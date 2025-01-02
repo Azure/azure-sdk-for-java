@@ -32,8 +32,8 @@ public final class ConfigurationBuilder {
      * <!-- src_embed io.clientcore.core.util.ConfigurationBuilder#putProperty -->
      * <pre>
      * configuration = new ConfigurationBuilder&#40;&#41;
-     *     .putProperty&#40;&quot;azure.sdk.client-name.connection-string&quot;, &quot;...&quot;&#41;
-     *     .root&#40;&quot;azure.sdk&quot;&#41;
+     *     .putProperty&#40;&quot;my.sdk.client-name.connection-string&quot;, &quot;...&quot;&#41;
+     *     .root&#40;&quot;my.sdk&quot;&#41;
      *     .buildSection&#40;&quot;client-name&quot;&#41;;
      *
      * ConfigurationProperty&lt;String&gt; connectionStringProperty = ConfigurationPropertyBuilder.ofString&#40;&quot;connection-string&quot;&#41;
@@ -54,7 +54,7 @@ public final class ConfigurationBuilder {
      * <!-- src_embed io.clientcore.core.util.Configuration -->
      * <pre>
      * Configuration configuration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
-     *     .root&#40;&quot;azure.sdk&quot;&#41;
+     *     .root&#40;&quot;my.sdk&quot;&#41;
      *     .buildSection&#40;&quot;client-name&quot;&#41;;
      *
      * ConfigurationProperty&lt;String&gt; proxyHostnameProperty = ConfigurationPropertyBuilder.ofString&#40;&quot;http.proxy.hostname&quot;&#41;
@@ -73,23 +73,22 @@ public final class ConfigurationBuilder {
 
     /**
      * Creates {@code ConfigurationBuilder} with configuration sources for explicit configuration, system properties and
-     * environment configuration sources. Use this constructor to customize known SDK system properties and
-     * environment variables retrieval.
+     * environment configuration sources. Use this constructor to customize known system properties and environment
+     * variables retrieval.
      *
-     * @param source Custom {@link ConfigurationSource} containing known SDK configuration properties
-     * @param systemPropertiesConfigurationSource {@link ConfigurationSource} containing known Azure SDK system
-     * properties.
-     * @param environmentConfigurationSource {@link ConfigurationSource} containing known Azure SDK environment
-     * variables.
+     * @param source Custom {@link ConfigurationSource} containing known configuration properties
+     * @param systemPropertiesConfigurationSource {@link ConfigurationSource} containing known system properties.
+     * @param environmentConfigurationSource {@link ConfigurationSource} containing known environment variables.
      */
     public ConfigurationBuilder(ConfigurationSource source, ConfigurationSource systemPropertiesConfigurationSource,
         ConfigurationSource environmentConfigurationSource) {
         Objects.requireNonNull(source, "'source' cannot be null");
-        Objects.requireNonNull(systemPropertiesConfigurationSource, "'systemPropertiesConfigurationSource' cannot be null");
+        Objects.requireNonNull(systemPropertiesConfigurationSource,
+            "'systemPropertiesConfigurationSource' cannot be null");
         Objects.requireNonNull(environmentConfigurationSource, "'environmentConfigurationSource' cannot be null");
         this.mutableSource = new MutableConfigurationSource(source);
-        this.environmentConfiguration = new EnvironmentConfiguration(systemPropertiesConfigurationSource,
-            environmentConfigurationSource);
+        this.environmentConfiguration
+            = new EnvironmentConfiguration(systemPropertiesConfigurationSource, environmentConfigurationSource);
     }
 
     /**
@@ -99,8 +98,8 @@ public final class ConfigurationBuilder {
      * <!-- src_embed io.clientcore.core.util.ConfigurationBuilder#putProperty -->
      * <pre>
      * configuration = new ConfigurationBuilder&#40;&#41;
-     *     .putProperty&#40;&quot;azure.sdk.client-name.connection-string&quot;, &quot;...&quot;&#41;
-     *     .root&#40;&quot;azure.sdk&quot;&#41;
+     *     .putProperty&#40;&quot;my.sdk.client-name.connection-string&quot;, &quot;...&quot;&#41;
+     *     .root&#40;&quot;my.sdk&quot;&#41;
      *     .buildSection&#40;&quot;client-name&quot;&#41;;
      *
      * ConfigurationProperty&lt;String&gt; connectionStringProperty = ConfigurationPropertyBuilder.ofString&#40;&quot;connection-string&quot;&#41;
@@ -130,7 +129,7 @@ public final class ConfigurationBuilder {
      * <!-- src_embed io.clientcore.core.util.Configuration -->
      * <pre>
      * Configuration configuration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
-     *     .root&#40;&quot;azure.sdk&quot;&#41;
+     *     .root&#40;&quot;my.sdk&quot;&#41;
      *     .buildSection&#40;&quot;client-name&quot;&#41;;
      *
      * ConfigurationProperty&lt;String&gt; proxyHostnameProperty = ConfigurationPropertyBuilder.ofString&#40;&quot;http.proxy.hostname&quot;&#41;
@@ -158,7 +157,7 @@ public final class ConfigurationBuilder {
      * <pre>
      * &#47;&#47; Builds shared Configuration only.
      * Configuration sharedConfiguration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
-     *     .root&#40;&quot;azure.sdk&quot;&#41;
+     *     .root&#40;&quot;my.sdk&quot;&#41;
      *     .build&#40;&#41;;
      * </pre>
      * <!-- end com.io.clientcore.core.util.ConfigurationBuilder#build -->
@@ -182,7 +181,7 @@ public final class ConfigurationBuilder {
      * <pre>
      * &#47;&#47; Builds Configuration for &lt;client-name&gt; with fallback to shared properties.
      * configuration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
-     *     .root&#40;&quot;azure.sdk&quot;&#41;
+     *     .root&#40;&quot;my.sdk&quot;&#41;
      *     .buildSection&#40;&quot;client-name&quot;&#41;;
      * </pre>
      * <!-- end io.clientcore.core.util.ConfigurationBuilder#buildSection -->
@@ -241,9 +240,8 @@ public final class ConfigurationBuilder {
 
         @Override
         public Map<String, String> getProperties(String source) {
-            Map<String, String> original = originalSource == null
-                ? Collections.emptyMap()
-                : originalSource.getProperties(source);
+            Map<String, String> original
+                = originalSource == null ? Collections.emptyMap() : originalSource.getProperties(source);
             if (additionalConfigurations == null) {
                 return original;
             }
@@ -265,7 +263,8 @@ public final class ConfigurationBuilder {
         }
 
         private static boolean hasPrefix(String key, String prefix) {
-            return prefix == null || key.startsWith(prefix) && key.length() > prefix.length() && key.charAt(prefix.length()) == '.';
+            return prefix == null
+                || key.startsWith(prefix) && key.length() > prefix.length() && key.charAt(prefix.length()) == '.';
         }
     }
 }

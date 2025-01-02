@@ -173,10 +173,8 @@ public final class PipelineTopologyProperties {
             parameters().forEach(e -> e.validate());
         }
         if (sources() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sources in model PipelineTopologyProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property sources in model PipelineTopologyProperties"));
         } else {
             sources().forEach(e -> e.validate());
         }
@@ -184,10 +182,8 @@ public final class PipelineTopologyProperties {
             processors().forEach(e -> e.validate());
         }
         if (sinks() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sinks in model PipelineTopologyProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property sinks in model PipelineTopologyProperties"));
         } else {
             sinks().forEach(e -> e.validate());
         }

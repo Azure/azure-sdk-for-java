@@ -15,20 +15,21 @@ public final class AzureFunctionActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureFunctionActivityTypeProperties model = BinaryData.fromString(
-            "{\"method\":\"HEAD\",\"functionName\":\"datakrwihbyufmuinhq\",\"headers\":{\"huxzdgoto\":\"dataowxd\"},\"body\":\"datasduirjqxkna\"}")
+            "{\"method\":\"POST\",\"functionName\":\"datajqtk\",\"headers\":{\"kj\":\"datamq\",\"cvmhpueiuhhnexnx\":\"dataczpzwfewbj\",\"lipymnukv\":\"datawafi\",\"liodyuu\":\"datajbxvhu\"},\"body\":\"dataqplj\"}")
             .toObject(AzureFunctionActivityTypeProperties.class);
-        Assertions.assertEquals(AzureFunctionActivityMethod.HEAD, model.method());
+        Assertions.assertEquals(AzureFunctionActivityMethod.POST, model.method());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureFunctionActivityTypeProperties model
-            = new AzureFunctionActivityTypeProperties().withMethod(AzureFunctionActivityMethod.HEAD)
-                .withFunctionName("datakrwihbyufmuinhq")
-                .withHeaders(mapOf("huxzdgoto", "dataowxd"))
-                .withBody("datasduirjqxkna");
+            = new AzureFunctionActivityTypeProperties().withMethod(AzureFunctionActivityMethod.POST)
+                .withFunctionName("datajqtk")
+                .withHeaders(mapOf("kj", "datamq", "cvmhpueiuhhnexnx", "dataczpzwfewbj", "lipymnukv", "datawafi",
+                    "liodyuu", "datajbxvhu"))
+                .withBody("dataqplj");
         model = BinaryData.fromObject(model).toObject(AzureFunctionActivityTypeProperties.class);
-        Assertions.assertEquals(AzureFunctionActivityMethod.HEAD, model.method());
+        Assertions.assertEquals(AzureFunctionActivityMethod.POST, model.method());
     }
 
     // Use "Map.of" if available

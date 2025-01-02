@@ -45,14 +45,19 @@ public final class PrefixListLocalRulestacksCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PrefixListResource response
-            = manager.prefixListLocalRulestacks().define("ilrixysf").withExistingLocalRulestack("phgerhsmvgoh", "wzm")
-                .withPrefixList(Arrays.asList("ympmlqoin", "zduewihapfjii")).withDescription("msqywwwmhkruwae")
-                .withEtag("jdiq").withAuditComment("iej").create();
+        PrefixListResource response = manager.prefixListLocalRulestacks()
+            .define("ilrixysf")
+            .withExistingLocalRulestack("phgerhsmvgoh", "wzm")
+            .withPrefixList(Arrays.asList("ympmlqoin", "zduewihapfjii"))
+            .withDescription("msqywwwmhkruwae")
+            .withEtag("jdiq")
+            .withAuditComment("iej")
+            .create();
 
         Assertions.assertEquals("dmskxknpdgzigjsu", response.description());
         Assertions.assertEquals("whgsaodkww", response.prefixList().get(0));

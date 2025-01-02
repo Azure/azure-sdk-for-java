@@ -16,8 +16,8 @@ import com.azure.resourcemanager.eventgrid.fluent.models.TopicSharedAccessKeysIn
 import com.azure.resourcemanager.eventgrid.models.EventType;
 import com.azure.resourcemanager.eventgrid.models.Topic;
 import com.azure.resourcemanager.eventgrid.models.TopicRegenerateKeyRequest;
-import com.azure.resourcemanager.eventgrid.models.Topics;
 import com.azure.resourcemanager.eventgrid.models.TopicSharedAccessKeys;
+import com.azure.resourcemanager.eventgrid.models.Topics;
 
 public final class TopicsImpl implements Topics {
     private static final ClientLogger LOGGER = new ClientLogger(TopicsImpl.class);

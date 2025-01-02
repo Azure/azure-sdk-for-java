@@ -5,35 +5,119 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.fluent.models.AlertRuleInner;
 import com.azure.resourcemanager.securityinsights.fluent.models.MLBehaviorAnalyticsAlertRuleProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Represents MLBehaviorAnalytics alert rule. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("MLBehaviorAnalytics")
+/**
+ * Represents MLBehaviorAnalytics alert rule.
+ */
 @Fluent
 public final class MLBehaviorAnalyticsAlertRule extends AlertRuleInner {
     /*
+     * The kind of the alert rule
+     */
+    private AlertRuleKind kind = AlertRuleKind.MLBEHAVIOR_ANALYTICS;
+
+    /*
      * MLBehaviorAnalytics alert rule properties
      */
-    @JsonProperty(value = "properties")
     private MLBehaviorAnalyticsAlertRuleProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of MLBehaviorAnalyticsAlertRule class.
+     */
+    public MLBehaviorAnalyticsAlertRule() {
+    }
+
+    /**
+     * Get the kind property: The kind of the alert rule.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public AlertRuleKind kind() {
+        return this.kind;
+    }
 
     /**
      * Get the innerProperties property: MLBehaviorAnalytics alert rule properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MLBehaviorAnalyticsAlertRuleProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MLBehaviorAnalyticsAlertRule withEtag(String etag) {
         super.withEtag(etag);
@@ -42,7 +126,7 @@ public final class MLBehaviorAnalyticsAlertRule extends AlertRuleInner {
 
     /**
      * Get the alertRuleTemplateName property: The Name of the alert rule template used to create this rule.
-     *
+     * 
      * @return the alertRuleTemplateName value.
      */
     public String alertRuleTemplateName() {
@@ -51,7 +135,7 @@ public final class MLBehaviorAnalyticsAlertRule extends AlertRuleInner {
 
     /**
      * Set the alertRuleTemplateName property: The Name of the alert rule template used to create this rule.
-     *
+     * 
      * @param alertRuleTemplateName the alertRuleTemplateName value to set.
      * @return the MLBehaviorAnalyticsAlertRule object itself.
      */
@@ -65,7 +149,7 @@ public final class MLBehaviorAnalyticsAlertRule extends AlertRuleInner {
 
     /**
      * Get the description property: The description of the alert rule.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -74,7 +158,7 @@ public final class MLBehaviorAnalyticsAlertRule extends AlertRuleInner {
 
     /**
      * Get the displayName property: The display name for alerts created by this alert rule.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -83,7 +167,7 @@ public final class MLBehaviorAnalyticsAlertRule extends AlertRuleInner {
 
     /**
      * Get the enabled property: Determines whether this alert rule is enabled or disabled.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -92,7 +176,7 @@ public final class MLBehaviorAnalyticsAlertRule extends AlertRuleInner {
 
     /**
      * Set the enabled property: Determines whether this alert rule is enabled or disabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the MLBehaviorAnalyticsAlertRule object itself.
      */
@@ -106,7 +190,7 @@ public final class MLBehaviorAnalyticsAlertRule extends AlertRuleInner {
 
     /**
      * Get the lastModifiedUtc property: The last time that this alert rule has been modified.
-     *
+     * 
      * @return the lastModifiedUtc value.
      */
     public OffsetDateTime lastModifiedUtc() {
@@ -115,7 +199,7 @@ public final class MLBehaviorAnalyticsAlertRule extends AlertRuleInner {
 
     /**
      * Get the severity property: The severity for alerts created by this alert rule.
-     *
+     * 
      * @return the severity value.
      */
     public AlertSeverity severity() {
@@ -124,7 +208,7 @@ public final class MLBehaviorAnalyticsAlertRule extends AlertRuleInner {
 
     /**
      * Get the tactics property: The tactics of the alert rule.
-     *
+     * 
      * @return the tactics value.
      */
     public List<AttackTactic> tactics() {
@@ -133,7 +217,7 @@ public final class MLBehaviorAnalyticsAlertRule extends AlertRuleInner {
 
     /**
      * Get the techniques property: The techniques of the alert rule.
-     *
+     * 
      * @return the techniques value.
      */
     public List<String> techniques() {
@@ -142,14 +226,65 @@ public final class MLBehaviorAnalyticsAlertRule extends AlertRuleInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("etag", etag());
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MLBehaviorAnalyticsAlertRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MLBehaviorAnalyticsAlertRule if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MLBehaviorAnalyticsAlertRule.
+     */
+    public static MLBehaviorAnalyticsAlertRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MLBehaviorAnalyticsAlertRule deserializedMLBehaviorAnalyticsAlertRule = new MLBehaviorAnalyticsAlertRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMLBehaviorAnalyticsAlertRule.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedMLBehaviorAnalyticsAlertRule.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedMLBehaviorAnalyticsAlertRule.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedMLBehaviorAnalyticsAlertRule.withEtag(reader.getString());
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedMLBehaviorAnalyticsAlertRule.systemData = SystemData.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedMLBehaviorAnalyticsAlertRule.kind = AlertRuleKind.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedMLBehaviorAnalyticsAlertRule.innerProperties
+                        = MLBehaviorAnalyticsAlertRuleProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMLBehaviorAnalyticsAlertRule;
+        });
     }
 }

@@ -5,39 +5,61 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The PermissionsResourceProviderItem model. */
+/**
+ * The PermissionsResourceProviderItem model.
+ */
 @Fluent
 public final class PermissionsResourceProviderItem extends ResourceProvider {
-    /** {@inheritDoc} */
+    /**
+     * Creates an instance of PermissionsResourceProviderItem class.
+     */
+    public PermissionsResourceProviderItem() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PermissionsResourceProviderItem withProvider(ProviderName provider) {
         super.withProvider(provider);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PermissionsResourceProviderItem withPermissionsDisplayText(String permissionsDisplayText) {
         super.withPermissionsDisplayText(permissionsDisplayText);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PermissionsResourceProviderItem withProviderDisplayName(String providerDisplayName) {
         super.withProviderDisplayName(providerDisplayName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PermissionsResourceProviderItem withScope(PermissionProviderScope scope) {
         super.withScope(scope);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PermissionsResourceProviderItem withRequiredPermissions(RequiredPermissions requiredPermissions) {
         super.withRequiredPermissions(requiredPermissions);
@@ -46,11 +68,65 @@ public final class PermissionsResourceProviderItem extends ResourceProvider {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (requiredPermissions() != null) {
+            requiredPermissions().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("provider", provider() == null ? null : provider().toString());
+        jsonWriter.writeStringField("permissionsDisplayText", permissionsDisplayText());
+        jsonWriter.writeStringField("providerDisplayName", providerDisplayName());
+        jsonWriter.writeStringField("scope", scope() == null ? null : scope().toString());
+        jsonWriter.writeJsonField("requiredPermissions", requiredPermissions());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PermissionsResourceProviderItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PermissionsResourceProviderItem if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PermissionsResourceProviderItem.
+     */
+    public static PermissionsResourceProviderItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PermissionsResourceProviderItem deserializedPermissionsResourceProviderItem
+                = new PermissionsResourceProviderItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provider".equals(fieldName)) {
+                    deserializedPermissionsResourceProviderItem
+                        .withProvider(ProviderName.fromString(reader.getString()));
+                } else if ("permissionsDisplayText".equals(fieldName)) {
+                    deserializedPermissionsResourceProviderItem.withPermissionsDisplayText(reader.getString());
+                } else if ("providerDisplayName".equals(fieldName)) {
+                    deserializedPermissionsResourceProviderItem.withProviderDisplayName(reader.getString());
+                } else if ("scope".equals(fieldName)) {
+                    deserializedPermissionsResourceProviderItem
+                        .withScope(PermissionProviderScope.fromString(reader.getString()));
+                } else if ("requiredPermissions".equals(fieldName)) {
+                    deserializedPermissionsResourceProviderItem
+                        .withRequiredPermissions(RequiredPermissions.fromJson(reader));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPermissionsResourceProviderItem;
+        });
     }
 }

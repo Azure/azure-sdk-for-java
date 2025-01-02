@@ -45,14 +45,20 @@ public final class CertificateObjectLocalRulestacksCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CertificateObjectLocalRulestackResource response = manager.certificateObjectLocalRulestacks()
-            .define("kdschlzvfictnkjj").withExistingLocalRulestack("ununm", "zkrvfyi")
-            .withCertificateSelfSigned(BooleanEnum.FALSE).withCertificateSignerResourceId("cwnphbkgfyrtogm")
-            .withAuditComment("pjscdfpdqwtygev").withDescription("mseharx").withEtag("vqnrxtmbpj").create();
+            .define("kdschlzvfictnkjj")
+            .withExistingLocalRulestack("ununm", "zkrvfyi")
+            .withCertificateSelfSigned(BooleanEnum.FALSE)
+            .withCertificateSignerResourceId("cwnphbkgfyrtogm")
+            .withAuditComment("pjscdfpdqwtygev")
+            .withDescription("mseharx")
+            .withEtag("vqnrxtmbpj")
+            .create();
 
         Assertions.assertEquals("u", response.certificateSignerResourceId());
         Assertions.assertEquals(BooleanEnum.TRUE, response.certificateSelfSigned());

@@ -1,11 +1,16 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package com.azure.json.implementation.jackson.core.base;
 
-import com.azure.json.implementation.jackson.core.*;
+import com.azure.json.implementation.jackson.core.Base64Variant;
+import com.azure.json.implementation.jackson.core.JsonGenerator;
+import com.azure.json.implementation.jackson.core.JsonStreamContext;
+import com.azure.json.implementation.jackson.core.ObjectCodec;
+import com.azure.json.implementation.jackson.core.SerializableString;
+import com.azure.json.implementation.jackson.core.TreeNode;
+import com.azure.json.implementation.jackson.core.Version;
 import com.azure.json.implementation.jackson.core.json.DupDetector;
 import com.azure.json.implementation.jackson.core.json.JsonWriteContext;
 import com.azure.json.implementation.jackson.core.json.PackageVersion;
-import com.azure.json.implementation.jackson.core.util.DefaultPrettyPrinter;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,7 +30,7 @@ public abstract class GeneratorBase extends JsonGenerator {
     /**
      * Set of feature masks related to features that need updates of other
      * local configuration or state.
-     * 
+     *
      * @since 2.5
      */
     @SuppressWarnings("deprecation")
@@ -46,7 +51,7 @@ public abstract class GeneratorBase extends JsonGenerator {
      * in "plain" (non-engineering) notation; intent is to prevent asymmetric
      * attack whereupon simple eng-notation with big scale is used to generate
      * huge "plain" serialization. See [core#315] for details.
-     * 
+     *
      * @since 2.7.7
      */
     protected final static int MAX_BIG_DECIMAL_SCALE = 9999;
@@ -61,7 +66,7 @@ public abstract class GeneratorBase extends JsonGenerator {
 
     /**
      * Bit flag composed of bits that indicate which
-     * {@link com.azure.json.implementation.jackson.core.JsonGenerator.Feature}s
+     * {@link Feature}s
      * are enabled.
      */
     protected int _features;
@@ -106,16 +111,6 @@ public abstract class GeneratorBase extends JsonGenerator {
         DupDetector dups
             = Feature.STRICT_DUPLICATE_DETECTION.enabledIn(features) ? DupDetector.rootDetector(this) : null;
         _writeContext = JsonWriteContext.createRootContext(dups);
-        _cfgNumbersAsStrings = Feature.WRITE_NUMBERS_AS_STRINGS.enabledIn(features);
-    }
-
-    // @since 2.5
-    @SuppressWarnings("deprecation")
-    protected GeneratorBase(int features, ObjectCodec codec, JsonWriteContext ctxt) {
-        super();
-        _features = features;
-        _objectCodec = codec;
-        _writeContext = ctxt;
         _cfgNumbersAsStrings = Feature.WRITE_NUMBERS_AS_STRINGS.enabledIn(features);
     }
 
@@ -253,15 +248,6 @@ public abstract class GeneratorBase extends JsonGenerator {
                 _writeContext = _writeContext.withDupDetector(null);
             }
         }
-    }
-
-    @Override
-    public JsonGenerator useDefaultPrettyPrinter() {
-        // Should not override a pretty printer if one already assigned.
-        if (getPrettyPrinter() != null) {
-            return this;
-        }
-        return setPrettyPrinter(_constructDefaultPrettyPrinter());
     }
 
     @Override
@@ -459,7 +445,7 @@ public abstract class GeneratorBase extends JsonGenerator {
      * Method called before trying to write a value (scalar or structured),
      * to verify that this is legal in current output state, as well as to
      * output separators if and as necessary.
-     * 
+     *
      * @param typeMsg Additional message used for generating exception message
      *   if value output is NOT legal in current generator output state.
      *
@@ -469,19 +455,7 @@ public abstract class GeneratorBase extends JsonGenerator {
     protected abstract void _verifyValueWrite(String typeMsg) throws IOException;
 
     /**
-     * Overridable factory method called to instantiate an appropriate {@link PrettyPrinter}
-     * for case of "just use the default one", when {@link #useDefaultPrettyPrinter()} is called.
-     *
-     * @return Instance of "default" pretty printer to use
-     *
-     * @since 2.6
-     */
-    protected PrettyPrinter _constructDefaultPrettyPrinter() {
-        return new DefaultPrettyPrinter();
-    }
-
-    /**
-     * Helper method used to serialize a {@link java.math.BigDecimal} as a String,
+     * Helper method used to serialize a {@link BigDecimal} as a String,
      * for serialization, taking into account configuration settings
      *
      * @param value BigDecimal value to convert to String
@@ -519,7 +493,6 @@ public abstract class GeneratorBase extends JsonGenerator {
             String msg = String.format("Incomplete surrogate pair: first char 0x%04X, second 0x%04X", surr1, surr2);
             _reportError(msg);
         }
-        int c = 0x10000 + ((surr1 - SURR1_FIRST) << 10) + (surr2 - SURR2_FIRST);
-        return c;
+        return 0x10000 + ((surr1 - SURR1_FIRST) << 10) + (surr2 - SURR2_FIRST);
     }
 }

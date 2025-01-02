@@ -61,6 +61,13 @@ public interface ContainerServiceFleetManagementClient {
     FleetsClient getFleets();
 
     /**
+     * Gets the AutoUpgradeProfilesClient object to access its operations.
+     * 
+     * @return the AutoUpgradeProfilesClient object.
+     */
+    AutoUpgradeProfilesClient getAutoUpgradeProfiles();
+
+    /**
      * Gets the FleetMembersClient object to access its operations.
      * 
      * @return the FleetMembersClient object.

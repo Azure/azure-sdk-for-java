@@ -20,7 +20,7 @@ public final class ReplicationNetworkMappingsListSamples {
      */
     public static void getsAllTheNetworkMappingsUnderAVault(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationNetworkMappings().list("srce2avaultbvtaC27", "srcBvte2a14C27",
-            com.azure.core.util.Context.NONE);
+        manager.replicationNetworkMappings()
+            .list("srce2avaultbvtaC27", "srcBvte2a14C27", com.azure.core.util.Context.NONE);
     }
 }

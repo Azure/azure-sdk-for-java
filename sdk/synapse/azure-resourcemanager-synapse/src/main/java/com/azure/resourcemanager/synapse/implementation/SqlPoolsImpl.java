@@ -11,7 +11,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.SqlPoolsClient;
 import com.azure.resourcemanager.synapse.fluent.models.SqlPoolInner;
-import com.azure.resourcemanager.synapse.models.ResourceMoveDefinition;
 import com.azure.resourcemanager.synapse.models.SqlPool;
 import com.azure.resourcemanager.synapse.models.SqlPools;
 
@@ -27,15 +26,12 @@ public final class SqlPoolsImpl implements SqlPools {
         this.serviceManager = serviceManager;
     }
 
-    public Response<SqlPool> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
-        Response<SqlPoolInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, sqlPoolName, context);
+    public Response<SqlPool> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context) {
+        Response<SqlPoolInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, sqlPoolName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SqlPoolImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -51,187 +47,113 @@ public final class SqlPoolsImpl implements SqlPools {
         }
     }
 
-    public SqlPool delete(String resourceGroupName, String workspaceName, String sqlPoolName) {
-        SqlPoolInner inner = this.serviceClient().delete(resourceGroupName, workspaceName, sqlPoolName);
-        if (inner != null) {
-            return new SqlPoolImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public Object delete(String resourceGroupName, String workspaceName, String sqlPoolName) {
+        return this.serviceClient().delete(resourceGroupName, workspaceName, sqlPoolName);
     }
 
-    public SqlPool delete(String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
-        SqlPoolInner inner = this.serviceClient().delete(resourceGroupName, workspaceName, sqlPoolName, context);
-        if (inner != null) {
-            return new SqlPoolImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public Object delete(String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
+        return this.serviceClient().delete(resourceGroupName, workspaceName, sqlPoolName, context);
     }
 
     public PagedIterable<SqlPool> listByWorkspace(String resourceGroupName, String workspaceName) {
         PagedIterable<SqlPoolInner> inner = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new SqlPoolImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SqlPoolImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SqlPool> listByWorkspace(String resourceGroupName, String workspaceName, Context context) {
-        PagedIterable<SqlPoolInner> inner =
-            this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, context);
-        return Utils.mapPage(inner, inner1 -> new SqlPoolImpl(inner1, this.manager()));
+        PagedIterable<SqlPoolInner> inner
+            = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SqlPoolImpl(inner1, this.manager()));
     }
 
-    public SqlPool pause(String resourceGroupName, String workspaceName, String sqlPoolName) {
-        SqlPoolInner inner = this.serviceClient().pause(resourceGroupName, workspaceName, sqlPoolName);
-        if (inner != null) {
-            return new SqlPoolImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public Object pause(String resourceGroupName, String workspaceName, String sqlPoolName) {
+        return this.serviceClient().pause(resourceGroupName, workspaceName, sqlPoolName);
     }
 
-    public SqlPool pause(String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
-        SqlPoolInner inner = this.serviceClient().pause(resourceGroupName, workspaceName, sqlPoolName, context);
-        if (inner != null) {
-            return new SqlPoolImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public Object pause(String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
+        return this.serviceClient().pause(resourceGroupName, workspaceName, sqlPoolName, context);
     }
 
-    public SqlPool resume(String resourceGroupName, String workspaceName, String sqlPoolName) {
-        SqlPoolInner inner = this.serviceClient().resume(resourceGroupName, workspaceName, sqlPoolName);
-        if (inner != null) {
-            return new SqlPoolImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public Object resume(String resourceGroupName, String workspaceName, String sqlPoolName) {
+        return this.serviceClient().resume(resourceGroupName, workspaceName, sqlPoolName);
     }
 
-    public SqlPool resume(String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
-        SqlPoolInner inner = this.serviceClient().resume(resourceGroupName, workspaceName, sqlPoolName, context);
-        if (inner != null) {
-            return new SqlPoolImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<Void> renameWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        ResourceMoveDefinition parameters,
-        Context context) {
-        return this
-            .serviceClient()
-            .renameWithResponse(resourceGroupName, workspaceName, sqlPoolName, parameters, context);
-    }
-
-    public void rename(
-        String resourceGroupName, String workspaceName, String sqlPoolName, ResourceMoveDefinition parameters) {
-        this.serviceClient().rename(resourceGroupName, workspaceName, sqlPoolName, parameters);
+    public Object resume(String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
+        return this.serviceClient().resume(resourceGroupName, workspaceName, sqlPoolName, context);
     }
 
     public SqlPool getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
+        String sqlPoolName = ResourceManagerUtils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, sqlPoolName, Context.NONE).getValue();
     }
 
     public Response<SqlPool> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
+        String sqlPoolName = ResourceManagerUtils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, sqlPoolName, context);
     }
 
-    public SqlPool deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+    public Object deleteById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
+        String sqlPoolName = ResourceManagerUtils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
         }
         return this.delete(resourceGroupName, workspaceName, sqlPoolName, Context.NONE);
     }
 
-    public SqlPool deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+    public Object deleteByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
+        String sqlPoolName = ResourceManagerUtils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
         }
         return this.delete(resourceGroupName, workspaceName, sqlPoolName, context);
     }

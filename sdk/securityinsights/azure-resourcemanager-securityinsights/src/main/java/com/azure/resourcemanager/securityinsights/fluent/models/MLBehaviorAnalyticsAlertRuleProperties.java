@@ -5,67 +5,73 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.AlertSeverity;
 import com.azure.resourcemanager.securityinsights.models.AttackTactic;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** MLBehaviorAnalytics alert rule base property bag. */
+/**
+ * MLBehaviorAnalytics alert rule base property bag.
+ */
 @Fluent
-public final class MLBehaviorAnalyticsAlertRuleProperties {
+public final class MLBehaviorAnalyticsAlertRuleProperties
+    implements JsonSerializable<MLBehaviorAnalyticsAlertRuleProperties> {
     /*
      * The Name of the alert rule template used to create this rule.
      */
-    @JsonProperty(value = "alertRuleTemplateName", required = true)
     private String alertRuleTemplateName;
 
     /*
      * The description of the alert rule.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * The display name for alerts created by this alert rule.
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * Determines whether this alert rule is enabled or disabled.
      */
-    @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
 
     /*
      * The last time that this alert rule has been modified.
      */
-    @JsonProperty(value = "lastModifiedUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedUtc;
 
     /*
      * The severity for alerts created by this alert rule.
      */
-    @JsonProperty(value = "severity", access = JsonProperty.Access.WRITE_ONLY)
     private AlertSeverity severity;
 
     /*
      * The tactics of the alert rule
      */
-    @JsonProperty(value = "tactics", access = JsonProperty.Access.WRITE_ONLY)
     private List<AttackTactic> tactics;
 
     /*
      * The techniques of the alert rule
      */
-    @JsonProperty(value = "techniques", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> techniques;
 
     /**
+     * Creates an instance of MLBehaviorAnalyticsAlertRuleProperties class.
+     */
+    public MLBehaviorAnalyticsAlertRuleProperties() {
+    }
+
+    /**
      * Get the alertRuleTemplateName property: The Name of the alert rule template used to create this rule.
-     *
+     * 
      * @return the alertRuleTemplateName value.
      */
     public String alertRuleTemplateName() {
@@ -74,7 +80,7 @@ public final class MLBehaviorAnalyticsAlertRuleProperties {
 
     /**
      * Set the alertRuleTemplateName property: The Name of the alert rule template used to create this rule.
-     *
+     * 
      * @param alertRuleTemplateName the alertRuleTemplateName value to set.
      * @return the MLBehaviorAnalyticsAlertRuleProperties object itself.
      */
@@ -85,7 +91,7 @@ public final class MLBehaviorAnalyticsAlertRuleProperties {
 
     /**
      * Get the description property: The description of the alert rule.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -94,7 +100,7 @@ public final class MLBehaviorAnalyticsAlertRuleProperties {
 
     /**
      * Get the displayName property: The display name for alerts created by this alert rule.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -103,7 +109,7 @@ public final class MLBehaviorAnalyticsAlertRuleProperties {
 
     /**
      * Get the enabled property: Determines whether this alert rule is enabled or disabled.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -112,7 +118,7 @@ public final class MLBehaviorAnalyticsAlertRuleProperties {
 
     /**
      * Set the enabled property: Determines whether this alert rule is enabled or disabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the MLBehaviorAnalyticsAlertRuleProperties object itself.
      */
@@ -123,7 +129,7 @@ public final class MLBehaviorAnalyticsAlertRuleProperties {
 
     /**
      * Get the lastModifiedUtc property: The last time that this alert rule has been modified.
-     *
+     * 
      * @return the lastModifiedUtc value.
      */
     public OffsetDateTime lastModifiedUtc() {
@@ -132,7 +138,7 @@ public final class MLBehaviorAnalyticsAlertRuleProperties {
 
     /**
      * Get the severity property: The severity for alerts created by this alert rule.
-     *
+     * 
      * @return the severity value.
      */
     public AlertSeverity severity() {
@@ -141,7 +147,7 @@ public final class MLBehaviorAnalyticsAlertRuleProperties {
 
     /**
      * Get the tactics property: The tactics of the alert rule.
-     *
+     * 
      * @return the tactics value.
      */
     public List<AttackTactic> tactics() {
@@ -150,7 +156,7 @@ public final class MLBehaviorAnalyticsAlertRuleProperties {
 
     /**
      * Get the techniques property: The techniques of the alert rule.
-     *
+     * 
      * @return the techniques value.
      */
     public List<String> techniques() {
@@ -159,18 +165,74 @@ public final class MLBehaviorAnalyticsAlertRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (alertRuleTemplateName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property alertRuleTemplateName in model"
-                            + " MLBehaviorAnalyticsAlertRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property alertRuleTemplateName in model MLBehaviorAnalyticsAlertRuleProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MLBehaviorAnalyticsAlertRuleProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("alertRuleTemplateName", this.alertRuleTemplateName);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MLBehaviorAnalyticsAlertRuleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MLBehaviorAnalyticsAlertRuleProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MLBehaviorAnalyticsAlertRuleProperties.
+     */
+    public static MLBehaviorAnalyticsAlertRuleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MLBehaviorAnalyticsAlertRuleProperties deserializedMLBehaviorAnalyticsAlertRuleProperties
+                = new MLBehaviorAnalyticsAlertRuleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("alertRuleTemplateName".equals(fieldName)) {
+                    deserializedMLBehaviorAnalyticsAlertRuleProperties.alertRuleTemplateName = reader.getString();
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedMLBehaviorAnalyticsAlertRuleProperties.enabled = reader.getBoolean();
+                } else if ("description".equals(fieldName)) {
+                    deserializedMLBehaviorAnalyticsAlertRuleProperties.description = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMLBehaviorAnalyticsAlertRuleProperties.displayName = reader.getString();
+                } else if ("lastModifiedUtc".equals(fieldName)) {
+                    deserializedMLBehaviorAnalyticsAlertRuleProperties.lastModifiedUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("severity".equals(fieldName)) {
+                    deserializedMLBehaviorAnalyticsAlertRuleProperties.severity
+                        = AlertSeverity.fromString(reader.getString());
+                } else if ("tactics".equals(fieldName)) {
+                    List<AttackTactic> tactics
+                        = reader.readArray(reader1 -> AttackTactic.fromString(reader1.getString()));
+                    deserializedMLBehaviorAnalyticsAlertRuleProperties.tactics = tactics;
+                } else if ("techniques".equals(fieldName)) {
+                    List<String> techniques = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMLBehaviorAnalyticsAlertRuleProperties.techniques = techniques;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMLBehaviorAnalyticsAlertRuleProperties;
+        });
+    }
 }

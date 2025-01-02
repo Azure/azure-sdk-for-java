@@ -21,12 +21,10 @@ public class IdentityFeature implements GraalVMFeature {
 
     @Override
     public Set<ClassReflectionAttributes> getReflectionClasses() {
-        return setOf(
-            createWithAllDeclared("com.microsoft.aad.msal4j.AadInstanceDiscoveryResponse"),
+        return setOf(createWithAllDeclared("com.microsoft.aad.msal4j.AadInstanceDiscoveryResponse"),
             createWithAllDeclared("com.microsoft.aad.msal4j.InstanceDiscoveryMetadataEntry"),
 
             // this is due to Msal4j library dependency
-            createWithAllDeclared("java.util.HashSet")
-        );
+            createWithAllDeclared("java.util.HashSet"));
     }
 }

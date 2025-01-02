@@ -5,26 +5,36 @@
 package com.azure.ai.personalizer.administration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Learning settings specifying how to train the model. */
+/**
+ * Learning settings specifying how to train the model.
+ */
 @Fluent
-public final class PersonalizerPolicy {
+public final class PersonalizerPolicy implements JsonSerializable<PersonalizerPolicy> {
     /*
      * Name of the learning settings.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Arguments of the learning settings.
      */
-    @JsonProperty(value = "arguments", required = true)
     private String arguments;
 
     /**
+     * Creates an instance of PersonalizerPolicy class.
+     */
+    public PersonalizerPolicy() {
+    }
+
+    /**
      * Get the name property: Name of the learning settings.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -33,7 +43,7 @@ public final class PersonalizerPolicy {
 
     /**
      * Set the name property: Name of the learning settings.
-     *
+     * 
      * @param name the name value to set.
      * @return the PersonalizerPolicy object itself.
      */
@@ -44,7 +54,7 @@ public final class PersonalizerPolicy {
 
     /**
      * Get the arguments property: Arguments of the learning settings.
-     *
+     * 
      * @return the arguments value.
      */
     public String getArguments() {
@@ -53,12 +63,52 @@ public final class PersonalizerPolicy {
 
     /**
      * Set the arguments property: Arguments of the learning settings.
-     *
+     * 
      * @param arguments the arguments value to set.
      * @return the PersonalizerPolicy object itself.
      */
     public PersonalizerPolicy setArguments(String arguments) {
         this.arguments = arguments;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("arguments", this.arguments);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PersonalizerPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PersonalizerPolicy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PersonalizerPolicy.
+     */
+    public static PersonalizerPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PersonalizerPolicy deserializedPersonalizerPolicy = new PersonalizerPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedPersonalizerPolicy.name = reader.getString();
+                } else if ("arguments".equals(fieldName)) {
+                    deserializedPersonalizerPolicy.arguments = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPersonalizerPolicy;
+        });
     }
 }

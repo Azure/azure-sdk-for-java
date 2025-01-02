@@ -5,25 +5,28 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.LinkedIntegrationRuntimeType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The self-hosted integration runtime properties.
  */
 @Fluent
-public final class SelfHostedIntegrationRuntimeTypeProperties {
+public final class SelfHostedIntegrationRuntimeTypeProperties
+    implements JsonSerializable<SelfHostedIntegrationRuntimeTypeProperties> {
     /*
      * The base definition of a linked integration runtime.
      */
-    @JsonProperty(value = "linkedInfo")
     private LinkedIntegrationRuntimeType linkedInfo;
 
     /*
      * An alternative option to ensure interactive authoring function when your self-hosted integration runtime is
      * unable to establish a connection with Azure Relay.
      */
-    @JsonProperty(value = "selfContainedInteractiveAuthoringEnabled")
     private Boolean selfContainedInteractiveAuthoringEnabled;
 
     /**
@@ -84,5 +87,48 @@ public final class SelfHostedIntegrationRuntimeTypeProperties {
         if (linkedInfo() != null) {
             linkedInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("linkedInfo", this.linkedInfo);
+        jsonWriter.writeBooleanField("selfContainedInteractiveAuthoringEnabled",
+            this.selfContainedInteractiveAuthoringEnabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SelfHostedIntegrationRuntimeTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SelfHostedIntegrationRuntimeTypeProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SelfHostedIntegrationRuntimeTypeProperties.
+     */
+    public static SelfHostedIntegrationRuntimeTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SelfHostedIntegrationRuntimeTypeProperties deserializedSelfHostedIntegrationRuntimeTypeProperties
+                = new SelfHostedIntegrationRuntimeTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("linkedInfo".equals(fieldName)) {
+                    deserializedSelfHostedIntegrationRuntimeTypeProperties.linkedInfo
+                        = LinkedIntegrationRuntimeType.fromJson(reader);
+                } else if ("selfContainedInteractiveAuthoringEnabled".equals(fieldName)) {
+                    deserializedSelfHostedIntegrationRuntimeTypeProperties.selfContainedInteractiveAuthoringEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSelfHostedIntegrationRuntimeTypeProperties;
+        });
     }
 }

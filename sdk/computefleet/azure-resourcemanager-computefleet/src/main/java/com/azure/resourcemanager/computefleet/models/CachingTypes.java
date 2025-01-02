@@ -12,17 +12,17 @@ import java.util.Collection;
  */
 public final class CachingTypes extends ExpandableStringEnum<CachingTypes> {
     /**
-     * Static value None for CachingTypes.
+     * 'None' is default for Standard Storage.
      */
     public static final CachingTypes NONE = fromString("None");
 
     /**
-     * Static value ReadOnly for CachingTypes.
+     * 'ReadOnly' is default for Premium Storage.
      */
     public static final CachingTypes READ_ONLY = fromString("ReadOnly");
 
     /**
-     * Static value ReadWrite for CachingTypes.
+     * 'ReadWrite' is default for OS Disk.
      */
     public static final CachingTypes READ_WRITE = fromString("ReadWrite");
 

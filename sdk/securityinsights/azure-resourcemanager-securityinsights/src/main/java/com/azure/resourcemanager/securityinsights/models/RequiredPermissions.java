@@ -5,38 +5,46 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Required permissions for the connector. */
+/**
+ * Required permissions for the connector.
+ */
 @Fluent
-public final class RequiredPermissions {
+public final class RequiredPermissions implements JsonSerializable<RequiredPermissions> {
     /*
      * action permission
      */
-    @JsonProperty(value = "action")
     private Boolean action;
 
     /*
      * write permission
      */
-    @JsonProperty(value = "write")
     private Boolean write;
 
     /*
      * read permission
      */
-    @JsonProperty(value = "read")
     private Boolean read;
 
     /*
      * delete permission
      */
-    @JsonProperty(value = "delete")
     private Boolean delete;
 
     /**
+     * Creates an instance of RequiredPermissions class.
+     */
+    public RequiredPermissions() {
+    }
+
+    /**
      * Get the action property: action permission.
-     *
+     * 
      * @return the action value.
      */
     public Boolean action() {
@@ -45,7 +53,7 @@ public final class RequiredPermissions {
 
     /**
      * Set the action property: action permission.
-     *
+     * 
      * @param action the action value to set.
      * @return the RequiredPermissions object itself.
      */
@@ -56,7 +64,7 @@ public final class RequiredPermissions {
 
     /**
      * Get the write property: write permission.
-     *
+     * 
      * @return the write value.
      */
     public Boolean write() {
@@ -65,7 +73,7 @@ public final class RequiredPermissions {
 
     /**
      * Set the write property: write permission.
-     *
+     * 
      * @param write the write value to set.
      * @return the RequiredPermissions object itself.
      */
@@ -76,7 +84,7 @@ public final class RequiredPermissions {
 
     /**
      * Get the read property: read permission.
-     *
+     * 
      * @return the read value.
      */
     public Boolean read() {
@@ -85,7 +93,7 @@ public final class RequiredPermissions {
 
     /**
      * Set the read property: read permission.
-     *
+     * 
      * @param read the read value to set.
      * @return the RequiredPermissions object itself.
      */
@@ -96,7 +104,7 @@ public final class RequiredPermissions {
 
     /**
      * Get the delete property: delete permission.
-     *
+     * 
      * @return the delete value.
      */
     public Boolean delete() {
@@ -105,7 +113,7 @@ public final class RequiredPermissions {
 
     /**
      * Set the delete property: delete permission.
-     *
+     * 
      * @param delete the delete value to set.
      * @return the RequiredPermissions object itself.
      */
@@ -116,9 +124,54 @@ public final class RequiredPermissions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("action", this.action);
+        jsonWriter.writeBooleanField("write", this.write);
+        jsonWriter.writeBooleanField("read", this.read);
+        jsonWriter.writeBooleanField("delete", this.delete);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RequiredPermissions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RequiredPermissions if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RequiredPermissions.
+     */
+    public static RequiredPermissions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RequiredPermissions deserializedRequiredPermissions = new RequiredPermissions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("action".equals(fieldName)) {
+                    deserializedRequiredPermissions.action = reader.getNullable(JsonReader::getBoolean);
+                } else if ("write".equals(fieldName)) {
+                    deserializedRequiredPermissions.write = reader.getNullable(JsonReader::getBoolean);
+                } else if ("read".equals(fieldName)) {
+                    deserializedRequiredPermissions.read = reader.getNullable(JsonReader::getBoolean);
+                } else if ("delete".equals(fieldName)) {
+                    deserializedRequiredPermissions.delete = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRequiredPermissions;
+        });
     }
 }

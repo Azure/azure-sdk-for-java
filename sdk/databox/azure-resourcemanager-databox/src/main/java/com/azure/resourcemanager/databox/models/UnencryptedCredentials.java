@@ -6,25 +6,27 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.resourcemanager.databox.fluent.models.UnencryptedCredentialsInner;
 
-/** An immutable client-side representation of UnencryptedCredentials. */
+/**
+ * An immutable client-side representation of UnencryptedCredentials.
+ */
 public interface UnencryptedCredentials {
     /**
      * Gets the jobName property: Name of the job.
-     *
+     * 
      * @return the jobName value.
      */
     String jobName();
 
     /**
      * Gets the jobSecrets property: Secrets related to this job.
-     *
+     * 
      * @return the jobSecrets value.
      */
     JobSecrets jobSecrets();
 
     /**
      * Gets the inner com.azure.resourcemanager.databox.fluent.models.UnencryptedCredentialsInner object.
-     *
+     * 
      * @return the inner object.
      */
     UnencryptedCredentialsInner innerModel();

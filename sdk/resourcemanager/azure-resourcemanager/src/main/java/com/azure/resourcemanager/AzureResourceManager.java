@@ -378,15 +378,15 @@ public final class AzureResourceManager {
         public Authenticated withTenantId(String tenantId) {
             Objects.requireNonNull(tenantId);
             this.tenantId = tenantId;
-            this.authorizationManager = AuthorizationManager.authenticate(
-                this.httpPipeline, new AzureProfile(tenantId, subscriptionId, environment));
+            this.authorizationManager = AuthorizationManager.authenticate(this.httpPipeline,
+                new AzureProfile(tenantId, subscriptionId, environment));
             return this;
         }
 
         @Override
         public AzureResourceManager withSubscription(String subscriptionId) {
-            return new AzureResourceManager(
-                httpPipeline, new AzureProfile(tenantId, subscriptionId, environment), this);
+            return new AzureResourceManager(httpPipeline, new AzureProfile(tenantId, subscriptionId, environment),
+                this);
         }
 
         @Override
@@ -394,8 +394,8 @@ public final class AzureResourceManager {
             if (subscriptionId == null) {
                 subscriptionId = ResourceManagerUtils.getDefaultSubscription(this.subscriptions().list());
             }
-            return new AzureResourceManager(
-                httpPipeline, new AzureProfile(tenantId, subscriptionId, environment), this);
+            return new AzureResourceManager(httpPipeline, new AzureProfile(tenantId, subscriptionId, environment),
+                this);
         }
     }
 

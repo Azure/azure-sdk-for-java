@@ -20,29 +20,29 @@ import com.azure.resourcemanager.machinelearningservices.models.UnderlyingResour
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class MachineLearningComputesImpl implements MachineLearningComputes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MachineLearningComputesImpl.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(MachineLearningComputesImpl.class);
 
     private final MachineLearningComputesClient innerClient;
 
     private final com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager;
 
-    public MachineLearningComputesImpl(
-        MachineLearningComputesClient innerClient,
+    public MachineLearningComputesImpl(MachineLearningComputesClient innerClient,
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ComputeResource> listByWorkspace(String resourceGroupName, String workspaceName) {
-        PagedIterable<ComputeResourceInner> inner =
-            this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
+        PagedIterable<ComputeResourceInner> inner
+            = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
         return Utils.mapPage(inner, inner1 -> new ComputeResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ComputeResource> listByWorkspace(
-        String resourceGroupName, String workspaceName, String skip, Context context) {
-        PagedIterable<ComputeResourceInner> inner =
-            this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, skip, context);
+    public PagedIterable<ComputeResource> listByWorkspace(String resourceGroupName, String workspaceName, String skip,
+        Context context) {
+        PagedIterable<ComputeResourceInner> inner
+            = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, skip, context);
         return Utils.mapPage(inner, inner1 -> new ComputeResourceImpl(inner1, this.manager()));
     }
 
@@ -55,45 +55,35 @@ public final class MachineLearningComputesImpl implements MachineLearningCompute
         }
     }
 
-    public Response<ComputeResource> getWithResponse(
-        String resourceGroupName, String workspaceName, String computeName, Context context) {
-        Response<ComputeResourceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, computeName, context);
+    public Response<ComputeResource> getWithResponse(String resourceGroupName, String workspaceName, String computeName,
+        Context context) {
+        Response<ComputeResourceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, computeName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ComputeResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public void delete(
-        String resourceGroupName,
-        String workspaceName,
-        String computeName,
+    public void delete(String resourceGroupName, String workspaceName, String computeName,
         UnderlyingResourceAction underlyingResourceAction) {
         this.serviceClient().delete(resourceGroupName, workspaceName, computeName, underlyingResourceAction);
     }
 
-    public void delete(
-        String resourceGroupName,
-        String workspaceName,
-        String computeName,
-        UnderlyingResourceAction underlyingResourceAction,
-        Context context) {
+    public void delete(String resourceGroupName, String workspaceName, String computeName,
+        UnderlyingResourceAction underlyingResourceAction, Context context) {
         this.serviceClient().delete(resourceGroupName, workspaceName, computeName, underlyingResourceAction, context);
     }
 
-    public PagedIterable<AmlComputeNodeInformation> listNodes(
-        String resourceGroupName, String workspaceName, String computeName) {
+    public PagedIterable<AmlComputeNodeInformation> listNodes(String resourceGroupName, String workspaceName,
+        String computeName) {
         return this.serviceClient().listNodes(resourceGroupName, workspaceName, computeName);
     }
 
-    public PagedIterable<AmlComputeNodeInformation> listNodes(
-        String resourceGroupName, String workspaceName, String computeName, Context context) {
+    public PagedIterable<AmlComputeNodeInformation> listNodes(String resourceGroupName, String workspaceName,
+        String computeName, Context context) {
         return this.serviceClient().listNodes(resourceGroupName, workspaceName, computeName, context);
     }
 
@@ -106,15 +96,12 @@ public final class MachineLearningComputesImpl implements MachineLearningCompute
         }
     }
 
-    public Response<ComputeSecrets> listKeysWithResponse(
-        String resourceGroupName, String workspaceName, String computeName, Context context) {
-        Response<ComputeSecretsInner> inner =
-            this.serviceClient().listKeysWithResponse(resourceGroupName, workspaceName, computeName, context);
+    public Response<ComputeSecrets> listKeysWithResponse(String resourceGroupName, String workspaceName,
+        String computeName, Context context) {
+        Response<ComputeSecretsInner> inner
+            = this.serviceClient().listKeysWithResponse(resourceGroupName, workspaceName, computeName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ComputeSecretsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -141,33 +128,26 @@ public final class MachineLearningComputesImpl implements MachineLearningCompute
         this.serviceClient().restart(resourceGroupName, workspaceName, computeName);
     }
 
-    public Response<Void> restartWithResponse(
-        String resourceGroupName, String workspaceName, String computeName, Context context) {
+    public Response<Void> restartWithResponse(String resourceGroupName, String workspaceName, String computeName,
+        Context context) {
         return this.serviceClient().restartWithResponse(resourceGroupName, workspaceName, computeName, context);
     }
 
     public ComputeResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String computeName = Utils.getValueFromIdByName(id, "computes");
         if (computeName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'computes'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'computes'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, computeName, Context.NONE).getValue();
     }
@@ -175,25 +155,18 @@ public final class MachineLearningComputesImpl implements MachineLearningCompute
     public Response<ComputeResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String computeName = Utils.getValueFromIdByName(id, "computes");
         if (computeName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'computes'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'computes'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, computeName, context);
     }

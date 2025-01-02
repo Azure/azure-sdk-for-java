@@ -5,15 +5,18 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Defines a health policy used to evaluate the health of the cluster or of a cluster node.
  */
 @Fluent
-public final class ClusterHealthPolicy {
+public final class ClusterHealthPolicy implements JsonSerializable<ClusterHealthPolicy> {
     /*
      * The maximum allowed percentage of unhealthy nodes before reporting an error. For example, to allow 10% of nodes
      * to be unhealthy, this value would be 10.
@@ -27,9 +30,7 @@ public final class ClusterHealthPolicy {
      * 
      * In large clusters, some nodes will always be down or out for repairs, so this percentage should be configured to
      * tolerate that.
-     * 
      */
-    @JsonProperty(value = "maxPercentUnhealthyNodes")
     private Integer maxPercentUnhealthyNodes;
 
     /*
@@ -44,17 +45,13 @@ public final class ClusterHealthPolicy {
      * instances in the cluster, excluding applications of application types that are included in the
      * ApplicationTypeHealthPolicyMap.
      * The computation rounds up to tolerate one failure on small numbers of applications. Default percentage is zero.
-     * 
      */
-    @JsonProperty(value = "maxPercentUnhealthyApplications")
     private Integer maxPercentUnhealthyApplications;
 
     /*
      * Defines the application health policy map used to evaluate the health of an application or one of its children
      * entities.
      */
-    @JsonProperty(value = "applicationHealthPolicies")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ApplicationHealthPolicy> applicationHealthPolicies;
 
     /**
@@ -106,8 +103,8 @@ public final class ClusterHealthPolicy {
     }
 
     /**
-     * Get the maxPercentUnhealthyApplications property: The maximum allowed percentage of unhealthy applications
-     * before reporting an error. For example, to allow 10% of applications to be unhealthy, this value would be 10.
+     * Get the maxPercentUnhealthyApplications property: The maximum allowed percentage of unhealthy applications before
+     * reporting an error. For example, to allow 10% of applications to be unhealthy, this value would be 10.
      * 
      * The percentage represents the maximum tolerated percentage of applications that can be unhealthy before the
      * cluster is considered in error.
@@ -125,8 +122,8 @@ public final class ClusterHealthPolicy {
     }
 
     /**
-     * Set the maxPercentUnhealthyApplications property: The maximum allowed percentage of unhealthy applications
-     * before reporting an error. For example, to allow 10% of applications to be unhealthy, this value would be 10.
+     * Set the maxPercentUnhealthyApplications property: The maximum allowed percentage of unhealthy applications before
+     * reporting an error. For example, to allow 10% of applications to be unhealthy, this value would be 10.
      * 
      * The percentage represents the maximum tolerated percentage of applications that can be unhealthy before the
      * cluster is considered in error.
@@ -146,8 +143,8 @@ public final class ClusterHealthPolicy {
     }
 
     /**
-     * Get the applicationHealthPolicies property: Defines the application health policy map used to evaluate the
-     * health of an application or one of its children entities.
+     * Get the applicationHealthPolicies property: Defines the application health policy map used to evaluate the health
+     * of an application or one of its children entities.
      * 
      * @return the applicationHealthPolicies value.
      */
@@ -156,8 +153,8 @@ public final class ClusterHealthPolicy {
     }
 
     /**
-     * Set the applicationHealthPolicies property: Defines the application health policy map used to evaluate the
-     * health of an application or one of its children entities.
+     * Set the applicationHealthPolicies property: Defines the application health policy map used to evaluate the health
+     * of an application or one of its children entities.
      * 
      * @param applicationHealthPolicies the applicationHealthPolicies value to set.
      * @return the ClusterHealthPolicy object itself.
@@ -181,5 +178,51 @@ public final class ClusterHealthPolicy {
                 }
             });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("maxPercentUnhealthyNodes", this.maxPercentUnhealthyNodes);
+        jsonWriter.writeNumberField("maxPercentUnhealthyApplications", this.maxPercentUnhealthyApplications);
+        jsonWriter.writeMapField("applicationHealthPolicies", this.applicationHealthPolicies,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterHealthPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterHealthPolicy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterHealthPolicy.
+     */
+    public static ClusterHealthPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterHealthPolicy deserializedClusterHealthPolicy = new ClusterHealthPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maxPercentUnhealthyNodes".equals(fieldName)) {
+                    deserializedClusterHealthPolicy.maxPercentUnhealthyNodes = reader.getNullable(JsonReader::getInt);
+                } else if ("maxPercentUnhealthyApplications".equals(fieldName)) {
+                    deserializedClusterHealthPolicy.maxPercentUnhealthyApplications
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("applicationHealthPolicies".equals(fieldName)) {
+                    Map<String, ApplicationHealthPolicy> applicationHealthPolicies
+                        = reader.readMap(reader1 -> ApplicationHealthPolicy.fromJson(reader1));
+                    deserializedClusterHealthPolicy.applicationHealthPolicies = applicationHealthPolicies;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterHealthPolicy;
+        });
     }
 }

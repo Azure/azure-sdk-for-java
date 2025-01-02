@@ -9,6 +9,7 @@ import com.azure.resourcemanager.logic.fluent.models.IntegrationAccountInner;
 import com.azure.resourcemanager.logic.models.IntegrationAccountListResult;
 import com.azure.resourcemanager.logic.models.IntegrationAccountSku;
 import com.azure.resourcemanager.logic.models.IntegrationAccountSkuName;
+import com.azure.resourcemanager.logic.models.ResourceReference;
 import com.azure.resourcemanager.logic.models.WorkflowState;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -18,44 +19,46 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationAccountListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationAccountListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"state\":\"Suspended\"},\"sku\":{\"name\":\"Basic\"},\"location\":\"hqzonosggbhcoh\",\"tags\":{\"utiiswacf\":\"sjnkal\",\"ewkfvhqcrai\":\"gdkz\"},\"id\":\"vpnpp\",\"name\":\"uflrwd\",\"type\":\"hdlxyjrxsagafcn\"},{\"properties\":{\"state\":\"NotSpecified\"},\"sku\":{\"name\":\"Free\"},\"location\":\"nedgfbc\",\"tags\":{\"pkeqdcvdrhvoo\":\"vq\",\"dopcjwvnh\":\"sotbob\",\"mgxcxrslpm\":\"ld\"},\"id\":\"twuoegrpkhjwni\",\"name\":\"qsluicp\",\"type\":\"ggkzzlvmbmpa\"}],\"nextLink\":\"odfvuefywsbp\"}")
-                .toObject(IntegrationAccountListResult.class);
-        Assertions.assertEquals("hqzonosggbhcoh", model.value().get(0).location());
-        Assertions.assertEquals("sjnkal", model.value().get(0).tags().get("utiiswacf"));
+        IntegrationAccountListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"integrationServiceEnvironment\":{\"id\":\"nvjsrtkfa\",\"name\":\"opqgikyzirtxdyux\",\"type\":\"jntpsewgioilqu\"},\"state\":\"Disabled\"},\"sku\":{\"name\":\"Basic\"},\"location\":\"tqmieox\",\"tags\":{\"havgrvk\":\"gufhyaomtbg\",\"jzhpjbibgjmfx\":\"fo\",\"cluyovwxnbkf\":\"mv\"},\"id\":\"zzxscyhwzdgiruj\",\"name\":\"zbomvzzbtdcqvpni\",\"type\":\"ujviylwdshfs\"},{\"properties\":{\"integrationServiceEnvironment\":{\"id\":\"gy\",\"name\":\"rymsgaojfmw\",\"type\":\"otmrfhir\"},\"state\":\"Suspended\"},\"sku\":{\"name\":\"Standard\"},\"location\":\"xoftpipiwyczu\",\"tags\":{\"pskasdvlmfwdg\":\"cpqjlihhyu\"},\"id\":\"x\",\"name\":\"lucvpam\",\"type\":\"sreuzvxurisjnh\"},{\"properties\":{\"integrationServiceEnvironment\":{\"id\":\"ifqjz\",\"name\":\"mrhublwpc\",\"type\":\"utr\"},\"state\":\"Disabled\"},\"sku\":{\"name\":\"Basic\"},\"location\":\"uutpwoqhih\",\"tags\":{\"zpnfqntcypsxj\":\"g\"},\"id\":\"foimwkslircizjxv\",\"name\":\"dfcea\",\"type\":\"vlhv\"}],\"nextLink\":\"dyftumrtwna\"}")
+            .toObject(IntegrationAccountListResult.class);
+        Assertions.assertEquals("tqmieox", model.value().get(0).location());
+        Assertions.assertEquals("gufhyaomtbg", model.value().get(0).tags().get("havgrvk"));
         Assertions.assertEquals(IntegrationAccountSkuName.BASIC, model.value().get(0).sku().name());
-        Assertions.assertEquals(WorkflowState.SUSPENDED, model.value().get(0).state());
-        Assertions.assertEquals("odfvuefywsbp", model.nextLink());
+        Assertions.assertEquals("nvjsrtkfa", model.value().get(0).integrationServiceEnvironment().id());
+        Assertions.assertEquals(WorkflowState.DISABLED, model.value().get(0).state());
+        Assertions.assertEquals("dyftumrtwna", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationAccountListResult model =
-            new IntegrationAccountListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new IntegrationAccountInner()
-                                .withLocation("hqzonosggbhcoh")
-                                .withTags(mapOf("utiiswacf", "sjnkal", "ewkfvhqcrai", "gdkz"))
-                                .withSku(new IntegrationAccountSku().withName(IntegrationAccountSkuName.BASIC))
-                                .withState(WorkflowState.SUSPENDED),
-                            new IntegrationAccountInner()
-                                .withLocation("nedgfbc")
-                                .withTags(mapOf("pkeqdcvdrhvoo", "vq", "dopcjwvnh", "sotbob", "mgxcxrslpm", "ld"))
-                                .withSku(new IntegrationAccountSku().withName(IntegrationAccountSkuName.FREE))
-                                .withState(WorkflowState.NOT_SPECIFIED)))
-                .withNextLink("odfvuefywsbp");
+        IntegrationAccountListResult model = new IntegrationAccountListResult().withValue(Arrays.asList(
+            new IntegrationAccountInner().withLocation("tqmieox")
+                .withTags(mapOf("havgrvk", "gufhyaomtbg", "jzhpjbibgjmfx", "fo", "cluyovwxnbkf", "mv"))
+                .withSku(new IntegrationAccountSku().withName(IntegrationAccountSkuName.BASIC))
+                .withIntegrationServiceEnvironment(new ResourceReference().withId("nvjsrtkfa"))
+                .withState(WorkflowState.DISABLED),
+            new IntegrationAccountInner().withLocation("xoftpipiwyczu")
+                .withTags(mapOf("pskasdvlmfwdg", "cpqjlihhyu"))
+                .withSku(new IntegrationAccountSku().withName(IntegrationAccountSkuName.STANDARD))
+                .withIntegrationServiceEnvironment(new ResourceReference().withId("gy"))
+                .withState(WorkflowState.SUSPENDED),
+            new IntegrationAccountInner().withLocation("uutpwoqhih")
+                .withTags(mapOf("zpnfqntcypsxj", "g"))
+                .withSku(new IntegrationAccountSku().withName(IntegrationAccountSkuName.BASIC))
+                .withIntegrationServiceEnvironment(new ResourceReference().withId("ifqjz"))
+                .withState(WorkflowState.DISABLED)))
+            .withNextLink("dyftumrtwna");
         model = BinaryData.fromObject(model).toObject(IntegrationAccountListResult.class);
-        Assertions.assertEquals("hqzonosggbhcoh", model.value().get(0).location());
-        Assertions.assertEquals("sjnkal", model.value().get(0).tags().get("utiiswacf"));
+        Assertions.assertEquals("tqmieox", model.value().get(0).location());
+        Assertions.assertEquals("gufhyaomtbg", model.value().get(0).tags().get("havgrvk"));
         Assertions.assertEquals(IntegrationAccountSkuName.BASIC, model.value().get(0).sku().name());
-        Assertions.assertEquals(WorkflowState.SUSPENDED, model.value().get(0).state());
-        Assertions.assertEquals("odfvuefywsbp", model.nextLink());
+        Assertions.assertEquals("nvjsrtkfa", model.value().get(0).integrationServiceEnvironment().id());
+        Assertions.assertEquals(WorkflowState.DISABLED, model.value().get(0).state());
+        Assertions.assertEquals("dyftumrtwna", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

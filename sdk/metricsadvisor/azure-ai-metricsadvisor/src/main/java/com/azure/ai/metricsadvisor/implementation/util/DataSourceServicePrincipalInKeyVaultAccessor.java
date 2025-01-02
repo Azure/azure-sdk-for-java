@@ -17,6 +17,7 @@ public final class DataSourceServicePrincipalInKeyVaultAccessor {
      */
     public interface Accessor {
         void setId(DataSourceServicePrincipalInKeyVault entity, String id);
+
         String getKeyVaultClientSecret(DataSourceServicePrincipalInKeyVault entity);
     }
 

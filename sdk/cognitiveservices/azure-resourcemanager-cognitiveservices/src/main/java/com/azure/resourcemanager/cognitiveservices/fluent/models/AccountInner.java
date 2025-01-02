@@ -6,12 +6,14 @@ package com.azure.resourcemanager.cognitiveservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cognitiveservices.models.AccountProperties;
 import com.azure.resourcemanager.cognitiveservices.models.AzureEntityResource;
 import com.azure.resourcemanager.cognitiveservices.models.Identity;
 import com.azure.resourcemanager.cognitiveservices.models.Sku;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -22,53 +24,67 @@ public final class AccountInner extends AzureEntityResource {
     /*
      * The Kind of the resource.
      */
-    @JsonProperty(value = "kind")
     private String kind;
 
     /*
      * The resource model definition representing SKU
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
      * Identity for the resource.
      */
-    @JsonProperty(value = "identity")
     private Identity identity;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * Resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The geo-location where the resource lives
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Properties of Cognitive Services account.
      */
-    @JsonProperty(value = "properties")
     private AccountProperties properties;
 
-    /** Creates an instance of AccountInner class. */
+    /*
+     * Resource Etag.
+     */
+    private String etag;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of AccountInner class.
+     */
     public AccountInner() {
     }
 
     /**
      * Get the kind property: The Kind of the resource.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -77,7 +93,7 @@ public final class AccountInner extends AzureEntityResource {
 
     /**
      * Set the kind property: The Kind of the resource.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the AccountInner object itself.
      */
@@ -88,7 +104,7 @@ public final class AccountInner extends AzureEntityResource {
 
     /**
      * Get the sku property: The resource model definition representing SKU.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -97,7 +113,7 @@ public final class AccountInner extends AzureEntityResource {
 
     /**
      * Set the sku property: The resource model definition representing SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the AccountInner object itself.
      */
@@ -108,7 +124,7 @@ public final class AccountInner extends AzureEntityResource {
 
     /**
      * Get the identity property: Identity for the resource.
-     *
+     * 
      * @return the identity value.
      */
     public Identity identity() {
@@ -117,7 +133,7 @@ public final class AccountInner extends AzureEntityResource {
 
     /**
      * Set the identity property: Identity for the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the AccountInner object itself.
      */
@@ -128,7 +144,7 @@ public final class AccountInner extends AzureEntityResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -137,7 +153,7 @@ public final class AccountInner extends AzureEntityResource {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -146,7 +162,7 @@ public final class AccountInner extends AzureEntityResource {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the AccountInner object itself.
      */
@@ -157,7 +173,7 @@ public final class AccountInner extends AzureEntityResource {
 
     /**
      * Get the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -166,7 +182,7 @@ public final class AccountInner extends AzureEntityResource {
 
     /**
      * Set the location property: The geo-location where the resource lives.
-     *
+     * 
      * @param location the location value to set.
      * @return the AccountInner object itself.
      */
@@ -177,7 +193,7 @@ public final class AccountInner extends AzureEntityResource {
 
     /**
      * Get the properties property: Properties of Cognitive Services account.
-     *
+     * 
      * @return the properties value.
      */
     public AccountProperties properties() {
@@ -186,7 +202,7 @@ public final class AccountInner extends AzureEntityResource {
 
     /**
      * Set the properties property: Properties of Cognitive Services account.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the AccountInner object itself.
      */
@@ -196,13 +212,52 @@ public final class AccountInner extends AzureEntityResource {
     }
 
     /**
+     * Get the etag property: Resource Etag.
+     * 
+     * @return the etag value.
+     */
+    @Override
+    public String etag() {
+        return this.etag;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (sku() != null) {
             sku().validate();
         }
@@ -212,5 +267,68 @@ public final class AccountInner extends AzureEntityResource {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccountInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccountInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AccountInner.
+     */
+    public static AccountInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccountInner deserializedAccountInner = new AccountInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAccountInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAccountInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAccountInner.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedAccountInner.etag = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedAccountInner.kind = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedAccountInner.sku = Sku.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedAccountInner.identity = Identity.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedAccountInner.systemData = SystemData.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAccountInner.tags = tags;
+                } else if ("location".equals(fieldName)) {
+                    deserializedAccountInner.location = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAccountInner.properties = AccountProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccountInner;
+        });
     }
 }

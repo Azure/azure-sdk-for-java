@@ -7,7 +7,7 @@
 package com.azure.quantum.jobs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Defines values for TargetAvailability. */
@@ -22,17 +22,28 @@ public final class TargetAvailability extends ExpandableStringEnum<TargetAvailab
     public static final TargetAvailability UNAVAILABLE = fromString("Unavailable");
 
     /**
+     * Creates a new instance of {@link TargetAvailability} with no string value.
+     *
+     * @deprecated Use {@link #fromString(String)} instead to create or get an instance of {@link TargetAvailability}.
+     */
+    @Deprecated
+    public TargetAvailability() {
+    }
+
+    /**
      * Creates or finds a TargetAvailability from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding TargetAvailability.
      */
-    @JsonCreator
     public static TargetAvailability fromString(String name) {
         return fromString(name, TargetAvailability.class);
     }
 
-    /** @return known TargetAvailability values. */
+    /**
+     * Gets the known values for TargetAvailability.
+     * @return known TargetAvailability values.
+     */
     public static Collection<TargetAvailability> values() {
         return values(TargetAvailability.class);
     }

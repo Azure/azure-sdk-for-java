@@ -36,22 +36,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in JitRequestsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in JitRequestsClient.
+ */
 public final class JitRequestsClientImpl implements JitRequestsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final JitRequestsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApplicationClientImpl client;
 
     /**
      * Initializes an instance of JitRequestsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     JitRequestsClientImpl(ApplicationClientImpl client) {
-        this.service =
-            RestProxy.create(JitRequestsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(JitRequestsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -62,92 +68,67 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
     @Host("{$host}")
     @ServiceInterface(name = "ApplicationClientJit")
     public interface JitRequestsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/jitRequests/{jitRequestName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/jitRequests/{jitRequestName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JitRequestDefinitionInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<JitRequestDefinitionInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("jitRequestName") String jitRequestName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/jitRequests/{jitRequestName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("jitRequestName") String jitRequestName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") JitRequestDefinitionInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/jitRequests/{jitRequestName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/jitRequests/{jitRequestName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<JitRequestDefinitionInner>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("jitRequestName") String jitRequestName,
-            @BodyParam("application/json") JitRequestDefinitionInner parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") JitRequestPatchable parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/jitRequests/{jitRequestName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/jitRequests/{jitRequestName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JitRequestDefinitionInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("jitRequestName") String jitRequestName,
-            @BodyParam("application/json") JitRequestPatchable parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("jitRequestName") String jitRequestName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/jitRequests/{jitRequestName}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("jitRequestName") String jitRequestName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Solutions/jitRequests")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JitRequestDefinitionListResultInner>> listBySubscription(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<JitRequestDefinitionListResultInner>> listBySubscription(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/jitRequests")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/jitRequests")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JitRequestDefinitionListResultInner>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<JitRequestDefinitionListResultInner>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -156,19 +137,15 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
      * @return the JIT request along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JitRequestDefinitionInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String jitRequestName) {
+    private Mono<Response<JitRequestDefinitionInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String jitRequestName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -180,22 +157,14 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            jitRequestName,
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), jitRequestName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param context The context to associate with this operation.
@@ -205,19 +174,15 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
      * @return the JIT request along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JitRequestDefinitionInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String jitRequestName, Context context) {
+    private Mono<Response<JitRequestDefinitionInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String jitRequestName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -228,20 +193,13 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                jitRequestName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), jitRequestName, accept, context);
     }
 
     /**
      * Gets the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -257,7 +215,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Gets the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param context The context to associate with this operation.
@@ -267,14 +225,14 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
      * @return the JIT request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JitRequestDefinitionInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String jitRequestName, Context context) {
+    public Response<JitRequestDefinitionInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String jitRequestName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, jitRequestName, context).block();
     }
 
     /**
      * Gets the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -289,30 +247,26 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Creates or updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about JIT request definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about JIT request definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String jitRequestName, JitRequestDefinitionInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String jitRequestName, JitRequestDefinitionInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -328,24 +282,14 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            jitRequestName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), jitRequestName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
@@ -353,23 +297,19 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about JIT request definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about JIT request definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String jitRequestName, JitRequestDefinitionInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String jitRequestName, JitRequestDefinitionInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -385,21 +325,13 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                jitRequestName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), jitRequestName, parameters, accept, context);
     }
 
     /**
      * Creates or updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
@@ -411,21 +343,16 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<JitRequestDefinitionInner>, JitRequestDefinitionInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String jitRequestName, JitRequestDefinitionInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, jitRequestName, parameters);
-        return this
-            .client
-            .<JitRequestDefinitionInner, JitRequestDefinitionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                JitRequestDefinitionInner.class,
-                JitRequestDefinitionInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, jitRequestName, parameters);
+        return this.client.<JitRequestDefinitionInner, JitRequestDefinitionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), JitRequestDefinitionInner.class, JitRequestDefinitionInner.class,
+            this.client.getContext());
     }
 
     /**
      * Creates or updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
@@ -439,21 +366,15 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
     private PollerFlux<PollResult<JitRequestDefinitionInner>, JitRequestDefinitionInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String jitRequestName, JitRequestDefinitionInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, jitRequestName, parameters, context);
-        return this
-            .client
-            .<JitRequestDefinitionInner, JitRequestDefinitionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                JitRequestDefinitionInner.class,
-                JitRequestDefinitionInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, jitRequestName, parameters, context);
+        return this.client.<JitRequestDefinitionInner, JitRequestDefinitionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), JitRequestDefinitionInner.class, JitRequestDefinitionInner.class, context);
     }
 
     /**
      * Creates or updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
@@ -463,14 +384,14 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
      * @return the {@link SyncPoller} for polling of information about JIT request definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<JitRequestDefinitionInner>, JitRequestDefinitionInner> beginCreateOrUpdate(
-        String resourceGroupName, String jitRequestName, JitRequestDefinitionInner parameters) {
+    public SyncPoller<PollResult<JitRequestDefinitionInner>, JitRequestDefinitionInner>
+        beginCreateOrUpdate(String resourceGroupName, String jitRequestName, JitRequestDefinitionInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, jitRequestName, parameters).getSyncPoller();
     }
 
     /**
      * Creates or updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
@@ -488,7 +409,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Creates or updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
@@ -498,16 +419,15 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
      * @return information about JIT request definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<JitRequestDefinitionInner> createOrUpdateAsync(
-        String resourceGroupName, String jitRequestName, JitRequestDefinitionInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, jitRequestName, parameters)
-            .last()
+    private Mono<JitRequestDefinitionInner> createOrUpdateAsync(String resourceGroupName, String jitRequestName,
+        JitRequestDefinitionInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, jitRequestName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
@@ -518,16 +438,15 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
      * @return information about JIT request definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<JitRequestDefinitionInner> createOrUpdateAsync(
-        String resourceGroupName, String jitRequestName, JitRequestDefinitionInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, jitRequestName, parameters, context)
-            .last()
+    private Mono<JitRequestDefinitionInner> createOrUpdateAsync(String resourceGroupName, String jitRequestName,
+        JitRequestDefinitionInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, jitRequestName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
@@ -537,14 +456,14 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
      * @return information about JIT request definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JitRequestDefinitionInner createOrUpdate(
-        String resourceGroupName, String jitRequestName, JitRequestDefinitionInner parameters) {
+    public JitRequestDefinitionInner createOrUpdate(String resourceGroupName, String jitRequestName,
+        JitRequestDefinitionInner parameters) {
         return createOrUpdateAsync(resourceGroupName, jitRequestName, parameters).block();
     }
 
     /**
      * Creates or updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
@@ -555,37 +474,33 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
      * @return information about JIT request definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JitRequestDefinitionInner createOrUpdate(
-        String resourceGroupName, String jitRequestName, JitRequestDefinitionInner parameters, Context context) {
+    public JitRequestDefinitionInner createOrUpdate(String resourceGroupName, String jitRequestName,
+        JitRequestDefinitionInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, jitRequestName, parameters, context).block();
     }
 
     /**
      * Updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about JIT request definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about JIT request definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JitRequestDefinitionInner>> updateWithResponseAsync(
-        String resourceGroupName, String jitRequestName, JitRequestPatchable parameters) {
+    private Mono<Response<JitRequestDefinitionInner>> updateWithResponseAsync(String resourceGroupName,
+        String jitRequestName, JitRequestPatchable parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -601,24 +516,14 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            jitRequestName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), jitRequestName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
@@ -626,23 +531,19 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about JIT request definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about JIT request definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JitRequestDefinitionInner>> updateWithResponseAsync(
-        String resourceGroupName, String jitRequestName, JitRequestPatchable parameters, Context context) {
+    private Mono<Response<JitRequestDefinitionInner>> updateWithResponseAsync(String resourceGroupName,
+        String jitRequestName, JitRequestPatchable parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -658,21 +559,13 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                jitRequestName,
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), jitRequestName, parameters, accept, context);
     }
 
     /**
      * Updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
@@ -682,15 +575,15 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
      * @return information about JIT request definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<JitRequestDefinitionInner> updateAsync(
-        String resourceGroupName, String jitRequestName, JitRequestPatchable parameters) {
+    private Mono<JitRequestDefinitionInner> updateAsync(String resourceGroupName, String jitRequestName,
+        JitRequestPatchable parameters) {
         return updateWithResponseAsync(resourceGroupName, jitRequestName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
@@ -701,14 +594,14 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
      * @return information about JIT request definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JitRequestDefinitionInner> updateWithResponse(
-        String resourceGroupName, String jitRequestName, JitRequestPatchable parameters, Context context) {
+    public Response<JitRequestDefinitionInner> updateWithResponse(String resourceGroupName, String jitRequestName,
+        JitRequestPatchable parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, jitRequestName, parameters, context).block();
     }
 
     /**
      * Updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
@@ -718,14 +611,14 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
      * @return information about JIT request definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JitRequestDefinitionInner update(
-        String resourceGroupName, String jitRequestName, JitRequestPatchable parameters) {
+    public JitRequestDefinitionInner update(String resourceGroupName, String jitRequestName,
+        JitRequestPatchable parameters) {
         return updateWithResponse(resourceGroupName, jitRequestName, parameters, Context.NONE).getValue();
     }
 
     /**
      * Deletes the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -736,16 +629,12 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String jitRequestName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -756,23 +645,14 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            jitRequestName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), jitRequestName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param context The context to associate with this operation.
@@ -782,19 +662,15 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String jitRequestName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String jitRequestName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -805,20 +681,13 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                jitRequestName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), jitRequestName, accept, context);
     }
 
     /**
      * Deletes the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -833,7 +702,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Deletes the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param context The context to associate with this operation.
@@ -849,7 +718,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Deletes the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -863,7 +732,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Lists all JIT requests within the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of JIT requests along with {@link Response} on successful completion of {@link Mono}.
@@ -871,34 +740,23 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<JitRequestDefinitionListResultInner>> listBySubscriptionWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listBySubscription(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.listBySubscription(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all JIT requests within the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -908,31 +766,22 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<JitRequestDefinitionListResultInner>> listBySubscriptionWithResponseAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscription(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.listBySubscription(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Lists all JIT requests within the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of JIT requests on successful completion of {@link Mono}.
@@ -944,7 +793,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Lists all JIT requests within the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -958,7 +807,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Lists all JIT requests within the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of JIT requests.
@@ -970,7 +819,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Lists all JIT requests within the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -978,19 +827,15 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
      * @return list of JIT requests along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JitRequestDefinitionListResultInner>> listByResourceGroupWithResponseAsync(
-        String resourceGroupName) {
+    private Mono<Response<JitRequestDefinitionListResultInner>>
+        listByResourceGroupWithResponseAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -998,22 +843,14 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all JIT requests within the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1022,19 +859,15 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
      * @return list of JIT requests along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JitRequestDefinitionListResultInner>> listByResourceGroupWithResponseAsync(
-        String resourceGroupName, Context context) {
+    private Mono<Response<JitRequestDefinitionListResultInner>>
+        listByResourceGroupWithResponseAsync(String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1042,19 +875,13 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Lists all JIT requests within the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1068,7 +895,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Lists all JIT requests within the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1077,14 +904,14 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
      * @return list of JIT requests along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JitRequestDefinitionListResultInner> listByResourceGroupWithResponse(
-        String resourceGroupName, Context context) {
+    public Response<JitRequestDefinitionListResultInner> listByResourceGroupWithResponse(String resourceGroupName,
+        Context context) {
         return listByResourceGroupWithResponseAsync(resourceGroupName, context).block();
     }
 
     /**
      * Lists all JIT requests within the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

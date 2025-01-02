@@ -48,16 +48,15 @@ public final class StreamUtil {
         int initialBufferSize, int maxBufferSize) throws IOException {
         Objects.requireNonNull(inputStream, "'inputStream' must not be null");
         if (initialBufferSize <= 0) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalArgumentException("'initialBufferSize' must be positive integer"));
+            throw LOGGER
+                .logThrowableAsError(new IllegalArgumentException("'initialBufferSize' must be positive integer"));
         }
         if (maxBufferSize < initialBufferSize) {
             throw LOGGER.logThrowableAsError(
                 new IllegalArgumentException("'maxBufferSize' must not be smaller than 'maxBufferSize'"));
         }
         if (lengthHint != null && lengthHint < 0) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalArgumentException("'length' must not be negative"));
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'length' must not be negative"));
         }
 
         // Start small.
@@ -71,7 +70,6 @@ public final class StreamUtil {
         long totalRead = 0;
         long actualLength = lengthHint != null ? lengthHint : Long.MAX_VALUE; // assume infinity for unknown length.
 
-
         ReadableByteChannel channel = Channels.newChannel(inputStream);
         List<ByteBuffer> buffers = new LinkedList<>();
         ByteBuffer chunk = ByteBuffer.allocate(chunkSize);
@@ -84,8 +82,7 @@ public final class StreamUtil {
                     // Keep doubling the chunk until we hit max or known length.
                     // This is to not over allocate for small streams eagerly.
                     int nextChunkSizeCandidate = 2 * chunkSize;
-                    if (nextChunkSizeCandidate <= actualLength - totalRead
-                        && nextChunkSizeCandidate <= maxBufferSize) {
+                    if (nextChunkSizeCandidate <= actualLength - totalRead && nextChunkSizeCandidate <= maxBufferSize) {
                         chunkSize = nextChunkSizeCandidate;
                     }
 

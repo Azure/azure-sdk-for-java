@@ -7,11 +7,13 @@ package com.azure.resourcemanager.securityinsights.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of SourceControls. */
+/**
+ * Resource collection API of SourceControls.
+ */
 public interface SourceControls {
     /**
      * Gets a list of repositories metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param repoType The repo type.
@@ -24,7 +26,7 @@ public interface SourceControls {
 
     /**
      * Gets a list of repositories metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param repoType The repo type.
@@ -34,6 +36,6 @@ public interface SourceControls {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of repositories metadata as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Repo> listRepositories(
-        String resourceGroupName, String workspaceName, RepoType repoType, Context context);
+    PagedIterable<Repo> listRepositories(String resourceGroupName, String workspaceName, RepoType repoType,
+        Context context);
 }

@@ -16,7 +16,8 @@ import java.util.List;
 /** Describes Workspace Sku details and features. */
 @Fluent
 public final class WorkspaceSkuInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceSkuInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(WorkspaceSkuInner.class);
 
     /*
      * The set of locations that the SKU is available. This will be supported

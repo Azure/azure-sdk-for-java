@@ -9,30 +9,28 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.resourcemanager.securityinsights.fluent.models.WatchlistInner;
 
-/** Contains all response data for the createOrUpdate operation. */
+/**
+ * Contains all response data for the createOrUpdate operation.
+ */
 public final class WatchlistsCreateOrUpdateResponse
     extends ResponseBase<WatchlistsCreateOrUpdateHeaders, WatchlistInner> {
     /**
      * Creates an instance of WatchlistsCreateOrUpdateResponse.
-     *
+     * 
      * @param request the request which resulted in this WatchlistsCreateOrUpdateResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public WatchlistsCreateOrUpdateResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        WatchlistInner value,
-        WatchlistsCreateOrUpdateHeaders headers) {
+    public WatchlistsCreateOrUpdateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        WatchlistInner value, WatchlistsCreateOrUpdateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
     /**
      * Gets the deserialized response body.
-     *
+     * 
      * @return the deserialized response body.
      */
     @Override

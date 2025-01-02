@@ -13,8 +13,7 @@ public final class UpgradeGraphImpl implements UpgradeGraph {
 
     private final com.azure.resourcemanager.resourceconnector.ResourceConnectorManager serviceManager;
 
-    UpgradeGraphImpl(
-        UpgradeGraphInner innerObject,
+    UpgradeGraphImpl(UpgradeGraphInner innerObject,
         com.azure.resourcemanager.resourceconnector.ResourceConnectorManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

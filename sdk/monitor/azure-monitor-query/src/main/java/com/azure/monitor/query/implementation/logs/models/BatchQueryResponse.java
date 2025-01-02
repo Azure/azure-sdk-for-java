@@ -28,8 +28,6 @@ public final class BatchQueryResponse implements JsonSerializable<BatchQueryResp
     private Integer status;
 
     /*
-     * A query response for a single query in a batch.
-     * 
      * Contains the tables, columns & rows resulting from a query.
      */
     private BatchQueryResults body;
@@ -86,9 +84,7 @@ public final class BatchQueryResponse implements JsonSerializable<BatchQueryResp
     }
 
     /**
-     * Get the body property: A query response for a single query in a batch.
-     * 
-     * Contains the tables, columns &amp; rows resulting from a query.
+     * Get the body property: Contains the tables, columns &amp; rows resulting from a query.
      * 
      * @return the body value.
      */
@@ -97,9 +93,7 @@ public final class BatchQueryResponse implements JsonSerializable<BatchQueryResp
     }
 
     /**
-     * Set the body property: A query response for a single query in a batch.
-     * 
-     * Contains the tables, columns &amp; rows resulting from a query.
+     * Set the body property: Contains the tables, columns &amp; rows resulting from a query.
      * 
      * @param body the body value to set.
      * @return the BatchQueryResponse object itself.
@@ -129,6 +123,9 @@ public final class BatchQueryResponse implements JsonSerializable<BatchQueryResp
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

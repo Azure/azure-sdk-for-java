@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.edgeorder.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ResourceProvider ListOrderAtResourceGroupLevel. */
+/**
+ * Samples for ResourceProvider ListOrderAtResourceGroupLevel.
+ */
 public final class ResourceProviderListOrderAtResourceGroupLevelSamples {
     /*
-     * x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListOrderAtResourceGroupLevel.json
+     * x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/
+     * ListOrderAtResourceGroupLevel.json
      */
     /**
      * Sample code: ListOrderAtResourceGroupLevel.
-     *
+     * 
      * @param manager Entry point to EdgeOrderManager.
      */
     public static void listOrderAtResourceGroupLevel(com.azure.resourcemanager.edgeorder.EdgeOrderManager manager) {
-        manager.resourceProviders().listOrderAtResourceGroupLevel("TestRG", null, Context.NONE);
+        manager.resourceProviders()
+            .listOrderAtResourceGroupLevel("YourResourceGroupName", null, com.azure.core.util.Context.NONE);
     }
 }

@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Reboot properties. */
+/**
+ * Reboot properties.
+ */
 @Fluent
-public final class RebootProperties {
+public final class RebootProperties implements JsonSerializable<RebootProperties> {
     /*
      * Type of reboot to be performed. Example: GracefulRebootWithZTP
      */
-    @JsonProperty(value = "rebootType")
     private RebootType rebootType;
 
-    /** Creates an instance of RebootProperties class. */
+    /**
+     * Creates an instance of RebootProperties class.
+     */
     public RebootProperties() {
     }
 
     /**
      * Get the rebootType property: Type of reboot to be performed. Example: GracefulRebootWithZTP.
-     *
+     * 
      * @return the rebootType value.
      */
     public RebootType rebootType() {
@@ -31,7 +38,7 @@ public final class RebootProperties {
 
     /**
      * Set the rebootType property: Type of reboot to be performed. Example: GracefulRebootWithZTP.
-     *
+     * 
      * @param rebootType the rebootType value to set.
      * @return the RebootProperties object itself.
      */
@@ -42,9 +49,45 @@ public final class RebootProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("rebootType", this.rebootType == null ? null : this.rebootType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RebootProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RebootProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RebootProperties.
+     */
+    public static RebootProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RebootProperties deserializedRebootProperties = new RebootProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("rebootType".equals(fieldName)) {
+                    deserializedRebootProperties.rebootType = RebootType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRebootProperties;
+        });
     }
 }

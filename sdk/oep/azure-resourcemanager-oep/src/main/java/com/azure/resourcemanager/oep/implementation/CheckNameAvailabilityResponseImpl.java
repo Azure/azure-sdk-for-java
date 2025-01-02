@@ -13,8 +13,8 @@ public final class CheckNameAvailabilityResponseImpl implements CheckNameAvailab
 
     private final com.azure.resourcemanager.oep.OepManager serviceManager;
 
-    CheckNameAvailabilityResponseImpl(
-        CheckNameAvailabilityResponseInner innerObject, com.azure.resourcemanager.oep.OepManager serviceManager) {
+    CheckNameAvailabilityResponseImpl(CheckNameAvailabilityResponseInner innerObject,
+        com.azure.resourcemanager.oep.OepManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

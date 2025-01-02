@@ -6,33 +6,42 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Expansion result metadata. */
+/**
+ * Expansion result metadata.
+ */
 @Fluent
-public final class TimelineResultsMetadata {
+public final class TimelineResultsMetadata implements JsonSerializable<TimelineResultsMetadata> {
     /*
      * the total items found for the timeline request
      */
-    @JsonProperty(value = "totalCount", required = true)
     private int totalCount;
 
     /*
      * timeline aggregation per kind
      */
-    @JsonProperty(value = "aggregations", required = true)
     private List<TimelineAggregation> aggregations;
 
     /*
      * information about the failure queries
      */
-    @JsonProperty(value = "errors")
     private List<TimelineError> errors;
 
     /**
+     * Creates an instance of TimelineResultsMetadata class.
+     */
+    public TimelineResultsMetadata() {
+    }
+
+    /**
      * Get the totalCount property: the total items found for the timeline request.
-     *
+     * 
      * @return the totalCount value.
      */
     public int totalCount() {
@@ -41,7 +50,7 @@ public final class TimelineResultsMetadata {
 
     /**
      * Set the totalCount property: the total items found for the timeline request.
-     *
+     * 
      * @param totalCount the totalCount value to set.
      * @return the TimelineResultsMetadata object itself.
      */
@@ -52,7 +61,7 @@ public final class TimelineResultsMetadata {
 
     /**
      * Get the aggregations property: timeline aggregation per kind.
-     *
+     * 
      * @return the aggregations value.
      */
     public List<TimelineAggregation> aggregations() {
@@ -61,7 +70,7 @@ public final class TimelineResultsMetadata {
 
     /**
      * Set the aggregations property: timeline aggregation per kind.
-     *
+     * 
      * @param aggregations the aggregations value to set.
      * @return the TimelineResultsMetadata object itself.
      */
@@ -72,7 +81,7 @@ public final class TimelineResultsMetadata {
 
     /**
      * Get the errors property: information about the failure queries.
-     *
+     * 
      * @return the errors value.
      */
     public List<TimelineError> errors() {
@@ -81,7 +90,7 @@ public final class TimelineResultsMetadata {
 
     /**
      * Set the errors property: information about the failure queries.
-     *
+     * 
      * @param errors the errors value to set.
      * @return the TimelineResultsMetadata object itself.
      */
@@ -92,15 +101,14 @@ public final class TimelineResultsMetadata {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (aggregations() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property aggregations in model TimelineResultsMetadata"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property aggregations in model TimelineResultsMetadata"));
         } else {
             aggregations().forEach(e -> e.validate());
         }
@@ -110,4 +118,50 @@ public final class TimelineResultsMetadata {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TimelineResultsMetadata.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("totalCount", this.totalCount);
+        jsonWriter.writeArrayField("aggregations", this.aggregations, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TimelineResultsMetadata from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TimelineResultsMetadata if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TimelineResultsMetadata.
+     */
+    public static TimelineResultsMetadata fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TimelineResultsMetadata deserializedTimelineResultsMetadata = new TimelineResultsMetadata();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("totalCount".equals(fieldName)) {
+                    deserializedTimelineResultsMetadata.totalCount = reader.getInt();
+                } else if ("aggregations".equals(fieldName)) {
+                    List<TimelineAggregation> aggregations
+                        = reader.readArray(reader1 -> TimelineAggregation.fromJson(reader1));
+                    deserializedTimelineResultsMetadata.aggregations = aggregations;
+                } else if ("errors".equals(fieldName)) {
+                    List<TimelineError> errors = reader.readArray(reader1 -> TimelineError.fromJson(reader1));
+                    deserializedTimelineResultsMetadata.errors = errors;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTimelineResultsMetadata;
+        });
+    }
 }

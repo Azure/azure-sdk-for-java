@@ -6,38 +6,43 @@ package com.azure.resourcemanager.loganalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.loganalytics.models.Type;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Destination properties. */
+/**
+ * Destination properties.
+ */
 @Fluent
-public final class Destination {
+public final class Destination implements JsonSerializable<Destination> {
     /*
      * The destination resource ID. This can be copied from the Properties entry of the destination resource in Azure.
      */
-    @JsonProperty(value = "resourceId", required = true)
     private String resourceId;
 
     /*
      * The type of the destination resource
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private Type type;
 
     /*
      * destination meta data.
      */
-    @JsonProperty(value = "metaData")
     private DestinationMetadata innerMetadata;
 
-    /** Creates an instance of Destination class. */
+    /**
+     * Creates an instance of Destination class.
+     */
     public Destination() {
     }
 
     /**
      * Get the resourceId property: The destination resource ID. This can be copied from the Properties entry of the
      * destination resource in Azure.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -47,7 +52,7 @@ public final class Destination {
     /**
      * Set the resourceId property: The destination resource ID. This can be copied from the Properties entry of the
      * destination resource in Azure.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the Destination object itself.
      */
@@ -58,7 +63,7 @@ public final class Destination {
 
     /**
      * Get the type property: The type of the destination resource.
-     *
+     * 
      * @return the type value.
      */
     public Type type() {
@@ -67,7 +72,7 @@ public final class Destination {
 
     /**
      * Get the innerMetadata property: destination meta data.
-     *
+     * 
      * @return the innerMetadata value.
      */
     private DestinationMetadata innerMetadata() {
@@ -77,7 +82,7 @@ public final class Destination {
     /**
      * Get the eventHubName property: Optional. Allows to define an Event Hub name. Not applicable when destination is
      * Storage Account.
-     *
+     * 
      * @return the eventHubName value.
      */
     public String eventHubName() {
@@ -87,7 +92,7 @@ public final class Destination {
     /**
      * Set the eventHubName property: Optional. Allows to define an Event Hub name. Not applicable when destination is
      * Storage Account.
-     *
+     * 
      * @param eventHubName the eventHubName value to set.
      * @return the Destination object itself.
      */
@@ -101,14 +106,13 @@ public final class Destination {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property resourceId in model Destination"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property resourceId in model Destination"));
         }
         if (innerMetadata() != null) {
             innerMetadata().validate();
@@ -116,4 +120,46 @@ public final class Destination {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Destination.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeJsonField("metaData", this.innerMetadata);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Destination from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Destination if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Destination.
+     */
+    public static Destination fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Destination deserializedDestination = new Destination();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedDestination.resourceId = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDestination.type = Type.fromString(reader.getString());
+                } else if ("metaData".equals(fieldName)) {
+                    deserializedDestination.innerMetadata = DestinationMetadata.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDestination;
+        });
+    }
 }

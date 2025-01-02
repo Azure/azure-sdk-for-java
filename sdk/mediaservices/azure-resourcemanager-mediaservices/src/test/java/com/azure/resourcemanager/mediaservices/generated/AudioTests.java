@@ -11,25 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class AudioTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Audio model =
-            BinaryData
-                .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.Audio\",\"channels\":1521698279,\"samplingRate\":181907688,\"bitrate\":1490007773,\"label\":\"isze\"}")
-                .toObject(Audio.class);
-        Assertions.assertEquals("isze", model.label());
-        Assertions.assertEquals(1521698279, model.channels());
-        Assertions.assertEquals(181907688, model.samplingRate());
-        Assertions.assertEquals(1490007773, model.bitrate());
+        Audio model = BinaryData.fromString(
+            "{\"@odata.type\":\"#Microsoft.Media.Audio\",\"channels\":293972975,\"samplingRate\":1449714251,\"bitrate\":1120939728,\"label\":\"gtcojocqwo\"}")
+            .toObject(Audio.class);
+        Assertions.assertEquals("gtcojocqwo", model.label());
+        Assertions.assertEquals(293972975, model.channels());
+        Assertions.assertEquals(1449714251, model.samplingRate());
+        Assertions.assertEquals(1120939728, model.bitrate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Audio model =
-            new Audio().withLabel("isze").withChannels(1521698279).withSamplingRate(181907688).withBitrate(1490007773);
+        Audio model = new Audio().withLabel("gtcojocqwo")
+            .withChannels(293972975)
+            .withSamplingRate(1449714251)
+            .withBitrate(1120939728);
         model = BinaryData.fromObject(model).toObject(Audio.class);
-        Assertions.assertEquals("isze", model.label());
-        Assertions.assertEquals(1521698279, model.channels());
-        Assertions.assertEquals(181907688, model.samplingRate());
-        Assertions.assertEquals(1490007773, model.bitrate());
+        Assertions.assertEquals("gtcojocqwo", model.label());
+        Assertions.assertEquals(293972975, model.channels());
+        Assertions.assertEquals(1449714251, model.samplingRate());
+        Assertions.assertEquals(1120939728, model.bitrate());
     }
 }

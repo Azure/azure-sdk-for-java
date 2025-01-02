@@ -24,7 +24,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *     &#64;QueryParam&#40;&quot;api-version&quot;&#41; String apiVersion&#41;;
  *
  * &#47;&#47; The value of parameters filter, expand, top, apiVersion will be encoded and will be used to set the query
- * &#47;&#47; parameters &#123;$filter&#125;, &#123;$expand&#125;, &#123;$top&#125;, &#123;api-version&#125; on the HTTP URL.
+ * &#47;&#47; parameters &#123;$filter&#125;, &#123;$expand&#125;, &#123;$top&#125;, &#123;api-version&#125; on the HTTP URI.
  * </pre>
  * <!-- end io.clientcore.core.annotation.http.QueryParam.class1 -->
  *
@@ -37,7 +37,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *     returnValueWireType = String.class&#41;
  * String getValue&#40;&#64;PathParam&#40;&quot;subpath&quot;&#41; String param, &#64;QueryParam&#40;&quot;query&quot;&#41; String query&#41;;
  *
- * &#47;&#47; In this case, if consumer pass &quot;a=b&quot; as the value for 'query' then the resolved url looks like:
+ * &#47;&#47; In this case, if consumer pass &quot;a=b&quot; as the value for 'query' then the resolved uri looks like:
  * &#47;&#47; &quot;http:&#47;&#47;wq.com&#47;foo&#47;subpath&#47;value?query=a%3Db&quot;
  * </pre>
  * <!-- end io.clientcore.core.annotation.http.QueryParam.class2 -->
@@ -51,7 +51,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * List&lt;String&gt; getValues&#40;&#64;PathParam&#40;&quot;subpath&quot;&#41; String param,
  *     &#64;QueryParam&#40;value = &quot;query&quot;, encoded = true&#41; String query&#41;;
  *
- * &#47;&#47; In this case, if consumer pass &quot;a=b&quot; as the value for 'query' then the resolved url looks like:
+ * &#47;&#47; In this case, if consumer pass &quot;a=b&quot; as the value for 'query' then the resolved uri looks like:
  * &#47;&#47; &quot;http:&#47;&#47;wq.com&#47;foo&#47;paramblah&#47;values?connectionString=a=b&quot;
  * </pre>
  * <!-- end io.clientcore.core.annotation.http.QueryParam.class3 -->
@@ -79,12 +79,14 @@ public @interface QueryParam {
      *     value of the parameter annotated with this annotation.
      */
     String value();
+
     /**
      * A value true for this argument indicates that value of {@link QueryParam#value()} is already encoded
      * hence engine should not encode it, by default value will be encoded.
      * @return Whether this query parameter is already encoded.
      */
     boolean encoded() default false;
+
     /**
      * A value true for this argument indicates that value of {@link QueryParam#value()} should not be
      * converted to Json in case it is an array but instead sent as multiple values with same parameter

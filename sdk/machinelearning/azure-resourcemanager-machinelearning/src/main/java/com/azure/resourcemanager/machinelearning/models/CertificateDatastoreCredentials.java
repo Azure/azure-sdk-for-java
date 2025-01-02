@@ -6,59 +6,72 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
-/** Certificate datastore credentials configuration. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "credentialsType")
-@JsonTypeName("Certificate")
+/**
+ * Certificate datastore credentials configuration.
+ */
 @Fluent
 public final class CertificateDatastoreCredentials extends DatastoreCredentials {
     /*
-     * Authority URL used for authentication.
+     * [Required] Credential type used to authentication with storage.
      */
-    @JsonProperty(value = "authorityUrl")
-    private String authorityUrl;
+    private CredentialsType credentialsType = CredentialsType.CERTIFICATE;
 
     /*
-     * [Required] Service principal client ID.
+     * Authority URL used for authentication.
      */
-    @JsonProperty(value = "clientId", required = true)
-    private UUID clientId;
+    private String authorityUrl;
 
     /*
      * Resource the service principal has access to.
      */
-    @JsonProperty(value = "resourceUrl")
     private String resourceUrl;
-
-    /*
-     * [Required] Service principal secrets.
-     */
-    @JsonProperty(value = "secrets", required = true)
-    private CertificateDatastoreSecrets secrets;
 
     /*
      * [Required] ID of the tenant to which the service principal belongs.
      */
-    @JsonProperty(value = "tenantId", required = true)
     private UUID tenantId;
+
+    /*
+     * [Required] Service principal client ID.
+     */
+    private UUID clientId;
 
     /*
      * [Required] Thumbprint of the certificate used for authentication.
      */
-    @JsonProperty(value = "thumbprint", required = true)
     private String thumbprint;
 
-    /** Creates an instance of CertificateDatastoreCredentials class. */
+    /*
+     * [Required] Service principal secrets.
+     */
+    private CertificateDatastoreSecrets secrets;
+
+    /**
+     * Creates an instance of CertificateDatastoreCredentials class.
+     */
     public CertificateDatastoreCredentials() {
     }
 
     /**
+     * Get the credentialsType property: [Required] Credential type used to authentication with storage.
+     * 
+     * @return the credentialsType value.
+     */
+    @Override
+    public CredentialsType credentialsType() {
+        return this.credentialsType;
+    }
+
+    /**
      * Get the authorityUrl property: Authority URL used for authentication.
-     *
+     * 
      * @return the authorityUrl value.
      */
     public String authorityUrl() {
@@ -67,7 +80,7 @@ public final class CertificateDatastoreCredentials extends DatastoreCredentials 
 
     /**
      * Set the authorityUrl property: Authority URL used for authentication.
-     *
+     * 
      * @param authorityUrl the authorityUrl value to set.
      * @return the CertificateDatastoreCredentials object itself.
      */
@@ -77,28 +90,8 @@ public final class CertificateDatastoreCredentials extends DatastoreCredentials 
     }
 
     /**
-     * Get the clientId property: [Required] Service principal client ID.
-     *
-     * @return the clientId value.
-     */
-    public UUID clientId() {
-        return this.clientId;
-    }
-
-    /**
-     * Set the clientId property: [Required] Service principal client ID.
-     *
-     * @param clientId the clientId value to set.
-     * @return the CertificateDatastoreCredentials object itself.
-     */
-    public CertificateDatastoreCredentials withClientId(UUID clientId) {
-        this.clientId = clientId;
-        return this;
-    }
-
-    /**
      * Get the resourceUrl property: Resource the service principal has access to.
-     *
+     * 
      * @return the resourceUrl value.
      */
     public String resourceUrl() {
@@ -107,7 +100,7 @@ public final class CertificateDatastoreCredentials extends DatastoreCredentials 
 
     /**
      * Set the resourceUrl property: Resource the service principal has access to.
-     *
+     * 
      * @param resourceUrl the resourceUrl value to set.
      * @return the CertificateDatastoreCredentials object itself.
      */
@@ -117,28 +110,8 @@ public final class CertificateDatastoreCredentials extends DatastoreCredentials 
     }
 
     /**
-     * Get the secrets property: [Required] Service principal secrets.
-     *
-     * @return the secrets value.
-     */
-    public CertificateDatastoreSecrets secrets() {
-        return this.secrets;
-    }
-
-    /**
-     * Set the secrets property: [Required] Service principal secrets.
-     *
-     * @param secrets the secrets value to set.
-     * @return the CertificateDatastoreCredentials object itself.
-     */
-    public CertificateDatastoreCredentials withSecrets(CertificateDatastoreSecrets secrets) {
-        this.secrets = secrets;
-        return this;
-    }
-
-    /**
      * Get the tenantId property: [Required] ID of the tenant to which the service principal belongs.
-     *
+     * 
      * @return the tenantId value.
      */
     public UUID tenantId() {
@@ -147,7 +120,7 @@ public final class CertificateDatastoreCredentials extends DatastoreCredentials 
 
     /**
      * Set the tenantId property: [Required] ID of the tenant to which the service principal belongs.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the CertificateDatastoreCredentials object itself.
      */
@@ -157,8 +130,28 @@ public final class CertificateDatastoreCredentials extends DatastoreCredentials 
     }
 
     /**
+     * Get the clientId property: [Required] Service principal client ID.
+     * 
+     * @return the clientId value.
+     */
+    public UUID clientId() {
+        return this.clientId;
+    }
+
+    /**
+     * Set the clientId property: [Required] Service principal client ID.
+     * 
+     * @param clientId the clientId value to set.
+     * @return the CertificateDatastoreCredentials object itself.
+     */
+    public CertificateDatastoreCredentials withClientId(UUID clientId) {
+        this.clientId = clientId;
+        return this;
+    }
+
+    /**
      * Get the thumbprint property: [Required] Thumbprint of the certificate used for authentication.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -167,7 +160,7 @@ public final class CertificateDatastoreCredentials extends DatastoreCredentials 
 
     /**
      * Set the thumbprint property: [Required] Thumbprint of the certificate used for authentication.
-     *
+     * 
      * @param thumbprint the thumbprint value to set.
      * @return the CertificateDatastoreCredentials object itself.
      */
@@ -177,40 +170,116 @@ public final class CertificateDatastoreCredentials extends DatastoreCredentials 
     }
 
     /**
+     * Get the secrets property: [Required] Service principal secrets.
+     * 
+     * @return the secrets value.
+     */
+    public CertificateDatastoreSecrets secrets() {
+        return this.secrets;
+    }
+
+    /**
+     * Set the secrets property: [Required] Service principal secrets.
+     * 
+     * @param secrets the secrets value to set.
+     * @return the CertificateDatastoreCredentials object itself.
+     */
+    public CertificateDatastoreCredentials withSecrets(CertificateDatastoreSecrets secrets) {
+        this.secrets = secrets;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
-        if (clientId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property clientId in model CertificateDatastoreCredentials"));
-        }
-        if (secrets() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property secrets in model CertificateDatastoreCredentials"));
-        } else {
-            secrets().validate();
-        }
         if (tenantId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property tenantId in model CertificateDatastoreCredentials"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property tenantId in model CertificateDatastoreCredentials"));
+        }
+        if (clientId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property clientId in model CertificateDatastoreCredentials"));
         }
         if (thumbprint() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property thumbprint in model CertificateDatastoreCredentials"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property thumbprint in model CertificateDatastoreCredentials"));
+        }
+        if (secrets() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property secrets in model CertificateDatastoreCredentials"));
+        } else {
+            secrets().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CertificateDatastoreCredentials.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
+        jsonWriter.writeStringField("clientId", Objects.toString(this.clientId, null));
+        jsonWriter.writeStringField("thumbprint", this.thumbprint);
+        jsonWriter.writeJsonField("secrets", this.secrets);
+        jsonWriter.writeStringField("credentialsType",
+            this.credentialsType == null ? null : this.credentialsType.toString());
+        jsonWriter.writeStringField("authorityUrl", this.authorityUrl);
+        jsonWriter.writeStringField("resourceUrl", this.resourceUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CertificateDatastoreCredentials from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CertificateDatastoreCredentials if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CertificateDatastoreCredentials.
+     */
+    public static CertificateDatastoreCredentials fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CertificateDatastoreCredentials deserializedCertificateDatastoreCredentials
+                = new CertificateDatastoreCredentials();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tenantId".equals(fieldName)) {
+                    deserializedCertificateDatastoreCredentials.tenantId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedCertificateDatastoreCredentials.clientId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("thumbprint".equals(fieldName)) {
+                    deserializedCertificateDatastoreCredentials.thumbprint = reader.getString();
+                } else if ("secrets".equals(fieldName)) {
+                    deserializedCertificateDatastoreCredentials.secrets = CertificateDatastoreSecrets.fromJson(reader);
+                } else if ("credentialsType".equals(fieldName)) {
+                    deserializedCertificateDatastoreCredentials.credentialsType
+                        = CredentialsType.fromString(reader.getString());
+                } else if ("authorityUrl".equals(fieldName)) {
+                    deserializedCertificateDatastoreCredentials.authorityUrl = reader.getString();
+                } else if ("resourceUrl".equals(fieldName)) {
+                    deserializedCertificateDatastoreCredentials.resourceUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCertificateDatastoreCredentials;
+        });
+    }
 }

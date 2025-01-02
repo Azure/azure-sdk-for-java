@@ -5,31 +5,38 @@
 package com.azure.resourcemanager.databox.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Shipment pick up response. */
+/**
+ * Shipment pick up response.
+ */
 @Immutable
-public final class ShipmentPickUpResponseInner {
+public final class ShipmentPickUpResponseInner implements JsonSerializable<ShipmentPickUpResponseInner> {
     /*
      * Confirmation number for the pick up request.
      */
-    @JsonProperty(value = "confirmationNumber", access = JsonProperty.Access.WRITE_ONLY)
     private String confirmationNumber;
 
     /*
      * Time by which shipment should be ready for pick up, this is in local time of pick up area.
      */
-    @JsonProperty(value = "readyByTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime readyByTime;
 
-    /** Creates an instance of ShipmentPickUpResponseInner class. */
+    /**
+     * Creates an instance of ShipmentPickUpResponseInner class.
+     */
     public ShipmentPickUpResponseInner() {
     }
 
     /**
      * Get the confirmationNumber property: Confirmation number for the pick up request.
-     *
+     * 
      * @return the confirmationNumber value.
      */
     public String confirmationNumber() {
@@ -39,7 +46,7 @@ public final class ShipmentPickUpResponseInner {
     /**
      * Get the readyByTime property: Time by which shipment should be ready for pick up, this is in local time of pick
      * up area.
-     *
+     * 
      * @return the readyByTime value.
      */
     public OffsetDateTime readyByTime() {
@@ -48,9 +55,47 @@ public final class ShipmentPickUpResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ShipmentPickUpResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ShipmentPickUpResponseInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ShipmentPickUpResponseInner.
+     */
+    public static ShipmentPickUpResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ShipmentPickUpResponseInner deserializedShipmentPickUpResponseInner = new ShipmentPickUpResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("confirmationNumber".equals(fieldName)) {
+                    deserializedShipmentPickUpResponseInner.confirmationNumber = reader.getString();
+                } else if ("readyByTime".equals(fieldName)) {
+                    deserializedShipmentPickUpResponseInner.readyByTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedShipmentPickUpResponseInner;
+        });
     }
 }

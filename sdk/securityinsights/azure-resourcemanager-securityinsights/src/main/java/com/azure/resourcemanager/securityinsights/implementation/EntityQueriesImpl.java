@@ -23,8 +23,7 @@ public final class EntityQueriesImpl implements EntityQueries {
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    public EntityQueriesImpl(
-        EntityQueriesClient innerClient,
+    public EntityQueriesImpl(EntityQueriesClient innerClient,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -32,14 +31,26 @@ public final class EntityQueriesImpl implements EntityQueries {
 
     public PagedIterable<EntityQuery> list(String resourceGroupName, String workspaceName) {
         PagedIterable<EntityQueryInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new EntityQueryImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EntityQueryImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<EntityQuery> list(
-        String resourceGroupName, String workspaceName, EntityQueriesKind kind, Context context) {
-        PagedIterable<EntityQueryInner> inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, kind, context);
-        return Utils.mapPage(inner, inner1 -> new EntityQueryImpl(inner1, this.manager()));
+    public PagedIterable<EntityQuery> list(String resourceGroupName, String workspaceName, EntityQueriesKind kind,
+        Context context) {
+        PagedIterable<EntityQueryInner> inner
+            = this.serviceClient().list(resourceGroupName, workspaceName, kind, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EntityQueryImpl(inner1, this.manager()));
+    }
+
+    public Response<EntityQuery> getWithResponse(String resourceGroupName, String workspaceName, String entityQueryId,
+        Context context) {
+        Response<EntityQueryInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, entityQueryId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new EntityQueryImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public EntityQuery get(String resourceGroupName, String workspaceName, String entityQueryId) {
@@ -51,25 +62,22 @@ public final class EntityQueriesImpl implements EntityQueries {
         }
     }
 
-    public Response<EntityQuery> getWithResponse(
-        String resourceGroupName, String workspaceName, String entityQueryId, Context context) {
-        Response<EntityQueryInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, entityQueryId, context);
+    public Response<EntityQuery> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
+        String entityQueryId, CustomEntityQuery entityQuery, Context context) {
+        Response<EntityQueryInner> inner = this.serviceClient()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, entityQueryId, entityQuery, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new EntityQueryImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public EntityQuery createOrUpdate(
-        String resourceGroupName, String workspaceName, String entityQueryId, CustomEntityQuery entityQuery) {
-        EntityQueryInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, workspaceName, entityQueryId, entityQuery);
+    public EntityQuery createOrUpdate(String resourceGroupName, String workspaceName, String entityQueryId,
+        CustomEntityQuery entityQuery) {
+        EntityQueryInner inner
+            = this.serviceClient().createOrUpdate(resourceGroupName, workspaceName, entityQueryId, entityQuery);
         if (inner != null) {
             return new EntityQueryImpl(inner, this.manager());
         } else {
@@ -77,34 +85,13 @@ public final class EntityQueriesImpl implements EntityQueries {
         }
     }
 
-    public Response<EntityQuery> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String entityQueryId,
-        CustomEntityQuery entityQuery,
+    public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String entityQueryId,
         Context context) {
-        Response<EntityQueryInner> inner =
-            this
-                .serviceClient()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, entityQueryId, entityQuery, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new EntityQueryImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return this.serviceClient().deleteWithResponse(resourceGroupName, workspaceName, entityQueryId, context);
     }
 
     public void delete(String resourceGroupName, String workspaceName, String entityQueryId) {
         this.serviceClient().delete(resourceGroupName, workspaceName, entityQueryId);
-    }
-
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String entityQueryId, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, workspaceName, entityQueryId, context);
     }
 
     private EntityQueriesClient serviceClient() {

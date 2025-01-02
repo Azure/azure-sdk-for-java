@@ -34,28 +34,35 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.networkcloud.fluent.BmcKeySetsClient;
 import com.azure.resourcemanager.networkcloud.fluent.models.BmcKeySetInner;
+import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.networkcloud.models.BmcKeySetList;
 import com.azure.resourcemanager.networkcloud.models.BmcKeySetPatchParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in BmcKeySetsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BmcKeySetsClient.
+ */
 public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final BmcKeySetsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkCloudImpl client;
 
     /**
      * Initializes an instance of BmcKeySetsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     BmcKeySetsClientImpl(NetworkCloudImpl client) {
-        this.service =
-            RestProxy.create(BmcKeySetsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(BmcKeySetsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,120 +73,86 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
     @Host("{$host}")
     @ServiceInterface(name = "NetworkCloudBmcKeySe")
     public interface BmcKeySetsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/bmcKeySets")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/bmcKeySets")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BmcKeySetList>> listByCluster(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<BmcKeySetList>> listByCluster(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/bmcKeySets/{bmcKeySetName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/bmcKeySets/{bmcKeySetName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BmcKeySetInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
+        Mono<Response<BmcKeySetInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("bmcKeySetName") String bmcKeySetName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/bmcKeySets/{bmcKeySetName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("bmcKeySetName") String bmcKeySetName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BmcKeySetInner bmcKeySetParameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/bmcKeySets/{bmcKeySetName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/bmcKeySets/{bmcKeySetName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("bmcKeySetName") String bmcKeySetName,
-            @BodyParam("application/json") BmcKeySetInner bmcKeySetParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("bmcKeySetName") String bmcKeySetName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/bmcKeySets/{bmcKeySetName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/bmcKeySets/{bmcKeySetName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("bmcKeySetName") String bmcKeySetName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/bmcKeySets/{bmcKeySetName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("bmcKeySetName") String bmcKeySetName,
             @BodyParam("application/json") BmcKeySetPatchParameters bmcKeySetUpdateParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BmcKeySetList>> listByClusterNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<BmcKeySetList>> listByClusterNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List baseboard management controller key sets of the cluster.
-     *
-     * <p>Get a list of baseboard management controller key sets for the provided cluster.
-     *
+     * 
+     * Get a list of baseboard management controller key sets for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of baseboard management controller key sets for the provided cluster along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of baseboard management controller key sets for the provided cluster along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BmcKeySetInner>> listByClusterSinglePageAsync(
-        String resourceGroupName, String clusterName) {
+    private Mono<PagedResponse<BmcKeySetInner>> listByClusterSinglePageAsync(String resourceGroupName,
+        String clusterName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -190,57 +163,37 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByCluster(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            accept,
-                            context))
-            .<PagedResponse<BmcKeySetInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByCluster(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, context))
+            .<PagedResponse<BmcKeySetInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List baseboard management controller key sets of the cluster.
-     *
-     * <p>Get a list of baseboard management controller key sets for the provided cluster.
-     *
+     * 
+     * Get a list of baseboard management controller key sets for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of baseboard management controller key sets for the provided cluster along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of baseboard management controller key sets for the provided cluster along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BmcKeySetInner>> listByClusterSinglePageAsync(
-        String resourceGroupName, String clusterName, Context context) {
+    private Mono<PagedResponse<BmcKeySetInner>> listByClusterSinglePageAsync(String resourceGroupName,
+        String clusterName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -252,50 +205,36 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByCluster(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByCluster(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, clusterName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List baseboard management controller key sets of the cluster.
-     *
-     * <p>Get a list of baseboard management controller key sets for the provided cluster.
-     *
+     * 
+     * Get a list of baseboard management controller key sets for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of baseboard management controller key sets for the provided cluster as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BmcKeySetInner> listByClusterAsync(String resourceGroupName, String clusterName) {
-        return new PagedFlux<>(
-            () -> listByClusterSinglePageAsync(resourceGroupName, clusterName),
+        return new PagedFlux<>(() -> listByClusterSinglePageAsync(resourceGroupName, clusterName),
             nextLink -> listByClusterNextSinglePageAsync(nextLink));
     }
 
     /**
      * List baseboard management controller key sets of the cluster.
-     *
-     * <p>Get a list of baseboard management controller key sets for the provided cluster.
-     *
+     * 
+     * Get a list of baseboard management controller key sets for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -303,28 +242,27 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of baseboard management controller key sets for the provided cluster as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BmcKeySetInner> listByClusterAsync(
-        String resourceGroupName, String clusterName, Context context) {
-        return new PagedFlux<>(
-            () -> listByClusterSinglePageAsync(resourceGroupName, clusterName, context),
+    private PagedFlux<BmcKeySetInner> listByClusterAsync(String resourceGroupName, String clusterName,
+        Context context) {
+        return new PagedFlux<>(() -> listByClusterSinglePageAsync(resourceGroupName, clusterName, context),
             nextLink -> listByClusterNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List baseboard management controller key sets of the cluster.
-     *
-     * <p>Get a list of baseboard management controller key sets for the provided cluster.
-     *
+     * 
+     * Get a list of baseboard management controller key sets for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of baseboard management controller key sets for the provided cluster as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BmcKeySetInner> listByCluster(String resourceGroupName, String clusterName) {
@@ -333,9 +271,9 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
 
     /**
      * List baseboard management controller key sets of the cluster.
-     *
-     * <p>Get a list of baseboard management controller key sets for the provided cluster.
-     *
+     * 
+     * Get a list of baseboard management controller key sets for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -343,7 +281,7 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of baseboard management controller key sets for the provided cluster as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BmcKeySetInner> listByCluster(String resourceGroupName, String clusterName, Context context) {
@@ -352,9 +290,9 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
 
     /**
      * Retrieve the baseboard management controller key set of the cluster.
-     *
-     * <p>Get baseboard management controller key set of the provided cluster.
-     *
+     * 
+     * Get baseboard management controller key set of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -362,22 +300,18 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return baseboard management controller key set of the provided cluster along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BmcKeySetInner>> getWithResponseAsync(
-        String resourceGroupName, String clusterName, String bmcKeySetName) {
+    private Mono<Response<BmcKeySetInner>> getWithResponseAsync(String resourceGroupName, String clusterName,
+        String bmcKeySetName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -391,26 +325,16 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            bmcKeySetName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, bmcKeySetName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve the baseboard management controller key set of the cluster.
-     *
-     * <p>Get baseboard management controller key set of the provided cluster.
-     *
+     * 
+     * Get baseboard management controller key set of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -419,22 +343,18 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return baseboard management controller key set of the provided cluster along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BmcKeySetInner>> getWithResponseAsync(
-        String resourceGroupName, String clusterName, String bmcKeySetName, Context context) {
+    private Mono<Response<BmcKeySetInner>> getWithResponseAsync(String resourceGroupName, String clusterName,
+        String bmcKeySetName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -448,23 +368,15 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                bmcKeySetName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, clusterName, bmcKeySetName, accept, context);
     }
 
     /**
      * Retrieve the baseboard management controller key set of the cluster.
-     *
-     * <p>Get baseboard management controller key set of the provided cluster.
-     *
+     * 
+     * Get baseboard management controller key set of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -481,9 +393,9 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
 
     /**
      * Retrieve the baseboard management controller key set of the cluster.
-     *
-     * <p>Get baseboard management controller key set of the provided cluster.
-     *
+     * 
+     * Get baseboard management controller key set of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -494,16 +406,16 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @return baseboard management controller key set of the provided cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BmcKeySetInner> getWithResponse(
-        String resourceGroupName, String clusterName, String bmcKeySetName, Context context) {
+    public Response<BmcKeySetInner> getWithResponse(String resourceGroupName, String clusterName, String bmcKeySetName,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, clusterName, bmcKeySetName, context).block();
     }
 
     /**
      * Retrieve the baseboard management controller key set of the cluster.
-     *
-     * <p>Get baseboard management controller key set of the provided cluster.
-     *
+     * 
+     * Get baseboard management controller key set of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -519,9 +431,9 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
 
     /**
      * Create or update the baseboard management controller key set of the cluster.
-     *
-     * <p>Create a new baseboard management controller key set or update the existing one for the provided cluster.
-     *
+     * 
+     * Create a new baseboard management controller key set or update the existing one for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -530,22 +442,18 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bmcKeySet represents the baseboard management controller key set along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String clusterName, String bmcKeySetName, BmcKeySetInner bmcKeySetParameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String clusterName, String bmcKeySetName, BmcKeySetInner bmcKeySetParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -565,27 +473,17 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            bmcKeySetName,
-                            bmcKeySetParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, bmcKeySetName, bmcKeySetParameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update the baseboard management controller key set of the cluster.
-     *
-     * <p>Create a new baseboard management controller key set or update the existing one for the provided cluster.
-     *
+     * 
+     * Create a new baseboard management controller key set or update the existing one for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -595,26 +493,18 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bmcKeySet represents the baseboard management controller key set along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String bmcKeySetName,
-        BmcKeySetInner bmcKeySetParameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String clusterName, String bmcKeySetName, BmcKeySetInner bmcKeySetParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -634,24 +524,16 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                bmcKeySetName,
-                bmcKeySetParameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, bmcKeySetName, bmcKeySetParameters, accept,
+            context);
     }
 
     /**
      * Create or update the baseboard management controller key set of the cluster.
-     *
-     * <p>Create a new baseboard management controller key set or update the existing one for the provided cluster.
-     *
+     * 
+     * Create a new baseboard management controller key set or update the existing one for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -662,25 +544,19 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @return the {@link PollerFlux} for polling of bmcKeySet represents the baseboard management controller key set.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<BmcKeySetInner>, BmcKeySetInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String clusterName, String bmcKeySetName, BmcKeySetInner bmcKeySetParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, clusterName, bmcKeySetName, bmcKeySetParameters);
-        return this
-            .client
-            .<BmcKeySetInner, BmcKeySetInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                BmcKeySetInner.class,
-                BmcKeySetInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<BmcKeySetInner>, BmcKeySetInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String clusterName, String bmcKeySetName, BmcKeySetInner bmcKeySetParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, clusterName, bmcKeySetName, bmcKeySetParameters);
+        return this.client.<BmcKeySetInner, BmcKeySetInner>getLroResult(mono, this.client.getHttpPipeline(),
+            BmcKeySetInner.class, BmcKeySetInner.class, this.client.getContext());
     }
 
     /**
      * Create or update the baseboard management controller key set of the cluster.
-     *
-     * <p>Create a new baseboard management controller key set or update the existing one for the provided cluster.
-     *
+     * 
+     * Create a new baseboard management controller key set or update the existing one for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -692,27 +568,20 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @return the {@link PollerFlux} for polling of bmcKeySet represents the baseboard management controller key set.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<BmcKeySetInner>, BmcKeySetInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String bmcKeySetName,
-        BmcKeySetInner bmcKeySetParameters,
-        Context context) {
+    private PollerFlux<PollResult<BmcKeySetInner>, BmcKeySetInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String clusterName, String bmcKeySetName, BmcKeySetInner bmcKeySetParameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, clusterName, bmcKeySetName, bmcKeySetParameters, context);
-        return this
-            .client
-            .<BmcKeySetInner, BmcKeySetInner>getLroResult(
-                mono, this.client.getHttpPipeline(), BmcKeySetInner.class, BmcKeySetInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, clusterName,
+            bmcKeySetName, bmcKeySetParameters, context);
+        return this.client.<BmcKeySetInner, BmcKeySetInner>getLroResult(mono, this.client.getHttpPipeline(),
+            BmcKeySetInner.class, BmcKeySetInner.class, context);
     }
 
     /**
      * Create or update the baseboard management controller key set of the cluster.
-     *
-     * <p>Create a new baseboard management controller key set or update the existing one for the provided cluster.
-     *
+     * 
+     * Create a new baseboard management controller key set or update the existing one for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -723,18 +592,17 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @return the {@link SyncPoller} for polling of bmcKeySet represents the baseboard management controller key set.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BmcKeySetInner>, BmcKeySetInner> beginCreateOrUpdate(
-        String resourceGroupName, String clusterName, String bmcKeySetName, BmcKeySetInner bmcKeySetParameters) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, clusterName, bmcKeySetName, bmcKeySetParameters)
+    public SyncPoller<PollResult<BmcKeySetInner>, BmcKeySetInner> beginCreateOrUpdate(String resourceGroupName,
+        String clusterName, String bmcKeySetName, BmcKeySetInner bmcKeySetParameters) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, clusterName, bmcKeySetName, bmcKeySetParameters)
             .getSyncPoller();
     }
 
     /**
      * Create or update the baseboard management controller key set of the cluster.
-     *
-     * <p>Create a new baseboard management controller key set or update the existing one for the provided cluster.
-     *
+     * 
+     * Create a new baseboard management controller key set or update the existing one for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -746,12 +614,8 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @return the {@link SyncPoller} for polling of bmcKeySet represents the baseboard management controller key set.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BmcKeySetInner>, BmcKeySetInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String bmcKeySetName,
-        BmcKeySetInner bmcKeySetParameters,
-        Context context) {
+    public SyncPoller<PollResult<BmcKeySetInner>, BmcKeySetInner> beginCreateOrUpdate(String resourceGroupName,
+        String clusterName, String bmcKeySetName, BmcKeySetInner bmcKeySetParameters, Context context) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, clusterName, bmcKeySetName, bmcKeySetParameters, context)
             .getSyncPoller();
@@ -759,9 +623,9 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
 
     /**
      * Create or update the baseboard management controller key set of the cluster.
-     *
-     * <p>Create a new baseboard management controller key set or update the existing one for the provided cluster.
-     *
+     * 
+     * Create a new baseboard management controller key set or update the existing one for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -769,22 +633,21 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bmcKeySet represents the baseboard management controller key set on successful completion of {@link
-     *     Mono}.
+     * @return bmcKeySet represents the baseboard management controller key set on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BmcKeySetInner> createOrUpdateAsync(
-        String resourceGroupName, String clusterName, String bmcKeySetName, BmcKeySetInner bmcKeySetParameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, bmcKeySetName, bmcKeySetParameters)
-            .last()
+    private Mono<BmcKeySetInner> createOrUpdateAsync(String resourceGroupName, String clusterName, String bmcKeySetName,
+        BmcKeySetInner bmcKeySetParameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, bmcKeySetName, bmcKeySetParameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update the baseboard management controller key set of the cluster.
-     *
-     * <p>Create a new baseboard management controller key set or update the existing one for the provided cluster.
-     *
+     * 
+     * Create a new baseboard management controller key set or update the existing one for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -793,16 +656,12 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bmcKeySet represents the baseboard management controller key set on successful completion of {@link
-     *     Mono}.
+     * @return bmcKeySet represents the baseboard management controller key set on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BmcKeySetInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String bmcKeySetName,
-        BmcKeySetInner bmcKeySetParameters,
-        Context context) {
+    private Mono<BmcKeySetInner> createOrUpdateAsync(String resourceGroupName, String clusterName, String bmcKeySetName,
+        BmcKeySetInner bmcKeySetParameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, clusterName, bmcKeySetName, bmcKeySetParameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -810,9 +669,9 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
 
     /**
      * Create or update the baseboard management controller key set of the cluster.
-     *
-     * <p>Create a new baseboard management controller key set or update the existing one for the provided cluster.
-     *
+     * 
+     * Create a new baseboard management controller key set or update the existing one for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -823,16 +682,16 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @return bmcKeySet represents the baseboard management controller key set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BmcKeySetInner createOrUpdate(
-        String resourceGroupName, String clusterName, String bmcKeySetName, BmcKeySetInner bmcKeySetParameters) {
+    public BmcKeySetInner createOrUpdate(String resourceGroupName, String clusterName, String bmcKeySetName,
+        BmcKeySetInner bmcKeySetParameters) {
         return createOrUpdateAsync(resourceGroupName, clusterName, bmcKeySetName, bmcKeySetParameters).block();
     }
 
     /**
      * Create or update the baseboard management controller key set of the cluster.
-     *
-     * <p>Create a new baseboard management controller key set or update the existing one for the provided cluster.
-     *
+     * 
+     * Create a new baseboard management controller key set or update the existing one for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -844,42 +703,35 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @return bmcKeySet represents the baseboard management controller key set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BmcKeySetInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String bmcKeySetName,
-        BmcKeySetInner bmcKeySetParameters,
-        Context context) {
+    public BmcKeySetInner createOrUpdate(String resourceGroupName, String clusterName, String bmcKeySetName,
+        BmcKeySetInner bmcKeySetParameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, clusterName, bmcKeySetName, bmcKeySetParameters, context).block();
     }
 
     /**
      * Delete the baseboard management controller key set of the cluster.
-     *
-     * <p>Delete the baseboard management controller key set of the provided cluster.
-     *
+     * 
+     * Delete the baseboard management controller key set of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String clusterName, String bmcKeySetName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
+        String bmcKeySetName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -893,26 +745,16 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            bmcKeySetName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, bmcKeySetName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete the baseboard management controller key set of the cluster.
-     *
-     * <p>Delete the baseboard management controller key set of the provided cluster.
-     *
+     * 
+     * Delete the baseboard management controller key set of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -920,22 +762,19 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String clusterName, String bmcKeySetName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
+        String bmcKeySetName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -949,46 +788,37 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                bmcKeySetName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, clusterName, bmcKeySetName, accept, context);
     }
 
     /**
      * Delete the baseboard management controller key set of the cluster.
-     *
-     * <p>Delete the baseboard management controller key set of the provided cluster.
-     *
+     * 
+     * Delete the baseboard management controller key set of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String clusterName, String bmcKeySetName) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDeleteAsync(String resourceGroupName, String clusterName, String bmcKeySetName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, clusterName, bmcKeySetName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
+            this.client.getContext());
     }
 
     /**
      * Delete the baseboard management controller key set of the cluster.
-     *
-     * <p>Delete the baseboard management controller key set of the provided cluster.
-     *
+     * 
+     * Delete the baseboard management controller key set of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -996,43 +826,42 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String clusterName, String bmcKeySetName, Context context) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDeleteAsync(String resourceGroupName, String clusterName, String bmcKeySetName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, clusterName, bmcKeySetName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, clusterName, bmcKeySetName, context);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class, context);
     }
 
     /**
      * Delete the baseboard management controller key set of the cluster.
-     *
-     * <p>Delete the baseboard management controller key set of the provided cluster.
-     *
+     * 
+     * Delete the baseboard management controller key set of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String bmcKeySetName) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDelete(String resourceGroupName, String clusterName, String bmcKeySetName) {
         return this.beginDeleteAsync(resourceGroupName, clusterName, bmcKeySetName).getSyncPoller();
     }
 
     /**
      * Delete the baseboard management controller key set of the cluster.
-     *
-     * <p>Delete the baseboard management controller key set of the provided cluster.
-     *
+     * 
+     * Delete the baseboard management controller key set of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -1040,39 +869,39 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String bmcKeySetName, Context context) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDelete(String resourceGroupName, String clusterName, String bmcKeySetName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, clusterName, bmcKeySetName, context).getSyncPoller();
     }
 
     /**
      * Delete the baseboard management controller key set of the cluster.
-     *
-     * <p>Delete the baseboard management controller key set of the provided cluster.
-     *
+     * 
+     * Delete the baseboard management controller key set of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String bmcKeySetName) {
-        return beginDeleteAsync(resourceGroupName, clusterName, bmcKeySetName)
-            .last()
+    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String clusterName,
+        String bmcKeySetName) {
+        return beginDeleteAsync(resourceGroupName, clusterName, bmcKeySetName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the baseboard management controller key set of the cluster.
-     *
-     * <p>Delete the baseboard management controller key set of the provided cluster.
-     *
+     * 
+     * Delete the baseboard management controller key set of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -1080,38 +909,38 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String clusterName, String bmcKeySetName, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, bmcKeySetName, context)
-            .last()
+    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String clusterName,
+        String bmcKeySetName, Context context) {
+        return beginDeleteAsync(resourceGroupName, clusterName, bmcKeySetName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the baseboard management controller key set of the cluster.
-     *
-     * <p>Delete the baseboard management controller key set of the provided cluster.
-     *
+     * 
+     * Delete the baseboard management controller key set of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String clusterName, String bmcKeySetName) {
-        deleteAsync(resourceGroupName, clusterName, bmcKeySetName).block();
+    public OperationStatusResultInner delete(String resourceGroupName, String clusterName, String bmcKeySetName) {
+        return deleteAsync(resourceGroupName, clusterName, bmcKeySetName).block();
     }
 
     /**
      * Delete the baseboard management controller key set of the cluster.
-     *
-     * <p>Delete the baseboard management controller key set of the provided cluster.
-     *
+     * 
+     * Delete the baseboard management controller key set of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -1119,18 +948,20 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String clusterName, String bmcKeySetName, Context context) {
-        deleteAsync(resourceGroupName, clusterName, bmcKeySetName, context).block();
+    public OperationStatusResultInner delete(String resourceGroupName, String clusterName, String bmcKeySetName,
+        Context context) {
+        return deleteAsync(resourceGroupName, clusterName, bmcKeySetName, context).block();
     }
 
     /**
      * Patch baseboard management controller key set of the cluster.
-     *
-     * <p>Patch properties of baseboard management controller key set for the provided cluster, or update the tags
+     * 
+     * Patch properties of baseboard management controller key set for the provided cluster, or update the tags
      * associated with it. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -1139,25 +970,18 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bmcKeySet represents the baseboard management controller key set along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String bmcKeySetName,
-        BmcKeySetPatchParameters bmcKeySetUpdateParameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
+        String bmcKeySetName, BmcKeySetPatchParameters bmcKeySetUpdateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1174,28 +998,18 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            bmcKeySetName,
-                            bmcKeySetUpdateParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, bmcKeySetName,
+                bmcKeySetUpdateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Patch baseboard management controller key set of the cluster.
-     *
-     * <p>Patch properties of baseboard management controller key set for the provided cluster, or update the tags
+     * 
+     * Patch properties of baseboard management controller key set for the provided cluster, or update the tags
      * associated with it. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -1205,26 +1019,18 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bmcKeySet represents the baseboard management controller key set along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String bmcKeySetName,
-        BmcKeySetPatchParameters bmcKeySetUpdateParameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
+        String bmcKeySetName, BmcKeySetPatchParameters bmcKeySetUpdateParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1241,25 +1047,16 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                bmcKeySetName,
-                bmcKeySetUpdateParameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, clusterName, bmcKeySetName, bmcKeySetUpdateParameters, accept, context);
     }
 
     /**
      * Patch baseboard management controller key set of the cluster.
-     *
-     * <p>Patch properties of baseboard management controller key set for the provided cluster, or update the tags
+     * 
+     * Patch properties of baseboard management controller key set for the provided cluster, or update the tags
      * associated with it. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -1270,29 +1067,20 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @return the {@link PollerFlux} for polling of bmcKeySet represents the baseboard management controller key set.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<BmcKeySetInner>, BmcKeySetInner> beginUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String bmcKeySetName,
-        BmcKeySetPatchParameters bmcKeySetUpdateParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, clusterName, bmcKeySetName, bmcKeySetUpdateParameters);
-        return this
-            .client
-            .<BmcKeySetInner, BmcKeySetInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                BmcKeySetInner.class,
-                BmcKeySetInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<BmcKeySetInner>, BmcKeySetInner> beginUpdateAsync(String resourceGroupName,
+        String clusterName, String bmcKeySetName, BmcKeySetPatchParameters bmcKeySetUpdateParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, clusterName, bmcKeySetName, bmcKeySetUpdateParameters);
+        return this.client.<BmcKeySetInner, BmcKeySetInner>getLroResult(mono, this.client.getHttpPipeline(),
+            BmcKeySetInner.class, BmcKeySetInner.class, this.client.getContext());
     }
 
     /**
      * Patch baseboard management controller key set of the cluster.
-     *
-     * <p>Patch properties of baseboard management controller key set for the provided cluster, or update the tags
+     * 
+     * Patch properties of baseboard management controller key set for the provided cluster, or update the tags
      * associated with it. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -1302,27 +1090,21 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @return the {@link PollerFlux} for polling of bmcKeySet represents the baseboard management controller key set.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<BmcKeySetInner>, BmcKeySetInner> beginUpdateAsync(
-        String resourceGroupName, String clusterName, String bmcKeySetName) {
+    private PollerFlux<PollResult<BmcKeySetInner>, BmcKeySetInner> beginUpdateAsync(String resourceGroupName,
+        String clusterName, String bmcKeySetName) {
         final BmcKeySetPatchParameters bmcKeySetUpdateParameters = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, clusterName, bmcKeySetName, bmcKeySetUpdateParameters);
-        return this
-            .client
-            .<BmcKeySetInner, BmcKeySetInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                BmcKeySetInner.class,
-                BmcKeySetInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, clusterName, bmcKeySetName, bmcKeySetUpdateParameters);
+        return this.client.<BmcKeySetInner, BmcKeySetInner>getLroResult(mono, this.client.getHttpPipeline(),
+            BmcKeySetInner.class, BmcKeySetInner.class, this.client.getContext());
     }
 
     /**
      * Patch baseboard management controller key set of the cluster.
-     *
-     * <p>Patch properties of baseboard management controller key set for the provided cluster, or update the tags
+     * 
+     * Patch properties of baseboard management controller key set for the provided cluster, or update the tags
      * associated with it. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -1334,27 +1116,21 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @return the {@link PollerFlux} for polling of bmcKeySet represents the baseboard management controller key set.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<BmcKeySetInner>, BmcKeySetInner> beginUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String bmcKeySetName,
-        BmcKeySetPatchParameters bmcKeySetUpdateParameters,
-        Context context) {
+    private PollerFlux<PollResult<BmcKeySetInner>, BmcKeySetInner> beginUpdateAsync(String resourceGroupName,
+        String clusterName, String bmcKeySetName, BmcKeySetPatchParameters bmcKeySetUpdateParameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, clusterName, bmcKeySetName, bmcKeySetUpdateParameters, context);
-        return this
-            .client
-            .<BmcKeySetInner, BmcKeySetInner>getLroResult(
-                mono, this.client.getHttpPipeline(), BmcKeySetInner.class, BmcKeySetInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, clusterName, bmcKeySetName,
+            bmcKeySetUpdateParameters, context);
+        return this.client.<BmcKeySetInner, BmcKeySetInner>getLroResult(mono, this.client.getHttpPipeline(),
+            BmcKeySetInner.class, BmcKeySetInner.class, context);
     }
 
     /**
      * Patch baseboard management controller key set of the cluster.
-     *
-     * <p>Patch properties of baseboard management controller key set for the provided cluster, or update the tags
+     * 
+     * Patch properties of baseboard management controller key set for the provided cluster, or update the tags
      * associated with it. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -1364,20 +1140,19 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @return the {@link SyncPoller} for polling of bmcKeySet represents the baseboard management controller key set.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BmcKeySetInner>, BmcKeySetInner> beginUpdate(
-        String resourceGroupName, String clusterName, String bmcKeySetName) {
+    public SyncPoller<PollResult<BmcKeySetInner>, BmcKeySetInner> beginUpdate(String resourceGroupName,
+        String clusterName, String bmcKeySetName) {
         final BmcKeySetPatchParameters bmcKeySetUpdateParameters = null;
-        return this
-            .beginUpdateAsync(resourceGroupName, clusterName, bmcKeySetName, bmcKeySetUpdateParameters)
+        return this.beginUpdateAsync(resourceGroupName, clusterName, bmcKeySetName, bmcKeySetUpdateParameters)
             .getSyncPoller();
     }
 
     /**
      * Patch baseboard management controller key set of the cluster.
-     *
-     * <p>Patch properties of baseboard management controller key set for the provided cluster, or update the tags
+     * 
+     * Patch properties of baseboard management controller key set for the provided cluster, or update the tags
      * associated with it. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -1389,23 +1164,18 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @return the {@link SyncPoller} for polling of bmcKeySet represents the baseboard management controller key set.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BmcKeySetInner>, BmcKeySetInner> beginUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String bmcKeySetName,
-        BmcKeySetPatchParameters bmcKeySetUpdateParameters,
-        Context context) {
-        return this
-            .beginUpdateAsync(resourceGroupName, clusterName, bmcKeySetName, bmcKeySetUpdateParameters, context)
+    public SyncPoller<PollResult<BmcKeySetInner>, BmcKeySetInner> beginUpdate(String resourceGroupName,
+        String clusterName, String bmcKeySetName, BmcKeySetPatchParameters bmcKeySetUpdateParameters, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, clusterName, bmcKeySetName, bmcKeySetUpdateParameters, context)
             .getSyncPoller();
     }
 
     /**
      * Patch baseboard management controller key set of the cluster.
-     *
-     * <p>Patch properties of baseboard management controller key set for the provided cluster, or update the tags
+     * 
+     * Patch properties of baseboard management controller key set for the provided cluster, or update the tags
      * associated with it. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -1413,49 +1183,44 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bmcKeySet represents the baseboard management controller key set on successful completion of {@link
-     *     Mono}.
+     * @return bmcKeySet represents the baseboard management controller key set on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BmcKeySetInner> updateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String bmcKeySetName,
+    private Mono<BmcKeySetInner> updateAsync(String resourceGroupName, String clusterName, String bmcKeySetName,
         BmcKeySetPatchParameters bmcKeySetUpdateParameters) {
-        return beginUpdateAsync(resourceGroupName, clusterName, bmcKeySetName, bmcKeySetUpdateParameters)
-            .last()
+        return beginUpdateAsync(resourceGroupName, clusterName, bmcKeySetName, bmcKeySetUpdateParameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Patch baseboard management controller key set of the cluster.
-     *
-     * <p>Patch properties of baseboard management controller key set for the provided cluster, or update the tags
+     * 
+     * Patch properties of baseboard management controller key set for the provided cluster, or update the tags
      * associated with it. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bmcKeySet represents the baseboard management controller key set on successful completion of {@link
-     *     Mono}.
+     * @return bmcKeySet represents the baseboard management controller key set on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BmcKeySetInner> updateAsync(String resourceGroupName, String clusterName, String bmcKeySetName) {
         final BmcKeySetPatchParameters bmcKeySetUpdateParameters = null;
-        return beginUpdateAsync(resourceGroupName, clusterName, bmcKeySetName, bmcKeySetUpdateParameters)
-            .last()
+        return beginUpdateAsync(resourceGroupName, clusterName, bmcKeySetName, bmcKeySetUpdateParameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Patch baseboard management controller key set of the cluster.
-     *
-     * <p>Patch properties of baseboard management controller key set for the provided cluster, or update the tags
+     * 
+     * Patch properties of baseboard management controller key set for the provided cluster, or update the tags
      * associated with it. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -1464,16 +1229,12 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bmcKeySet represents the baseboard management controller key set on successful completion of {@link
-     *     Mono}.
+     * @return bmcKeySet represents the baseboard management controller key set on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BmcKeySetInner> updateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String bmcKeySetName,
-        BmcKeySetPatchParameters bmcKeySetUpdateParameters,
-        Context context) {
+    private Mono<BmcKeySetInner> updateAsync(String resourceGroupName, String clusterName, String bmcKeySetName,
+        BmcKeySetPatchParameters bmcKeySetUpdateParameters, Context context) {
         return beginUpdateAsync(resourceGroupName, clusterName, bmcKeySetName, bmcKeySetUpdateParameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1481,10 +1242,10 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
 
     /**
      * Patch baseboard management controller key set of the cluster.
-     *
-     * <p>Patch properties of baseboard management controller key set for the provided cluster, or update the tags
+     * 
+     * Patch properties of baseboard management controller key set for the provided cluster, or update the tags
      * associated with it. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -1501,10 +1262,10 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
 
     /**
      * Patch baseboard management controller key set of the cluster.
-     *
-     * <p>Patch properties of baseboard management controller key set for the provided cluster, or update the tags
+     * 
+     * Patch properties of baseboard management controller key set for the provided cluster, or update the tags
      * associated with it. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -1516,25 +1277,20 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @return bmcKeySet represents the baseboard management controller key set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BmcKeySetInner update(
-        String resourceGroupName,
-        String clusterName,
-        String bmcKeySetName,
-        BmcKeySetPatchParameters bmcKeySetUpdateParameters,
-        Context context) {
+    public BmcKeySetInner update(String resourceGroupName, String clusterName, String bmcKeySetName,
+        BmcKeySetPatchParameters bmcKeySetUpdateParameters, Context context) {
         return updateAsync(resourceGroupName, clusterName, bmcKeySetName, bmcKeySetUpdateParameters, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bmcKeySetList represents a list of baseboard management controller key sets along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return bmcKeySetList represents a list of baseboard management controller key sets along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BmcKeySetInner>> listByClusterNextSinglePageAsync(String nextLink) {
@@ -1542,37 +1298,27 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByClusterNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<BmcKeySetInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<BmcKeySetInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bmcKeySetList represents a list of baseboard management controller key sets along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return bmcKeySetList represents a list of baseboard management controller key sets along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BmcKeySetInner>> listByClusterNextSinglePageAsync(String nextLink, Context context) {
@@ -1580,23 +1326,13 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByClusterNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByClusterNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

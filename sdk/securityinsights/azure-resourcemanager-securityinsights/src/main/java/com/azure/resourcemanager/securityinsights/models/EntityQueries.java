@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of EntityQueries. */
+/**
+ * Resource collection API of EntityQueries.
+ */
 public interface EntityQueries {
     /**
      * Gets all entity queries.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface EntityQueries {
 
     /**
      * Gets all entity queries.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kind The entity query kind we want to fetch.
@@ -34,12 +36,27 @@ public interface EntityQueries {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all entity queries as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<EntityQuery> list(
-        String resourceGroupName, String workspaceName, EntityQueriesKind kind, Context context);
+    PagedIterable<EntityQuery> list(String resourceGroupName, String workspaceName, EntityQueriesKind kind,
+        Context context);
 
     /**
      * Gets an entity query.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param entityQueryId entity query ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an entity query along with {@link Response}.
+     */
+    Response<EntityQuery> getWithResponse(String resourceGroupName, String workspaceName, String entityQueryId,
+        Context context);
+
+    /**
+     * Gets an entity query.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param entityQueryId entity query ID.
@@ -51,38 +68,8 @@ public interface EntityQueries {
     EntityQuery get(String resourceGroupName, String workspaceName, String entityQueryId);
 
     /**
-     * Gets an entity query.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param entityQueryId entity query ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an entity query along with {@link Response}.
-     */
-    Response<EntityQuery> getWithResponse(
-        String resourceGroupName, String workspaceName, String entityQueryId, Context context);
-
-    /**
      * Creates or updates the entity query.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param entityQueryId entity query ID.
-     * @param entityQuery The entity query we want to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specific entity query.
-     */
-    EntityQuery createOrUpdate(
-        String resourceGroupName, String workspaceName, String entityQueryId, CustomEntityQuery entityQuery);
-
-    /**
-     * Creates or updates the entity query.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param entityQueryId entity query ID.
@@ -93,28 +80,27 @@ public interface EntityQueries {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specific entity query along with {@link Response}.
      */
-    Response<EntityQuery> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String entityQueryId,
-        CustomEntityQuery entityQuery,
-        Context context);
+    Response<EntityQuery> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
+        String entityQueryId, CustomEntityQuery entityQuery, Context context);
 
     /**
-     * Delete the entity query.
-     *
+     * Creates or updates the entity query.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param entityQueryId entity query ID.
+     * @param entityQuery The entity query we want to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specific entity query.
      */
-    void delete(String resourceGroupName, String workspaceName, String entityQueryId);
+    EntityQuery createOrUpdate(String resourceGroupName, String workspaceName, String entityQueryId,
+        CustomEntityQuery entityQuery);
 
     /**
      * Delete the entity query.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param entityQueryId entity query ID.
@@ -124,6 +110,18 @@ public interface EntityQueries {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String entityQueryId, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String entityQueryId,
+        Context context);
+
+    /**
+     * Delete the entity query.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param entityQueryId entity query ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String workspaceName, String entityQueryId);
 }

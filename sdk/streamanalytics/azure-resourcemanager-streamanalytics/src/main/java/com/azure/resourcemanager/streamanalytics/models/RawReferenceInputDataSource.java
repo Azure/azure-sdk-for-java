@@ -5,31 +5,45 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.fluent.models.RawInputDatasourceProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
 /**
  * Describes a raw input data source that contains reference data. This data source type is only applicable/usable when
  * using the query testing API. You cannot create a job with this data source type or add an input of this data source
  * type to an existing job.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Raw")
 @Fluent
 public final class RawReferenceInputDataSource extends ReferenceInputDataSource {
+    /*
+     * Indicates the type of input data source containing reference data. Required on PUT (CreateOrReplace) requests.
+     */
+    private String type = "Raw";
+
     /*
      * The properties that are associated with a raw input containing reference data. Required on PUT (CreateOrReplace)
      * requests.
      */
-    @JsonProperty(value = "properties")
     private RawInputDatasourceProperties innerProperties;
 
     /**
      * Creates an instance of RawReferenceInputDataSource class.
      */
     public RawReferenceInputDataSource() {
+    }
+
+    /**
+     * Get the type property: Indicates the type of input data source containing reference data. Required on PUT
+     * (CreateOrReplace) requests.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -99,9 +113,48 @@ public final class RawReferenceInputDataSource extends ReferenceInputDataSource 
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RawReferenceInputDataSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RawReferenceInputDataSource if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RawReferenceInputDataSource.
+     */
+    public static RawReferenceInputDataSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RawReferenceInputDataSource deserializedRawReferenceInputDataSource = new RawReferenceInputDataSource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedRawReferenceInputDataSource.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRawReferenceInputDataSource.innerProperties
+                        = RawInputDatasourceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRawReferenceInputDataSource;
+        });
     }
 }

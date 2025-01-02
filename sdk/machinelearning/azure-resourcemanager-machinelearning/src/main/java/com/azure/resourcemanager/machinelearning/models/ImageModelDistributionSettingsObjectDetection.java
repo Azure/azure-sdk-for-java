@@ -5,14 +5,23 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * Distribution expressions to sweep over values of model settings. &lt;example&gt; Some examples are: &lt;code&gt;
- * ModelName = "choice('seresnext', 'resnest50')"; LearningRate = "uniform(0.001, 0.01)"; LayersToFreeze = "choice(0,
- * 2)"; &lt;/code&gt;&lt;/example&gt; For more details on how to compose distribution expressions please check the
- * documentation: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-tune-hyperparameters For more
- * information on the available settings please visit the official documentation:
+ * Distribution expressions to sweep over values of model settings.
+ * &lt;example&gt;
+ * Some examples are:
+ * ```
+ * ModelName = "choice('seresnext', 'resnest50')";
+ * LearningRate = "uniform(0.001, 0.01)";
+ * LayersToFreeze = "choice(0, 2)";
+ * ```&lt;/example&gt;
+ * For more details on how to compose distribution expressions please check the documentation:
+ * https://docs.microsoft.com/en-us/azure/machine-learning/how-to-tune-hyperparameters
+ * For more information on the available settings please visit the official documentation:
  * https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
  */
 @Fluent
@@ -21,14 +30,12 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
      * Maximum number of detections per image, for all classes. Must be a positive integer.
      * Note: This settings is not supported for the 'yolov5' algorithm.
      */
-    @JsonProperty(value = "boxDetectionsPerImage")
     private String boxDetectionsPerImage;
 
     /*
      * During inference, only return proposals with a classification score greater than
      * BoxScoreThreshold. Must be a float in the range[0, 1].
      */
-    @JsonProperty(value = "boxScoreThreshold")
     private String boxScoreThreshold;
 
     /*
@@ -36,7 +43,6 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
      * Note: The training run may get into CUDA OOM if the size is too big.
      * Note: This settings is only supported for the 'yolov5' algorithm.
      */
-    @JsonProperty(value = "imageSize")
     private String imageSize;
 
     /*
@@ -44,7 +50,6 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
      * Must be a positive integer. Note: training run may get into CUDA OOM if the size is too big.
      * Note: This settings is not supported for the 'yolov5' algorithm.
      */
-    @JsonProperty(value = "maxSize")
     private String maxSize;
 
     /*
@@ -52,7 +57,6 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
      * Must be a positive integer. Note: training run may get into CUDA OOM if the size is too big.
      * Note: This settings is not supported for the 'yolov5' algorithm.
      */
-    @JsonProperty(value = "minSize")
     private String minSize;
 
     /*
@@ -60,7 +64,6 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
      * Note: training run may get into CUDA OOM if the model size is too big.
      * Note: This settings is only supported for the 'yolov5' algorithm.
      */
-    @JsonProperty(value = "modelSize")
     private String modelSize;
 
     /*
@@ -68,13 +71,11 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
      * Note: training run may get into CUDA OOM if no sufficient GPU memory.
      * Note: This settings is only supported for the 'yolov5' algorithm.
      */
-    @JsonProperty(value = "multiScale")
     private String multiScale;
 
     /*
      * IOU threshold used during inference in NMS post processing. Must be float in the range [0, 1].
      */
-    @JsonProperty(value = "nmsIouThreshold")
     private String nmsIouThreshold;
 
     /*
@@ -82,14 +83,12 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
      * None to enable small object detection logic. A string containing two integers in mxn format.
      * Note: This settings is not supported for the 'yolov5' algorithm.
      */
-    @JsonProperty(value = "tileGridSize")
     private String tileGridSize;
 
     /*
      * Overlap ratio between adjacent tiles in each dimension. Must be float in the range [0, 1).
      * Note: This settings is not supported for the 'yolov5' algorithm.
      */
-    @JsonProperty(value = "tileOverlapRatio")
     private String tileOverlapRatio;
 
     /*
@@ -98,29 +97,29 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
      * Note: This settings is not supported for the 'yolov5' algorithm.
      * NMS: Non-maximum suppression
      */
-    @JsonProperty(value = "tilePredictionsNmsThreshold")
     private String tilePredictionsNmsThreshold;
 
     /*
      * IOU threshold to use when computing validation metric. Must be float in the range [0, 1].
      */
-    @JsonProperty(value = "validationIouThreshold")
     private String validationIouThreshold;
 
     /*
      * Metric computation method to use for validation metrics. Must be 'none', 'coco', 'voc', or 'coco_voc'.
      */
-    @JsonProperty(value = "validationMetricType")
     private String validationMetricType;
 
-    /** Creates an instance of ImageModelDistributionSettingsObjectDetection class. */
+    /**
+     * Creates an instance of ImageModelDistributionSettingsObjectDetection class.
+     */
     public ImageModelDistributionSettingsObjectDetection() {
     }
 
     /**
      * Get the boxDetectionsPerImage property: Maximum number of detections per image, for all classes. Must be a
-     * positive integer. Note: This settings is not supported for the 'yolov5' algorithm.
-     *
+     * positive integer.
+     * Note: This settings is not supported for the 'yolov5' algorithm.
+     * 
      * @return the boxDetectionsPerImage value.
      */
     public String boxDetectionsPerImage() {
@@ -129,8 +128,9 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
 
     /**
      * Set the boxDetectionsPerImage property: Maximum number of detections per image, for all classes. Must be a
-     * positive integer. Note: This settings is not supported for the 'yolov5' algorithm.
-     *
+     * positive integer.
+     * Note: This settings is not supported for the 'yolov5' algorithm.
+     * 
      * @param boxDetectionsPerImage the boxDetectionsPerImage value to set.
      * @return the ImageModelDistributionSettingsObjectDetection object itself.
      */
@@ -141,8 +141,9 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
 
     /**
      * Get the boxScoreThreshold property: During inference, only return proposals with a classification score greater
-     * than BoxScoreThreshold. Must be a float in the range[0, 1].
-     *
+     * than
+     * BoxScoreThreshold. Must be a float in the range[0, 1].
+     * 
      * @return the boxScoreThreshold value.
      */
     public String boxScoreThreshold() {
@@ -151,8 +152,9 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
 
     /**
      * Set the boxScoreThreshold property: During inference, only return proposals with a classification score greater
-     * than BoxScoreThreshold. Must be a float in the range[0, 1].
-     *
+     * than
+     * BoxScoreThreshold. Must be a float in the range[0, 1].
+     * 
      * @param boxScoreThreshold the boxScoreThreshold value to set.
      * @return the ImageModelDistributionSettingsObjectDetection object itself.
      */
@@ -162,10 +164,10 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
     }
 
     /**
-     * Get the imageSize property: Image size for train and validation. Must be a positive integer. Note: The training
-     * run may get into CUDA OOM if the size is too big. Note: This settings is only supported for the 'yolov5'
-     * algorithm.
-     *
+     * Get the imageSize property: Image size for train and validation. Must be a positive integer.
+     * Note: The training run may get into CUDA OOM if the size is too big.
+     * Note: This settings is only supported for the 'yolov5' algorithm.
+     * 
      * @return the imageSize value.
      */
     public String imageSize() {
@@ -173,10 +175,10 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
     }
 
     /**
-     * Set the imageSize property: Image size for train and validation. Must be a positive integer. Note: The training
-     * run may get into CUDA OOM if the size is too big. Note: This settings is only supported for the 'yolov5'
-     * algorithm.
-     *
+     * Set the imageSize property: Image size for train and validation. Must be a positive integer.
+     * Note: The training run may get into CUDA OOM if the size is too big.
+     * Note: This settings is only supported for the 'yolov5' algorithm.
+     * 
      * @param imageSize the imageSize value to set.
      * @return the ImageModelDistributionSettingsObjectDetection object itself.
      */
@@ -186,10 +188,10 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
     }
 
     /**
-     * Get the maxSize property: Maximum size of the image to be rescaled before feeding it to the backbone. Must be a
-     * positive integer. Note: training run may get into CUDA OOM if the size is too big. Note: This settings is not
-     * supported for the 'yolov5' algorithm.
-     *
+     * Get the maxSize property: Maximum size of the image to be rescaled before feeding it to the backbone.
+     * Must be a positive integer. Note: training run may get into CUDA OOM if the size is too big.
+     * Note: This settings is not supported for the 'yolov5' algorithm.
+     * 
      * @return the maxSize value.
      */
     public String maxSize() {
@@ -197,10 +199,10 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
     }
 
     /**
-     * Set the maxSize property: Maximum size of the image to be rescaled before feeding it to the backbone. Must be a
-     * positive integer. Note: training run may get into CUDA OOM if the size is too big. Note: This settings is not
-     * supported for the 'yolov5' algorithm.
-     *
+     * Set the maxSize property: Maximum size of the image to be rescaled before feeding it to the backbone.
+     * Must be a positive integer. Note: training run may get into CUDA OOM if the size is too big.
+     * Note: This settings is not supported for the 'yolov5' algorithm.
+     * 
      * @param maxSize the maxSize value to set.
      * @return the ImageModelDistributionSettingsObjectDetection object itself.
      */
@@ -210,10 +212,10 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
     }
 
     /**
-     * Get the minSize property: Minimum size of the image to be rescaled before feeding it to the backbone. Must be a
-     * positive integer. Note: training run may get into CUDA OOM if the size is too big. Note: This settings is not
-     * supported for the 'yolov5' algorithm.
-     *
+     * Get the minSize property: Minimum size of the image to be rescaled before feeding it to the backbone.
+     * Must be a positive integer. Note: training run may get into CUDA OOM if the size is too big.
+     * Note: This settings is not supported for the 'yolov5' algorithm.
+     * 
      * @return the minSize value.
      */
     public String minSize() {
@@ -221,10 +223,10 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
     }
 
     /**
-     * Set the minSize property: Minimum size of the image to be rescaled before feeding it to the backbone. Must be a
-     * positive integer. Note: training run may get into CUDA OOM if the size is too big. Note: This settings is not
-     * supported for the 'yolov5' algorithm.
-     *
+     * Set the minSize property: Minimum size of the image to be rescaled before feeding it to the backbone.
+     * Must be a positive integer. Note: training run may get into CUDA OOM if the size is too big.
+     * Note: This settings is not supported for the 'yolov5' algorithm.
+     * 
      * @param minSize the minSize value to set.
      * @return the ImageModelDistributionSettingsObjectDetection object itself.
      */
@@ -234,9 +236,10 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
     }
 
     /**
-     * Get the modelSize property: Model size. Must be 'small', 'medium', 'large', or 'xlarge'. Note: training run may
-     * get into CUDA OOM if the model size is too big. Note: This settings is only supported for the 'yolov5' algorithm.
-     *
+     * Get the modelSize property: Model size. Must be 'small', 'medium', 'large', or 'xlarge'.
+     * Note: training run may get into CUDA OOM if the model size is too big.
+     * Note: This settings is only supported for the 'yolov5' algorithm.
+     * 
      * @return the modelSize value.
      */
     public String modelSize() {
@@ -244,9 +247,10 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
     }
 
     /**
-     * Set the modelSize property: Model size. Must be 'small', 'medium', 'large', or 'xlarge'. Note: training run may
-     * get into CUDA OOM if the model size is too big. Note: This settings is only supported for the 'yolov5' algorithm.
-     *
+     * Set the modelSize property: Model size. Must be 'small', 'medium', 'large', or 'xlarge'.
+     * Note: training run may get into CUDA OOM if the model size is too big.
+     * Note: This settings is only supported for the 'yolov5' algorithm.
+     * 
      * @param modelSize the modelSize value to set.
      * @return the ImageModelDistributionSettingsObjectDetection object itself.
      */
@@ -256,9 +260,10 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
     }
 
     /**
-     * Get the multiScale property: Enable multi-scale image by varying image size by +/- 50%. Note: training run may
-     * get into CUDA OOM if no sufficient GPU memory. Note: This settings is only supported for the 'yolov5' algorithm.
-     *
+     * Get the multiScale property: Enable multi-scale image by varying image size by +/- 50%.
+     * Note: training run may get into CUDA OOM if no sufficient GPU memory.
+     * Note: This settings is only supported for the 'yolov5' algorithm.
+     * 
      * @return the multiScale value.
      */
     public String multiScale() {
@@ -266,9 +271,10 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
     }
 
     /**
-     * Set the multiScale property: Enable multi-scale image by varying image size by +/- 50%. Note: training run may
-     * get into CUDA OOM if no sufficient GPU memory. Note: This settings is only supported for the 'yolov5' algorithm.
-     *
+     * Set the multiScale property: Enable multi-scale image by varying image size by +/- 50%.
+     * Note: training run may get into CUDA OOM if no sufficient GPU memory.
+     * Note: This settings is only supported for the 'yolov5' algorithm.
+     * 
      * @param multiScale the multiScale value to set.
      * @return the ImageModelDistributionSettingsObjectDetection object itself.
      */
@@ -280,7 +286,7 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
     /**
      * Get the nmsIouThreshold property: IOU threshold used during inference in NMS post processing. Must be float in
      * the range [0, 1].
-     *
+     * 
      * @return the nmsIouThreshold value.
      */
     public String nmsIouThreshold() {
@@ -290,7 +296,7 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
     /**
      * Set the nmsIouThreshold property: IOU threshold used during inference in NMS post processing. Must be float in
      * the range [0, 1].
-     *
+     * 
      * @param nmsIouThreshold the nmsIouThreshold value to set.
      * @return the ImageModelDistributionSettingsObjectDetection object itself.
      */
@@ -300,10 +306,10 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
     }
 
     /**
-     * Get the tileGridSize property: The grid size to use for tiling each image. Note: TileGridSize must not be None to
-     * enable small object detection logic. A string containing two integers in mxn format. Note: This settings is not
-     * supported for the 'yolov5' algorithm.
-     *
+     * Get the tileGridSize property: The grid size to use for tiling each image. Note: TileGridSize must not be
+     * None to enable small object detection logic. A string containing two integers in mxn format.
+     * Note: This settings is not supported for the 'yolov5' algorithm.
+     * 
      * @return the tileGridSize value.
      */
     public String tileGridSize() {
@@ -311,10 +317,10 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
     }
 
     /**
-     * Set the tileGridSize property: The grid size to use for tiling each image. Note: TileGridSize must not be None to
-     * enable small object detection logic. A string containing two integers in mxn format. Note: This settings is not
-     * supported for the 'yolov5' algorithm.
-     *
+     * Set the tileGridSize property: The grid size to use for tiling each image. Note: TileGridSize must not be
+     * None to enable small object detection logic. A string containing two integers in mxn format.
+     * Note: This settings is not supported for the 'yolov5' algorithm.
+     * 
      * @param tileGridSize the tileGridSize value to set.
      * @return the ImageModelDistributionSettingsObjectDetection object itself.
      */
@@ -325,8 +331,9 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
 
     /**
      * Get the tileOverlapRatio property: Overlap ratio between adjacent tiles in each dimension. Must be float in the
-     * range [0, 1). Note: This settings is not supported for the 'yolov5' algorithm.
-     *
+     * range [0, 1).
+     * Note: This settings is not supported for the 'yolov5' algorithm.
+     * 
      * @return the tileOverlapRatio value.
      */
     public String tileOverlapRatio() {
@@ -335,8 +342,9 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
 
     /**
      * Set the tileOverlapRatio property: Overlap ratio between adjacent tiles in each dimension. Must be float in the
-     * range [0, 1). Note: This settings is not supported for the 'yolov5' algorithm.
-     *
+     * range [0, 1).
+     * Note: This settings is not supported for the 'yolov5' algorithm.
+     * 
      * @param tileOverlapRatio the tileOverlapRatio value to set.
      * @return the ImageModelDistributionSettingsObjectDetection object itself.
      */
@@ -347,9 +355,11 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
 
     /**
      * Get the tilePredictionsNmsThreshold property: The IOU threshold to use to perform NMS while merging predictions
-     * from tiles and image. Used in validation/ inference. Must be float in the range [0, 1]. Note: This settings is
-     * not supported for the 'yolov5' algorithm. NMS: Non-maximum suppression.
-     *
+     * from tiles and image.
+     * Used in validation/ inference. Must be float in the range [0, 1].
+     * Note: This settings is not supported for the 'yolov5' algorithm.
+     * NMS: Non-maximum suppression.
+     * 
      * @return the tilePredictionsNmsThreshold value.
      */
     public String tilePredictionsNmsThreshold() {
@@ -358,14 +368,16 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
 
     /**
      * Set the tilePredictionsNmsThreshold property: The IOU threshold to use to perform NMS while merging predictions
-     * from tiles and image. Used in validation/ inference. Must be float in the range [0, 1]. Note: This settings is
-     * not supported for the 'yolov5' algorithm. NMS: Non-maximum suppression.
-     *
+     * from tiles and image.
+     * Used in validation/ inference. Must be float in the range [0, 1].
+     * Note: This settings is not supported for the 'yolov5' algorithm.
+     * NMS: Non-maximum suppression.
+     * 
      * @param tilePredictionsNmsThreshold the tilePredictionsNmsThreshold value to set.
      * @return the ImageModelDistributionSettingsObjectDetection object itself.
      */
-    public ImageModelDistributionSettingsObjectDetection withTilePredictionsNmsThreshold(
-        String tilePredictionsNmsThreshold) {
+    public ImageModelDistributionSettingsObjectDetection
+        withTilePredictionsNmsThreshold(String tilePredictionsNmsThreshold) {
         this.tilePredictionsNmsThreshold = tilePredictionsNmsThreshold;
         return this;
     }
@@ -373,7 +385,7 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
     /**
      * Get the validationIouThreshold property: IOU threshold to use when computing validation metric. Must be float in
      * the range [0, 1].
-     *
+     * 
      * @return the validationIouThreshold value.
      */
     public String validationIouThreshold() {
@@ -383,7 +395,7 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
     /**
      * Set the validationIouThreshold property: IOU threshold to use when computing validation metric. Must be float in
      * the range [0, 1].
-     *
+     * 
      * @param validationIouThreshold the validationIouThreshold value to set.
      * @return the ImageModelDistributionSettingsObjectDetection object itself.
      */
@@ -395,7 +407,7 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
     /**
      * Get the validationMetricType property: Metric computation method to use for validation metrics. Must be 'none',
      * 'coco', 'voc', or 'coco_voc'.
-     *
+     * 
      * @return the validationMetricType value.
      */
     public String validationMetricType() {
@@ -405,7 +417,7 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
     /**
      * Set the validationMetricType property: Metric computation method to use for validation metrics. Must be 'none',
      * 'coco', 'voc', or 'coco_voc'.
-     *
+     * 
      * @param validationMetricType the validationMetricType value to set.
      * @return the ImageModelDistributionSettingsObjectDetection object itself.
      */
@@ -414,197 +426,253 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageModelDistributionSettingsObjectDetection withAmsGradient(String amsGradient) {
         super.withAmsGradient(amsGradient);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageModelDistributionSettingsObjectDetection withAugmentations(String augmentations) {
         super.withAugmentations(augmentations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageModelDistributionSettingsObjectDetection withBeta1(String beta1) {
         super.withBeta1(beta1);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageModelDistributionSettingsObjectDetection withBeta2(String beta2) {
         super.withBeta2(beta2);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageModelDistributionSettingsObjectDetection withDistributed(String distributed) {
         super.withDistributed(distributed);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageModelDistributionSettingsObjectDetection withEarlyStopping(String earlyStopping) {
         super.withEarlyStopping(earlyStopping);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageModelDistributionSettingsObjectDetection withEarlyStoppingDelay(String earlyStoppingDelay) {
         super.withEarlyStoppingDelay(earlyStoppingDelay);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageModelDistributionSettingsObjectDetection withEarlyStoppingPatience(String earlyStoppingPatience) {
         super.withEarlyStoppingPatience(earlyStoppingPatience);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public ImageModelDistributionSettingsObjectDetection withEnableOnnxNormalization(String enableOnnxNormalization) {
-        super.withEnableOnnxNormalization(enableOnnxNormalization);
-        return this;
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageModelDistributionSettingsObjectDetection withEvaluationFrequency(String evaluationFrequency) {
         super.withEvaluationFrequency(evaluationFrequency);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ImageModelDistributionSettingsObjectDetection withEnableOnnxNormalization(String enableOnnxNormalization) {
+        super.withEnableOnnxNormalization(enableOnnxNormalization);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageModelDistributionSettingsObjectDetection withGradientAccumulationStep(String gradientAccumulationStep) {
         super.withGradientAccumulationStep(gradientAccumulationStep);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageModelDistributionSettingsObjectDetection withLayersToFreeze(String layersToFreeze) {
         super.withLayersToFreeze(layersToFreeze);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageModelDistributionSettingsObjectDetection withLearningRate(String learningRate) {
         super.withLearningRate(learningRate);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageModelDistributionSettingsObjectDetection withLearningRateScheduler(String learningRateScheduler) {
         super.withLearningRateScheduler(learningRateScheduler);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageModelDistributionSettingsObjectDetection withModelName(String modelName) {
         super.withModelName(modelName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageModelDistributionSettingsObjectDetection withMomentum(String momentum) {
         super.withMomentum(momentum);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageModelDistributionSettingsObjectDetection withNesterov(String nesterov) {
         super.withNesterov(nesterov);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageModelDistributionSettingsObjectDetection withNumberOfEpochs(String numberOfEpochs) {
         super.withNumberOfEpochs(numberOfEpochs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageModelDistributionSettingsObjectDetection withNumberOfWorkers(String numberOfWorkers) {
         super.withNumberOfWorkers(numberOfWorkers);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageModelDistributionSettingsObjectDetection withOptimizer(String optimizer) {
         super.withOptimizer(optimizer);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageModelDistributionSettingsObjectDetection withRandomSeed(String randomSeed) {
         super.withRandomSeed(randomSeed);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageModelDistributionSettingsObjectDetection withStepLRGamma(String stepLRGamma) {
         super.withStepLRGamma(stepLRGamma);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageModelDistributionSettingsObjectDetection withStepLRStepSize(String stepLRStepSize) {
         super.withStepLRStepSize(stepLRStepSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageModelDistributionSettingsObjectDetection withTrainingBatchSize(String trainingBatchSize) {
         super.withTrainingBatchSize(trainingBatchSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageModelDistributionSettingsObjectDetection withValidationBatchSize(String validationBatchSize) {
         super.withValidationBatchSize(validationBatchSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageModelDistributionSettingsObjectDetection withWarmupCosineLRCycles(String warmupCosineLRCycles) {
         super.withWarmupCosineLRCycles(warmupCosineLRCycles);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ImageModelDistributionSettingsObjectDetection withWarmupCosineLRWarmupEpochs(
-        String warmupCosineLRWarmupEpochs) {
+    public ImageModelDistributionSettingsObjectDetection
+        withWarmupCosineLRWarmupEpochs(String warmupCosineLRWarmupEpochs) {
         super.withWarmupCosineLRWarmupEpochs(warmupCosineLRWarmupEpochs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageModelDistributionSettingsObjectDetection withWeightDecay(String weightDecay) {
         super.withWeightDecay(weightDecay);
@@ -613,11 +681,180 @@ public final class ImageModelDistributionSettingsObjectDetection extends ImageMo
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("amsGradient", amsGradient());
+        jsonWriter.writeStringField("augmentations", augmentations());
+        jsonWriter.writeStringField("beta1", beta1());
+        jsonWriter.writeStringField("beta2", beta2());
+        jsonWriter.writeStringField("distributed", distributed());
+        jsonWriter.writeStringField("earlyStopping", earlyStopping());
+        jsonWriter.writeStringField("earlyStoppingDelay", earlyStoppingDelay());
+        jsonWriter.writeStringField("earlyStoppingPatience", earlyStoppingPatience());
+        jsonWriter.writeStringField("evaluationFrequency", evaluationFrequency());
+        jsonWriter.writeStringField("enableOnnxNormalization", enableOnnxNormalization());
+        jsonWriter.writeStringField("gradientAccumulationStep", gradientAccumulationStep());
+        jsonWriter.writeStringField("layersToFreeze", layersToFreeze());
+        jsonWriter.writeStringField("learningRate", learningRate());
+        jsonWriter.writeStringField("learningRateScheduler", learningRateScheduler());
+        jsonWriter.writeStringField("modelName", modelName());
+        jsonWriter.writeStringField("momentum", momentum());
+        jsonWriter.writeStringField("nesterov", nesterov());
+        jsonWriter.writeStringField("numberOfEpochs", numberOfEpochs());
+        jsonWriter.writeStringField("numberOfWorkers", numberOfWorkers());
+        jsonWriter.writeStringField("optimizer", optimizer());
+        jsonWriter.writeStringField("randomSeed", randomSeed());
+        jsonWriter.writeStringField("stepLRGamma", stepLRGamma());
+        jsonWriter.writeStringField("stepLRStepSize", stepLRStepSize());
+        jsonWriter.writeStringField("trainingBatchSize", trainingBatchSize());
+        jsonWriter.writeStringField("validationBatchSize", validationBatchSize());
+        jsonWriter.writeStringField("warmupCosineLRCycles", warmupCosineLRCycles());
+        jsonWriter.writeStringField("warmupCosineLRWarmupEpochs", warmupCosineLRWarmupEpochs());
+        jsonWriter.writeStringField("weightDecay", weightDecay());
+        jsonWriter.writeStringField("boxDetectionsPerImage", this.boxDetectionsPerImage);
+        jsonWriter.writeStringField("boxScoreThreshold", this.boxScoreThreshold);
+        jsonWriter.writeStringField("imageSize", this.imageSize);
+        jsonWriter.writeStringField("maxSize", this.maxSize);
+        jsonWriter.writeStringField("minSize", this.minSize);
+        jsonWriter.writeStringField("modelSize", this.modelSize);
+        jsonWriter.writeStringField("multiScale", this.multiScale);
+        jsonWriter.writeStringField("nmsIouThreshold", this.nmsIouThreshold);
+        jsonWriter.writeStringField("tileGridSize", this.tileGridSize);
+        jsonWriter.writeStringField("tileOverlapRatio", this.tileOverlapRatio);
+        jsonWriter.writeStringField("tilePredictionsNmsThreshold", this.tilePredictionsNmsThreshold);
+        jsonWriter.writeStringField("validationIouThreshold", this.validationIouThreshold);
+        jsonWriter.writeStringField("validationMetricType", this.validationMetricType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageModelDistributionSettingsObjectDetection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageModelDistributionSettingsObjectDetection if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageModelDistributionSettingsObjectDetection.
+     */
+    public static ImageModelDistributionSettingsObjectDetection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageModelDistributionSettingsObjectDetection deserializedImageModelDistributionSettingsObjectDetection
+                = new ImageModelDistributionSettingsObjectDetection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("amsGradient".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection.withAmsGradient(reader.getString());
+                } else if ("augmentations".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection.withAugmentations(reader.getString());
+                } else if ("beta1".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection.withBeta1(reader.getString());
+                } else if ("beta2".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection.withBeta2(reader.getString());
+                } else if ("distributed".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection.withDistributed(reader.getString());
+                } else if ("earlyStopping".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection.withEarlyStopping(reader.getString());
+                } else if ("earlyStoppingDelay".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection
+                        .withEarlyStoppingDelay(reader.getString());
+                } else if ("earlyStoppingPatience".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection
+                        .withEarlyStoppingPatience(reader.getString());
+                } else if ("evaluationFrequency".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection
+                        .withEvaluationFrequency(reader.getString());
+                } else if ("enableOnnxNormalization".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection
+                        .withEnableOnnxNormalization(reader.getString());
+                } else if ("gradientAccumulationStep".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection
+                        .withGradientAccumulationStep(reader.getString());
+                } else if ("layersToFreeze".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection.withLayersToFreeze(reader.getString());
+                } else if ("learningRate".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection.withLearningRate(reader.getString());
+                } else if ("learningRateScheduler".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection
+                        .withLearningRateScheduler(reader.getString());
+                } else if ("modelName".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection.withModelName(reader.getString());
+                } else if ("momentum".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection.withMomentum(reader.getString());
+                } else if ("nesterov".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection.withNesterov(reader.getString());
+                } else if ("numberOfEpochs".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection.withNumberOfEpochs(reader.getString());
+                } else if ("numberOfWorkers".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection.withNumberOfWorkers(reader.getString());
+                } else if ("optimizer".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection.withOptimizer(reader.getString());
+                } else if ("randomSeed".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection.withRandomSeed(reader.getString());
+                } else if ("stepLRGamma".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection.withStepLRGamma(reader.getString());
+                } else if ("stepLRStepSize".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection.withStepLRStepSize(reader.getString());
+                } else if ("trainingBatchSize".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection.withTrainingBatchSize(reader.getString());
+                } else if ("validationBatchSize".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection
+                        .withValidationBatchSize(reader.getString());
+                } else if ("warmupCosineLRCycles".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection
+                        .withWarmupCosineLRCycles(reader.getString());
+                } else if ("warmupCosineLRWarmupEpochs".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection
+                        .withWarmupCosineLRWarmupEpochs(reader.getString());
+                } else if ("weightDecay".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection.withWeightDecay(reader.getString());
+                } else if ("boxDetectionsPerImage".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection.boxDetectionsPerImage
+                        = reader.getString();
+                } else if ("boxScoreThreshold".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection.boxScoreThreshold = reader.getString();
+                } else if ("imageSize".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection.imageSize = reader.getString();
+                } else if ("maxSize".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection.maxSize = reader.getString();
+                } else if ("minSize".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection.minSize = reader.getString();
+                } else if ("modelSize".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection.modelSize = reader.getString();
+                } else if ("multiScale".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection.multiScale = reader.getString();
+                } else if ("nmsIouThreshold".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection.nmsIouThreshold = reader.getString();
+                } else if ("tileGridSize".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection.tileGridSize = reader.getString();
+                } else if ("tileOverlapRatio".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection.tileOverlapRatio = reader.getString();
+                } else if ("tilePredictionsNmsThreshold".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection.tilePredictionsNmsThreshold
+                        = reader.getString();
+                } else if ("validationIouThreshold".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection.validationIouThreshold
+                        = reader.getString();
+                } else if ("validationMetricType".equals(fieldName)) {
+                    deserializedImageModelDistributionSettingsObjectDetection.validationMetricType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageModelDistributionSettingsObjectDetection;
+        });
     }
 }

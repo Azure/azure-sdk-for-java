@@ -7,12 +7,15 @@ package com.azure.resourcemanager.cdn.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.HealthProbeParameters;
 import com.azure.resourcemanager.cdn.models.OriginGroupProvisioningState;
 import com.azure.resourcemanager.cdn.models.OriginGroupResourceState;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
 import com.azure.resourcemanager.cdn.models.ResponseBasedOriginErrorDetectionParameters;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -23,14 +26,27 @@ public final class OriginGroupInner extends ProxyResource {
     /*
      * The JSON object that contains the properties of the origin group.
      */
-    @JsonProperty(value = "properties")
     private OriginGroupProperties innerProperties;
 
     /*
      * Read only system data
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of OriginGroupInner class.
@@ -57,6 +73,36 @@ public final class OriginGroupInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the resourceState property: Resource status of the origin group.
      * 
      * @return the resourceState value.
@@ -75,8 +121,8 @@ public final class OriginGroupInner extends ProxyResource {
     }
 
     /**
-     * Get the healthProbeSettings property: Health probe settings to the origin that is used to determine the health
-     * of the origin.
+     * Get the healthProbeSettings property: Health probe settings to the origin that is used to determine the health of
+     * the origin.
      * 
      * @return the healthProbeSettings value.
      */
@@ -85,8 +131,8 @@ public final class OriginGroupInner extends ProxyResource {
     }
 
     /**
-     * Set the healthProbeSettings property: Health probe settings to the origin that is used to determine the health
-     * of the origin.
+     * Set the healthProbeSettings property: Health probe settings to the origin that is used to determine the health of
+     * the origin.
      * 
      * @param healthProbeSettings the healthProbeSettings value to set.
      * @return the OriginGroupInner object itself.
@@ -130,7 +176,8 @@ public final class OriginGroupInner extends ProxyResource {
      * @return the trafficRestorationTimeToHealedOrNewEndpointsInMinutes value.
      */
     public Integer trafficRestorationTimeToHealedOrNewEndpointsInMinutes() {
-        return this.innerProperties() == null ? null
+        return this.innerProperties() == null
+            ? null
             : this.innerProperties().trafficRestorationTimeToHealedOrNewEndpointsInMinutes();
     }
 
@@ -148,8 +195,9 @@ public final class OriginGroupInner extends ProxyResource {
         if (this.innerProperties() == null) {
             this.innerProperties = new OriginGroupProperties();
         }
-        this.innerProperties().withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
-            trafficRestorationTimeToHealedOrNewEndpointsInMinutes);
+        this.innerProperties()
+            .withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
+                trafficRestorationTimeToHealedOrNewEndpointsInMinutes);
         return this;
     }
 
@@ -160,7 +208,8 @@ public final class OriginGroupInner extends ProxyResource {
      * @return the responseBasedOriginErrorDetectionSettings value.
      */
     public ResponseBasedOriginErrorDetectionParameters responseBasedOriginErrorDetectionSettings() {
-        return this.innerProperties() == null ? null
+        return this.innerProperties() == null
+            ? null
             : this.innerProperties().responseBasedOriginErrorDetectionSettings();
     }
 
@@ -189,5 +238,50 @@ public final class OriginGroupInner extends ProxyResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OriginGroupInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OriginGroupInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OriginGroupInner.
+     */
+    public static OriginGroupInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OriginGroupInner deserializedOriginGroupInner = new OriginGroupInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedOriginGroupInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedOriginGroupInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedOriginGroupInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedOriginGroupInner.innerProperties = OriginGroupProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedOriginGroupInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOriginGroupInner;
+        });
     }
 }

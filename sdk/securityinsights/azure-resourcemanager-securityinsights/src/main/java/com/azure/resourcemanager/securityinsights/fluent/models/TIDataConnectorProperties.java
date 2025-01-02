@@ -5,30 +5,41 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.DataConnectorTenantId;
 import com.azure.resourcemanager.securityinsights.models.TIDataConnectorDataTypes;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** TI (Threat Intelligence) data connector properties. */
+/**
+ * TI (Threat Intelligence) data connector properties.
+ */
 @Fluent
 public final class TIDataConnectorProperties extends DataConnectorTenantId {
     /*
      * The lookback period for the feed to be imported.
      */
-    @JsonProperty(value = "tipLookbackPeriod")
     private OffsetDateTime tipLookbackPeriod;
 
     /*
      * The available data types for the connector.
      */
-    @JsonProperty(value = "dataTypes", required = true)
     private TIDataConnectorDataTypes dataTypes;
 
     /**
+     * Creates an instance of TIDataConnectorProperties class.
+     */
+    public TIDataConnectorProperties() {
+    }
+
+    /**
      * Get the tipLookbackPeriod property: The lookback period for the feed to be imported.
-     *
+     * 
      * @return the tipLookbackPeriod value.
      */
     public OffsetDateTime tipLookbackPeriod() {
@@ -37,7 +48,7 @@ public final class TIDataConnectorProperties extends DataConnectorTenantId {
 
     /**
      * Set the tipLookbackPeriod property: The lookback period for the feed to be imported.
-     *
+     * 
      * @param tipLookbackPeriod the tipLookbackPeriod value to set.
      * @return the TIDataConnectorProperties object itself.
      */
@@ -48,7 +59,7 @@ public final class TIDataConnectorProperties extends DataConnectorTenantId {
 
     /**
      * Get the dataTypes property: The available data types for the connector.
-     *
+     * 
      * @return the dataTypes value.
      */
     public TIDataConnectorDataTypes dataTypes() {
@@ -57,7 +68,7 @@ public final class TIDataConnectorProperties extends DataConnectorTenantId {
 
     /**
      * Set the dataTypes property: The available data types for the connector.
-     *
+     * 
      * @param dataTypes the dataTypes value to set.
      * @return the TIDataConnectorProperties object itself.
      */
@@ -66,7 +77,9 @@ public final class TIDataConnectorProperties extends DataConnectorTenantId {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TIDataConnectorProperties withTenantId(String tenantId) {
         super.withTenantId(tenantId);
@@ -75,21 +88,71 @@ public final class TIDataConnectorProperties extends DataConnectorTenantId {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (dataTypes() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataTypes in model TIDataConnectorProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataTypes in model TIDataConnectorProperties"));
         } else {
             dataTypes().validate();
+        }
+        if (tenantId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property tenantId in model TIDataConnectorProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TIDataConnectorProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tenantId", tenantId());
+        jsonWriter.writeJsonField("dataTypes", this.dataTypes);
+        jsonWriter.writeStringField("tipLookbackPeriod",
+            this.tipLookbackPeriod == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.tipLookbackPeriod));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TIDataConnectorProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TIDataConnectorProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TIDataConnectorProperties.
+     */
+    public static TIDataConnectorProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TIDataConnectorProperties deserializedTIDataConnectorProperties = new TIDataConnectorProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tenantId".equals(fieldName)) {
+                    deserializedTIDataConnectorProperties.withTenantId(reader.getString());
+                } else if ("dataTypes".equals(fieldName)) {
+                    deserializedTIDataConnectorProperties.dataTypes = TIDataConnectorDataTypes.fromJson(reader);
+                } else if ("tipLookbackPeriod".equals(fieldName)) {
+                    deserializedTIDataConnectorProperties.tipLookbackPeriod = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTIDataConnectorProperties;
+        });
+    }
 }

@@ -34,7 +34,9 @@ public final class SubscriptionsTestOutputSamples {
                     .withDatasource(new BlobOutputDataSource()
                         .withStorageAccounts(Arrays.asList(new StorageAccount().withAccountName("someAccountName")
                             .withAccountKey("fakeTokenPlaceholder")))
-                        .withContainer("state").withPathPattern("{date}/{time}").withDateFormat("yyyy/MM/dd")
+                        .withContainer("state")
+                        .withPathPattern("{date}/{time}")
+                        .withDateFormat("yyyy/MM/dd")
                         .withTimeFormat("HH"))
                     .withSerialization(new CsvSerialization().withFieldDelimiter(",").withEncoding(Encoding.UTF8))),
                 com.azure.core.util.Context.NONE);

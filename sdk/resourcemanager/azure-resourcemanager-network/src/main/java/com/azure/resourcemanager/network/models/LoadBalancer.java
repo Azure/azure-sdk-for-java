@@ -16,12 +16,8 @@ import java.util.Map;
 
 /** Entry point for load balancer management API in Azure. */
 @Fluent
-public interface LoadBalancer
-    extends GroupableResource<NetworkManager, LoadBalancerInner>,
-        Refreshable<LoadBalancer>,
-        Updatable<LoadBalancer.Update>,
-        UpdatableWithTags<LoadBalancer>,
-        HasLoadBalancingRules {
+public interface LoadBalancer extends GroupableResource<NetworkManager, LoadBalancerInner>, Refreshable<LoadBalancer>,
+    Updatable<LoadBalancer.Update>, UpdatableWithTags<LoadBalancer>, HasLoadBalancingRules {
 
     // Getters
 
@@ -78,18 +74,11 @@ public interface LoadBalancer
     Map<String, LoadBalancerOutboundRule> outboundRules();
 
     /** The entirety of the load balancer definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithCreate,
-            DefinitionStages.WithBackend,
-            DefinitionStages.WithLoadBalancingRule,
-            DefinitionStages.WithLBRuleOrNat,
-            DefinitionStages.WithLBRuleOrNatOrCreate,
-            DefinitionStages.WithCreateAndInboundNatPool,
-            DefinitionStages.WithCreateAndInboundNatRule,
-            DefinitionStages.WithCreateAndOutboundRule,
-            DefinitionStages.WithCreateAndNatChoice {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithCreate,
+        DefinitionStages.WithBackend, DefinitionStages.WithLoadBalancingRule, DefinitionStages.WithLBRuleOrNat,
+        DefinitionStages.WithLBRuleOrNatOrCreate, DefinitionStages.WithCreateAndInboundNatPool,
+        DefinitionStages.WithCreateAndInboundNatRule, DefinitionStages.WithCreateAndOutboundRule,
+        DefinitionStages.WithCreateAndNatChoice {
     }
 
     /** Grouping of load balancer definition stages. */
@@ -134,7 +123,8 @@ public interface LoadBalancer
              * @param name the name for the frontend
              * @return the first stage of a new frontend definition
              */
-            LoadBalancerPublicFrontend.DefinitionStages.Blank<WithCreateAndOutboundRule> definePublicFrontend(String name);
+            LoadBalancerPublicFrontend.DefinitionStages.Blank<WithCreateAndOutboundRule>
+                definePublicFrontend(String name);
         }
 
         /** The stage of a load balancer definition allowing to add a backend. */
@@ -214,13 +204,8 @@ public interface LoadBalancer
          * The stage of a load balancer definition containing all the required inputs for the resource to be created,
          * but also allowing for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Creatable<LoadBalancer>,
-                Resource.DefinitionWithTags<WithCreate>,
-                WithBackend,
-                WithFrontend,
-                WithProbe,
-                WithSku {
+        interface WithCreate extends Creatable<LoadBalancer>, Resource.DefinitionWithTags<WithCreate>, WithBackend,
+            WithFrontend, WithProbe, WithSku {
         }
 
         /**
@@ -241,7 +226,7 @@ public interface LoadBalancer
         /**
          * The stage of a load balancer definition allowing to create the load balancer or add an outbound rule
          */
-        interface WithCreateAndOutboundRule extends  WithCreate, WithOutboundRule {
+        interface WithCreateAndOutboundRule extends WithCreate, WithOutboundRule {
         }
 
         /** The stage of a load balancer definition allowing to create a new inbound NAT rule. */
@@ -252,8 +237,8 @@ public interface LoadBalancer
              * @param name the name of the inbound NAT rule
              * @return the first stage of the new inbound NAT rule definition
              */
-            LoadBalancerInboundNatRule.DefinitionStages.Blank<WithCreateAndInboundNatRule> defineInboundNatRule(
-                String name);
+            LoadBalancerInboundNatRule.DefinitionStages.Blank<WithCreateAndInboundNatRule>
+                defineInboundNatRule(String name);
         }
 
         /**
@@ -266,7 +251,8 @@ public interface LoadBalancer
              * @param name the name of the outbound rule
              * @return the first stage of the new outbound rule definition
              */
-            LoadBalancerOutboundRule.DefinitionStages.Blank<? extends WithCreateAndOutboundRule> defineOutboundRule(String name);
+            LoadBalancerOutboundRule.DefinitionStages.Blank<? extends WithCreateAndOutboundRule>
+                defineOutboundRule(String name);
         }
 
         /**
@@ -283,8 +269,8 @@ public interface LoadBalancer
              * @param name the name of the inbound NAT pool
              * @return the first stage of the new inbound NAT pool definition
              */
-            LoadBalancerInboundNatPool.DefinitionStages.Blank<WithCreateAndInboundNatPool> defineInboundNatPool(
-                String name);
+            LoadBalancerInboundNatPool.DefinitionStages.Blank<WithCreateAndInboundNatPool>
+                defineInboundNatPool(String name);
         }
     }
 
@@ -553,16 +539,9 @@ public interface LoadBalancer
     }
 
     /** The template for a load balancer update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<LoadBalancer>,
-            Resource.UpdateWithTags<Update>,
-            UpdateStages.WithProbe,
-            UpdateStages.WithBackend,
-            UpdateStages.WithLoadBalancingRule,
-            UpdateStages.WithPublicFrontend,
-            UpdateStages.WithPrivateFrontend,
-            UpdateStages.WithOutboundRule,
-            UpdateStages.WithInboundNatRule,
-            UpdateStages.WithInboundNatPool {
+    interface Update extends Appliable<LoadBalancer>, Resource.UpdateWithTags<Update>, UpdateStages.WithProbe,
+        UpdateStages.WithBackend, UpdateStages.WithLoadBalancingRule, UpdateStages.WithPublicFrontend,
+        UpdateStages.WithPrivateFrontend, UpdateStages.WithOutboundRule, UpdateStages.WithInboundNatRule,
+        UpdateStages.WithInboundNatPool {
     }
 }

@@ -16,8 +16,7 @@ public final class EntityGetInsightsResponseImpl implements EntityGetInsightsRes
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    EntityGetInsightsResponseImpl(
-        EntityGetInsightsResponseInner innerObject,
+    EntityGetInsightsResponseImpl(EntityGetInsightsResponseInner innerObject,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

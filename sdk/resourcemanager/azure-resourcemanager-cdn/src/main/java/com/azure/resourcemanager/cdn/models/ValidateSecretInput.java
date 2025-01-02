@@ -6,33 +6,34 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Input of the secret to be validated.
  */
 @Fluent
-public final class ValidateSecretInput {
+public final class ValidateSecretInput implements JsonSerializable<ValidateSecretInput> {
     /*
      * The secret type.
      */
-    @JsonProperty(value = "secretType", required = true)
     private SecretType secretType;
 
     /*
      * Resource reference to the Azure Key Vault secret. Expected to be in format of
-     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}
-     * ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}
-     * ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}
-     * ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}
+     * /providers/Microsoft.KeyVault/vaults/{vaultName}
+     * /secrets/{secretName}
+     *
      */
-    @JsonProperty(value = "secretSource", required = true)
     private ResourceReference secretSource;
 
     /*
      * Secret version, if customer is using a specific version.
      */
-    @JsonProperty(value = "secretVersion")
     private String secretVersion;
 
     /**
@@ -43,7 +44,7 @@ public final class ValidateSecretInput {
 
     /**
      * Get the secretType property: The secret type.
-     * 
+     *
      * @return the secretType value.
      */
     public SecretType secretType() {
@@ -52,7 +53,7 @@ public final class ValidateSecretInput {
 
     /**
      * Set the secretType property: The secret type.
-     * 
+     *
      * @param secretType the secretType value to set.
      * @return the ValidateSecretInput object itself.
      */
@@ -63,8 +64,8 @@ public final class ValidateSecretInput {
 
     /**
      * Get the secretSource property: Resource reference to the Azure Key Vault secret. Expected to be in format of
-     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​.
-     * 
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/secrets/{secretName}.
+     *
      * @return the secretSource value.
      */
     public ResourceReference secretSource() {
@@ -73,8 +74,8 @@ public final class ValidateSecretInput {
 
     /**
      * Set the secretSource property: Resource reference to the Azure Key Vault secret. Expected to be in format of
-     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​.
-     * 
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/secrets/{secretName}.
+     *
      * @param secretSource the secretSource value to set.
      * @return the ValidateSecretInput object itself.
      */
@@ -85,7 +86,7 @@ public final class ValidateSecretInput {
 
     /**
      * Get the secretVersion property: Secret version, if customer is using a specific version.
-     * 
+     *
      * @return the secretVersion value.
      */
     public String secretVersion() {
@@ -94,7 +95,7 @@ public final class ValidateSecretInput {
 
     /**
      * Set the secretVersion property: Secret version, if customer is using a specific version.
-     * 
+     *
      * @param secretVersion the secretVersion value to set.
      * @return the ValidateSecretInput object itself.
      */
@@ -105,21 +106,65 @@ public final class ValidateSecretInput {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (secretType() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property secretType in model ValidateSecretInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property secretType in model ValidateSecretInput"));
         }
         if (secretSource() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property secretSource in model ValidateSecretInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property secretSource in model ValidateSecretInput"));
         } else {
             secretSource().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ValidateSecretInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("secretType", this.secretType == null ? null : this.secretType.toString());
+        jsonWriter.writeJsonField("secretSource", this.secretSource);
+        jsonWriter.writeStringField("secretVersion", this.secretVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ValidateSecretInput from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ValidateSecretInput if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ValidateSecretInput.
+     */
+    public static ValidateSecretInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ValidateSecretInput deserializedValidateSecretInput = new ValidateSecretInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("secretType".equals(fieldName)) {
+                    deserializedValidateSecretInput.secretType = SecretType.fromString(reader.getString());
+                } else if ("secretSource".equals(fieldName)) {
+                    deserializedValidateSecretInput.secretSource = ResourceReference.fromJson(reader);
+                } else if ("secretVersion".equals(fieldName)) {
+                    deserializedValidateSecretInput.secretVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedValidateSecretInput;
+        });
+    }
 }

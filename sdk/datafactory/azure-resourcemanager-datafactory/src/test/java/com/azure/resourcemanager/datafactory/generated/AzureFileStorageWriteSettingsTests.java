@@ -13,17 +13,17 @@ public final class AzureFileStorageWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureFileStorageWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"AzureFileStorageWriteSettings\",\"maxConcurrentConnections\":\"datajuingnfunhtzgxs\",\"disableMetricsCollection\":\"datawmopk\",\"copyBehavior\":\"datahjztbw\",\"metadata\":[{\"name\":\"dataz\",\"value\":\"databhznhqzdbzl\"}],\"\":{\"vg\":\"databekvprkwpvxieqc\",\"aeiuex\":\"datashfafbeh\",\"ecrizkabafdlsiza\":\"datapgrmwdwlraeplpf\"}}")
+            "{\"type\":\"AzureFileStorageWriteSettings\",\"maxConcurrentConnections\":\"dataduttqjtszqexc\",\"disableMetricsCollection\":\"datawbxx\",\"copyBehavior\":\"datavekqjdrumlvk\",\"metadata\":[{\"name\":\"datahhlfvmw\",\"value\":\"dataarswsvtzotmwxq\"}],\"\":{\"wrtmjskb\":\"datadanfexlawkeqjhz\",\"mvounbyvsfqu\":\"dataenjnady\",\"xqbknoxjhedwh\":\"datar\",\"rpajbiig\":\"datamwb\"}}")
             .toObject(AzureFileStorageWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureFileStorageWriteSettings model
-            = new AzureFileStorageWriteSettings().withMaxConcurrentConnections("datajuingnfunhtzgxs")
-                .withDisableMetricsCollection("datawmopk")
-                .withCopyBehavior("datahjztbw")
-                .withMetadata(Arrays.asList(new MetadataItem().withName("dataz").withValue("databhznhqzdbzl")));
+        AzureFileStorageWriteSettings model = new AzureFileStorageWriteSettings()
+            .withMaxConcurrentConnections("dataduttqjtszqexc")
+            .withDisableMetricsCollection("datawbxx")
+            .withCopyBehavior("datavekqjdrumlvk")
+            .withMetadata(Arrays.asList(new MetadataItem().withName("datahhlfvmw").withValue("dataarswsvtzotmwxq")));
         model = BinaryData.fromObject(model).toObject(AzureFileStorageWriteSettings.class);
     }
 }

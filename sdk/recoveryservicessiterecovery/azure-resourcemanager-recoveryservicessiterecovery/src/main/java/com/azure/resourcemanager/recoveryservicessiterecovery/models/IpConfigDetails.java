@@ -5,102 +5,91 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The IpConfigDetails model.
  */
 @Fluent
-public final class IpConfigDetails {
+public final class IpConfigDetails implements JsonSerializable<IpConfigDetails> {
     /*
      * The name property.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The isPrimary property.
      */
-    @JsonProperty(value = "isPrimary")
     private Boolean isPrimary;
 
     /*
      * The subnetName property.
      */
-    @JsonProperty(value = "subnetName")
     private String subnetName;
 
     /*
      * The staticIPAddress property.
      */
-    @JsonProperty(value = "staticIPAddress")
     private String staticIpAddress;
 
     /*
      * The ipAddressType property.
      */
-    @JsonProperty(value = "ipAddressType")
     private String ipAddressType;
 
     /*
      * The isSeletedForFailover property.
      */
-    @JsonProperty(value = "isSeletedForFailover")
     private Boolean isSeletedForFailover;
 
     /*
      * The recoverySubnetName property.
      */
-    @JsonProperty(value = "recoverySubnetName")
     private String recoverySubnetName;
 
     /*
      * The recoveryStaticIPAddress property.
      */
-    @JsonProperty(value = "recoveryStaticIPAddress")
     private String recoveryStaticIpAddress;
 
     /*
      * The recoveryIPAddressType property.
      */
-    @JsonProperty(value = "recoveryIPAddressType")
     private String recoveryIpAddressType;
 
     /*
      * The recoveryPublicIPAddressId property.
      */
-    @JsonProperty(value = "recoveryPublicIPAddressId")
     private String recoveryPublicIpAddressId;
 
     /*
      * The recoveryLBBackendAddressPoolIds property.
      */
-    @JsonProperty(value = "recoveryLBBackendAddressPoolIds")
     private List<String> recoveryLBBackendAddressPoolIds;
 
     /*
      * The tfoSubnetName property.
      */
-    @JsonProperty(value = "tfoSubnetName")
     private String tfoSubnetName;
 
     /*
      * The tfoStaticIPAddress property.
      */
-    @JsonProperty(value = "tfoStaticIPAddress")
     private String tfoStaticIpAddress;
 
     /*
      * The tfoPublicIPAddressId property.
      */
-    @JsonProperty(value = "tfoPublicIPAddressId")
     private String tfoPublicIpAddressId;
 
     /*
      * The tfoLBBackendAddressPoolIds property.
      */
-    @JsonProperty(value = "tfoLBBackendAddressPoolIds")
     private List<String> tfoLBBackendAddressPoolIds;
 
     /**
@@ -415,5 +404,87 @@ public final class IpConfigDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeBooleanField("isPrimary", this.isPrimary);
+        jsonWriter.writeStringField("subnetName", this.subnetName);
+        jsonWriter.writeStringField("staticIPAddress", this.staticIpAddress);
+        jsonWriter.writeStringField("ipAddressType", this.ipAddressType);
+        jsonWriter.writeBooleanField("isSeletedForFailover", this.isSeletedForFailover);
+        jsonWriter.writeStringField("recoverySubnetName", this.recoverySubnetName);
+        jsonWriter.writeStringField("recoveryStaticIPAddress", this.recoveryStaticIpAddress);
+        jsonWriter.writeStringField("recoveryIPAddressType", this.recoveryIpAddressType);
+        jsonWriter.writeStringField("recoveryPublicIPAddressId", this.recoveryPublicIpAddressId);
+        jsonWriter.writeArrayField("recoveryLBBackendAddressPoolIds", this.recoveryLBBackendAddressPoolIds,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("tfoSubnetName", this.tfoSubnetName);
+        jsonWriter.writeStringField("tfoStaticIPAddress", this.tfoStaticIpAddress);
+        jsonWriter.writeStringField("tfoPublicIPAddressId", this.tfoPublicIpAddressId);
+        jsonWriter.writeArrayField("tfoLBBackendAddressPoolIds", this.tfoLBBackendAddressPoolIds,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IpConfigDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IpConfigDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IpConfigDetails.
+     */
+    public static IpConfigDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IpConfigDetails deserializedIpConfigDetails = new IpConfigDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedIpConfigDetails.name = reader.getString();
+                } else if ("isPrimary".equals(fieldName)) {
+                    deserializedIpConfigDetails.isPrimary = reader.getNullable(JsonReader::getBoolean);
+                } else if ("subnetName".equals(fieldName)) {
+                    deserializedIpConfigDetails.subnetName = reader.getString();
+                } else if ("staticIPAddress".equals(fieldName)) {
+                    deserializedIpConfigDetails.staticIpAddress = reader.getString();
+                } else if ("ipAddressType".equals(fieldName)) {
+                    deserializedIpConfigDetails.ipAddressType = reader.getString();
+                } else if ("isSeletedForFailover".equals(fieldName)) {
+                    deserializedIpConfigDetails.isSeletedForFailover = reader.getNullable(JsonReader::getBoolean);
+                } else if ("recoverySubnetName".equals(fieldName)) {
+                    deserializedIpConfigDetails.recoverySubnetName = reader.getString();
+                } else if ("recoveryStaticIPAddress".equals(fieldName)) {
+                    deserializedIpConfigDetails.recoveryStaticIpAddress = reader.getString();
+                } else if ("recoveryIPAddressType".equals(fieldName)) {
+                    deserializedIpConfigDetails.recoveryIpAddressType = reader.getString();
+                } else if ("recoveryPublicIPAddressId".equals(fieldName)) {
+                    deserializedIpConfigDetails.recoveryPublicIpAddressId = reader.getString();
+                } else if ("recoveryLBBackendAddressPoolIds".equals(fieldName)) {
+                    List<String> recoveryLBBackendAddressPoolIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIpConfigDetails.recoveryLBBackendAddressPoolIds = recoveryLBBackendAddressPoolIds;
+                } else if ("tfoSubnetName".equals(fieldName)) {
+                    deserializedIpConfigDetails.tfoSubnetName = reader.getString();
+                } else if ("tfoStaticIPAddress".equals(fieldName)) {
+                    deserializedIpConfigDetails.tfoStaticIpAddress = reader.getString();
+                } else if ("tfoPublicIPAddressId".equals(fieldName)) {
+                    deserializedIpConfigDetails.tfoPublicIpAddressId = reader.getString();
+                } else if ("tfoLBBackendAddressPoolIds".equals(fieldName)) {
+                    List<String> tfoLBBackendAddressPoolIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIpConfigDetails.tfoLBBackendAddressPoolIds = tfoLBBackendAddressPoolIds;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIpConfigDetails;
+        });
     }
 }

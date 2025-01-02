@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SortOrder. */
+/**
+ * Defines values for SortOrder.
+ */
 public final class SortOrder extends ExpandableStringEnum<SortOrder> {
-    /** Static value asc for SortOrder. */
+    /**
+     * Static value asc for SortOrder.
+     */
     public static final SortOrder ASC = fromString("asc");
 
-    /** Static value desc for SortOrder. */
+    /**
+     * Static value desc for SortOrder.
+     */
     public static final SortOrder DESC = fromString("desc");
 
     /**
+     * Creates a new instance of SortOrder value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SortOrder() {
+    }
+
+    /**
      * Creates or finds a SortOrder from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SortOrder.
      */
-    @JsonCreator
     public static SortOrder fromString(String name) {
         return fromString(name, SortOrder.class);
     }
 
     /**
      * Gets known SortOrder values.
-     *
+     * 
      * @return known SortOrder values.
      */
     public static Collection<SortOrder> values() {

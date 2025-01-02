@@ -6,71 +6,39 @@ package com.azure.resourcemanager.loganalytics.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.models.DataExport;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DataExportsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"dataExportId\":\"sdaultxij\",\"tableNames\":[\"mfqwa\"],\"destination\":{\"resourceId\":\"nqnm\",\"type\":\"StorageAccount\",\"metaData\":{\"eventHubName\":\"qdqx\"}},\"enable\":false,\"createdDate\":\"gny\",\"lastModifiedDate\":\"sf\"},\"id\":\"svtui\",\"name\":\"zh\",\"type\":\"jqg\"}";
 
-        String responseStr =
-            "{\"properties\":{\"dataExportId\":\"wiuub\",\"tableNames\":[\"fqsfa\",\"aqtferr\",\"wexjkmfxapjwogq\",\"nobpudcdabtqwpw\"],\"destination\":{\"resourceId\":\"wbzasqbuclj\",\"type\":\"StorageAccount\",\"metaData\":{\"eventHubName\":\"aoguyaipids\"}},\"enable\":true,\"createdDate\":\"tx\",\"lastModifiedDate\":\"jumfqwazlnq\"},\"id\":\"mcjn\",\"name\":\"zqdqxt\",\"type\":\"jw\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        LogAnalyticsManager manager = LogAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        DataExport response
+            = manager.dataExports().getWithResponse("jg", "yexaoguy", "i", com.azure.core.util.Context.NONE).getValue();
 
-        LogAnalyticsManager manager =
-            LogAnalyticsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        DataExport response =
-            manager
-                .dataExports()
-                .getWithResponse("pcpil", "hahzvechndbnwi", "hol", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("wiuub", response.dataExportId());
-        Assertions.assertEquals("fqsfa", response.tableNames().get(0));
-        Assertions.assertEquals(true, response.enable());
-        Assertions.assertEquals("tx", response.createdDate());
-        Assertions.assertEquals("jumfqwazlnq", response.lastModifiedDate());
-        Assertions.assertEquals("wbzasqbuclj", response.resourceId());
-        Assertions.assertEquals("aoguyaipids", response.eventHubName());
+        Assertions.assertEquals("sdaultxij", response.dataExportId());
+        Assertions.assertEquals("mfqwa", response.tableNames().get(0));
+        Assertions.assertEquals(false, response.enable());
+        Assertions.assertEquals("gny", response.createdDate());
+        Assertions.assertEquals("sf", response.lastModifiedDate());
+        Assertions.assertEquals("nqnm", response.resourceId());
+        Assertions.assertEquals("qdqx", response.eventHubName());
     }
 }

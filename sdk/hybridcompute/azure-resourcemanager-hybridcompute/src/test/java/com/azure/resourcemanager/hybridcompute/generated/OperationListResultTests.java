@@ -11,7 +11,7 @@ public final class OperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationListResult model = BinaryData.fromString(
-            "{\"value\":[{\"origin\":\"cers\",\"name\":\"ntnev\",\"display\":{\"operation\":\"jmygtdsslswtmwer\",\"resource\":\"fzp\",\"description\":\"semwabnet\",\"provider\":\"hszhedplvwiwu\"},\"isDataAction\":true},{\"origin\":\"besldnkwwtppjflc\",\"name\":\"gaokonzmnsikv\",\"display\":{\"operation\":\"ze\",\"resource\":\"kdltfzxmhhvhg\",\"description\":\"eodkwobda\",\"provider\":\"tibqdxbxwakb\"},\"isDataAction\":false},{\"origin\":\"ndlkzgxhurip\",\"name\":\"podxunkb\",\"display\":{\"operation\":\"mubyynt\",\"resource\":\"rbqtkoie\",\"description\":\"eotg\",\"provider\":\"l\"},\"isDataAction\":true},{\"origin\":\"wlauwzizxbmpg\",\"name\":\"efuzmuvpbttd\",\"display\":{\"operation\":\"rp\",\"resource\":\"ebmnzbtbhjpglk\",\"description\":\"ohdneuel\",\"provider\":\"hsd\"},\"isDataAction\":false}]}")
+            "{\"value\":[{\"origin\":\"youlp\",\"name\":\"v\",\"display\":{\"operation\":\"l\",\"resource\":\"imjwosyt\",\"description\":\"tcs\",\"provider\":\"cktqumiekkezzi\"},\"isDataAction\":false}]}")
             .toObject(OperationListResult.class);
     }
 

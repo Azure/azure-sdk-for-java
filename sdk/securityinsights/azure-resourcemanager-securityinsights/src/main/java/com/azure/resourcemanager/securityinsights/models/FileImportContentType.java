@@ -5,34 +5,49 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The content type of this file. */
+/**
+ * The content type of this file.
+ */
 public final class FileImportContentType extends ExpandableStringEnum<FileImportContentType> {
-    /** Static value BasicIndicator for FileImportContentType. */
+    /**
+     * Static value BasicIndicator for FileImportContentType.
+     */
     public static final FileImportContentType BASIC_INDICATOR = fromString("BasicIndicator");
 
-    /** Static value StixIndicator for FileImportContentType. */
+    /**
+     * Static value StixIndicator for FileImportContentType.
+     */
     public static final FileImportContentType STIX_INDICATOR = fromString("StixIndicator");
 
-    /** Static value Unspecified for FileImportContentType. */
+    /**
+     * Static value Unspecified for FileImportContentType.
+     */
     public static final FileImportContentType UNSPECIFIED = fromString("Unspecified");
 
     /**
+     * Creates a new instance of FileImportContentType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FileImportContentType() {
+    }
+
+    /**
      * Creates or finds a FileImportContentType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FileImportContentType.
      */
-    @JsonCreator
     public static FileImportContentType fromString(String name) {
         return fromString(name, FileImportContentType.class);
     }
 
     /**
      * Gets known FileImportContentType values.
-     *
+     * 
      * @return known FileImportContentType values.
      */
     public static Collection<FileImportContentType> values() {

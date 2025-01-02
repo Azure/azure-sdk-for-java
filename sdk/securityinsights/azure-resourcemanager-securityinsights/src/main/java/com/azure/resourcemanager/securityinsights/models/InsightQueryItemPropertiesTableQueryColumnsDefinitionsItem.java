@@ -5,32 +5,42 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The InsightQueryItemPropertiesTableQueryColumnsDefinitionsItem model. */
+/**
+ * The InsightQueryItemPropertiesTableQueryColumnsDefinitionsItem model.
+ */
 @Fluent
-public final class InsightQueryItemPropertiesTableQueryColumnsDefinitionsItem {
+public final class InsightQueryItemPropertiesTableQueryColumnsDefinitionsItem
+    implements JsonSerializable<InsightQueryItemPropertiesTableQueryColumnsDefinitionsItem> {
     /*
      * Insight column header.
      */
-    @JsonProperty(value = "header")
     private String headerProperty;
 
     /*
      * Insights Column type.
      */
-    @JsonProperty(value = "outputType")
     private OutputType outputType;
 
     /*
      * Is query supports deep-link.
      */
-    @JsonProperty(value = "supportDeepLink")
     private Boolean supportDeepLink;
 
     /**
+     * Creates an instance of InsightQueryItemPropertiesTableQueryColumnsDefinitionsItem class.
+     */
+    public InsightQueryItemPropertiesTableQueryColumnsDefinitionsItem() {
+    }
+
+    /**
      * Get the headerProperty property: Insight column header.
-     *
+     * 
      * @return the headerProperty value.
      */
     public String headerProperty() {
@@ -39,7 +49,7 @@ public final class InsightQueryItemPropertiesTableQueryColumnsDefinitionsItem {
 
     /**
      * Set the headerProperty property: Insight column header.
-     *
+     * 
      * @param headerProperty the headerProperty value to set.
      * @return the InsightQueryItemPropertiesTableQueryColumnsDefinitionsItem object itself.
      */
@@ -50,7 +60,7 @@ public final class InsightQueryItemPropertiesTableQueryColumnsDefinitionsItem {
 
     /**
      * Get the outputType property: Insights Column type.
-     *
+     * 
      * @return the outputType value.
      */
     public OutputType outputType() {
@@ -59,7 +69,7 @@ public final class InsightQueryItemPropertiesTableQueryColumnsDefinitionsItem {
 
     /**
      * Set the outputType property: Insights Column type.
-     *
+     * 
      * @param outputType the outputType value to set.
      * @return the InsightQueryItemPropertiesTableQueryColumnsDefinitionsItem object itself.
      */
@@ -70,7 +80,7 @@ public final class InsightQueryItemPropertiesTableQueryColumnsDefinitionsItem {
 
     /**
      * Get the supportDeepLink property: Is query supports deep-link.
-     *
+     * 
      * @return the supportDeepLink value.
      */
     public Boolean supportDeepLink() {
@@ -79,7 +89,7 @@ public final class InsightQueryItemPropertiesTableQueryColumnsDefinitionsItem {
 
     /**
      * Set the supportDeepLink property: Is query supports deep-link.
-     *
+     * 
      * @param supportDeepLink the supportDeepLink value to set.
      * @return the InsightQueryItemPropertiesTableQueryColumnsDefinitionsItem object itself.
      */
@@ -90,9 +100,57 @@ public final class InsightQueryItemPropertiesTableQueryColumnsDefinitionsItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("header", this.headerProperty);
+        jsonWriter.writeStringField("outputType", this.outputType == null ? null : this.outputType.toString());
+        jsonWriter.writeBooleanField("supportDeepLink", this.supportDeepLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InsightQueryItemPropertiesTableQueryColumnsDefinitionsItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InsightQueryItemPropertiesTableQueryColumnsDefinitionsItem if the JsonReader was pointing
+     * to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * InsightQueryItemPropertiesTableQueryColumnsDefinitionsItem.
+     */
+    public static InsightQueryItemPropertiesTableQueryColumnsDefinitionsItem fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            InsightQueryItemPropertiesTableQueryColumnsDefinitionsItem deserializedInsightQueryItemPropertiesTableQueryColumnsDefinitionsItem
+                = new InsightQueryItemPropertiesTableQueryColumnsDefinitionsItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("header".equals(fieldName)) {
+                    deserializedInsightQueryItemPropertiesTableQueryColumnsDefinitionsItem.headerProperty
+                        = reader.getString();
+                } else if ("outputType".equals(fieldName)) {
+                    deserializedInsightQueryItemPropertiesTableQueryColumnsDefinitionsItem.outputType
+                        = OutputType.fromString(reader.getString());
+                } else if ("supportDeepLink".equals(fieldName)) {
+                    deserializedInsightQueryItemPropertiesTableQueryColumnsDefinitionsItem.supportDeepLink
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInsightQueryItemPropertiesTableQueryColumnsDefinitionsItem;
+        });
     }
 }

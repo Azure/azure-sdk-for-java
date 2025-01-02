@@ -35,22 +35,28 @@ import com.azure.resourcemanager.securityinsights.models.MetadataList;
 import com.azure.resourcemanager.securityinsights.models.MetadataPatch;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in MetadatasClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MetadatasClient.
+ */
 public final class MetadatasClientImpl implements MetadatasClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final MetadatasService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SecurityInsightsImpl client;
 
     /**
      * Initializes an instance of MetadatasClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     MetadatasClientImpl(SecurityInsightsImpl client) {
-        this.service =
-            RestProxy.create(MetadatasService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(MetadatasService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -60,132 +66,89 @@ public final class MetadatasClientImpl implements MetadatasClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityInsightsMeta")
-    private interface MetadatasService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/metadata")
-        @ExpectedResponses({200})
+    public interface MetadatasService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/metadata")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MetadataList>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$orderby") String orderby,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<MetadataList>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("$filter") String filter, @QueryParam("$orderby") String orderby,
+            @QueryParam("$top") Integer top, @QueryParam("$skip") Integer skip, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/metadata/{metadataName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/metadata/{metadataName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MetadataModelInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("metadataName") String metadataName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<MetadataModelInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("metadataName") String metadataName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/metadata/{metadataName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/metadata/{metadataName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("metadataName") String metadataName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("metadataName") String metadataName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/metadata/{metadataName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/metadata/{metadataName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MetadataModelInner>> create(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("metadataName") String metadataName,
-            @BodyParam("application/json") MetadataModelInner metadata,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<MetadataModelInner>> create(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("metadataName") String metadataName, @BodyParam("application/json") MetadataModelInner metadata,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/metadata/{metadataName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/metadata/{metadataName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MetadataModelInner>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("metadataName") String metadataName,
-            @BodyParam("application/json") MetadataPatch metadataPatch,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<MetadataModelInner>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("metadataName") String metadataName, @BodyParam("application/json") MetadataPatch metadataPatch,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MetadataList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<MetadataList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List of all metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param filter Filters the results, based on a Boolean condition. Optional.
      * @param orderby Sorts the results. Optional.
      * @param top Returns only the first n results. Optional.
      * @param skip Used to skip n elements in the OData query (offset). Returns a nextLink to the next page of results
-     *     if there are any left.
+     * if there are any left.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of all the metadata along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MetadataModelInner>> listSinglePageAsync(
-        String resourceGroupName, String workspaceName, String filter, String orderby, Integer top, Integer skip) {
+    private Mono<PagedResponse<MetadataModelInner>> listSinglePageAsync(String resourceGroupName, String workspaceName,
+        String filter, String orderby, Integer top, Integer skip) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -196,43 +159,24 @@ public final class MetadatasClientImpl implements MetadatasClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            filter,
-                            orderby,
-                            top,
-                            skip,
-                            accept,
-                            context))
-            .<PagedResponse<MetadataModelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, filter, orderby, top, skip, accept,
+                context))
+            .<PagedResponse<MetadataModelInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List of all metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param filter Filters the results, based on a Boolean condition. Optional.
      * @param orderby Sorts the results. Optional.
      * @param top Returns only the first n results. Optional.
      * @param skip Used to skip n elements in the OData query (offset). Returns a nextLink to the next page of results
-     *     if there are any left.
+     * if there are any left.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -240,25 +184,15 @@ public final class MetadatasClientImpl implements MetadatasClient {
      * @return list of all the metadata along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MetadataModelInner>> listSinglePageAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String filter,
-        String orderby,
-        Integer top,
-        Integer skip,
-        Context context) {
+    private Mono<PagedResponse<MetadataModelInner>> listSinglePageAsync(String resourceGroupName, String workspaceName,
+        String filter, String orderby, Integer top, Integer skip, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -270,55 +204,37 @@ public final class MetadatasClientImpl implements MetadatasClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                filter,
-                orderby,
-                top,
-                skip,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, filter, orderby, top, skip, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List of all metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param filter Filters the results, based on a Boolean condition. Optional.
      * @param orderby Sorts the results. Optional.
      * @param top Returns only the first n results. Optional.
      * @param skip Used to skip n elements in the OData query (offset). Returns a nextLink to the next page of results
-     *     if there are any left.
+     * if there are any left.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of all the metadata as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<MetadataModelInner> listAsync(
-        String resourceGroupName, String workspaceName, String filter, String orderby, Integer top, Integer skip) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, workspaceName, filter, orderby, top, skip),
+    private PagedFlux<MetadataModelInner> listAsync(String resourceGroupName, String workspaceName, String filter,
+        String orderby, Integer top, Integer skip) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, workspaceName, filter, orderby, top, skip),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * List of all metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -332,21 +248,20 @@ public final class MetadatasClientImpl implements MetadatasClient {
         final String orderby = null;
         final Integer top = null;
         final Integer skip = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, workspaceName, filter, orderby, top, skip),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, workspaceName, filter, orderby, top, skip),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * List of all metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param filter Filters the results, based on a Boolean condition. Optional.
      * @param orderby Sorts the results. Optional.
      * @param top Returns only the first n results. Optional.
      * @param skip Used to skip n elements in the OData query (offset). Returns a nextLink to the next page of results
-     *     if there are any left.
+     * if there are any left.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -354,14 +269,8 @@ public final class MetadatasClientImpl implements MetadatasClient {
      * @return list of all the metadata as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<MetadataModelInner> listAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String filter,
-        String orderby,
-        Integer top,
-        Integer skip,
-        Context context) {
+    private PagedFlux<MetadataModelInner> listAsync(String resourceGroupName, String workspaceName, String filter,
+        String orderby, Integer top, Integer skip, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, workspaceName, filter, orderby, top, skip, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
@@ -369,7 +278,7 @@ public final class MetadatasClientImpl implements MetadatasClient {
 
     /**
      * List of all metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -388,14 +297,14 @@ public final class MetadatasClientImpl implements MetadatasClient {
 
     /**
      * List of all metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param filter Filters the results, based on a Boolean condition. Optional.
      * @param orderby Sorts the results. Optional.
      * @param top Returns only the first n results. Optional.
      * @param skip Used to skip n elements in the OData query (offset). Returns a nextLink to the next page of results
-     *     if there are any left.
+     * if there are any left.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -403,20 +312,14 @@ public final class MetadatasClientImpl implements MetadatasClient {
      * @return list of all the metadata as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MetadataModelInner> list(
-        String resourceGroupName,
-        String workspaceName,
-        String filter,
-        String orderby,
-        Integer top,
-        Integer skip,
-        Context context) {
+    public PagedIterable<MetadataModelInner> list(String resourceGroupName, String workspaceName, String filter,
+        String orderby, Integer top, Integer skip, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, filter, orderby, top, skip, context));
     }
 
     /**
      * Get a Metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param metadataName The Metadata name.
@@ -426,19 +329,15 @@ public final class MetadatasClientImpl implements MetadatasClient {
      * @return a Metadata along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MetadataModelInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String metadataName) {
+    private Mono<Response<MetadataModelInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String metadataName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -452,24 +351,14 @@ public final class MetadatasClientImpl implements MetadatasClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            metadataName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, metadataName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a Metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param metadataName The Metadata name.
@@ -480,19 +369,15 @@ public final class MetadatasClientImpl implements MetadatasClient {
      * @return a Metadata along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MetadataModelInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String metadataName, Context context) {
+    private Mono<Response<MetadataModelInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String metadataName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -506,21 +391,13 @@ public final class MetadatasClientImpl implements MetadatasClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                metadataName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, metadataName, accept, context);
     }
 
     /**
      * Get a Metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param metadataName The Metadata name.
@@ -537,23 +414,7 @@ public final class MetadatasClientImpl implements MetadatasClient {
 
     /**
      * Get a Metadata.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param metadataName The Metadata name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Metadata.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MetadataModelInner get(String resourceGroupName, String workspaceName, String metadataName) {
-        return getAsync(resourceGroupName, workspaceName, metadataName).block();
-    }
-
-    /**
-     * Get a Metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param metadataName The Metadata name.
@@ -564,14 +425,30 @@ public final class MetadatasClientImpl implements MetadatasClient {
      * @return a Metadata along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MetadataModelInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String metadataName, Context context) {
+    public Response<MetadataModelInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String metadataName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, metadataName, context).block();
     }
 
     /**
+     * Get a Metadata.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param metadataName The Metadata name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Metadata.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MetadataModelInner get(String resourceGroupName, String workspaceName, String metadataName) {
+        return getWithResponse(resourceGroupName, workspaceName, metadataName, Context.NONE).getValue();
+    }
+
+    /**
      * Delete a Metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param metadataName The Metadata name.
@@ -581,19 +458,15 @@ public final class MetadatasClientImpl implements MetadatasClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String metadataName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String metadataName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -607,24 +480,14 @@ public final class MetadatasClientImpl implements MetadatasClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            metadataName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, metadataName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a Metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param metadataName The Metadata name.
@@ -635,19 +498,15 @@ public final class MetadatasClientImpl implements MetadatasClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String metadataName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String metadataName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -661,21 +520,13 @@ public final class MetadatasClientImpl implements MetadatasClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                metadataName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, metadataName, accept, context);
     }
 
     /**
      * Delete a Metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param metadataName The Metadata name.
@@ -691,22 +542,7 @@ public final class MetadatasClientImpl implements MetadatasClient {
 
     /**
      * Delete a Metadata.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param metadataName The Metadata name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String workspaceName, String metadataName) {
-        deleteAsync(resourceGroupName, workspaceName, metadataName).block();
-    }
-
-    /**
-     * Delete a Metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param metadataName The Metadata name.
@@ -717,14 +553,29 @@ public final class MetadatasClientImpl implements MetadatasClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String metadataName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String metadataName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, metadataName, context).block();
     }
 
     /**
+     * Delete a Metadata.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param metadataName The Metadata name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String workspaceName, String metadataName) {
+        deleteWithResponse(resourceGroupName, workspaceName, metadataName, Context.NONE);
+    }
+
+    /**
      * Create a Metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param metadataName The Metadata name.
@@ -735,19 +586,15 @@ public final class MetadatasClientImpl implements MetadatasClient {
      * @return metadata resource definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MetadataModelInner>> createWithResponseAsync(
-        String resourceGroupName, String workspaceName, String metadataName, MetadataModelInner metadata) {
+    private Mono<Response<MetadataModelInner>> createWithResponseAsync(String resourceGroupName, String workspaceName,
+        String metadataName, MetadataModelInner metadata) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -765,26 +612,14 @@ public final class MetadatasClientImpl implements MetadatasClient {
             metadata.validate();
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            metadataName,
-                            metadata,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, workspaceName, metadataName, metadata, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create a Metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param metadataName The Metadata name.
@@ -796,23 +631,15 @@ public final class MetadatasClientImpl implements MetadatasClient {
      * @return metadata resource definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MetadataModelInner>> createWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String metadataName,
-        MetadataModelInner metadata,
-        Context context) {
+    private Mono<Response<MetadataModelInner>> createWithResponseAsync(String resourceGroupName, String workspaceName,
+        String metadataName, MetadataModelInner metadata, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -831,22 +658,13 @@ public final class MetadatasClientImpl implements MetadatasClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                metadataName,
-                metadata,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, metadataName, metadata, accept, context);
     }
 
     /**
      * Create a Metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param metadataName The Metadata name.
@@ -857,33 +675,15 @@ public final class MetadatasClientImpl implements MetadatasClient {
      * @return metadata resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MetadataModelInner> createAsync(
-        String resourceGroupName, String workspaceName, String metadataName, MetadataModelInner metadata) {
+    private Mono<MetadataModelInner> createAsync(String resourceGroupName, String workspaceName, String metadataName,
+        MetadataModelInner metadata) {
         return createWithResponseAsync(resourceGroupName, workspaceName, metadataName, metadata)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create a Metadata.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param metadataName The Metadata name.
-     * @param metadata Metadata resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata resource definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MetadataModelInner create(
-        String resourceGroupName, String workspaceName, String metadataName, MetadataModelInner metadata) {
-        return createAsync(resourceGroupName, workspaceName, metadataName, metadata).block();
-    }
-
-    /**
-     * Create a Metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param metadataName The Metadata name.
@@ -895,18 +695,32 @@ public final class MetadatasClientImpl implements MetadatasClient {
      * @return metadata resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MetadataModelInner> createWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String metadataName,
-        MetadataModelInner metadata,
-        Context context) {
+    public Response<MetadataModelInner> createWithResponse(String resourceGroupName, String workspaceName,
+        String metadataName, MetadataModelInner metadata, Context context) {
         return createWithResponseAsync(resourceGroupName, workspaceName, metadataName, metadata, context).block();
     }
 
     /**
+     * Create a Metadata.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param metadataName The Metadata name.
+     * @param metadata Metadata resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metadata resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MetadataModelInner create(String resourceGroupName, String workspaceName, String metadataName,
+        MetadataModelInner metadata) {
+        return createWithResponse(resourceGroupName, workspaceName, metadataName, metadata, Context.NONE).getValue();
+    }
+
+    /**
      * Update an existing Metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param metadataName The Metadata name.
@@ -917,19 +731,15 @@ public final class MetadatasClientImpl implements MetadatasClient {
      * @return metadata resource definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MetadataModelInner>> updateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String metadataName, MetadataPatch metadataPatch) {
+    private Mono<Response<MetadataModelInner>> updateWithResponseAsync(String resourceGroupName, String workspaceName,
+        String metadataName, MetadataPatch metadataPatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -948,25 +758,15 @@ public final class MetadatasClientImpl implements MetadatasClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            metadataName,
-                            metadataPatch,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, metadataName, metadataPatch, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update an existing Metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param metadataName The Metadata name.
@@ -978,23 +778,15 @@ public final class MetadatasClientImpl implements MetadatasClient {
      * @return metadata resource definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MetadataModelInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String metadataName,
-        MetadataPatch metadataPatch,
-        Context context) {
+    private Mono<Response<MetadataModelInner>> updateWithResponseAsync(String resourceGroupName, String workspaceName,
+        String metadataName, MetadataPatch metadataPatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1013,22 +805,13 @@ public final class MetadatasClientImpl implements MetadatasClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                metadataName,
-                metadataPatch,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, metadataName, metadataPatch, accept, context);
     }
 
     /**
      * Update an existing Metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param metadataName The Metadata name.
@@ -1039,33 +822,15 @@ public final class MetadatasClientImpl implements MetadatasClient {
      * @return metadata resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MetadataModelInner> updateAsync(
-        String resourceGroupName, String workspaceName, String metadataName, MetadataPatch metadataPatch) {
+    private Mono<MetadataModelInner> updateAsync(String resourceGroupName, String workspaceName, String metadataName,
+        MetadataPatch metadataPatch) {
         return updateWithResponseAsync(resourceGroupName, workspaceName, metadataName, metadataPatch)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Update an existing Metadata.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param metadataName The Metadata name.
-     * @param metadataPatch Partial metadata request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata resource definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MetadataModelInner update(
-        String resourceGroupName, String workspaceName, String metadataName, MetadataPatch metadataPatch) {
-        return updateAsync(resourceGroupName, workspaceName, metadataName, metadataPatch).block();
-    }
-
-    /**
-     * Update an existing Metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param metadataName The Metadata name.
@@ -1077,20 +842,34 @@ public final class MetadatasClientImpl implements MetadatasClient {
      * @return metadata resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MetadataModelInner> updateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String metadataName,
-        MetadataPatch metadataPatch,
-        Context context) {
+    public Response<MetadataModelInner> updateWithResponse(String resourceGroupName, String workspaceName,
+        String metadataName, MetadataPatch metadataPatch, Context context) {
         return updateWithResponseAsync(resourceGroupName, workspaceName, metadataName, metadataPatch, context).block();
     }
 
     /**
+     * Update an existing Metadata.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param metadataName The Metadata name.
+     * @param metadataPatch Partial metadata request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metadata resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MetadataModelInner update(String resourceGroupName, String workspaceName, String metadataName,
+        MetadataPatch metadataPatch) {
+        return updateWithResponse(resourceGroupName, workspaceName, metadataName, metadataPatch, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1102,31 +881,20 @@ public final class MetadatasClientImpl implements MetadatasClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<MetadataModelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<MetadataModelInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1139,23 +907,13 @@ public final class MetadatasClientImpl implements MetadatasClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

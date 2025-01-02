@@ -13,8 +13,7 @@ public final class CustomLocationFindTargetResourceGroupResultImpl
 
     private final com.azure.resourcemanager.extendedlocation.CustomLocationsManager serviceManager;
 
-    CustomLocationFindTargetResourceGroupResultImpl(
-        CustomLocationFindTargetResourceGroupResultInner innerObject,
+    CustomLocationFindTargetResourceGroupResultImpl(CustomLocationFindTargetResourceGroupResultInner innerObject,
         com.azure.resourcemanager.extendedlocation.CustomLocationsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

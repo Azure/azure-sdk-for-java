@@ -25,14 +25,20 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.alertsmanagement.fluent.AlertsManagementClient;
 import com.azure.resourcemanager.alertsmanagement.implementation.AlertProcessingRulesImpl;
+import com.azure.resourcemanager.alertsmanagement.implementation.AlertRuleRecommendationsImpl;
 import com.azure.resourcemanager.alertsmanagement.implementation.AlertsImpl;
 import com.azure.resourcemanager.alertsmanagement.implementation.AlertsManagementClientBuilder;
 import com.azure.resourcemanager.alertsmanagement.implementation.OperationsImpl;
+import com.azure.resourcemanager.alertsmanagement.implementation.PrometheusRuleGroupsImpl;
 import com.azure.resourcemanager.alertsmanagement.implementation.SmartGroupsImpl;
+import com.azure.resourcemanager.alertsmanagement.implementation.TenantActivityLogAlertsImpl;
 import com.azure.resourcemanager.alertsmanagement.models.AlertProcessingRules;
+import com.azure.resourcemanager.alertsmanagement.models.AlertRuleRecommendations;
 import com.azure.resourcemanager.alertsmanagement.models.Alerts;
 import com.azure.resourcemanager.alertsmanagement.models.Operations;
+import com.azure.resourcemanager.alertsmanagement.models.PrometheusRuleGroups;
 import com.azure.resourcemanager.alertsmanagement.models.SmartGroups;
+import com.azure.resourcemanager.alertsmanagement.models.TenantActivityLogAlerts;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -40,9 +46,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to AlertsManagementManager. AlertsManagement Client. */
+/**
+ * Entry point to AlertsManagementManager.
+ * AlertsManagement Client.
+ */
 public final class AlertsManagementManager {
     private AlertProcessingRules alertProcessingRules;
+
+    private PrometheusRuleGroups prometheusRuleGroups;
 
     private Operations operations;
 
@@ -50,23 +61,25 @@ public final class AlertsManagementManager {
 
     private SmartGroups smartGroups;
 
+    private AlertRuleRecommendations alertRuleRecommendations;
+
+    private TenantActivityLogAlerts tenantActivityLogAlerts;
+
     private final AlertsManagementClient clientObject;
 
     private AlertsManagementManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new AlertsManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new AlertsManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
      * Creates an instance of AlertsManagement service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the AlertsManagement service API instance.
@@ -79,7 +92,7 @@ public final class AlertsManagementManager {
 
     /**
      * Creates an instance of AlertsManagement service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the AlertsManagement service API instance.
@@ -92,14 +105,16 @@ public final class AlertsManagementManager {
 
     /**
      * Gets a Configurable instance that can be used to create AlertsManagementManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new AlertsManagementManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -171,8 +186,8 @@ public final class AlertsManagementManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -189,8 +204,8 @@ public final class AlertsManagementManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -210,15 +225,13 @@ public final class AlertsManagementManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
+            userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.alertsmanagement")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
+                userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -243,38 +256,28 @@ public final class AlertsManagementManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new AlertsManagementManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
     /**
      * Gets the resource collection API of AlertProcessingRules. It manages AlertProcessingRule.
-     *
+     * 
      * @return Resource collection API of AlertProcessingRules.
      */
     public AlertProcessingRules alertProcessingRules() {
@@ -285,8 +288,20 @@ public final class AlertsManagementManager {
     }
 
     /**
+     * Gets the resource collection API of PrometheusRuleGroups. It manages PrometheusRuleGroupResource.
+     * 
+     * @return Resource collection API of PrometheusRuleGroups.
+     */
+    public PrometheusRuleGroups prometheusRuleGroups() {
+        if (this.prometheusRuleGroups == null) {
+            this.prometheusRuleGroups = new PrometheusRuleGroupsImpl(clientObject.getPrometheusRuleGroups(), this);
+        }
+        return prometheusRuleGroups;
+    }
+
+    /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -298,7 +313,7 @@ public final class AlertsManagementManager {
 
     /**
      * Gets the resource collection API of Alerts.
-     *
+     * 
      * @return Resource collection API of Alerts.
      */
     public Alerts alerts() {
@@ -310,7 +325,7 @@ public final class AlertsManagementManager {
 
     /**
      * Gets the resource collection API of SmartGroups.
-     *
+     * 
      * @return Resource collection API of SmartGroups.
      */
     public SmartGroups smartGroups() {
@@ -321,8 +336,36 @@ public final class AlertsManagementManager {
     }
 
     /**
-     * @return Wrapped service client AlertsManagementClient providing direct access to the underlying auto-generated
-     *     API implementation, based on Azure REST API.
+     * Gets the resource collection API of AlertRuleRecommendations.
+     * 
+     * @return Resource collection API of AlertRuleRecommendations.
+     */
+    public AlertRuleRecommendations alertRuleRecommendations() {
+        if (this.alertRuleRecommendations == null) {
+            this.alertRuleRecommendations
+                = new AlertRuleRecommendationsImpl(clientObject.getAlertRuleRecommendations(), this);
+        }
+        return alertRuleRecommendations;
+    }
+
+    /**
+     * Gets the resource collection API of TenantActivityLogAlerts.
+     * 
+     * @return Resource collection API of TenantActivityLogAlerts.
+     */
+    public TenantActivityLogAlerts tenantActivityLogAlerts() {
+        if (this.tenantActivityLogAlerts == null) {
+            this.tenantActivityLogAlerts
+                = new TenantActivityLogAlertsImpl(clientObject.getTenantActivityLogAlerts(), this);
+        }
+        return tenantActivityLogAlerts;
+    }
+
+    /**
+     * Gets wrapped service client AlertsManagementClient providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client AlertsManagementClient.
      */
     public AlertsManagementClient serviceClient() {
         return this.clientObject;

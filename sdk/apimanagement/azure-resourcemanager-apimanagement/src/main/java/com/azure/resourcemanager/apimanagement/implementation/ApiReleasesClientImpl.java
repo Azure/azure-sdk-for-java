@@ -39,22 +39,28 @@ import com.azure.resourcemanager.apimanagement.models.ApiReleasesGetResponse;
 import com.azure.resourcemanager.apimanagement.models.ApiReleasesUpdateResponse;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ApiReleasesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ApiReleasesClient.
+ */
 public final class ApiReleasesClientImpl implements ApiReleasesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ApiReleasesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of ApiReleasesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ApiReleasesClientImpl(ApiManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ApiReleasesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ApiReleasesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,147 +71,104 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientA")
     public interface ApiReleasesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/releases")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/releases")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApiReleaseCollection>> listByService(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("apiId") String apiId,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<ApiReleaseCollection>> listByService(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("apiId") String apiId, @QueryParam("$filter") String filter, @QueryParam("$top") Integer top,
+            @QueryParam("$skip") Integer skip, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Head("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/releases/{releaseId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<ApiReleasesGetEntityTagResponse> getEntityTag(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("apiId") String apiId, @PathParam("releaseId") String releaseId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/releases/{releaseId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<ApiReleasesGetResponse> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("apiId") String apiId, @PathParam("releaseId") String releaseId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/releases/{releaseId}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<ApiReleasesCreateOrUpdateResponse> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("apiId") String apiId, @PathParam("releaseId") String releaseId,
+            @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ApiReleaseContractInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Head(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/releases/{releaseId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/releases/{releaseId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<ApiReleasesGetEntityTagResponse> getEntityTag(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("apiId") String apiId,
-            @PathParam("releaseId") String releaseId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<ApiReleasesUpdateResponse> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("apiId") String apiId, @PathParam("releaseId") String releaseId,
+            @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ApiReleaseContractInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/releases/{releaseId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/releases/{releaseId}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<ApiReleasesGetResponse> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("apiId") String apiId,
-            @PathParam("releaseId") String releaseId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("apiId") String apiId, @PathParam("releaseId") String releaseId,
+            @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/releases/{releaseId}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<ApiReleasesCreateOrUpdateResponse> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("apiId") String apiId,
-            @PathParam("releaseId") String releaseId,
-            @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") ApiReleaseContractInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/releases/{releaseId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<ApiReleasesUpdateResponse> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("apiId") String apiId,
-            @PathParam("releaseId") String releaseId,
-            @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") ApiReleaseContractInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/releases/{releaseId}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("apiId") String apiId,
-            @PathParam("releaseId") String releaseId,
-            @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApiReleaseCollection>> listByServiceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists all releases of an API. An API release is created when making an API Revision current. Releases are also
      * used to rollback to previous revisions. Results will be paged and can be constrained by the $top and $skip
      * parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| notes | filter | ge, le,
-     *     eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| notes | filter | ge, le, eq,
+     * ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged ApiRelease list representation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return paged ApiRelease list representation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ApiReleaseContractInner>> listByServiceSinglePageAsync(
-        String resourceGroupName, String serviceName, String apiId, String filter, Integer top, Integer skip) {
+    private Mono<PagedResponse<ApiReleaseContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
+        String serviceName, String apiId, String filter, Integer top, Integer skip) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -218,37 +181,16 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
             return Mono.error(new IllegalArgumentException("Parameter apiId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByService(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            apiId,
-                            filter,
-                            top,
-                            skip,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<ApiReleaseContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByService(this.client.getEndpoint(), resourceGroupName, serviceName, apiId,
+                    filter, top, skip, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<ApiReleaseContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -256,36 +198,28 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * Lists all releases of an API. An API release is created when making an API Revision current. Releases are also
      * used to rollback to previous revisions. Results will be paged and can be constrained by the $top and $skip
      * parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| notes | filter | ge, le,
-     *     eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| notes | filter | ge, le, eq,
+     * ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged ApiRelease list representation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return paged ApiRelease list representation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ApiReleaseContractInner>> listByServiceSinglePageAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context) {
+    private Mono<PagedResponse<ApiReleaseContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
+        String serviceName, String apiId, String filter, Integer top, Integer skip, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -298,48 +232,29 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
             return Mono.error(new IllegalArgumentException("Parameter apiId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByService(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                apiId,
-                filter,
-                top,
-                skip,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByService(this.client.getEndpoint(), resourceGroupName, serviceName, apiId, filter, top, skip,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all releases of an API. An API release is created when making an API Revision current. Releases are also
      * used to rollback to previous revisions. Results will be paged and can be constrained by the $top and $skip
      * parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| notes | filter | ge, le,
-     *     eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| notes | filter | ge, le, eq,
+     * ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -348,8 +263,8 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * @return paged ApiRelease list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ApiReleaseContractInner> listByServiceAsync(
-        String resourceGroupName, String serviceName, String apiId, String filter, Integer top, Integer skip) {
+    private PagedFlux<ApiReleaseContractInner> listByServiceAsync(String resourceGroupName, String serviceName,
+        String apiId, String filter, Integer top, Integer skip) {
         return new PagedFlux<>(
             () -> listByServiceSinglePageAsync(resourceGroupName, serviceName, apiId, filter, top, skip),
             nextLink -> listByServiceNextSinglePageAsync(nextLink));
@@ -359,7 +274,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * Lists all releases of an API. An API release is created when making an API Revision current. Releases are also
      * used to rollback to previous revisions. Results will be paged and can be constrained by the $top and $skip
      * parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -369,8 +284,8 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * @return paged ApiRelease list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ApiReleaseContractInner> listByServiceAsync(
-        String resourceGroupName, String serviceName, String apiId) {
+    private PagedFlux<ApiReleaseContractInner> listByServiceAsync(String resourceGroupName, String serviceName,
+        String apiId) {
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -383,13 +298,13 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * Lists all releases of an API. An API release is created when making an API Revision current. Releases are also
      * used to rollback to previous revisions. Results will be paged and can be constrained by the $top and $skip
      * parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| notes | filter | ge, le,
-     *     eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| notes | filter | ge, le, eq,
+     * ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -399,14 +314,8 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * @return paged ApiRelease list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ApiReleaseContractInner> listByServiceAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context) {
+    private PagedFlux<ApiReleaseContractInner> listByServiceAsync(String resourceGroupName, String serviceName,
+        String apiId, String filter, Integer top, Integer skip, Context context) {
         return new PagedFlux<>(
             () -> listByServiceSinglePageAsync(resourceGroupName, serviceName, apiId, filter, top, skip, context),
             nextLink -> listByServiceNextSinglePageAsync(nextLink, context));
@@ -416,7 +325,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * Lists all releases of an API. An API release is created when making an API Revision current. Releases are also
      * used to rollback to previous revisions. Results will be paged and can be constrained by the $top and $skip
      * parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -426,8 +335,8 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * @return paged ApiRelease list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ApiReleaseContractInner> listByService(
-        String resourceGroupName, String serviceName, String apiId) {
+    public PagedIterable<ApiReleaseContractInner> listByService(String resourceGroupName, String serviceName,
+        String apiId) {
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -438,13 +347,13 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * Lists all releases of an API. An API release is created when making an API Revision current. Releases are also
      * used to rollback to previous revisions. Results will be paged and can be constrained by the $top and $skip
      * parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| notes | filter | ge, le,
-     *     eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| notes | filter | ge, le, eq,
+     * ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -454,21 +363,15 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * @return paged ApiRelease list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ApiReleaseContractInner> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context) {
+    public PagedIterable<ApiReleaseContractInner> listByService(String resourceGroupName, String serviceName,
+        String apiId, String filter, Integer top, Integer skip, Context context) {
         return new PagedIterable<>(
             listByServiceAsync(resourceGroupName, serviceName, apiId, filter, top, skip, context));
     }
 
     /**
      * Returns the etag of an API release.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -479,13 +382,11 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiReleasesGetEntityTagResponse> getEntityTagWithResponseAsync(
-        String resourceGroupName, String serviceName, String apiId, String releaseId) {
+    private Mono<ApiReleasesGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
+        String serviceName, String apiId, String releaseId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -501,32 +402,19 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
             return Mono.error(new IllegalArgumentException("Parameter releaseId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getEntityTag(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            apiId,
-                            releaseId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.getEntityTag(this.client.getEndpoint(), resourceGroupName, serviceName,
+                apiId, releaseId, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Returns the etag of an API release.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -538,13 +426,11 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiReleasesGetEntityTagResponse> getEntityTagWithResponseAsync(
-        String resourceGroupName, String serviceName, String apiId, String releaseId, Context context) {
+    private Mono<ApiReleasesGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
+        String serviceName, String apiId, String releaseId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -560,29 +446,18 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
             return Mono.error(new IllegalArgumentException("Parameter releaseId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getEntityTag(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                apiId,
-                releaseId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getEntityTag(this.client.getEndpoint(), resourceGroupName, serviceName, apiId, releaseId,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Returns the etag of an API release.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -600,7 +475,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
 
     /**
      * Returns the etag of an API release.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -612,14 +487,14 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiReleasesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String releaseId, Context context) {
+    public ApiReleasesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String releaseId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, apiId, releaseId, context).block();
     }
 
     /**
      * Returns the etag of an API release.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -635,7 +510,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
 
     /**
      * Returns the details of an API release.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -646,13 +521,11 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * @return apiRelease details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiReleasesGetResponse> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String apiId, String releaseId) {
+    private Mono<ApiReleasesGetResponse> getWithResponseAsync(String resourceGroupName, String serviceName,
+        String apiId, String releaseId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -668,32 +541,19 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
             return Mono.error(new IllegalArgumentException("Parameter releaseId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            apiId,
-                            releaseId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serviceName, apiId,
+                releaseId, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Returns the details of an API release.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -705,13 +565,11 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * @return apiRelease details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiReleasesGetResponse> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String apiId, String releaseId, Context context) {
+    private Mono<ApiReleasesGetResponse> getWithResponseAsync(String resourceGroupName, String serviceName,
+        String apiId, String releaseId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -727,29 +585,18 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
             return Mono.error(new IllegalArgumentException("Parameter releaseId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                apiId,
-                releaseId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, serviceName, apiId, releaseId,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Returns the details of an API release.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -760,15 +607,15 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * @return apiRelease details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiReleaseContractInner> getAsync(
-        String resourceGroupName, String serviceName, String apiId, String releaseId) {
+    private Mono<ApiReleaseContractInner> getAsync(String resourceGroupName, String serviceName, String apiId,
+        String releaseId) {
         return getWithResponseAsync(resourceGroupName, serviceName, apiId, releaseId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Returns the details of an API release.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -780,14 +627,14 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * @return apiRelease details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiReleasesGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String releaseId, Context context) {
+    public ApiReleasesGetResponse getWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String releaseId, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, apiId, releaseId, context).block();
     }
 
     /**
      * Returns the details of an API release.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -804,7 +651,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
 
     /**
      * Creates a new Release for the API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -817,18 +664,11 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * @return apiRelease details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiReleasesCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String releaseId,
-        ApiReleaseContractInner parameters,
-        String ifMatch) {
+    private Mono<ApiReleasesCreateOrUpdateResponse> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serviceName, String apiId, String releaseId, ApiReleaseContractInner parameters, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -844,10 +684,8 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
             return Mono.error(new IllegalArgumentException("Parameter releaseId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -856,27 +694,15 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            apiId,
-                            releaseId,
-                            ifMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serviceName,
+                apiId, releaseId, ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a new Release for the API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -890,19 +716,12 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * @return apiRelease details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiReleasesCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String releaseId,
-        ApiReleaseContractInner parameters,
-        String ifMatch,
+    private Mono<ApiReleasesCreateOrUpdateResponse> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serviceName, String apiId, String releaseId, ApiReleaseContractInner parameters, String ifMatch,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -918,10 +737,8 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
             return Mono.error(new IllegalArgumentException("Parameter releaseId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -930,24 +747,13 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                apiId,
-                releaseId,
-                ifMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serviceName, apiId, releaseId,
+            ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Creates a new Release for the API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -959,12 +765,8 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * @return apiRelease details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiReleaseContractInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String releaseId,
-        ApiReleaseContractInner parameters) {
+    private Mono<ApiReleaseContractInner> createOrUpdateAsync(String resourceGroupName, String serviceName,
+        String apiId, String releaseId, ApiReleaseContractInner parameters) {
         final String ifMatch = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, apiId, releaseId, parameters, ifMatch)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -972,7 +774,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
 
     /**
      * Creates a new Release for the API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -986,22 +788,15 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * @return apiRelease details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiReleasesCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String releaseId,
-        ApiReleaseContractInner parameters,
-        String ifMatch,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, serviceName, apiId, releaseId, parameters, ifMatch, context)
-            .block();
+    public ApiReleasesCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String releaseId, ApiReleaseContractInner parameters, String ifMatch, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, apiId, releaseId, parameters, ifMatch,
+            context).block();
     }
 
     /**
      * Creates a new Release for the API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -1013,27 +808,22 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * @return apiRelease details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiReleaseContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String releaseId,
-        ApiReleaseContractInner parameters) {
+    public ApiReleaseContractInner createOrUpdate(String resourceGroupName, String serviceName, String apiId,
+        String releaseId, ApiReleaseContractInner parameters) {
         final String ifMatch = null;
-        return createOrUpdateWithResponse(
-                resourceGroupName, serviceName, apiId, releaseId, parameters, ifMatch, Context.NONE)
-            .getValue();
+        return createOrUpdateWithResponse(resourceGroupName, serviceName, apiId, releaseId, parameters, ifMatch,
+            Context.NONE).getValue();
     }
 
     /**
      * Updates the details of the release of the API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param releaseId Release identifier within an API. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters API Release Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1041,18 +831,11 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * @return apiRelease details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiReleasesUpdateResponse> updateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String releaseId,
-        String ifMatch,
-        ApiReleaseContractInner parameters) {
+    private Mono<ApiReleasesUpdateResponse> updateWithResponseAsync(String resourceGroupName, String serviceName,
+        String apiId, String releaseId, String ifMatch, ApiReleaseContractInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1071,10 +854,8 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1084,32 +865,20 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            apiId,
-                            releaseId,
-                            ifMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.update(this.client.getEndpoint(), resourceGroupName, serviceName, apiId, releaseId,
+                    ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates the details of the release of the API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param releaseId Release identifier within an API. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters API Release Update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1118,19 +887,11 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * @return apiRelease details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiReleasesUpdateResponse> updateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String releaseId,
-        String ifMatch,
-        ApiReleaseContractInner parameters,
-        Context context) {
+    private Mono<ApiReleasesUpdateResponse> updateWithResponseAsync(String resourceGroupName, String serviceName,
+        String apiId, String releaseId, String ifMatch, ApiReleaseContractInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1149,10 +910,8 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1161,30 +920,19 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                apiId,
-                releaseId,
-                ifMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, serviceName, apiId, releaseId, ifMatch,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Updates the details of the release of the API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param releaseId Release identifier within an API. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters API Release Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1192,26 +940,21 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * @return apiRelease details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiReleaseContractInner> updateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String releaseId,
-        String ifMatch,
-        ApiReleaseContractInner parameters) {
+    private Mono<ApiReleaseContractInner> updateAsync(String resourceGroupName, String serviceName, String apiId,
+        String releaseId, String ifMatch, ApiReleaseContractInner parameters) {
         return updateWithResponseAsync(resourceGroupName, serviceName, apiId, releaseId, ifMatch, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Updates the details of the release of the API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param releaseId Release identifier within an API. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters API Release Update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1220,27 +963,21 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * @return apiRelease details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiReleasesUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String releaseId,
-        String ifMatch,
-        ApiReleaseContractInner parameters,
-        Context context) {
+    public ApiReleasesUpdateResponse updateWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String releaseId, String ifMatch, ApiReleaseContractInner parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, serviceName, apiId, releaseId, ifMatch, parameters, context)
             .block();
     }
 
     /**
      * Updates the details of the release of the API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param releaseId Release identifier within an API. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters API Release Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1248,39 +985,32 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * @return apiRelease details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiReleaseContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String releaseId,
-        String ifMatch,
-        ApiReleaseContractInner parameters) {
+    public ApiReleaseContractInner update(String resourceGroupName, String serviceName, String apiId, String releaseId,
+        String ifMatch, ApiReleaseContractInner parameters) {
         return updateWithResponse(resourceGroupName, serviceName, apiId, releaseId, ifMatch, parameters, Context.NONE)
             .getValue();
     }
 
     /**
      * Deletes the specified release in the API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param releaseId Release identifier within an API. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String apiId, String releaseId, String ifMatch) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serviceName, String apiId,
+        String releaseId, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1299,39 +1029,25 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            apiId,
-                            releaseId,
-                            ifMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, serviceName, apiId,
+                releaseId, ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the specified release in the API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param releaseId Release identifier within an API. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1339,13 +1055,11 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String apiId, String releaseId, String ifMatch, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serviceName, String apiId,
+        String releaseId, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1364,57 +1078,45 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                apiId,
-                releaseId,
-                ifMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, serviceName, apiId, releaseId, ifMatch,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Deletes the specified release in the API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param releaseId Release identifier within an API. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String serviceName, String apiId, String releaseId, String ifMatch) {
+    private Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String apiId, String releaseId,
+        String ifMatch) {
         return deleteWithResponseAsync(resourceGroupName, serviceName, apiId, releaseId, ifMatch)
             .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes the specified release in the API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param releaseId Release identifier within an API. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1422,20 +1124,20 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String releaseId, String ifMatch, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String releaseId, String ifMatch, Context context) {
         return deleteWithResponseAsync(resourceGroupName, serviceName, apiId, releaseId, ifMatch, context).block();
     }
 
     /**
      * Deletes the specified release in the API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param releaseId Release identifier within an API. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1447,14 +1149,13 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged ApiRelease list representation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return paged ApiRelease list representation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApiReleaseContractInner>> listByServiceNextSinglePageAsync(String nextLink) {
@@ -1462,62 +1163,42 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByServiceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ApiReleaseContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ApiReleaseContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged ApiRelease list representation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return paged ApiRelease list representation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ApiReleaseContractInner>> listByServiceNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ApiReleaseContractInner>> listByServiceNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByServiceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByServiceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

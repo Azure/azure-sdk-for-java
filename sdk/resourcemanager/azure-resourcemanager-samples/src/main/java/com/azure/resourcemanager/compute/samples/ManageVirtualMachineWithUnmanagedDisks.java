@@ -43,7 +43,7 @@ public final class ManageVirtualMachineWithUnmanagedDisks {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final Region region = Region.US_WEST;
+        final Region region = Region.US_WEST2;
         final String windowsVMName = Utils.randomResourceName(azureResourceManager, "wVM", 15);
         final String linuxVMName = Utils.randomResourceName(azureResourceManager, "lVM", 15);
         final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOMV", 15);
@@ -61,61 +61,53 @@ public final class ManageVirtualMachineWithUnmanagedDisks {
 
             Date t1 = new Date();
 
-            VirtualMachine windowsVM = azureResourceManager.virtualMachines().define(windowsVMName)
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName)
-                    .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withoutPrimaryPublicIPAddress()
-                    .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                    .withAdminUsername(userName)
-                    .withAdminPassword(password)
-                    .withUnmanagedDisks()
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                    .create();
+            VirtualMachine windowsVM = azureResourceManager.virtualMachines()
+                .define(windowsVMName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
+                .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
+                .withAdminUsername(userName)
+                .withAdminPassword(password)
+                .withUnmanagedDisks()
+                .withSize(VirtualMachineSizeTypes.STANDARD_DS2_V2)
+                .create();
 
             Date t2 = new Date();
-            System.out.println("Created VM: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + windowsVM.id());
+            System.out
+                .println("Created VM: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + windowsVM.id());
             // Print virtual machine details
             Utils.print(windowsVM);
-
 
             //=============================================================
             // Update - Tag the virtual machine
 
-            windowsVM.update()
-                    .withTag("who-rocks", "java")
-                    .withTag("where", "on azure")
-                    .apply();
+            windowsVM.update().withTag("who-rocks", "java").withTag("where", "on azure").apply();
 
             System.out.println("Tagged VM: " + windowsVM.id());
-
 
             //=============================================================
             // Update - Attach data disks
 
             windowsVM.update()
-                    .withNewUnmanagedDataDisk(10)
-                    .defineUnmanagedDataDisk(dataDiskName)
-                        .withNewVhd(20)
-                        .withCaching(CachingTypes.READ_WRITE)
-                        .attach()
-                    .apply();
-
+                .withNewUnmanagedDataDisk(10)
+                .defineUnmanagedDataDisk(dataDiskName)
+                .withNewVhd(20)
+                .withCaching(CachingTypes.READ_WRITE)
+                .attach()
+                .apply();
 
             System.out.println("Attached a new data disk" + dataDiskName + " to VM" + windowsVM.id());
             Utils.print(windowsVM);
 
-
             //=============================================================
             // Update - detach data disk
 
-            windowsVM.update()
-                    .withoutUnmanagedDataDisk(dataDiskName)
-                    .apply();
+            windowsVM.update().withoutUnmanagedDataDisk(dataDiskName).apply();
 
             System.out.println("Detached data disk " + dataDiskName + " from VM " + windowsVM.id());
-
 
             //=============================================================
             // Update - Resize (expand) the data disk
@@ -129,14 +121,9 @@ public final class ManageVirtualMachineWithUnmanagedDisks {
 
             VirtualMachineUnmanagedDataDisk dataDisk = windowsVM.unmanagedDataDisks().get(0);
 
-            windowsVM.update()
-                    .updateUnmanagedDataDisk(dataDisk.name())
-                        .withSizeInGB(30)
-                        .parent()
-                    .apply();
+            windowsVM.update().updateUnmanagedDataDisk(dataDisk.name()).withSizeInGB(30).parent().apply();
 
             System.out.println("Expanded VM " + windowsVM.id() + "'s data disk to 30GB");
-
 
             //=============================================================
             // Update - Expand the OS drive size by 10 GB
@@ -149,12 +136,9 @@ public final class ManageVirtualMachineWithUnmanagedDisks {
                 osDiskSizeInGb = 256;
             }
 
-            windowsVM.update()
-                    .withOSDiskSizeInGB(osDiskSizeInGb + 10)
-                    .apply();
+            windowsVM.update().withOSDiskSizeInGB(osDiskSizeInGb + 10).apply();
 
             System.out.println("Expanded VM " + windowsVM.id() + "'s OS disk to " + (osDiskSizeInGb + 10));
-
 
             //=============================================================
             // Start the virtual machine
@@ -165,7 +149,6 @@ public final class ManageVirtualMachineWithUnmanagedDisks {
 
             System.out.println("Started VM: " + windowsVM.id() + "; state = " + windowsVM.powerState());
 
-
             //=============================================================
             // Restart the virtual machine
 
@@ -174,7 +157,6 @@ public final class ManageVirtualMachineWithUnmanagedDisks {
             windowsVM.restart();
 
             System.out.println("Restarted VM: " + windowsVM.id() + "; state = " + windowsVM.powerState());
-
 
             //=============================================================
             // Stop (powerOff) the virtual machine
@@ -188,25 +170,25 @@ public final class ManageVirtualMachineWithUnmanagedDisks {
             // Get the network where Windows VM is hosted
             Network network = windowsVM.getPrimaryNetworkInterface().primaryIPConfiguration().getNetwork();
 
-
             //=============================================================
             // Create a Linux VM in the same virtual network
 
             System.out.println("Creating a Linux VM in the network");
 
-            VirtualMachine linuxVM = azureResourceManager.virtualMachines().define(linuxVMName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withExistingPrimaryNetwork(network)
-                    .withSubnet("subnet1") // Referencing the default subnet name when no name specified at creation
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withoutPrimaryPublicIPAddress()
-                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                    .withRootUsername(userName)
-                    .withSsh(sshPublicKey)
-                    .withUnmanagedDisks()
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                    .create();
+            VirtualMachine linuxVM = azureResourceManager.virtualMachines()
+                .define(linuxVMName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withExistingPrimaryNetwork(network)
+                .withSubnet("subnet1") // Referencing the default subnet name when no name specified at creation
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                .withRootUsername(userName)
+                .withSsh(sshPublicKey)
+                .withUnmanagedDisks()
+                .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
+                .create();
 
             System.out.println("Created a Linux VM (in the same virtual network): " + linuxVM.id());
             Utils.print(linuxVM);
@@ -218,7 +200,8 @@ public final class ManageVirtualMachineWithUnmanagedDisks {
 
             System.out.println("Printing list of VMs =======");
 
-            for (VirtualMachine virtualMachine : azureResourceManager.virtualMachines().listByResourceGroup(resourceGroupName)) {
+            for (VirtualMachine virtualMachine : azureResourceManager.virtualMachines()
+                .listByResourceGroup(resourceGroupName)) {
                 Utils.print(virtualMachine);
             }
 
@@ -259,8 +242,7 @@ public final class ManageVirtualMachineWithUnmanagedDisks {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

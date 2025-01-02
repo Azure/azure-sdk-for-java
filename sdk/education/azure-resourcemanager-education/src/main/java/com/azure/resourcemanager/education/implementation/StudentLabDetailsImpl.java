@@ -17,8 +17,8 @@ public final class StudentLabDetailsImpl implements StudentLabDetails {
 
     private final com.azure.resourcemanager.education.EducationManager serviceManager;
 
-    StudentLabDetailsImpl(
-        StudentLabDetailsInner innerObject, com.azure.resourcemanager.education.EducationManager serviceManager) {
+    StudentLabDetailsImpl(StudentLabDetailsInner innerObject,
+        com.azure.resourcemanager.education.EducationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

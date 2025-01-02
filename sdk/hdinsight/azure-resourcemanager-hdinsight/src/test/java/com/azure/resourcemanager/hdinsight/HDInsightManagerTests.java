@@ -9,7 +9,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -43,7 +43,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class HDInsightManagerTests extends TestBase {
+public class HDInsightManagerTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
     private static final Region REGION = Region.US_EAST;
     private String resourceGroupName = "rg" + randomPadding();
@@ -57,18 +57,15 @@ public class HDInsightManagerTests extends TestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        hdInsightManager = HDInsightManager
-            .configure()
+        hdInsightManager = HDInsightManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        storageManager = StorageManager
-            .configure()
+        storageManager = StorageManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -79,10 +76,7 @@ public class HDInsightManagerTests extends TestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -104,11 +98,8 @@ public class HDInsightManagerTests extends TestBase {
             String containerName = "container" + randomPadding;
             String strPassword = "Pa$s" + randomPadding;
 
-            OsProfile osProfile = new OsProfile()
-                .withLinuxOperatingSystemProfile(
-                    new LinuxOperatingSystemProfile()
-                        .withUsername("sshuser")
-                        .withPassword(strPassword));
+            OsProfile osProfile = new OsProfile().withLinuxOperatingSystemProfile(
+                new LinuxOperatingSystemProfile().withUsername("sshuser").withPassword(strPassword));
 
             Map<String, Map<String, String>> clusterDefinition = new HashMap<>(1);
             Map<String, String> clusterProperties = new HashMap<>(3);
@@ -118,15 +109,15 @@ public class HDInsightManagerTests extends TestBase {
             clusterDefinition.put("gateway", Collections.unmodifiableMap(clusterProperties));
 
             // @embedmeStart
-            com.azure.resourcemanager.storage.models.StorageAccount storageAccount =
-                storageManager.storageAccounts().define(storageName)
-                    .withRegion(REGION)
-                    .withExistingResourceGroup(resourceGroupName)
-                    .withSku(StorageAccountSkuType.STANDARD_LRS)
-                    .withMinimumTlsVersion(MinimumTlsVersion.TLS1_0)
-                    .withAccessFromAzureServices()
-                    .withAccessFromAllNetworks()
-                    .create();
+            com.azure.resourcemanager.storage.models.StorageAccount storageAccount = storageManager.storageAccounts()
+                .define(storageName)
+                .withRegion(REGION)
+                .withExistingResourceGroup(resourceGroupName)
+                .withSku(StorageAccountSkuType.STANDARD_LRS)
+                .withMinimumTlsVersion(MinimumTlsVersion.TLS1_0)
+                .withAccessFromAzureServices()
+                .withAccessFromAllNetworks()
+                .create();
 
             BlobContainer blobContainer = storageManager.blobContainers()
                 .defineContainer(containerName)
@@ -134,59 +125,52 @@ public class HDInsightManagerTests extends TestBase {
                 .withPublicAccess(PublicAccess.NONE)
                 .create();
 
-            cluster = hdInsightManager.clusters()
-                .define(clusterName)
-                .withExistingResourceGroup(resourceGroupName)
-                .withRegion(REGION)
-                .withProperties(
-                    new ClusterCreateProperties()
-                        .withClusterVersion("4.0.3000.1")
-                        .withOsType(OSType.LINUX)
-                        .withClusterDefinition(
-                            new ClusterDefinition()
-                                .withKind("SPARK")
+            cluster
+                = hdInsightManager.clusters()
+                    .define(clusterName)
+                    .withExistingResourceGroup(resourceGroupName)
+                    .withRegion(REGION)
+                    .withProperties(
+                        new ClusterCreateProperties().withClusterVersion("4.0.3000.1")
+                            .withOsType(OSType.LINUX)
+                            .withClusterDefinition(new ClusterDefinition().withKind("SPARK")
                                 .withConfigurations(Collections.unmodifiableMap(clusterDefinition)))
-                        .withComputeProfile(
-                            new ComputeProfile()
-                                .withRoles(
-                                    Arrays.asList(
-                                        new Role().withName("headnode")
-                                            .withTargetInstanceCount(2)
-                                            .withHardwareProfile(new HardwareProfile().withVmSize("standard_e8_v3"))
-                                            .withOsProfile(osProfile)
-                                            .withEncryptDataDisks(false),
-                                        new Role().withName("workernode")
-                                            .withTargetInstanceCount(4)
-                                            .withHardwareProfile(new HardwareProfile().withVmSize("standard_e8_v3"))
-                                            .withOsProfile(osProfile)
-                                            .withEncryptDataDisks(false),
-                                        new Role().withName("zookeepernode")
-                                            .withTargetInstanceCount(3)
-                                            .withHardwareProfile(new HardwareProfile().withVmSize("standard_a2_v2"))
-                                            .withOsProfile(osProfile)
-                                            .withEncryptDataDisks(false)
-                                    )))
-                        .withTier(Tier.STANDARD)
-                        .withEncryptionInTransitProperties(
-                            new EncryptionInTransitProperties()
-                                .withIsEncryptionInTransitEnabled(false))
-                        .withStorageProfile(
-                            new StorageProfile()
-                                .withStorageaccounts(
-                                    Arrays.asList(
-                                        new StorageAccount()
-                                            .withName(storageName + ".blob.core.windows.net")
-                                            .withResourceId(storageAccount.id())
-                                            .withContainer(blobContainer.name())
-                                            .withIsDefault(true)
-                                            .withKey(storageAccount.getKeys().iterator().next().value()))
-                                ))
-                        .withMinSupportedTlsVersion("1.2")
-                        .withComputeIsolationProperties(
-                            new ComputeIsolationProperties()
-                                .withEnableComputeIsolation(false))
-                )
-                .create();
+                            .withComputeProfile(
+                                new ComputeProfile()
+                                    .withRoles(
+                                        Arrays
+                                            .asList(
+                                                new Role().withName("headnode")
+                                                    .withTargetInstanceCount(2)
+                                                    .withHardwareProfile(
+                                                        new HardwareProfile().withVmSize("standard_e8_v3"))
+                                                    .withOsProfile(osProfile)
+                                                    .withEncryptDataDisks(false),
+                                                new Role().withName("workernode")
+                                                    .withTargetInstanceCount(4)
+                                                    .withHardwareProfile(
+                                                        new HardwareProfile().withVmSize("standard_e8_v3"))
+                                                    .withOsProfile(osProfile)
+                                                    .withEncryptDataDisks(false),
+                                                new Role().withName("zookeepernode")
+                                                    .withTargetInstanceCount(3)
+                                                    .withHardwareProfile(
+                                                        new HardwareProfile().withVmSize("standard_a2_v2"))
+                                                    .withOsProfile(osProfile)
+                                                    .withEncryptDataDisks(false))))
+                            .withTier(Tier.STANDARD)
+                            .withEncryptionInTransitProperties(
+                                new EncryptionInTransitProperties().withIsEncryptionInTransitEnabled(false))
+                            .withStorageProfile(new StorageProfile().withStorageaccounts(
+                                Arrays.asList(new StorageAccount().withName(storageName + ".blob.core.windows.net")
+                                    .withResourceId(storageAccount.id())
+                                    .withContainer(blobContainer.name())
+                                    .withIsDefault(true)
+                                    .withKey(storageAccount.getKeys().iterator().next().value()))))
+                            .withMinSupportedTlsVersion("1.2")
+                            .withComputeIsolationProperties(
+                                new ComputeIsolationProperties().withEnableComputeIsolation(false)))
+                    .create();
             // @embedmeEnd
             cluster.refresh();
             Assertions.assertEquals(cluster.name(), clusterName);

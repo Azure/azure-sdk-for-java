@@ -5,28 +5,38 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.fluent.models.EntityInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The expansion result values. */
+/**
+ * The expansion result values.
+ */
 @Fluent
-public final class BookmarkExpandResponseValue {
+public final class BookmarkExpandResponseValue implements JsonSerializable<BookmarkExpandResponseValue> {
     /*
      * Array of the expansion result entities.
      */
-    @JsonProperty(value = "entities")
     private List<EntityInner> entities;
 
     /*
      * Array of expansion result connected entities
      */
-    @JsonProperty(value = "edges")
     private List<ConnectedEntity> edges;
 
     /**
+     * Creates an instance of BookmarkExpandResponseValue class.
+     */
+    public BookmarkExpandResponseValue() {
+    }
+
+    /**
      * Get the entities property: Array of the expansion result entities.
-     *
+     * 
      * @return the entities value.
      */
     public List<EntityInner> entities() {
@@ -35,7 +45,7 @@ public final class BookmarkExpandResponseValue {
 
     /**
      * Set the entities property: Array of the expansion result entities.
-     *
+     * 
      * @param entities the entities value to set.
      * @return the BookmarkExpandResponseValue object itself.
      */
@@ -46,7 +56,7 @@ public final class BookmarkExpandResponseValue {
 
     /**
      * Get the edges property: Array of expansion result connected entities.
-     *
+     * 
      * @return the edges value.
      */
     public List<ConnectedEntity> edges() {
@@ -55,7 +65,7 @@ public final class BookmarkExpandResponseValue {
 
     /**
      * Set the edges property: Array of expansion result connected entities.
-     *
+     * 
      * @param edges the edges value to set.
      * @return the BookmarkExpandResponseValue object itself.
      */
@@ -66,7 +76,7 @@ public final class BookmarkExpandResponseValue {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -76,5 +86,46 @@ public final class BookmarkExpandResponseValue {
         if (edges() != null) {
             edges().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("entities", this.entities, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("edges", this.edges, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BookmarkExpandResponseValue from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BookmarkExpandResponseValue if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BookmarkExpandResponseValue.
+     */
+    public static BookmarkExpandResponseValue fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BookmarkExpandResponseValue deserializedBookmarkExpandResponseValue = new BookmarkExpandResponseValue();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("entities".equals(fieldName)) {
+                    List<EntityInner> entities = reader.readArray(reader1 -> EntityInner.fromJson(reader1));
+                    deserializedBookmarkExpandResponseValue.entities = entities;
+                } else if ("edges".equals(fieldName)) {
+                    List<ConnectedEntity> edges = reader.readArray(reader1 -> ConnectedEntity.fromJson(reader1));
+                    deserializedBookmarkExpandResponseValue.edges = edges;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBookmarkExpandResponseValue;
+        });
     }
 }

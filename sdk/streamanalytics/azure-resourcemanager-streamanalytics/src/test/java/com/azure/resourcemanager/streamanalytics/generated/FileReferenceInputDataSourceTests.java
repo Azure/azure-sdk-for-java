@@ -12,15 +12,15 @@ public final class FileReferenceInputDataSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileReferenceInputDataSource model
-            = BinaryData.fromString("{\"type\":\"File\",\"properties\":{\"path\":\"ashrt\"}}")
+            = BinaryData.fromString("{\"type\":\"File\",\"properties\":{\"path\":\"iobyu\"}}")
                 .toObject(FileReferenceInputDataSource.class);
-        Assertions.assertEquals("ashrt", model.path());
+        Assertions.assertEquals("iobyu", model.path());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FileReferenceInputDataSource model = new FileReferenceInputDataSource().withPath("ashrt");
+        FileReferenceInputDataSource model = new FileReferenceInputDataSource().withPath("iobyu");
         model = BinaryData.fromObject(model).toObject(FileReferenceInputDataSource.class);
-        Assertions.assertEquals("ashrt", model.path());
+        Assertions.assertEquals("iobyu", model.path());
     }
 }

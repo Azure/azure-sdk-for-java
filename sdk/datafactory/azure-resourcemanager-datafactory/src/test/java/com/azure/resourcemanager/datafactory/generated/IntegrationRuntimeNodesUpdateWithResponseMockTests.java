@@ -21,7 +21,7 @@ public final class IntegrationRuntimeNodesUpdateWithResponseMockTests {
     @Test
     public void testUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"nodeName\":\"dibdbkgx\",\"machineName\":\"bwepduyqx\",\"hostServiceUri\":\"xarddbnqyayl\",\"status\":\"NeedRegistration\",\"capabilities\":{\"pxbjihz\":\"dprtpxwgt\",\"dnljpouz\":\"xndnbzhs\",\"ugqllq\":\"stytexu\"},\"versionStatus\":\"eyfuf\",\"version\":\"ioyw\",\"registerTime\":\"2021-04-12T09:41:48Z\",\"lastConnectTime\":\"2021-07-14T20:04:05Z\",\"expiryTime\":\"2021-03-23T09:37:38Z\",\"lastStartTime\":\"2021-12-05T19:22:06Z\",\"lastStopTime\":\"2021-09-27T23:49Z\",\"lastUpdateResult\":\"Succeed\",\"lastStartUpdateTime\":\"2021-08-11T04:14:48Z\",\"lastEndUpdateTime\":\"2021-06-16T16:09:13Z\",\"isActiveDispatcher\":true,\"concurrentJobsLimit\":1334488394,\"maxConcurrentJobs\":1334330909,\"\":{\"pwom\":\"datatyzjqteqajip\",\"segyt\":\"datal\",\"nw\":\"datauktcqggxdnp\",\"lwoozlfliiru\":\"dataqag\"}}";
+            = "{\"nodeName\":\"w\",\"machineName\":\"df\",\"hostServiceUri\":\"q\",\"status\":\"Limited\",\"capabilities\":{\"dsnc\":\"sabyowfrwprbzf\"},\"versionStatus\":\"lgtqrowtaz\",\"version\":\"xwkkjx\",\"registerTime\":\"2021-06-24T12:52:09Z\",\"lastConnectTime\":\"2021-09-26T11:47:54Z\",\"expiryTime\":\"2021-09-06T21:28:54Z\",\"lastStartTime\":\"2021-08-27T15:55:46Z\",\"lastStopTime\":\"2021-10-07T00:16:58Z\",\"lastUpdateResult\":\"Fail\",\"lastStartUpdateTime\":\"2021-08-31T19:56:57Z\",\"lastEndUpdateTime\":\"2021-06-22T04:38:40Z\",\"isActiveDispatcher\":false,\"concurrentJobsLimit\":1091038831,\"maxConcurrentJobs\":1665291142,\"\":{\"fkdf\":\"datairttlwuqgaaj\",\"febtvnskygzqqikt\":\"dataqsbekmeeowdojpja\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,8 +31,8 @@ public final class IntegrationRuntimeNodesUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SelfHostedIntegrationRuntimeNode response = manager.integrationRuntimeNodes()
-            .updateWithResponse("vmc", "chbofqd", "qvjfszvecedoptez", "krerurcjgkau",
-                new UpdateIntegrationRuntimeNodeRequest().withConcurrentJobsLimit(943572631),
+            .updateWithResponse("vcwhodfwv", "xrfr", "x", "yktlofgpnswv",
+                new UpdateIntegrationRuntimeNodeRequest().withConcurrentJobsLimit(1423242353),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

@@ -13,8 +13,8 @@ import org.junit.jupiter.api.Assertions;
 public final class LabFragmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LabFragment model =
-            BinaryData.fromString("{\"tags\":{\"hxiidlopedb\":\"scbbxig\"}}").toObject(LabFragment.class);
+        LabFragment model
+            = BinaryData.fromString("{\"tags\":{\"hxiidlopedb\":\"scbbxig\"}}").toObject(LabFragment.class);
         Assertions.assertEquals("scbbxig", model.tags().get("hxiidlopedb"));
     }
 

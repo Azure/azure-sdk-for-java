@@ -9,7 +9,8 @@ package com.azure.resourcemanager.mysqlflexibleserver.generated;
  */
 public final class GetPrivateDnsZoneSuffixExecuteSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/ServiceOperations/stable/2023-12-30/examples/GetPrivateDnsZoneSuffix.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/
+     * GetPrivateDnsZoneSuffix.json
      */
     /**
      * Sample code: GetPrivateDnsZoneSuffix.

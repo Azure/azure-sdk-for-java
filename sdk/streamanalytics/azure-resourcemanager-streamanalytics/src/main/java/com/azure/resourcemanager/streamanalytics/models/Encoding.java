@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -33,7 +32,6 @@ public final class Encoding extends ExpandableStringEnum<Encoding> {
      * @param name a name to look for.
      * @return the corresponding Encoding.
      */
-    @JsonCreator
     public static Encoding fromString(String name) {
         return fromString(name, Encoding.class);
     }

@@ -67,12 +67,13 @@ public final class ManageVirtualMachineScaleSet {
         final String httpsLoadBalancingRule = "httpsRule";
         final String natPool50XXto22 = "natPool50XXto22";
         final String natPool60XXto23 = "natPool60XXto23";
-        final String vmssName =  Utils.randomResourceName(azureResourceManager, "vmss", 24);
+        final String vmssName = Utils.randomResourceName(azureResourceManager, "vmss", 24);
 
         final String userName = "tirekicker";
         final String sshKey = Utils.sshPublicKey();
 
-        final String apacheInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/install_apache.sh";
+        final String apacheInstallScript
+            = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/install_apache.sh";
         final String installCommand = "bash install_apache.sh";
         List<String> fileUris = new ArrayList<>();
         fileUris.add(apacheInstallScript);
@@ -82,14 +83,15 @@ public final class ManageVirtualMachineScaleSet {
             // Create a virtual network with a frontend subnet
             System.out.println("Creating virtual network with a frontend subnet ...");
 
-            Network network = azureResourceManager.networks().define(vnetName)
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName)
-                    .withAddressSpace("172.16.0.0/16")
-                    .defineSubnet("Front-end")
-                        .withAddressPrefix("172.16.1.0/24")
-                        .attach()
-                    .create();
+            Network network = azureResourceManager.networks()
+                .define(vnetName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withAddressSpace("172.16.0.0/16")
+                .defineSubnet("Front-end")
+                .withAddressPrefix("172.16.1.0/24")
+                .attach()
+                .create();
 
             System.out.println("Created a virtual network");
             // Print the virtual network details
@@ -99,11 +101,12 @@ public final class ManageVirtualMachineScaleSet {
             // Create a public IP address
             System.out.println("Creating a public IP address...");
 
-            PublicIpAddress publicIPAddress = azureResourceManager.publicIpAddresses().define(publicIpName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withLeafDomainLabel(publicIpName)
-                    .create();
+            PublicIpAddress publicIPAddress = azureResourceManager.publicIpAddresses()
+                .define(publicIpName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withLeafDomainLabel(publicIpName)
+                .create();
 
             System.out.println("Created a public IP address");
             // Print the virtual network details
@@ -125,122 +128,122 @@ public final class ManageVirtualMachineScaleSet {
             System.out.println("Creating a Internet facing load balancer with ...");
             System.out.println("- A frontend IP address");
             System.out.println("- Two backend address pools which contain network interfaces for the virtual\n"
-                    + "  machines to receive HTTP and HTTPS network traffic from the load balancer");
+                + "  machines to receive HTTP and HTTPS network traffic from the load balancer");
             System.out.println("- Two load balancing rules for HTTP and HTTPS to map public ports on the load\n"
-                    + "  balancer to ports in the backend address pool");
+                + "  balancer to ports in the backend address pool");
             System.out.println("- Two probes which contain HTTP and HTTPS health probes used to check availability\n"
-                    + "  of virtual machines in the backend address pool");
+                + "  of virtual machines in the backend address pool");
             System.out.println("- Two inbound NAT rules which contain rules that map a public port on the load\n"
-                    + "  balancer to a port for a specific virtual machine in the backend address pool\n"
-                    + "  - this provides direct VM connectivity for SSH to port 22 and TELNET to port 23");
+                + "  balancer to a port for a specific virtual machine in the backend address pool\n"
+                + "  - this provides direct VM connectivity for SSH to port 22 and TELNET to port 23");
 
-            LoadBalancer loadBalancer1 = azureResourceManager.loadBalancers().define(loadBalancerName1)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    // Add two rules that uses above backend and probe
-                    .defineLoadBalancingRule(httpLoadBalancingRule)
-                        .withProtocol(TransportProtocol.TCP)
-                        .fromFrontend(frontendName)
-                        .fromFrontendPort(80)
-                        .toBackend(backendPoolName1)
-                        .withProbe(httpProbe)
-                        .attach()
-                    .defineLoadBalancingRule(httpsLoadBalancingRule)
-                        .withProtocol(TransportProtocol.TCP)
-                        .fromFrontend(frontendName)
-                        .fromFrontendPort(443)
-                        .toBackend(backendPoolName2)
-                        .withProbe(httpsProbe)
-                        .attach()
+            LoadBalancer loadBalancer1 = azureResourceManager.loadBalancers()
+                .define(loadBalancerName1)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                // Add two rules that uses above backend and probe
+                .defineLoadBalancingRule(httpLoadBalancingRule)
+                .withProtocol(TransportProtocol.TCP)
+                .fromFrontend(frontendName)
+                .fromFrontendPort(80)
+                .toBackend(backendPoolName1)
+                .withProbe(httpProbe)
+                .attach()
+                .defineLoadBalancingRule(httpsLoadBalancingRule)
+                .withProtocol(TransportProtocol.TCP)
+                .fromFrontend(frontendName)
+                .fromFrontendPort(443)
+                .toBackend(backendPoolName2)
+                .withProbe(httpsProbe)
+                .attach()
 
-                    // Add nat pools to enable direct VM connectivity for
-                    //  SSH to port 22 and TELNET to port 23
-                    .defineInboundNatPool(natPool50XXto22)
-                        .withProtocol(TransportProtocol.TCP)
-                        .fromFrontend(frontendName)
-                        .fromFrontendPortRange(5000, 5099)
-                        .toBackendPort(22)
-                        .attach()
-                    .defineInboundNatPool(natPool60XXto23)
-                        .withProtocol(TransportProtocol.TCP)
-                        .fromFrontend(frontendName)
-                        .fromFrontendPortRange(6000, 6099)
-                        .toBackendPort(23)
-                        .attach()
+                // Add nat pools to enable direct VM connectivity for
+                //  SSH to port 22 and TELNET to port 23
+                .defineInboundNatPool(natPool50XXto22)
+                .withProtocol(TransportProtocol.TCP)
+                .fromFrontend(frontendName)
+                .fromFrontendPortRange(5000, 5099)
+                .toBackendPort(22)
+                .attach()
+                .defineInboundNatPool(natPool60XXto23)
+                .withProtocol(TransportProtocol.TCP)
+                .fromFrontend(frontendName)
+                .fromFrontendPortRange(6000, 6099)
+                .toBackendPort(23)
+                .attach()
 
-                    // Explicitly define the frontend
-                    .definePublicFrontend(frontendName)
-                        .withExistingPublicIpAddress(publicIPAddress)
-                        .attach()
+                // Explicitly define the frontend
+                .definePublicFrontend(frontendName)
+                .withExistingPublicIpAddress(publicIPAddress)
+                .attach()
 
-                    // Add two probes one per rule
-                    .defineHttpProbe(httpProbe)
-                        .withRequestPath("/")
-                        .withPort(80)
-                        .attach()
-                    .defineHttpProbe(httpsProbe)
-                        .withRequestPath("/")
-                        .withPort(443)
-                        .attach()
+                // Add two probes one per rule
+                .defineHttpProbe(httpProbe)
+                .withRequestPath("/")
+                .withPort(80)
+                .attach()
+                .defineHttpProbe(httpsProbe)
+                .withRequestPath("/")
+                .withPort(443)
+                .attach()
 
-                    .create();
+                .create();
 
             // Print load balancer details
             System.out.println("Created a load balancer");
             Utils.print(loadBalancer1);
 
-
             //=============================================================
             // Create a virtual machine scale set with three virtual machines
             // And, install Apache Web servers on them
 
-            System.out.println("Creating virtual machine scale set with three virtual machines"
-                    + " in the frontend subnet ...");
+            System.out.println(
+                "Creating virtual machine scale set with three virtual machines" + " in the frontend subnet ...");
 
             Date t1 = new Date();
 
-            ImageReference imageReference = new ImageReference()
-                    .withPublisher("Canonical")
-                    .withOffer("UbuntuServer")
-                    .withSku("18.04-LTS")
-                    .withVersion("latest");
+            ImageReference imageReference = new ImageReference().withPublisher("Canonical")
+                .withOffer("UbuntuServer")
+                .withSku("18.04-LTS")
+                .withVersion("latest");
 
-            VirtualMachineScaleSet virtualMachineScaleSet = azureResourceManager.virtualMachineScaleSets().define(vmssName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D3_V2)
-                    .withExistingPrimaryNetworkSubnet(network, "Front-end")
-                    .withExistingPrimaryInternetFacingLoadBalancer(loadBalancer1)
-                    .withPrimaryInternetFacingLoadBalancerBackends(backendPoolName1, backendPoolName2)
-                    .withPrimaryInternetFacingLoadBalancerInboundNatPools(natPool50XXto22, natPool60XXto23)
-                    .withoutPrimaryInternalLoadBalancer()
-                    .withSpecificLinuxImageVersion(imageReference)
-                    .withRootUsername(userName)
-                    .withSsh(sshKey)
-                    .withNewDataDisk(100)
-                    .withNewDataDisk(100, 1, CachingTypes.READ_WRITE)
-                    .withNewDataDisk(100, 2, CachingTypes.READ_WRITE, StorageAccountTypes.STANDARD_LRS)
-                    .withCapacity(3)
-                    .create();
+            VirtualMachineScaleSet virtualMachineScaleSet = azureResourceManager.virtualMachineScaleSets()
+                .define(vmssName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D3_V2)
+                .withExistingPrimaryNetworkSubnet(network, "Front-end")
+                .withExistingPrimaryInternetFacingLoadBalancer(loadBalancer1)
+                .withPrimaryInternetFacingLoadBalancerBackends(backendPoolName1, backendPoolName2)
+                .withPrimaryInternetFacingLoadBalancerInboundNatPools(natPool50XXto22, natPool60XXto23)
+                .withoutPrimaryInternalLoadBalancer()
+                .withSpecificLinuxImageVersion(imageReference)
+                .withRootUsername(userName)
+                .withSsh(sshKey)
+                .withNewDataDisk(100)
+                .withNewDataDisk(100, 1, CachingTypes.READ_WRITE)
+                .withNewDataDisk(100, 2, CachingTypes.READ_WRITE, StorageAccountTypes.STANDARD_LRS)
+                .withCapacity(3)
+                .create();
 
             // VM may take some time to init its pkgs
             ResourceManagerUtils.sleep(Duration.ofMinutes(1));
 
             virtualMachineScaleSet.update()
-                    // Use a VM extension to install Apache Web servers
-                    .defineNewExtension("CustomScriptForLinux")
-                        .withPublisher("Microsoft.OSTCExtensions")
-                        .withType("CustomScriptForLinux")
-                        .withVersion("1.4")
-                        .withMinorVersionAutoUpgrade()
-                        .withPublicSetting("fileUris", fileUris)
-                        .withPublicSetting("commandToExecute", installCommand)
-                        .attach()
-                    .apply();
+                // Use a VM extension to install Apache Web servers
+                .defineNewExtension("CustomScriptForLinux")
+                .withPublisher("Microsoft.OSTCExtensions")
+                .withType("CustomScriptForLinux")
+                .withVersion("1.4")
+                .withMinorVersionAutoUpgrade()
+                .withPublicSetting("fileUris", fileUris)
+                .withPublicSetting("commandToExecute", installCommand)
+                .attach()
+                .apply();
 
             Date t2 = new Date();
-            System.out.println("Created a virtual machine scale set with "
-                    + "3 Linux VMs & Apache Web servers on them: (took "
+            System.out.println(
+                "Created a virtual machine scale set with " + "3 Linux VMs & Apache Web servers on them: (took "
                     + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) ");
             System.out.println();
 
@@ -251,7 +254,8 @@ public final class ManageVirtualMachineScaleSet {
             // List virtual machine scale set network interfaces
 
             System.out.println("Listing scale set network interfaces ...");
-            PagedIterable<VirtualMachineScaleSetNetworkInterface> vmssNics = virtualMachineScaleSet.listNetworkInterfaces();
+            PagedIterable<VirtualMachineScaleSetNetworkInterface> vmssNics
+                = virtualMachineScaleSet.listNetworkInterfaces();
             for (VirtualMachineScaleSetNetworkInterface vmssNic : vmssNics) {
                 System.out.println(vmssNic.id());
             }
@@ -259,19 +263,23 @@ public final class ManageVirtualMachineScaleSet {
             //=============================================================
             // List virtual machine scale set instance network interfaces and SSH connection string
 
-            System.out.println("Listing scale set virtual machine instance network interfaces and SSH connection string...");
+            System.out
+                .println("Listing scale set virtual machine instance network interfaces and SSH connection string...");
             for (VirtualMachineScaleSetVM instance : virtualMachineScaleSet.virtualMachines().list()) {
                 System.out.println("Scale set virtual machine instance #" + instance.instanceId());
                 System.out.println(instance.id());
-                PagedIterable<VirtualMachineScaleSetNetworkInterface> networkInterfaces = instance.listNetworkInterfaces();
+                PagedIterable<VirtualMachineScaleSetNetworkInterface> networkInterfaces
+                    = instance.listNetworkInterfaces();
                 // Pick the first NIC
                 VirtualMachineScaleSetNetworkInterface networkInterface = networkInterfaces.iterator().next();
-                for (VirtualMachineScaleSetNicIpConfiguration ipConfig :networkInterface.ipConfigurations().values()) {
+                for (VirtualMachineScaleSetNicIpConfiguration ipConfig : networkInterface.ipConfigurations().values()) {
                     if (ipConfig.isPrimary()) {
-                        List<LoadBalancerInboundNatRule> natRules = ipConfig.listAssociatedLoadBalancerInboundNatRules();
+                        List<LoadBalancerInboundNatRule> natRules
+                            = ipConfig.listAssociatedLoadBalancerInboundNatRules();
                         for (LoadBalancerInboundNatRule natRule : natRules) {
                             if (natRule.backendPort() == 22) {
-                                System.out.println("SSH connection string: " + userName + "@" + publicIPAddress.fqdn() + ":" + natRule.frontendPort());
+                                System.out.println("SSH connection string: " + userName + "@" + publicIPAddress.fqdn()
+                                    + ":" + natRule.frontendPort());
                                 break;
                             }
                         }
@@ -287,7 +295,6 @@ public final class ManageVirtualMachineScaleSet {
             virtualMachineScaleSet.powerOff();
             System.out.println("Stopped virtual machine scale set");
 
-
             //=============================================================
             // Deallocate the virtual machine scale set
 
@@ -299,10 +306,7 @@ public final class ManageVirtualMachineScaleSet {
             // Update the virtual machine scale set by removing and adding disk
 
             System.out.println("Updating virtual machine scale set managed data disks...");
-            virtualMachineScaleSet.update()
-                    .withoutDataDisk(0)
-                    .withoutDataDisk(200)
-                    .apply();
+            virtualMachineScaleSet.update().withoutDataDisk(0).withoutDataDisk(200).apply();
             System.out.println("Updated virtual machine scale set");
 
             //=============================================================
@@ -312,21 +316,15 @@ public final class ManageVirtualMachineScaleSet {
             virtualMachineScaleSet.start();
             System.out.println("Started virtual machine scale set");
 
-
             //=============================================================
             // Update the virtual machine scale set
             // - double the no. of virtual machines
 
-            System.out.println("Updating virtual machine scale set "
-                    + "- double the no. of virtual machines ...");
+            System.out.println("Updating virtual machine scale set " + "- double the no. of virtual machines ...");
 
-            virtualMachineScaleSet.update()
-                    .withCapacity(6)
-                    .apply();
+            virtualMachineScaleSet.update().withCapacity(6).apply();
 
-            System.out.println("Doubled the no. of virtual machines in "
-                    + "the virtual machine scale set");
-
+            System.out.println("Doubled the no. of virtual machines in " + "the virtual machine scale set");
 
             //=============================================================
             // re-start virtual machine scale set
@@ -365,8 +363,7 @@ public final class ManageVirtualMachineScaleSet {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

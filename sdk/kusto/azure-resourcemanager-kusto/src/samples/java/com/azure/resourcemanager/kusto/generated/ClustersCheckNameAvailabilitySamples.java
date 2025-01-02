@@ -6,20 +6,22 @@ package com.azure.resourcemanager.kusto.generated;
 
 import com.azure.resourcemanager.kusto.models.ClusterCheckNameRequest;
 
-/** Samples for Clusters CheckNameAvailability. */
+/**
+ * Samples for Clusters CheckNameAvailability.
+ */
 public final class ClustersCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClustersCheckNameAvailability.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/
+     * KustoClustersCheckNameAvailability.json
      */
     /**
      * Sample code: KustoClustersCheckNameAvailability.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoClustersCheckNameAvailability(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .clusters()
-            .checkNameAvailabilityWithResponse(
-                "westus", new ClusterCheckNameRequest().withName("kustoCluster"), com.azure.core.util.Context.NONE);
+        manager.clusters()
+            .checkNameAvailabilityWithResponse("westus", new ClusterCheckNameRequest().withName("kustoCluster"),
+                com.azure.core.util.Context.NONE);
     }
 }

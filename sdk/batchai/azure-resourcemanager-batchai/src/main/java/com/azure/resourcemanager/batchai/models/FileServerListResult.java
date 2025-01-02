@@ -14,7 +14,8 @@ import java.util.List;
 /** Values returned by the File Server List operation. */
 @Fluent
 public final class FileServerListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FileServerListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(FileServerListResult.class);
 
     /*
      * The collection of File Servers.

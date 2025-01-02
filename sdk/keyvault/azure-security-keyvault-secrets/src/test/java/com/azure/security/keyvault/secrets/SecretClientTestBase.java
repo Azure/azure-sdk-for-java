@@ -45,10 +45,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class SecretClientTestBase extends TestProxyTestBase {
     static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
-    private static final String AZURE_TEST_KEYVAULT_SECRET_SERVICE_VERSIONS =
-        "AZURE_KEYVAULT_TEST_SECRETS_SERVICE_VERSIONS";
-    private static final String SERVICE_VERSION_FROM_ENV =
-        Configuration.getGlobalConfiguration().get(AZURE_TEST_KEYVAULT_SECRET_SERVICE_VERSIONS);
+    private static final String AZURE_TEST_KEYVAULT_SECRET_SERVICE_VERSIONS
+        = "AZURE_KEYVAULT_TEST_SECRETS_SERVICE_VERSIONS";
+    private static final String SERVICE_VERSION_FROM_ENV = Configuration.getGlobalConfiguration()
+        .get(AZURE_TEST_KEYVAULT_SECRET_SERVICE_VERSIONS);
 
     private static final String SECRET_NAME = "javaSecretTemp";
     private static final String SECRET_VALUE = "Chocolate is hidden in the toothpaste cabinet";
@@ -271,8 +271,8 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
     void restoreSecretRunner(Consumer<KeyVaultSecret> testRunner) {
         final KeyVaultSecret secretToBackupAndRestore =
             new KeyVaultSecret(testResourceNamer.randomName("testSecretRestore", 20), "testSecretRestoreVal")
-            .setProperties(new SecretProperties()
-                .setExpiresOn(OffsetDateTime.of(2080, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
+                .setProperties(new SecretProperties()
+                    .setExpiresOn(OffsetDateTime.of(2080, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
 
         testRunner.accept(secretToBackupAndRestore);
     }
@@ -394,11 +394,10 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
         // arguments - https://github.com/junit-team/junit5/issues/1427
         List<Arguments> argumentsList = new ArrayList<>();
 
-        getHttpClients()
-            .forEach(httpClient -> {
-                Arrays.stream(SecretServiceVersion.values()).filter(SecretClientTestBase::shouldServiceVersionBeTested)
-                    .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
-            });
+        getHttpClients().forEach(httpClient ->
+            Arrays.stream(SecretServiceVersion.values())
+                .filter(SecretClientTestBase::shouldServiceVersionBeTested)
+                .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion))));
 
         return argumentsList.stream();
     }
@@ -431,7 +430,7 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
 
         String[] configuredServiceVersionList = SERVICE_VERSION_FROM_ENV.split(",");
 
-        return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
-            serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
+        return Arrays.stream(configuredServiceVersionList)
+            .anyMatch(configuredServiceVersion -> serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
     }
 }

@@ -24,7 +24,8 @@ public final class CurrentScenarioDetailsTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CurrentScenarioDetails model = new CurrentScenarioDetails().withScenarioName("epxgyqagvr")
-            .withJobId("npkukghimdblx").withStartTime(OffsetDateTime.parse("2021-02-15T12:58:28Z"));
+            .withJobId("npkukghimdblx")
+            .withStartTime(OffsetDateTime.parse("2021-02-15T12:58:28Z"));
         model = BinaryData.fromObject(model).toObject(CurrentScenarioDetails.class);
         Assertions.assertEquals("epxgyqagvr", model.scenarioName());
         Assertions.assertEquals("npkukghimdblx", model.jobId());

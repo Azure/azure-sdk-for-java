@@ -10,9 +10,9 @@ module com.azure.communication.callingserver {
     exports com.azure.communication.callingserver.models;
     exports com.azure.communication.callingserver.models.events;
 
-    // exporting some packages specifically for Jackson
-    opens com.azure.communication.callingserver.implementation.models to com.fasterxml.jackson.databind, com.azure.core;
-    opens com.azure.communication.callingserver to com.fasterxml.jackson.databind;
-    opens com.azure.communication.callingserver.models to com.azure.core, com.fasterxml.jackson.databind;
-    opens com.azure.communication.callingserver.models.events to com.fasterxml.jackson.databind;
+    // Opening some packages to azure-core for serialization.
+    opens com.azure.communication.callingserver.implementation.models to com.azure.core;
+    opens com.azure.communication.callingserver to com.azure.core;
+    opens com.azure.communication.callingserver.models to com.azure.core;
+    opens com.azure.communication.callingserver.models.events to com.azure.core;
 }

@@ -5,34 +5,49 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The polling frequency for the TAXII server. */
+/**
+ * The polling frequency for the TAXII server.
+ */
 public final class PollingFrequency extends ExpandableStringEnum<PollingFrequency> {
-    /** Static value OnceAMinute for PollingFrequency. */
+    /**
+     * Static value OnceAMinute for PollingFrequency.
+     */
     public static final PollingFrequency ONCE_AMINUTE = fromString("OnceAMinute");
 
-    /** Static value OnceAnHour for PollingFrequency. */
+    /**
+     * Static value OnceAnHour for PollingFrequency.
+     */
     public static final PollingFrequency ONCE_AN_HOUR = fromString("OnceAnHour");
 
-    /** Static value OnceADay for PollingFrequency. */
+    /**
+     * Static value OnceADay for PollingFrequency.
+     */
     public static final PollingFrequency ONCE_ADAY = fromString("OnceADay");
 
     /**
+     * Creates a new instance of PollingFrequency value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PollingFrequency() {
+    }
+
+    /**
      * Creates or finds a PollingFrequency from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PollingFrequency.
      */
-    @JsonCreator
     public static PollingFrequency fromString(String name) {
         return fromString(name, PollingFrequency.class);
     }
 
     /**
      * Gets known PollingFrequency values.
-     *
+     * 
      * @return known PollingFrequency values.
      */
     public static Collection<PollingFrequency> values() {

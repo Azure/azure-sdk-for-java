@@ -19,26 +19,20 @@ public final class EmailConfigurationsImpl implements EmailConfigurations {
 
     private final EmailConfigurationsClient innerClient;
 
-    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-        serviceManager;
+    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager;
 
-    public EmailConfigurationsImpl(
-        EmailConfigurationsClient innerClient,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-            serviceManager) {
+    public EmailConfigurationsImpl(EmailConfigurationsClient innerClient,
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<EmailConfigurationModel> getWithResponse(
-        String resourceGroupName, String vaultName, String emailConfigurationName, Context context) {
-        Response<EmailConfigurationModelInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, vaultName, emailConfigurationName, context);
+    public Response<EmailConfigurationModel> getWithResponse(String resourceGroupName, String vaultName,
+        String emailConfigurationName, Context context) {
+        Response<EmailConfigurationModelInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, vaultName, emailConfigurationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new EmailConfigurationModelImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -46,8 +40,8 @@ public final class EmailConfigurationsImpl implements EmailConfigurations {
     }
 
     public EmailConfigurationModel get(String resourceGroupName, String vaultName, String emailConfigurationName) {
-        EmailConfigurationModelInner inner =
-            this.serviceClient().get(resourceGroupName, vaultName, emailConfigurationName);
+        EmailConfigurationModelInner inner
+            = this.serviceClient().get(resourceGroupName, vaultName, emailConfigurationName);
         if (inner != null) {
             return new EmailConfigurationModelImpl(inner, this.manager());
         } else {
@@ -57,67 +51,49 @@ public final class EmailConfigurationsImpl implements EmailConfigurations {
 
     public PagedIterable<EmailConfigurationModel> list(String resourceGroupName, String vaultName) {
         PagedIterable<EmailConfigurationModelInner> inner = this.serviceClient().list(resourceGroupName, vaultName);
-        return Utils.mapPage(inner, inner1 -> new EmailConfigurationModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EmailConfigurationModelImpl(inner1, this.manager()));
     }
 
     public PagedIterable<EmailConfigurationModel> list(String resourceGroupName, String vaultName, Context context) {
-        PagedIterable<EmailConfigurationModelInner> inner =
-            this.serviceClient().list(resourceGroupName, vaultName, context);
-        return Utils.mapPage(inner, inner1 -> new EmailConfigurationModelImpl(inner1, this.manager()));
+        PagedIterable<EmailConfigurationModelInner> inner
+            = this.serviceClient().list(resourceGroupName, vaultName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EmailConfigurationModelImpl(inner1, this.manager()));
     }
 
     public EmailConfigurationModel getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String vaultName = Utils.getValueFromIdByName(id, "replicationVaults");
+        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "replicationVaults");
         if (vaultName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'replicationVaults'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationVaults'.", id)));
         }
-        String emailConfigurationName = Utils.getValueFromIdByName(id, "alertSettings");
+        String emailConfigurationName = ResourceManagerUtils.getValueFromIdByName(id, "alertSettings");
         if (emailConfigurationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'alertSettings'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'alertSettings'.", id)));
         }
         return this.getWithResponse(resourceGroupName, vaultName, emailConfigurationName, Context.NONE).getValue();
     }
 
     public Response<EmailConfigurationModel> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String vaultName = Utils.getValueFromIdByName(id, "replicationVaults");
+        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "replicationVaults");
         if (vaultName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'replicationVaults'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationVaults'.", id)));
         }
-        String emailConfigurationName = Utils.getValueFromIdByName(id, "alertSettings");
+        String emailConfigurationName = ResourceManagerUtils.getValueFromIdByName(id, "alertSettings");
         if (emailConfigurationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'alertSettings'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'alertSettings'.", id)));
         }
         return this.getWithResponse(resourceGroupName, vaultName, emailConfigurationName, context);
     }

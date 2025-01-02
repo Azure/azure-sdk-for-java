@@ -27,7 +27,8 @@ public final class QueryFunctionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QueryFunction model = new QueryFunction().withName("oqqnwvlryav").withType("hheunmmqhgyx")
+        QueryFunction model = new QueryFunction().withName("oqqnwvlryav")
+            .withType("hheunmmqhgyx")
             .withBindingType("konocu")
             .withInputs(Arrays.asList(new FunctionInput().withDataType("lyaxuc").withIsConfigurationParameter(false),
                 new FunctionInput().withDataType("szfkbe").withIsConfigurationParameter(true),

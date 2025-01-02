@@ -6,36 +6,41 @@ package com.azure.resourcemanager.managedapplications.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Application definition artifact. */
+/**
+ * Application definition artifact.
+ */
 @Fluent
-public final class ApplicationDefinitionArtifact {
+public final class ApplicationDefinitionArtifact implements JsonSerializable<ApplicationDefinitionArtifact> {
     /*
      * The managed application definition artifact name.
      */
-    @JsonProperty(value = "name", required = true)
     private ApplicationDefinitionArtifactName name;
 
     /*
      * The managed application definition artifact blob uri.
      */
-    @JsonProperty(value = "uri", required = true)
     private String uri;
 
     /*
      * The managed application definition artifact type.
      */
-    @JsonProperty(value = "type", required = true)
     private ApplicationArtifactType type;
 
-    /** Creates an instance of ApplicationDefinitionArtifact class. */
+    /**
+     * Creates an instance of ApplicationDefinitionArtifact class.
+     */
     public ApplicationDefinitionArtifact() {
     }
 
     /**
      * Get the name property: The managed application definition artifact name.
-     *
+     * 
      * @return the name value.
      */
     public ApplicationDefinitionArtifactName name() {
@@ -44,7 +49,7 @@ public final class ApplicationDefinitionArtifact {
 
     /**
      * Set the name property: The managed application definition artifact name.
-     *
+     * 
      * @param name the name value to set.
      * @return the ApplicationDefinitionArtifact object itself.
      */
@@ -55,7 +60,7 @@ public final class ApplicationDefinitionArtifact {
 
     /**
      * Get the uri property: The managed application definition artifact blob uri.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -64,7 +69,7 @@ public final class ApplicationDefinitionArtifact {
 
     /**
      * Set the uri property: The managed application definition artifact blob uri.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the ApplicationDefinitionArtifact object itself.
      */
@@ -75,7 +80,7 @@ public final class ApplicationDefinitionArtifact {
 
     /**
      * Get the type property: The managed application definition artifact type.
-     *
+     * 
      * @return the type value.
      */
     public ApplicationArtifactType type() {
@@ -84,7 +89,7 @@ public final class ApplicationDefinitionArtifact {
 
     /**
      * Set the type property: The managed application definition artifact type.
-     *
+     * 
      * @param type the type value to set.
      * @return the ApplicationDefinitionArtifact object itself.
      */
@@ -95,29 +100,72 @@ public final class ApplicationDefinitionArtifact {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model ApplicationDefinitionArtifact"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model ApplicationDefinitionArtifact"));
         }
         if (uri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property uri in model ApplicationDefinitionArtifact"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property uri in model ApplicationDefinitionArtifact"));
         }
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property type in model ApplicationDefinitionArtifact"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property type in model ApplicationDefinitionArtifact"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ApplicationDefinitionArtifact.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        jsonWriter.writeStringField("uri", this.uri);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationDefinitionArtifact from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationDefinitionArtifact if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApplicationDefinitionArtifact.
+     */
+    public static ApplicationDefinitionArtifact fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationDefinitionArtifact deserializedApplicationDefinitionArtifact
+                = new ApplicationDefinitionArtifact();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedApplicationDefinitionArtifact.name
+                        = ApplicationDefinitionArtifactName.fromString(reader.getString());
+                } else if ("uri".equals(fieldName)) {
+                    deserializedApplicationDefinitionArtifact.uri = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedApplicationDefinitionArtifact.type
+                        = ApplicationArtifactType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationDefinitionArtifact;
+        });
+    }
 }

@@ -5,27 +5,36 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Status of the operation. */
+/**
+ * Status of the operation.
+ */
 public final class CalculateExchangeOperationResultStatus
     extends ExpandableStringEnum<CalculateExchangeOperationResultStatus> {
-    /** Static value Succeeded for CalculateExchangeOperationResultStatus. */
+    /**
+     * Static value Succeeded for CalculateExchangeOperationResultStatus.
+     */
     public static final CalculateExchangeOperationResultStatus SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for CalculateExchangeOperationResultStatus. */
+    /**
+     * Static value Failed for CalculateExchangeOperationResultStatus.
+     */
     public static final CalculateExchangeOperationResultStatus FAILED = fromString("Failed");
 
-    /** Static value Cancelled for CalculateExchangeOperationResultStatus. */
+    /**
+     * Static value Cancelled for CalculateExchangeOperationResultStatus.
+     */
     public static final CalculateExchangeOperationResultStatus CANCELLED = fromString("Cancelled");
 
-    /** Static value Pending for CalculateExchangeOperationResultStatus. */
+    /**
+     * Static value Pending for CalculateExchangeOperationResultStatus.
+     */
     public static final CalculateExchangeOperationResultStatus PENDING = fromString("Pending");
 
     /**
      * Creates a new instance of CalculateExchangeOperationResultStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,18 +43,17 @@ public final class CalculateExchangeOperationResultStatus
 
     /**
      * Creates or finds a CalculateExchangeOperationResultStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CalculateExchangeOperationResultStatus.
      */
-    @JsonCreator
     public static CalculateExchangeOperationResultStatus fromString(String name) {
         return fromString(name, CalculateExchangeOperationResultStatus.class);
     }
 
     /**
      * Gets known CalculateExchangeOperationResultStatus values.
-     *
+     * 
      * @return known CalculateExchangeOperationResultStatus values.
      */
     public static Collection<CalculateExchangeOperationResultStatus> values() {

@@ -1,5 +1,11 @@
 # Azure Document Translator client library for Java
 
+## Deprecation Notice
+
+> Please note, this package has been deprecated and will no longer be maintained. We encourage you to 
+> upgrade to the replacement package, `azure-ai-translation-document`, to continue receiving updates. 
+> Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
+
 Microsoft Azure Cognitive Services Document Translator API enables you to translate documents in batch.
 
 [Source code][source_code] | [Package (Maven)][package] | [Product Documentation][product_documentation] | [Samples][samples_readme]

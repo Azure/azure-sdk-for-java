@@ -6,6 +6,7 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -35,7 +36,7 @@ public final class AutoCompleteOptions implements JsonSerializable<AutoCompleteO
      * The filter for the autocomplete request.
      */
     @Generated
-    private Object filter;
+    private BinaryData filter;
 
     /**
      * Creates an instance of AutoCompleteOptions class.
@@ -98,7 +99,7 @@ public final class AutoCompleteOptions implements JsonSerializable<AutoCompleteO
      * @return the filter value.
      */
     @Generated
-    public Object getFilter() {
+    public BinaryData getFilter() {
         return this.filter;
     }
 
@@ -109,7 +110,7 @@ public final class AutoCompleteOptions implements JsonSerializable<AutoCompleteO
      * @return the AutoCompleteOptions object itself.
      */
     @Generated
-    public AutoCompleteOptions setFilter(Object filter) {
+    public AutoCompleteOptions setFilter(BinaryData filter) {
         this.filter = filter;
         return this;
     }
@@ -123,7 +124,10 @@ public final class AutoCompleteOptions implements JsonSerializable<AutoCompleteO
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("keywords", this.keywords);
         jsonWriter.writeNumberField("limit", this.limit);
-        jsonWriter.writeUntypedField("filter", this.filter);
+        if (this.filter != null) {
+            jsonWriter.writeFieldName("filter");
+            this.filter.writeTo(jsonWriter);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -148,7 +152,8 @@ public final class AutoCompleteOptions implements JsonSerializable<AutoCompleteO
                 } else if ("limit".equals(fieldName)) {
                     deserializedAutoCompleteOptions.limit = reader.getNullable(JsonReader::getInt);
                 } else if ("filter".equals(fieldName)) {
-                    deserializedAutoCompleteOptions.filter = reader.readUntyped();
+                    deserializedAutoCompleteOptions.filter
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else {
                     reader.skipChildren();
                 }

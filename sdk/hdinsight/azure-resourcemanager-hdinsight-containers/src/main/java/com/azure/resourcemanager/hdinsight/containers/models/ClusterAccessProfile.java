@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Cluster access profile.
  */
 @Fluent
-public final class ClusterAccessProfile {
+public final class ClusterAccessProfile implements JsonSerializable<ClusterAccessProfile> {
     /*
      * Whether to create cluster using private IP instead of public IP. This property must be set at create time.
      */
-    @JsonProperty(value = "enableInternalIngress", required = true)
     private boolean enableInternalIngress;
 
     /*
      * Private link service resource ID. Only when enableInternalIngress is true, this property will be returned.
      */
-    @JsonProperty(value = "privateLinkServiceId", access = JsonProperty.Access.WRITE_ONLY)
     private String privateLinkServiceId;
 
     /**
@@ -53,8 +55,8 @@ public final class ClusterAccessProfile {
     }
 
     /**
-     * Get the privateLinkServiceId property: Private link service resource ID. Only when enableInternalIngress is
-     * true, this property will be returned.
+     * Get the privateLinkServiceId property: Private link service resource ID. Only when enableInternalIngress is true,
+     * this property will be returned.
      * 
      * @return the privateLinkServiceId value.
      */
@@ -68,5 +70,44 @@ public final class ClusterAccessProfile {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enableInternalIngress", this.enableInternalIngress);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterAccessProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterAccessProfile if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClusterAccessProfile.
+     */
+    public static ClusterAccessProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterAccessProfile deserializedClusterAccessProfile = new ClusterAccessProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enableInternalIngress".equals(fieldName)) {
+                    deserializedClusterAccessProfile.enableInternalIngress = reader.getBoolean();
+                } else if ("privateLinkServiceId".equals(fieldName)) {
+                    deserializedClusterAccessProfile.privateLinkServiceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterAccessProfile;
+        });
     }
 }

@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.resourceconnector.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Represents a supported Fabric/Infra. (AKSEdge etc...). */
+/**
+ * Represents a supported Fabric/Infra. (AKSEdge etc...).
+ */
 public final class Distro extends ExpandableStringEnum<Distro> {
-    /** Static value AKSEdge for Distro. */
+    /**
+     * Static value AKSEdge for Distro.
+     */
     public static final Distro AKSEDGE = fromString("AKSEdge");
 
     /**
      * Creates a new instance of Distro value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class Distro extends ExpandableStringEnum<Distro> {
 
     /**
      * Creates or finds a Distro from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Distro.
      */
-    @JsonCreator
     public static Distro fromString(String name) {
         return fromString(name, Distro.class);
     }
 
     /**
      * Gets known Distro values.
-     *
+     * 
      * @return known Distro values.
      */
     public static Collection<Distro> values() {

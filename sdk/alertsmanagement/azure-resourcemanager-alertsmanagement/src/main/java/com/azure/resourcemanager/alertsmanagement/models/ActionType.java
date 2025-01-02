@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Action that should be applied. */
+/**
+ * Action that should be applied.
+ */
 public final class ActionType extends ExpandableStringEnum<ActionType> {
-    /** Static value AddActionGroups for ActionType. */
+    /**
+     * Static value AddActionGroups for ActionType.
+     */
     public static final ActionType ADD_ACTION_GROUPS = fromString("AddActionGroups");
 
-    /** Static value RemoveAllActionGroups for ActionType. */
+    /**
+     * Static value RemoveAllActionGroups for ActionType.
+     */
     public static final ActionType REMOVE_ALL_ACTION_GROUPS = fromString("RemoveAllActionGroups");
 
     /**
+     * Creates a new instance of ActionType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ActionType() {
+    }
+
+    /**
      * Creates or finds a ActionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ActionType.
      */
-    @JsonCreator
     public static ActionType fromString(String name) {
         return fromString(name, ActionType.class);
     }
 
     /**
      * Gets known ActionType values.
-     *
+     * 
      * @return known ActionType values.
      */
     public static Collection<ActionType> values() {

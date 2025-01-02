@@ -6,21 +6,39 @@ package com.azure.resourcemanager.batch.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.fluent.models.DetectorResponseInner;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class DetectorResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DetectorResponseInner model = BinaryData.fromString(
-            "{\"properties\":{\"value\":\"ovm\"},\"etag\":\"kacspkw\",\"id\":\"hzdobpxjmflbvvnc\",\"name\":\"rkcciwwzjuqk\",\"type\":\"rsa\"}")
+            "{\"properties\":{\"value\":\"osvexcsonpclhoc\"},\"etag\":\"slkevle\",\"tags\":{\"ithlvmezyvshxm\":\"fbuhfmvfaxkffe\",\"gigr\":\"sbbzo\"},\"id\":\"wburvjxxjnspydpt\",\"name\":\"oenkouknvudwti\",\"type\":\"kbldngkpocipa\"}")
             .toObject(DetectorResponseInner.class);
-        Assertions.assertEquals("ovm", model.value());
+        Assertions.assertEquals("fbuhfmvfaxkffe", model.tags().get("ithlvmezyvshxm"));
+        Assertions.assertEquals("osvexcsonpclhoc", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DetectorResponseInner model = new DetectorResponseInner().withValue("ovm");
+        DetectorResponseInner model
+            = new DetectorResponseInner().withTags(mapOf("ithlvmezyvshxm", "fbuhfmvfaxkffe", "gigr", "sbbzo"))
+                .withValue("osvexcsonpclhoc");
         model = BinaryData.fromObject(model).toObject(DetectorResponseInner.class);
-        Assertions.assertEquals("ovm", model.value());
+        Assertions.assertEquals("fbuhfmvfaxkffe", model.tags().get("ithlvmezyvshxm"));
+        Assertions.assertEquals("osvexcsonpclhoc", model.value());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

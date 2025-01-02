@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-/** Samples for Clusters Delete. */
+/**
+ * Samples for Clusters Delete.
+ */
 public final class ClustersDeleteSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2021-06-01/examples/ClustersDelete.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
+     * ClustersDelete.json
      */
     /**
      * Sample code: ClustersDelete.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void clustersDelete(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {

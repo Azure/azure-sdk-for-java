@@ -36,7 +36,12 @@ public enum SiteLoadBalancing {
     /**
      * Enum value PerSiteRoundRobin.
      */
-    PER_SITE_ROUND_ROBIN("PerSiteRoundRobin");
+    PER_SITE_ROUND_ROBIN("PerSiteRoundRobin"),
+
+    /**
+     * Enum value LeastRequestsWithTieBreaker.
+     */
+    LEAST_REQUESTS_WITH_TIE_BREAKER("LeastRequestsWithTieBreaker");
 
     /**
      * The actual serialized value for a SiteLoadBalancing instance.

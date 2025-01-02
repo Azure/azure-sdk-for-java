@@ -13,24 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class DataLakeStoreAccountBasicInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataLakeStoreAccountBasicInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"accountId\":\"cb6c8fa7-736e-4f98-85e6-6c76de82dfb9\",\"provisioningState\":\"Deleting\",\"state\":\"Active\",\"creationTime\":\"2021-03-22T18:05:05Z\",\"lastModifiedTime\":\"2021-06-23T16:37:05Z\",\"endpoint\":\"ifpikxwczby\"},\"location\":\"cnpqxuhivyqniwby\",\"tags\":{\"mjgr\":\"xvd\"},\"id\":\"fwvuk\",\"name\":\"gaudcc\",\"type\":\"nhsjcnyej\"}")
-                .toObject(DataLakeStoreAccountBasicInner.class);
+        DataLakeStoreAccountBasicInner model = BinaryData.fromString(
+            "{\"properties\":{\"accountId\":\"5da8d816-50e6-457e-bb6f-a693b9c52aa3\",\"provisioningState\":\"Deleting\",\"state\":\"Active\",\"creationTime\":\"2021-03-22T18:05:05Z\",\"lastModifiedTime\":\"2021-06-23T16:37:05Z\",\"endpoint\":\"ifpikxwczby\"},\"location\":\"cnpqxuhivyqniwby\",\"tags\":{\"mjgr\":\"xvd\"},\"id\":\"fwvuk\",\"name\":\"gaudcc\",\"type\":\"nhsjcnyej\"}")
+            .toObject(DataLakeStoreAccountBasicInner.class);
         Assertions.assertEquals("cnpqxuhivyqniwby", model.location());
         Assertions.assertEquals("xvd", model.tags().get("mjgr"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataLakeStoreAccountBasicInner model =
-            new DataLakeStoreAccountBasicInner().withLocation("cnpqxuhivyqniwby").withTags(mapOf("mjgr", "xvd"));
+        DataLakeStoreAccountBasicInner model
+            = new DataLakeStoreAccountBasicInner().withLocation("cnpqxuhivyqniwby").withTags(mapOf("mjgr", "xvd"));
         model = BinaryData.fromObject(model).toObject(DataLakeStoreAccountBasicInner.class);
         Assertions.assertEquals("cnpqxuhivyqniwby", model.location());
         Assertions.assertEquals("xvd", model.tags().get("mjgr"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

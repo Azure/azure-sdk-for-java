@@ -17,7 +17,8 @@ import java.io.IOException;
 @Fluent
 public final class IncomingRelationship implements JsonSerializable<IncomingRelationship> {
     /*
-     * A user-provided string representing the id of this relationship, unique in the context of the source digital twin, i.e. sourceId + relationshipId is unique in the context of the service.
+     * A user-provided string representing the id of this relationship, unique in the context of the source digital
+     * twin, i.e. sourceId + relationshipId is unique in the context of the service.
      */
     private String relationshipId;
 

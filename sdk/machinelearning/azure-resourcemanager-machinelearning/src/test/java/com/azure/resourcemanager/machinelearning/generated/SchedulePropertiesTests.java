@@ -15,44 +15,43 @@ import org.junit.jupiter.api.Assertions;
 public final class SchedulePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScheduleProperties model =
-            BinaryData
-                .fromString(
-                    "{\"action\":{\"actionType\":\"ScheduleActionBase\"},\"displayName\":\"zdfuydzvkfvxcnqm\",\"isEnabled\":false,\"provisioningState\":\"Creating\",\"trigger\":{\"triggerType\":\"TriggerBase\",\"endTime\":\"kmvkhl\",\"startTime\":\"dhbemzqkzszu\",\"timeZone\":\"wtglxx\"},\"description\":\"jfpgpicrmn\",\"properties\":{\"vpqcb\":\"gmqgjs\",\"s\":\"rmbodt\"},\"tags\":{\"xousxauzl\":\"vriibakclacjfr\",\"wohqfzizvu\":\"vsg\",\"vmribiat\":\"mmkjsvthnwpztek\"}}")
-                .toObject(ScheduleProperties.class);
-        Assertions.assertEquals("jfpgpicrmn", model.description());
-        Assertions.assertEquals("gmqgjs", model.properties().get("vpqcb"));
-        Assertions.assertEquals("vriibakclacjfr", model.tags().get("xousxauzl"));
-        Assertions.assertEquals("zdfuydzvkfvxcnqm", model.displayName());
-        Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals("kmvkhl", model.trigger().endTime());
-        Assertions.assertEquals("dhbemzqkzszu", model.trigger().startTime());
-        Assertions.assertEquals("wtglxx", model.trigger().timeZone());
+        ScheduleProperties model = BinaryData.fromString(
+            "{\"displayName\":\"t\",\"isEnabled\":true,\"trigger\":{\"triggerType\":\"TriggerBase\",\"endTime\":\"logxsvtzar\",\"startTime\":\"vqnsqk\",\"timeZone\":\"mbjwzzoslpkyb\"},\"action\":{\"actionType\":\"ScheduleActionBase\"},\"provisioningState\":\"Deleting\",\"description\":\"kzpgaj\",\"tags\":{\"uqrebluimmbwx\":\"cemqbmfuvqarwz\",\"kraokq\":\"fgtdmbvx\",\"aokbavlyttaaknwf\":\"budbt\",\"sm\":\"ke\"},\"properties\":{\"gatolekscbctnan\":\"ujd\",\"wnsnlaimouxwks\":\"imwbzxpdcldpk\",\"fco\":\"mud\",\"kbqsjhbtqqvyfscy\":\"bicziuswswj\"}}")
+            .toObject(ScheduleProperties.class);
+        Assertions.assertEquals("kzpgaj", model.description());
+        Assertions.assertEquals("cemqbmfuvqarwz", model.tags().get("uqrebluimmbwx"));
+        Assertions.assertEquals("ujd", model.properties().get("gatolekscbctnan"));
+        Assertions.assertEquals("t", model.displayName());
+        Assertions.assertEquals(true, model.isEnabled());
+        Assertions.assertEquals("logxsvtzar", model.trigger().endTime());
+        Assertions.assertEquals("vqnsqk", model.trigger().startTime());
+        Assertions.assertEquals("mbjwzzoslpkyb", model.trigger().timeZone());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScheduleProperties model =
-            new ScheduleProperties()
-                .withDescription("jfpgpicrmn")
-                .withProperties(mapOf("vpqcb", "gmqgjs", "s", "rmbodt"))
-                .withTags(mapOf("xousxauzl", "vriibakclacjfr", "wohqfzizvu", "vsg", "vmribiat", "mmkjsvthnwpztek"))
-                .withAction(new ScheduleActionBase())
-                .withDisplayName("zdfuydzvkfvxcnqm")
-                .withIsEnabled(false)
-                .withTrigger(
-                    new TriggerBase().withEndTime("kmvkhl").withStartTime("dhbemzqkzszu").withTimeZone("wtglxx"));
+        ScheduleProperties model = new ScheduleProperties().withDescription("kzpgaj")
+            .withTags(
+                mapOf("uqrebluimmbwx", "cemqbmfuvqarwz", "kraokq", "fgtdmbvx", "aokbavlyttaaknwf", "budbt", "sm", "ke"))
+            .withProperties(mapOf("gatolekscbctnan", "ujd", "wnsnlaimouxwks", "imwbzxpdcldpk", "fco", "mud",
+                "kbqsjhbtqqvyfscy", "bicziuswswj"))
+            .withDisplayName("t")
+            .withIsEnabled(true)
+            .withTrigger(
+                new TriggerBase().withEndTime("logxsvtzar").withStartTime("vqnsqk").withTimeZone("mbjwzzoslpkyb"))
+            .withAction(new ScheduleActionBase());
         model = BinaryData.fromObject(model).toObject(ScheduleProperties.class);
-        Assertions.assertEquals("jfpgpicrmn", model.description());
-        Assertions.assertEquals("gmqgjs", model.properties().get("vpqcb"));
-        Assertions.assertEquals("vriibakclacjfr", model.tags().get("xousxauzl"));
-        Assertions.assertEquals("zdfuydzvkfvxcnqm", model.displayName());
-        Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals("kmvkhl", model.trigger().endTime());
-        Assertions.assertEquals("dhbemzqkzszu", model.trigger().startTime());
-        Assertions.assertEquals("wtglxx", model.trigger().timeZone());
+        Assertions.assertEquals("kzpgaj", model.description());
+        Assertions.assertEquals("cemqbmfuvqarwz", model.tags().get("uqrebluimmbwx"));
+        Assertions.assertEquals("ujd", model.properties().get("gatolekscbctnan"));
+        Assertions.assertEquals("t", model.displayName());
+        Assertions.assertEquals(true, model.isEnabled());
+        Assertions.assertEquals("logxsvtzar", model.trigger().endTime());
+        Assertions.assertEquals("vqnsqk", model.trigger().startTime());
+        Assertions.assertEquals("mbjwzzoslpkyb", model.trigger().timeZone());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

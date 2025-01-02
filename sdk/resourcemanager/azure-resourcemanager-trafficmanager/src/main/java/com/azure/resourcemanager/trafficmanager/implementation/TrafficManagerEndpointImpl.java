@@ -28,20 +28,17 @@ import java.util.TreeMap;
 import reactor.core.publisher.Mono;
 
 /** Implementation for {@link TrafficManagerEndpoint}. */
-class TrafficManagerEndpointImpl
-    extends ExternalChildResourceImpl<
-        TrafficManagerEndpoint, EndpointInner, TrafficManagerProfileImpl, TrafficManagerProfile>
+class TrafficManagerEndpointImpl extends
+    ExternalChildResourceImpl<TrafficManagerEndpoint, EndpointInner, TrafficManagerProfileImpl, TrafficManagerProfile>
     implements TrafficManagerEndpoint,
-        TrafficManagerEndpoint.Definition<TrafficManagerProfile.DefinitionStages.WithCreate>,
-        TrafficManagerEndpoint.UpdateDefinition<TrafficManagerProfile.Update>,
-        TrafficManagerEndpoint.UpdateAzureEndpoint,
-        TrafficManagerEndpoint.UpdateExternalEndpoint,
-        TrafficManagerEndpoint.UpdateNestedProfileEndpoint {
+    TrafficManagerEndpoint.Definition<TrafficManagerProfile.DefinitionStages.WithCreate>,
+    TrafficManagerEndpoint.UpdateDefinition<TrafficManagerProfile.Update>, TrafficManagerEndpoint.UpdateAzureEndpoint,
+    TrafficManagerEndpoint.UpdateExternalEndpoint, TrafficManagerEndpoint.UpdateNestedProfileEndpoint {
     private final EndpointsClient client;
     private EndpointType endpointType;
 
-    TrafficManagerEndpointImpl(
-        String name, TrafficManagerProfileImpl parent, EndpointInner inner, EndpointsClient client) {
+    TrafficManagerEndpointImpl(String name, TrafficManagerProfileImpl parent, EndpointInner inner,
+        EndpointsClient client) {
         super(name, parent, inner);
         this.client = client;
     }
@@ -243,8 +240,9 @@ class TrafficManagerEndpointImpl
             }
         }
         if (!found) {
-            this.innerModel().subnets().add(
-                new EndpointPropertiesSubnetsItem().withFirst(subnetStartIp).withScope(mask));
+            this.innerModel()
+                .subnets()
+                .add(new EndpointPropertiesSubnetsItem().withFirst(subnetStartIp).withScope(mask));
         }
         return this;
     }
@@ -265,8 +263,7 @@ class TrafficManagerEndpointImpl
             }
         }
         if (!found) {
-            this
-                .innerModel()
+            this.innerModel()
                 .subnets()
                 .add(new EndpointPropertiesSubnetsItem().withFirst(subnetStartIp).withLast(subnetEndIp));
         }
@@ -277,14 +274,11 @@ class TrafficManagerEndpointImpl
     public TrafficManagerEndpointImpl withSubnets(List<EndpointPropertiesSubnetsItem> subnets) {
         this.innerModel().withSubnets(new ArrayList<>());
         for (EndpointPropertiesSubnetsItem subnet : subnets) {
-            this
-                .innerModel()
+            this.innerModel()
                 .subnets()
-                .add(
-                    new EndpointPropertiesSubnetsItem()
-                        .withFirst(subnet.first())
-                        .withLast(subnet.last())
-                        .withScope(subnet.scope()));
+                .add(new EndpointPropertiesSubnetsItem().withFirst(subnet.first())
+                    .withLast(subnet.last())
+                    .withScope(subnet.scope()));
         }
         return this;
     }
@@ -350,8 +344,9 @@ class TrafficManagerEndpointImpl
             }
         }
         if (!found) {
-            this.innerModel().customHeaders().add(
-                new EndpointPropertiesCustomHeadersItem().withName(name).withValue(value));
+            this.innerModel()
+                .customHeaders()
+                .add(new EndpointPropertiesCustomHeadersItem().withName(name).withValue(value));
         }
         return this;
     }
@@ -360,8 +355,7 @@ class TrafficManagerEndpointImpl
     public TrafficManagerEndpointImpl withCustomHeaders(Map<String, String> headers) {
         this.innerModel().withCustomHeaders(new ArrayList<>());
         for (Map.Entry<String, String> entry : headers.entrySet()) {
-            this
-                .innerModel()
+            this.innerModel()
                 .customHeaders()
                 .add(new EndpointPropertiesCustomHeadersItem().withName(entry.getKey()).withValue(entry.getValue()));
         }
@@ -391,19 +385,13 @@ class TrafficManagerEndpointImpl
 
     @Override
     public Mono<TrafficManagerEndpoint> createResourceAsync() {
-        return this
-            .client
-            .createOrUpdateAsync(
-                this.parent().resourceGroupName(),
-                this.parent().name(),
-                EndpointTypes.fromString(this.endpointType().localName()),
-                this.name(),
-                this.innerModel())
-            .map(
-                inner -> {
-                    setInner(inner);
-                    return this;
-                });
+        return this.client
+            .createOrUpdateAsync(this.parent().resourceGroupName(), this.parent().name(),
+                EndpointTypes.fromString(this.endpointType().localName()), this.name(), this.innerModel())
+            .map(inner -> {
+                setInner(inner);
+                return this;
+            });
     }
 
     @Override
@@ -413,13 +401,9 @@ class TrafficManagerEndpointImpl
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return this
-            .client
-            .deleteAsync(
-                this.parent().resourceGroupName(),
-                this.parent().name(),
-                EndpointTypes.fromString(this.endpointType().localName()),
-                this.name())
+        return this.client
+            .deleteAsync(this.parent().resourceGroupName(), this.parent().name(),
+                EndpointTypes.fromString(this.endpointType().localName()), this.name())
             .then();
     }
 
@@ -430,13 +414,8 @@ class TrafficManagerEndpointImpl
 
     @Override
     protected Mono<EndpointInner> getInnerAsync() {
-        return this
-            .client
-            .getAsync(
-                this.parent().resourceGroupName(),
-                this.parent().name(),
-                EndpointTypes.fromString(this.endpointType().toString()),
-                this.name());
+        return this.client.getAsync(this.parent().resourceGroupName(), this.parent().name(),
+            EndpointTypes.fromString(this.endpointType().toString()), this.name());
     }
 
     void withEndpointType(EndpointType endpointType) {

@@ -5,100 +5,100 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.FileImportContentType;
 import com.azure.resourcemanager.securityinsights.models.FileImportState;
 import com.azure.resourcemanager.securityinsights.models.FileMetadata;
 import com.azure.resourcemanager.securityinsights.models.IngestionMode;
 import com.azure.resourcemanager.securityinsights.models.ValidationError;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Describes the FileImport's properties. */
+/**
+ * Describes the FileImport's properties.
+ */
 @Fluent
-public final class FileImportProperties {
+public final class FileImportProperties implements JsonSerializable<FileImportProperties> {
     /*
      * Describes how to ingest the records in the file.
      */
-    @JsonProperty(value = "ingestionMode", required = true)
     private IngestionMode ingestionMode;
 
     /*
      * The content type of this file.
      */
-    @JsonProperty(value = "contentType", required = true)
     private FileImportContentType contentType;
 
     /*
      * The time the file was imported.
      */
-    @JsonProperty(value = "createdTimeUTC", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdTimeUtc;
 
     /*
      * Represents the error file (if the import was ingested with errors or failed the validation).
      */
-    @JsonProperty(value = "errorFile", access = JsonProperty.Access.WRITE_ONLY)
     private FileMetadata errorFile;
 
     /*
      * An ordered list of some of the errors that were encountered during validation.
      */
-    @JsonProperty(value = "errorsPreview", access = JsonProperty.Access.WRITE_ONLY)
     private List<ValidationError> errorsPreview;
 
     /*
      * Represents the imported file.
      */
-    @JsonProperty(value = "importFile", required = true)
     private FileMetadata importFile;
 
     /*
      * The number of records that have been successfully ingested.
      */
-    @JsonProperty(value = "ingestedRecordCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer ingestedRecordCount;
 
     /*
      * The source for the data in the file.
      */
-    @JsonProperty(value = "source", required = true)
     private String source;
 
     /*
      * The state of the file import.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private FileImportState state;
 
     /*
      * The number of records in the file.
      */
-    @JsonProperty(value = "totalRecordCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer totalRecordCount;
 
     /*
      * The number of records that have passed validation.
      */
-    @JsonProperty(value = "validRecordCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer validRecordCount;
 
     /*
      * The time the files associated with this import are deleted from the storage account.
      */
-    @JsonProperty(value = "filesValidUntilTimeUTC", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime filesValidUntilTimeUtc;
 
     /*
      * The time the file import record is soft deleted from the database and history.
      */
-    @JsonProperty(value = "importValidUntilTimeUTC", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime importValidUntilTimeUtc;
 
     /**
+     * Creates an instance of FileImportProperties class.
+     */
+    public FileImportProperties() {
+    }
+
+    /**
      * Get the ingestionMode property: Describes how to ingest the records in the file.
-     *
+     * 
      * @return the ingestionMode value.
      */
     public IngestionMode ingestionMode() {
@@ -107,7 +107,7 @@ public final class FileImportProperties {
 
     /**
      * Set the ingestionMode property: Describes how to ingest the records in the file.
-     *
+     * 
      * @param ingestionMode the ingestionMode value to set.
      * @return the FileImportProperties object itself.
      */
@@ -118,7 +118,7 @@ public final class FileImportProperties {
 
     /**
      * Get the contentType property: The content type of this file.
-     *
+     * 
      * @return the contentType value.
      */
     public FileImportContentType contentType() {
@@ -127,7 +127,7 @@ public final class FileImportProperties {
 
     /**
      * Set the contentType property: The content type of this file.
-     *
+     * 
      * @param contentType the contentType value to set.
      * @return the FileImportProperties object itself.
      */
@@ -138,7 +138,7 @@ public final class FileImportProperties {
 
     /**
      * Get the createdTimeUtc property: The time the file was imported.
-     *
+     * 
      * @return the createdTimeUtc value.
      */
     public OffsetDateTime createdTimeUtc() {
@@ -148,7 +148,7 @@ public final class FileImportProperties {
     /**
      * Get the errorFile property: Represents the error file (if the import was ingested with errors or failed the
      * validation).
-     *
+     * 
      * @return the errorFile value.
      */
     public FileMetadata errorFile() {
@@ -157,7 +157,7 @@ public final class FileImportProperties {
 
     /**
      * Get the errorsPreview property: An ordered list of some of the errors that were encountered during validation.
-     *
+     * 
      * @return the errorsPreview value.
      */
     public List<ValidationError> errorsPreview() {
@@ -166,7 +166,7 @@ public final class FileImportProperties {
 
     /**
      * Get the importFile property: Represents the imported file.
-     *
+     * 
      * @return the importFile value.
      */
     public FileMetadata importFile() {
@@ -175,7 +175,7 @@ public final class FileImportProperties {
 
     /**
      * Set the importFile property: Represents the imported file.
-     *
+     * 
      * @param importFile the importFile value to set.
      * @return the FileImportProperties object itself.
      */
@@ -186,7 +186,7 @@ public final class FileImportProperties {
 
     /**
      * Get the ingestedRecordCount property: The number of records that have been successfully ingested.
-     *
+     * 
      * @return the ingestedRecordCount value.
      */
     public Integer ingestedRecordCount() {
@@ -195,7 +195,7 @@ public final class FileImportProperties {
 
     /**
      * Get the source property: The source for the data in the file.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -204,7 +204,7 @@ public final class FileImportProperties {
 
     /**
      * Set the source property: The source for the data in the file.
-     *
+     * 
      * @param source the source value to set.
      * @return the FileImportProperties object itself.
      */
@@ -215,7 +215,7 @@ public final class FileImportProperties {
 
     /**
      * Get the state property: The state of the file import.
-     *
+     * 
      * @return the state value.
      */
     public FileImportState state() {
@@ -224,7 +224,7 @@ public final class FileImportProperties {
 
     /**
      * Get the totalRecordCount property: The number of records in the file.
-     *
+     * 
      * @return the totalRecordCount value.
      */
     public Integer totalRecordCount() {
@@ -233,7 +233,7 @@ public final class FileImportProperties {
 
     /**
      * Get the validRecordCount property: The number of records that have passed validation.
-     *
+     * 
      * @return the validRecordCount value.
      */
     public Integer validRecordCount() {
@@ -243,7 +243,7 @@ public final class FileImportProperties {
     /**
      * Get the filesValidUntilTimeUtc property: The time the files associated with this import are deleted from the
      * storage account.
-     *
+     * 
      * @return the filesValidUntilTimeUtc value.
      */
     public OffsetDateTime filesValidUntilTimeUtc() {
@@ -253,7 +253,7 @@ public final class FileImportProperties {
     /**
      * Get the importValidUntilTimeUtc property: The time the file import record is soft deleted from the database and
      * history.
-     *
+     * 
      * @return the importValidUntilTimeUtc value.
      */
     public OffsetDateTime importValidUntilTimeUtc() {
@@ -262,21 +262,19 @@ public final class FileImportProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ingestionMode() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ingestionMode in model FileImportProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property ingestionMode in model FileImportProperties"));
         }
         if (contentType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property contentType in model FileImportProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property contentType in model FileImportProperties"));
         }
         if (errorFile() != null) {
             errorFile().validate();
@@ -285,18 +283,86 @@ public final class FileImportProperties {
             errorsPreview().forEach(e -> e.validate());
         }
         if (importFile() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property importFile in model FileImportProperties"));
         } else {
             importFile().validate();
         }
         if (source() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property source in model FileImportProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property source in model FileImportProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FileImportProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ingestionMode", this.ingestionMode == null ? null : this.ingestionMode.toString());
+        jsonWriter.writeStringField("contentType", this.contentType == null ? null : this.contentType.toString());
+        jsonWriter.writeJsonField("importFile", this.importFile);
+        jsonWriter.writeStringField("source", this.source);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FileImportProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FileImportProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FileImportProperties.
+     */
+    public static FileImportProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FileImportProperties deserializedFileImportProperties = new FileImportProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ingestionMode".equals(fieldName)) {
+                    deserializedFileImportProperties.ingestionMode = IngestionMode.fromString(reader.getString());
+                } else if ("contentType".equals(fieldName)) {
+                    deserializedFileImportProperties.contentType = FileImportContentType.fromString(reader.getString());
+                } else if ("importFile".equals(fieldName)) {
+                    deserializedFileImportProperties.importFile = FileMetadata.fromJson(reader);
+                } else if ("source".equals(fieldName)) {
+                    deserializedFileImportProperties.source = reader.getString();
+                } else if ("createdTimeUTC".equals(fieldName)) {
+                    deserializedFileImportProperties.createdTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("errorFile".equals(fieldName)) {
+                    deserializedFileImportProperties.errorFile = FileMetadata.fromJson(reader);
+                } else if ("errorsPreview".equals(fieldName)) {
+                    List<ValidationError> errorsPreview
+                        = reader.readArray(reader1 -> ValidationError.fromJson(reader1));
+                    deserializedFileImportProperties.errorsPreview = errorsPreview;
+                } else if ("ingestedRecordCount".equals(fieldName)) {
+                    deserializedFileImportProperties.ingestedRecordCount = reader.getNullable(JsonReader::getInt);
+                } else if ("state".equals(fieldName)) {
+                    deserializedFileImportProperties.state = FileImportState.fromString(reader.getString());
+                } else if ("totalRecordCount".equals(fieldName)) {
+                    deserializedFileImportProperties.totalRecordCount = reader.getNullable(JsonReader::getInt);
+                } else if ("validRecordCount".equals(fieldName)) {
+                    deserializedFileImportProperties.validRecordCount = reader.getNullable(JsonReader::getInt);
+                } else if ("filesValidUntilTimeUTC".equals(fieldName)) {
+                    deserializedFileImportProperties.filesValidUntilTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("importValidUntilTimeUTC".equals(fieldName)) {
+                    deserializedFileImportProperties.importValidUntilTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFileImportProperties;
+        });
+    }
 }

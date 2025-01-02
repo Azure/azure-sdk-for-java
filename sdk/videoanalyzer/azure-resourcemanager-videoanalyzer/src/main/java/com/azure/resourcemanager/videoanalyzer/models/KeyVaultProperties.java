@@ -68,10 +68,8 @@ public final class KeyVaultProperties {
      */
     public void validate() {
         if (keyIdentifier() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyIdentifier in model KeyVaultProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property keyIdentifier in model KeyVaultProperties"));
         }
     }
 

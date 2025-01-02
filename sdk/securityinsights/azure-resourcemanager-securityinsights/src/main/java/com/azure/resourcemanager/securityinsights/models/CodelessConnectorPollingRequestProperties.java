@@ -6,86 +6,87 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describe the request properties needed to successfully pull from the server. */
+/**
+ * Describe the request properties needed to successfully pull from the server.
+ */
 @Fluent
-public final class CodelessConnectorPollingRequestProperties {
+public final class CodelessConnectorPollingRequestProperties
+    implements JsonSerializable<CodelessConnectorPollingRequestProperties> {
     /*
      * Describe the endpoint we should pull the data from
      */
-    @JsonProperty(value = "apiEndpoint", required = true)
     private String apiEndpoint;
 
     /*
      * Defines the rate limit QPS
      */
-    @JsonProperty(value = "rateLimitQps")
     private Integer rateLimitQps;
 
     /*
      * The window interval we will use the pull the data
      */
-    @JsonProperty(value = "queryWindowInMin", required = true)
     private int queryWindowInMin;
 
     /*
      * The http method type we will use in the poll request, GET or POST
      */
-    @JsonProperty(value = "httpMethod", required = true)
     private String httpMethod;
 
     /*
      * The time format will be used the query events in a specific window
      */
-    @JsonProperty(value = "queryTimeFormat", required = true)
     private String queryTimeFormat;
 
     /*
      * Describe the amount of time we should try and poll the data in case of failure
      */
-    @JsonProperty(value = "retryCount")
     private Integer retryCount;
 
     /*
      * The number of seconds we will consider as a request timeout
      */
-    @JsonProperty(value = "timeoutInSeconds")
     private Integer timeoutInSeconds;
 
     /*
      * Describe the headers sent in the poll request
      */
-    @JsonProperty(value = "headers")
     private Object headers;
 
     /*
      * Describe the query parameters sent in the poll request
      */
-    @JsonProperty(value = "queryParameters")
     private Object queryParameters;
 
     /*
      * For advanced scenarios for example user name/password embedded in nested JSON payload
      */
-    @JsonProperty(value = "queryParametersTemplate")
     private String queryParametersTemplate;
 
     /*
      * This will be used the query events from a start of the time window
      */
-    @JsonProperty(value = "startTimeAttributeName")
     private String startTimeAttributeName;
 
     /*
      * This will be used the query events from the end of the time window
      */
-    @JsonProperty(value = "endTimeAttributeName")
     private String endTimeAttributeName;
 
     /**
+     * Creates an instance of CodelessConnectorPollingRequestProperties class.
+     */
+    public CodelessConnectorPollingRequestProperties() {
+    }
+
+    /**
      * Get the apiEndpoint property: Describe the endpoint we should pull the data from.
-     *
+     * 
      * @return the apiEndpoint value.
      */
     public String apiEndpoint() {
@@ -94,7 +95,7 @@ public final class CodelessConnectorPollingRequestProperties {
 
     /**
      * Set the apiEndpoint property: Describe the endpoint we should pull the data from.
-     *
+     * 
      * @param apiEndpoint the apiEndpoint value to set.
      * @return the CodelessConnectorPollingRequestProperties object itself.
      */
@@ -105,7 +106,7 @@ public final class CodelessConnectorPollingRequestProperties {
 
     /**
      * Get the rateLimitQps property: Defines the rate limit QPS.
-     *
+     * 
      * @return the rateLimitQps value.
      */
     public Integer rateLimitQps() {
@@ -114,7 +115,7 @@ public final class CodelessConnectorPollingRequestProperties {
 
     /**
      * Set the rateLimitQps property: Defines the rate limit QPS.
-     *
+     * 
      * @param rateLimitQps the rateLimitQps value to set.
      * @return the CodelessConnectorPollingRequestProperties object itself.
      */
@@ -125,7 +126,7 @@ public final class CodelessConnectorPollingRequestProperties {
 
     /**
      * Get the queryWindowInMin property: The window interval we will use the pull the data.
-     *
+     * 
      * @return the queryWindowInMin value.
      */
     public int queryWindowInMin() {
@@ -134,7 +135,7 @@ public final class CodelessConnectorPollingRequestProperties {
 
     /**
      * Set the queryWindowInMin property: The window interval we will use the pull the data.
-     *
+     * 
      * @param queryWindowInMin the queryWindowInMin value to set.
      * @return the CodelessConnectorPollingRequestProperties object itself.
      */
@@ -145,7 +146,7 @@ public final class CodelessConnectorPollingRequestProperties {
 
     /**
      * Get the httpMethod property: The http method type we will use in the poll request, GET or POST.
-     *
+     * 
      * @return the httpMethod value.
      */
     public String httpMethod() {
@@ -154,7 +155,7 @@ public final class CodelessConnectorPollingRequestProperties {
 
     /**
      * Set the httpMethod property: The http method type we will use in the poll request, GET or POST.
-     *
+     * 
      * @param httpMethod the httpMethod value to set.
      * @return the CodelessConnectorPollingRequestProperties object itself.
      */
@@ -165,7 +166,7 @@ public final class CodelessConnectorPollingRequestProperties {
 
     /**
      * Get the queryTimeFormat property: The time format will be used the query events in a specific window.
-     *
+     * 
      * @return the queryTimeFormat value.
      */
     public String queryTimeFormat() {
@@ -174,7 +175,7 @@ public final class CodelessConnectorPollingRequestProperties {
 
     /**
      * Set the queryTimeFormat property: The time format will be used the query events in a specific window.
-     *
+     * 
      * @param queryTimeFormat the queryTimeFormat value to set.
      * @return the CodelessConnectorPollingRequestProperties object itself.
      */
@@ -185,7 +186,7 @@ public final class CodelessConnectorPollingRequestProperties {
 
     /**
      * Get the retryCount property: Describe the amount of time we should try and poll the data in case of failure.
-     *
+     * 
      * @return the retryCount value.
      */
     public Integer retryCount() {
@@ -194,7 +195,7 @@ public final class CodelessConnectorPollingRequestProperties {
 
     /**
      * Set the retryCount property: Describe the amount of time we should try and poll the data in case of failure.
-     *
+     * 
      * @param retryCount the retryCount value to set.
      * @return the CodelessConnectorPollingRequestProperties object itself.
      */
@@ -205,7 +206,7 @@ public final class CodelessConnectorPollingRequestProperties {
 
     /**
      * Get the timeoutInSeconds property: The number of seconds we will consider as a request timeout.
-     *
+     * 
      * @return the timeoutInSeconds value.
      */
     public Integer timeoutInSeconds() {
@@ -214,7 +215,7 @@ public final class CodelessConnectorPollingRequestProperties {
 
     /**
      * Set the timeoutInSeconds property: The number of seconds we will consider as a request timeout.
-     *
+     * 
      * @param timeoutInSeconds the timeoutInSeconds value to set.
      * @return the CodelessConnectorPollingRequestProperties object itself.
      */
@@ -225,7 +226,7 @@ public final class CodelessConnectorPollingRequestProperties {
 
     /**
      * Get the headers property: Describe the headers sent in the poll request.
-     *
+     * 
      * @return the headers value.
      */
     public Object headers() {
@@ -234,7 +235,7 @@ public final class CodelessConnectorPollingRequestProperties {
 
     /**
      * Set the headers property: Describe the headers sent in the poll request.
-     *
+     * 
      * @param headers the headers value to set.
      * @return the CodelessConnectorPollingRequestProperties object itself.
      */
@@ -245,7 +246,7 @@ public final class CodelessConnectorPollingRequestProperties {
 
     /**
      * Get the queryParameters property: Describe the query parameters sent in the poll request.
-     *
+     * 
      * @return the queryParameters value.
      */
     public Object queryParameters() {
@@ -254,7 +255,7 @@ public final class CodelessConnectorPollingRequestProperties {
 
     /**
      * Set the queryParameters property: Describe the query parameters sent in the poll request.
-     *
+     * 
      * @param queryParameters the queryParameters value to set.
      * @return the CodelessConnectorPollingRequestProperties object itself.
      */
@@ -266,7 +267,7 @@ public final class CodelessConnectorPollingRequestProperties {
     /**
      * Get the queryParametersTemplate property: For advanced scenarios for example user name/password embedded in
      * nested JSON payload.
-     *
+     * 
      * @return the queryParametersTemplate value.
      */
     public String queryParametersTemplate() {
@@ -276,7 +277,7 @@ public final class CodelessConnectorPollingRequestProperties {
     /**
      * Set the queryParametersTemplate property: For advanced scenarios for example user name/password embedded in
      * nested JSON payload.
-     *
+     * 
      * @param queryParametersTemplate the queryParametersTemplate value to set.
      * @return the CodelessConnectorPollingRequestProperties object itself.
      */
@@ -287,7 +288,7 @@ public final class CodelessConnectorPollingRequestProperties {
 
     /**
      * Get the startTimeAttributeName property: This will be used the query events from a start of the time window.
-     *
+     * 
      * @return the startTimeAttributeName value.
      */
     public String startTimeAttributeName() {
@@ -296,7 +297,7 @@ public final class CodelessConnectorPollingRequestProperties {
 
     /**
      * Set the startTimeAttributeName property: This will be used the query events from a start of the time window.
-     *
+     * 
      * @param startTimeAttributeName the startTimeAttributeName value to set.
      * @return the CodelessConnectorPollingRequestProperties object itself.
      */
@@ -307,7 +308,7 @@ public final class CodelessConnectorPollingRequestProperties {
 
     /**
      * Get the endTimeAttributeName property: This will be used the query events from the end of the time window.
-     *
+     * 
      * @return the endTimeAttributeName value.
      */
     public String endTimeAttributeName() {
@@ -316,7 +317,7 @@ public final class CodelessConnectorPollingRequestProperties {
 
     /**
      * Set the endTimeAttributeName property: This will be used the query events from the end of the time window.
-     *
+     * 
      * @param endTimeAttributeName the endTimeAttributeName value to set.
      * @return the CodelessConnectorPollingRequestProperties object itself.
      */
@@ -327,30 +328,100 @@ public final class CodelessConnectorPollingRequestProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (apiEndpoint() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property apiEndpoint in model CodelessConnectorPollingRequestProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property apiEndpoint in model CodelessConnectorPollingRequestProperties"));
         }
         if (httpMethod() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property httpMethod in model CodelessConnectorPollingRequestProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property httpMethod in model CodelessConnectorPollingRequestProperties"));
         }
         if (queryTimeFormat() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property queryTimeFormat in model"
-                            + " CodelessConnectorPollingRequestProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property queryTimeFormat in model CodelessConnectorPollingRequestProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CodelessConnectorPollingRequestProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("apiEndpoint", this.apiEndpoint);
+        jsonWriter.writeIntField("queryWindowInMin", this.queryWindowInMin);
+        jsonWriter.writeStringField("httpMethod", this.httpMethod);
+        jsonWriter.writeStringField("queryTimeFormat", this.queryTimeFormat);
+        jsonWriter.writeNumberField("rateLimitQps", this.rateLimitQps);
+        jsonWriter.writeNumberField("retryCount", this.retryCount);
+        jsonWriter.writeNumberField("timeoutInSeconds", this.timeoutInSeconds);
+        jsonWriter.writeUntypedField("headers", this.headers);
+        jsonWriter.writeUntypedField("queryParameters", this.queryParameters);
+        jsonWriter.writeStringField("queryParametersTemplate", this.queryParametersTemplate);
+        jsonWriter.writeStringField("startTimeAttributeName", this.startTimeAttributeName);
+        jsonWriter.writeStringField("endTimeAttributeName", this.endTimeAttributeName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CodelessConnectorPollingRequestProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CodelessConnectorPollingRequestProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CodelessConnectorPollingRequestProperties.
+     */
+    public static CodelessConnectorPollingRequestProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CodelessConnectorPollingRequestProperties deserializedCodelessConnectorPollingRequestProperties
+                = new CodelessConnectorPollingRequestProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("apiEndpoint".equals(fieldName)) {
+                    deserializedCodelessConnectorPollingRequestProperties.apiEndpoint = reader.getString();
+                } else if ("queryWindowInMin".equals(fieldName)) {
+                    deserializedCodelessConnectorPollingRequestProperties.queryWindowInMin = reader.getInt();
+                } else if ("httpMethod".equals(fieldName)) {
+                    deserializedCodelessConnectorPollingRequestProperties.httpMethod = reader.getString();
+                } else if ("queryTimeFormat".equals(fieldName)) {
+                    deserializedCodelessConnectorPollingRequestProperties.queryTimeFormat = reader.getString();
+                } else if ("rateLimitQps".equals(fieldName)) {
+                    deserializedCodelessConnectorPollingRequestProperties.rateLimitQps
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("retryCount".equals(fieldName)) {
+                    deserializedCodelessConnectorPollingRequestProperties.retryCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("timeoutInSeconds".equals(fieldName)) {
+                    deserializedCodelessConnectorPollingRequestProperties.timeoutInSeconds
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("headers".equals(fieldName)) {
+                    deserializedCodelessConnectorPollingRequestProperties.headers = reader.readUntyped();
+                } else if ("queryParameters".equals(fieldName)) {
+                    deserializedCodelessConnectorPollingRequestProperties.queryParameters = reader.readUntyped();
+                } else if ("queryParametersTemplate".equals(fieldName)) {
+                    deserializedCodelessConnectorPollingRequestProperties.queryParametersTemplate = reader.getString();
+                } else if ("startTimeAttributeName".equals(fieldName)) {
+                    deserializedCodelessConnectorPollingRequestProperties.startTimeAttributeName = reader.getString();
+                } else if ("endTimeAttributeName".equals(fieldName)) {
+                    deserializedCodelessConnectorPollingRequestProperties.endTimeAttributeName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCodelessConnectorPollingRequestProperties;
+        });
+    }
 }

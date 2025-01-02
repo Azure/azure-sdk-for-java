@@ -5,18 +5,34 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The CodelessUiConnectorConfigPropertiesDataTypesItem model. */
+/**
+ * The CodelessUiConnectorConfigPropertiesDataTypesItem model.
+ */
 @Fluent
 public final class CodelessUiConnectorConfigPropertiesDataTypesItem extends LastDataReceivedDataType {
-    /** {@inheritDoc} */
+    /**
+     * Creates an instance of CodelessUiConnectorConfigPropertiesDataTypesItem class.
+     */
+    public CodelessUiConnectorConfigPropertiesDataTypesItem() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CodelessUiConnectorConfigPropertiesDataTypesItem withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CodelessUiConnectorConfigPropertiesDataTypesItem withLastDataReceivedQuery(String lastDataReceivedQuery) {
         super.withLastDataReceivedQuery(lastDataReceivedQuery);
@@ -25,11 +41,51 @@ public final class CodelessUiConnectorConfigPropertiesDataTypesItem extends Last
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("lastDataReceivedQuery", lastDataReceivedQuery());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CodelessUiConnectorConfigPropertiesDataTypesItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CodelessUiConnectorConfigPropertiesDataTypesItem if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CodelessUiConnectorConfigPropertiesDataTypesItem.
+     */
+    public static CodelessUiConnectorConfigPropertiesDataTypesItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CodelessUiConnectorConfigPropertiesDataTypesItem deserializedCodelessUiConnectorConfigPropertiesDataTypesItem
+                = new CodelessUiConnectorConfigPropertiesDataTypesItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedCodelessUiConnectorConfigPropertiesDataTypesItem.withName(reader.getString());
+                } else if ("lastDataReceivedQuery".equals(fieldName)) {
+                    deserializedCodelessUiConnectorConfigPropertiesDataTypesItem
+                        .withLastDataReceivedQuery(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCodelessUiConnectorConfigPropertiesDataTypesItem;
+        });
     }
 }

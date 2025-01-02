@@ -88,7 +88,6 @@ public final class ImageTemplateSharedImageVersionSource extends ImageTemplateSo
      */
     @Override
     public void validate() {
-        super.validate();
         if (imageVersionId() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(

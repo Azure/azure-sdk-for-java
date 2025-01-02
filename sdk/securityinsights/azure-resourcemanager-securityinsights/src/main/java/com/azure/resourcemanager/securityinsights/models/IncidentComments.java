@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of IncidentComments. */
+/**
+ * Resource collection API of IncidentComments.
+ */
 public interface IncidentComments {
     /**
      * Gets all incident comments.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param incidentId Incident ID.
@@ -25,7 +27,7 @@ public interface IncidentComments {
 
     /**
      * Gets all incident comments.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param incidentId Incident ID.
@@ -33,27 +35,36 @@ public interface IncidentComments {
      * @param orderby Sorts the results. Optional.
      * @param top Returns only the first n results. Optional.
      * @param skipToken Skiptoken is only used if a previous operation returned a partial result. If a previous response
-     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
-     *     specifies a starting point to use for subsequent calls. Optional.
+     * contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies
+     * a starting point to use for subsequent calls. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all incident comments as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<IncidentComment> list(
-        String resourceGroupName,
-        String workspaceName,
-        String incidentId,
-        String filter,
-        String orderby,
-        Integer top,
-        String skipToken,
-        Context context);
+    PagedIterable<IncidentComment> list(String resourceGroupName, String workspaceName, String incidentId,
+        String filter, String orderby, Integer top, String skipToken, Context context);
 
     /**
      * Gets an incident comment.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param incidentId Incident ID.
+     * @param incidentCommentId Incident comment ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an incident comment along with {@link Response}.
+     */
+    Response<IncidentComment> getWithResponse(String resourceGroupName, String workspaceName, String incidentId,
+        String incidentCommentId, Context context);
+
+    /**
+     * Gets an incident comment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param incidentId Incident ID.
@@ -66,8 +77,8 @@ public interface IncidentComments {
     IncidentComment get(String resourceGroupName, String workspaceName, String incidentId, String incidentCommentId);
 
     /**
-     * Gets an incident comment.
-     *
+     * Delete the incident comment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param incidentId Incident ID.
@@ -76,14 +87,14 @@ public interface IncidentComments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an incident comment along with {@link Response}.
+     * @return the {@link Response}.
      */
-    Response<IncidentComment> getWithResponse(
-        String resourceGroupName, String workspaceName, String incidentId, String incidentCommentId, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String incidentId,
+        String incidentCommentId, Context context);
 
     /**
      * Delete the incident comment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param incidentId Incident ID.
@@ -95,24 +106,8 @@ public interface IncidentComments {
     void delete(String resourceGroupName, String workspaceName, String incidentId, String incidentCommentId);
 
     /**
-     * Delete the incident comment.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param incidentId Incident ID.
-     * @param incidentCommentId Incident comment ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String incidentId, String incidentCommentId, Context context);
-
-    /**
      * Gets an incident comment.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -123,7 +118,7 @@ public interface IncidentComments {
 
     /**
      * Gets an incident comment.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -135,7 +130,7 @@ public interface IncidentComments {
 
     /**
      * Delete the incident comment.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -145,7 +140,7 @@ public interface IncidentComments {
 
     /**
      * Delete the incident comment.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -157,7 +152,7 @@ public interface IncidentComments {
 
     /**
      * Begins definition for a new IncidentComment resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new IncidentComment definition.
      */

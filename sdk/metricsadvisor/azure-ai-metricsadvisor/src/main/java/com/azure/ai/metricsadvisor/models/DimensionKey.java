@@ -44,7 +44,7 @@ public final class DimensionKey {
      * Creates a new instance of DimensionKey.
      */
     public DimensionKey() {
-        this.dimensions =  new HashMap<>();
+        this.dimensions = new HashMap<>();
     }
 
     /**
@@ -54,7 +54,7 @@ public final class DimensionKey {
      * @param dimensionNameValue The map of dimension name values.
      */
     public DimensionKey(Map<String, String> dimensionNameValue) {
-        this.dimensions =  new HashMap<>(dimensionNameValue);
+        this.dimensions = new HashMap<>(dimensionNameValue);
     }
 
     /**
@@ -115,16 +115,14 @@ public final class DimensionKey {
         }
 
         // Sort both map by dimension-names - log(n):
-        final Iterator<Map.Entry<String, String>> itr1
-            = (new TreeMap<>(this.dimensions)).entrySet().iterator();
+        final Iterator<Map.Entry<String, String>> itr1 = (new TreeMap<>(this.dimensions)).entrySet().iterator();
         final Iterator<Map.Entry<String, String>> itr2
             = (new TreeMap<>(otherDimensionKey.dimensions)).entrySet().iterator();
         // Compare - O(n):
         while (itr1.hasNext()) {
             Map.Entry<String, String> entry1 = itr1.next();
             Map.Entry<String, String> entry2 = itr2.next();
-            if (!entry1.getKey().equals(entry2.getKey())
-                || !entry1.getValue().equals(entry2.getValue())) {
+            if (!entry1.getKey().equals(entry2.getKey()) || !entry1.getValue().equals(entry2.getValue())) {
                 return false;
             }
         }

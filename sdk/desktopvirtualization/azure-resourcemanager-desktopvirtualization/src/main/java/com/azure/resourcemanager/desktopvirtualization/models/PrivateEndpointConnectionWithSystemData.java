@@ -6,33 +6,50 @@ package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.PrivateEndpointConnectionWithSystemDataInner;
+import java.util.List;
 
-/** An immutable client-side representation of PrivateEndpointConnectionWithSystemData. */
+/**
+ * An immutable client-side representation of PrivateEndpointConnectionWithSystemData.
+ */
 public interface PrivateEndpointConnectionWithSystemData {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
-     * Gets the privateEndpoint property: The resource of private end point.
-     *
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
+     * Gets the groupIds property: The group ids for the private endpoint resource.
+     * 
+     * @return the groupIds value.
+     */
+    List<String> groupIds();
+
+    /**
+     * Gets the privateEndpoint property: The private endpoint resource.
+     * 
      * @return the privateEndpoint value.
      */
     PrivateEndpoint privateEndpoint();
@@ -40,30 +57,23 @@ public interface PrivateEndpointConnectionWithSystemData {
     /**
      * Gets the privateLinkServiceConnectionState property: A collection of information about the state of the
      * connection between service consumer and provider.
-     *
+     * 
      * @return the privateLinkServiceConnectionState value.
      */
     PrivateLinkServiceConnectionState privateLinkServiceConnectionState();
 
     /**
      * Gets the provisioningState property: The provisioning state of the private endpoint connection resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     PrivateEndpointConnectionProvisioningState provisioningState();
 
     /**
-     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
-
-    /**
      * Gets the inner
      * com.azure.resourcemanager.desktopvirtualization.fluent.models.PrivateEndpointConnectionWithSystemDataInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     PrivateEndpointConnectionWithSystemDataInner innerModel();

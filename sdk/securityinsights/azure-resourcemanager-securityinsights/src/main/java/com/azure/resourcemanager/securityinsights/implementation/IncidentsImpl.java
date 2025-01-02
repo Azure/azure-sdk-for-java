@@ -31,44 +31,44 @@ public final class IncidentsImpl implements Incidents {
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    public IncidentsImpl(
-        IncidentsClient innerClient,
+    public IncidentsImpl(IncidentsClient innerClient,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<Object> runPlaybookWithResponse(String resourceGroupName, String workspaceName,
+        String incidentIdentifier, ManualTriggerRequestBody requestBody, Context context) {
+        return this.serviceClient()
+            .runPlaybookWithResponse(resourceGroupName, workspaceName, incidentIdentifier, requestBody, context);
     }
 
     public Object runPlaybook(String resourceGroupName, String workspaceName, String incidentIdentifier) {
         return this.serviceClient().runPlaybook(resourceGroupName, workspaceName, incidentIdentifier);
     }
 
-    public Response<Object> runPlaybookWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String incidentIdentifier,
-        ManualTriggerRequestBody requestBody,
-        Context context) {
-        return this
-            .serviceClient()
-            .runPlaybookWithResponse(resourceGroupName, workspaceName, incidentIdentifier, requestBody, context);
-    }
-
     public PagedIterable<Incident> list(String resourceGroupName, String workspaceName) {
         PagedIterable<IncidentInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new IncidentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new IncidentImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Incident> list(
-        String resourceGroupName,
-        String workspaceName,
-        String filter,
-        String orderby,
-        Integer top,
-        String skipToken,
+    public PagedIterable<Incident> list(String resourceGroupName, String workspaceName, String filter, String orderby,
+        Integer top, String skipToken, Context context) {
+        PagedIterable<IncidentInner> inner
+            = this.serviceClient().list(resourceGroupName, workspaceName, filter, orderby, top, skipToken, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new IncidentImpl(inner1, this.manager()));
+    }
+
+    public Response<Incident> getWithResponse(String resourceGroupName, String workspaceName, String incidentId,
         Context context) {
-        PagedIterable<IncidentInner> inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, filter, orderby, top, skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new IncidentImpl(inner1, this.manager()));
+        Response<IncidentInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, incidentId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new IncidentImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Incident get(String resourceGroupName, String workspaceName, String incidentId) {
@@ -80,34 +80,31 @@ public final class IncidentsImpl implements Incidents {
         }
     }
 
-    public Response<Incident> getWithResponse(
-        String resourceGroupName, String workspaceName, String incidentId, Context context) {
-        Response<IncidentInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, incidentId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new IncidentImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String incidentId,
+        Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, workspaceName, incidentId, context);
     }
 
     public void delete(String resourceGroupName, String workspaceName, String incidentId) {
         this.serviceClient().delete(resourceGroupName, workspaceName, incidentId);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String incidentId, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, workspaceName, incidentId, context);
+    public Response<TeamInformation> createTeamWithResponse(String resourceGroupName, String workspaceName,
+        String incidentId, TeamProperties teamProperties, Context context) {
+        Response<TeamInformationInner> inner = this.serviceClient()
+            .createTeamWithResponse(resourceGroupName, workspaceName, incidentId, teamProperties, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new TeamInformationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
-    public TeamInformation createTeam(
-        String resourceGroupName, String workspaceName, String incidentId, TeamProperties teamProperties) {
-        TeamInformationInner inner =
-            this.serviceClient().createTeam(resourceGroupName, workspaceName, incidentId, teamProperties);
+    public TeamInformation createTeam(String resourceGroupName, String workspaceName, String incidentId,
+        TeamProperties teamProperties) {
+        TeamInformationInner inner
+            = this.serviceClient().createTeam(resourceGroupName, workspaceName, incidentId, teamProperties);
         if (inner != null) {
             return new TeamInformationImpl(inner, this.manager());
         } else {
@@ -115,22 +112,13 @@ public final class IncidentsImpl implements Incidents {
         }
     }
 
-    public Response<TeamInformation> createTeamWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String incidentId,
-        TeamProperties teamProperties,
-        Context context) {
-        Response<TeamInformationInner> inner =
-            this
-                .serviceClient()
-                .createTeamWithResponse(resourceGroupName, workspaceName, incidentId, teamProperties, context);
+    public Response<IncidentAlertList> listAlertsWithResponse(String resourceGroupName, String workspaceName,
+        String incidentId, Context context) {
+        Response<IncidentAlertListInner> inner
+            = this.serviceClient().listAlertsWithResponse(resourceGroupName, workspaceName, incidentId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new TeamInformationImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new IncidentAlertListImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -145,24 +133,21 @@ public final class IncidentsImpl implements Incidents {
         }
     }
 
-    public Response<IncidentAlertList> listAlertsWithResponse(
-        String resourceGroupName, String workspaceName, String incidentId, Context context) {
-        Response<IncidentAlertListInner> inner =
-            this.serviceClient().listAlertsWithResponse(resourceGroupName, workspaceName, incidentId, context);
+    public Response<IncidentBookmarkList> listBookmarksWithResponse(String resourceGroupName, String workspaceName,
+        String incidentId, Context context) {
+        Response<IncidentBookmarkListInner> inner
+            = this.serviceClient().listBookmarksWithResponse(resourceGroupName, workspaceName, incidentId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new IncidentAlertListImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new IncidentBookmarkListImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
     public IncidentBookmarkList listBookmarks(String resourceGroupName, String workspaceName, String incidentId) {
-        IncidentBookmarkListInner inner =
-            this.serviceClient().listBookmarks(resourceGroupName, workspaceName, incidentId);
+        IncidentBookmarkListInner inner
+            = this.serviceClient().listBookmarks(resourceGroupName, workspaceName, incidentId);
         if (inner != null) {
             return new IncidentBookmarkListImpl(inner, this.manager());
         } else {
@@ -170,24 +155,21 @@ public final class IncidentsImpl implements Incidents {
         }
     }
 
-    public Response<IncidentBookmarkList> listBookmarksWithResponse(
-        String resourceGroupName, String workspaceName, String incidentId, Context context) {
-        Response<IncidentBookmarkListInner> inner =
-            this.serviceClient().listBookmarksWithResponse(resourceGroupName, workspaceName, incidentId, context);
+    public Response<IncidentEntitiesResponse> listEntitiesWithResponse(String resourceGroupName, String workspaceName,
+        String incidentId, Context context) {
+        Response<IncidentEntitiesResponseInner> inner
+            = this.serviceClient().listEntitiesWithResponse(resourceGroupName, workspaceName, incidentId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new IncidentBookmarkListImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new IncidentEntitiesResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
     public IncidentEntitiesResponse listEntities(String resourceGroupName, String workspaceName, String incidentId) {
-        IncidentEntitiesResponseInner inner =
-            this.serviceClient().listEntities(resourceGroupName, workspaceName, incidentId);
+        IncidentEntitiesResponseInner inner
+            = this.serviceClient().listEntities(resourceGroupName, workspaceName, incidentId);
         if (inner != null) {
             return new IncidentEntitiesResponseImpl(inner, this.manager());
         } else {
@@ -195,121 +177,78 @@ public final class IncidentsImpl implements Incidents {
         }
     }
 
-    public Response<IncidentEntitiesResponse> listEntitiesWithResponse(
-        String resourceGroupName, String workspaceName, String incidentId, Context context) {
-        Response<IncidentEntitiesResponseInner> inner =
-            this.serviceClient().listEntitiesWithResponse(resourceGroupName, workspaceName, incidentId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new IncidentEntitiesResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public Incident getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String incidentId = Utils.getValueFromIdByName(id, "incidents");
+        String incidentId = ResourceManagerUtils.getValueFromIdByName(id, "incidents");
         if (incidentId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'incidents'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'incidents'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, incidentId, Context.NONE).getValue();
     }
 
     public Response<Incident> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String incidentId = Utils.getValueFromIdByName(id, "incidents");
+        String incidentId = ResourceManagerUtils.getValueFromIdByName(id, "incidents");
         if (incidentId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'incidents'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'incidents'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, incidentId, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String incidentId = Utils.getValueFromIdByName(id, "incidents");
+        String incidentId = ResourceManagerUtils.getValueFromIdByName(id, "incidents");
         if (incidentId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'incidents'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'incidents'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, workspaceName, incidentId, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String incidentId = Utils.getValueFromIdByName(id, "incidents");
+        String incidentId = ResourceManagerUtils.getValueFromIdByName(id, "incidents");
         if (incidentId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'incidents'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'incidents'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, workspaceName, incidentId, context);
     }

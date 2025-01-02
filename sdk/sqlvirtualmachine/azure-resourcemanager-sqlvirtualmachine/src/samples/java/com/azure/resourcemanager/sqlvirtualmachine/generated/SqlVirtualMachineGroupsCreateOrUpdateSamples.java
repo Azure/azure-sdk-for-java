@@ -10,39 +10,41 @@ import com.azure.resourcemanager.sqlvirtualmachine.models.WsfcDomainProfile;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for SqlVirtualMachineGroups CreateOrUpdate. */
+/**
+ * Samples for SqlVirtualMachineGroups CreateOrUpdate.
+ */
 public final class SqlVirtualMachineGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/CreateOrUpdateSqlVirtualMachineGroup.json
+     * x-ms-original-file:
+     * specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/
+     * CreateOrUpdateSqlVirtualMachineGroup.json
      */
     /**
      * Sample code: Creates or updates a SQL virtual machine group.
-     *
+     * 
      * @param manager Entry point to SqlVirtualMachineManager.
      */
     public static void createsOrUpdatesASQLVirtualMachineGroup(
         com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager manager) {
-        manager
-            .sqlVirtualMachineGroups()
+        manager.sqlVirtualMachineGroups()
             .define("testvmgroup")
             .withRegion("northeurope")
             .withExistingResourceGroup("testrg")
             .withTags(mapOf("mytag", "myval"))
             .withSqlImageOffer("SQL2016-WS2016")
             .withSqlImageSku(SqlVmGroupImageSku.ENTERPRISE)
-            .withWsfcDomainProfile(
-                new WsfcDomainProfile()
-                    .withDomainFqdn("testdomain.com")
-                    .withOuPath("OU=WSCluster,DC=testdomain,DC=com")
-                    .withClusterBootstrapAccount("testrpadmin")
-                    .withClusterOperatorAccount("testrp@testdomain.com")
-                    .withSqlServiceAccount("sqlservice@testdomain.com")
-                    .withStorageAccountUrl("https://storgact.blob.core.windows.net/")
-                    .withStorageAccountPrimaryKey("fakeTokenPlaceholder")
-                    .withClusterSubnetType(ClusterSubnetType.MULTI_SUBNET))
+            .withWsfcDomainProfile(new WsfcDomainProfile().withDomainFqdn("testdomain.com")
+                .withOuPath("OU=WSCluster,DC=testdomain,DC=com")
+                .withClusterBootstrapAccount("testrpadmin")
+                .withClusterOperatorAccount("testrp@testdomain.com")
+                .withSqlServiceAccount("sqlservice@testdomain.com")
+                .withStorageAccountUrl("https://storgact.blob.core.windows.net/")
+                .withStorageAccountPrimaryKey("fakeTokenPlaceholder")
+                .withClusterSubnetType(ClusterSubnetType.MULTI_SUBNET))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

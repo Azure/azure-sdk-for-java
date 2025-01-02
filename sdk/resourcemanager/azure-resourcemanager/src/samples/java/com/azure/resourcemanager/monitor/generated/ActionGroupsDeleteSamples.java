@@ -18,7 +18,10 @@ public final class ActionGroupsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteAnActionGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getActionGroups()
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getActionGroups()
             .deleteWithResponse("Default-NotificationRules", "SampleActionGroup", com.azure.core.util.Context.NONE);
     }
 }

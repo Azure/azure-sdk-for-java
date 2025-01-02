@@ -37,16 +37,15 @@ public final class ServiceBusSenderInstrumentation {
 
         if (tracer.isEnabled()) {
             return Mono.defer(() -> {
-                Context span = tracer.startSpanWithLinks(spanName, ServiceBusTracer.OperationName.PUBLISH, batch, Context.NONE);
-                return publisher
-                    .doOnEach(signal -> {
-                        meter.reportBatchSend(batch.size(), signal.getThrowable(), false, span);
-                        tracer.endSpan(signal.getThrowable(), span, null);
-                    })
-                    .doOnCancel(() -> {
-                        meter.reportBatchSend(batch.size(), null, true, span);
-                        tracer.cancelSpan(span);
-                    });
+                Context span
+                    = tracer.startSpanWithLinks(spanName, ServiceBusTracer.OperationName.PUBLISH, batch, Context.NONE);
+                return publisher.doOnEach(signal -> {
+                    meter.reportBatchSend(batch.size(), signal.getThrowable(), false, span);
+                    tracer.endSpan(signal.getThrowable(), span, null);
+                }).doOnCancel(() -> {
+                    meter.reportBatchSend(batch.size(), null, true, span);
+                    tracer.cancelSpan(span);
+                });
             });
         } else {
             return publisher

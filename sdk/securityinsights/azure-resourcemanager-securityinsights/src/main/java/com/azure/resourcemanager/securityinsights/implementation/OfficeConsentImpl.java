@@ -13,8 +13,7 @@ public final class OfficeConsentImpl implements OfficeConsent {
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    OfficeConsentImpl(
-        OfficeConsentInner innerObject,
+    OfficeConsentImpl(OfficeConsentInner innerObject,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

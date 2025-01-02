@@ -5,37 +5,54 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The data source that enriched by ueba. */
+/**
+ * The data source that enriched by ueba.
+ */
 public final class UebaDataSources extends ExpandableStringEnum<UebaDataSources> {
-    /** Static value AuditLogs for UebaDataSources. */
+    /**
+     * Static value AuditLogs for UebaDataSources.
+     */
     public static final UebaDataSources AUDIT_LOGS = fromString("AuditLogs");
 
-    /** Static value AzureActivity for UebaDataSources. */
+    /**
+     * Static value AzureActivity for UebaDataSources.
+     */
     public static final UebaDataSources AZURE_ACTIVITY = fromString("AzureActivity");
 
-    /** Static value SecurityEvent for UebaDataSources. */
+    /**
+     * Static value SecurityEvent for UebaDataSources.
+     */
     public static final UebaDataSources SECURITY_EVENT = fromString("SecurityEvent");
 
-    /** Static value SigninLogs for UebaDataSources. */
+    /**
+     * Static value SigninLogs for UebaDataSources.
+     */
     public static final UebaDataSources SIGNIN_LOGS = fromString("SigninLogs");
 
     /**
+     * Creates a new instance of UebaDataSources value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public UebaDataSources() {
+    }
+
+    /**
      * Creates or finds a UebaDataSources from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding UebaDataSources.
      */
-    @JsonCreator
     public static UebaDataSources fromString(String name) {
         return fromString(name, UebaDataSources.class);
     }
 
     /**
      * Gets known UebaDataSources values.
-     *
+     * 
      * @return known UebaDataSources values.
      */
     public static Collection<UebaDataSources> values() {

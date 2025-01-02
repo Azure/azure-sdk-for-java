@@ -15,8 +15,8 @@ public final class OperationListResultImpl implements OperationListResult {
 
     private final com.azure.resourcemanager.devhub.DevHubManager serviceManager;
 
-    OperationListResultImpl(
-        OperationListResultInner innerObject, com.azure.resourcemanager.devhub.DevHubManager serviceManager) {
+    OperationListResultImpl(OperationListResultInner innerObject,
+        com.azure.resourcemanager.devhub.DevHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

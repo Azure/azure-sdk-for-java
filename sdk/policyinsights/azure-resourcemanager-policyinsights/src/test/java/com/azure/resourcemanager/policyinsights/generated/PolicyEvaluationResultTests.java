@@ -6,20 +6,17 @@ package com.azure.resourcemanager.policyinsights.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.policyinsights.models.PolicyEvaluationResult;
-import org.junit.jupiter.api.Test;
 
 public final class PolicyEvaluationResultTests {
-    @Test
-    public void testDeserialize() {
-        PolicyEvaluationResult model =
-            BinaryData
-                .fromString(
-                    "{\"policyInfo\":{\"policyDefinitionId\":\"nqvsaznqnto\",\"policySetDefinitionId\":\"dsg\",\"policyDefinitionReferenceId\":\"hmk\",\"policyAssignmentId\":\"grauwjuetaebur\"},\"evaluationResult\":\"dmovsm\",\"evaluationDetails\":{\"evaluatedExpressions\":[{\"result\":\"b\",\"expression\":\"oefki\",\"expressionKind\":\"vtpuqujmqlgk\",\"path\":\"tndoaongbjc\",\"operator\":\"i\"}],\"ifNotExistsDetails\":{\"resourceId\":\"ed\",\"totalResources\":659482239}}}")
-                .toObject(PolicyEvaluationResult.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PolicyEvaluationResult model = BinaryData.fromString(
+            "{\"policyInfo\":{\"policyDefinitionId\":\"pxiwf\",\"policySetDefinitionId\":\"gjsaasiixtm\",\"policyDefinitionReferenceId\":\"jvkviirhgfgrws\",\"policyAssignmentId\":\"gratzvzbglbyvict\"},\"evaluationResult\":\"brxkjzwr\",\"evaluationDetails\":{\"evaluatedExpressions\":[{\"result\":\"shkwfbkgozxwopd\",\"expression\":\"dpizq\",\"expressionKind\":\"lnapxbiygn\",\"path\":\"j\",\"expressionValue\":\"datafsmfcttuxuuyi\",\"targetValue\":\"datalq\",\"operator\":\"quvre\"}],\"ifNotExistsDetails\":{\"resourceId\":\"njhvsujztc\",\"totalResources\":11608921}}}")
+            .toObject(PolicyEvaluationResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PolicyEvaluationResult model = new PolicyEvaluationResult();
         model = BinaryData.fromObject(model).toObject(PolicyEvaluationResult.class);
     }

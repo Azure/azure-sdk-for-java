@@ -9,30 +9,28 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.resourcemanager.apimanagement.fluent.models.SubscriptionContractInner;
 
-/** Contains all response data for the get operation. */
+/**
+ * Contains all response data for the get operation.
+ */
 public final class UserSubscriptionsGetResponse
     extends ResponseBase<UserSubscriptionsGetHeaders, SubscriptionContractInner> {
     /**
      * Creates an instance of UserSubscriptionsGetResponse.
-     *
+     * 
      * @param request the request which resulted in this UserSubscriptionsGetResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public UserSubscriptionsGetResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        SubscriptionContractInner value,
-        UserSubscriptionsGetHeaders headers) {
+    public UserSubscriptionsGetResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        SubscriptionContractInner value, UserSubscriptionsGetHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
     /**
      * Gets the deserialized response body.
-     *
+     * 
      * @return the deserialized response body.
      */
     @Override

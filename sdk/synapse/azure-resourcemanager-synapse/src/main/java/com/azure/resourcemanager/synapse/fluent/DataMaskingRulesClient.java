@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.DataMaskingRuleInner;
 
-/** An instance of this class provides access to all the operations defined in DataMaskingRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DataMaskingRulesClient.
+ */
 public interface DataMaskingRulesClient {
     /**
      * Creates or updates a Sql pool data masking rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -28,17 +30,12 @@ public interface DataMaskingRulesClient {
      * @return represents a Sql pool data masking rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DataMaskingRuleInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String dataMaskingRuleName,
-        DataMaskingRuleInner parameters,
-        Context context);
+    Response<DataMaskingRuleInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String dataMaskingRuleName, DataMaskingRuleInner parameters, Context context);
 
     /**
      * Creates or updates a Sql pool data masking rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -50,16 +47,12 @@ public interface DataMaskingRulesClient {
      * @return represents a Sql pool data masking rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DataMaskingRuleInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String dataMaskingRuleName,
-        DataMaskingRuleInner parameters);
+    DataMaskingRuleInner createOrUpdate(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String dataMaskingRuleName, DataMaskingRuleInner parameters);
 
     /**
      * Gets the specific Sql pool data masking rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -71,16 +64,12 @@ public interface DataMaskingRulesClient {
      * @return the specific Sql pool data masking rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DataMaskingRuleInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String dataMaskingRuleName,
-        Context context);
+    Response<DataMaskingRuleInner> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String dataMaskingRuleName, Context context);
 
     /**
      * Gets the specific Sql pool data masking rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -91,12 +80,12 @@ public interface DataMaskingRulesClient {
      * @return the specific Sql pool data masking rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DataMaskingRuleInner get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String dataMaskingRuleName);
+    DataMaskingRuleInner get(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String dataMaskingRuleName);
 
     /**
      * Gets a list of Sql pool data masking rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -106,12 +95,12 @@ public interface DataMaskingRulesClient {
      * @return a list of Sql pool data masking rules as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DataMaskingRuleInner> listBySqlPool(
-        String resourceGroupName, String workspaceName, String sqlPoolName);
+    PagedIterable<DataMaskingRuleInner> listBySqlPool(String resourceGroupName, String workspaceName,
+        String sqlPoolName);
 
     /**
      * Gets a list of Sql pool data masking rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -122,6 +111,6 @@ public interface DataMaskingRulesClient {
      * @return a list of Sql pool data masking rules as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DataMaskingRuleInner> listBySqlPool(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    PagedIterable<DataMaskingRuleInner> listBySqlPool(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context);
 }

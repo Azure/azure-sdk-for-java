@@ -15,10 +15,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 /** Client-side representation of express route circuit peering object, associated with express route circuit. */
 @Fluent
 public interface ExpressRouteCircuitPeering
-    extends IndependentChild<NetworkManager>,
-        HasInnerModel<ExpressRouteCircuitPeeringInner>,
-        Refreshable<ExpressRouteCircuitPeering>,
-        Updatable<ExpressRouteCircuitPeering.Update> {
+    extends IndependentChild<NetworkManager>, HasInnerModel<ExpressRouteCircuitPeeringInner>,
+    Refreshable<ExpressRouteCircuitPeering>, Updatable<ExpressRouteCircuitPeering.Update> {
 
     // Getters
 
@@ -76,14 +74,9 @@ public interface ExpressRouteCircuitPeering
     Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig();
 
     /** The entirety of the express route circuit peering definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithAdvertisedPublicPrefixes,
-            DefinitionStages.WithPrimaryPeerAddressPrefix,
-            DefinitionStages.WithSecondaryPeerAddressPrefix,
-            DefinitionStages.WithVlanId,
-            DefinitionStages.WithPeerAsn,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithAdvertisedPublicPrefixes,
+        DefinitionStages.WithPrimaryPeerAddressPrefix, DefinitionStages.WithSecondaryPeerAddressPrefix,
+        DefinitionStages.WithVlanId, DefinitionStages.WithPeerAsn, DefinitionStages.WithCreate {
     }
 
     /** Grouping of express route circuit peering definition stages. */
@@ -157,13 +150,9 @@ public interface ExpressRouteCircuitPeering
     }
 
     /** Grouping of express route circuit peering update stages. */
-    interface Update
-        extends Appliable<ExpressRouteCircuitPeering>,
-            UpdateStages.WithAdvertisedPublicPrefixes,
-            UpdateStages.WithPrimaryPeerAddressPrefix,
-            UpdateStages.WithSecondaryPeerAddressPrefix,
-            UpdateStages.WithVlanId,
-            UpdateStages.WithPeerAsn {
+    interface Update extends Appliable<ExpressRouteCircuitPeering>, UpdateStages.WithAdvertisedPublicPrefixes,
+        UpdateStages.WithPrimaryPeerAddressPrefix, UpdateStages.WithSecondaryPeerAddressPrefix, UpdateStages.WithVlanId,
+        UpdateStages.WithPeerAsn {
     }
 
     /**

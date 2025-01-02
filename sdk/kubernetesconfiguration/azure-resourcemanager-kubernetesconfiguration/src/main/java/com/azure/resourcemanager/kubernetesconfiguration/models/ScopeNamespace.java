@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.kubernetesconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Specifies that the scope of the extension is Namespace. */
+/**
+ * Specifies that the scope of the extension is Namespace.
+ */
 @Fluent
-public final class ScopeNamespace {
+public final class ScopeNamespace implements JsonSerializable<ScopeNamespace> {
     /*
-     * Namespace where the extension will be created for an Namespace scoped extension.  If this namespace does not
+     * Namespace where the extension will be created for an Namespace scoped extension. If this namespace does not
      * exist, it will be created
      */
-    @JsonProperty(value = "targetNamespace")
     private String targetNamespace;
 
-    /** Creates an instance of ScopeNamespace class. */
+    /**
+     * Creates an instance of ScopeNamespace class.
+     */
     public ScopeNamespace() {
     }
 
     /**
      * Get the targetNamespace property: Namespace where the extension will be created for an Namespace scoped
      * extension. If this namespace does not exist, it will be created.
-     *
+     * 
      * @return the targetNamespace value.
      */
     public String targetNamespace() {
@@ -34,7 +41,7 @@ public final class ScopeNamespace {
     /**
      * Set the targetNamespace property: Namespace where the extension will be created for an Namespace scoped
      * extension. If this namespace does not exist, it will be created.
-     *
+     * 
      * @param targetNamespace the targetNamespace value to set.
      * @return the ScopeNamespace object itself.
      */
@@ -45,9 +52,45 @@ public final class ScopeNamespace {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetNamespace", this.targetNamespace);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScopeNamespace from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScopeNamespace if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScopeNamespace.
+     */
+    public static ScopeNamespace fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScopeNamespace deserializedScopeNamespace = new ScopeNamespace();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetNamespace".equals(fieldName)) {
+                    deserializedScopeNamespace.targetNamespace = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScopeNamespace;
+        });
     }
 }

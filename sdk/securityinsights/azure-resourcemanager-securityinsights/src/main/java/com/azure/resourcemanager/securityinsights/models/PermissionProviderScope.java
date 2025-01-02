@@ -5,34 +5,49 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Permission provider scope. */
+/**
+ * Permission provider scope.
+ */
 public final class PermissionProviderScope extends ExpandableStringEnum<PermissionProviderScope> {
-    /** Static value ResourceGroup for PermissionProviderScope. */
+    /**
+     * Static value ResourceGroup for PermissionProviderScope.
+     */
     public static final PermissionProviderScope RESOURCE_GROUP = fromString("ResourceGroup");
 
-    /** Static value Subscription for PermissionProviderScope. */
+    /**
+     * Static value Subscription for PermissionProviderScope.
+     */
     public static final PermissionProviderScope SUBSCRIPTION = fromString("Subscription");
 
-    /** Static value Workspace for PermissionProviderScope. */
+    /**
+     * Static value Workspace for PermissionProviderScope.
+     */
     public static final PermissionProviderScope WORKSPACE = fromString("Workspace");
 
     /**
+     * Creates a new instance of PermissionProviderScope value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PermissionProviderScope() {
+    }
+
+    /**
      * Creates or finds a PermissionProviderScope from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PermissionProviderScope.
      */
-    @JsonCreator
     public static PermissionProviderScope fromString(String name) {
         return fromString(name, PermissionProviderScope.class);
     }
 
     /**
      * Gets known PermissionProviderScope values.
-     *
+     * 
      * @return known PermissionProviderScope values.
      */
     public static Collection<PermissionProviderScope> values() {

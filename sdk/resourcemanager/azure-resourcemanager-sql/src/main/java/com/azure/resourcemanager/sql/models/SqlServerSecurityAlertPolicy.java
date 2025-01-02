@@ -17,13 +17,8 @@ import java.util.List;
 /** An immutable client-side representation of an Azure SQL Server Security Alert Policy. */
 @Fluent
 public interface SqlServerSecurityAlertPolicy
-    extends HasId,
-        HasInnerModel<ServerSecurityAlertPolicyInner>,
-        HasName,
-        HasResourceGroup,
-        Indexable,
-        Refreshable<SqlServerSecurityAlertPolicy>,
-        Updatable<SqlServerSecurityAlertPolicy.Update> {
+    extends HasId, HasInnerModel<ServerSecurityAlertPolicyInner>, HasName, HasResourceGroup, Indexable,
+    Refreshable<SqlServerSecurityAlertPolicy>, Updatable<SqlServerSecurityAlertPolicy.Update> {
 
     /** @return name of the SQL Server to which this DNS alias belongs */
     String sqlServerName();
@@ -59,14 +54,12 @@ public interface SqlServerSecurityAlertPolicy
      * The template for a SQL Server Security Alert Policy update operation, containing all the settings that can be
      * modified.
      */
-    interface Update
-        extends SqlServerSecurityAlertPolicy.UpdateStages.WithState,
-            SqlServerSecurityAlertPolicy.UpdateStages.WithEmailAccountAdmins,
-            SqlServerSecurityAlertPolicy.UpdateStages.WithStorageAccount,
-            SqlServerSecurityAlertPolicy.UpdateStages.WithEmailAddresses,
-            SqlServerSecurityAlertPolicy.UpdateStages.WithDisabledAlerts,
-            SqlServerSecurityAlertPolicy.UpdateStages.WithRetentionDays,
-            Appliable<SqlServerSecurityAlertPolicy> {
+    interface Update extends SqlServerSecurityAlertPolicy.UpdateStages.WithState,
+        SqlServerSecurityAlertPolicy.UpdateStages.WithEmailAccountAdmins,
+        SqlServerSecurityAlertPolicy.UpdateStages.WithStorageAccount,
+        SqlServerSecurityAlertPolicy.UpdateStages.WithEmailAddresses,
+        SqlServerSecurityAlertPolicy.UpdateStages.WithDisabledAlerts,
+        SqlServerSecurityAlertPolicy.UpdateStages.WithRetentionDays, Appliable<SqlServerSecurityAlertPolicy> {
     }
 
     /** Grouping of all the SQL Server Security Alert Policy update stages. */

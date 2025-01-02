@@ -68,7 +68,7 @@ public final class MultiLanguageBatchInput implements JsonSerializable<MultiLang
 
                 if ("documents".equals(fieldName)) {
                     deserializedMultiLanguageBatchInput.documents
-                            = reader.readArray(reader1 -> MultiLanguageInput.fromJson(reader1));
+                        = reader.readArray(reader1 -> MultiLanguageInput.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }

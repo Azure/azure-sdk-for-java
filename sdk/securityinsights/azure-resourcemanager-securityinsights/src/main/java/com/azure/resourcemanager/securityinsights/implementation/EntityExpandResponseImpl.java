@@ -14,8 +14,7 @@ public final class EntityExpandResponseImpl implements EntityExpandResponse {
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    EntityExpandResponseImpl(
-        EntityExpandResponseInner innerObject,
+    EntityExpandResponseImpl(EntityExpandResponseInner innerObject,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

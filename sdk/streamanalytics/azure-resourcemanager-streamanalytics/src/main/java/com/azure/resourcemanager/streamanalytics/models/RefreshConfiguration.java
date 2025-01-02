@@ -5,47 +5,46 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The refresh parameters for any/all updatable user defined functions present in the job config.
  */
 @Fluent
-public final class RefreshConfiguration {
+public final class RefreshConfiguration implements JsonSerializable<RefreshConfiguration> {
     /*
-     * The blob path pattern. Not a regular expression. It represents a pattern against which blob names will be
-     * matched to determine whether or not they should be included as input or output to the job. See
+     * The blob path pattern. Not a regular expression. It represents a pattern against which blob names will be matched
+     * to determine whether or not they should be included as input or output to the job. See
      * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or
-     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a more detailed
-     * explanation and example.
+     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a more detailed explanation
+     * and example.
      */
-    @JsonProperty(value = "pathPattern")
     private String pathPattern;
 
     /*
      * The date format. Wherever {date} appears in pathPattern, the value of this property is used as the date format
      * instead.
      */
-    @JsonProperty(value = "dateFormat")
     private String dateFormat;
 
     /*
      * The time format. Wherever {time} appears in pathPattern, the value of this property is used as the time format
      * instead.
      */
-    @JsonProperty(value = "timeFormat")
     private String timeFormat;
 
     /*
      * The refresh interval.
      */
-    @JsonProperty(value = "refreshInterval")
     private String refreshInterval;
 
     /*
      * This property indicates which data refresh option to use, Blocking or Nonblocking.
      */
-    @JsonProperty(value = "refreshType")
     private UpdatableUdfRefreshType refreshType;
 
     /**
@@ -58,8 +57,8 @@ public final class RefreshConfiguration {
      * Get the pathPattern property: The blob path pattern. Not a regular expression. It represents a pattern against
      * which blob names will be matched to determine whether or not they should be included as input or output to the
      * job. See https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or
-     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a more detailed
-     * explanation and example.
+     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a more detailed explanation
+     * and example.
      * 
      * @return the pathPattern value.
      */
@@ -71,8 +70,8 @@ public final class RefreshConfiguration {
      * Set the pathPattern property: The blob path pattern. Not a regular expression. It represents a pattern against
      * which blob names will be matched to determine whether or not they should be included as input or output to the
      * job. See https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or
-     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a more detailed
-     * explanation and example.
+     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a more detailed explanation
+     * and example.
      * 
      * @param pathPattern the pathPattern value to set.
      * @return the RefreshConfiguration object itself.
@@ -172,5 +171,54 @@ public final class RefreshConfiguration {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("pathPattern", this.pathPattern);
+        jsonWriter.writeStringField("dateFormat", this.dateFormat);
+        jsonWriter.writeStringField("timeFormat", this.timeFormat);
+        jsonWriter.writeStringField("refreshInterval", this.refreshInterval);
+        jsonWriter.writeStringField("refreshType", this.refreshType == null ? null : this.refreshType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RefreshConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RefreshConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RefreshConfiguration.
+     */
+    public static RefreshConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RefreshConfiguration deserializedRefreshConfiguration = new RefreshConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("pathPattern".equals(fieldName)) {
+                    deserializedRefreshConfiguration.pathPattern = reader.getString();
+                } else if ("dateFormat".equals(fieldName)) {
+                    deserializedRefreshConfiguration.dateFormat = reader.getString();
+                } else if ("timeFormat".equals(fieldName)) {
+                    deserializedRefreshConfiguration.timeFormat = reader.getString();
+                } else if ("refreshInterval".equals(fieldName)) {
+                    deserializedRefreshConfiguration.refreshInterval = reader.getString();
+                } else if ("refreshType".equals(fieldName)) {
+                    deserializedRefreshConfiguration.refreshType
+                        = UpdatableUdfRefreshType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRefreshConfiguration;
+        });
     }
 }

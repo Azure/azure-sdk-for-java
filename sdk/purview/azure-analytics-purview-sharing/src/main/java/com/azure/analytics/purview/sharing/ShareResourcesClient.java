@@ -16,14 +16,17 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 
-/** Initializes a new instance of the synchronous PurviewShareClient type. */
+/**
+ * Initializes a new instance of the synchronous PurviewShareClient type.
+ */
 @ServiceClient(builder = ShareResourcesClientBuilder.class)
 public final class ShareResourcesClient {
-    @Generated private final ShareResourcesAsyncClient client;
+    @Generated
+    private final ShareResourcesAsyncClient client;
 
     /**
      * Initializes an instance of ShareResourcesClient class.
-     *
+     * 
      * @param client the async client.
      */
     @Generated
@@ -33,23 +36,20 @@ public final class ShareResourcesClient {
 
     /**
      * API operation to list ShareResources.
-     *
-     * <p>List share resources.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * 
+     * List share resources.
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
-     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
+     * <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     type: String (Optional)
@@ -61,8 +61,9 @@ public final class ShareResourcesClient {
      *         type: String(ArmResourceReference) (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.

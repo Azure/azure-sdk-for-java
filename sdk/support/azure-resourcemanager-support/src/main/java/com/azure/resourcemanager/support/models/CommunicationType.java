@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.support.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class CommunicationType extends ExpandableStringEnum<CommunicationT
      * @param name a name to look for.
      * @return the corresponding CommunicationType.
      */
-    @JsonCreator
     public static CommunicationType fromString(String name) {
         return fromString(name, CommunicationType.class);
     }

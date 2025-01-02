@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.securityinsights.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.securityinsights.models.AlertDetail;
 import com.azure.resourcemanager.securityinsights.models.AlertDetailsOverride;
 import com.azure.resourcemanager.securityinsights.models.AlertSeverity;
@@ -32,273 +31,175 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for AlertRules CreateOrUpdate. */
+/**
+ * Samples for AlertRules CreateOrUpdate.
+ */
 public final class AlertRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/alertRules/CreateFusionAlertRule.json
+     * x-ms-original-file:
+     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/
+     * alertRules/CreateFusionAlertRule.json
      */
     /**
      * Sample code: Creates or updates a Fusion alert rule.
-     *
+     * 
      * @param manager Entry point to SecurityInsightsManager.
      */
-    public static void createsOrUpdatesAFusionAlertRule(
-        com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
-        manager
-            .alertRules()
-            .createOrUpdateWithResponse(
-                "myRg",
-                "myWorkspace",
-                "myFirstFusionRule",
-                new FusionAlertRule()
-                    .withEtag("3d00c3ca-0000-0100-0000-5d42d5010000")
+    public static void
+        createsOrUpdatesAFusionAlertRule(com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
+        manager.alertRules()
+            .createOrUpdateWithResponse("myRg", "myWorkspace", "myFirstFusionRule",
+                new FusionAlertRule().withEtag("3d00c3ca-0000-0100-0000-5d42d5010000")
                     .withAlertRuleTemplateName("f71aba3d-28fb-450b-b192-4e76a83015c8")
                     .withEnabled(true)
-                    .withSourceSettings(
-                        Arrays
-                            .asList(
-                                new FusionSourceSettings().withEnabled(true).withSourceName("Anomalies"),
-                                new FusionSourceSettings()
-                                    .withEnabled(true)
-                                    .withSourceName("Alert providers")
-                                    .withSourceSubTypes(
-                                        Arrays
-                                            .asList(
-                                                new FusionSourceSubTypeSetting()
-                                                    .withEnabled(true)
-                                                    .withSourceSubTypeName("Azure Active Directory Identity Protection")
-                                                    .withSeverityFilters(
-                                                        new FusionSubTypeSeverityFilter()
-                                                            .withFilters(
-                                                                Arrays
-                                                                    .asList(
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.HIGH)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.MEDIUM)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.LOW)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.INFORMATIONAL)
-                                                                            .withEnabled(true)))),
-                                                new FusionSourceSubTypeSetting()
-                                                    .withEnabled(true)
-                                                    .withSourceSubTypeName("Azure Defender")
-                                                    .withSeverityFilters(
-                                                        new FusionSubTypeSeverityFilter()
-                                                            .withFilters(
-                                                                Arrays
-                                                                    .asList(
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.HIGH)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.MEDIUM)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.LOW)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.INFORMATIONAL)
-                                                                            .withEnabled(true)))),
-                                                new FusionSourceSubTypeSetting()
-                                                    .withEnabled(true)
-                                                    .withSourceSubTypeName("Azure Defender for IoT")
-                                                    .withSeverityFilters(
-                                                        new FusionSubTypeSeverityFilter()
-                                                            .withFilters(
-                                                                Arrays
-                                                                    .asList(
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.HIGH)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.MEDIUM)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.LOW)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.INFORMATIONAL)
-                                                                            .withEnabled(true)))),
-                                                new FusionSourceSubTypeSetting()
-                                                    .withEnabled(true)
-                                                    .withSourceSubTypeName("Microsoft 365 Defender")
-                                                    .withSeverityFilters(
-                                                        new FusionSubTypeSeverityFilter()
-                                                            .withFilters(
-                                                                Arrays
-                                                                    .asList(
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.HIGH)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.MEDIUM)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.LOW)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.INFORMATIONAL)
-                                                                            .withEnabled(true)))),
-                                                new FusionSourceSubTypeSetting()
-                                                    .withEnabled(true)
-                                                    .withSourceSubTypeName("Microsoft Cloud App Security")
-                                                    .withSeverityFilters(
-                                                        new FusionSubTypeSeverityFilter()
-                                                            .withFilters(
-                                                                Arrays
-                                                                    .asList(
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.HIGH)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.MEDIUM)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.LOW)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.INFORMATIONAL)
-                                                                            .withEnabled(true)))),
-                                                new FusionSourceSubTypeSetting()
-                                                    .withEnabled(true)
-                                                    .withSourceSubTypeName("Microsoft Defender for Endpoint")
-                                                    .withSeverityFilters(
-                                                        new FusionSubTypeSeverityFilter()
-                                                            .withFilters(
-                                                                Arrays
-                                                                    .asList(
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.HIGH)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.MEDIUM)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.LOW)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.INFORMATIONAL)
-                                                                            .withEnabled(true)))),
-                                                new FusionSourceSubTypeSetting()
-                                                    .withEnabled(true)
-                                                    .withSourceSubTypeName("Microsoft Defender for Identity")
-                                                    .withSeverityFilters(
-                                                        new FusionSubTypeSeverityFilter()
-                                                            .withFilters(
-                                                                Arrays
-                                                                    .asList(
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.HIGH)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.MEDIUM)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.LOW)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.INFORMATIONAL)
-                                                                            .withEnabled(true)))),
-                                                new FusionSourceSubTypeSetting()
-                                                    .withEnabled(true)
-                                                    .withSourceSubTypeName("Microsoft Defender for Office 365")
-                                                    .withSeverityFilters(
-                                                        new FusionSubTypeSeverityFilter()
-                                                            .withFilters(
-                                                                Arrays
-                                                                    .asList(
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.HIGH)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.MEDIUM)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.LOW)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.INFORMATIONAL)
-                                                                            .withEnabled(true)))),
-                                                new FusionSourceSubTypeSetting()
-                                                    .withEnabled(true)
-                                                    .withSourceSubTypeName("Azure Sentinel scheduled analytics rules")
-                                                    .withSeverityFilters(
-                                                        new FusionSubTypeSeverityFilter()
-                                                            .withFilters(
-                                                                Arrays
-                                                                    .asList(
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.HIGH)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.MEDIUM)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.LOW)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.INFORMATIONAL)
-                                                                            .withEnabled(true)))))),
-                                new FusionSourceSettings()
-                                    .withEnabled(true)
-                                    .withSourceName("Raw logs from other sources")
-                                    .withSourceSubTypes(
-                                        Arrays
-                                            .asList(
-                                                new FusionSourceSubTypeSetting()
-                                                    .withEnabled(true)
-                                                    .withSourceSubTypeName("Palo Alto Networks")
-                                                    .withSeverityFilters(new FusionSubTypeSeverityFilter()))))),
-                Context.NONE);
+                    .withSourceSettings(Arrays.asList(
+                        new FusionSourceSettings().withEnabled(true).withSourceName("Anomalies"),
+                        new FusionSourceSettings().withEnabled(true)
+                            .withSourceName("Alert providers")
+                            .withSourceSubTypes(Arrays.asList(
+                                new FusionSourceSubTypeSetting().withEnabled(true)
+                                    .withSourceSubTypeName("Azure Active Directory Identity Protection")
+                                    .withSeverityFilters(new FusionSubTypeSeverityFilter().withFilters(Arrays.asList(
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.HIGH)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.MEDIUM)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.LOW)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.INFORMATIONAL)
+                                            .withEnabled(true)))),
+                                new FusionSourceSubTypeSetting().withEnabled(true)
+                                    .withSourceSubTypeName("Azure Defender")
+                                    .withSeverityFilters(new FusionSubTypeSeverityFilter().withFilters(Arrays.asList(
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.HIGH)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.MEDIUM)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.LOW)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.INFORMATIONAL)
+                                            .withEnabled(true)))),
+                                new FusionSourceSubTypeSetting().withEnabled(true)
+                                    .withSourceSubTypeName("Azure Defender for IoT")
+                                    .withSeverityFilters(new FusionSubTypeSeverityFilter().withFilters(Arrays.asList(
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.HIGH)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.MEDIUM)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.LOW)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.INFORMATIONAL)
+                                            .withEnabled(true)))),
+                                new FusionSourceSubTypeSetting().withEnabled(true)
+                                    .withSourceSubTypeName("Microsoft 365 Defender")
+                                    .withSeverityFilters(new FusionSubTypeSeverityFilter().withFilters(Arrays.asList(
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.HIGH)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.MEDIUM)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.LOW)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.INFORMATIONAL)
+                                            .withEnabled(true)))),
+                                new FusionSourceSubTypeSetting().withEnabled(true)
+                                    .withSourceSubTypeName("Microsoft Cloud App Security")
+                                    .withSeverityFilters(new FusionSubTypeSeverityFilter().withFilters(Arrays.asList(
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.HIGH)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.MEDIUM)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.LOW)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.INFORMATIONAL)
+                                            .withEnabled(true)))),
+                                new FusionSourceSubTypeSetting().withEnabled(true)
+                                    .withSourceSubTypeName("Microsoft Defender for Endpoint")
+                                    .withSeverityFilters(new FusionSubTypeSeverityFilter().withFilters(Arrays.asList(
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.HIGH)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.MEDIUM)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.LOW)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.INFORMATIONAL)
+                                            .withEnabled(true)))),
+                                new FusionSourceSubTypeSetting().withEnabled(true)
+                                    .withSourceSubTypeName("Microsoft Defender for Identity")
+                                    .withSeverityFilters(new FusionSubTypeSeverityFilter().withFilters(Arrays.asList(
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.HIGH)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.MEDIUM)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.LOW)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.INFORMATIONAL)
+                                            .withEnabled(true)))),
+                                new FusionSourceSubTypeSetting().withEnabled(true)
+                                    .withSourceSubTypeName("Microsoft Defender for Office 365")
+                                    .withSeverityFilters(new FusionSubTypeSeverityFilter().withFilters(Arrays.asList(
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.HIGH)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.MEDIUM)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.LOW)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.INFORMATIONAL)
+                                            .withEnabled(true)))),
+                                new FusionSourceSubTypeSetting().withEnabled(true)
+                                    .withSourceSubTypeName("Azure Sentinel scheduled analytics rules")
+                                    .withSeverityFilters(new FusionSubTypeSeverityFilter().withFilters(Arrays.asList(
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.HIGH)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.MEDIUM)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.LOW)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.INFORMATIONAL)
+                                            .withEnabled(true)))))),
+                        new FusionSourceSettings().withEnabled(true)
+                            .withSourceName("Raw logs from other sources")
+                            .withSourceSubTypes(Arrays.asList(new FusionSourceSubTypeSetting().withEnabled(true)
+                                .withSourceSubTypeName("Palo Alto Networks")
+                                .withSeverityFilters(new FusionSubTypeSeverityFilter()))))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/alertRules/CreateMicrosoftSecurityIncidentCreationAlertRule.json
+     * x-ms-original-file:
+     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/
+     * alertRules/CreateMicrosoftSecurityIncidentCreationAlertRule.json
      */
     /**
      * Sample code: Creates or updates a MicrosoftSecurityIncidentCreation rule.
-     *
+     * 
      * @param manager Entry point to SecurityInsightsManager.
      */
     public static void createsOrUpdatesAMicrosoftSecurityIncidentCreationRule(
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
-        manager
-            .alertRules()
-            .createOrUpdateWithResponse(
-                "myRg",
-                "myWorkspace",
-                "microsoftSecurityIncidentCreationRuleExample",
-                new MicrosoftSecurityIncidentCreationAlertRule()
-                    .withEtag("\"260097e0-0000-0d00-0000-5d6fa88f0000\"")
+        manager.alertRules()
+            .createOrUpdateWithResponse("myRg", "myWorkspace", "microsoftSecurityIncidentCreationRuleExample",
+                new MicrosoftSecurityIncidentCreationAlertRule().withEtag("\"260097e0-0000-0d00-0000-5d6fa88f0000\"")
                     .withDisplayName("testing displayname")
                     .withEnabled(true)
                     .withProductFilter(MicrosoftSecurityProductName.MICROSOFT_CLOUD_APP_SECURITY),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/alertRules/CreateScheduledAlertRule.json
+     * x-ms-original-file:
+     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/
+     * alertRules/CreateScheduledAlertRule.json
      */
     /**
      * Sample code: Creates or updates a Scheduled alert rule.
-     *
+     * 
      * @param manager Entry point to SecurityInsightsManager.
      */
     public static void createsOrUpdatesAScheduledAlertRule(
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
-        manager
-            .alertRules()
-            .createOrUpdateWithResponse(
-                "myRg",
-                "myWorkspace",
-                "73e01a99-5cd7-4139-a149-9f2736ff2ab5",
-                new ScheduledAlertRule()
-                    .withEtag("\"0300bf09-0000-0000-0000-5c37296e0000\"")
+        manager.alertRules()
+            .createOrUpdateWithResponse("myRg", "myWorkspace", "73e01a99-5cd7-4139-a149-9f2736ff2ab5",
+                new ScheduledAlertRule().withEtag("\"0300bf09-0000-0000-0000-5c37296e0000\"")
                     .withDescription("An example for a scheduled rule")
                     .withDisplayName("My scheduled rule")
                     .withEnabled(true)
@@ -306,19 +207,14 @@ public final class AlertRulesCreateOrUpdateSamples {
                     .withSuppressionEnabled(false)
                     .withTactics(Arrays.asList(AttackTactic.PERSISTENCE, AttackTactic.LATERAL_MOVEMENT))
                     .withTechniques(Arrays.asList("T1037", "T1021"))
-                    .withIncidentConfiguration(
-                        new IncidentConfiguration()
-                            .withCreateIncident(true)
-                            .withGroupingConfiguration(
-                                new GroupingConfiguration()
-                                    .withEnabled(true)
-                                    .withReopenClosedIncident(false)
-                                    .withLookbackDuration(Duration.parse("PT5H"))
-                                    .withMatchingMethod(MatchingMethod.SELECTED)
-                                    .withGroupByEntities(Arrays.asList(EntityMappingType.HOST))
-                                    .withGroupByAlertDetails(Arrays.asList(AlertDetail.DISPLAY_NAME))
-                                    .withGroupByCustomDetails(
-                                        Arrays.asList("OperatingSystemType", "OperatingSystemName"))))
+                    .withIncidentConfiguration(new IncidentConfiguration().withCreateIncident(true)
+                        .withGroupingConfiguration(new GroupingConfiguration().withEnabled(true)
+                            .withReopenClosedIncident(false)
+                            .withLookbackDuration(Duration.parse("PT5H"))
+                            .withMatchingMethod(MatchingMethod.SELECTED)
+                            .withGroupByEntities(Arrays.asList(EntityMappingType.HOST))
+                            .withGroupByAlertDetails(Arrays.asList(AlertDetail.DISPLAY_NAME))
+                            .withGroupByCustomDetails(Arrays.asList("OperatingSystemType", "OperatingSystemName"))))
                     .withQuery("Heartbeat")
                     .withQueryFrequency(Duration.parse("PT1H"))
                     .withQueryPeriod(Duration.parse("P2DT1H30M"))
@@ -328,277 +224,166 @@ public final class AlertRulesCreateOrUpdateSamples {
                     .withEventGroupingSettings(
                         new EventGroupingSettings().withAggregationKind(EventGroupingAggregationKind.ALERT_PER_RESULT))
                     .withCustomDetails(mapOf("OperatingSystemName", "OSName", "OperatingSystemType", "OSType"))
-                    .withEntityMappings(
-                        Arrays
-                            .asList(
-                                new EntityMapping()
-                                    .withEntityType(EntityMappingType.HOST)
-                                    .withFieldMappings(
-                                        Arrays
-                                            .asList(
-                                                new FieldMapping()
-                                                    .withIdentifier("FullName")
-                                                    .withColumnName("Computer"))),
-                                new EntityMapping()
-                                    .withEntityType(EntityMappingType.IP)
-                                    .withFieldMappings(
-                                        Arrays
-                                            .asList(
-                                                new FieldMapping()
-                                                    .withIdentifier("Address")
-                                                    .withColumnName("ComputerIP")))))
+                    .withEntityMappings(Arrays.asList(
+                        new EntityMapping().withEntityType(EntityMappingType.HOST)
+                            .withFieldMappings(Arrays
+                                .asList(new FieldMapping().withIdentifier("FullName").withColumnName("Computer"))),
+                        new EntityMapping().withEntityType(EntityMappingType.IP)
+                            .withFieldMappings(Arrays
+                                .asList(new FieldMapping().withIdentifier("Address").withColumnName("ComputerIP")))))
                     .withAlertDetailsOverride(
-                        new AlertDetailsOverride()
-                            .withAlertDisplayNameFormat("Alert from {{Computer}}")
+                        new AlertDetailsOverride().withAlertDisplayNameFormat("Alert from {{Computer}}")
                             .withAlertDescriptionFormat("Suspicious activity was made by {{ComputerIP}}")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/alertRules/CreateFusionAlertRuleWithFusionScenarioExclusion.json
+     * x-ms-original-file:
+     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/
+     * alertRules/CreateFusionAlertRuleWithFusionScenarioExclusion.json
      */
     /**
      * Sample code: Creates or updates a Fusion alert rule with scenario exclusion pattern.
-     *
+     * 
      * @param manager Entry point to SecurityInsightsManager.
      */
     public static void createsOrUpdatesAFusionAlertRuleWithScenarioExclusionPattern(
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
-        manager
-            .alertRules()
-            .createOrUpdateWithResponse(
-                "myRg",
-                "myWorkspace",
-                "myFirstFusionRule",
-                new FusionAlertRule()
-                    .withEtag("3d00c3ca-0000-0100-0000-5d42d5010000")
+        manager.alertRules()
+            .createOrUpdateWithResponse("myRg", "myWorkspace", "myFirstFusionRule",
+                new FusionAlertRule().withEtag("3d00c3ca-0000-0100-0000-5d42d5010000")
                     .withAlertRuleTemplateName("f71aba3d-28fb-450b-b192-4e76a83015c8")
                     .withEnabled(true)
-                    .withSourceSettings(
-                        Arrays
-                            .asList(
-                                new FusionSourceSettings().withEnabled(true).withSourceName("Anomalies"),
-                                new FusionSourceSettings()
-                                    .withEnabled(true)
-                                    .withSourceName("Alert providers")
-                                    .withSourceSubTypes(
-                                        Arrays
-                                            .asList(
-                                                new FusionSourceSubTypeSetting()
-                                                    .withEnabled(true)
-                                                    .withSourceSubTypeName("Azure Active Directory Identity Protection")
-                                                    .withSeverityFilters(
-                                                        new FusionSubTypeSeverityFilter()
-                                                            .withFilters(
-                                                                Arrays
-                                                                    .asList(
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.HIGH)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.MEDIUM)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.LOW)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.INFORMATIONAL)
-                                                                            .withEnabled(true)))),
-                                                new FusionSourceSubTypeSetting()
-                                                    .withEnabled(true)
-                                                    .withSourceSubTypeName("Azure Defender")
-                                                    .withSeverityFilters(
-                                                        new FusionSubTypeSeverityFilter()
-                                                            .withFilters(
-                                                                Arrays
-                                                                    .asList(
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.HIGH)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.MEDIUM)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.LOW)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.INFORMATIONAL)
-                                                                            .withEnabled(true)))),
-                                                new FusionSourceSubTypeSetting()
-                                                    .withEnabled(true)
-                                                    .withSourceSubTypeName("Azure Defender for IoT")
-                                                    .withSeverityFilters(
-                                                        new FusionSubTypeSeverityFilter()
-                                                            .withFilters(
-                                                                Arrays
-                                                                    .asList(
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.HIGH)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.MEDIUM)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.LOW)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.INFORMATIONAL)
-                                                                            .withEnabled(true)))),
-                                                new FusionSourceSubTypeSetting()
-                                                    .withEnabled(true)
-                                                    .withSourceSubTypeName("Microsoft 365 Defender")
-                                                    .withSeverityFilters(
-                                                        new FusionSubTypeSeverityFilter()
-                                                            .withFilters(
-                                                                Arrays
-                                                                    .asList(
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.HIGH)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.MEDIUM)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.LOW)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.INFORMATIONAL)
-                                                                            .withEnabled(true)))),
-                                                new FusionSourceSubTypeSetting()
-                                                    .withEnabled(true)
-                                                    .withSourceSubTypeName("Microsoft Cloud App Security")
-                                                    .withSeverityFilters(
-                                                        new FusionSubTypeSeverityFilter()
-                                                            .withFilters(
-                                                                Arrays
-                                                                    .asList(
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.HIGH)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.MEDIUM)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.LOW)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.INFORMATIONAL)
-                                                                            .withEnabled(true)))),
-                                                new FusionSourceSubTypeSetting()
-                                                    .withEnabled(true)
-                                                    .withSourceSubTypeName("Microsoft Defender for Endpoint")
-                                                    .withSeverityFilters(
-                                                        new FusionSubTypeSeverityFilter()
-                                                            .withFilters(
-                                                                Arrays
-                                                                    .asList(
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.HIGH)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.MEDIUM)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.LOW)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.INFORMATIONAL)
-                                                                            .withEnabled(true)))),
-                                                new FusionSourceSubTypeSetting()
-                                                    .withEnabled(true)
-                                                    .withSourceSubTypeName("Microsoft Defender for Identity")
-                                                    .withSeverityFilters(
-                                                        new FusionSubTypeSeverityFilter()
-                                                            .withFilters(
-                                                                Arrays
-                                                                    .asList(
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.HIGH)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.MEDIUM)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.LOW)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.INFORMATIONAL)
-                                                                            .withEnabled(true)))),
-                                                new FusionSourceSubTypeSetting()
-                                                    .withEnabled(true)
-                                                    .withSourceSubTypeName("Microsoft Defender for Office 365")
-                                                    .withSeverityFilters(
-                                                        new FusionSubTypeSeverityFilter()
-                                                            .withFilters(
-                                                                Arrays
-                                                                    .asList(
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.HIGH)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.MEDIUM)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.LOW)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.INFORMATIONAL)
-                                                                            .withEnabled(true)))),
-                                                new FusionSourceSubTypeSetting()
-                                                    .withEnabled(true)
-                                                    .withSourceSubTypeName("Azure Sentinel scheduled analytics rules")
-                                                    .withSeverityFilters(
-                                                        new FusionSubTypeSeverityFilter()
-                                                            .withFilters(
-                                                                Arrays
-                                                                    .asList(
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.HIGH)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.MEDIUM)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.LOW)
-                                                                            .withEnabled(true),
-                                                                        new FusionSubTypeSeverityFiltersItem()
-                                                                            .withSeverity(AlertSeverity.INFORMATIONAL)
-                                                                            .withEnabled(true)))))),
-                                new FusionSourceSettings()
-                                    .withEnabled(true)
-                                    .withSourceName("Raw logs from other sources")
-                                    .withSourceSubTypes(
-                                        Arrays
-                                            .asList(
-                                                new FusionSourceSubTypeSetting()
-                                                    .withEnabled(true)
-                                                    .withSourceSubTypeName("Palo Alto Networks")
-                                                    .withSeverityFilters(new FusionSubTypeSeverityFilter()))))),
-                Context.NONE);
+                    .withSourceSettings(Arrays.asList(
+                        new FusionSourceSettings().withEnabled(true).withSourceName("Anomalies"),
+                        new FusionSourceSettings().withEnabled(true)
+                            .withSourceName("Alert providers")
+                            .withSourceSubTypes(Arrays.asList(
+                                new FusionSourceSubTypeSetting().withEnabled(true)
+                                    .withSourceSubTypeName("Azure Active Directory Identity Protection")
+                                    .withSeverityFilters(new FusionSubTypeSeverityFilter().withFilters(Arrays.asList(
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.HIGH)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.MEDIUM)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.LOW)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.INFORMATIONAL)
+                                            .withEnabled(true)))),
+                                new FusionSourceSubTypeSetting().withEnabled(true)
+                                    .withSourceSubTypeName("Azure Defender")
+                                    .withSeverityFilters(new FusionSubTypeSeverityFilter().withFilters(Arrays.asList(
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.HIGH)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.MEDIUM)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.LOW)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.INFORMATIONAL)
+                                            .withEnabled(true)))),
+                                new FusionSourceSubTypeSetting().withEnabled(true)
+                                    .withSourceSubTypeName("Azure Defender for IoT")
+                                    .withSeverityFilters(new FusionSubTypeSeverityFilter().withFilters(Arrays.asList(
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.HIGH)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.MEDIUM)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.LOW)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.INFORMATIONAL)
+                                            .withEnabled(true)))),
+                                new FusionSourceSubTypeSetting().withEnabled(true)
+                                    .withSourceSubTypeName("Microsoft 365 Defender")
+                                    .withSeverityFilters(new FusionSubTypeSeverityFilter().withFilters(Arrays.asList(
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.HIGH)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.MEDIUM)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.LOW)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.INFORMATIONAL)
+                                            .withEnabled(true)))),
+                                new FusionSourceSubTypeSetting().withEnabled(true)
+                                    .withSourceSubTypeName("Microsoft Cloud App Security")
+                                    .withSeverityFilters(new FusionSubTypeSeverityFilter().withFilters(Arrays.asList(
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.HIGH)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.MEDIUM)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.LOW)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.INFORMATIONAL)
+                                            .withEnabled(true)))),
+                                new FusionSourceSubTypeSetting().withEnabled(true)
+                                    .withSourceSubTypeName("Microsoft Defender for Endpoint")
+                                    .withSeverityFilters(new FusionSubTypeSeverityFilter().withFilters(Arrays.asList(
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.HIGH)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.MEDIUM)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.LOW)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.INFORMATIONAL)
+                                            .withEnabled(true)))),
+                                new FusionSourceSubTypeSetting().withEnabled(true)
+                                    .withSourceSubTypeName("Microsoft Defender for Identity")
+                                    .withSeverityFilters(new FusionSubTypeSeverityFilter().withFilters(Arrays.asList(
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.HIGH)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.MEDIUM)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.LOW)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.INFORMATIONAL)
+                                            .withEnabled(true)))),
+                                new FusionSourceSubTypeSetting().withEnabled(true)
+                                    .withSourceSubTypeName("Microsoft Defender for Office 365")
+                                    .withSeverityFilters(new FusionSubTypeSeverityFilter().withFilters(Arrays.asList(
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.HIGH)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.MEDIUM)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.LOW)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.INFORMATIONAL)
+                                            .withEnabled(true)))),
+                                new FusionSourceSubTypeSetting().withEnabled(true)
+                                    .withSourceSubTypeName("Azure Sentinel scheduled analytics rules")
+                                    .withSeverityFilters(new FusionSubTypeSeverityFilter().withFilters(Arrays.asList(
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.HIGH)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.MEDIUM)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.LOW)
+                                            .withEnabled(true),
+                                        new FusionSubTypeSeverityFiltersItem().withSeverity(AlertSeverity.INFORMATIONAL)
+                                            .withEnabled(true)))))),
+                        new FusionSourceSettings().withEnabled(true)
+                            .withSourceName("Raw logs from other sources")
+                            .withSourceSubTypes(Arrays.asList(new FusionSourceSubTypeSetting().withEnabled(true)
+                                .withSourceSubTypeName("Palo Alto Networks")
+                                .withSeverityFilters(new FusionSubTypeSeverityFilter()))))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/alertRules/CreateNrtAlertRule.json
+     * x-ms-original-file:
+     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/
+     * alertRules/CreateNrtAlertRule.json
      */
     /**
      * Sample code: Creates or updates a Nrt alert rule.
-     *
+     * 
      * @param manager Entry point to SecurityInsightsManager.
      */
-    public static void createsOrUpdatesANrtAlertRule(
-        com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
-        manager
-            .alertRules()
-            .createOrUpdateWithResponse(
-                "myRg",
-                "myWorkspace",
-                "73e01a99-5cd7-4139-a149-9f2736ff2ab5",
-                new NrtAlertRule()
-                    .withEtag("\"0300bf09-0000-0000-0000-5c37296e0000\"")
+    public static void
+        createsOrUpdatesANrtAlertRule(com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
+        manager.alertRules()
+            .createOrUpdateWithResponse("myRg", "myWorkspace", "73e01a99-5cd7-4139-a149-9f2736ff2ab5",
+                new NrtAlertRule().withEtag("\"0300bf09-0000-0000-0000-5c37296e0000\"")
                     .withDescription("")
                     .withQuery(
-                        "ProtectionStatus | extend HostCustomEntity = Computer | extend IPCustomEntity ="
-                            + " ComputerIP_Hidden")
+                        "ProtectionStatus | extend HostCustomEntity = Computer | extend IPCustomEntity = ComputerIP_Hidden")
                     .withTactics(Arrays.asList(AttackTactic.PERSISTENCE, AttackTactic.LATERAL_MOVEMENT))
                     .withTechniques(Arrays.asList("T1037", "T1021"))
                     .withDisplayName("Rule2")
@@ -606,22 +391,18 @@ public final class AlertRulesCreateOrUpdateSamples {
                     .withSuppressionDuration(Duration.parse("PT1H"))
                     .withSuppressionEnabled(false)
                     .withSeverity(AlertSeverity.HIGH)
-                    .withIncidentConfiguration(
-                        new IncidentConfiguration()
-                            .withCreateIncident(true)
-                            .withGroupingConfiguration(
-                                new GroupingConfiguration()
-                                    .withEnabled(true)
-                                    .withReopenClosedIncident(false)
-                                    .withLookbackDuration(Duration.parse("PT5H"))
-                                    .withMatchingMethod(MatchingMethod.SELECTED)
-                                    .withGroupByEntities(
-                                        Arrays.asList(EntityMappingType.HOST, EntityMappingType.ACCOUNT))))
+                    .withIncidentConfiguration(new IncidentConfiguration().withCreateIncident(true)
+                        .withGroupingConfiguration(new GroupingConfiguration().withEnabled(true)
+                            .withReopenClosedIncident(false)
+                            .withLookbackDuration(Duration.parse("PT5H"))
+                            .withMatchingMethod(MatchingMethod.SELECTED)
+                            .withGroupByEntities(Arrays.asList(EntityMappingType.HOST, EntityMappingType.ACCOUNT))))
                     .withEventGroupingSettings(
                         new EventGroupingSettings().withAggregationKind(EventGroupingAggregationKind.ALERT_PER_RESULT)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

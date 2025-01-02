@@ -73,14 +73,18 @@ public final class DeviceImpl implements Device, Device.Definition, Device.Updat
     }
 
     public Device create() {
-        this.innerObject = serviceManager.serviceClient().getDevices().createOrUpdate(resourceGroupName, catalogName,
-            productName, deviceGroupName, deviceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDevices()
+            .createOrUpdate(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public Device create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDevices().createOrUpdate(resourceGroupName, catalogName,
-            productName, deviceGroupName, deviceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDevices()
+            .createOrUpdate(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, this.innerModel(),
+                context);
         return this;
     }
 
@@ -96,14 +100,18 @@ public final class DeviceImpl implements Device, Device.Definition, Device.Updat
     }
 
     public Device apply() {
-        this.innerObject = serviceManager.serviceClient().getDevices().update(resourceGroupName, catalogName,
-            productName, deviceGroupName, deviceName, updateProperties, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDevices()
+            .update(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, updateProperties,
+                Context.NONE);
         return this;
     }
 
     public Device apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDevices().update(resourceGroupName, catalogName,
-            productName, deviceGroupName, deviceName, updateProperties, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDevices()
+            .update(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, updateProperties,
+                context);
         return this;
     }
 
@@ -118,14 +126,16 @@ public final class DeviceImpl implements Device, Device.Definition, Device.Updat
     }
 
     public Device refresh() {
-        this.innerObject = serviceManager.serviceClient().getDevices()
+        this.innerObject = serviceManager.serviceClient()
+            .getDevices()
             .getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, Context.NONE)
             .getValue();
         return this;
     }
 
     public Device refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDevices()
+        this.innerObject = serviceManager.serviceClient()
+            .getDevices()
             .getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, context)
             .getValue();
         return this;
@@ -133,14 +143,16 @@ public final class DeviceImpl implements Device, Device.Definition, Device.Updat
 
     public SignedCapabilityImageResponse
         generateCapabilityImage(GenerateCapabilityImageRequest generateDeviceCapabilityRequest) {
-        return serviceManager.devices().generateCapabilityImage(resourceGroupName, catalogName, productName,
-            deviceGroupName, deviceName, generateDeviceCapabilityRequest);
+        return serviceManager.devices()
+            .generateCapabilityImage(resourceGroupName, catalogName, productName, deviceGroupName, deviceName,
+                generateDeviceCapabilityRequest);
     }
 
     public SignedCapabilityImageResponse
         generateCapabilityImage(GenerateCapabilityImageRequest generateDeviceCapabilityRequest, Context context) {
-        return serviceManager.devices().generateCapabilityImage(resourceGroupName, catalogName, productName,
-            deviceGroupName, deviceName, generateDeviceCapabilityRequest, context);
+        return serviceManager.devices()
+            .generateCapabilityImage(resourceGroupName, catalogName, productName, deviceGroupName, deviceName,
+                generateDeviceCapabilityRequest, context);
     }
 
     public DeviceImpl withProperties(DeviceProperties properties) {

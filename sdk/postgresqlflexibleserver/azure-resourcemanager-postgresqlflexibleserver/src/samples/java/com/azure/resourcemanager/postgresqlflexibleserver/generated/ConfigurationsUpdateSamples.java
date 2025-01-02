@@ -11,7 +11,9 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.Configuration;
  */
 public final class ConfigurationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/ConfigurationUpdate.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * ConfigurationUpdate.json
      */
     /**
      * Sample code: Update a user configuration.

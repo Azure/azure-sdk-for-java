@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The RequestMatchPattern model. */
+/**
+ * The RequestMatchPattern model.
+ */
 @Fluent
-public final class RequestMatchPattern {
+public final class RequestMatchPattern implements JsonSerializable<RequestMatchPattern> {
     /*
      * The path property.
      */
-    @JsonProperty(value = "path")
     private String path;
 
     /*
      * The method property.
      */
-    @JsonProperty(value = "method")
     private String method;
 
-    /** Creates an instance of RequestMatchPattern class. */
+    /**
+     * Creates an instance of RequestMatchPattern class.
+     */
     public RequestMatchPattern() {
     }
 
     /**
      * Get the path property: The path property.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -37,7 +43,7 @@ public final class RequestMatchPattern {
 
     /**
      * Set the path property: The path property.
-     *
+     * 
      * @param path the path value to set.
      * @return the RequestMatchPattern object itself.
      */
@@ -48,7 +54,7 @@ public final class RequestMatchPattern {
 
     /**
      * Get the method property: The method property.
-     *
+     * 
      * @return the method value.
      */
     public String method() {
@@ -57,7 +63,7 @@ public final class RequestMatchPattern {
 
     /**
      * Set the method property: The method property.
-     *
+     * 
      * @param method the method value to set.
      * @return the RequestMatchPattern object itself.
      */
@@ -68,9 +74,48 @@ public final class RequestMatchPattern {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("path", this.path);
+        jsonWriter.writeStringField("method", this.method);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RequestMatchPattern from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RequestMatchPattern if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RequestMatchPattern.
+     */
+    public static RequestMatchPattern fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RequestMatchPattern deserializedRequestMatchPattern = new RequestMatchPattern();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("path".equals(fieldName)) {
+                    deserializedRequestMatchPattern.path = reader.getString();
+                } else if ("method".equals(fieldName)) {
+                    deserializedRequestMatchPattern.method = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRequestMatchPattern;
+        });
     }
 }

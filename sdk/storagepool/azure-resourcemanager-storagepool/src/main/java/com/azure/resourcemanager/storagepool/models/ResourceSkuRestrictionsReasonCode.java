@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.storagepool.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The reason for restriction. */
+/**
+ * The reason for restriction.
+ */
 public enum ResourceSkuRestrictionsReasonCode {
-    /** Enum value QuotaId. */
+    /**
+     * Enum value QuotaId.
+     */
     QUOTA_ID("QuotaId"),
 
-    /** Enum value NotAvailableForSubscription. */
+    /**
+     * Enum value NotAvailableForSubscription.
+     */
     NOT_AVAILABLE_FOR_SUBSCRIPTION("NotAvailableForSubscription");
 
-    /** The actual serialized value for a ResourceSkuRestrictionsReasonCode instance. */
+    /**
+     * The actual serialized value for a ResourceSkuRestrictionsReasonCode instance.
+     */
     private final String value;
 
     ResourceSkuRestrictionsReasonCode(String value) {
@@ -24,11 +29,10 @@ public enum ResourceSkuRestrictionsReasonCode {
 
     /**
      * Parses a serialized value to a ResourceSkuRestrictionsReasonCode instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ResourceSkuRestrictionsReasonCode object, or null if unable to parse.
      */
-    @JsonCreator
     public static ResourceSkuRestrictionsReasonCode fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum ResourceSkuRestrictionsReasonCode {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

@@ -5,143 +5,137 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.Kind;
 import com.azure.resourcemanager.securityinsights.models.MetadataAuthor;
 import com.azure.resourcemanager.securityinsights.models.MetadataCategories;
 import com.azure.resourcemanager.securityinsights.models.MetadataDependencies;
 import com.azure.resourcemanager.securityinsights.models.MetadataSource;
 import com.azure.resourcemanager.securityinsights.models.MetadataSupport;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
-/** Metadata property bag for patch requests. This is the same as the MetadataProperties, but with nothing required. */
+/**
+ * Metadata property bag for patch requests. This is the same as the MetadataProperties, but with nothing required.
+ */
 @Fluent
-public final class MetadataPropertiesPatch {
+public final class MetadataPropertiesPatch implements JsonSerializable<MetadataPropertiesPatch> {
     /*
-     * Static ID for the content.  Used to identify dependencies and content from solutions or community.
-     * Hard-coded/static for out of the box content and solutions. Dynamic for user-created.  This is the resource name
+     * Static ID for the content. Used to identify dependencies and content from solutions or community.
+     * Hard-coded/static for out of the box content and solutions. Dynamic for user-created. This is the resource name
      */
-    @JsonProperty(value = "contentId")
     private String contentId;
 
     /*
-     * Full parent resource ID of the content item the metadata is for.  This is the full resource ID including the
-     * scope (subscription and resource group)
+     * Full parent resource ID of the content item the metadata is for. This is the full resource ID including the scope
+     * (subscription and resource group)
      */
-    @JsonProperty(value = "parentId")
     private String parentId;
 
     /*
-     * Version of the content.  Default and recommended format is numeric (e.g. 1, 1.0, 1.0.0, 1.0.0.0), following ARM
-     * template best practices.  Can also be any string, but then we cannot guarantee any version checks
+     * Version of the content. Default and recommended format is numeric (e.g. 1, 1.0, 1.0.0, 1.0.0.0), following ARM
+     * template best practices. Can also be any string, but then we cannot guarantee any version checks
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * The kind of content the metadata is for.
      */
-    @JsonProperty(value = "kind")
     private Kind kind;
 
     /*
-     * Source of the content.  This is where/how it was created.
+     * Source of the content. This is where/how it was created.
      */
-    @JsonProperty(value = "source")
     private MetadataSource source;
 
     /*
      * The creator of the content item.
      */
-    @JsonProperty(value = "author")
     private MetadataAuthor author;
 
     /*
      * Support information for the metadata - type, name, contact information
      */
-    @JsonProperty(value = "support")
     private MetadataSupport support;
 
     /*
-     * Dependencies for the content item, what other content items it requires to work.  Can describe more complex
+     * Dependencies for the content item, what other content items it requires to work. Can describe more complex
      * dependencies using a recursive/nested structure. For a single dependency an id/kind/version can be supplied or
      * operator/criteria for complex formats.
      */
-    @JsonProperty(value = "dependencies")
     private MetadataDependencies dependencies;
 
     /*
      * Categories for the solution content item
      */
-    @JsonProperty(value = "categories")
     private MetadataCategories categories;
 
     /*
      * Providers for the solution content item
      */
-    @JsonProperty(value = "providers")
     private List<String> providers;
 
     /*
      * first publish date solution content item
      */
-    @JsonProperty(value = "firstPublishDate")
     private LocalDate firstPublishDate;
 
     /*
      * last publish date for the solution content item
      */
-    @JsonProperty(value = "lastPublishDate")
     private LocalDate lastPublishDate;
 
     /*
      * The custom version of the content. A optional free text
      */
-    @JsonProperty(value = "customVersion")
     private String customVersion;
 
     /*
      * Schema version of the content. Can be used to distinguish between different flow based on the schema version
      */
-    @JsonProperty(value = "contentSchemaVersion")
     private String contentSchemaVersion;
 
     /*
      * the icon identifier. this id can later be fetched from the solution template
      */
-    @JsonProperty(value = "icon")
     private String icon;
 
     /*
      * the tactics the resource covers
      */
-    @JsonProperty(value = "threatAnalysisTactics")
     private List<String> threatAnalysisTactics;
 
     /*
      * the techniques the resource covers, these have to be aligned with the tactics being used
      */
-    @JsonProperty(value = "threatAnalysisTechniques")
     private List<String> threatAnalysisTechniques;
 
     /*
      * preview image file names. These will be taken from the solution artifacts
      */
-    @JsonProperty(value = "previewImages")
     private List<String> previewImages;
 
     /*
      * preview image file names. These will be taken from the solution artifacts. used for dark theme support
      */
-    @JsonProperty(value = "previewImagesDark")
     private List<String> previewImagesDark;
+
+    /**
+     * Creates an instance of MetadataPropertiesPatch class.
+     */
+    public MetadataPropertiesPatch() {
+    }
 
     /**
      * Get the contentId property: Static ID for the content. Used to identify dependencies and content from solutions
      * or community. Hard-coded/static for out of the box content and solutions. Dynamic for user-created. This is the
      * resource name.
-     *
+     * 
      * @return the contentId value.
      */
     public String contentId() {
@@ -152,7 +146,7 @@ public final class MetadataPropertiesPatch {
      * Set the contentId property: Static ID for the content. Used to identify dependencies and content from solutions
      * or community. Hard-coded/static for out of the box content and solutions. Dynamic for user-created. This is the
      * resource name.
-     *
+     * 
      * @param contentId the contentId value to set.
      * @return the MetadataPropertiesPatch object itself.
      */
@@ -164,7 +158,7 @@ public final class MetadataPropertiesPatch {
     /**
      * Get the parentId property: Full parent resource ID of the content item the metadata is for. This is the full
      * resource ID including the scope (subscription and resource group).
-     *
+     * 
      * @return the parentId value.
      */
     public String parentId() {
@@ -174,7 +168,7 @@ public final class MetadataPropertiesPatch {
     /**
      * Set the parentId property: Full parent resource ID of the content item the metadata is for. This is the full
      * resource ID including the scope (subscription and resource group).
-     *
+     * 
      * @param parentId the parentId value to set.
      * @return the MetadataPropertiesPatch object itself.
      */
@@ -187,7 +181,7 @@ public final class MetadataPropertiesPatch {
      * Get the version property: Version of the content. Default and recommended format is numeric (e.g. 1, 1.0, 1.0.0,
      * 1.0.0.0), following ARM template best practices. Can also be any string, but then we cannot guarantee any version
      * checks.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -198,7 +192,7 @@ public final class MetadataPropertiesPatch {
      * Set the version property: Version of the content. Default and recommended format is numeric (e.g. 1, 1.0, 1.0.0,
      * 1.0.0.0), following ARM template best practices. Can also be any string, but then we cannot guarantee any version
      * checks.
-     *
+     * 
      * @param version the version value to set.
      * @return the MetadataPropertiesPatch object itself.
      */
@@ -209,7 +203,7 @@ public final class MetadataPropertiesPatch {
 
     /**
      * Get the kind property: The kind of content the metadata is for.
-     *
+     * 
      * @return the kind value.
      */
     public Kind kind() {
@@ -218,7 +212,7 @@ public final class MetadataPropertiesPatch {
 
     /**
      * Set the kind property: The kind of content the metadata is for.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the MetadataPropertiesPatch object itself.
      */
@@ -229,7 +223,7 @@ public final class MetadataPropertiesPatch {
 
     /**
      * Get the source property: Source of the content. This is where/how it was created.
-     *
+     * 
      * @return the source value.
      */
     public MetadataSource source() {
@@ -238,7 +232,7 @@ public final class MetadataPropertiesPatch {
 
     /**
      * Set the source property: Source of the content. This is where/how it was created.
-     *
+     * 
      * @param source the source value to set.
      * @return the MetadataPropertiesPatch object itself.
      */
@@ -249,7 +243,7 @@ public final class MetadataPropertiesPatch {
 
     /**
      * Get the author property: The creator of the content item.
-     *
+     * 
      * @return the author value.
      */
     public MetadataAuthor author() {
@@ -258,7 +252,7 @@ public final class MetadataPropertiesPatch {
 
     /**
      * Set the author property: The creator of the content item.
-     *
+     * 
      * @param author the author value to set.
      * @return the MetadataPropertiesPatch object itself.
      */
@@ -269,7 +263,7 @@ public final class MetadataPropertiesPatch {
 
     /**
      * Get the support property: Support information for the metadata - type, name, contact information.
-     *
+     * 
      * @return the support value.
      */
     public MetadataSupport support() {
@@ -278,7 +272,7 @@ public final class MetadataPropertiesPatch {
 
     /**
      * Set the support property: Support information for the metadata - type, name, contact information.
-     *
+     * 
      * @param support the support value to set.
      * @return the MetadataPropertiesPatch object itself.
      */
@@ -291,7 +285,7 @@ public final class MetadataPropertiesPatch {
      * Get the dependencies property: Dependencies for the content item, what other content items it requires to work.
      * Can describe more complex dependencies using a recursive/nested structure. For a single dependency an
      * id/kind/version can be supplied or operator/criteria for complex formats.
-     *
+     * 
      * @return the dependencies value.
      */
     public MetadataDependencies dependencies() {
@@ -302,7 +296,7 @@ public final class MetadataPropertiesPatch {
      * Set the dependencies property: Dependencies for the content item, what other content items it requires to work.
      * Can describe more complex dependencies using a recursive/nested structure. For a single dependency an
      * id/kind/version can be supplied or operator/criteria for complex formats.
-     *
+     * 
      * @param dependencies the dependencies value to set.
      * @return the MetadataPropertiesPatch object itself.
      */
@@ -313,7 +307,7 @@ public final class MetadataPropertiesPatch {
 
     /**
      * Get the categories property: Categories for the solution content item.
-     *
+     * 
      * @return the categories value.
      */
     public MetadataCategories categories() {
@@ -322,7 +316,7 @@ public final class MetadataPropertiesPatch {
 
     /**
      * Set the categories property: Categories for the solution content item.
-     *
+     * 
      * @param categories the categories value to set.
      * @return the MetadataPropertiesPatch object itself.
      */
@@ -333,7 +327,7 @@ public final class MetadataPropertiesPatch {
 
     /**
      * Get the providers property: Providers for the solution content item.
-     *
+     * 
      * @return the providers value.
      */
     public List<String> providers() {
@@ -342,7 +336,7 @@ public final class MetadataPropertiesPatch {
 
     /**
      * Set the providers property: Providers for the solution content item.
-     *
+     * 
      * @param providers the providers value to set.
      * @return the MetadataPropertiesPatch object itself.
      */
@@ -353,7 +347,7 @@ public final class MetadataPropertiesPatch {
 
     /**
      * Get the firstPublishDate property: first publish date solution content item.
-     *
+     * 
      * @return the firstPublishDate value.
      */
     public LocalDate firstPublishDate() {
@@ -362,7 +356,7 @@ public final class MetadataPropertiesPatch {
 
     /**
      * Set the firstPublishDate property: first publish date solution content item.
-     *
+     * 
      * @param firstPublishDate the firstPublishDate value to set.
      * @return the MetadataPropertiesPatch object itself.
      */
@@ -373,7 +367,7 @@ public final class MetadataPropertiesPatch {
 
     /**
      * Get the lastPublishDate property: last publish date for the solution content item.
-     *
+     * 
      * @return the lastPublishDate value.
      */
     public LocalDate lastPublishDate() {
@@ -382,7 +376,7 @@ public final class MetadataPropertiesPatch {
 
     /**
      * Set the lastPublishDate property: last publish date for the solution content item.
-     *
+     * 
      * @param lastPublishDate the lastPublishDate value to set.
      * @return the MetadataPropertiesPatch object itself.
      */
@@ -393,7 +387,7 @@ public final class MetadataPropertiesPatch {
 
     /**
      * Get the customVersion property: The custom version of the content. A optional free text.
-     *
+     * 
      * @return the customVersion value.
      */
     public String customVersion() {
@@ -402,7 +396,7 @@ public final class MetadataPropertiesPatch {
 
     /**
      * Set the customVersion property: The custom version of the content. A optional free text.
-     *
+     * 
      * @param customVersion the customVersion value to set.
      * @return the MetadataPropertiesPatch object itself.
      */
@@ -414,7 +408,7 @@ public final class MetadataPropertiesPatch {
     /**
      * Get the contentSchemaVersion property: Schema version of the content. Can be used to distinguish between
      * different flow based on the schema version.
-     *
+     * 
      * @return the contentSchemaVersion value.
      */
     public String contentSchemaVersion() {
@@ -424,7 +418,7 @@ public final class MetadataPropertiesPatch {
     /**
      * Set the contentSchemaVersion property: Schema version of the content. Can be used to distinguish between
      * different flow based on the schema version.
-     *
+     * 
      * @param contentSchemaVersion the contentSchemaVersion value to set.
      * @return the MetadataPropertiesPatch object itself.
      */
@@ -435,7 +429,7 @@ public final class MetadataPropertiesPatch {
 
     /**
      * Get the icon property: the icon identifier. this id can later be fetched from the solution template.
-     *
+     * 
      * @return the icon value.
      */
     public String icon() {
@@ -444,7 +438,7 @@ public final class MetadataPropertiesPatch {
 
     /**
      * Set the icon property: the icon identifier. this id can later be fetched from the solution template.
-     *
+     * 
      * @param icon the icon value to set.
      * @return the MetadataPropertiesPatch object itself.
      */
@@ -455,7 +449,7 @@ public final class MetadataPropertiesPatch {
 
     /**
      * Get the threatAnalysisTactics property: the tactics the resource covers.
-     *
+     * 
      * @return the threatAnalysisTactics value.
      */
     public List<String> threatAnalysisTactics() {
@@ -464,7 +458,7 @@ public final class MetadataPropertiesPatch {
 
     /**
      * Set the threatAnalysisTactics property: the tactics the resource covers.
-     *
+     * 
      * @param threatAnalysisTactics the threatAnalysisTactics value to set.
      * @return the MetadataPropertiesPatch object itself.
      */
@@ -476,7 +470,7 @@ public final class MetadataPropertiesPatch {
     /**
      * Get the threatAnalysisTechniques property: the techniques the resource covers, these have to be aligned with the
      * tactics being used.
-     *
+     * 
      * @return the threatAnalysisTechniques value.
      */
     public List<String> threatAnalysisTechniques() {
@@ -486,7 +480,7 @@ public final class MetadataPropertiesPatch {
     /**
      * Set the threatAnalysisTechniques property: the techniques the resource covers, these have to be aligned with the
      * tactics being used.
-     *
+     * 
      * @param threatAnalysisTechniques the threatAnalysisTechniques value to set.
      * @return the MetadataPropertiesPatch object itself.
      */
@@ -497,7 +491,7 @@ public final class MetadataPropertiesPatch {
 
     /**
      * Get the previewImages property: preview image file names. These will be taken from the solution artifacts.
-     *
+     * 
      * @return the previewImages value.
      */
     public List<String> previewImages() {
@@ -506,7 +500,7 @@ public final class MetadataPropertiesPatch {
 
     /**
      * Set the previewImages property: preview image file names. These will be taken from the solution artifacts.
-     *
+     * 
      * @param previewImages the previewImages value to set.
      * @return the MetadataPropertiesPatch object itself.
      */
@@ -518,7 +512,7 @@ public final class MetadataPropertiesPatch {
     /**
      * Get the previewImagesDark property: preview image file names. These will be taken from the solution artifacts.
      * used for dark theme support.
-     *
+     * 
      * @return the previewImagesDark value.
      */
     public List<String> previewImagesDark() {
@@ -528,7 +522,7 @@ public final class MetadataPropertiesPatch {
     /**
      * Set the previewImagesDark property: preview image file names. These will be taken from the solution artifacts.
      * used for dark theme support.
-     *
+     * 
      * @param previewImagesDark the previewImagesDark value to set.
      * @return the MetadataPropertiesPatch object itself.
      */
@@ -539,7 +533,7 @@ public final class MetadataPropertiesPatch {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -558,5 +552,106 @@ public final class MetadataPropertiesPatch {
         if (categories() != null) {
             categories().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("contentId", this.contentId);
+        jsonWriter.writeStringField("parentId", this.parentId);
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("source", this.source);
+        jsonWriter.writeJsonField("author", this.author);
+        jsonWriter.writeJsonField("support", this.support);
+        jsonWriter.writeJsonField("dependencies", this.dependencies);
+        jsonWriter.writeJsonField("categories", this.categories);
+        jsonWriter.writeArrayField("providers", this.providers, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("firstPublishDate", Objects.toString(this.firstPublishDate, null));
+        jsonWriter.writeStringField("lastPublishDate", Objects.toString(this.lastPublishDate, null));
+        jsonWriter.writeStringField("customVersion", this.customVersion);
+        jsonWriter.writeStringField("contentSchemaVersion", this.contentSchemaVersion);
+        jsonWriter.writeStringField("icon", this.icon);
+        jsonWriter.writeArrayField("threatAnalysisTactics", this.threatAnalysisTactics,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("threatAnalysisTechniques", this.threatAnalysisTechniques,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("previewImages", this.previewImages,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("previewImagesDark", this.previewImagesDark,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetadataPropertiesPatch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetadataPropertiesPatch if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetadataPropertiesPatch.
+     */
+    public static MetadataPropertiesPatch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetadataPropertiesPatch deserializedMetadataPropertiesPatch = new MetadataPropertiesPatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("contentId".equals(fieldName)) {
+                    deserializedMetadataPropertiesPatch.contentId = reader.getString();
+                } else if ("parentId".equals(fieldName)) {
+                    deserializedMetadataPropertiesPatch.parentId = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedMetadataPropertiesPatch.version = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedMetadataPropertiesPatch.kind = Kind.fromString(reader.getString());
+                } else if ("source".equals(fieldName)) {
+                    deserializedMetadataPropertiesPatch.source = MetadataSource.fromJson(reader);
+                } else if ("author".equals(fieldName)) {
+                    deserializedMetadataPropertiesPatch.author = MetadataAuthor.fromJson(reader);
+                } else if ("support".equals(fieldName)) {
+                    deserializedMetadataPropertiesPatch.support = MetadataSupport.fromJson(reader);
+                } else if ("dependencies".equals(fieldName)) {
+                    deserializedMetadataPropertiesPatch.dependencies = MetadataDependencies.fromJson(reader);
+                } else if ("categories".equals(fieldName)) {
+                    deserializedMetadataPropertiesPatch.categories = MetadataCategories.fromJson(reader);
+                } else if ("providers".equals(fieldName)) {
+                    List<String> providers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetadataPropertiesPatch.providers = providers;
+                } else if ("firstPublishDate".equals(fieldName)) {
+                    deserializedMetadataPropertiesPatch.firstPublishDate
+                        = reader.getNullable(nonNullReader -> LocalDate.parse(nonNullReader.getString()));
+                } else if ("lastPublishDate".equals(fieldName)) {
+                    deserializedMetadataPropertiesPatch.lastPublishDate
+                        = reader.getNullable(nonNullReader -> LocalDate.parse(nonNullReader.getString()));
+                } else if ("customVersion".equals(fieldName)) {
+                    deserializedMetadataPropertiesPatch.customVersion = reader.getString();
+                } else if ("contentSchemaVersion".equals(fieldName)) {
+                    deserializedMetadataPropertiesPatch.contentSchemaVersion = reader.getString();
+                } else if ("icon".equals(fieldName)) {
+                    deserializedMetadataPropertiesPatch.icon = reader.getString();
+                } else if ("threatAnalysisTactics".equals(fieldName)) {
+                    List<String> threatAnalysisTactics = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetadataPropertiesPatch.threatAnalysisTactics = threatAnalysisTactics;
+                } else if ("threatAnalysisTechniques".equals(fieldName)) {
+                    List<String> threatAnalysisTechniques = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetadataPropertiesPatch.threatAnalysisTechniques = threatAnalysisTechniques;
+                } else if ("previewImages".equals(fieldName)) {
+                    List<String> previewImages = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetadataPropertiesPatch.previewImages = previewImages;
+                } else if ("previewImagesDark".equals(fieldName)) {
+                    List<String> previewImagesDark = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetadataPropertiesPatch.previewImagesDark = previewImagesDark;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetadataPropertiesPatch;
+        });
     }
 }

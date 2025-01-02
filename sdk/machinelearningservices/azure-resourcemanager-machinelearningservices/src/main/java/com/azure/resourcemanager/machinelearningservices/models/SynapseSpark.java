@@ -16,7 +16,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("SynapseSpark")
 @Fluent
 public final class SynapseSpark extends Compute {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SynapseSpark.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(SynapseSpark.class);
 
     /*
      * AKS properties

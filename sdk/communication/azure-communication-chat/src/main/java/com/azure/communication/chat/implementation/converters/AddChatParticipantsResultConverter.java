@@ -22,8 +22,8 @@ public final class AddChatParticipantsResultConverter {
      * Maps from {@link com.azure.communication.chat.implementation.models.AddChatParticipantsResult} to
      * {@link AddChatParticipantsResult}.
      */
-    public static AddChatParticipantsResult convert(
-        com.azure.communication.chat.implementation.models.AddChatParticipantsResult obj) {
+    public static AddChatParticipantsResult
+        convert(com.azure.communication.chat.implementation.models.AddChatParticipantsResult obj) {
 
         if (obj == null) {
             return null;

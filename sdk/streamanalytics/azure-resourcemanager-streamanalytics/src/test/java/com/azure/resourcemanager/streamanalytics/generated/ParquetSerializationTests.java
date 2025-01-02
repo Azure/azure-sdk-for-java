@@ -10,13 +10,14 @@ import com.azure.resourcemanager.streamanalytics.models.ParquetSerialization;
 public final class ParquetSerializationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ParquetSerialization model = BinaryData.fromString("{\"type\":\"Parquet\",\"properties\":\"databchckqqzqio\"}")
-            .toObject(ParquetSerialization.class);
+        ParquetSerialization model
+            = BinaryData.fromString("{\"type\":\"Parquet\",\"properties\":\"datamabiknsorgjhxb\"}")
+                .toObject(ParquetSerialization.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ParquetSerialization model = new ParquetSerialization().withProperties("databchckqqzqio");
+        ParquetSerialization model = new ParquetSerialization().withProperties("datamabiknsorgjhxb");
         model = BinaryData.fromObject(model).toObject(ParquetSerialization.class);
     }
 }

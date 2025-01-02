@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datalakeanalytics.fluent.models.ComputePolicyPr
 public final class ComputePolicyPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComputePolicyProperties model =
-            BinaryData
-                .fromString(
-                    "{\"objectId\":\"ba91c649-ed39-4022-b697-182497ec12d8\",\"objectType\":\"User\",\"maxDegreeOfParallelismPerJob\":1344764188,\"minPriorityPerJob\":453736827}")
-                .toObject(ComputePolicyProperties.class);
+        ComputePolicyProperties model = BinaryData.fromString(
+            "{\"objectId\":\"168fb718-d72e-447d-bfbb-38614a1c918a\",\"objectType\":\"User\",\"maxDegreeOfParallelismPerJob\":19075135,\"minPriorityPerJob\":523315995}")
+            .toObject(ComputePolicyProperties.class);
     }
 
     @org.junit.jupiter.api.Test

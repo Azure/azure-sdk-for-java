@@ -5,24 +5,27 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.fluent.models.BlobReferenceInputDataSourceProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes a blob input data source that contains reference data.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Microsoft.Storage/Blob")
 @Fluent
 public final class BlobReferenceInputDataSource extends ReferenceInputDataSource {
     /*
-     * The properties that are associated with a blob input containing reference data. Required on PUT
-     * (CreateOrReplace) requests.
+     * Indicates the type of input data source containing reference data. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "properties")
+    private String type = "Microsoft.Storage/Blob";
+
+    /*
+     * The properties that are associated with a blob input containing reference data. Required on PUT (CreateOrReplace)
+     * requests.
+     */
     private BlobReferenceInputDataSourceProperties innerProperties;
 
     /**
@@ -32,8 +35,19 @@ public final class BlobReferenceInputDataSource extends ReferenceInputDataSource
     }
 
     /**
-     * Get the innerProperties property: The properties that are associated with a blob input containing reference
-     * data. Required on PUT (CreateOrReplace) requests.
+     * Get the type property: Indicates the type of input data source containing reference data. Required on PUT
+     * (CreateOrReplace) requests.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the innerProperties property: The properties that are associated with a blob input containing reference data.
+     * Required on PUT (CreateOrReplace) requests.
      * 
      * @return the innerProperties value.
      */
@@ -159,8 +173,8 @@ public final class BlobReferenceInputDataSource extends ReferenceInputDataSource
     }
 
     /**
-     * Get the storageAccounts property: A list of one or more Azure Storage accounts. Required on PUT
-     * (CreateOrReplace) requests.
+     * Get the storageAccounts property: A list of one or more Azure Storage accounts. Required on PUT (CreateOrReplace)
+     * requests.
      * 
      * @return the storageAccounts value.
      */
@@ -169,8 +183,8 @@ public final class BlobReferenceInputDataSource extends ReferenceInputDataSource
     }
 
     /**
-     * Set the storageAccounts property: A list of one or more Azure Storage accounts. Required on PUT
-     * (CreateOrReplace) requests.
+     * Set the storageAccounts property: A list of one or more Azure Storage accounts. Required on PUT (CreateOrReplace)
+     * requests.
      * 
      * @param storageAccounts the storageAccounts value to set.
      * @return the BlobReferenceInputDataSource object itself.
@@ -212,8 +226,8 @@ public final class BlobReferenceInputDataSource extends ReferenceInputDataSource
      * Get the pathPattern property: The blob path pattern. Not a regular expression. It represents a pattern against
      * which blob names will be matched to determine whether or not they should be included as input or output to the
      * job. See https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or
-     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a more detailed
-     * explanation and example.
+     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a more detailed explanation
+     * and example.
      * 
      * @return the pathPattern value.
      */
@@ -225,8 +239,8 @@ public final class BlobReferenceInputDataSource extends ReferenceInputDataSource
      * Set the pathPattern property: The blob path pattern. Not a regular expression. It represents a pattern against
      * which blob names will be matched to determine whether or not they should be included as input or output to the
      * job. See https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or
-     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a more detailed
-     * explanation and example.
+     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a more detailed explanation
+     * and example.
      * 
      * @param pathPattern the pathPattern value to set.
      * @return the BlobReferenceInputDataSource object itself.
@@ -319,9 +333,48 @@ public final class BlobReferenceInputDataSource extends ReferenceInputDataSource
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BlobReferenceInputDataSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BlobReferenceInputDataSource if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BlobReferenceInputDataSource.
+     */
+    public static BlobReferenceInputDataSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BlobReferenceInputDataSource deserializedBlobReferenceInputDataSource = new BlobReferenceInputDataSource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedBlobReferenceInputDataSource.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBlobReferenceInputDataSource.innerProperties
+                        = BlobReferenceInputDataSourceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBlobReferenceInputDataSource;
+        });
     }
 }

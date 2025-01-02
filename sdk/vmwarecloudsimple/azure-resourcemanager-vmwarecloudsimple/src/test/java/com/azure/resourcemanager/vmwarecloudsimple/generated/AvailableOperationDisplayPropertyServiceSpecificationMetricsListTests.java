@@ -14,39 +14,39 @@ import org.junit.jupiter.api.Assertions;
 public final class AvailableOperationDisplayPropertyServiceSpecificationMetricsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailableOperationDisplayPropertyServiceSpecificationMetricsList model =
-            BinaryData
-                .fromString(
-                    "{\"metricSpecifications\":[{\"aggregationType\":\"Average\",\"displayDescription\":\"czwlokjyem\",\"displayName\":\"kvnipjoxz\",\"name\":\"nchgej\",\"unit\":\"podmailzydehojwy\"}]}")
-                .toObject(AvailableOperationDisplayPropertyServiceSpecificationMetricsList.class);
-        Assertions.assertEquals(AggregationType.AVERAGE, model.metricSpecifications().get(0).aggregationType());
-        Assertions.assertEquals("czwlokjyem", model.metricSpecifications().get(0).displayDescription());
-        Assertions.assertEquals("kvnipjoxz", model.metricSpecifications().get(0).displayName());
-        Assertions.assertEquals("nchgej", model.metricSpecifications().get(0).name());
-        Assertions.assertEquals("podmailzydehojwy", model.metricSpecifications().get(0).unit());
+        AvailableOperationDisplayPropertyServiceSpecificationMetricsList model = BinaryData.fromString(
+            "{\"metricSpecifications\":[{\"aggregationType\":\"Total\",\"displayDescription\":\"kjfkg\",\"displayName\":\"awxklr\",\"name\":\"plwckbas\",\"unit\":\"ypnddhsgcb\"},{\"aggregationType\":\"Average\",\"displayDescription\":\"phejkotynqgoulz\",\"displayName\":\"dlikwyqkgfgibma\",\"name\":\"gakeqsr\",\"unit\":\"yb\"}]}")
+            .toObject(AvailableOperationDisplayPropertyServiceSpecificationMetricsList.class);
+        Assertions.assertEquals(AggregationType.TOTAL, model.metricSpecifications().get(0).aggregationType());
+        Assertions.assertEquals("kjfkg", model.metricSpecifications().get(0).displayDescription());
+        Assertions.assertEquals("awxklr", model.metricSpecifications().get(0).displayName());
+        Assertions.assertEquals("plwckbas", model.metricSpecifications().get(0).name());
+        Assertions.assertEquals("ypnddhsgcb", model.metricSpecifications().get(0).unit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvailableOperationDisplayPropertyServiceSpecificationMetricsList model =
-            new AvailableOperationDisplayPropertyServiceSpecificationMetricsList()
-                .withMetricSpecifications(
-                    Arrays
-                        .asList(
-                            new AvailableOperationDisplayPropertyServiceSpecificationMetricsItem()
-                                .withAggregationType(AggregationType.AVERAGE)
-                                .withDisplayDescription("czwlokjyem")
-                                .withDisplayName("kvnipjoxz")
-                                .withName("nchgej")
-                                .withUnit("podmailzydehojwy")));
-        model =
-            BinaryData
-                .fromObject(model)
-                .toObject(AvailableOperationDisplayPropertyServiceSpecificationMetricsList.class);
-        Assertions.assertEquals(AggregationType.AVERAGE, model.metricSpecifications().get(0).aggregationType());
-        Assertions.assertEquals("czwlokjyem", model.metricSpecifications().get(0).displayDescription());
-        Assertions.assertEquals("kvnipjoxz", model.metricSpecifications().get(0).displayName());
-        Assertions.assertEquals("nchgej", model.metricSpecifications().get(0).name());
-        Assertions.assertEquals("podmailzydehojwy", model.metricSpecifications().get(0).unit());
+        AvailableOperationDisplayPropertyServiceSpecificationMetricsList model
+            = new AvailableOperationDisplayPropertyServiceSpecificationMetricsList()
+                .withMetricSpecifications(Arrays.asList(
+                    new AvailableOperationDisplayPropertyServiceSpecificationMetricsItem()
+                        .withAggregationType(AggregationType.TOTAL)
+                        .withDisplayDescription("kjfkg")
+                        .withDisplayName("awxklr")
+                        .withName("plwckbas")
+                        .withUnit("ypnddhsgcb"),
+                    new AvailableOperationDisplayPropertyServiceSpecificationMetricsItem()
+                        .withAggregationType(AggregationType.AVERAGE)
+                        .withDisplayDescription("phejkotynqgoulz")
+                        .withDisplayName("dlikwyqkgfgibma")
+                        .withName("gakeqsr")
+                        .withUnit("yb")));
+        model = BinaryData.fromObject(model)
+            .toObject(AvailableOperationDisplayPropertyServiceSpecificationMetricsList.class);
+        Assertions.assertEquals(AggregationType.TOTAL, model.metricSpecifications().get(0).aggregationType());
+        Assertions.assertEquals("kjfkg", model.metricSpecifications().get(0).displayDescription());
+        Assertions.assertEquals("awxklr", model.metricSpecifications().get(0).displayName());
+        Assertions.assertEquals("plwckbas", model.metricSpecifications().get(0).name());
+        Assertions.assertEquals("ypnddhsgcb", model.metricSpecifications().get(0).unit());
     }
 }

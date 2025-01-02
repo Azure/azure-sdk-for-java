@@ -14,23 +14,19 @@ import org.junit.jupiter.api.Assertions;
 public final class DedicatedCapacityMutablePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DedicatedCapacityMutableProperties model =
-            BinaryData
-                .fromString(
-                    "{\"administration\":{\"members\":[\"ryuanzwuxzdxtay\",\"lhmwhfpmrqobm\"]},\"mode\":\"Gen2\",\"tenantId\":\"nryrtihf\",\"friendlyName\":\"ijbpzvgnwzsymgl\"}")
-                .toObject(DedicatedCapacityMutableProperties.class);
+        DedicatedCapacityMutableProperties model = BinaryData.fromString(
+            "{\"administration\":{\"members\":[\"ryuanzwuxzdxtay\",\"lhmwhfpmrqobm\"]},\"mode\":\"Gen2\",\"tenantId\":\"nryrtihf\",\"friendlyName\":\"ijbpzvgnwzsymgl\"}")
+            .toObject(DedicatedCapacityMutableProperties.class);
         Assertions.assertEquals("ryuanzwuxzdxtay", model.administration().members().get(0));
         Assertions.assertEquals(Mode.GEN2, model.mode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DedicatedCapacityMutableProperties model =
-            new DedicatedCapacityMutableProperties()
-                .withAdministration(
-                    new DedicatedCapacityAdministrators()
-                        .withMembers(Arrays.asList("ryuanzwuxzdxtay", "lhmwhfpmrqobm")))
-                .withMode(Mode.GEN2);
+        DedicatedCapacityMutableProperties model = new DedicatedCapacityMutableProperties()
+            .withAdministration(
+                new DedicatedCapacityAdministrators().withMembers(Arrays.asList("ryuanzwuxzdxtay", "lhmwhfpmrqobm")))
+            .withMode(Mode.GEN2);
         model = BinaryData.fromObject(model).toObject(DedicatedCapacityMutableProperties.class);
         Assertions.assertEquals("ryuanzwuxzdxtay", model.administration().members().get(0));
         Assertions.assertEquals(Mode.GEN2, model.mode());

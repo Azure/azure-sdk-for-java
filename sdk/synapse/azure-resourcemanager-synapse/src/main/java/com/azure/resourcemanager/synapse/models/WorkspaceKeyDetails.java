@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details of the customer managed key associated with the workspace. */
+/**
+ * Details of the customer managed key associated with the workspace.
+ */
 @Fluent
-public final class WorkspaceKeyDetails {
+public final class WorkspaceKeyDetails implements JsonSerializable<WorkspaceKeyDetails> {
     /*
      * Workspace Key sub-resource name
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Workspace Key sub-resource key vault url
      */
-    @JsonProperty(value = "keyVaultUrl")
     private String keyVaultUrl;
 
-    /** Creates an instance of WorkspaceKeyDetails class. */
+    /**
+     * Creates an instance of WorkspaceKeyDetails class.
+     */
     public WorkspaceKeyDetails() {
     }
 
     /**
      * Get the name property: Workspace Key sub-resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +43,7 @@ public final class WorkspaceKeyDetails {
 
     /**
      * Set the name property: Workspace Key sub-resource name.
-     *
+     * 
      * @param name the name value to set.
      * @return the WorkspaceKeyDetails object itself.
      */
@@ -48,7 +54,7 @@ public final class WorkspaceKeyDetails {
 
     /**
      * Get the keyVaultUrl property: Workspace Key sub-resource key vault url.
-     *
+     * 
      * @return the keyVaultUrl value.
      */
     public String keyVaultUrl() {
@@ -57,7 +63,7 @@ public final class WorkspaceKeyDetails {
 
     /**
      * Set the keyVaultUrl property: Workspace Key sub-resource key vault url.
-     *
+     * 
      * @param keyVaultUrl the keyVaultUrl value to set.
      * @return the WorkspaceKeyDetails object itself.
      */
@@ -68,9 +74,48 @@ public final class WorkspaceKeyDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("keyVaultUrl", this.keyVaultUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkspaceKeyDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkspaceKeyDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkspaceKeyDetails.
+     */
+    public static WorkspaceKeyDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkspaceKeyDetails deserializedWorkspaceKeyDetails = new WorkspaceKeyDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedWorkspaceKeyDetails.name = reader.getString();
+                } else if ("keyVaultUrl".equals(fieldName)) {
+                    deserializedWorkspaceKeyDetails.keyVaultUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkspaceKeyDetails;
+        });
     }
 }

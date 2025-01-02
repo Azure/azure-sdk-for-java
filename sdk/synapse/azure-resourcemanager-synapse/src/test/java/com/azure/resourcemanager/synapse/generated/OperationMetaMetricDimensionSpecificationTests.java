@@ -11,25 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationMetaMetricDimensionSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationMetaMetricDimensionSpecification model =
-            BinaryData
-                .fromString("{\"displayName\":\"cpc\",\"name\":\"hurzafblj\",\"toBeExportedForShoebox\":true}")
-                .toObject(OperationMetaMetricDimensionSpecification.class);
-        Assertions.assertEquals("cpc", model.displayName());
-        Assertions.assertEquals("hurzafblj", model.name());
-        Assertions.assertEquals(true, model.toBeExportedForShoebox());
+        OperationMetaMetricDimensionSpecification model = BinaryData
+            .fromString("{\"displayName\":\"llrxcyjmoad\",\"name\":\"varmywdmj\",\"toBeExportedForShoebox\":false}")
+            .toObject(OperationMetaMetricDimensionSpecification.class);
+        Assertions.assertEquals("llrxcyjmoad", model.displayName());
+        Assertions.assertEquals("varmywdmj", model.name());
+        Assertions.assertEquals(false, model.toBeExportedForShoebox());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationMetaMetricDimensionSpecification model =
-            new OperationMetaMetricDimensionSpecification()
-                .withDisplayName("cpc")
-                .withName("hurzafblj")
-                .withToBeExportedForShoebox(true);
+        OperationMetaMetricDimensionSpecification model
+            = new OperationMetaMetricDimensionSpecification().withDisplayName("llrxcyjmoad")
+                .withName("varmywdmj")
+                .withToBeExportedForShoebox(false);
         model = BinaryData.fromObject(model).toObject(OperationMetaMetricDimensionSpecification.class);
-        Assertions.assertEquals("cpc", model.displayName());
-        Assertions.assertEquals("hurzafblj", model.name());
-        Assertions.assertEquals(true, model.toBeExportedForShoebox());
+        Assertions.assertEquals("llrxcyjmoad", model.displayName());
+        Assertions.assertEquals("varmywdmj", model.name());
+        Assertions.assertEquals(false, model.toBeExportedForShoebox());
     }
 }

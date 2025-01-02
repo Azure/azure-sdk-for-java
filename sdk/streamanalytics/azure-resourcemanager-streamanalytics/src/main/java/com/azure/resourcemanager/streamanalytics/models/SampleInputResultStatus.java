@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class SampleInputResultStatus extends ExpandableStringEnum<SampleIn
      * @param name a name to look for.
      * @return the corresponding SampleInputResultStatus.
      */
-    @JsonCreator
     public static SampleInputResultStatus fromString(String name) {
         return fromString(name, SampleInputResultStatus.class);
     }

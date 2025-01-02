@@ -15,8 +15,8 @@ public final class OperationImpl implements Operation {
 
     private final com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager;
 
-    OperationImpl(
-        OperationInner innerObject, com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
+    OperationImpl(OperationInner innerObject,
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

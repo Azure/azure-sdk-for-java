@@ -9,10 +9,10 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.fluent.AddressClient;
-import com.azure.resourcemanager.billing.fluent.models.ValidateAddressResponseInner;
+import com.azure.resourcemanager.billing.fluent.models.AddressValidationResponseInner;
 import com.azure.resourcemanager.billing.models.Address;
 import com.azure.resourcemanager.billing.models.AddressDetails;
-import com.azure.resourcemanager.billing.models.ValidateAddressResponse;
+import com.azure.resourcemanager.billing.models.AddressValidationResponse;
 
 public final class AddressImpl implements Address {
     private static final ClientLogger LOGGER = new ClientLogger(AddressImpl.class);
@@ -26,23 +26,20 @@ public final class AddressImpl implements Address {
         this.serviceManager = serviceManager;
     }
 
-    public Response<ValidateAddressResponse> validateWithResponse(AddressDetails address, Context context) {
-        Response<ValidateAddressResponseInner> inner = this.serviceClient().validateWithResponse(address, context);
+    public Response<AddressValidationResponse> validateWithResponse(AddressDetails parameters, Context context) {
+        Response<AddressValidationResponseInner> inner = this.serviceClient().validateWithResponse(parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ValidateAddressResponseImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AddressValidationResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ValidateAddressResponse validate(AddressDetails address) {
-        ValidateAddressResponseInner inner = this.serviceClient().validate(address);
+    public AddressValidationResponse validate(AddressDetails parameters) {
+        AddressValidationResponseInner inner = this.serviceClient().validate(parameters);
         if (inner != null) {
-            return new ValidateAddressResponseImpl(inner, this.manager());
+            return new AddressValidationResponseImpl(inner, this.manager());
         } else {
             return null;
         }

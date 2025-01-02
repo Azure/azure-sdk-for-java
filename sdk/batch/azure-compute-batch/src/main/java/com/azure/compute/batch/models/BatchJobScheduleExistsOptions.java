@@ -6,5 +6,9 @@ package com.azure.compute.batch.models;
  * Optional parameters regarding whether a Batch job schedule exists.
  */
 public class BatchJobScheduleExistsOptions extends BatchExistsOptions {
-
+    /**
+     * Creates an instance of {@link BatchJobScheduleExistsOptions}.
+     */
+    public BatchJobScheduleExistsOptions() {
+    }
 }

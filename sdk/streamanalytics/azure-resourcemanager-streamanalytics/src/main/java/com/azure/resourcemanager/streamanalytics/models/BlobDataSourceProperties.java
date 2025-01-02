@@ -5,55 +5,53 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The properties that are associated with a blob data source.
  */
 @Fluent
-public class BlobDataSourceProperties {
+public class BlobDataSourceProperties implements JsonSerializable<BlobDataSourceProperties> {
     /*
      * A list of one or more Azure Storage accounts. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "storageAccounts")
     private List<StorageAccount> storageAccounts;
 
     /*
      * The name of a container within the associated Storage account. This container contains either the blob(s) to be
      * read from or written to. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "container")
     private String container;
 
     /*
-     * The blob path pattern. Not a regular expression. It represents a pattern against which blob names will be
-     * matched to determine whether or not they should be included as input or output to the job. See
+     * The blob path pattern. Not a regular expression. It represents a pattern against which blob names will be matched
+     * to determine whether or not they should be included as input or output to the job. See
      * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or
-     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a more detailed
-     * explanation and example.
+     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a more detailed explanation
+     * and example.
      */
-    @JsonProperty(value = "pathPattern")
     private String pathPattern;
 
     /*
      * The date format. Wherever {date} appears in pathPattern, the value of this property is used as the date format
      * instead.
      */
-    @JsonProperty(value = "dateFormat")
     private String dateFormat;
 
     /*
      * The time format. Wherever {time} appears in pathPattern, the value of this property is used as the time format
      * instead.
      */
-    @JsonProperty(value = "timeFormat")
     private String timeFormat;
 
     /*
      * Authentication Mode.
      */
-    @JsonProperty(value = "authenticationMode")
     private AuthenticationMode authenticationMode;
 
     /**
@@ -63,8 +61,8 @@ public class BlobDataSourceProperties {
     }
 
     /**
-     * Get the storageAccounts property: A list of one or more Azure Storage accounts. Required on PUT
-     * (CreateOrReplace) requests.
+     * Get the storageAccounts property: A list of one or more Azure Storage accounts. Required on PUT (CreateOrReplace)
+     * requests.
      * 
      * @return the storageAccounts value.
      */
@@ -73,8 +71,8 @@ public class BlobDataSourceProperties {
     }
 
     /**
-     * Set the storageAccounts property: A list of one or more Azure Storage accounts. Required on PUT
-     * (CreateOrReplace) requests.
+     * Set the storageAccounts property: A list of one or more Azure Storage accounts. Required on PUT (CreateOrReplace)
+     * requests.
      * 
      * @param storageAccounts the storageAccounts value to set.
      * @return the BlobDataSourceProperties object itself.
@@ -110,8 +108,8 @@ public class BlobDataSourceProperties {
      * Get the pathPattern property: The blob path pattern. Not a regular expression. It represents a pattern against
      * which blob names will be matched to determine whether or not they should be included as input or output to the
      * job. See https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or
-     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a more detailed
-     * explanation and example.
+     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a more detailed explanation
+     * and example.
      * 
      * @return the pathPattern value.
      */
@@ -123,8 +121,8 @@ public class BlobDataSourceProperties {
      * Set the pathPattern property: The blob path pattern. Not a regular expression. It represents a pattern against
      * which blob names will be matched to determine whether or not they should be included as input or output to the
      * job. See https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or
-     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a more detailed
-     * explanation and example.
+     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a more detailed explanation
+     * and example.
      * 
      * @param pathPattern the pathPattern value to set.
      * @return the BlobDataSourceProperties object itself.
@@ -207,5 +205,61 @@ public class BlobDataSourceProperties {
         if (storageAccounts() != null) {
             storageAccounts().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("storageAccounts", this.storageAccounts,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("container", this.container);
+        jsonWriter.writeStringField("pathPattern", this.pathPattern);
+        jsonWriter.writeStringField("dateFormat", this.dateFormat);
+        jsonWriter.writeStringField("timeFormat", this.timeFormat);
+        jsonWriter.writeStringField("authenticationMode",
+            this.authenticationMode == null ? null : this.authenticationMode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BlobDataSourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BlobDataSourceProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BlobDataSourceProperties.
+     */
+    public static BlobDataSourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BlobDataSourceProperties deserializedBlobDataSourceProperties = new BlobDataSourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageAccounts".equals(fieldName)) {
+                    List<StorageAccount> storageAccounts
+                        = reader.readArray(reader1 -> StorageAccount.fromJson(reader1));
+                    deserializedBlobDataSourceProperties.storageAccounts = storageAccounts;
+                } else if ("container".equals(fieldName)) {
+                    deserializedBlobDataSourceProperties.container = reader.getString();
+                } else if ("pathPattern".equals(fieldName)) {
+                    deserializedBlobDataSourceProperties.pathPattern = reader.getString();
+                } else if ("dateFormat".equals(fieldName)) {
+                    deserializedBlobDataSourceProperties.dateFormat = reader.getString();
+                } else if ("timeFormat".equals(fieldName)) {
+                    deserializedBlobDataSourceProperties.timeFormat = reader.getString();
+                } else if ("authenticationMode".equals(fieldName)) {
+                    deserializedBlobDataSourceProperties.authenticationMode
+                        = AuthenticationMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBlobDataSourceProperties;
+        });
     }
 }

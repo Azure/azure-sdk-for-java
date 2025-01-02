@@ -39,29 +39,17 @@ public final class ShareServiceSasSignatureValues {
         .get(Constants.PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, ShareServiceVersion.getLatest().getVersion());
 
     private SasProtocol protocol;
-
     private OffsetDateTime startTime;
-
     private OffsetDateTime expiryTime;
-
     private String permissions;
-
     private SasIpRange sasIpRange;
-
     private String shareName;
-
     private String filePath;
-
     private String identifier;
-
     private String cacheControl;
-
     private String contentDisposition;
-
     private String contentEncoding;
-
     private String contentLanguage;
-
     private String contentType;
 
     /**
@@ -111,6 +99,9 @@ public final class ShareServiceSasSignatureValues {
     }
 
     /**
+     * Gets the version of the service this SAS will target. If not specified, it will default to the version targeted
+     * by the library.
+     *
      * @return the version of the service this SAS will target. If not specified, it will default to the version
      * targeted by the library.
      */
@@ -134,6 +125,8 @@ public final class ShareServiceSasSignatureValues {
     }
 
     /**
+     * Gets the {@link SasProtocol} which determines the protocols allowed by the SAS.
+     *
      * @return the {@link SasProtocol} which determines the protocols allowed by the SAS.
      */
     public SasProtocol getProtocol() {
@@ -152,6 +145,8 @@ public final class ShareServiceSasSignatureValues {
     }
 
     /**
+     * Gets when the SAS will take effect.
+     *
      * @return when the SAS will take effect.
      */
     public OffsetDateTime getStartTime() {
@@ -170,6 +165,8 @@ public final class ShareServiceSasSignatureValues {
     }
 
     /**
+     * Gets the time after which the SAS will no longer work.
+     *
      * @return the time after which the SAS will no longer work.
      */
     public OffsetDateTime getExpiryTime() {
@@ -188,6 +185,10 @@ public final class ShareServiceSasSignatureValues {
     }
 
     /**
+     *
+     * Gets the permissions string allowed by the SAS. Please refer to either {@link ShareSasPermission} or {@link
+     * ShareFileSasPermission} depending on the resource being accessed for help determining the permissions allowed.
+     *
      * @return the permissions string allowed by the SAS. Please refer to either {@link ShareSasPermission} or {@link
      * ShareFileSasPermission} depending on the resource being accessed for help determining the permissions allowed.
      */
@@ -222,6 +223,8 @@ public final class ShareServiceSasSignatureValues {
     }
 
     /**
+     * Gets the {@link SasIpRange} which determines the IP ranges that are allowed to use the SAS.
+     *
      * @return the {@link SasIpRange} which determines the IP ranges that are allowed to use the SAS.
      */
     public SasIpRange getSasIpRange() {
@@ -294,6 +297,10 @@ public final class ShareServiceSasSignatureValues {
     }
 
     /**
+     * Gets the name of the access policy on the share this SAS references if any. Please see
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/establishing-a-stored-access-policy">
+     * Establishing a stored access policy</a> for more information.
+     *
      * @return the name of the access policy on the share this SAS references if any. Please see
      * <a href="https://docs.microsoft.com/rest/api/storageservices/establishing-a-stored-access-policy">
      * Establishing a stored access policy</a> for more information.
@@ -316,6 +323,8 @@ public final class ShareServiceSasSignatureValues {
     }
 
     /**
+     * Gets the cache-control header for the SAS.
+     *
      * @return the cache-control header for the SAS.
      */
     public String getCacheControl() {
@@ -334,6 +343,8 @@ public final class ShareServiceSasSignatureValues {
     }
 
     /**
+     * Gets the content-disposition header for the SAS.
+     *
      * @return the content-disposition header for the SAS.
      */
     public String getContentDisposition() {
@@ -352,6 +363,8 @@ public final class ShareServiceSasSignatureValues {
     }
 
     /**
+     * Gets the content-encoding header for the SAS.
+     *
      * @return the content-encoding header for the SAS.
      */
     public String getContentEncoding() {
@@ -370,6 +383,8 @@ public final class ShareServiceSasSignatureValues {
     }
 
     /**
+     * Gets the content-language header for the SAS.
+     *
      * @return the content-language header for the SAS.
      */
     public String getContentLanguage() {
@@ -388,6 +403,8 @@ public final class ShareServiceSasSignatureValues {
     }
 
     /**
+     * Gets the content-type header for the SAS.
+     *
      * @return the content-type header for the SAS.
      */
     public String getContentType() {
@@ -437,8 +454,8 @@ public final class ShareServiceSasSignatureValues {
      * client after initializing {@link ShareServiceSasSignatureValues}.
      */
     @Deprecated
-    public ShareServiceSasQueryParameters generateSasQueryParameters(
-        StorageSharedKeyCredential storageSharedKeyCredentials) {
+    public ShareServiceSasQueryParameters
+        generateSasQueryParameters(StorageSharedKeyCredential storageSharedKeyCredentials) {
         StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
 
         final String resource;
@@ -486,20 +503,14 @@ public final class ShareServiceSasSignatureValues {
     }
 
     private String stringToSign(String canonicalName) {
-        return String.join("\n",
-            this.permissions == null ? "" : this.permissions,
+        return String.join("\n", this.permissions == null ? "" : this.permissions,
             this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
-            this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
-            canonicalName,
-            this.identifier == null ? "" : this.identifier,
-            this.sasIpRange == null ? "" : this.sasIpRange.toString(),
-            this.protocol == null ? "" : protocol.toString(),
-            VERSION == null ? "" : VERSION,
+            this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime), canonicalName,
+            this.identifier == null ? "" : this.identifier, this.sasIpRange == null ? "" : this.sasIpRange.toString(),
+            this.protocol == null ? "" : protocol.toString(), VERSION == null ? "" : VERSION,
             this.cacheControl == null ? "" : this.cacheControl,
             this.contentDisposition == null ? "" : this.contentDisposition,
             this.contentEncoding == null ? "" : this.contentEncoding,
-            this.contentLanguage == null ? "" : this.contentLanguage,
-            this.contentType == null ? "" : this.contentType
-        );
+            this.contentLanguage == null ? "" : this.contentLanguage, this.contentType == null ? "" : this.contentType);
     }
 }

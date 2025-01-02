@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Operator used for list of dependencies in criteria array. */
+/**
+ * Operator used for list of dependencies in criteria array.
+ */
 public final class Operator extends ExpandableStringEnum<Operator> {
-    /** Static value AND for Operator. */
+    /**
+     * Static value AND for Operator.
+     */
     public static final Operator AND = fromString("AND");
 
-    /** Static value OR for Operator. */
+    /**
+     * Static value OR for Operator.
+     */
     public static final Operator OR = fromString("OR");
 
     /**
+     * Creates a new instance of Operator value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Operator() {
+    }
+
+    /**
      * Creates or finds a Operator from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Operator.
      */
-    @JsonCreator
     public static Operator fromString(String name) {
         return fromString(name, Operator.class);
     }
 
     /**
      * Gets known Operator values.
-     *
+     * 
      * @return known Operator values.
      */
     public static Collection<Operator> values() {

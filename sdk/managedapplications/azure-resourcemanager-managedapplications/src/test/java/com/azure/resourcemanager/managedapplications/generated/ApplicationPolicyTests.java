@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationPolicy model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"cyddglmjthjqk\",\"policyDefinitionId\":\"yeicxmqciwqvhk\",\"parameters\":\"xuigdtopbobj\"}")
-                .toObject(ApplicationPolicy.class);
+        ApplicationPolicy model = BinaryData.fromString(
+            "{\"name\":\"cyddglmjthjqk\",\"policyDefinitionId\":\"yeicxmqciwqvhk\",\"parameters\":\"xuigdtopbobj\"}")
+            .toObject(ApplicationPolicy.class);
         Assertions.assertEquals("cyddglmjthjqk", model.name());
         Assertions.assertEquals("yeicxmqciwqvhk", model.policyDefinitionId());
         Assertions.assertEquals("xuigdtopbobj", model.parameters());
@@ -23,11 +21,9 @@ public final class ApplicationPolicyTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationPolicy model =
-            new ApplicationPolicy()
-                .withName("cyddglmjthjqk")
-                .withPolicyDefinitionId("yeicxmqciwqvhk")
-                .withParameters("xuigdtopbobj");
+        ApplicationPolicy model = new ApplicationPolicy().withName("cyddglmjthjqk")
+            .withPolicyDefinitionId("yeicxmqciwqvhk")
+            .withParameters("xuigdtopbobj");
         model = BinaryData.fromObject(model).toObject(ApplicationPolicy.class);
         Assertions.assertEquals("cyddglmjthjqk", model.name());
         Assertions.assertEquals("yeicxmqciwqvhk", model.policyDefinitionId());

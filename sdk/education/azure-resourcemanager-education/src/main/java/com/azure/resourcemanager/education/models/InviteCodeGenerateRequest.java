@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.education.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** invite code generate request. */
+/**
+ * invite code generate request.
+ */
 @Fluent
-public final class InviteCodeGenerateRequest {
+public final class InviteCodeGenerateRequest implements JsonSerializable<InviteCodeGenerateRequest> {
     /*
      * the total number of students that can be accepted to the lab.
      */
-    @JsonProperty(value = "maxStudentCount")
     private Float maxStudentCount;
 
-    /** Creates an instance of InviteCodeGenerateRequest class. */
+    /**
+     * Creates an instance of InviteCodeGenerateRequest class.
+     */
     public InviteCodeGenerateRequest() {
     }
 
     /**
      * Get the maxStudentCount property: the total number of students that can be accepted to the lab.
-     *
+     * 
      * @return the maxStudentCount value.
      */
     public Float maxStudentCount() {
@@ -31,7 +38,7 @@ public final class InviteCodeGenerateRequest {
 
     /**
      * Set the maxStudentCount property: the total number of students that can be accepted to the lab.
-     *
+     * 
      * @param maxStudentCount the maxStudentCount value to set.
      * @return the InviteCodeGenerateRequest object itself.
      */
@@ -42,9 +49,45 @@ public final class InviteCodeGenerateRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("maxStudentCount", this.maxStudentCount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InviteCodeGenerateRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InviteCodeGenerateRequest if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InviteCodeGenerateRequest.
+     */
+    public static InviteCodeGenerateRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InviteCodeGenerateRequest deserializedInviteCodeGenerateRequest = new InviteCodeGenerateRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maxStudentCount".equals(fieldName)) {
+                    deserializedInviteCodeGenerateRequest.maxStudentCount = reader.getNullable(JsonReader::getFloat);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInviteCodeGenerateRequest;
+        });
     }
 }

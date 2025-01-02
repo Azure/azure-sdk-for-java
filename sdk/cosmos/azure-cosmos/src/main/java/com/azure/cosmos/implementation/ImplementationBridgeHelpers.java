@@ -29,7 +29,6 @@ import com.azure.cosmos.GlobalThroughputControlConfig;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
-import com.azure.cosmos.implementation.batch.BulkExecutorDiagnosticsTracker;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
@@ -82,7 +81,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 
 import java.net.URI;
 import java.time.Duration;
@@ -91,7 +89,6 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -297,6 +294,8 @@ public class ImplementationBridgeHelpers {
 
             Integer getMaxItemCountForVectorSearch(CosmosQueryRequestOptions options);
 
+            Integer getMaxItemCountForHybridSearch(CosmosQueryRequestOptions options);
+
             void setPartitionKeyDefinition(CosmosQueryRequestOptions options, PartitionKeyDefinition partitionKeyDefinition);
 
             PartitionKeyDefinition getPartitionKeyDefinition(CosmosQueryRequestOptions options);
@@ -374,6 +373,8 @@ public class ImplementationBridgeHelpers {
             CosmosChangeFeedRequestOptions setHeader(CosmosChangeFeedRequestOptions changeFeedRequestOptions, String name, String value);
             Map<String, String> getHeader(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
             CosmosChangeFeedRequestOptionsImpl getImpl(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
+            CosmosChangeFeedRequestOptions setEndLSN(CosmosChangeFeedRequestOptions changeFeedRequestOptions, Long endLsn);
+            Long getEndLSN(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
             void setOperationContext(CosmosChangeFeedRequestOptions changeFeedRequestOptions, OperationContextAndListenerTuple operationContext);
             OperationContextAndListenerTuple getOperationContext(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
             CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosChangeFeedRequestOptions options);
@@ -465,54 +466,6 @@ public class ImplementationBridgeHelpers {
         }
 
         public interface CosmosBulkExecutionOptionsAccessor {
-
-            void setOperationContext(CosmosBulkExecutionOptions options,
-                                     OperationContextAndListenerTuple operationContextAndListenerTuple);
-
-            OperationContextAndListenerTuple getOperationContext(CosmosBulkExecutionOptions options);
-
-            Duration getMaxMicroBatchInterval(CosmosBulkExecutionOptions options);
-
-            CosmosBulkExecutionOptions setTargetedMicroBatchRetryRate(
-                CosmosBulkExecutionOptions options,
-                double minRetryRate,
-                double maxRetryRate);
-
-            @SuppressWarnings({"unchecked"})
-            <T> T getLegacyBatchScopedContext(CosmosBulkExecutionOptions options);
-
-            double getMinTargetedMicroBatchRetryRate(CosmosBulkExecutionOptions options);
-
-            double getMaxTargetedMicroBatchRetryRate(CosmosBulkExecutionOptions options);
-
-            int getMaxMicroBatchPayloadSizeInBytes(CosmosBulkExecutionOptions options);
-
-            CosmosBulkExecutionOptions setMaxMicroBatchPayloadSizeInBytes(
-                CosmosBulkExecutionOptions options,
-                int maxMicroBatchPayloadSizeInBytes);
-
-            int getMaxMicroBatchConcurrency(CosmosBulkExecutionOptions options);
-
-            Integer getMaxConcurrentCosmosPartitions(CosmosBulkExecutionOptions options);
-
-            CosmosBulkExecutionOptions setMaxConcurrentCosmosPartitions(
-                CosmosBulkExecutionOptions options, int mxConcurrentCosmosPartitions);
-
-            CosmosBulkExecutionOptions setHeader(CosmosBulkExecutionOptions cosmosBulkExecutionOptions,
-                                                 String name, String value);
-
-            Map<String, String> getHeader(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
-
-            Map<String, String> getCustomOptions(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
-
-            int getMaxMicroBatchSize(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
-
-            void setDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, BulkExecutorDiagnosticsTracker tracker);
-
-            BulkExecutorDiagnosticsTracker getDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
-
-            CosmosBulkExecutionOptions setSchedulerOverride(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, Scheduler customScheduler);
-
             CosmosBulkExecutionOptions clone(CosmosBulkExecutionOptions toBeCloned);
             CosmosBulkExecutionOptionsImpl getImpl(CosmosBulkExecutionOptions options);
         }

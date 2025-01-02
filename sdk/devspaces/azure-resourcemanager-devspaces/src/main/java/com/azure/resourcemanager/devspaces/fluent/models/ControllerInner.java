@@ -7,33 +7,53 @@ package com.azure.resourcemanager.devspaces.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devspaces.models.ProvisioningState;
 import com.azure.resourcemanager.devspaces.models.Sku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The Controller model. */
+/**
+ * The Controller model.
+ */
 @Fluent
 public final class ControllerInner extends Resource {
     /*
      * The properties property.
      */
-    @JsonProperty(value = "properties", required = true)
     private ControllerProperties innerProperties = new ControllerProperties();
 
     /*
      * Model representing SKU for Azure Dev Spaces Controller.
      */
-    @JsonProperty(value = "sku", required = true)
     private Sku sku;
 
-    /** Creates an instance of ControllerInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ControllerInner class.
+     */
     public ControllerInner() {
     }
 
     /**
      * Get the innerProperties property: The properties property.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ControllerProperties innerProperties() {
@@ -42,7 +62,7 @@ public final class ControllerInner extends Resource {
 
     /**
      * Get the sku property: Model representing SKU for Azure Dev Spaces Controller.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -51,7 +71,7 @@ public final class ControllerInner extends Resource {
 
     /**
      * Set the sku property: Model representing SKU for Azure Dev Spaces Controller.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ControllerInner object itself.
      */
@@ -60,14 +80,48 @@ public final class ControllerInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ControllerInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ControllerInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -76,7 +130,7 @@ public final class ControllerInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state of the Azure Dev Spaces Controller.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -85,7 +139,7 @@ public final class ControllerInner extends Resource {
 
     /**
      * Get the hostSuffix property: DNS suffix for public endpoints running in the Azure Dev Spaces Controller.
-     *
+     * 
      * @return the hostSuffix value.
      */
     public String hostSuffix() {
@@ -94,7 +148,7 @@ public final class ControllerInner extends Resource {
 
     /**
      * Get the dataPlaneFqdn property: DNS name for accessing DataPlane services.
-     *
+     * 
      * @return the dataPlaneFqdn value.
      */
     public String dataPlaneFqdn() {
@@ -103,7 +157,7 @@ public final class ControllerInner extends Resource {
 
     /**
      * Get the targetContainerHostApiServerFqdn property: DNS of the target container host's API server.
-     *
+     * 
      * @return the targetContainerHostApiServerFqdn value.
      */
     public String targetContainerHostApiServerFqdn() {
@@ -112,7 +166,7 @@ public final class ControllerInner extends Resource {
 
     /**
      * Get the targetContainerHostResourceId property: Resource ID of the target container host.
-     *
+     * 
      * @return the targetContainerHostResourceId value.
      */
     public String targetContainerHostResourceId() {
@@ -121,7 +175,7 @@ public final class ControllerInner extends Resource {
 
     /**
      * Set the targetContainerHostResourceId property: Resource ID of the target container host.
-     *
+     * 
      * @param targetContainerHostResourceId the targetContainerHostResourceId value to set.
      * @return the ControllerInner object itself.
      */
@@ -135,7 +189,7 @@ public final class ControllerInner extends Resource {
 
     /**
      * Get the targetContainerHostCredentialsBase64 property: Credentials of the target container host (base64).
-     *
+     * 
      * @return the targetContainerHostCredentialsBase64 value.
      */
     public String targetContainerHostCredentialsBase64() {
@@ -144,7 +198,7 @@ public final class ControllerInner extends Resource {
 
     /**
      * Set the targetContainerHostCredentialsBase64 property: Credentials of the target container host (base64).
-     *
+     * 
      * @param targetContainerHostCredentialsBase64 the targetContainerHostCredentialsBase64 value to set.
      * @return the ControllerInner object itself.
      */
@@ -158,25 +212,77 @@ public final class ControllerInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property innerProperties in model ControllerInner"));
         } else {
             innerProperties().validate();
         }
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model ControllerInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sku in model ControllerInner"));
         } else {
             sku().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ControllerInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ControllerInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ControllerInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ControllerInner.
+     */
+    public static ControllerInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ControllerInner deserializedControllerInner = new ControllerInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedControllerInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedControllerInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedControllerInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedControllerInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedControllerInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedControllerInner.innerProperties = ControllerProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedControllerInner.sku = Sku.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedControllerInner;
+        });
+    }
 }

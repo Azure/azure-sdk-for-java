@@ -6,26 +6,36 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Instruction step details. */
+/**
+ * Instruction step details.
+ */
 @Fluent
-public class ConnectorInstructionModelBase {
+public class ConnectorInstructionModelBase implements JsonSerializable<ConnectorInstructionModelBase> {
     /*
      * The parameters for the setting
      */
-    @JsonProperty(value = "parameters")
     private Object parameters;
 
     /*
      * The kind of the setting
      */
-    @JsonProperty(value = "type", required = true)
     private SettingType type;
 
     /**
+     * Creates an instance of ConnectorInstructionModelBase class.
+     */
+    public ConnectorInstructionModelBase() {
+    }
+
+    /**
      * Get the parameters property: The parameters for the setting.
-     *
+     * 
      * @return the parameters value.
      */
     public Object parameters() {
@@ -34,7 +44,7 @@ public class ConnectorInstructionModelBase {
 
     /**
      * Set the parameters property: The parameters for the setting.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the ConnectorInstructionModelBase object itself.
      */
@@ -45,7 +55,7 @@ public class ConnectorInstructionModelBase {
 
     /**
      * Get the type property: The kind of the setting.
-     *
+     * 
      * @return the type value.
      */
     public SettingType type() {
@@ -54,7 +64,7 @@ public class ConnectorInstructionModelBase {
 
     /**
      * Set the type property: The kind of the setting.
-     *
+     * 
      * @param type the type value to set.
      * @return the ConnectorInstructionModelBase object itself.
      */
@@ -65,17 +75,57 @@ public class ConnectorInstructionModelBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property type in model ConnectorInstructionModelBase"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property type in model ConnectorInstructionModelBase"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConnectorInstructionModelBase.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeUntypedField("parameters", this.parameters);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectorInstructionModelBase from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectorInstructionModelBase if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectorInstructionModelBase.
+     */
+    public static ConnectorInstructionModelBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectorInstructionModelBase deserializedConnectorInstructionModelBase
+                = new ConnectorInstructionModelBase();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedConnectorInstructionModelBase.type = SettingType.fromString(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    deserializedConnectorInstructionModelBase.parameters = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectorInstructionModelBase;
+        });
+    }
 }

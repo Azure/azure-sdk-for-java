@@ -10,18 +10,16 @@ import com.azure.resourcemanager.datamigration.models.MigratePostgreSqlAzureDbFo
 public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel model =
-            BinaryData
-                .fromString(
-                    "{\"resultType\":\"TableLevelOutput\",\"tableName\":\"ncj\",\"databaseName\":\"udurgkakmokz\",\"cdcInsertCounter\":2248907093975297235,\"cdcUpdateCounter\":3751920609197992678,\"cdcDeleteCounter\":6890514693450435484,\"fullLoadEstFinishTime\":\"2021-06-25T06:45:10Z\",\"fullLoadStartedOn\":\"2021-09-10T08:27:42Z\",\"fullLoadEndedOn\":\"2021-01-26T12:14:58Z\",\"fullLoadTotalRows\":3452185252717027967,\"state\":\"COMPLETED\",\"totalChangesApplied\":2216106318758150745,\"dataErrorsCounter\":1842124516680921238,\"lastModifiedTime\":\"2021-08-01T17:17:52Z\",\"id\":\"uhqlbjbsybbqwrvt\"}")
-                .toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel.class);
+        MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel model = BinaryData.fromString(
+            "{\"resultType\":\"TableLevelOutput\",\"tableName\":\"dtclusiypb\",\"databaseName\":\"gytguslfead\",\"cdcInsertCounter\":1540620177587618900,\"cdcUpdateCounter\":4539196903443287081,\"cdcDeleteCounter\":8734080438498794448,\"fullLoadEstFinishTime\":\"2021-09-15T19:08:49Z\",\"fullLoadStartedOn\":\"2021-01-15T09:14:04Z\",\"fullLoadEndedOn\":\"2021-07-17T10:31:49Z\",\"fullLoadTotalRows\":5199624305945055059,\"state\":\"FULL_LOAD\",\"totalChangesApplied\":555329664048541191,\"dataErrorsCounter\":6507639588870568676,\"lastModifiedTime\":\"2021-08-16T07:12:35Z\",\"id\":\"vu\"}")
+            .toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel model =
-            new MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel();
-        model =
-            BinaryData.fromObject(model).toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel.class);
+        MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel model
+            = new MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel();
+        model = BinaryData.fromObject(model)
+            .toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel.class);
     }
 }

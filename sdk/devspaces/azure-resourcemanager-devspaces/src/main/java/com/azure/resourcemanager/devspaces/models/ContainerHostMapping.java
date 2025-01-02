@@ -6,25 +6,27 @@ package com.azure.resourcemanager.devspaces.models;
 
 import com.azure.resourcemanager.devspaces.fluent.models.ContainerHostMappingInner;
 
-/** An immutable client-side representation of ContainerHostMapping. */
+/**
+ * An immutable client-side representation of ContainerHostMapping.
+ */
 public interface ContainerHostMapping {
     /**
      * Gets the containerHostResourceId property: ARM ID of the Container Host resource.
-     *
+     * 
      * @return the containerHostResourceId value.
      */
     String containerHostResourceId();
 
     /**
      * Gets the mappedControllerResourceId property: ARM ID of the mapped Controller resource.
-     *
+     * 
      * @return the mappedControllerResourceId value.
      */
     String mappedControllerResourceId();
 
     /**
      * Gets the inner com.azure.resourcemanager.devspaces.fluent.models.ContainerHostMappingInner object.
-     *
+     * 
      * @return the inner object.
      */
     ContainerHostMappingInner innerModel();

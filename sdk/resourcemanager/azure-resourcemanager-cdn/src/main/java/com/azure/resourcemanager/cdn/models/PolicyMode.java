@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class PolicyMode extends ExpandableStringEnum<PolicyMode> {
      * @param name a name to look for.
      * @return the corresponding PolicyMode.
      */
-    @JsonCreator
     public static PolicyMode fromString(String name) {
         return fromString(name, PolicyMode.class);
     }

@@ -5,33 +5,117 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.fluent.models.EyesOnSettingsProperties;
 import com.azure.resourcemanager.securityinsights.fluent.models.SettingsInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
-/** Settings with single toggle. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("EyesOn")
+/**
+ * Settings with single toggle.
+ */
 @Fluent
 public final class EyesOn extends SettingsInner {
     /*
+     * The kind of the setting
+     */
+    private SettingKind kind = SettingKind.EYES_ON;
+
+    /*
      * EyesOn properties
      */
-    @JsonProperty(value = "properties")
     private EyesOnSettingsProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of EyesOn class.
+     */
+    public EyesOn() {
+    }
+
+    /**
+     * Get the kind property: The kind of the setting.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public SettingKind kind() {
+        return this.kind;
+    }
 
     /**
      * Get the innerProperties property: EyesOn properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private EyesOnSettingsProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EyesOn withEtag(String etag) {
         super.withEtag(etag);
@@ -40,7 +124,7 @@ public final class EyesOn extends SettingsInner {
 
     /**
      * Get the isEnabled property: Determines whether the setting is enable or disabled.
-     *
+     * 
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -49,14 +133,64 @@ public final class EyesOn extends SettingsInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("etag", etag());
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EyesOn from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EyesOn if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EyesOn.
+     */
+    public static EyesOn fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EyesOn deserializedEyesOn = new EyesOn();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedEyesOn.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedEyesOn.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedEyesOn.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedEyesOn.withEtag(reader.getString());
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedEyesOn.systemData = SystemData.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedEyesOn.kind = SettingKind.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedEyesOn.innerProperties = EyesOnSettingsProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEyesOn;
+        });
     }
 }

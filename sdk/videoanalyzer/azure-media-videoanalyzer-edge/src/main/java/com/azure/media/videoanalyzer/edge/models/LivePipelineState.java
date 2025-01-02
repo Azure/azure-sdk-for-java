@@ -5,35 +5,59 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LivePipelineState. */
+/**
+ * Current pipeline state (read-only).
+ */
 public final class LivePipelineState extends ExpandableStringEnum<LivePipelineState> {
-    /** Static value inactive for LivePipelineState. */
+    /**
+     * The live pipeline is idle and not processing media.
+     */
     public static final LivePipelineState INACTIVE = fromString("inactive");
 
-    /** Static value activating for LivePipelineState. */
+    /**
+     * The live pipeline is transitioning into the active state.
+     */
     public static final LivePipelineState ACTIVATING = fromString("activating");
 
-    /** Static value active for LivePipelineState. */
+    /**
+     * The live pipeline is active and able to process media. If your data source is not available, for instance, if
+     * your RTSP camera is powered off or unreachable, the pipeline will still be active and periodically retrying the
+     * connection. Your Azure subscription will be billed for the duration in which the live pipeline is in the active
+     * state.
+     */
     public static final LivePipelineState ACTIVE = fromString("active");
 
-    /** Static value deactivating for LivePipelineState. */
+    /**
+     * The live pipeline is transitioning into the inactive state.
+     */
     public static final LivePipelineState DEACTIVATING = fromString("deactivating");
 
     /**
+     * Creates a new instance of LivePipelineState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LivePipelineState() {
+    }
+
+    /**
      * Creates or finds a LivePipelineState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LivePipelineState.
      */
-    @JsonCreator
     public static LivePipelineState fromString(String name) {
         return fromString(name, LivePipelineState.class);
     }
 
-    /** @return known LivePipelineState values. */
+    /**
+     * Gets known LivePipelineState values.
+     * 
+     * @return known LivePipelineState values.
+     */
     public static Collection<LivePipelineState> values() {
         return values(LivePipelineState.class);
     }

@@ -35,14 +35,17 @@ public final class SpringbootsitesListResultTests {
     public void testSerialize() throws Exception {
         SpringbootsitesListResult model = new SpringbootsitesListResult()
             .withValue(Arrays.asList(
-                new SpringbootsitesModelInner().withLocation("th").withTags(mapOf("npqxuh", "abifpikxwczbys"))
+                new SpringbootsitesModelInner().withLocation("th")
+                    .withTags(mapOf("npqxuh", "abifpikxwczbys"))
                     .withProperties(new SpringbootsitesProperties().withMasterSiteId("symglzufcyz")
-                        .withMigrateProjectId("hdbihan").withProvisioningState(ProvisioningState.UNKNOWN))
+                        .withMigrateProjectId("hdbihan")
+                        .withProvisioningState(ProvisioningState.UNKNOWN))
                     .withExtendedLocation(new SpringbootsitesModelExtendedLocation().withType("bj").withName("a")),
                 new SpringbootsitesModelInner().withLocation("dmailzydehojw")
                     .withTags(mapOf("ixjsprozvcputeg", "uxinpmqnjaq", "atscmd", "vwmf", "zkrwfn", "pjhulsuuvmkj"))
                     .withProperties(new SpringbootsitesProperties().withMasterSiteId("h")
-                        .withMigrateProjectId("cnyejhkryhtnapcz").withProvisioningState(ProvisioningState.SUCCEEDED))
+                        .withMigrateProjectId("cnyejhkryhtnapcz")
+                        .withProvisioningState(ProvisioningState.SUCCEEDED))
                     .withExtendedLocation(
                         new SpringbootsitesModelExtendedLocation().withType("yemkkvnip").withName("xzjnchgejs"))))
             .withNextLink("soacctazakl");

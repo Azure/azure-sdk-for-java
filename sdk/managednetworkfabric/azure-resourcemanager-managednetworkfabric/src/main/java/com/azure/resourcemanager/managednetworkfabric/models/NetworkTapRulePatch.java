@@ -5,34 +5,42 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkTapRulePatchProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The NetworkTapRule resource definition. */
+/**
+ * The NetworkTapRule resource definition.
+ */
 @Fluent
 public final class NetworkTapRulePatch extends TagsUpdate {
     /*
      * Network Tap Rule Patch properties.
      */
-    @JsonProperty(value = "properties")
     private NetworkTapRulePatchProperties innerProperties;
 
-    /** Creates an instance of NetworkTapRulePatch class. */
+    /**
+     * Creates an instance of NetworkTapRulePatch class.
+     */
     public NetworkTapRulePatch() {
     }
 
     /**
      * Get the innerProperties property: Network Tap Rule Patch properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NetworkTapRulePatchProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkTapRulePatch withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -41,7 +49,7 @@ public final class NetworkTapRulePatch extends TagsUpdate {
 
     /**
      * Get the configurationType property: Input method to configure Network Tap Rule.
-     *
+     * 
      * @return the configurationType value.
      */
     public ConfigurationType configurationType() {
@@ -50,7 +58,7 @@ public final class NetworkTapRulePatch extends TagsUpdate {
 
     /**
      * Set the configurationType property: Input method to configure Network Tap Rule.
-     *
+     * 
      * @param configurationType the configurationType value to set.
      * @return the NetworkTapRulePatch object itself.
      */
@@ -64,7 +72,7 @@ public final class NetworkTapRulePatch extends TagsUpdate {
 
     /**
      * Get the tapRulesUrl property: Network Tap Rules file URL.
-     *
+     * 
      * @return the tapRulesUrl value.
      */
     public String tapRulesUrl() {
@@ -73,7 +81,7 @@ public final class NetworkTapRulePatch extends TagsUpdate {
 
     /**
      * Set the tapRulesUrl property: Network Tap Rules file URL.
-     *
+     * 
      * @param tapRulesUrl the tapRulesUrl value to set.
      * @return the NetworkTapRulePatch object itself.
      */
@@ -87,7 +95,7 @@ public final class NetworkTapRulePatch extends TagsUpdate {
 
     /**
      * Get the matchConfigurations property: List of match configurations.
-     *
+     * 
      * @return the matchConfigurations value.
      */
     public List<NetworkTapRuleMatchConfiguration> matchConfigurations() {
@@ -96,7 +104,7 @@ public final class NetworkTapRulePatch extends TagsUpdate {
 
     /**
      * Set the matchConfigurations property: List of match configurations.
-     *
+     * 
      * @param matchConfigurations the matchConfigurations value to set.
      * @return the NetworkTapRulePatch object itself.
      */
@@ -110,7 +118,7 @@ public final class NetworkTapRulePatch extends TagsUpdate {
 
     /**
      * Get the dynamicMatchConfigurations property: List of dynamic match configurations.
-     *
+     * 
      * @return the dynamicMatchConfigurations value.
      */
     public List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations() {
@@ -119,12 +127,12 @@ public final class NetworkTapRulePatch extends TagsUpdate {
 
     /**
      * Set the dynamicMatchConfigurations property: List of dynamic match configurations.
-     *
+     * 
      * @param dynamicMatchConfigurations the dynamicMatchConfigurations value to set.
      * @return the NetworkTapRulePatch object itself.
      */
-    public NetworkTapRulePatch withDynamicMatchConfigurations(
-        List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
+    public NetworkTapRulePatch
+        withDynamicMatchConfigurations(List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
         if (this.innerProperties() == null) {
             this.innerProperties = new NetworkTapRulePatchProperties();
         }
@@ -134,7 +142,7 @@ public final class NetworkTapRulePatch extends TagsUpdate {
 
     /**
      * Get the annotation property: Switch configuration description.
-     *
+     * 
      * @return the annotation value.
      */
     public String annotation() {
@@ -143,7 +151,7 @@ public final class NetworkTapRulePatch extends TagsUpdate {
 
     /**
      * Set the annotation property: Switch configuration description.
-     *
+     * 
      * @param annotation the annotation value to set.
      * @return the NetworkTapRulePatch object itself.
      */
@@ -157,14 +165,53 @@ public final class NetworkTapRulePatch extends TagsUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkTapRulePatch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkTapRulePatch if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkTapRulePatch.
+     */
+    public static NetworkTapRulePatch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkTapRulePatch deserializedNetworkTapRulePatch = new NetworkTapRulePatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedNetworkTapRulePatch.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedNetworkTapRulePatch.innerProperties = NetworkTapRulePatchProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkTapRulePatch;
+        });
     }
 }

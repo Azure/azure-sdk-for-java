@@ -28,7 +28,7 @@ public final class PipelinesDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.pipelines()
-            .deleteWithResponse("vbvicwfrybvhg", "ltjghdfusphokcc", "ynnm", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("fkrtsaeagvqctcrd", "xqhnw", "ujrnfdqlzggvo", com.azure.core.util.Context.NONE);
 
     }
 }

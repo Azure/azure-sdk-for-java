@@ -6,93 +6,56 @@ package com.azure.resourcemanager.logz.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.logz.LogzManager;
 import com.azure.resourcemanager.logz.models.LogzMonitorResource;
 import com.azure.resourcemanager.logz.models.ManagedIdentityTypes;
 import com.azure.resourcemanager.logz.models.MarketplaceSubscriptionStatus;
 import com.azure.resourcemanager.logz.models.MonitoringStatus;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class MonitorsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"monitoringStatus\":\"Enabled\",\"marketplaceSubscriptionStatus\":\"Suspended\",\"logzOrganizationProperties\":{\"companyName\":\"fmvfaxkffeiit\",\"id\":\"vmezy\",\"enterpriseAppId\":\"hxmzsbbzoggig\",\"singleSignOnUrl\":\"wburvjxxjnspydpt\"},\"userInfo\":{\"firstName\":\"nkoukn\",\"lastName\":\"dwtiukbldngkp\",\"emailAddress\":\"ipazyxoegukgjnpi\",\"phoneNumber\":\"gygev\"},\"planData\":{\"usageType\":\"typmrbpizcdrqjsd\",\"billingCycle\":\"dnfyhxdeoejzicwi\",\"planDetails\":\"jttgzf\",\"effectiveDate\":\"2021-03-25T08:46:02Z\"},\"liftrResourceCategory\":\"Unknown\",\"liftrResourcePreference\":1326905161},\"identity\":{\"principalId\":\"deyeamdphagalpbu\",\"tenantId\":\"gipwhonowkg\",\"type\":\"UserAssigned\"},\"location\":\"ankixzbinjeput\",\"tags\":{\"tiyqzrnkcqv\":\"ywnuzoq\"},\"id\":\"xlwhzlsicoh\",\"name\":\"qqn\",\"type\":\"vlryavwhheunmmq\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"monitoringStatus\":\"Disabled\",\"marketplaceSubscriptionStatus\":\"Suspended\",\"logzOrganizationProperties\":{\"companyName\":\"wey\",\"id\":\"menevfyexfwh\",\"enterpriseAppId\":\"cibvyvdcsitynn\",\"singleSignOnUrl\":\"mdectehfiqscjey\"},\"userInfo\":{\"firstName\":\"ezrkgqhcjrefo\",\"lastName\":\"mkqsleyyv\",\"emailAddress\":\"qjpkcattpngjcrc\",\"phoneNumber\":\"sqpjhvmdajvn\"},\"planData\":{\"usageType\":\"unqecanoae\",\"billingCycle\":\"fhyhltrpmopjmcma\",\"planDetails\":\"okth\",\"effectiveDate\":\"2021-07-03T23:07:28Z\"},\"liftrResourceCategory\":\"MonitorLogs\",\"liftrResourcePreference\":1445775245},\"identity\":{\"principalId\":\"cpkvxodp\",\"tenantId\":\"zmyzydagf\",\"type\":\"UserAssigned\"},\"location\":\"bezy\",\"tags\":{\"ywqsmbsurexim\":\"kktwhrdxw\",\"stkiiuxhqyud\":\"ryocfsfksymdd\",\"rq\":\"o\"},\"id\":\"b\",\"name\":\"oczvy\",\"type\":\"fqrvkdvjsllrmvvd\"}]}";
-
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        LogzManager manager =
-            LogzManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        LogzManager manager = LogzManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<LogzMonitorResource> response = manager.monitors().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bezy", response.iterator().next().location());
-        Assertions.assertEquals("kktwhrdxw", response.iterator().next().tags().get("ywqsmbsurexim"));
-        Assertions.assertEquals(MonitoringStatus.DISABLED, response.iterator().next().properties().monitoringStatus());
-        Assertions
-            .assertEquals(
-                MarketplaceSubscriptionStatus.SUSPENDED,
-                response.iterator().next().properties().marketplaceSubscriptionStatus());
-        Assertions
-            .assertEquals("wey", response.iterator().next().properties().logzOrganizationProperties().companyName());
-        Assertions
-            .assertEquals(
-                "cibvyvdcsitynn",
-                response.iterator().next().properties().logzOrganizationProperties().enterpriseAppId());
-        Assertions
-            .assertEquals(
-                "mdectehfiqscjey",
-                response.iterator().next().properties().logzOrganizationProperties().singleSignOnUrl());
-        Assertions.assertEquals("ezrkgqhcjrefo", response.iterator().next().properties().userInfo().firstName());
-        Assertions.assertEquals("mkqsleyyv", response.iterator().next().properties().userInfo().lastName());
-        Assertions.assertEquals("qjpkcattpngjcrc", response.iterator().next().properties().userInfo().emailAddress());
-        Assertions.assertEquals("sqpjhvmdajvn", response.iterator().next().properties().userInfo().phoneNumber());
-        Assertions.assertEquals("unqecanoae", response.iterator().next().properties().planData().usageType());
-        Assertions.assertEquals("fhyhltrpmopjmcma", response.iterator().next().properties().planData().billingCycle());
-        Assertions.assertEquals("okth", response.iterator().next().properties().planData().planDetails());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-07-03T23:07:28Z"),
-                response.iterator().next().properties().planData().effectiveDate());
+        Assertions.assertEquals("ankixzbinjeput", response.iterator().next().location());
+        Assertions.assertEquals("ywnuzoq", response.iterator().next().tags().get("tiyqzrnkcqv"));
+        Assertions.assertEquals(MonitoringStatus.ENABLED, response.iterator().next().properties().monitoringStatus());
+        Assertions.assertEquals(MarketplaceSubscriptionStatus.SUSPENDED,
+            response.iterator().next().properties().marketplaceSubscriptionStatus());
+        Assertions.assertEquals("fmvfaxkffeiit",
+            response.iterator().next().properties().logzOrganizationProperties().companyName());
+        Assertions.assertEquals("hxmzsbbzoggig",
+            response.iterator().next().properties().logzOrganizationProperties().enterpriseAppId());
+        Assertions.assertEquals("wburvjxxjnspydpt",
+            response.iterator().next().properties().logzOrganizationProperties().singleSignOnUrl());
+        Assertions.assertEquals("nkoukn", response.iterator().next().properties().userInfo().firstName());
+        Assertions.assertEquals("dwtiukbldngkp", response.iterator().next().properties().userInfo().lastName());
+        Assertions.assertEquals("ipazyxoegukgjnpi", response.iterator().next().properties().userInfo().emailAddress());
+        Assertions.assertEquals("gygev", response.iterator().next().properties().userInfo().phoneNumber());
+        Assertions.assertEquals("typmrbpizcdrqjsd", response.iterator().next().properties().planData().usageType());
+        Assertions.assertEquals("dnfyhxdeoejzicwi", response.iterator().next().properties().planData().billingCycle());
+        Assertions.assertEquals("jttgzf", response.iterator().next().properties().planData().planDetails());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-25T08:46:02Z"),
+            response.iterator().next().properties().planData().effectiveDate());
         Assertions.assertEquals(ManagedIdentityTypes.USER_ASSIGNED, response.iterator().next().identity().type());
     }
 }

@@ -23,7 +23,9 @@ public final class DiskDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiskDetails model = new DiskDetails().withMaxSizeMB(3920956440221145049L).withVhdType("zm").withVhdId("k")
+        DiskDetails model = new DiskDetails().withMaxSizeMB(3920956440221145049L)
+            .withVhdType("zm")
+            .withVhdId("k")
             .withVhdName("wsxvjab");
         model = BinaryData.fromObject(model).toObject(DiskDetails.class);
         Assertions.assertEquals(3920956440221145049L, model.maxSizeMB());

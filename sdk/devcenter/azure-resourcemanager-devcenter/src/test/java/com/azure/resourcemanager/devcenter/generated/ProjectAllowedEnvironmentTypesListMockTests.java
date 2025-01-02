@@ -21,7 +21,7 @@ public final class ProjectAllowedEnvironmentTypesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"displayName\":\"sqo\"},\"id\":\"fikayiansharujtj\",\"name\":\"qxfzyjqttvwk\",\"type\":\"qhjpenuygbqe\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"displayName\":\"nzhrgmqgjsxvpqcb\"},\"id\":\"mbodthsqqgvri\",\"name\":\"bakclacjfrnxous\",\"type\":\"au\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class ProjectAllowedEnvironmentTypesListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<AllowedEnvironmentType> response = manager.projectAllowedEnvironmentTypes()
-            .list("kffdjktsys", "dfvclglxnfu", 1455910916, com.azure.core.util.Context.NONE);
+            .list("tglxx", "ljfp", 1925996996, com.azure.core.util.Context.NONE);
 
     }
 }

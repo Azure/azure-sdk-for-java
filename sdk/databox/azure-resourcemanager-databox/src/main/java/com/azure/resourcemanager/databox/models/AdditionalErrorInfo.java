@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** This class represents additional info which Resource Providers pass when an error occurs. */
+/**
+ * This class represents additional info which Resource Providers pass when an error occurs.
+ */
 @Fluent
-public final class AdditionalErrorInfo {
+public final class AdditionalErrorInfo implements JsonSerializable<AdditionalErrorInfo> {
     /*
      * Additional information of the type of error.
      */
-    @JsonProperty(value = "info")
     private Object info;
 
     /*
      * Type of error (e.g. CustomerIntervention, PolicyViolation, SecurityViolation).
      */
-    @JsonProperty(value = "type")
     private String type;
 
-    /** Creates an instance of AdditionalErrorInfo class. */
+    /**
+     * Creates an instance of AdditionalErrorInfo class.
+     */
     public AdditionalErrorInfo() {
     }
 
     /**
      * Get the info property: Additional information of the type of error.
-     *
+     * 
      * @return the info value.
      */
     public Object info() {
@@ -37,7 +43,7 @@ public final class AdditionalErrorInfo {
 
     /**
      * Set the info property: Additional information of the type of error.
-     *
+     * 
      * @param info the info value to set.
      * @return the AdditionalErrorInfo object itself.
      */
@@ -48,7 +54,7 @@ public final class AdditionalErrorInfo {
 
     /**
      * Get the type property: Type of error (e.g. CustomerIntervention, PolicyViolation, SecurityViolation).
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -57,7 +63,7 @@ public final class AdditionalErrorInfo {
 
     /**
      * Set the type property: Type of error (e.g. CustomerIntervention, PolicyViolation, SecurityViolation).
-     *
+     * 
      * @param type the type value to set.
      * @return the AdditionalErrorInfo object itself.
      */
@@ -68,9 +74,48 @@ public final class AdditionalErrorInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("info", this.info);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AdditionalErrorInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AdditionalErrorInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AdditionalErrorInfo.
+     */
+    public static AdditionalErrorInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AdditionalErrorInfo deserializedAdditionalErrorInfo = new AdditionalErrorInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("info".equals(fieldName)) {
+                    deserializedAdditionalErrorInfo.info = reader.readUntyped();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAdditionalErrorInfo.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAdditionalErrorInfo;
+        });
     }
 }

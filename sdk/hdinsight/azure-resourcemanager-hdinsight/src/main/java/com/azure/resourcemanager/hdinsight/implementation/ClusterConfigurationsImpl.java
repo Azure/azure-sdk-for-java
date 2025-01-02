@@ -14,8 +14,8 @@ public final class ClusterConfigurationsImpl implements ClusterConfigurations {
 
     private final com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager;
 
-    ClusterConfigurationsImpl(
-        ClusterConfigurationsInner innerObject, com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
+    ClusterConfigurationsImpl(ClusterConfigurationsInner innerObject,
+        com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

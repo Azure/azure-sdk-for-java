@@ -17,60 +17,60 @@ import org.junit.jupiter.api.Assertions;
 public final class MetricSpecificationV1Tests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MetricSpecificationV1 model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"oxxjtfelluwf\",\"displayName\":\"tonpe\",\"displayDescription\":\"pjkjlxofpdv\",\"unit\":\"CountPerSecond\",\"aggregationType\":\"NotSpecified\",\"dimensions\":[{\"name\":\"ninmayhuyb\",\"displayName\":\"podepoo\",\"toBeExportedForShoebox\":true}],\"fillGapWithZero\":false,\"category\":\"Capacity\",\"resourceIdDimensionNameOverride\":\"heognarxzxtheo\",\"supportedTimeGrainTypes\":[\"PT1D\"],\"supportedAggregationTypes\":[\"Count\"]}")
-                .toObject(MetricSpecificationV1.class);
-        Assertions.assertEquals("oxxjtfelluwf", model.name());
-        Assertions.assertEquals("tonpe", model.displayName());
-        Assertions.assertEquals("pjkjlxofpdv", model.displayDescription());
+        MetricSpecificationV1 model = BinaryData.fromString(
+            "{\"name\":\"ubljofxqe\",\"displayName\":\"jaeq\",\"displayDescription\":\"qjbasvms\",\"unit\":\"CountPerSecond\",\"aggregationType\":\"None\",\"dimensions\":[{\"name\":\"ntnbybkzg\",\"displayName\":\"rwclxxwrljdo\",\"toBeExportedForShoebox\":true},{\"name\":\"qvkoc\",\"displayName\":\"jdkwtnhxbnjb\",\"toBeExportedForShoebox\":true},{\"name\":\"rglssainqpj\",\"displayName\":\"zlljfmppeebvm\",\"toBeExportedForShoebox\":true},{\"name\":\"bkyqduu\",\"displayName\":\"tcj\",\"toBeExportedForShoebox\":true}],\"fillGapWithZero\":false,\"category\":\"Capacity\",\"resourceIdDimensionNameOverride\":\"hkr\",\"supportedTimeGrainTypes\":[\"PT5M\"],\"supportedAggregationTypes\":[\"Average\"]}")
+            .toObject(MetricSpecificationV1.class);
+        Assertions.assertEquals("ubljofxqe", model.name());
+        Assertions.assertEquals("jaeq", model.displayName());
+        Assertions.assertEquals("qjbasvms", model.displayDescription());
         Assertions.assertEquals(MetricUnit.COUNT_PER_SECOND, model.unit());
-        Assertions.assertEquals(MetricAggregationType.NOT_SPECIFIED, model.aggregationType());
-        Assertions.assertEquals("ninmayhuyb", model.dimensions().get(0).name());
-        Assertions.assertEquals("podepoo", model.dimensions().get(0).displayName());
+        Assertions.assertEquals(MetricAggregationType.NONE, model.aggregationType());
+        Assertions.assertEquals("ntnbybkzg", model.dimensions().get(0).name());
+        Assertions.assertEquals("rwclxxwrljdo", model.dimensions().get(0).displayName());
         Assertions.assertEquals(true, model.dimensions().get(0).toBeExportedForShoebox());
         Assertions.assertEquals(false, model.fillGapWithZero());
         Assertions.assertEquals(MetricCategory.CAPACITY, model.category());
-        Assertions.assertEquals("heognarxzxtheo", model.resourceIdDimensionNameOverride());
-        Assertions.assertEquals(TimeGrain.PT1D, model.supportedTimeGrainTypes().get(0));
-        Assertions.assertEquals(MetricAggregationType.COUNT, model.supportedAggregationTypes().get(0));
+        Assertions.assertEquals("hkr", model.resourceIdDimensionNameOverride());
+        Assertions.assertEquals(TimeGrain.PT5M, model.supportedTimeGrainTypes().get(0));
+        Assertions.assertEquals(MetricAggregationType.AVERAGE, model.supportedAggregationTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetricSpecificationV1 model =
-            new MetricSpecificationV1()
-                .withName("oxxjtfelluwf")
-                .withDisplayName("tonpe")
-                .withDisplayDescription("pjkjlxofpdv")
-                .withUnit(MetricUnit.COUNT_PER_SECOND)
-                .withAggregationType(MetricAggregationType.NOT_SPECIFIED)
-                .withDimensions(
-                    Arrays
-                        .asList(
-                            new MetricDimensionV1()
-                                .withName("ninmayhuyb")
-                                .withDisplayName("podepoo")
-                                .withToBeExportedForShoebox(true)))
-                .withFillGapWithZero(false)
-                .withCategory(MetricCategory.CAPACITY)
-                .withResourceIdDimensionNameOverride("heognarxzxtheo")
-                .withSupportedTimeGrainTypes(Arrays.asList(TimeGrain.PT1D))
-                .withSupportedAggregationTypes(Arrays.asList(MetricAggregationType.COUNT));
+        MetricSpecificationV1 model = new MetricSpecificationV1().withName("ubljofxqe")
+            .withDisplayName("jaeq")
+            .withDisplayDescription("qjbasvms")
+            .withUnit(MetricUnit.COUNT_PER_SECOND)
+            .withAggregationType(MetricAggregationType.NONE)
+            .withDimensions(Arrays.asList(
+                new MetricDimensionV1().withName("ntnbybkzg")
+                    .withDisplayName("rwclxxwrljdo")
+                    .withToBeExportedForShoebox(true),
+                new MetricDimensionV1().withName("qvkoc")
+                    .withDisplayName("jdkwtnhxbnjb")
+                    .withToBeExportedForShoebox(true),
+                new MetricDimensionV1().withName("rglssainqpj")
+                    .withDisplayName("zlljfmppeebvm")
+                    .withToBeExportedForShoebox(true),
+                new MetricDimensionV1().withName("bkyqduu").withDisplayName("tcj").withToBeExportedForShoebox(true)))
+            .withFillGapWithZero(false)
+            .withCategory(MetricCategory.CAPACITY)
+            .withResourceIdDimensionNameOverride("hkr")
+            .withSupportedTimeGrainTypes(Arrays.asList(TimeGrain.PT5M))
+            .withSupportedAggregationTypes(Arrays.asList(MetricAggregationType.AVERAGE));
         model = BinaryData.fromObject(model).toObject(MetricSpecificationV1.class);
-        Assertions.assertEquals("oxxjtfelluwf", model.name());
-        Assertions.assertEquals("tonpe", model.displayName());
-        Assertions.assertEquals("pjkjlxofpdv", model.displayDescription());
+        Assertions.assertEquals("ubljofxqe", model.name());
+        Assertions.assertEquals("jaeq", model.displayName());
+        Assertions.assertEquals("qjbasvms", model.displayDescription());
         Assertions.assertEquals(MetricUnit.COUNT_PER_SECOND, model.unit());
-        Assertions.assertEquals(MetricAggregationType.NOT_SPECIFIED, model.aggregationType());
-        Assertions.assertEquals("ninmayhuyb", model.dimensions().get(0).name());
-        Assertions.assertEquals("podepoo", model.dimensions().get(0).displayName());
+        Assertions.assertEquals(MetricAggregationType.NONE, model.aggregationType());
+        Assertions.assertEquals("ntnbybkzg", model.dimensions().get(0).name());
+        Assertions.assertEquals("rwclxxwrljdo", model.dimensions().get(0).displayName());
         Assertions.assertEquals(true, model.dimensions().get(0).toBeExportedForShoebox());
         Assertions.assertEquals(false, model.fillGapWithZero());
         Assertions.assertEquals(MetricCategory.CAPACITY, model.category());
-        Assertions.assertEquals("heognarxzxtheo", model.resourceIdDimensionNameOverride());
-        Assertions.assertEquals(TimeGrain.PT1D, model.supportedTimeGrainTypes().get(0));
-        Assertions.assertEquals(MetricAggregationType.COUNT, model.supportedAggregationTypes().get(0));
+        Assertions.assertEquals("hkr", model.resourceIdDimensionNameOverride());
+        Assertions.assertEquals(TimeGrain.PT5M, model.supportedTimeGrainTypes().get(0));
+        Assertions.assertEquals(MetricAggregationType.AVERAGE, model.supportedAggregationTypes().get(0));
     }
 }

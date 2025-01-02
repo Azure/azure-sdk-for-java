@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The NotebookAccessTokenResult model. */
 @Immutable
 public final class NotebookAccessTokenResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NotebookAccessTokenResultInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(NotebookAccessTokenResultInner.class);
 
     /*
      * The notebookResourceId property.

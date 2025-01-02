@@ -13,13 +13,10 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.models.PolicyMo
 public final class PolicyModelImpl implements PolicyModel, PolicyModel.Definition {
     private PolicyModelInner innerObject;
 
-    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-        serviceManager;
+    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager;
 
-    PolicyModelImpl(
-        PolicyModelInner innerObject,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-            serviceManager) {
+    PolicyModelImpl(PolicyModelInner innerObject,
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -65,49 +62,39 @@ public final class PolicyModelImpl implements PolicyModel, PolicyModel.Definitio
     }
 
     public PolicyModel create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPolicies()
-                .create(resourceGroupName, vaultName, policyName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPolicies()
+            .create(resourceGroupName, vaultName, policyName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public PolicyModel create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPolicies()
-                .create(resourceGroupName, vaultName, policyName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getPolicies()
+            .create(resourceGroupName, vaultName, policyName, this.innerModel(), context);
         return this;
     }
 
-    PolicyModelImpl(
-        String name,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-            serviceManager) {
+    PolicyModelImpl(String name,
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerObject = new PolicyModelInner();
         this.serviceManager = serviceManager;
         this.policyName = name;
     }
 
     public PolicyModel refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPolicies()
-                .getWithResponse(resourceGroupName, vaultName, policyName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPolicies()
+            .getWithResponse(resourceGroupName, vaultName, policyName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PolicyModel refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPolicies()
-                .getWithResponse(resourceGroupName, vaultName, policyName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPolicies()
+            .getWithResponse(resourceGroupName, vaultName, policyName, context)
+            .getValue();
         return this;
     }
 

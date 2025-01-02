@@ -21,8 +21,7 @@ public final class FileImportsImpl implements FileImports {
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    public FileImportsImpl(
-        FileImportsClient innerClient,
+    public FileImportsImpl(FileImportsClient innerClient,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -30,41 +29,32 @@ public final class FileImportsImpl implements FileImports {
 
     public PagedIterable<FileImport> list(String resourceGroupName, String workspaceName) {
         PagedIterable<FileImportInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new FileImportImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FileImportImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<FileImport> list(
-        String resourceGroupName,
-        String workspaceName,
-        String filter,
-        String orderby,
-        Integer top,
-        String skipToken,
+    public PagedIterable<FileImport> list(String resourceGroupName, String workspaceName, String filter, String orderby,
+        Integer top, String skipToken, Context context) {
+        PagedIterable<FileImportInner> inner
+            = this.serviceClient().list(resourceGroupName, workspaceName, filter, orderby, top, skipToken, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FileImportImpl(inner1, this.manager()));
+    }
+
+    public Response<FileImport> getWithResponse(String resourceGroupName, String workspaceName, String fileImportId,
         Context context) {
-        PagedIterable<FileImportInner> inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, filter, orderby, top, skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new FileImportImpl(inner1, this.manager()));
+        Response<FileImportInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, fileImportId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new FileImportImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public FileImport get(String resourceGroupName, String workspaceName, String fileImportId) {
         FileImportInner inner = this.serviceClient().get(resourceGroupName, workspaceName, fileImportId);
         if (inner != null) {
             return new FileImportImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<FileImport> getWithResponse(
-        String resourceGroupName, String workspaceName, String fileImportId, Context context) {
-        Response<FileImportInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, fileImportId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new FileImportImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -89,105 +79,77 @@ public final class FileImportsImpl implements FileImports {
     }
 
     public FileImport getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String fileImportId = Utils.getValueFromIdByName(id, "fileImports");
+        String fileImportId = ResourceManagerUtils.getValueFromIdByName(id, "fileImports");
         if (fileImportId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'fileImports'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'fileImports'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, fileImportId, Context.NONE).getValue();
     }
 
     public Response<FileImport> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String fileImportId = Utils.getValueFromIdByName(id, "fileImports");
+        String fileImportId = ResourceManagerUtils.getValueFromIdByName(id, "fileImports");
         if (fileImportId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'fileImports'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'fileImports'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, fileImportId, context);
     }
 
     public FileImport deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String fileImportId = Utils.getValueFromIdByName(id, "fileImports");
+        String fileImportId = ResourceManagerUtils.getValueFromIdByName(id, "fileImports");
         if (fileImportId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'fileImports'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'fileImports'.", id)));
         }
         return this.delete(resourceGroupName, workspaceName, fileImportId, Context.NONE);
     }
 
     public FileImport deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String fileImportId = Utils.getValueFromIdByName(id, "fileImports");
+        String fileImportId = ResourceManagerUtils.getValueFromIdByName(id, "fileImports");
         if (fileImportId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'fileImports'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'fileImports'.", id)));
         }
         return this.delete(resourceGroupName, workspaceName, fileImportId, context);
     }

@@ -20,13 +20,13 @@ public class PoolEvaluateAutoScaleParameter {
      * applied to the Pool. To apply the formula to the Pool, 'Enable automatic
      * scaling on a Pool'. For more information about specifying this formula,
      * see Automatically scale Compute Nodes in an Azure Batch Pool
-     * (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling).
      */
     @JsonProperty(value = "autoScaleFormula", required = true)
     private String autoScaleFormula;
 
     /**
-     * Get the formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * Get the formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling).
      *
      * @return the autoScaleFormula value
      */
@@ -35,7 +35,7 @@ public class PoolEvaluateAutoScaleParameter {
     }
 
     /**
-     * Set the formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * Set the formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling).
      *
      * @param autoScaleFormula the autoScaleFormula value to set
      * @return the PoolEvaluateAutoScaleParameter object itself.

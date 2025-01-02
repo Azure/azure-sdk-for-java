@@ -4,11 +4,10 @@
 package io.clientcore.core.implementation.util;
 
 /**
- * Constants used as keys in semantic logging. Logging keys unify
- * how core logs HTTP requests, responses or anything else and simplify log analysis.
- *
- * When logging in client libraries, please do the best effort to stay consistent
- * with these keys, but copy the value.
+ * Constants used as keys in semantic logging. Logging keys unify how core logs HTTP requests, responses or anything
+ * else and simplify log analysis.
+ * <p>
+ * When logging in client libraries, please do the best effort to stay consistent with these keys, but copy the value.
  */
 public final class LoggingKeys {
     private LoggingKeys() {
@@ -32,14 +31,14 @@ public final class LoggingKeys {
     public static final String DURATION_MS_KEY = "durationMs";
 
     /**
-     * Key representing URL request was redirected to.
+     * Key representing URI request was redirected to.
      */
-    public static final String REDIRECT_URL_KEY = "redirectUrl";
+    public static final String REDIRECT_URI_KEY = "redirectUri";
 
     /**
-     * Key representing request URL.
+     * Key representing request URI.
      */
-    public static final String URL_KEY = "url";
+    public static final String URI_KEY = "uri";
 
     /**
      * Key representing request body content length.

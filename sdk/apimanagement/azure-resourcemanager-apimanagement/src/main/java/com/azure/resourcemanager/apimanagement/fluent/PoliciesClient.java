@@ -16,11 +16,13 @@ import com.azure.resourcemanager.apimanagement.models.PoliciesGetResponse;
 import com.azure.resourcemanager.apimanagement.models.PolicyExportFormat;
 import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 
-/** An instance of this class provides access to all the operations defined in PoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PoliciesClient.
+ */
 public interface PoliciesClient {
     /**
      * Lists all the Global Policy definitions of the Api Management service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
@@ -30,12 +32,12 @@ public interface PoliciesClient {
      * @return the response of the list policy operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicyCollectionInner> listByServiceWithResponse(
-        String resourceGroupName, String serviceName, Context context);
+    Response<PolicyCollectionInner> listByServiceWithResponse(String resourceGroupName, String serviceName,
+        Context context);
 
     /**
      * Lists all the Global Policy definitions of the Api Management service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -48,7 +50,7 @@ public interface PoliciesClient {
 
     /**
      * Gets the entity state (Etag) version of the Global policy definition in the Api Management service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
@@ -59,12 +61,12 @@ public interface PoliciesClient {
      * @return the entity state (Etag) version of the Global policy definition in the Api Management service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PoliciesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, PolicyIdName policyId, Context context);
+    PoliciesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        PolicyIdName policyId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Global policy definition in the Api Management service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
@@ -77,7 +79,7 @@ public interface PoliciesClient {
 
     /**
      * Get the Global policy definition of the Api Management service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
@@ -89,16 +91,12 @@ public interface PoliciesClient {
      * @return the Global policy definition of the Api Management service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PoliciesGetResponse getWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        PolicyIdName policyId,
-        PolicyExportFormat format,
-        Context context);
+    PoliciesGetResponse getWithResponse(String resourceGroupName, String serviceName, PolicyIdName policyId,
+        PolicyExportFormat format, Context context);
 
     /**
      * Get the Global policy definition of the Api Management service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
@@ -112,7 +110,7 @@ public interface PoliciesClient {
 
     /**
      * Creates or updates the global policy configuration of the Api Management service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
@@ -125,17 +123,12 @@ public interface PoliciesClient {
      * @return policy Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PoliciesCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        PolicyIdName policyId,
-        PolicyContractInner parameters,
-        String ifMatch,
-        Context context);
+    PoliciesCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        PolicyIdName policyId, PolicyContractInner parameters, String ifMatch, Context context);
 
     /**
      * Creates or updates the global policy configuration of the Api Management service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
@@ -146,17 +139,17 @@ public interface PoliciesClient {
      * @return policy Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, PolicyIdName policyId, PolicyContractInner parameters);
+    PolicyContractInner createOrUpdate(String resourceGroupName, String serviceName, PolicyIdName policyId,
+        PolicyContractInner parameters);
 
     /**
      * Deletes the global policy configuration of the Api Management Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -164,17 +157,17 @@ public interface PoliciesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, PolicyIdName policyId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, PolicyIdName policyId,
+        String ifMatch, Context context);
 
     /**
      * Deletes the global policy configuration of the Api Management Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

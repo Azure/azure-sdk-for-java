@@ -3,7 +3,6 @@
 
 package com.azure.monitor.query.models;
 
-
 /** Defines values for AggregationType. */
 public enum AggregationType {
     /** Enum value None. */

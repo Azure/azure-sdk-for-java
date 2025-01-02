@@ -21,28 +21,38 @@ public final class DscNodeConfigurationsImpl implements DscNodeConfigurations {
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    public DscNodeConfigurationsImpl(
-        DscNodeConfigurationsClient innerClient,
+    public DscNodeConfigurationsImpl(DscNodeConfigurationsClient innerClient,
         com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName,
+        String nodeConfigurationName, Context context) {
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, automationAccountName, nodeConfigurationName, context);
     }
 
     public void delete(String resourceGroupName, String automationAccountName, String nodeConfigurationName) {
         this.serviceClient().delete(resourceGroupName, automationAccountName, nodeConfigurationName);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String automationAccountName, String nodeConfigurationName, Context context) {
-        return this
-            .serviceClient()
-            .deleteWithResponse(resourceGroupName, automationAccountName, nodeConfigurationName, context);
+    public Response<DscNodeConfiguration> getWithResponse(String resourceGroupName, String automationAccountName,
+        String nodeConfigurationName, Context context) {
+        Response<DscNodeConfigurationInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, automationAccountName, nodeConfigurationName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DscNodeConfigurationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
-    public DscNodeConfiguration get(
-        String resourceGroupName, String automationAccountName, String nodeConfigurationName) {
-        DscNodeConfigurationInner inner =
-            this.serviceClient().get(resourceGroupName, automationAccountName, nodeConfigurationName);
+    public DscNodeConfiguration get(String resourceGroupName, String automationAccountName,
+        String nodeConfigurationName) {
+        DscNodeConfigurationInner inner
+            = this.serviceClient().get(resourceGroupName, automationAccountName, nodeConfigurationName);
         if (inner != null) {
             return new DscNodeConfigurationImpl(inner, this.manager());
         } else {
@@ -50,164 +60,93 @@ public final class DscNodeConfigurationsImpl implements DscNodeConfigurations {
         }
     }
 
-    public Response<DscNodeConfiguration> getWithResponse(
-        String resourceGroupName, String automationAccountName, String nodeConfigurationName, Context context) {
-        Response<DscNodeConfigurationInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, automationAccountName, nodeConfigurationName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new DscNodeConfigurationImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public PagedIterable<DscNodeConfiguration> listByAutomationAccount(String resourceGroupName,
+        String automationAccountName) {
+        PagedIterable<DscNodeConfigurationInner> inner
+            = this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DscNodeConfigurationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DscNodeConfiguration> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName) {
-        PagedIterable<DscNodeConfigurationInner> inner =
-            this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName);
-        return Utils.mapPage(inner, inner1 -> new DscNodeConfigurationImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<DscNodeConfiguration> listByAutomationAccount(
-        String resourceGroupName,
-        String automationAccountName,
-        String filter,
-        Integer skip,
-        Integer top,
-        String inlinecount,
-        Context context) {
-        PagedIterable<DscNodeConfigurationInner> inner =
-            this
-                .serviceClient()
-                .listByAutomationAccount(
-                    resourceGroupName, automationAccountName, filter, skip, top, inlinecount, context);
-        return Utils.mapPage(inner, inner1 -> new DscNodeConfigurationImpl(inner1, this.manager()));
+    public PagedIterable<DscNodeConfiguration> listByAutomationAccount(String resourceGroupName,
+        String automationAccountName, String filter, Integer skip, Integer top, String inlinecount, Context context) {
+        PagedIterable<DscNodeConfigurationInner> inner = this.serviceClient()
+            .listByAutomationAccount(resourceGroupName, automationAccountName, filter, skip, top, inlinecount, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DscNodeConfigurationImpl(inner1, this.manager()));
     }
 
     public DscNodeConfiguration getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String nodeConfigurationName = Utils.getValueFromIdByName(id, "nodeConfigurations");
+        String nodeConfigurationName = ResourceManagerUtils.getValueFromIdByName(id, "nodeConfigurations");
         if (nodeConfigurationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'nodeConfigurations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'nodeConfigurations'.", id)));
         }
-        return this
-            .getWithResponse(resourceGroupName, automationAccountName, nodeConfigurationName, Context.NONE)
+        return this.getWithResponse(resourceGroupName, automationAccountName, nodeConfigurationName, Context.NONE)
             .getValue();
     }
 
     public Response<DscNodeConfiguration> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String nodeConfigurationName = Utils.getValueFromIdByName(id, "nodeConfigurations");
+        String nodeConfigurationName = ResourceManagerUtils.getValueFromIdByName(id, "nodeConfigurations");
         if (nodeConfigurationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'nodeConfigurations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'nodeConfigurations'.", id)));
         }
         return this.getWithResponse(resourceGroupName, automationAccountName, nodeConfigurationName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String nodeConfigurationName = Utils.getValueFromIdByName(id, "nodeConfigurations");
+        String nodeConfigurationName = ResourceManagerUtils.getValueFromIdByName(id, "nodeConfigurations");
         if (nodeConfigurationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'nodeConfigurations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'nodeConfigurations'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, automationAccountName, nodeConfigurationName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String nodeConfigurationName = Utils.getValueFromIdByName(id, "nodeConfigurations");
+        String nodeConfigurationName = ResourceManagerUtils.getValueFromIdByName(id, "nodeConfigurations");
         if (nodeConfigurationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'nodeConfigurations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'nodeConfigurations'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, automationAccountName, nodeConfigurationName, context);
     }

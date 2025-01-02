@@ -5,60 +5,61 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.models.ChannelProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.ChannelType;
 import com.azure.resourcemanager.eventgrid.models.PartnerDestinationInfo;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopicInfo;
 import com.azure.resourcemanager.eventgrid.models.ReadinessState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Properties of the Channel.
  */
 @Fluent
-public final class ChannelProperties {
+public final class ChannelProperties implements JsonSerializable<ChannelProperties> {
     /*
      * The type of the event channel which represents the direction flow of events.
      */
-    @JsonProperty(value = "channelType")
     private ChannelType channelType;
 
     /*
-     * This property should be populated when channelType is PartnerTopic and represents information about the partner topic resource corresponding to the channel.
+     * This property should be populated when channelType is PartnerTopic and represents information about the partner
+     * topic resource corresponding to the channel.
      */
-    @JsonProperty(value = "partnerTopicInfo")
     private PartnerTopicInfo partnerTopicInfo;
 
     /*
-     * This property should be populated when channelType is PartnerDestination and represents information about the partner destination resource corresponding to the channel.
+     * This property should be populated when channelType is PartnerDestination and represents information about the
+     * partner destination resource corresponding to the channel.
      */
-    @JsonProperty(value = "partnerDestinationInfo")
     private PartnerDestinationInfo partnerDestinationInfo;
 
     /*
      * Context or helpful message that can be used during the approval process by the subscriber.
      */
-    @JsonProperty(value = "messageForActivation")
     private String messageForActivation;
 
     /*
      * Provisioning state of the channel.
      */
-    @JsonProperty(value = "provisioningState")
     private ChannelProvisioningState provisioningState;
 
     /*
      * The readiness state of the corresponding partner topic.
      */
-    @JsonProperty(value = "readinessState")
     private ReadinessState readinessState;
 
     /*
      * Expiration time of the channel. If this timer expires while the corresponding partner topic is never activated,
      * the channel and corresponding partner topic are deleted.
      */
-    @JsonProperty(value = "expirationTimeIfNotActivatedUtc")
     private OffsetDateTime expirationTimeIfNotActivatedUtc;
 
     /**
@@ -229,5 +230,66 @@ public final class ChannelProperties {
         if (partnerDestinationInfo() != null) {
             partnerDestinationInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("channelType", this.channelType == null ? null : this.channelType.toString());
+        jsonWriter.writeJsonField("partnerTopicInfo", this.partnerTopicInfo);
+        jsonWriter.writeJsonField("partnerDestinationInfo", this.partnerDestinationInfo);
+        jsonWriter.writeStringField("messageForActivation", this.messageForActivation);
+        jsonWriter.writeStringField("provisioningState",
+            this.provisioningState == null ? null : this.provisioningState.toString());
+        jsonWriter.writeStringField("readinessState",
+            this.readinessState == null ? null : this.readinessState.toString());
+        jsonWriter.writeStringField("expirationTimeIfNotActivatedUtc",
+            this.expirationTimeIfNotActivatedUtc == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationTimeIfNotActivatedUtc));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChannelProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChannelProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ChannelProperties.
+     */
+    public static ChannelProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChannelProperties deserializedChannelProperties = new ChannelProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("channelType".equals(fieldName)) {
+                    deserializedChannelProperties.channelType = ChannelType.fromString(reader.getString());
+                } else if ("partnerTopicInfo".equals(fieldName)) {
+                    deserializedChannelProperties.partnerTopicInfo = PartnerTopicInfo.fromJson(reader);
+                } else if ("partnerDestinationInfo".equals(fieldName)) {
+                    deserializedChannelProperties.partnerDestinationInfo = PartnerDestinationInfo.fromJson(reader);
+                } else if ("messageForActivation".equals(fieldName)) {
+                    deserializedChannelProperties.messageForActivation = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedChannelProperties.provisioningState
+                        = ChannelProvisioningState.fromString(reader.getString());
+                } else if ("readinessState".equals(fieldName)) {
+                    deserializedChannelProperties.readinessState = ReadinessState.fromString(reader.getString());
+                } else if ("expirationTimeIfNotActivatedUtc".equals(fieldName)) {
+                    deserializedChannelProperties.expirationTimeIfNotActivatedUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedChannelProperties;
+        });
     }
 }

@@ -37,16 +37,13 @@ public final class ListVirtualMachineImages {
         // published by Canonical, Red Hat and SUSE
         // by browsing through locations, publishers, offers, SKUs and images
 
-        PagedIterable<VirtualMachinePublisher> publishers = azureResourceManager
-                .virtualMachineImages()
-                .publishers()
-                .listByRegion(region);
+        PagedIterable<VirtualMachinePublisher> publishers
+            = azureResourceManager.virtualMachineImages().publishers().listByRegion(region);
 
         VirtualMachinePublisher chosenPublisher;
 
-        System.out.println("US East data center: printing list of \n"
-                + "a) Publishers and\n"
-                + "b) Images published by Canonical, Red Hat and Suse");
+        System.out.println("US East data center: printing list of \n" + "a) Publishers and\n"
+            + "b) Images published by Canonical, Red Hat and Suse");
         System.out.println("=======================================================");
         System.out.println("\n");
 
@@ -55,8 +52,8 @@ public final class ListVirtualMachineImages {
             System.out.println("Publisher - " + publisher.name());
 
             if (publisher.name().equalsIgnoreCase("Canonical")
-                    || publisher.name().equalsIgnoreCase("Suse")
-                    || publisher.name().equalsIgnoreCase("RedHat")) {
+                || publisher.name().equalsIgnoreCase("Suse")
+                || publisher.name().equalsIgnoreCase("RedHat")) {
 
                 chosenPublisher = publisher;
                 System.out.print("\n\n");
@@ -66,11 +63,10 @@ public final class ListVirtualMachineImages {
                 System.out.println("Printing entries as publisher/offer/sku/image.version()");
 
                 for (VirtualMachineOffer offer : chosenPublisher.offers().list()) {
-                    for (VirtualMachineSku sku: offer.skus().list()) {
+                    for (VirtualMachineSku sku : offer.skus().list()) {
                         for (VirtualMachineImage image : sku.images().list()) {
-                            System.out.println("Image - " + chosenPublisher.name() + "/"
-                                    + offer.name() + "/"
-                                    + sku.name() + "/" + image.version());
+                            System.out.println("Image - " + chosenPublisher.name() + "/" + offer.name() + "/"
+                                + sku.name() + "/" + image.version());
                         }
                     }
 
@@ -98,8 +94,7 @@ public final class ListVirtualMachineImages {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

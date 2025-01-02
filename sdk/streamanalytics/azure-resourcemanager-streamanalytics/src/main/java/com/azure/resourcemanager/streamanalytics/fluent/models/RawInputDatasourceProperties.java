@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The properties that are associated with a raw input.
  */
 @Fluent
-public final class RawInputDatasourceProperties {
+public final class RawInputDatasourceProperties implements JsonSerializable<RawInputDatasourceProperties> {
     /*
      * The JSON serialized content of the input data. Either payload or payloadUri must be set, but not both.
      */
-    @JsonProperty(value = "payload")
     private String payload;
 
     /*
-     * The SAS URL to a blob containing the JSON serialized content of the input data. Either payload or payloadUri
-     * must be set, but not both.
+     * The SAS URL to a blob containing the JSON serialized content of the input data. Either payload or payloadUri must
+     * be set, but not both.
      */
-    @JsonProperty(value = "payloadUri")
     private String payloadUri;
 
     /**
@@ -81,5 +83,44 @@ public final class RawInputDatasourceProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("payload", this.payload);
+        jsonWriter.writeStringField("payloadUri", this.payloadUri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RawInputDatasourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RawInputDatasourceProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RawInputDatasourceProperties.
+     */
+    public static RawInputDatasourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RawInputDatasourceProperties deserializedRawInputDatasourceProperties = new RawInputDatasourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("payload".equals(fieldName)) {
+                    deserializedRawInputDatasourceProperties.payload = reader.getString();
+                } else if ("payloadUri".equals(fieldName)) {
+                    deserializedRawInputDatasourceProperties.payloadUri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRawInputDatasourceProperties;
+        });
     }
 }

@@ -22,7 +22,8 @@ public final class StreamingJobsUpdateSamples {
      */
     public static void updateAStreamingJob(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
         StreamingJob resource = manager.streamingJobs()
-            .getByResourceGroupWithResponse("sjrg6936", "sj59", null, com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("sjrg6936", "sj59", null, com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withEventsOutOfOrderMaxDelayInSeconds(21).withEventsLateArrivalMaxDelayInSeconds(13).apply();
     }
 }

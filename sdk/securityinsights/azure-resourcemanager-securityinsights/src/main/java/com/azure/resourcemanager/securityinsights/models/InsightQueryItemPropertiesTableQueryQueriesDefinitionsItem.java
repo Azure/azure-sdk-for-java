@@ -5,39 +5,48 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem model. */
+/**
+ * The InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem model.
+ */
 @Fluent
-public final class InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem {
+public final class InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem
+    implements JsonSerializable<InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem> {
     /*
      * Insight column header.
      */
-    @JsonProperty(value = "filter")
     private String filter;
 
     /*
      * Insight column header.
      */
-    @JsonProperty(value = "summarize")
     private String summarize;
 
     /*
      * Insight column header.
      */
-    @JsonProperty(value = "project")
     private String project;
 
     /*
      * Insight column header.
      */
-    @JsonProperty(value = "linkColumnsDefinitions")
     private List<InsightQueryItemPropertiesTableQueryQueriesDefinitionsPropertiesItemsItem> linkColumnsDefinitions;
 
     /**
+     * Creates an instance of InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem class.
+     */
+    public InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem() {
+    }
+
+    /**
      * Get the filter property: Insight column header.
-     *
+     * 
      * @return the filter value.
      */
     public String filter() {
@@ -46,7 +55,7 @@ public final class InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem {
 
     /**
      * Set the filter property: Insight column header.
-     *
+     * 
      * @param filter the filter value to set.
      * @return the InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem object itself.
      */
@@ -57,7 +66,7 @@ public final class InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem {
 
     /**
      * Get the summarize property: Insight column header.
-     *
+     * 
      * @return the summarize value.
      */
     public String summarize() {
@@ -66,7 +75,7 @@ public final class InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem {
 
     /**
      * Set the summarize property: Insight column header.
-     *
+     * 
      * @param summarize the summarize value to set.
      * @return the InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem object itself.
      */
@@ -77,7 +86,7 @@ public final class InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem {
 
     /**
      * Get the project property: Insight column header.
-     *
+     * 
      * @return the project value.
      */
     public String project() {
@@ -86,7 +95,7 @@ public final class InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem {
 
     /**
      * Set the project property: Insight column header.
-     *
+     * 
      * @param project the project value to set.
      * @return the InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem object itself.
      */
@@ -97,7 +106,7 @@ public final class InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem {
 
     /**
      * Get the linkColumnsDefinitions property: Insight column header.
-     *
+     * 
      * @return the linkColumnsDefinitions value.
      */
     public List<InsightQueryItemPropertiesTableQueryQueriesDefinitionsPropertiesItemsItem> linkColumnsDefinitions() {
@@ -106,7 +115,7 @@ public final class InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem {
 
     /**
      * Set the linkColumnsDefinitions property: Insight column header.
-     *
+     * 
      * @param linkColumnsDefinitions the linkColumnsDefinitions value to set.
      * @return the InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem object itself.
      */
@@ -118,12 +127,67 @@ public final class InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (linkColumnsDefinitions() != null) {
             linkColumnsDefinitions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("filter", this.filter);
+        jsonWriter.writeStringField("summarize", this.summarize);
+        jsonWriter.writeStringField("project", this.project);
+        jsonWriter.writeArrayField("linkColumnsDefinitions", this.linkColumnsDefinitions,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem if the JsonReader was pointing
+     * to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem.
+     */
+    public static InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem deserializedInsightQueryItemPropertiesTableQueryQueriesDefinitionsItem
+                = new InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("filter".equals(fieldName)) {
+                    deserializedInsightQueryItemPropertiesTableQueryQueriesDefinitionsItem.filter = reader.getString();
+                } else if ("summarize".equals(fieldName)) {
+                    deserializedInsightQueryItemPropertiesTableQueryQueriesDefinitionsItem.summarize
+                        = reader.getString();
+                } else if ("project".equals(fieldName)) {
+                    deserializedInsightQueryItemPropertiesTableQueryQueriesDefinitionsItem.project = reader.getString();
+                } else if ("linkColumnsDefinitions".equals(fieldName)) {
+                    List<InsightQueryItemPropertiesTableQueryQueriesDefinitionsPropertiesItemsItem> linkColumnsDefinitions
+                        = reader.readArray(
+                            reader1 -> InsightQueryItemPropertiesTableQueryQueriesDefinitionsPropertiesItemsItem
+                                .fromJson(reader1));
+                    deserializedInsightQueryItemPropertiesTableQueryQueriesDefinitionsItem.linkColumnsDefinitions
+                        = linkColumnsDefinitions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInsightQueryItemPropertiesTableQueryQueriesDefinitionsItem;
+        });
     }
 }

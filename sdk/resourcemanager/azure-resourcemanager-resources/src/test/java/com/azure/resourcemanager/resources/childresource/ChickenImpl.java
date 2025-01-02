@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.resources.childresource;
 
-
 import reactor.core.publisher.Flux;
 
 class ChickenImpl {
@@ -38,7 +37,6 @@ class ChickenImpl {
 
     Flux<ChickenImpl> applyAsync() {
         final ChickenImpl self = this;
-        return this.pullets.commitAsync()
-                .flatMap(p -> Flux.just(self));
+        return this.pullets.commitAsync().flatMap(p -> Flux.just(self));
     }
 }

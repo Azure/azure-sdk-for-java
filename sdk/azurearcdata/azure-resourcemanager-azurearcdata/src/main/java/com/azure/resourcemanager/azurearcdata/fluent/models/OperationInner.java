@@ -6,53 +6,54 @@ package com.azure.resourcemanager.azurearcdata.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.azurearcdata.models.OperationDisplay;
 import com.azure.resourcemanager.azurearcdata.models.OperationOrigin;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Azure Data Services on Azure Arc operation definition. */
+/**
+ * Azure Data Services on Azure Arc operation definition.
+ */
 @Fluent
-public final class OperationInner {
+public final class OperationInner implements JsonSerializable<OperationInner> {
     /*
      * The name of the operation being performed on this particular object.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The localized display information for this particular operation / action.
      */
-    @JsonProperty(value = "display", required = true)
     private OperationDisplay display;
 
     /*
      * The intended executor of the operation.
      */
-    @JsonProperty(value = "origin", access = JsonProperty.Access.WRITE_ONLY)
     private OperationOrigin origin;
 
     /*
      * Indicates whether the operation is a data action
      */
-    @JsonProperty(value = "isDataAction", required = true)
     private boolean isDataAction;
 
     /*
      * Additional descriptions for the operation.
      */
-    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> properties;
 
-    /** Creates an instance of OperationInner class. */
+    /**
+     * Creates an instance of OperationInner class.
+     */
     public OperationInner() {
     }
 
     /**
      * Get the name property: The name of the operation being performed on this particular object.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -61,7 +62,7 @@ public final class OperationInner {
 
     /**
      * Set the name property: The name of the operation being performed on this particular object.
-     *
+     * 
      * @param name the name value to set.
      * @return the OperationInner object itself.
      */
@@ -72,7 +73,7 @@ public final class OperationInner {
 
     /**
      * Get the display property: The localized display information for this particular operation / action.
-     *
+     * 
      * @return the display value.
      */
     public OperationDisplay display() {
@@ -81,7 +82,7 @@ public final class OperationInner {
 
     /**
      * Set the display property: The localized display information for this particular operation / action.
-     *
+     * 
      * @param display the display value to set.
      * @return the OperationInner object itself.
      */
@@ -92,7 +93,7 @@ public final class OperationInner {
 
     /**
      * Get the origin property: The intended executor of the operation.
-     *
+     * 
      * @return the origin value.
      */
     public OperationOrigin origin() {
@@ -101,7 +102,7 @@ public final class OperationInner {
 
     /**
      * Get the isDataAction property: Indicates whether the operation is a data action.
-     *
+     * 
      * @return the isDataAction value.
      */
     public boolean isDataAction() {
@@ -110,7 +111,7 @@ public final class OperationInner {
 
     /**
      * Set the isDataAction property: Indicates whether the operation is a data action.
-     *
+     * 
      * @param isDataAction the isDataAction value to set.
      * @return the OperationInner object itself.
      */
@@ -121,7 +122,7 @@ public final class OperationInner {
 
     /**
      * Get the properties property: Additional descriptions for the operation.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, Object> properties() {
@@ -130,23 +131,69 @@ public final class OperationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model OperationInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model OperationInner"));
         }
         if (display() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property display in model OperationInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property display in model OperationInner"));
         } else {
             display().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OperationInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("display", this.display);
+        jsonWriter.writeBooleanField("isDataAction", this.isDataAction);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OperationInner.
+     */
+    public static OperationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationInner deserializedOperationInner = new OperationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedOperationInner.name = reader.getString();
+                } else if ("display".equals(fieldName)) {
+                    deserializedOperationInner.display = OperationDisplay.fromJson(reader);
+                } else if ("isDataAction".equals(fieldName)) {
+                    deserializedOperationInner.isDataAction = reader.getBoolean();
+                } else if ("origin".equals(fieldName)) {
+                    deserializedOperationInner.origin = OperationOrigin.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    Map<String, Object> properties = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedOperationInner.properties = properties;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationInner;
+        });
+    }
 }

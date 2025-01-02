@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Resources created in Azure DevOps repository. */
+/**
+ * Resources created in Azure DevOps repository.
+ */
 @Fluent
-public final class AzureDevOpsResourceInfo {
+public final class AzureDevOpsResourceInfo implements JsonSerializable<AzureDevOpsResourceInfo> {
     /*
      * Id of the pipeline created for the source-control.
      */
-    @JsonProperty(value = "pipelineId")
     private String pipelineId;
 
     /*
      * Id of the service-connection created for the source-control.
      */
-    @JsonProperty(value = "serviceConnectionId")
     private String serviceConnectionId;
 
     /**
+     * Creates an instance of AzureDevOpsResourceInfo class.
+     */
+    public AzureDevOpsResourceInfo() {
+    }
+
+    /**
      * Get the pipelineId property: Id of the pipeline created for the source-control.
-     *
+     * 
      * @return the pipelineId value.
      */
     public String pipelineId() {
@@ -33,7 +43,7 @@ public final class AzureDevOpsResourceInfo {
 
     /**
      * Set the pipelineId property: Id of the pipeline created for the source-control.
-     *
+     * 
      * @param pipelineId the pipelineId value to set.
      * @return the AzureDevOpsResourceInfo object itself.
      */
@@ -44,7 +54,7 @@ public final class AzureDevOpsResourceInfo {
 
     /**
      * Get the serviceConnectionId property: Id of the service-connection created for the source-control.
-     *
+     * 
      * @return the serviceConnectionId value.
      */
     public String serviceConnectionId() {
@@ -53,7 +63,7 @@ public final class AzureDevOpsResourceInfo {
 
     /**
      * Set the serviceConnectionId property: Id of the service-connection created for the source-control.
-     *
+     * 
      * @param serviceConnectionId the serviceConnectionId value to set.
      * @return the AzureDevOpsResourceInfo object itself.
      */
@@ -64,9 +74,48 @@ public final class AzureDevOpsResourceInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("pipelineId", this.pipelineId);
+        jsonWriter.writeStringField("serviceConnectionId", this.serviceConnectionId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureDevOpsResourceInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureDevOpsResourceInfo if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureDevOpsResourceInfo.
+     */
+    public static AzureDevOpsResourceInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureDevOpsResourceInfo deserializedAzureDevOpsResourceInfo = new AzureDevOpsResourceInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("pipelineId".equals(fieldName)) {
+                    deserializedAzureDevOpsResourceInfo.pipelineId = reader.getString();
+                } else if ("serviceConnectionId".equals(fieldName)) {
+                    deserializedAzureDevOpsResourceInfo.serviceConnectionId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureDevOpsResourceInfo;
+        });
     }
 }

@@ -5,26 +5,42 @@
 package com.azure.resourcemanager.postgresql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IdentityType. */
+/**
+ * The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active Directory
+ * principal for the resource.
+ */
 public final class IdentityType extends ExpandableStringEnum<IdentityType> {
-    /** Static value SystemAssigned for IdentityType. */
+    /**
+     * Static value SystemAssigned for IdentityType.
+     */
     public static final IdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
 
     /**
+     * Creates a new instance of IdentityType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IdentityType() {
+    }
+
+    /**
      * Creates or finds a IdentityType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IdentityType.
      */
-    @JsonCreator
     public static IdentityType fromString(String name) {
         return fromString(name, IdentityType.class);
     }
 
-    /** @return known IdentityType values. */
+    /**
+     * Gets known IdentityType values.
+     * 
+     * @return known IdentityType values.
+     */
     public static Collection<IdentityType> values() {
         return values(IdentityType.class);
     }

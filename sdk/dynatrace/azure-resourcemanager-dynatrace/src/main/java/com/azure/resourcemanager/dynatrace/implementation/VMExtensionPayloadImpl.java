@@ -12,8 +12,8 @@ public final class VMExtensionPayloadImpl implements VMExtensionPayload {
 
     private final com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager;
 
-    VMExtensionPayloadImpl(
-        VMExtensionPayloadInner innerObject, com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager) {
+    VMExtensionPayloadImpl(VMExtensionPayloadInner innerObject,
+        com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

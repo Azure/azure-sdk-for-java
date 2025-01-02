@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.managedapplications.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managedapplications.models.ApplicationArtifact;
 import com.azure.resourcemanager.managedapplications.models.ApplicationAuthorization;
 import com.azure.resourcemanager.managedapplications.models.ApplicationBillingDetailsDefinition;
@@ -14,110 +18,99 @@ import com.azure.resourcemanager.managedapplications.models.ApplicationManagemen
 import com.azure.resourcemanager.managedapplications.models.ApplicationPackageContact;
 import com.azure.resourcemanager.managedapplications.models.ApplicationPackageSupportUrls;
 import com.azure.resourcemanager.managedapplications.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The managed application properties. */
+/**
+ * The managed application properties.
+ */
 @Fluent
-public final class ApplicationProperties {
+public final class ApplicationProperties implements JsonSerializable<ApplicationProperties> {
     /*
      * The managed resource group Id.
      */
-    @JsonProperty(value = "managedResourceGroupId")
     private String managedResourceGroupId;
 
     /*
      * The fully qualified path of managed application definition Id.
      */
-    @JsonProperty(value = "applicationDefinitionId")
     private String applicationDefinitionId;
 
     /*
      * Name and value pairs that define the managed application parameters. It can be a JObject or a well formed JSON
      * string.
      */
-    @JsonProperty(value = "parameters")
     private Object parameters;
 
     /*
      * Name and value pairs that define the managed application outputs.
      */
-    @JsonProperty(value = "outputs", access = JsonProperty.Access.WRITE_ONLY)
     private Object outputs;
 
     /*
      * The managed application provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The managed application billing details.
      */
-    @JsonProperty(value = "billingDetails", access = JsonProperty.Access.WRITE_ONLY)
     private ApplicationBillingDetailsDefinition billingDetails;
 
     /*
      * The managed application Jit access policy.
      */
-    @JsonProperty(value = "jitAccessPolicy")
     private ApplicationJitAccessPolicy jitAccessPolicy;
 
     /*
      * The publisher tenant Id.
      */
-    @JsonProperty(value = "publisherTenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String publisherTenantId;
 
     /*
-     * The  read-only authorizations property that is retrieved from the application package.
+     * The read-only authorizations property that is retrieved from the application package.
      */
-    @JsonProperty(value = "authorizations", access = JsonProperty.Access.WRITE_ONLY)
     private List<ApplicationAuthorization> authorizations;
 
     /*
      * The managed application management mode.
      */
-    @JsonProperty(value = "managementMode", access = JsonProperty.Access.WRITE_ONLY)
     private ApplicationManagementMode managementMode;
 
     /*
      * The read-only customer support property that is retrieved from the application package.
      */
-    @JsonProperty(value = "customerSupport", access = JsonProperty.Access.WRITE_ONLY)
     private ApplicationPackageContact customerSupport;
 
     /*
      * The read-only support URLs property that is retrieved from the application package.
      */
-    @JsonProperty(value = "supportUrls", access = JsonProperty.Access.WRITE_ONLY)
     private ApplicationPackageSupportUrls supportUrls;
 
     /*
      * The collection of managed application artifacts.
      */
-    @JsonProperty(value = "artifacts", access = JsonProperty.Access.WRITE_ONLY)
     private List<ApplicationArtifact> artifacts;
 
     /*
      * The client entity that created the JIT request.
      */
-    @JsonProperty(value = "createdBy", access = JsonProperty.Access.WRITE_ONLY)
     private ApplicationClientDetails createdBy;
 
     /*
      * The client entity that last updated the JIT request.
      */
-    @JsonProperty(value = "updatedBy", access = JsonProperty.Access.WRITE_ONLY)
     private ApplicationClientDetails updatedBy;
 
-    /** Creates an instance of ApplicationProperties class. */
+    /**
+     * Creates an instance of ApplicationProperties class.
+     */
     public ApplicationProperties() {
     }
 
     /**
      * Get the managedResourceGroupId property: The managed resource group Id.
-     *
+     * 
      * @return the managedResourceGroupId value.
      */
     public String managedResourceGroupId() {
@@ -126,7 +119,7 @@ public final class ApplicationProperties {
 
     /**
      * Set the managedResourceGroupId property: The managed resource group Id.
-     *
+     * 
      * @param managedResourceGroupId the managedResourceGroupId value to set.
      * @return the ApplicationProperties object itself.
      */
@@ -137,7 +130,7 @@ public final class ApplicationProperties {
 
     /**
      * Get the applicationDefinitionId property: The fully qualified path of managed application definition Id.
-     *
+     * 
      * @return the applicationDefinitionId value.
      */
     public String applicationDefinitionId() {
@@ -146,7 +139,7 @@ public final class ApplicationProperties {
 
     /**
      * Set the applicationDefinitionId property: The fully qualified path of managed application definition Id.
-     *
+     * 
      * @param applicationDefinitionId the applicationDefinitionId value to set.
      * @return the ApplicationProperties object itself.
      */
@@ -158,7 +151,7 @@ public final class ApplicationProperties {
     /**
      * Get the parameters property: Name and value pairs that define the managed application parameters. It can be a
      * JObject or a well formed JSON string.
-     *
+     * 
      * @return the parameters value.
      */
     public Object parameters() {
@@ -168,7 +161,7 @@ public final class ApplicationProperties {
     /**
      * Set the parameters property: Name and value pairs that define the managed application parameters. It can be a
      * JObject or a well formed JSON string.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the ApplicationProperties object itself.
      */
@@ -179,7 +172,7 @@ public final class ApplicationProperties {
 
     /**
      * Get the outputs property: Name and value pairs that define the managed application outputs.
-     *
+     * 
      * @return the outputs value.
      */
     public Object outputs() {
@@ -188,7 +181,7 @@ public final class ApplicationProperties {
 
     /**
      * Get the provisioningState property: The managed application provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -197,7 +190,7 @@ public final class ApplicationProperties {
 
     /**
      * Get the billingDetails property: The managed application billing details.
-     *
+     * 
      * @return the billingDetails value.
      */
     public ApplicationBillingDetailsDefinition billingDetails() {
@@ -206,7 +199,7 @@ public final class ApplicationProperties {
 
     /**
      * Get the jitAccessPolicy property: The managed application Jit access policy.
-     *
+     * 
      * @return the jitAccessPolicy value.
      */
     public ApplicationJitAccessPolicy jitAccessPolicy() {
@@ -215,7 +208,7 @@ public final class ApplicationProperties {
 
     /**
      * Set the jitAccessPolicy property: The managed application Jit access policy.
-     *
+     * 
      * @param jitAccessPolicy the jitAccessPolicy value to set.
      * @return the ApplicationProperties object itself.
      */
@@ -226,7 +219,7 @@ public final class ApplicationProperties {
 
     /**
      * Get the publisherTenantId property: The publisher tenant Id.
-     *
+     * 
      * @return the publisherTenantId value.
      */
     public String publisherTenantId() {
@@ -236,7 +229,7 @@ public final class ApplicationProperties {
     /**
      * Get the authorizations property: The read-only authorizations property that is retrieved from the application
      * package.
-     *
+     * 
      * @return the authorizations value.
      */
     public List<ApplicationAuthorization> authorizations() {
@@ -245,7 +238,7 @@ public final class ApplicationProperties {
 
     /**
      * Get the managementMode property: The managed application management mode.
-     *
+     * 
      * @return the managementMode value.
      */
     public ApplicationManagementMode managementMode() {
@@ -255,7 +248,7 @@ public final class ApplicationProperties {
     /**
      * Get the customerSupport property: The read-only customer support property that is retrieved from the application
      * package.
-     *
+     * 
      * @return the customerSupport value.
      */
     public ApplicationPackageContact customerSupport() {
@@ -264,7 +257,7 @@ public final class ApplicationProperties {
 
     /**
      * Get the supportUrls property: The read-only support URLs property that is retrieved from the application package.
-     *
+     * 
      * @return the supportUrls value.
      */
     public ApplicationPackageSupportUrls supportUrls() {
@@ -273,7 +266,7 @@ public final class ApplicationProperties {
 
     /**
      * Get the artifacts property: The collection of managed application artifacts.
-     *
+     * 
      * @return the artifacts value.
      */
     public List<ApplicationArtifact> artifacts() {
@@ -282,7 +275,7 @@ public final class ApplicationProperties {
 
     /**
      * Get the createdBy property: The client entity that created the JIT request.
-     *
+     * 
      * @return the createdBy value.
      */
     public ApplicationClientDetails createdBy() {
@@ -291,7 +284,7 @@ public final class ApplicationProperties {
 
     /**
      * Get the updatedBy property: The client entity that last updated the JIT request.
-     *
+     * 
      * @return the updatedBy value.
      */
     public ApplicationClientDetails updatedBy() {
@@ -300,7 +293,7 @@ public final class ApplicationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -328,5 +321,79 @@ public final class ApplicationProperties {
         if (updatedBy() != null) {
             updatedBy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("managedResourceGroupId", this.managedResourceGroupId);
+        jsonWriter.writeStringField("applicationDefinitionId", this.applicationDefinitionId);
+        jsonWriter.writeUntypedField("parameters", this.parameters);
+        jsonWriter.writeJsonField("jitAccessPolicy", this.jitAccessPolicy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationProperties.
+     */
+    public static ApplicationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationProperties deserializedApplicationProperties = new ApplicationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("managedResourceGroupId".equals(fieldName)) {
+                    deserializedApplicationProperties.managedResourceGroupId = reader.getString();
+                } else if ("applicationDefinitionId".equals(fieldName)) {
+                    deserializedApplicationProperties.applicationDefinitionId = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    deserializedApplicationProperties.parameters = reader.readUntyped();
+                } else if ("outputs".equals(fieldName)) {
+                    deserializedApplicationProperties.outputs = reader.readUntyped();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedApplicationProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("billingDetails".equals(fieldName)) {
+                    deserializedApplicationProperties.billingDetails
+                        = ApplicationBillingDetailsDefinition.fromJson(reader);
+                } else if ("jitAccessPolicy".equals(fieldName)) {
+                    deserializedApplicationProperties.jitAccessPolicy = ApplicationJitAccessPolicy.fromJson(reader);
+                } else if ("publisherTenantId".equals(fieldName)) {
+                    deserializedApplicationProperties.publisherTenantId = reader.getString();
+                } else if ("authorizations".equals(fieldName)) {
+                    List<ApplicationAuthorization> authorizations
+                        = reader.readArray(reader1 -> ApplicationAuthorization.fromJson(reader1));
+                    deserializedApplicationProperties.authorizations = authorizations;
+                } else if ("managementMode".equals(fieldName)) {
+                    deserializedApplicationProperties.managementMode
+                        = ApplicationManagementMode.fromString(reader.getString());
+                } else if ("customerSupport".equals(fieldName)) {
+                    deserializedApplicationProperties.customerSupport = ApplicationPackageContact.fromJson(reader);
+                } else if ("supportUrls".equals(fieldName)) {
+                    deserializedApplicationProperties.supportUrls = ApplicationPackageSupportUrls.fromJson(reader);
+                } else if ("artifacts".equals(fieldName)) {
+                    List<ApplicationArtifact> artifacts
+                        = reader.readArray(reader1 -> ApplicationArtifact.fromJson(reader1));
+                    deserializedApplicationProperties.artifacts = artifacts;
+                } else if ("createdBy".equals(fieldName)) {
+                    deserializedApplicationProperties.createdBy = ApplicationClientDetails.fromJson(reader);
+                } else if ("updatedBy".equals(fieldName)) {
+                    deserializedApplicationProperties.updatedBy = ApplicationClientDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationProperties;
+        });
     }
 }

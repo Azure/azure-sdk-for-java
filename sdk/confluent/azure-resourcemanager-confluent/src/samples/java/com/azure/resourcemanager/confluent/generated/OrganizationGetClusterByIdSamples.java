@@ -18,7 +18,8 @@ public final class OrganizationGetClusterByIdSamples {
      * @param manager Entry point to ConfluentManager.
      */
     public static void organizationGetClusterById(com.azure.resourcemanager.confluent.ConfluentManager manager) {
-        manager.organizations().getClusterByIdWithResponse("myResourceGroup", "myOrganization", "env-12132",
-            "dlz-f3a90de", com.azure.core.util.Context.NONE);
+        manager.organizations()
+            .getClusterByIdWithResponse("myResourceGroup", "myOrganization", "env-12132", "dlz-f3a90de",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -13,30 +13,26 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationAccountMapPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationAccountMapProperties model =
-            BinaryData
-                .fromString(
-                    "{\"mapType\":\"Xslt20\",\"parametersSchema\":{\"ref\":\"taugzxnfaa\"},\"createdTime\":\"2021-08-18T07:12:15Z\",\"changedTime\":\"2021-08-22T16:28:31Z\",\"content\":\"kdmkqjjlwuenvrkp\",\"contentType\":\"uaibrebqaaysj\",\"contentLink\":{\"uri\":\"qtnqtt\",\"contentVersion\":\"lwfffi\",\"contentSize\":7764702360859121907,\"contentHash\":{\"algorithm\":\"qmt\",\"value\":\"ltmm\"},\"metadata\":\"datahyeozphvwau\"},\"metadata\":\"datancyg\"}")
-                .toObject(IntegrationAccountMapProperties.class);
-        Assertions.assertEquals(MapType.XSLT20, model.mapType());
-        Assertions.assertEquals("taugzxnfaa", model.parametersSchema().ref());
-        Assertions.assertEquals("kdmkqjjlwuenvrkp", model.content());
-        Assertions.assertEquals("uaibrebqaaysj", model.contentType());
+        IntegrationAccountMapProperties model = BinaryData.fromString(
+            "{\"mapType\":\"Xslt\",\"parametersSchema\":{\"ref\":\"vodhtn\"},\"createdTime\":\"2021-05-30T21:19:36Z\",\"changedTime\":\"2021-05-31T13:10:20Z\",\"content\":\"z\",\"contentType\":\"es\",\"contentLink\":{\"uri\":\"lpagzrcx\",\"contentVersion\":\"ilcfxwmdboxd\",\"contentSize\":5413751597691708104,\"contentHash\":{\"algorithm\":\"fqob\",\"value\":\"lnacgcc\"},\"metadata\":\"datanhxk\"},\"metadata\":\"datav\"}")
+            .toObject(IntegrationAccountMapProperties.class);
+        Assertions.assertEquals(MapType.XSLT, model.mapType());
+        Assertions.assertEquals("vodhtn", model.parametersSchema().ref());
+        Assertions.assertEquals("z", model.content());
+        Assertions.assertEquals("es", model.contentType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationAccountMapProperties model =
-            new IntegrationAccountMapProperties()
-                .withMapType(MapType.XSLT20)
-                .withParametersSchema(new IntegrationAccountMapPropertiesParametersSchema().withRef("taugzxnfaa"))
-                .withContent("kdmkqjjlwuenvrkp")
-                .withContentType("uaibrebqaaysj")
-                .withMetadata("datancyg");
+        IntegrationAccountMapProperties model = new IntegrationAccountMapProperties().withMapType(MapType.XSLT)
+            .withParametersSchema(new IntegrationAccountMapPropertiesParametersSchema().withRef("vodhtn"))
+            .withContent("z")
+            .withContentType("es")
+            .withMetadata("datav");
         model = BinaryData.fromObject(model).toObject(IntegrationAccountMapProperties.class);
-        Assertions.assertEquals(MapType.XSLT20, model.mapType());
-        Assertions.assertEquals("taugzxnfaa", model.parametersSchema().ref());
-        Assertions.assertEquals("kdmkqjjlwuenvrkp", model.content());
-        Assertions.assertEquals("uaibrebqaaysj", model.contentType());
+        Assertions.assertEquals(MapType.XSLT, model.mapType());
+        Assertions.assertEquals("vodhtn", model.parametersSchema().ref());
+        Assertions.assertEquals("z", model.content());
+        Assertions.assertEquals("es", model.contentType());
     }
 }

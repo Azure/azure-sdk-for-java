@@ -16,8 +16,8 @@ public final class JobCollectionItemImpl implements JobCollectionItem {
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    JobCollectionItemImpl(
-        JobCollectionItemInner innerObject, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    JobCollectionItemImpl(JobCollectionItemInner innerObject,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

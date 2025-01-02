@@ -6,38 +6,46 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Support information for the content item. */
+/**
+ * Support information for the content item.
+ */
 @Fluent
-public final class MetadataSupport {
+public final class MetadataSupport implements JsonSerializable<MetadataSupport> {
     /*
      * Type of support for content item
      */
-    @JsonProperty(value = "tier", required = true)
     private SupportTier tier;
 
     /*
      * Name of the support contact. Company or person.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Email of support contact
      */
-    @JsonProperty(value = "email")
     private String email;
 
     /*
      * Link for support help, like to support page to open a ticket etc.
      */
-    @JsonProperty(value = "link")
     private String link;
 
     /**
+     * Creates an instance of MetadataSupport class.
+     */
+    public MetadataSupport() {
+    }
+
+    /**
      * Get the tier property: Type of support for content item.
-     *
+     * 
      * @return the tier value.
      */
     public SupportTier tier() {
@@ -46,7 +54,7 @@ public final class MetadataSupport {
 
     /**
      * Set the tier property: Type of support for content item.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the MetadataSupport object itself.
      */
@@ -57,7 +65,7 @@ public final class MetadataSupport {
 
     /**
      * Get the name property: Name of the support contact. Company or person.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -66,7 +74,7 @@ public final class MetadataSupport {
 
     /**
      * Set the name property: Name of the support contact. Company or person.
-     *
+     * 
      * @param name the name value to set.
      * @return the MetadataSupport object itself.
      */
@@ -77,7 +85,7 @@ public final class MetadataSupport {
 
     /**
      * Get the email property: Email of support contact.
-     *
+     * 
      * @return the email value.
      */
     public String email() {
@@ -86,7 +94,7 @@ public final class MetadataSupport {
 
     /**
      * Set the email property: Email of support contact.
-     *
+     * 
      * @param email the email value to set.
      * @return the MetadataSupport object itself.
      */
@@ -97,7 +105,7 @@ public final class MetadataSupport {
 
     /**
      * Get the link property: Link for support help, like to support page to open a ticket etc.
-     *
+     * 
      * @return the link value.
      */
     public String link() {
@@ -106,7 +114,7 @@ public final class MetadataSupport {
 
     /**
      * Set the link property: Link for support help, like to support page to open a ticket etc.
-     *
+     * 
      * @param link the link value to set.
      * @return the MetadataSupport object itself.
      */
@@ -117,16 +125,61 @@ public final class MetadataSupport {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (tier() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property tier in model MetadataSupport"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property tier in model MetadataSupport"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MetadataSupport.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tier", this.tier == null ? null : this.tier.toString());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("email", this.email);
+        jsonWriter.writeStringField("link", this.link);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetadataSupport from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetadataSupport if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MetadataSupport.
+     */
+    public static MetadataSupport fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetadataSupport deserializedMetadataSupport = new MetadataSupport();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tier".equals(fieldName)) {
+                    deserializedMetadataSupport.tier = SupportTier.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedMetadataSupport.name = reader.getString();
+                } else if ("email".equals(fieldName)) {
+                    deserializedMetadataSupport.email = reader.getString();
+                } else if ("link".equals(fieldName)) {
+                    deserializedMetadataSupport.link = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetadataSupport;
+        });
+    }
 }

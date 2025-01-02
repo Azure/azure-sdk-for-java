@@ -6,75 +6,71 @@ package com.azure.resourcemanager.applicationinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.applicationinsights.models.WebTestGeolocation;
 import com.azure.resourcemanager.applicationinsights.models.WebTestKind;
 import com.azure.resourcemanager.applicationinsights.models.WebTestPropertiesConfiguration;
 import com.azure.resourcemanager.applicationinsights.models.WebTestPropertiesRequest;
 import com.azure.resourcemanager.applicationinsights.models.WebTestPropertiesValidationRules;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Metadata describing a web test for an Azure resource. */
+/**
+ * Metadata describing a web test for an Azure resource.
+ */
 @Fluent
-public final class WebTestProperties {
+public final class WebTestProperties implements JsonSerializable<WebTestProperties> {
     /*
      * Unique ID of this WebTest. This is typically the same value as the Name field.
      */
-    @JsonProperty(value = "SyntheticMonitorId", required = true)
     private String syntheticMonitorId;
 
     /*
      * User defined name if this WebTest.
      */
-    @JsonProperty(value = "Name", required = true)
     private String webTestName;
 
     /*
      * User defined description for this WebTest.
      */
-    @JsonProperty(value = "Description")
     private String description;
 
     /*
      * Is the test actively being monitored.
      */
-    @JsonProperty(value = "Enabled")
     private Boolean enabled;
 
     /*
      * Interval in seconds between test runs for this WebTest. Default value is 300.
      */
-    @JsonProperty(value = "Frequency")
     private Integer frequency;
 
     /*
      * Seconds until this WebTest will timeout and fail. Default value is 30.
      */
-    @JsonProperty(value = "Timeout")
     private Integer timeout;
 
     /*
      * The kind of web test this is, valid choices are ping, multistep and standard.
      */
-    @JsonProperty(value = "Kind", required = true)
     private WebTestKind webTestKind;
 
     /*
      * Allow for retries should this WebTest fail.
      */
-    @JsonProperty(value = "RetryEnabled")
     private Boolean retryEnabled;
 
     /*
      * A list of where to physically run the tests from to give global coverage for accessibility of your application.
      */
-    @JsonProperty(value = "Locations", required = true)
     private List<WebTestGeolocation> locations;
 
     /*
      * An XML configuration specification for a WebTest.
      */
-    @JsonProperty(value = "Configuration")
     private WebTestPropertiesConfiguration configuration;
 
     /*
@@ -82,29 +78,28 @@ public final class WebTestProperties {
      * Users cannot change this value but are able to read from it. Values will include Succeeded, Deploying, Canceled,
      * and Failed.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The collection of request properties
      */
-    @JsonProperty(value = "Request")
     private WebTestPropertiesRequest request;
 
     /*
      * The collection of validation rule properties
      */
-    @JsonProperty(value = "ValidationRules")
     private WebTestPropertiesValidationRules validationRules;
 
-    /** Creates an instance of WebTestProperties class. */
+    /**
+     * Creates an instance of WebTestProperties class.
+     */
     public WebTestProperties() {
     }
 
     /**
      * Get the syntheticMonitorId property: Unique ID of this WebTest. This is typically the same value as the Name
      * field.
-     *
+     * 
      * @return the syntheticMonitorId value.
      */
     public String syntheticMonitorId() {
@@ -114,7 +109,7 @@ public final class WebTestProperties {
     /**
      * Set the syntheticMonitorId property: Unique ID of this WebTest. This is typically the same value as the Name
      * field.
-     *
+     * 
      * @param syntheticMonitorId the syntheticMonitorId value to set.
      * @return the WebTestProperties object itself.
      */
@@ -125,7 +120,7 @@ public final class WebTestProperties {
 
     /**
      * Get the webTestName property: User defined name if this WebTest.
-     *
+     * 
      * @return the webTestName value.
      */
     public String webTestName() {
@@ -134,7 +129,7 @@ public final class WebTestProperties {
 
     /**
      * Set the webTestName property: User defined name if this WebTest.
-     *
+     * 
      * @param webTestName the webTestName value to set.
      * @return the WebTestProperties object itself.
      */
@@ -145,7 +140,7 @@ public final class WebTestProperties {
 
     /**
      * Get the description property: User defined description for this WebTest.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -154,7 +149,7 @@ public final class WebTestProperties {
 
     /**
      * Set the description property: User defined description for this WebTest.
-     *
+     * 
      * @param description the description value to set.
      * @return the WebTestProperties object itself.
      */
@@ -165,7 +160,7 @@ public final class WebTestProperties {
 
     /**
      * Get the enabled property: Is the test actively being monitored.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -174,7 +169,7 @@ public final class WebTestProperties {
 
     /**
      * Set the enabled property: Is the test actively being monitored.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the WebTestProperties object itself.
      */
@@ -185,7 +180,7 @@ public final class WebTestProperties {
 
     /**
      * Get the frequency property: Interval in seconds between test runs for this WebTest. Default value is 300.
-     *
+     * 
      * @return the frequency value.
      */
     public Integer frequency() {
@@ -194,7 +189,7 @@ public final class WebTestProperties {
 
     /**
      * Set the frequency property: Interval in seconds between test runs for this WebTest. Default value is 300.
-     *
+     * 
      * @param frequency the frequency value to set.
      * @return the WebTestProperties object itself.
      */
@@ -205,7 +200,7 @@ public final class WebTestProperties {
 
     /**
      * Get the timeout property: Seconds until this WebTest will timeout and fail. Default value is 30.
-     *
+     * 
      * @return the timeout value.
      */
     public Integer timeout() {
@@ -214,7 +209,7 @@ public final class WebTestProperties {
 
     /**
      * Set the timeout property: Seconds until this WebTest will timeout and fail. Default value is 30.
-     *
+     * 
      * @param timeout the timeout value to set.
      * @return the WebTestProperties object itself.
      */
@@ -225,7 +220,7 @@ public final class WebTestProperties {
 
     /**
      * Get the webTestKind property: The kind of web test this is, valid choices are ping, multistep and standard.
-     *
+     * 
      * @return the webTestKind value.
      */
     public WebTestKind webTestKind() {
@@ -234,7 +229,7 @@ public final class WebTestProperties {
 
     /**
      * Set the webTestKind property: The kind of web test this is, valid choices are ping, multistep and standard.
-     *
+     * 
      * @param webTestKind the webTestKind value to set.
      * @return the WebTestProperties object itself.
      */
@@ -245,7 +240,7 @@ public final class WebTestProperties {
 
     /**
      * Get the retryEnabled property: Allow for retries should this WebTest fail.
-     *
+     * 
      * @return the retryEnabled value.
      */
     public Boolean retryEnabled() {
@@ -254,7 +249,7 @@ public final class WebTestProperties {
 
     /**
      * Set the retryEnabled property: Allow for retries should this WebTest fail.
-     *
+     * 
      * @param retryEnabled the retryEnabled value to set.
      * @return the WebTestProperties object itself.
      */
@@ -266,7 +261,7 @@ public final class WebTestProperties {
     /**
      * Get the locations property: A list of where to physically run the tests from to give global coverage for
      * accessibility of your application.
-     *
+     * 
      * @return the locations value.
      */
     public List<WebTestGeolocation> locations() {
@@ -276,7 +271,7 @@ public final class WebTestProperties {
     /**
      * Set the locations property: A list of where to physically run the tests from to give global coverage for
      * accessibility of your application.
-     *
+     * 
      * @param locations the locations value to set.
      * @return the WebTestProperties object itself.
      */
@@ -287,7 +282,7 @@ public final class WebTestProperties {
 
     /**
      * Get the configuration property: An XML configuration specification for a WebTest.
-     *
+     * 
      * @return the configuration value.
      */
     public WebTestPropertiesConfiguration configuration() {
@@ -296,7 +291,7 @@ public final class WebTestProperties {
 
     /**
      * Set the configuration property: An XML configuration specification for a WebTest.
-     *
+     * 
      * @param configuration the configuration value to set.
      * @return the WebTestProperties object itself.
      */
@@ -309,7 +304,7 @@ public final class WebTestProperties {
      * Get the provisioningState property: Current state of this component, whether or not is has been provisioned
      * within the resource group it is defined. Users cannot change this value but are able to read from it. Values will
      * include Succeeded, Deploying, Canceled, and Failed.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -318,7 +313,7 @@ public final class WebTestProperties {
 
     /**
      * Get the request property: The collection of request properties.
-     *
+     * 
      * @return the request value.
      */
     public WebTestPropertiesRequest request() {
@@ -327,7 +322,7 @@ public final class WebTestProperties {
 
     /**
      * Set the request property: The collection of request properties.
-     *
+     * 
      * @param request the request value to set.
      * @return the WebTestProperties object itself.
      */
@@ -338,7 +333,7 @@ public final class WebTestProperties {
 
     /**
      * Get the validationRules property: The collection of validation rule properties.
-     *
+     * 
      * @return the validationRules value.
      */
     public WebTestPropertiesValidationRules validationRules() {
@@ -347,7 +342,7 @@ public final class WebTestProperties {
 
     /**
      * Set the validationRules property: The collection of validation rule properties.
-     *
+     * 
      * @param validationRules the validationRules value to set.
      * @return the WebTestProperties object itself.
      */
@@ -358,30 +353,26 @@ public final class WebTestProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (syntheticMonitorId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property syntheticMonitorId in model WebTestProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property syntheticMonitorId in model WebTestProperties"));
         }
         if (webTestName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property webTestName in model WebTestProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property webTestName in model WebTestProperties"));
         }
         if (webTestKind() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property webTestKind in model WebTestProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property webTestKind in model WebTestProperties"));
         }
         if (locations() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property locations in model WebTestProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property locations in model WebTestProperties"));
         } else {
             locations().forEach(e -> e.validate());
         }
@@ -397,4 +388,78 @@ public final class WebTestProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WebTestProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("SyntheticMonitorId", this.syntheticMonitorId);
+        jsonWriter.writeStringField("Name", this.webTestName);
+        jsonWriter.writeStringField("Kind", this.webTestKind == null ? null : this.webTestKind.toString());
+        jsonWriter.writeArrayField("Locations", this.locations, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("Description", this.description);
+        jsonWriter.writeBooleanField("Enabled", this.enabled);
+        jsonWriter.writeNumberField("Frequency", this.frequency);
+        jsonWriter.writeNumberField("Timeout", this.timeout);
+        jsonWriter.writeBooleanField("RetryEnabled", this.retryEnabled);
+        jsonWriter.writeJsonField("Configuration", this.configuration);
+        jsonWriter.writeJsonField("Request", this.request);
+        jsonWriter.writeJsonField("ValidationRules", this.validationRules);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebTestProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebTestProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WebTestProperties.
+     */
+    public static WebTestProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebTestProperties deserializedWebTestProperties = new WebTestProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("SyntheticMonitorId".equals(fieldName)) {
+                    deserializedWebTestProperties.syntheticMonitorId = reader.getString();
+                } else if ("Name".equals(fieldName)) {
+                    deserializedWebTestProperties.webTestName = reader.getString();
+                } else if ("Kind".equals(fieldName)) {
+                    deserializedWebTestProperties.webTestKind = WebTestKind.fromString(reader.getString());
+                } else if ("Locations".equals(fieldName)) {
+                    List<WebTestGeolocation> locations
+                        = reader.readArray(reader1 -> WebTestGeolocation.fromJson(reader1));
+                    deserializedWebTestProperties.locations = locations;
+                } else if ("Description".equals(fieldName)) {
+                    deserializedWebTestProperties.description = reader.getString();
+                } else if ("Enabled".equals(fieldName)) {
+                    deserializedWebTestProperties.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("Frequency".equals(fieldName)) {
+                    deserializedWebTestProperties.frequency = reader.getNullable(JsonReader::getInt);
+                } else if ("Timeout".equals(fieldName)) {
+                    deserializedWebTestProperties.timeout = reader.getNullable(JsonReader::getInt);
+                } else if ("RetryEnabled".equals(fieldName)) {
+                    deserializedWebTestProperties.retryEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("Configuration".equals(fieldName)) {
+                    deserializedWebTestProperties.configuration = WebTestPropertiesConfiguration.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedWebTestProperties.provisioningState = reader.getString();
+                } else if ("Request".equals(fieldName)) {
+                    deserializedWebTestProperties.request = WebTestPropertiesRequest.fromJson(reader);
+                } else if ("ValidationRules".equals(fieldName)) {
+                    deserializedWebTestProperties.validationRules = WebTestPropertiesValidationRules.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebTestProperties;
+        });
+    }
 }

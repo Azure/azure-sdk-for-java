@@ -7,115 +7,107 @@ package com.azure.resourcemanager.edgeorder.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Order item details. */
+/**
+ * Order item details.
+ */
 @Fluent
-public final class OrderItemDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OrderItemDetails.class);
-
+public final class OrderItemDetails implements JsonSerializable<OrderItemDetails> {
     /*
      * Unique identifier for configuration.
      */
-    @JsonProperty(value = "productDetails", required = true)
     private ProductDetails productDetails;
 
     /*
      * Order item type.
      */
-    @JsonProperty(value = "orderItemType", required = true)
     private OrderItemType orderItemType;
 
     /*
      * Current Order item Status
      */
-    @JsonProperty(value = "currentStage", access = JsonProperty.Access.WRITE_ONLY)
     private StageDetails currentStage;
 
     /*
      * Order item status history
      */
-    @JsonProperty(value = "orderItemStageHistory", access = JsonProperty.Access.WRITE_ONLY)
     private List<StageDetails> orderItemStageHistory;
 
     /*
      * Customer notification Preferences
      */
-    @JsonProperty(value = "preferences")
     private Preferences preferences;
 
     /*
      * Forward Package Shipping details
      */
-    @JsonProperty(value = "forwardShippingDetails", access = JsonProperty.Access.WRITE_ONLY)
     private ForwardShippingDetails forwardShippingDetails;
 
     /*
      * Reverse Package Shipping details
      */
-    @JsonProperty(value = "reverseShippingDetails", access = JsonProperty.Access.WRITE_ONLY)
     private ReverseShippingDetails reverseShippingDetails;
 
     /*
      * Additional notification email list
      */
-    @JsonProperty(value = "notificationEmailList")
     private List<String> notificationEmailList;
 
     /*
      * Cancellation reason.
      */
-    @JsonProperty(value = "cancellationReason", access = JsonProperty.Access.WRITE_ONLY)
     private String cancellationReason;
 
     /*
      * Describes whether the order item is cancellable or not.
      */
-    @JsonProperty(value = "cancellationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private OrderItemCancellationEnum cancellationStatus;
 
     /*
      * Describes whether the order item is deletable or not.
      */
-    @JsonProperty(value = "deletionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ActionStatusEnum deletionStatus;
 
     /*
      * Return reason.
      */
-    @JsonProperty(value = "returnReason", access = JsonProperty.Access.WRITE_ONLY)
     private String returnReason;
 
     /*
      * Describes whether the order item is returnable or not.
      */
-    @JsonProperty(value = "returnStatus", access = JsonProperty.Access.WRITE_ONLY)
     private OrderItemReturnEnum returnStatus;
 
     /*
-     * Parent RP details - this returns only the first or default parent RP
-     * from the entire list
+     * Parent RP details - this returns only the first or default parent RP from the entire list
      */
-    @JsonProperty(value = "managementRpDetails", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceProviderDetails managementRpDetails;
 
     /*
      * List of parent RP details supported for configuration.
      */
-    @JsonProperty(value = "managementRpDetailsList", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceProviderDetails> managementRpDetailsList;
 
     /*
      * Top level error for the job.
      */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private ManagementError error;
 
     /**
+     * Creates an instance of OrderItemDetails class.
+     */
+    public OrderItemDetails() {
+    }
+
+    /**
      * Get the productDetails property: Unique identifier for configuration.
-     *
+     * 
      * @return the productDetails value.
      */
     public ProductDetails productDetails() {
@@ -124,7 +116,7 @@ public final class OrderItemDetails {
 
     /**
      * Set the productDetails property: Unique identifier for configuration.
-     *
+     * 
      * @param productDetails the productDetails value to set.
      * @return the OrderItemDetails object itself.
      */
@@ -135,7 +127,7 @@ public final class OrderItemDetails {
 
     /**
      * Get the orderItemType property: Order item type.
-     *
+     * 
      * @return the orderItemType value.
      */
     public OrderItemType orderItemType() {
@@ -144,7 +136,7 @@ public final class OrderItemDetails {
 
     /**
      * Set the orderItemType property: Order item type.
-     *
+     * 
      * @param orderItemType the orderItemType value to set.
      * @return the OrderItemDetails object itself.
      */
@@ -155,7 +147,7 @@ public final class OrderItemDetails {
 
     /**
      * Get the currentStage property: Current Order item Status.
-     *
+     * 
      * @return the currentStage value.
      */
     public StageDetails currentStage() {
@@ -164,7 +156,7 @@ public final class OrderItemDetails {
 
     /**
      * Get the orderItemStageHistory property: Order item status history.
-     *
+     * 
      * @return the orderItemStageHistory value.
      */
     public List<StageDetails> orderItemStageHistory() {
@@ -173,7 +165,7 @@ public final class OrderItemDetails {
 
     /**
      * Get the preferences property: Customer notification Preferences.
-     *
+     * 
      * @return the preferences value.
      */
     public Preferences preferences() {
@@ -182,7 +174,7 @@ public final class OrderItemDetails {
 
     /**
      * Set the preferences property: Customer notification Preferences.
-     *
+     * 
      * @param preferences the preferences value to set.
      * @return the OrderItemDetails object itself.
      */
@@ -193,7 +185,7 @@ public final class OrderItemDetails {
 
     /**
      * Get the forwardShippingDetails property: Forward Package Shipping details.
-     *
+     * 
      * @return the forwardShippingDetails value.
      */
     public ForwardShippingDetails forwardShippingDetails() {
@@ -202,7 +194,7 @@ public final class OrderItemDetails {
 
     /**
      * Get the reverseShippingDetails property: Reverse Package Shipping details.
-     *
+     * 
      * @return the reverseShippingDetails value.
      */
     public ReverseShippingDetails reverseShippingDetails() {
@@ -211,7 +203,7 @@ public final class OrderItemDetails {
 
     /**
      * Get the notificationEmailList property: Additional notification email list.
-     *
+     * 
      * @return the notificationEmailList value.
      */
     public List<String> notificationEmailList() {
@@ -220,7 +212,7 @@ public final class OrderItemDetails {
 
     /**
      * Set the notificationEmailList property: Additional notification email list.
-     *
+     * 
      * @param notificationEmailList the notificationEmailList value to set.
      * @return the OrderItemDetails object itself.
      */
@@ -231,7 +223,7 @@ public final class OrderItemDetails {
 
     /**
      * Get the cancellationReason property: Cancellation reason.
-     *
+     * 
      * @return the cancellationReason value.
      */
     public String cancellationReason() {
@@ -240,7 +232,7 @@ public final class OrderItemDetails {
 
     /**
      * Get the cancellationStatus property: Describes whether the order item is cancellable or not.
-     *
+     * 
      * @return the cancellationStatus value.
      */
     public OrderItemCancellationEnum cancellationStatus() {
@@ -249,7 +241,7 @@ public final class OrderItemDetails {
 
     /**
      * Get the deletionStatus property: Describes whether the order item is deletable or not.
-     *
+     * 
      * @return the deletionStatus value.
      */
     public ActionStatusEnum deletionStatus() {
@@ -258,7 +250,7 @@ public final class OrderItemDetails {
 
     /**
      * Get the returnReason property: Return reason.
-     *
+     * 
      * @return the returnReason value.
      */
     public String returnReason() {
@@ -267,7 +259,7 @@ public final class OrderItemDetails {
 
     /**
      * Get the returnStatus property: Describes whether the order item is returnable or not.
-     *
+     * 
      * @return the returnStatus value.
      */
     public OrderItemReturnEnum returnStatus() {
@@ -277,7 +269,7 @@ public final class OrderItemDetails {
     /**
      * Get the managementRpDetails property: Parent RP details - this returns only the first or default parent RP from
      * the entire list.
-     *
+     * 
      * @return the managementRpDetails value.
      */
     public ResourceProviderDetails managementRpDetails() {
@@ -286,7 +278,7 @@ public final class OrderItemDetails {
 
     /**
      * Get the managementRpDetailsList property: List of parent RP details supported for configuration.
-     *
+     * 
      * @return the managementRpDetailsList value.
      */
     public List<ResourceProviderDetails> managementRpDetailsList() {
@@ -295,7 +287,7 @@ public final class OrderItemDetails {
 
     /**
      * Get the error property: Top level error for the job.
-     *
+     * 
      * @return the error value.
      */
     public ManagementError error() {
@@ -304,21 +296,20 @@ public final class OrderItemDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (productDetails() == null) {
-            throw logger
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property productDetails in model OrderItemDetails"));
         } else {
             productDetails().validate();
         }
         if (orderItemType() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property orderItemType in model OrderItemDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property orderItemType in model OrderItemDetails"));
         }
         if (currentStage() != null) {
             currentStage().validate();
@@ -341,5 +332,84 @@ public final class OrderItemDetails {
         if (managementRpDetailsList() != null) {
             managementRpDetailsList().forEach(e -> e.validate());
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OrderItemDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("productDetails", this.productDetails);
+        jsonWriter.writeStringField("orderItemType", this.orderItemType == null ? null : this.orderItemType.toString());
+        jsonWriter.writeJsonField("preferences", this.preferences);
+        jsonWriter.writeArrayField("notificationEmailList", this.notificationEmailList,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OrderItemDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OrderItemDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OrderItemDetails.
+     */
+    public static OrderItemDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OrderItemDetails deserializedOrderItemDetails = new OrderItemDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("productDetails".equals(fieldName)) {
+                    deserializedOrderItemDetails.productDetails = ProductDetails.fromJson(reader);
+                } else if ("orderItemType".equals(fieldName)) {
+                    deserializedOrderItemDetails.orderItemType = OrderItemType.fromString(reader.getString());
+                } else if ("currentStage".equals(fieldName)) {
+                    deserializedOrderItemDetails.currentStage = StageDetails.fromJson(reader);
+                } else if ("orderItemStageHistory".equals(fieldName)) {
+                    List<StageDetails> orderItemStageHistory
+                        = reader.readArray(reader1 -> StageDetails.fromJson(reader1));
+                    deserializedOrderItemDetails.orderItemStageHistory = orderItemStageHistory;
+                } else if ("preferences".equals(fieldName)) {
+                    deserializedOrderItemDetails.preferences = Preferences.fromJson(reader);
+                } else if ("forwardShippingDetails".equals(fieldName)) {
+                    deserializedOrderItemDetails.forwardShippingDetails = ForwardShippingDetails.fromJson(reader);
+                } else if ("reverseShippingDetails".equals(fieldName)) {
+                    deserializedOrderItemDetails.reverseShippingDetails = ReverseShippingDetails.fromJson(reader);
+                } else if ("notificationEmailList".equals(fieldName)) {
+                    List<String> notificationEmailList = reader.readArray(reader1 -> reader1.getString());
+                    deserializedOrderItemDetails.notificationEmailList = notificationEmailList;
+                } else if ("cancellationReason".equals(fieldName)) {
+                    deserializedOrderItemDetails.cancellationReason = reader.getString();
+                } else if ("cancellationStatus".equals(fieldName)) {
+                    deserializedOrderItemDetails.cancellationStatus
+                        = OrderItemCancellationEnum.fromString(reader.getString());
+                } else if ("deletionStatus".equals(fieldName)) {
+                    deserializedOrderItemDetails.deletionStatus = ActionStatusEnum.fromString(reader.getString());
+                } else if ("returnReason".equals(fieldName)) {
+                    deserializedOrderItemDetails.returnReason = reader.getString();
+                } else if ("returnStatus".equals(fieldName)) {
+                    deserializedOrderItemDetails.returnStatus = OrderItemReturnEnum.fromString(reader.getString());
+                } else if ("managementRpDetails".equals(fieldName)) {
+                    deserializedOrderItemDetails.managementRpDetails = ResourceProviderDetails.fromJson(reader);
+                } else if ("managementRpDetailsList".equals(fieldName)) {
+                    List<ResourceProviderDetails> managementRpDetailsList
+                        = reader.readArray(reader1 -> ResourceProviderDetails.fromJson(reader1));
+                    deserializedOrderItemDetails.managementRpDetailsList = managementRpDetailsList;
+                } else if ("error".equals(fieldName)) {
+                    deserializedOrderItemDetails.error = ManagementError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOrderItemDetails;
+        });
     }
 }

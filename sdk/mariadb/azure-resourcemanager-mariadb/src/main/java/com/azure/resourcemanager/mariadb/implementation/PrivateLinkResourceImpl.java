@@ -13,8 +13,8 @@ public final class PrivateLinkResourceImpl implements PrivateLinkResource {
 
     private final com.azure.resourcemanager.mariadb.MariaDBManager serviceManager;
 
-    PrivateLinkResourceImpl(
-        PrivateLinkResourceInner innerObject, com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
+    PrivateLinkResourceImpl(PrivateLinkResourceInner innerObject,
+        com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

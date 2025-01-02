@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomerSubscriptionListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomerSubscriptionList model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"ccsnhsjc\",\"value\":[{\"properties\":{\"tenantId\":\"kryhtnapczwlokj\"},\"etag\":\"mkkvnip\",\"id\":\"oxzjnchgejspod\",\"name\":\"ailzydehojwyahu\",\"type\":\"inpm\"},{\"properties\":{\"tenantId\":\"aqwi\"},\"etag\":\"sprozvcput\",\"id\":\"gjvw\",\"name\":\"fdatsc\",\"type\":\"dvpjhulsuuvmk\"}]}")
-                .toObject(CustomerSubscriptionList.class);
+        CustomerSubscriptionList model = BinaryData.fromString(
+            "{\"nextLink\":\"ccsnhsjc\",\"value\":[{\"properties\":{\"tenantId\":\"kryhtnapczwlokj\"},\"etag\":\"mkkvnip\",\"id\":\"oxzjnchgejspod\",\"name\":\"ailzydehojwyahu\",\"type\":\"inpm\"},{\"properties\":{\"tenantId\":\"aqwi\"},\"etag\":\"sprozvcput\",\"id\":\"gjvw\",\"name\":\"fdatsc\",\"type\":\"dvpjhulsuuvmk\"}]}")
+            .toObject(CustomerSubscriptionList.class);
         Assertions.assertEquals("ccsnhsjc", model.nextLink());
         Assertions.assertEquals("mkkvnip", model.value().get(0).etag());
         Assertions.assertEquals("kryhtnapczwlokj", model.value().get(0).tenantId());
@@ -25,14 +23,10 @@ public final class CustomerSubscriptionListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomerSubscriptionList model =
-            new CustomerSubscriptionList()
-                .withNextLink("ccsnhsjc")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new CustomerSubscriptionInner().withEtag("mkkvnip").withTenantId("kryhtnapczwlokj"),
-                            new CustomerSubscriptionInner().withEtag("sprozvcput").withTenantId("aqwi")));
+        CustomerSubscriptionList model = new CustomerSubscriptionList().withNextLink("ccsnhsjc")
+            .withValue(
+                Arrays.asList(new CustomerSubscriptionInner().withEtag("mkkvnip").withTenantId("kryhtnapczwlokj"),
+                    new CustomerSubscriptionInner().withEtag("sprozvcput").withTenantId("aqwi")));
         model = BinaryData.fromObject(model).toObject(CustomerSubscriptionList.class);
         Assertions.assertEquals("ccsnhsjc", model.nextLink());
         Assertions.assertEquals("mkkvnip", model.value().get(0).etag());

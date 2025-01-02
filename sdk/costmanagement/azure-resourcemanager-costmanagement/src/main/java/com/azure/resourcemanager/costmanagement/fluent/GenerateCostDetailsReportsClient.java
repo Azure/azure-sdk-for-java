@@ -12,7 +12,9 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.costmanagement.fluent.models.CostDetailsOperationResultsInner;
 import com.azure.resourcemanager.costmanagement.models.GenerateCostDetailsReportRequestDefinition;
 
-/** An instance of this class provides access to all the operations defined in GenerateCostDetailsReportsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GenerateCostDetailsReportsClient.
+ */
 public interface GenerateCostDetailsReportsClient {
     /**
      * This API is the replacement for all previously release Usage Details APIs. Request to generate a cost details
@@ -25,9 +27,9 @@ public interface GenerateCostDetailsReportsClient {
      * report blob(s) that are available for download. The details on the file(s) available for download will be
      * available in the polling response body. To Understand cost details (formerly known as usage details) fields found
      * in files ,see https://learn.microsoft.com/azure/cost-management-billing/automate/understand-usage-details-fields.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param parameters Parameters supplied to the Create cost details operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -35,8 +37,8 @@ public interface GenerateCostDetailsReportsClient {
      * @return the {@link SyncPoller} for polling of the result of the long running operation for cost details Api.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CostDetailsOperationResultsInner>, CostDetailsOperationResultsInner> beginCreateOperation(
-        String scope, GenerateCostDetailsReportRequestDefinition parameters);
+    SyncPoller<PollResult<CostDetailsOperationResultsInner>, CostDetailsOperationResultsInner>
+        beginCreateOperation(String scope, GenerateCostDetailsReportRequestDefinition parameters);
 
     /**
      * This API is the replacement for all previously release Usage Details APIs. Request to generate a cost details
@@ -49,9 +51,9 @@ public interface GenerateCostDetailsReportsClient {
      * report blob(s) that are available for download. The details on the file(s) available for download will be
      * available in the polling response body. To Understand cost details (formerly known as usage details) fields found
      * in files ,see https://learn.microsoft.com/azure/cost-management-billing/automate/understand-usage-details-fields.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param parameters Parameters supplied to the Create cost details operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -60,8 +62,8 @@ public interface GenerateCostDetailsReportsClient {
      * @return the {@link SyncPoller} for polling of the result of the long running operation for cost details Api.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CostDetailsOperationResultsInner>, CostDetailsOperationResultsInner> beginCreateOperation(
-        String scope, GenerateCostDetailsReportRequestDefinition parameters, Context context);
+    SyncPoller<PollResult<CostDetailsOperationResultsInner>, CostDetailsOperationResultsInner>
+        beginCreateOperation(String scope, GenerateCostDetailsReportRequestDefinition parameters, Context context);
 
     /**
      * This API is the replacement for all previously release Usage Details APIs. Request to generate a cost details
@@ -74,9 +76,9 @@ public interface GenerateCostDetailsReportsClient {
      * report blob(s) that are available for download. The details on the file(s) available for download will be
      * available in the polling response body. To Understand cost details (formerly known as usage details) fields found
      * in files ,see https://learn.microsoft.com/azure/cost-management-billing/automate/understand-usage-details-fields.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param parameters Parameters supplied to the Create cost details operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -84,8 +86,8 @@ public interface GenerateCostDetailsReportsClient {
      * @return the result of the long running operation for cost details Api.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CostDetailsOperationResultsInner createOperation(
-        String scope, GenerateCostDetailsReportRequestDefinition parameters);
+    CostDetailsOperationResultsInner createOperation(String scope,
+        GenerateCostDetailsReportRequestDefinition parameters);
 
     /**
      * This API is the replacement for all previously release Usage Details APIs. Request to generate a cost details
@@ -98,9 +100,9 @@ public interface GenerateCostDetailsReportsClient {
      * report blob(s) that are available for download. The details on the file(s) available for download will be
      * available in the polling response body. To Understand cost details (formerly known as usage details) fields found
      * in files ,see https://learn.microsoft.com/azure/cost-management-billing/automate/understand-usage-details-fields.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param parameters Parameters supplied to the Create cost details operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -109,15 +111,15 @@ public interface GenerateCostDetailsReportsClient {
      * @return the result of the long running operation for cost details Api.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CostDetailsOperationResultsInner createOperation(
-        String scope, GenerateCostDetailsReportRequestDefinition parameters, Context context);
+    CostDetailsOperationResultsInner createOperation(String scope,
+        GenerateCostDetailsReportRequestDefinition parameters, Context context);
 
     /**
      * Get the result of the specified operation. This link is provided in the CostDetails creation request response
      * Location header.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param operationId The target operation Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -125,15 +127,15 @@ public interface GenerateCostDetailsReportsClient {
      * @return the {@link SyncPoller} for polling of the result of the specified operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CostDetailsOperationResultsInner>, CostDetailsOperationResultsInner> beginGetOperationResults(
-        String scope, String operationId);
+    SyncPoller<PollResult<CostDetailsOperationResultsInner>, CostDetailsOperationResultsInner>
+        beginGetOperationResults(String scope, String operationId);
 
     /**
      * Get the result of the specified operation. This link is provided in the CostDetails creation request response
      * Location header.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param operationId The target operation Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -142,15 +144,15 @@ public interface GenerateCostDetailsReportsClient {
      * @return the {@link SyncPoller} for polling of the result of the specified operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CostDetailsOperationResultsInner>, CostDetailsOperationResultsInner> beginGetOperationResults(
-        String scope, String operationId, Context context);
+    SyncPoller<PollResult<CostDetailsOperationResultsInner>, CostDetailsOperationResultsInner>
+        beginGetOperationResults(String scope, String operationId, Context context);
 
     /**
      * Get the result of the specified operation. This link is provided in the CostDetails creation request response
      * Location header.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param operationId The target operation Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -163,9 +165,9 @@ public interface GenerateCostDetailsReportsClient {
     /**
      * Get the result of the specified operation. This link is provided in the CostDetails creation request response
      * Location header.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param operationId The target operation Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

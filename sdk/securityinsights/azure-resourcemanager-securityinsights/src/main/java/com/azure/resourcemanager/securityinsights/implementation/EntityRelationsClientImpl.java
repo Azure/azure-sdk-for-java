@@ -25,22 +25,28 @@ import com.azure.resourcemanager.securityinsights.fluent.EntityRelationsClient;
 import com.azure.resourcemanager.securityinsights.fluent.models.RelationInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in EntityRelationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in EntityRelationsClient.
+ */
 public final class EntityRelationsClientImpl implements EntityRelationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final EntityRelationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SecurityInsightsImpl client;
 
     /**
      * Initializes an instance of EntityRelationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     EntityRelationsClientImpl(SecurityInsightsImpl client) {
-        this.service =
-            RestProxy.create(EntityRelationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(EntityRelationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -50,29 +56,21 @@ public final class EntityRelationsClientImpl implements EntityRelationsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityInsightsEnti")
-    private interface EntityRelationsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/entities/{entityId}/relations"
-                + "/{relationName}")
-        @ExpectedResponses({200})
+    public interface EntityRelationsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/entities/{entityId}/relations/{relationName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RelationInner>> getRelation(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("entityId") String entityId,
-            @PathParam("relationName") String relationName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RelationInner>> getRelation(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("entityId") String entityId, @PathParam("relationName") String relationName,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets an entity relation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param entityId entity ID.
@@ -83,19 +81,15 @@ public final class EntityRelationsClientImpl implements EntityRelationsClient {
      * @return an entity relation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RelationInner>> getRelationWithResponseAsync(
-        String resourceGroupName, String workspaceName, String entityId, String relationName) {
+    private Mono<Response<RelationInner>> getRelationWithResponseAsync(String resourceGroupName, String workspaceName,
+        String entityId, String relationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -112,25 +106,15 @@ public final class EntityRelationsClientImpl implements EntityRelationsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getRelation(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            entityId,
-                            relationName,
-                            accept,
-                            context))
+            .withContext(context -> service.getRelation(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, entityId, relationName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets an entity relation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param entityId entity ID.
@@ -142,19 +126,15 @@ public final class EntityRelationsClientImpl implements EntityRelationsClient {
      * @return an entity relation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RelationInner>> getRelationWithResponseAsync(
-        String resourceGroupName, String workspaceName, String entityId, String relationName, Context context) {
+    private Mono<Response<RelationInner>> getRelationWithResponseAsync(String resourceGroupName, String workspaceName,
+        String entityId, String relationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -171,22 +151,13 @@ public final class EntityRelationsClientImpl implements EntityRelationsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getRelation(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                entityId,
-                relationName,
-                accept,
-                context);
+        return service.getRelation(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, workspaceName, entityId, relationName, accept, context);
     }
 
     /**
      * Gets an entity relation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param entityId entity ID.
@@ -197,33 +168,15 @@ public final class EntityRelationsClientImpl implements EntityRelationsClient {
      * @return an entity relation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RelationInner> getRelationAsync(
-        String resourceGroupName, String workspaceName, String entityId, String relationName) {
+    private Mono<RelationInner> getRelationAsync(String resourceGroupName, String workspaceName, String entityId,
+        String relationName) {
         return getRelationWithResponseAsync(resourceGroupName, workspaceName, entityId, relationName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets an entity relation.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param entityId entity ID.
-     * @param relationName Relation Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an entity relation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RelationInner getRelation(
-        String resourceGroupName, String workspaceName, String entityId, String relationName) {
-        return getRelationAsync(resourceGroupName, workspaceName, entityId, relationName).block();
-    }
-
-    /**
-     * Gets an entity relation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param entityId entity ID.
@@ -235,8 +188,27 @@ public final class EntityRelationsClientImpl implements EntityRelationsClient {
      * @return an entity relation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RelationInner> getRelationWithResponse(
-        String resourceGroupName, String workspaceName, String entityId, String relationName, Context context) {
+    public Response<RelationInner> getRelationWithResponse(String resourceGroupName, String workspaceName,
+        String entityId, String relationName, Context context) {
         return getRelationWithResponseAsync(resourceGroupName, workspaceName, entityId, relationName, context).block();
+    }
+
+    /**
+     * Gets an entity relation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param entityId entity ID.
+     * @param relationName Relation Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an entity relation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RelationInner getRelation(String resourceGroupName, String workspaceName, String entityId,
+        String relationName) {
+        return getRelationWithResponse(resourceGroupName, workspaceName, entityId, relationName, Context.NONE)
+            .getValue();
     }
 }

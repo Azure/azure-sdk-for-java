@@ -39,15 +39,15 @@ public interface LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param metrics Array of LogMetric.
+     * @param metrics The metrics parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
      * @param granularity The granularity parameter.
-     * @param customDomains Array of Get11ItemsItem.
-     * @param protocols Array of Get12ItemsItem.
-     * @param groupBy Array of LogMetricsGroupBy.
-     * @param continents Array of Get9ItemsItem.
-     * @param countryOrRegions Array of Get10ItemsItem.
+     * @param customDomains The customDomains parameter.
+     * @param protocols The protocols parameter.
+     * @param groupBy The groupBy parameter.
+     * @param continents The continents parameter.
+     * @param countryOrRegions The countryOrRegions parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -65,12 +65,12 @@ public interface LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param metrics Array of LogMetric.
+     * @param metrics The metrics parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
      * @param granularity The granularity parameter.
-     * @param customDomains Array of Get11ItemsItem.
-     * @param protocols Array of Get12ItemsItem.
+     * @param customDomains The customDomains parameter.
+     * @param protocols The protocols parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -87,15 +87,15 @@ public interface LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param metrics Array of LogMetric.
+     * @param metrics The metrics parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
      * @param granularity The granularity parameter.
-     * @param customDomains Array of Get11ItemsItem.
-     * @param protocols Array of Get12ItemsItem.
-     * @param groupBy Array of LogMetricsGroupBy.
-     * @param continents Array of Get9ItemsItem.
-     * @param countryOrRegions Array of Get10ItemsItem.
+     * @param customDomains The customDomains parameter.
+     * @param protocols The protocols parameter.
+     * @param groupBy The groupBy parameter.
+     * @param continents The continents parameter.
+     * @param countryOrRegions The countryOrRegions parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -114,12 +114,12 @@ public interface LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param metrics Array of LogMetric.
+     * @param metrics The metrics parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
      * @param granularity The granularity parameter.
-     * @param customDomains Array of Get11ItemsItem.
-     * @param protocols Array of Get12ItemsItem.
+     * @param customDomains The customDomains parameter.
+     * @param protocols The protocols parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -136,12 +136,12 @@ public interface LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param rankings Array of LogRanking.
-     * @param metrics Array of LogRankingMetric.
+     * @param rankings The rankings parameter.
+     * @param metrics The metrics parameter.
      * @param maxRanking The maxRanking parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
-     * @param customDomains Array of String.
+     * @param customDomains The customDomains parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -159,8 +159,8 @@ public interface LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param rankings Array of LogRanking.
-     * @param metrics Array of LogRankingMetric.
+     * @param rankings The rankings parameter.
+     * @param metrics The metrics parameter.
      * @param maxRanking The maxRanking parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -180,12 +180,12 @@ public interface LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param rankings Array of LogRanking.
-     * @param metrics Array of LogRankingMetric.
+     * @param rankings The rankings parameter.
+     * @param metrics The metrics parameter.
      * @param maxRanking The maxRanking parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
-     * @param customDomains Array of String.
+     * @param customDomains The customDomains parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -203,8 +203,8 @@ public interface LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param rankings Array of LogRanking.
-     * @param metrics Array of LogRankingMetric.
+     * @param rankings The rankings parameter.
+     * @param metrics The metrics parameter.
      * @param maxRanking The maxRanking parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -344,13 +344,13 @@ public interface LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param metrics Array of WafMetric.
+     * @param metrics The metrics parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
      * @param granularity The granularity parameter.
-     * @param actions Array of WafAction.
-     * @param groupBy Array of WafRankingGroupBy.
-     * @param ruleTypes Array of WafRuleType.
+     * @param actions The actions parameter.
+     * @param groupBy The groupBy parameter.
+     * @param ruleTypes The ruleTypes parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -369,7 +369,7 @@ public interface LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param metrics Array of WafMetric.
+     * @param metrics The metrics parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
      * @param granularity The granularity parameter.
@@ -388,13 +388,13 @@ public interface LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param metrics Array of WafMetric.
+     * @param metrics The metrics parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
      * @param granularity The granularity parameter.
-     * @param actions Array of WafAction.
-     * @param groupBy Array of WafRankingGroupBy.
-     * @param ruleTypes Array of WafRuleType.
+     * @param actions The actions parameter.
+     * @param groupBy The groupBy parameter.
+     * @param ruleTypes The ruleTypes parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -413,7 +413,7 @@ public interface LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param metrics Array of WafMetric.
+     * @param metrics The metrics parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
      * @param granularity The granularity parameter.
@@ -432,13 +432,13 @@ public interface LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param metrics Array of WafMetric.
+     * @param metrics The metrics parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
      * @param maxRanking The maxRanking parameter.
-     * @param rankings Array of WafRankingType.
-     * @param actions Array of WafAction.
-     * @param ruleTypes Array of WafRuleType.
+     * @param rankings The rankings parameter.
+     * @param actions The actions parameter.
+     * @param ruleTypes The ruleTypes parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -456,11 +456,11 @@ public interface LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param metrics Array of WafMetric.
+     * @param metrics The metrics parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
      * @param maxRanking The maxRanking parameter.
-     * @param rankings Array of WafRankingType.
+     * @param rankings The rankings parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -477,13 +477,13 @@ public interface LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param metrics Array of WafMetric.
+     * @param metrics The metrics parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
      * @param maxRanking The maxRanking parameter.
-     * @param rankings Array of WafRankingType.
-     * @param actions Array of WafAction.
-     * @param ruleTypes Array of WafRuleType.
+     * @param rankings The rankings parameter.
+     * @param actions The actions parameter.
+     * @param ruleTypes The ruleTypes parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -502,11 +502,11 @@ public interface LogAnalyticsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      * within the resource group. which is unique within the resource group.
-     * @param metrics Array of WafMetric.
+     * @param metrics The metrics parameter.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
      * @param maxRanking The maxRanking parameter.
-     * @param rankings Array of WafRankingType.
+     * @param rankings The rankings parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

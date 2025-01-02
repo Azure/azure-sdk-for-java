@@ -5,63 +5,68 @@
 package com.azure.resourcemanager.hdinsight.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hdinsight.models.RuntimeScriptAction;
 import com.azure.resourcemanager.hdinsight.models.ScriptActionExecutionSummary;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The execution details of a script action. */
+/**
+ * The execution details of a script action.
+ */
 @Fluent
 public final class RuntimeScriptActionDetailInner extends RuntimeScriptAction {
     /*
      * The execution id of the script action.
      */
-    @JsonProperty(value = "scriptExecutionId", access = JsonProperty.Access.WRITE_ONLY)
     private Long scriptExecutionId;
 
     /*
      * The start time of script action execution.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private String startTime;
 
     /*
      * The end time of script action execution.
      */
-    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private String endTime;
 
     /*
      * The current execution status of the script action.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /*
      * The reason why the script action was executed.
      */
-    @JsonProperty(value = "operation", access = JsonProperty.Access.WRITE_ONLY)
     private String operation;
 
     /*
      * The summary of script action execution result.
      */
-    @JsonProperty(value = "executionSummary", access = JsonProperty.Access.WRITE_ONLY)
     private List<ScriptActionExecutionSummary> executionSummary;
 
     /*
      * The script action execution debug information.
      */
-    @JsonProperty(value = "debugInformation", access = JsonProperty.Access.WRITE_ONLY)
     private String debugInformation;
 
-    /** Creates an instance of RuntimeScriptActionDetailInner class. */
+    /*
+     * The application name of the script action, if any.
+     */
+    private String applicationName;
+
+    /**
+     * Creates an instance of RuntimeScriptActionDetailInner class.
+     */
     public RuntimeScriptActionDetailInner() {
     }
 
     /**
      * Get the scriptExecutionId property: The execution id of the script action.
-     *
+     * 
      * @return the scriptExecutionId value.
      */
     public Long scriptExecutionId() {
@@ -70,7 +75,7 @@ public final class RuntimeScriptActionDetailInner extends RuntimeScriptAction {
 
     /**
      * Get the startTime property: The start time of script action execution.
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -79,7 +84,7 @@ public final class RuntimeScriptActionDetailInner extends RuntimeScriptAction {
 
     /**
      * Get the endTime property: The end time of script action execution.
-     *
+     * 
      * @return the endTime value.
      */
     public String endTime() {
@@ -88,7 +93,7 @@ public final class RuntimeScriptActionDetailInner extends RuntimeScriptAction {
 
     /**
      * Get the status property: The current execution status of the script action.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -97,7 +102,7 @@ public final class RuntimeScriptActionDetailInner extends RuntimeScriptAction {
 
     /**
      * Get the operation property: The reason why the script action was executed.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -106,7 +111,7 @@ public final class RuntimeScriptActionDetailInner extends RuntimeScriptAction {
 
     /**
      * Get the executionSummary property: The summary of script action execution result.
-     *
+     * 
      * @return the executionSummary value.
      */
     public List<ScriptActionExecutionSummary> executionSummary() {
@@ -115,35 +120,53 @@ public final class RuntimeScriptActionDetailInner extends RuntimeScriptAction {
 
     /**
      * Get the debugInformation property: The script action execution debug information.
-     *
+     * 
      * @return the debugInformation value.
      */
     public String debugInformation() {
         return this.debugInformation;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the applicationName property: The application name of the script action, if any.
+     * 
+     * @return the applicationName value.
+     */
+    @Override
+    public String applicationName() {
+        return this.applicationName;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RuntimeScriptActionDetailInner withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RuntimeScriptActionDetailInner withUri(String uri) {
         super.withUri(uri);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RuntimeScriptActionDetailInner withParameters(String parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RuntimeScriptActionDetailInner withRoles(List<String> roles) {
         super.withRoles(roles);
@@ -152,7 +175,7 @@ public final class RuntimeScriptActionDetailInner extends RuntimeScriptAction {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -161,5 +184,72 @@ public final class RuntimeScriptActionDetailInner extends RuntimeScriptAction {
         if (executionSummary() != null) {
             executionSummary().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("uri", uri());
+        jsonWriter.writeArrayField("roles", roles(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("parameters", parameters());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RuntimeScriptActionDetailInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RuntimeScriptActionDetailInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RuntimeScriptActionDetailInner.
+     */
+    public static RuntimeScriptActionDetailInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RuntimeScriptActionDetailInner deserializedRuntimeScriptActionDetailInner
+                = new RuntimeScriptActionDetailInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedRuntimeScriptActionDetailInner.withName(reader.getString());
+                } else if ("uri".equals(fieldName)) {
+                    deserializedRuntimeScriptActionDetailInner.withUri(reader.getString());
+                } else if ("roles".equals(fieldName)) {
+                    List<String> roles = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRuntimeScriptActionDetailInner.withRoles(roles);
+                } else if ("parameters".equals(fieldName)) {
+                    deserializedRuntimeScriptActionDetailInner.withParameters(reader.getString());
+                } else if ("applicationName".equals(fieldName)) {
+                    deserializedRuntimeScriptActionDetailInner.applicationName = reader.getString();
+                } else if ("scriptExecutionId".equals(fieldName)) {
+                    deserializedRuntimeScriptActionDetailInner.scriptExecutionId
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedRuntimeScriptActionDetailInner.startTime = reader.getString();
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedRuntimeScriptActionDetailInner.endTime = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedRuntimeScriptActionDetailInner.status = reader.getString();
+                } else if ("operation".equals(fieldName)) {
+                    deserializedRuntimeScriptActionDetailInner.operation = reader.getString();
+                } else if ("executionSummary".equals(fieldName)) {
+                    List<ScriptActionExecutionSummary> executionSummary
+                        = reader.readArray(reader1 -> ScriptActionExecutionSummary.fromJson(reader1));
+                    deserializedRuntimeScriptActionDetailInner.executionSummary = executionSummary;
+                } else if ("debugInformation".equals(fieldName)) {
+                    deserializedRuntimeScriptActionDetailInner.debugInformation = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRuntimeScriptActionDetailInner;
+        });
     }
 }

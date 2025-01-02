@@ -4,24 +4,33 @@
 
 package com.azure.resourcemanager.cognitiveservices.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The identity type. */
+/**
+ * The identity type.
+ */
 public enum ResourceIdentityType {
-    /** Enum value None. */
+    /**
+     * Enum value None.
+     */
     NONE("None"),
 
-    /** Enum value SystemAssigned. */
+    /**
+     * Enum value SystemAssigned.
+     */
     SYSTEM_ASSIGNED("SystemAssigned"),
 
-    /** Enum value UserAssigned. */
+    /**
+     * Enum value UserAssigned.
+     */
     USER_ASSIGNED("UserAssigned"),
 
-    /** Enum value SystemAssigned, UserAssigned. */
+    /**
+     * Enum value SystemAssigned, UserAssigned.
+     */
     SYSTEM_ASSIGNED_USER_ASSIGNED("SystemAssigned, UserAssigned");
 
-    /** The actual serialized value for a ResourceIdentityType instance. */
+    /**
+     * The actual serialized value for a ResourceIdentityType instance.
+     */
     private final String value;
 
     ResourceIdentityType(String value) {
@@ -30,11 +39,10 @@ public enum ResourceIdentityType {
 
     /**
      * Parses a serialized value to a ResourceIdentityType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ResourceIdentityType object, or null if unable to parse.
      */
-    @JsonCreator
     public static ResourceIdentityType fromString(String value) {
         if (value == null) {
             return null;
@@ -48,8 +56,9 @@ public enum ResourceIdentityType {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

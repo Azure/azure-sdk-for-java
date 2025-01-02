@@ -113,66 +113,56 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
         // create data feeds
         DataFeed dataFeed;
         if (dataFeedSourceType == DataFeedSourceType.AZURE_APP_INSIGHTS) {
-            dataFeed = new DataFeed().setSource(new AzureAppInsightsDataFeedSource(
-                APP_INSIGHTS_APPLICATION_ID, APP_INSIGHTS_API_KEY, TestUtils.AZURE_CLOUD, APP_INSIGHTS_QUERY));
+            dataFeed = new DataFeed().setSource(new AzureAppInsightsDataFeedSource(APP_INSIGHTS_APPLICATION_ID,
+                APP_INSIGHTS_API_KEY, TestUtils.AZURE_CLOUD, APP_INSIGHTS_QUERY));
         } else if (dataFeedSourceType == DataFeedSourceType.AZURE_BLOB) {
-            dataFeed = new DataFeed().setSource(AzureBlobDataFeedSource.fromBasicCredential(
-                BLOB_CONNECTION_STRING,
-                TEST_DB_NAME, BLOB_TEMPLATE));
+            dataFeed = new DataFeed().setSource(
+                AzureBlobDataFeedSource.fromBasicCredential(BLOB_CONNECTION_STRING, TEST_DB_NAME, BLOB_TEMPLATE));
         } else if (dataFeedSourceType == DataFeedSourceType.AZURE_DATA_EXPLORER) {
-            dataFeed =
-                new DataFeed().setSource(AzureDataExplorerDataFeedSource.fromBasicCredential(
-                    DATA_EXPLORER_CONNECTION_STRING,
-                    DATA_EXPLORER_QUERY));
+            dataFeed = new DataFeed().setSource(AzureDataExplorerDataFeedSource
+                .fromBasicCredential(DATA_EXPLORER_CONNECTION_STRING, DATA_EXPLORER_QUERY));
         } else if (dataFeedSourceType == DataFeedSourceType.AZURE_TABLE) {
-            dataFeed = new DataFeed().setSource(new AzureTableDataFeedSource(TABLE_CONNECTION_STRING,
-                TABLE_QUERY, TEST_DB_NAME));
+            dataFeed = new DataFeed()
+                .setSource(new AzureTableDataFeedSource(TABLE_CONNECTION_STRING, TABLE_QUERY, TEST_DB_NAME));
         } else if (dataFeedSourceType == DataFeedSourceType.INFLUX_DB) {
-            dataFeed = new DataFeed().setSource(new InfluxDbDataFeedSource(INFLUX_DB_CONNECTION_STRING,
-                TEST_DB_NAME, "adreadonly", INFLUX_DB_PASSWORD, TEMPLATE_QUERY));
+            dataFeed = new DataFeed().setSource(new InfluxDbDataFeedSource(INFLUX_DB_CONNECTION_STRING, TEST_DB_NAME,
+                "adreadonly", INFLUX_DB_PASSWORD, TEMPLATE_QUERY));
         } else if (dataFeedSourceType == DataFeedSourceType.MONGO_DB) {
-            dataFeed = new DataFeed().setSource(new MongoDbDataFeedSource(MONGO_DB_CONNECTION_STRING,
-                TEST_DB_NAME, MONGO_COMMAND));
+            dataFeed = new DataFeed()
+                .setSource(new MongoDbDataFeedSource(MONGO_DB_CONNECTION_STRING, TEST_DB_NAME, MONGO_COMMAND));
         } else if (dataFeedSourceType == DataFeedSourceType.MYSQL_DB) {
-            dataFeed = new DataFeed().setSource(new MySqlDataFeedSource(MYSQL_DB_CONNECTION_STRING,
-                TEMPLATE_QUERY));
+            dataFeed = new DataFeed().setSource(new MySqlDataFeedSource(MYSQL_DB_CONNECTION_STRING, TEMPLATE_QUERY));
         } else if (dataFeedSourceType == DataFeedSourceType.POSTGRE_SQL_DB) {
-            dataFeed = new DataFeed().setSource(new PostgreSqlDataFeedSource(POSTGRE_SQL_DB_CONNECTION_STRING,
-                TEMPLATE_QUERY));
+            dataFeed = new DataFeed()
+                .setSource(new PostgreSqlDataFeedSource(POSTGRE_SQL_DB_CONNECTION_STRING, TEMPLATE_QUERY));
         } else if (dataFeedSourceType == DataFeedSourceType.SQL_SERVER_DB) {
-            dataFeed = new DataFeed().setSource(SqlServerDataFeedSource.fromBasicCredential(
-                SQL_SERVER_CONNECTION_STRING,
-                TEMPLATE_QUERY));
+            dataFeed = new DataFeed()
+                .setSource(SqlServerDataFeedSource.fromBasicCredential(SQL_SERVER_CONNECTION_STRING, TEMPLATE_QUERY));
         } else if (dataFeedSourceType == DataFeedSourceType.AZURE_COSMOS_DB) {
             dataFeed = new DataFeed().setSource(new AzureCosmosDbDataFeedSource(COSMOS_DB_CONNECTION_STRING,
                 TEMPLATE_QUERY, TEST_DB_NAME, TEST_DB_NAME));
         } else if (dataFeedSourceType == DataFeedSourceType.AZURE_DATA_LAKE_STORAGE_GEN2) {
-            dataFeed = new DataFeed().setSource(AzureDataLakeStorageGen2DataFeedSource.fromBasicCredential(
-                "adsampledatalakegen2",
-                AZURE_DATALAKEGEN2_ACCOUNT_KEY,
-                TEST_DB_NAME, DIRECTORY_TEMPLATE, FILE_TEMPLATE));
+            dataFeed = new DataFeed()
+                .setSource(AzureDataLakeStorageGen2DataFeedSource.fromBasicCredential("adsampledatalakegen2",
+                    AZURE_DATALAKEGEN2_ACCOUNT_KEY, TEST_DB_NAME, DIRECTORY_TEMPLATE, FILE_TEMPLATE));
         } else if (dataFeedSourceType == DataFeedSourceType.AZURE_LOG_ANALYTICS) {
-            dataFeed = new DataFeed().setSource(AzureLogAnalyticsDataFeedSource.fromBasicCredential(
-                AZURE_METRICS_ADVISOR_TENANT_ID,
-                AZURE_METRICS_ADVISOR_LOG_ANALYTICS_CLIENT_ID,
-                AZURE_METRICS_ADVISOR_LOG_ANALYTICS_CLIENT_SECRET,
-                AZURE_METRICS_ADVISOR_LOG_ANALYTICS_WORKSPACE_ID,
-                LOG_ANALYTICS_QUERY));
+            dataFeed = new DataFeed()
+                .setSource(AzureLogAnalyticsDataFeedSource.fromBasicCredential(AZURE_METRICS_ADVISOR_TENANT_ID,
+                    AZURE_METRICS_ADVISOR_LOG_ANALYTICS_CLIENT_ID, AZURE_METRICS_ADVISOR_LOG_ANALYTICS_CLIENT_SECRET,
+                    AZURE_METRICS_ADVISOR_LOG_ANALYTICS_WORKSPACE_ID, LOG_ANALYTICS_QUERY));
         } else {
             throw new IllegalStateException("Unexpected value: " + dataFeedSourceType);
         }
 
-        testRunner.accept(dataFeed.setSchema(new DataFeedSchema(Arrays.asList(
-            new DataFeedMetric("cost").setDisplayName("cost"),
-            new DataFeedMetric("revenue").setDisplayName("revenue")))
-            .setDimensions(Arrays.asList(
-                new DataFeedDimension("region").setDisplayName("region"),
-                new DataFeedDimension("category").setDisplayName("category"))))
+        testRunner.accept(dataFeed
+            .setSchema(new DataFeedSchema(Arrays.asList(new DataFeedMetric("cost").setDisplayName("cost"),
+                new DataFeedMetric("revenue").setDisplayName("revenue")))
+                    .setDimensions(Arrays.asList(new DataFeedDimension("region").setDisplayName("region"),
+                        new DataFeedDimension("category").setDisplayName("category"))))
             .setName("java_create_data_feed_test_sample" + UUID.randomUUID())
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
             .setIngestionSettings(new DataFeedIngestionSettings(INGESTION_START_TIME)));
     }
-
 
     void validateDataFeedResult(DataFeed expectedDataFeed, DataFeed actualDataFeed,
         DataFeedSourceType dataFeedSourceType) {
@@ -194,55 +184,52 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
     private void validateDataFeedSource(DataFeed expectedDataFeed, DataFeed actualDataFeed,
         DataFeedSourceType dataFeedSourceType) {
         if (dataFeedSourceType == DataFeedSourceType.AZURE_APP_INSIGHTS) {
-            final AzureAppInsightsDataFeedSource expAzureAppInsightsDataFeedSource =
-                (AzureAppInsightsDataFeedSource) expectedDataFeed.getSource();
-            final AzureAppInsightsDataFeedSource actualAzureAppInsightsDataFeedSource =
-                (AzureAppInsightsDataFeedSource) actualDataFeed.getSource();
+            final AzureAppInsightsDataFeedSource expAzureAppInsightsDataFeedSource
+                = (AzureAppInsightsDataFeedSource) expectedDataFeed.getSource();
+            final AzureAppInsightsDataFeedSource actualAzureAppInsightsDataFeedSource
+                = (AzureAppInsightsDataFeedSource) actualDataFeed.getSource();
             // ApiKey and applicationId are no longer returned from the service.
             // assertNotNull(actualAzureAppInsightsDataFeedSource.getApiKey());
             // assertNotNull(actualAzureAppInsightsDataFeedSource.getApplicationId());
-            assertEquals(expAzureAppInsightsDataFeedSource.getQuery(),
-                actualAzureAppInsightsDataFeedSource.getQuery());
+            assertEquals(expAzureAppInsightsDataFeedSource.getQuery(), actualAzureAppInsightsDataFeedSource.getQuery());
             assertEquals(expAzureAppInsightsDataFeedSource.getAzureCloud(),
                 actualAzureAppInsightsDataFeedSource.getAzureCloud());
         } else if (dataFeedSourceType == DataFeedSourceType.AZURE_BLOB) {
-            final AzureBlobDataFeedSource expBlobDataFeedSource =
-                (AzureBlobDataFeedSource) expectedDataFeed.getSource();
-            final AzureBlobDataFeedSource actualBlobDataFeedSource =
-                (AzureBlobDataFeedSource) actualDataFeed.getSource();
+            final AzureBlobDataFeedSource expBlobDataFeedSource
+                = (AzureBlobDataFeedSource) expectedDataFeed.getSource();
+            final AzureBlobDataFeedSource actualBlobDataFeedSource
+                = (AzureBlobDataFeedSource) actualDataFeed.getSource();
             assertEquals(expBlobDataFeedSource.getBlobTemplate(), actualBlobDataFeedSource.getBlobTemplate());
             // connection string is no longer returned from the service.
             // assertNotNull(actualBlobDataFeedSource.getConnectionString());
             assertEquals(expBlobDataFeedSource.getContainer(), actualBlobDataFeedSource.getContainer());
         } else if (dataFeedSourceType == DataFeedSourceType.AZURE_DATA_EXPLORER) {
-            final AzureDataExplorerDataFeedSource expExplorerDataFeedSource =
-                (AzureDataExplorerDataFeedSource) expectedDataFeed.getSource();
-            final AzureDataExplorerDataFeedSource actualExplorerDataFeedSource =
-                (AzureDataExplorerDataFeedSource) actualDataFeed.getSource();
+            final AzureDataExplorerDataFeedSource expExplorerDataFeedSource
+                = (AzureDataExplorerDataFeedSource) expectedDataFeed.getSource();
+            final AzureDataExplorerDataFeedSource actualExplorerDataFeedSource
+                = (AzureDataExplorerDataFeedSource) actualDataFeed.getSource();
             // assertNotNull(actualExplorerDataFeedSource.getConnectionString());
             assertEquals(expExplorerDataFeedSource.getQuery(), actualExplorerDataFeedSource.getQuery());
         } else if (dataFeedSourceType == DataFeedSourceType.AZURE_TABLE) {
-            final AzureTableDataFeedSource expTableDataFeedSource =
-                (AzureTableDataFeedSource) expectedDataFeed.getSource();
-            final AzureTableDataFeedSource actualTableDataFeedSource =
-                (AzureTableDataFeedSource) actualDataFeed.getSource();
+            final AzureTableDataFeedSource expTableDataFeedSource
+                = (AzureTableDataFeedSource) expectedDataFeed.getSource();
+            final AzureTableDataFeedSource actualTableDataFeedSource
+                = (AzureTableDataFeedSource) actualDataFeed.getSource();
             // assertNotNull(actualTableDataFeedSource.getConnectionString());
             assertEquals(expTableDataFeedSource.getTableName(), actualTableDataFeedSource.getTableName());
             assertEquals(expTableDataFeedSource.getQueryScript(), actualTableDataFeedSource.getQueryScript());
         } else if (dataFeedSourceType == DataFeedSourceType.INFLUX_DB) {
-            final InfluxDbDataFeedSource expInfluxDataFeedSource =
-                (InfluxDbDataFeedSource) expectedDataFeed.getSource();
-            final InfluxDbDataFeedSource actualInfluxDataFeedSource =
-                (InfluxDbDataFeedSource) actualDataFeed.getSource();
+            final InfluxDbDataFeedSource expInfluxDataFeedSource
+                = (InfluxDbDataFeedSource) expectedDataFeed.getSource();
+            final InfluxDbDataFeedSource actualInfluxDataFeedSource
+                = (InfluxDbDataFeedSource) actualDataFeed.getSource();
             assertNotNull(actualInfluxDataFeedSource.getConnectionString());
             assertEquals(expInfluxDataFeedSource.getDatabase(), actualInfluxDataFeedSource.getDatabase());
             // assertNotNull(actualInfluxDataFeedSource.getPassword());
             assertNotNull(actualInfluxDataFeedSource.getUserName());
         } else if (dataFeedSourceType == DataFeedSourceType.MONGO_DB) {
-            final MongoDbDataFeedSource expMongoDataFeedSource =
-                (MongoDbDataFeedSource) expectedDataFeed.getSource();
-            final MongoDbDataFeedSource actualMongoDataFeedSource =
-                (MongoDbDataFeedSource) actualDataFeed.getSource();
+            final MongoDbDataFeedSource expMongoDataFeedSource = (MongoDbDataFeedSource) expectedDataFeed.getSource();
+            final MongoDbDataFeedSource actualMongoDataFeedSource = (MongoDbDataFeedSource) actualDataFeed.getSource();
             // assertNotNull(actualMongoDataFeedSource.getConnectionString());
             assertEquals(expMongoDataFeedSource.getDatabase(), actualMongoDataFeedSource.getDatabase());
             assertEquals(expMongoDataFeedSource.getCommand(), actualMongoDataFeedSource.getCommand());
@@ -252,34 +239,34 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
             // assertNotNull(actualMySqlDataFeedSource.getConnectionString());
             assertEquals(expMySqlDataFeedSource.getQuery(), actualMySqlDataFeedSource.getQuery());
         } else if (dataFeedSourceType == DataFeedSourceType.POSTGRE_SQL_DB) {
-            final PostgreSqlDataFeedSource expPostGreDataFeedSource =
-                (PostgreSqlDataFeedSource) expectedDataFeed.getSource();
-            final PostgreSqlDataFeedSource actualPostGreDataFeedSource =
-                (PostgreSqlDataFeedSource) actualDataFeed.getSource();
+            final PostgreSqlDataFeedSource expPostGreDataFeedSource
+                = (PostgreSqlDataFeedSource) expectedDataFeed.getSource();
+            final PostgreSqlDataFeedSource actualPostGreDataFeedSource
+                = (PostgreSqlDataFeedSource) actualDataFeed.getSource();
             // assertNotNull(actualPostGreDataFeedSource.getConnectionString());
             assertEquals(expPostGreDataFeedSource.getQuery(), actualPostGreDataFeedSource.getQuery());
         } else if (dataFeedSourceType == DataFeedSourceType.SQL_SERVER_DB) {
-            final SqlServerDataFeedSource expSqlServerDataFeedSource =
-                (SqlServerDataFeedSource) expectedDataFeed.getSource();
-            final SqlServerDataFeedSource actualSqlServerDataFeedSource =
-                (SqlServerDataFeedSource) actualDataFeed.getSource();
+            final SqlServerDataFeedSource expSqlServerDataFeedSource
+                = (SqlServerDataFeedSource) expectedDataFeed.getSource();
+            final SqlServerDataFeedSource actualSqlServerDataFeedSource
+                = (SqlServerDataFeedSource) actualDataFeed.getSource();
             // connection string is no longer returned from the service.
             // assertNotNull(actualSqlServerDataFeedSource.getConnectionString());
             assertEquals(expSqlServerDataFeedSource.getQuery(), actualSqlServerDataFeedSource.getQuery());
         } else if (dataFeedSourceType == DataFeedSourceType.AZURE_COSMOS_DB) {
-            final AzureCosmosDbDataFeedSource expCosmosDataFeedSource =
-                (AzureCosmosDbDataFeedSource) expectedDataFeed.getSource();
-            final AzureCosmosDbDataFeedSource actualCosmosDataFeedSource =
-                (AzureCosmosDbDataFeedSource) actualDataFeed.getSource();
+            final AzureCosmosDbDataFeedSource expCosmosDataFeedSource
+                = (AzureCosmosDbDataFeedSource) expectedDataFeed.getSource();
+            final AzureCosmosDbDataFeedSource actualCosmosDataFeedSource
+                = (AzureCosmosDbDataFeedSource) actualDataFeed.getSource();
             assertEquals(expCosmosDataFeedSource.getCollectionId(), actualCosmosDataFeedSource.getCollectionId());
             // assertNotNull(actualCosmosDataFeedSource.getConnectionString());
             assertEquals(expCosmosDataFeedSource.getDatabase(), actualCosmosDataFeedSource.getDatabase());
             assertEquals(expCosmosDataFeedSource.getSqlQuery(), actualCosmosDataFeedSource.getSqlQuery());
         } else if (dataFeedSourceType == DataFeedSourceType.AZURE_DATA_LAKE_STORAGE_GEN2) {
-            final AzureDataLakeStorageGen2DataFeedSource expDataLakeStorageGen2DataFeedSource =
-                (AzureDataLakeStorageGen2DataFeedSource) expectedDataFeed.getSource();
-            final AzureDataLakeStorageGen2DataFeedSource actualDataLakeFeedSource =
-                (AzureDataLakeStorageGen2DataFeedSource) actualDataFeed.getSource();
+            final AzureDataLakeStorageGen2DataFeedSource expDataLakeStorageGen2DataFeedSource
+                = (AzureDataLakeStorageGen2DataFeedSource) expectedDataFeed.getSource();
+            final AzureDataLakeStorageGen2DataFeedSource actualDataLakeFeedSource
+                = (AzureDataLakeStorageGen2DataFeedSource) actualDataFeed.getSource();
             // assertNotNull(actualDataLakeFeedSource.getAccountKey());
             assertNotNull(actualDataLakeFeedSource.getAccountName());
             assertEquals(expDataLakeStorageGen2DataFeedSource.getDirectoryTemplate(),
@@ -289,17 +276,17 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
             assertEquals(expDataLakeStorageGen2DataFeedSource.getFileTemplate(),
                 actualDataLakeFeedSource.getFileTemplate());
         } else if (dataFeedSourceType == DataFeedSourceType.AZURE_LOG_ANALYTICS) {
-            final AzureLogAnalyticsDataFeedSource expLogAnalyticsDataFeedSource =
-                (AzureLogAnalyticsDataFeedSource) expectedDataFeed.getSource();
-            final AzureLogAnalyticsDataFeedSource logAnalyticsDataFeedSource =
-                (AzureLogAnalyticsDataFeedSource) actualDataFeed.getSource();
+            final AzureLogAnalyticsDataFeedSource expLogAnalyticsDataFeedSource
+                = (AzureLogAnalyticsDataFeedSource) expectedDataFeed.getSource();
+            final AzureLogAnalyticsDataFeedSource logAnalyticsDataFeedSource
+                = (AzureLogAnalyticsDataFeedSource) actualDataFeed.getSource();
             assertNotNull(logAnalyticsDataFeedSource.getQuery());
             assertNotNull(logAnalyticsDataFeedSource.getClientId());
             assertNotNull(logAnalyticsDataFeedSource.getTenantId());
-//            assertEquals(expLogAnalyticsDataFeedSource.getClientId(),
-//                logAnalyticsDataFeedSource.getClientId());
-//            assertEquals(expLogAnalyticsDataFeedSource.getTenantId(),
-//                logAnalyticsDataFeedSource.getTenantId());
+            //            assertEquals(expLogAnalyticsDataFeedSource.getClientId(),
+            //                logAnalyticsDataFeedSource.getClientId());
+            //            assertEquals(expLogAnalyticsDataFeedSource.getTenantId(),
+            //                logAnalyticsDataFeedSource.getTenantId());
             assertEquals(expLogAnalyticsDataFeedSource.getQuery(), LOG_ANALYTICS_QUERY);
         } else {
             throw new IllegalStateException("Unexpected value: " + dataFeedSourceType);
@@ -324,8 +311,9 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
             // setting defaults
             validateRollUpSettings(new DataFeedRollupSettings().setRollupType(DataFeedRollupType.NO_ROLLUP),
                 actualOptions.getRollupSettings());
-            validateFillSettings(new DataFeedMissingDataPointFillSettings()
-                    .setFillType(DataFeedMissingDataPointFillType.PREVIOUS_VALUE).setCustomFillValue(0.0),
+            validateFillSettings(
+                new DataFeedMissingDataPointFillSettings().setFillType(DataFeedMissingDataPointFillType.PREVIOUS_VALUE)
+                    .setCustomFillValue(0.0),
                 actualOptions.getMissingDataPointFillSettings());
         }
     }
@@ -338,15 +326,14 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
 
     private void validateRollUpSettings(DataFeedRollupSettings expectedRollUpSettings,
         DataFeedRollupSettings actualRollUpSettings) {
-        assertEquals(expectedRollUpSettings.getRollupIdentificationValue(), actualRollUpSettings
-            .getRollupIdentificationValue());
+        assertEquals(expectedRollUpSettings.getRollupIdentificationValue(),
+            actualRollUpSettings.getRollupIdentificationValue());
         assertEquals(expectedRollUpSettings.getRollupType(), actualRollUpSettings.getRollupType());
         if (expectedRollUpSettings.getDataFeedAutoRollUpMethod() != null) {
-            assertEquals(expectedRollUpSettings.getDataFeedAutoRollUpMethod(), actualRollUpSettings
-                .getDataFeedAutoRollUpMethod());
+            assertEquals(expectedRollUpSettings.getDataFeedAutoRollUpMethod(),
+                actualRollUpSettings.getDataFeedAutoRollUpMethod());
         }
-        assertEquals(DataFeedAutoRollUpMethod.NONE, actualRollUpSettings
-            .getDataFeedAutoRollUpMethod());
+        assertEquals(DataFeedAutoRollUpMethod.NONE, actualRollUpSettings.getDataFeedAutoRollUpMethod());
 
     }
 

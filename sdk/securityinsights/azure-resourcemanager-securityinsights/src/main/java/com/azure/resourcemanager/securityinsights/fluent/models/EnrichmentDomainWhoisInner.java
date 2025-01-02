@@ -5,52 +5,60 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.EnrichmentDomainWhoisDetails;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Whois information for a given domain and associated metadata. */
+/**
+ * Whois information for a given domain and associated metadata.
+ */
 @Fluent
-public final class EnrichmentDomainWhoisInner {
+public final class EnrichmentDomainWhoisInner implements JsonSerializable<EnrichmentDomainWhoisInner> {
     /*
      * The domain for this whois record
      */
-    @JsonProperty(value = "domain")
     private String domain;
 
     /*
      * The hostname of this registrar's whois server
      */
-    @JsonProperty(value = "server")
     private String server;
 
     /*
      * The timestamp at which this record was created
      */
-    @JsonProperty(value = "created")
     private OffsetDateTime created;
 
     /*
      * The timestamp at which this record was last updated
      */
-    @JsonProperty(value = "updated")
     private OffsetDateTime updated;
 
     /*
      * The timestamp at which this record will expire
      */
-    @JsonProperty(value = "expires")
     private OffsetDateTime expires;
 
     /*
      * The whois record for a given domain
      */
-    @JsonProperty(value = "parsedWhois")
     private EnrichmentDomainWhoisDetails parsedWhois;
 
     /**
+     * Creates an instance of EnrichmentDomainWhoisInner class.
+     */
+    public EnrichmentDomainWhoisInner() {
+    }
+
+    /**
      * Get the domain property: The domain for this whois record.
-     *
+     * 
      * @return the domain value.
      */
     public String domain() {
@@ -59,7 +67,7 @@ public final class EnrichmentDomainWhoisInner {
 
     /**
      * Set the domain property: The domain for this whois record.
-     *
+     * 
      * @param domain the domain value to set.
      * @return the EnrichmentDomainWhoisInner object itself.
      */
@@ -70,7 +78,7 @@ public final class EnrichmentDomainWhoisInner {
 
     /**
      * Get the server property: The hostname of this registrar's whois server.
-     *
+     * 
      * @return the server value.
      */
     public String server() {
@@ -79,7 +87,7 @@ public final class EnrichmentDomainWhoisInner {
 
     /**
      * Set the server property: The hostname of this registrar's whois server.
-     *
+     * 
      * @param server the server value to set.
      * @return the EnrichmentDomainWhoisInner object itself.
      */
@@ -90,7 +98,7 @@ public final class EnrichmentDomainWhoisInner {
 
     /**
      * Get the created property: The timestamp at which this record was created.
-     *
+     * 
      * @return the created value.
      */
     public OffsetDateTime created() {
@@ -99,7 +107,7 @@ public final class EnrichmentDomainWhoisInner {
 
     /**
      * Set the created property: The timestamp at which this record was created.
-     *
+     * 
      * @param created the created value to set.
      * @return the EnrichmentDomainWhoisInner object itself.
      */
@@ -110,7 +118,7 @@ public final class EnrichmentDomainWhoisInner {
 
     /**
      * Get the updated property: The timestamp at which this record was last updated.
-     *
+     * 
      * @return the updated value.
      */
     public OffsetDateTime updated() {
@@ -119,7 +127,7 @@ public final class EnrichmentDomainWhoisInner {
 
     /**
      * Set the updated property: The timestamp at which this record was last updated.
-     *
+     * 
      * @param updated the updated value to set.
      * @return the EnrichmentDomainWhoisInner object itself.
      */
@@ -130,7 +138,7 @@ public final class EnrichmentDomainWhoisInner {
 
     /**
      * Get the expires property: The timestamp at which this record will expire.
-     *
+     * 
      * @return the expires value.
      */
     public OffsetDateTime expires() {
@@ -139,7 +147,7 @@ public final class EnrichmentDomainWhoisInner {
 
     /**
      * Set the expires property: The timestamp at which this record will expire.
-     *
+     * 
      * @param expires the expires value to set.
      * @return the EnrichmentDomainWhoisInner object itself.
      */
@@ -150,7 +158,7 @@ public final class EnrichmentDomainWhoisInner {
 
     /**
      * Get the parsedWhois property: The whois record for a given domain.
-     *
+     * 
      * @return the parsedWhois value.
      */
     public EnrichmentDomainWhoisDetails parsedWhois() {
@@ -159,7 +167,7 @@ public final class EnrichmentDomainWhoisInner {
 
     /**
      * Set the parsedWhois property: The whois record for a given domain.
-     *
+     * 
      * @param parsedWhois the parsedWhois value to set.
      * @return the EnrichmentDomainWhoisInner object itself.
      */
@@ -170,12 +178,69 @@ public final class EnrichmentDomainWhoisInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (parsedWhois() != null) {
             parsedWhois().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("domain", this.domain);
+        jsonWriter.writeStringField("server", this.server);
+        jsonWriter.writeStringField("created",
+            this.created == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.created));
+        jsonWriter.writeStringField("updated",
+            this.updated == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.updated));
+        jsonWriter.writeStringField("expires",
+            this.expires == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expires));
+        jsonWriter.writeJsonField("parsedWhois", this.parsedWhois);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnrichmentDomainWhoisInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnrichmentDomainWhoisInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EnrichmentDomainWhoisInner.
+     */
+    public static EnrichmentDomainWhoisInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnrichmentDomainWhoisInner deserializedEnrichmentDomainWhoisInner = new EnrichmentDomainWhoisInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("domain".equals(fieldName)) {
+                    deserializedEnrichmentDomainWhoisInner.domain = reader.getString();
+                } else if ("server".equals(fieldName)) {
+                    deserializedEnrichmentDomainWhoisInner.server = reader.getString();
+                } else if ("created".equals(fieldName)) {
+                    deserializedEnrichmentDomainWhoisInner.created = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("updated".equals(fieldName)) {
+                    deserializedEnrichmentDomainWhoisInner.updated = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("expires".equals(fieldName)) {
+                    deserializedEnrichmentDomainWhoisInner.expires = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("parsedWhois".equals(fieldName)) {
+                    deserializedEnrichmentDomainWhoisInner.parsedWhois = EnrichmentDomainWhoisDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnrichmentDomainWhoisInner;
+        });
     }
 }

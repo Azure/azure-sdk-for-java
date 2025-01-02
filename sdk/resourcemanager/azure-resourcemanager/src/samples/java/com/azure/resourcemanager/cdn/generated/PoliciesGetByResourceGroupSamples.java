@@ -17,7 +17,10 @@ public final class PoliciesGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getPolicy(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getPolicies().getByResourceGroupWithResponse("rg1",
-            "MicrosoftCdnWafPolicy", com.azure.core.util.Context.NONE);
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getPolicies()
+            .getByResourceGroupWithResponse("rg1", "MicrosoftCdnWafPolicy", com.azure.core.util.Context.NONE);
     }
 }

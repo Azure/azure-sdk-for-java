@@ -5,39 +5,47 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** An properties abstract Query item for entity. */
+/**
+ * An properties abstract Query item for entity.
+ */
 @Fluent
-public class EntityQueryItemProperties {
+public class EntityQueryItemProperties implements JsonSerializable<EntityQueryItemProperties> {
     /*
      * Data types for template
      */
-    @JsonProperty(value = "dataTypes")
     private List<EntityQueryItemPropertiesDataTypesItem> dataTypes;
 
     /*
      * The type of the entity
      */
-    @JsonProperty(value = "inputEntityType")
     private EntityType inputEntityType;
 
     /*
      * Data types for template
      */
-    @JsonProperty(value = "requiredInputFieldsSets")
     private List<List<String>> requiredInputFieldsSets;
 
     /*
      * The query applied only to entities matching to all filters
      */
-    @JsonProperty(value = "entitiesFilter")
     private Object entitiesFilter;
 
     /**
+     * Creates an instance of EntityQueryItemProperties class.
+     */
+    public EntityQueryItemProperties() {
+    }
+
+    /**
      * Get the dataTypes property: Data types for template.
-     *
+     * 
      * @return the dataTypes value.
      */
     public List<EntityQueryItemPropertiesDataTypesItem> dataTypes() {
@@ -46,7 +54,7 @@ public class EntityQueryItemProperties {
 
     /**
      * Set the dataTypes property: Data types for template.
-     *
+     * 
      * @param dataTypes the dataTypes value to set.
      * @return the EntityQueryItemProperties object itself.
      */
@@ -57,7 +65,7 @@ public class EntityQueryItemProperties {
 
     /**
      * Get the inputEntityType property: The type of the entity.
-     *
+     * 
      * @return the inputEntityType value.
      */
     public EntityType inputEntityType() {
@@ -66,7 +74,7 @@ public class EntityQueryItemProperties {
 
     /**
      * Set the inputEntityType property: The type of the entity.
-     *
+     * 
      * @param inputEntityType the inputEntityType value to set.
      * @return the EntityQueryItemProperties object itself.
      */
@@ -77,7 +85,7 @@ public class EntityQueryItemProperties {
 
     /**
      * Get the requiredInputFieldsSets property: Data types for template.
-     *
+     * 
      * @return the requiredInputFieldsSets value.
      */
     public List<List<String>> requiredInputFieldsSets() {
@@ -86,7 +94,7 @@ public class EntityQueryItemProperties {
 
     /**
      * Set the requiredInputFieldsSets property: Data types for template.
-     *
+     * 
      * @param requiredInputFieldsSets the requiredInputFieldsSets value to set.
      * @return the EntityQueryItemProperties object itself.
      */
@@ -97,7 +105,7 @@ public class EntityQueryItemProperties {
 
     /**
      * Get the entitiesFilter property: The query applied only to entities matching to all filters.
-     *
+     * 
      * @return the entitiesFilter value.
      */
     public Object entitiesFilter() {
@@ -106,7 +114,7 @@ public class EntityQueryItemProperties {
 
     /**
      * Set the entitiesFilter property: The query applied only to entities matching to all filters.
-     *
+     * 
      * @param entitiesFilter the entitiesFilter value to set.
      * @return the EntityQueryItemProperties object itself.
      */
@@ -117,12 +125,63 @@ public class EntityQueryItemProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dataTypes() != null) {
             dataTypes().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("dataTypes", this.dataTypes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("inputEntityType",
+            this.inputEntityType == null ? null : this.inputEntityType.toString());
+        jsonWriter.writeArrayField("requiredInputFieldsSets", this.requiredInputFieldsSets,
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
+        jsonWriter.writeUntypedField("entitiesFilter", this.entitiesFilter);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EntityQueryItemProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EntityQueryItemProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EntityQueryItemProperties.
+     */
+    public static EntityQueryItemProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EntityQueryItemProperties deserializedEntityQueryItemProperties = new EntityQueryItemProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataTypes".equals(fieldName)) {
+                    List<EntityQueryItemPropertiesDataTypesItem> dataTypes
+                        = reader.readArray(reader1 -> EntityQueryItemPropertiesDataTypesItem.fromJson(reader1));
+                    deserializedEntityQueryItemProperties.dataTypes = dataTypes;
+                } else if ("inputEntityType".equals(fieldName)) {
+                    deserializedEntityQueryItemProperties.inputEntityType = EntityType.fromString(reader.getString());
+                } else if ("requiredInputFieldsSets".equals(fieldName)) {
+                    List<List<String>> requiredInputFieldsSets
+                        = reader.readArray(reader1 -> reader1.readArray(reader2 -> reader2.getString()));
+                    deserializedEntityQueryItemProperties.requiredInputFieldsSets = requiredInputFieldsSets;
+                } else if ("entitiesFilter".equals(fieldName)) {
+                    deserializedEntityQueryItemProperties.entitiesFilter = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEntityQueryItemProperties;
+        });
     }
 }

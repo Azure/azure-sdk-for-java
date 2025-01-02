@@ -93,23 +93,19 @@ public final class PipelineJobImpl implements PipelineJob, PipelineJob.Definitio
     }
 
     public PipelineJob create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPipelineJobs()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, accountName, pipelineJobName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPipelineJobs()
+            .createOrUpdateWithResponse(resourceGroupName, accountName, pipelineJobName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public PipelineJob create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPipelineJobs()
-                .createOrUpdateWithResponse(resourceGroupName, accountName, pipelineJobName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPipelineJobs()
+            .createOrUpdateWithResponse(resourceGroupName, accountName, pipelineJobName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -125,27 +121,23 @@ public final class PipelineJobImpl implements PipelineJob, PipelineJob.Definitio
     }
 
     public PipelineJob apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPipelineJobs()
-                .updateWithResponse(resourceGroupName, accountName, pipelineJobName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPipelineJobs()
+            .updateWithResponse(resourceGroupName, accountName, pipelineJobName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PipelineJob apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPipelineJobs()
-                .updateWithResponse(resourceGroupName, accountName, pipelineJobName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPipelineJobs()
+            .updateWithResponse(resourceGroupName, accountName, pipelineJobName, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    PipelineJobImpl(
-        PipelineJobInner innerObject, com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager) {
+    PipelineJobImpl(PipelineJobInner innerObject,
+        com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -154,22 +146,18 @@ public final class PipelineJobImpl implements PipelineJob, PipelineJob.Definitio
     }
 
     public PipelineJob refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPipelineJobs()
-                .getWithResponse(resourceGroupName, accountName, pipelineJobName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPipelineJobs()
+            .getWithResponse(resourceGroupName, accountName, pipelineJobName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PipelineJob refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPipelineJobs()
-                .getWithResponse(resourceGroupName, accountName, pipelineJobName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPipelineJobs()
+            .getWithResponse(resourceGroupName, accountName, pipelineJobName, context)
+            .getValue();
         return this;
     }
 

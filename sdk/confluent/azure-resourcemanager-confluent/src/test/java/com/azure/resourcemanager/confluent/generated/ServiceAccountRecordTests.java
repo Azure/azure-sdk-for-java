@@ -28,10 +28,15 @@ public final class ServiceAccountRecordTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceAccountRecord model = new ServiceAccountRecord()
-            .withKind("i").withId("xhqyudxorrqnb").withMetadata(new MetadataEntity().withSelf("zvyifqrvkdvj")
-                .withResourceName("lrmv").withCreatedAt("f").withUpdatedAt("t").withDeletedAt("n"))
-            .withDisplayName("lexxbczwtru").withDescription("qzbqjvsov");
+        ServiceAccountRecord model = new ServiceAccountRecord().withKind("i")
+            .withId("xhqyudxorrqnb")
+            .withMetadata(new MetadataEntity().withSelf("zvyifqrvkdvj")
+                .withResourceName("lrmv")
+                .withCreatedAt("f")
+                .withUpdatedAt("t")
+                .withDeletedAt("n"))
+            .withDisplayName("lexxbczwtru")
+            .withDescription("qzbqjvsov");
         model = BinaryData.fromObject(model).toObject(ServiceAccountRecord.class);
         Assertions.assertEquals("i", model.kind());
         Assertions.assertEquals("xhqyudxorrqnb", model.id());

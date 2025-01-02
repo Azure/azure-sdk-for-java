@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -131,6 +132,9 @@ public final class AcsChatMessageDeletedEventData extends AcsChatMessageEventBas
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -180,15 +184,15 @@ public final class AcsChatMessageDeletedEventData extends AcsChatMessageEventBas
                 } else if ("senderDisplayName".equals(fieldName)) {
                     deserializedAcsChatMessageDeletedEventData.setSenderDisplayName(reader.getString());
                 } else if ("composeTime".equals(fieldName)) {
-                    deserializedAcsChatMessageDeletedEventData.setComposeTime(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedAcsChatMessageDeletedEventData.setComposeTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("type".equals(fieldName)) {
                     deserializedAcsChatMessageDeletedEventData.setType(reader.getString());
                 } else if ("version".equals(fieldName)) {
                     deserializedAcsChatMessageDeletedEventData.setVersion(reader.getNullable(JsonReader::getLong));
                 } else if ("deleteTime".equals(fieldName)) {
-                    deserializedAcsChatMessageDeletedEventData.deleteTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedAcsChatMessageDeletedEventData.deleteTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

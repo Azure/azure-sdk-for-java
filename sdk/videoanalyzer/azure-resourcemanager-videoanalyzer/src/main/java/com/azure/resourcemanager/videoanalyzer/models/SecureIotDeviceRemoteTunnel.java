@@ -79,16 +79,12 @@ public final class SecureIotDeviceRemoteTunnel extends TunnelBase {
     public void validate() {
         super.validate();
         if (iotHubName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property iotHubName in model SecureIotDeviceRemoteTunnel"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property iotHubName in model SecureIotDeviceRemoteTunnel"));
         }
         if (deviceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property deviceId in model SecureIotDeviceRemoteTunnel"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property deviceId in model SecureIotDeviceRemoteTunnel"));
         }
     }
 

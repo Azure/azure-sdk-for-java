@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.securityinsights.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Entities List. */
+/**
+ * Samples for Entities List.
+ */
 public final class EntitiesListSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/entities/GetEntities.json
+     * x-ms-original-file:
+     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/
+     * entities/GetEntities.json
      */
     /**
      * Sample code: Get all entities.
-     *
+     * 
      * @param manager Entry point to SecurityInsightsManager.
      */
     public static void getAllEntities(com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
-        manager.entities().list("myRg", "myWorkspace", Context.NONE);
+        manager.entities().list("myRg", "myWorkspace", com.azure.core.util.Context.NONE);
     }
 }

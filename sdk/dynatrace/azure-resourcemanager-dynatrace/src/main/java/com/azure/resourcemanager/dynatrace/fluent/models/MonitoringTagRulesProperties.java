@@ -5,39 +5,44 @@
 package com.azure.resourcemanager.dynatrace.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.dynatrace.models.LogRules;
 import com.azure.resourcemanager.dynatrace.models.MetricRules;
 import com.azure.resourcemanager.dynatrace.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties for the Tag rules resource of a Monitor account. */
+/**
+ * Properties for the Tag rules resource of a Monitor account.
+ */
 @Fluent
-public final class MonitoringTagRulesProperties {
+public final class MonitoringTagRulesProperties implements JsonSerializable<MonitoringTagRulesProperties> {
     /*
      * Set of rules for sending logs for the Monitor resource.
      */
-    @JsonProperty(value = "logRules")
     private LogRules logRules;
 
     /*
      * Set of rules for sending metrics for the Monitor resource.
      */
-    @JsonProperty(value = "metricRules")
     private MetricRules metricRules;
 
     /*
      * Provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of MonitoringTagRulesProperties class. */
+    /**
+     * Creates an instance of MonitoringTagRulesProperties class.
+     */
     public MonitoringTagRulesProperties() {
     }
 
     /**
      * Get the logRules property: Set of rules for sending logs for the Monitor resource.
-     *
+     * 
      * @return the logRules value.
      */
     public LogRules logRules() {
@@ -46,7 +51,7 @@ public final class MonitoringTagRulesProperties {
 
     /**
      * Set the logRules property: Set of rules for sending logs for the Monitor resource.
-     *
+     * 
      * @param logRules the logRules value to set.
      * @return the MonitoringTagRulesProperties object itself.
      */
@@ -57,7 +62,7 @@ public final class MonitoringTagRulesProperties {
 
     /**
      * Get the metricRules property: Set of rules for sending metrics for the Monitor resource.
-     *
+     * 
      * @return the metricRules value.
      */
     public MetricRules metricRules() {
@@ -66,7 +71,7 @@ public final class MonitoringTagRulesProperties {
 
     /**
      * Set the metricRules property: Set of rules for sending metrics for the Monitor resource.
-     *
+     * 
      * @param metricRules the metricRules value to set.
      * @return the MonitoringTagRulesProperties object itself.
      */
@@ -77,7 +82,7 @@ public final class MonitoringTagRulesProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -86,7 +91,7 @@ public final class MonitoringTagRulesProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -96,5 +101,47 @@ public final class MonitoringTagRulesProperties {
         if (metricRules() != null) {
             metricRules().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("logRules", this.logRules);
+        jsonWriter.writeJsonField("metricRules", this.metricRules);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MonitoringTagRulesProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MonitoringTagRulesProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MonitoringTagRulesProperties.
+     */
+    public static MonitoringTagRulesProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MonitoringTagRulesProperties deserializedMonitoringTagRulesProperties = new MonitoringTagRulesProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("logRules".equals(fieldName)) {
+                    deserializedMonitoringTagRulesProperties.logRules = LogRules.fromJson(reader);
+                } else if ("metricRules".equals(fieldName)) {
+                    deserializedMonitoringTagRulesProperties.metricRules = MetricRules.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedMonitoringTagRulesProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMonitoringTagRulesProperties;
+        });
     }
 }

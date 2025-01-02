@@ -12,26 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class MLTableJobOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MLTableJobOutput model =
-            BinaryData
-                .fromString(
-                    "{\"jobOutputType\":\"mltable\",\"mode\":\"ReadWriteMount\",\"uri\":\"mlcfnzhmhsurl\",\"description\":\"qkpmmzpstau\"}")
-                .toObject(MLTableJobOutput.class);
-        Assertions.assertEquals("qkpmmzpstau", model.description());
-        Assertions.assertEquals(OutputDeliveryMode.READ_WRITE_MOUNT, model.mode());
-        Assertions.assertEquals("mlcfnzhmhsurl", model.uri());
+        MLTableJobOutput model = BinaryData.fromString(
+            "{\"jobOutputType\":\"mltable\",\"uri\":\"jwqdmr\",\"mode\":\"Upload\",\"description\":\"lppqcaigazwfwlr\"}")
+            .toObject(MLTableJobOutput.class);
+        Assertions.assertEquals("lppqcaigazwfwlr", model.description());
+        Assertions.assertEquals("jwqdmr", model.uri());
+        Assertions.assertEquals(OutputDeliveryMode.UPLOAD, model.mode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MLTableJobOutput model =
-            new MLTableJobOutput()
-                .withDescription("qkpmmzpstau")
-                .withMode(OutputDeliveryMode.READ_WRITE_MOUNT)
-                .withUri("mlcfnzhmhsurl");
+        MLTableJobOutput model = new MLTableJobOutput().withDescription("lppqcaigazwfwlr")
+            .withUri("jwqdmr")
+            .withMode(OutputDeliveryMode.UPLOAD);
         model = BinaryData.fromObject(model).toObject(MLTableJobOutput.class);
-        Assertions.assertEquals("qkpmmzpstau", model.description());
-        Assertions.assertEquals(OutputDeliveryMode.READ_WRITE_MOUNT, model.mode());
-        Assertions.assertEquals("mlcfnzhmhsurl", model.uri());
+        Assertions.assertEquals("lppqcaigazwfwlr", model.description());
+        Assertions.assertEquals("jwqdmr", model.uri());
+        Assertions.assertEquals(OutputDeliveryMode.UPLOAD, model.mode());
     }
 }

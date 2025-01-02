@@ -5,34 +5,46 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.UUID;
 
-/** The parameters required to execute an expand operation on the given bookmark. */
+/**
+ * The parameters required to execute an expand operation on the given bookmark.
+ */
 @Fluent
-public final class BookmarkExpandParameters {
+public final class BookmarkExpandParameters implements JsonSerializable<BookmarkExpandParameters> {
     /*
      * The end date filter, so the only expansion results returned are before this date.
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * The Id of the expansion to perform.
      */
-    @JsonProperty(value = "expansionId")
     private UUID expansionId;
 
     /*
      * The start date filter, so the only expansion results returned are after this date.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /**
+     * Creates an instance of BookmarkExpandParameters class.
+     */
+    public BookmarkExpandParameters() {
+    }
+
+    /**
      * Get the endTime property: The end date filter, so the only expansion results returned are before this date.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -41,7 +53,7 @@ public final class BookmarkExpandParameters {
 
     /**
      * Set the endTime property: The end date filter, so the only expansion results returned are before this date.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the BookmarkExpandParameters object itself.
      */
@@ -52,7 +64,7 @@ public final class BookmarkExpandParameters {
 
     /**
      * Get the expansionId property: The Id of the expansion to perform.
-     *
+     * 
      * @return the expansionId value.
      */
     public UUID expansionId() {
@@ -61,7 +73,7 @@ public final class BookmarkExpandParameters {
 
     /**
      * Set the expansionId property: The Id of the expansion to perform.
-     *
+     * 
      * @param expansionId the expansionId value to set.
      * @return the BookmarkExpandParameters object itself.
      */
@@ -72,7 +84,7 @@ public final class BookmarkExpandParameters {
 
     /**
      * Get the startTime property: The start date filter, so the only expansion results returned are after this date.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -81,7 +93,7 @@ public final class BookmarkExpandParameters {
 
     /**
      * Set the startTime property: The start date filter, so the only expansion results returned are after this date.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the BookmarkExpandParameters object itself.
      */
@@ -92,9 +104,56 @@ public final class BookmarkExpandParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeStringField("expansionId", Objects.toString(this.expansionId, null));
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BookmarkExpandParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BookmarkExpandParameters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BookmarkExpandParameters.
+     */
+    public static BookmarkExpandParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BookmarkExpandParameters deserializedBookmarkExpandParameters = new BookmarkExpandParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endTime".equals(fieldName)) {
+                    deserializedBookmarkExpandParameters.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("expansionId".equals(fieldName)) {
+                    deserializedBookmarkExpandParameters.expansionId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedBookmarkExpandParameters.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBookmarkExpandParameters;
+        });
     }
 }

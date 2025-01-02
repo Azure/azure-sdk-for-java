@@ -7,32 +7,52 @@ package com.azure.resourcemanager.education.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.education.models.LabStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Lab details. */
+/**
+ * Lab details.
+ */
 @Fluent
 public final class LabDetailsInner extends ProxyResource {
     /*
      * Get lab response properties.
      */
-    @JsonProperty(value = "properties")
     private LabProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of LabDetailsInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of LabDetailsInner class.
+     */
     public LabDetailsInner() {
     }
 
     /**
      * Get the innerProperties property: Get lab response properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private LabProperties innerProperties() {
@@ -41,7 +61,7 @@ public final class LabDetailsInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -49,8 +69,38 @@ public final class LabDetailsInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the displayName property: Lab Display Name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -59,7 +109,7 @@ public final class LabDetailsInner extends ProxyResource {
 
     /**
      * Set the displayName property: Lab Display Name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the LabDetailsInner object itself.
      */
@@ -73,7 +123,7 @@ public final class LabDetailsInner extends ProxyResource {
 
     /**
      * Get the budgetPerStudent property: Default monetary cap for each student in this lab.
-     *
+     * 
      * @return the budgetPerStudent value.
      */
     public Amount budgetPerStudent() {
@@ -82,7 +132,7 @@ public final class LabDetailsInner extends ProxyResource {
 
     /**
      * Set the budgetPerStudent property: Default monetary cap for each student in this lab.
-     *
+     * 
      * @param budgetPerStudent the budgetPerStudent value to set.
      * @return the LabDetailsInner object itself.
      */
@@ -96,7 +146,7 @@ public final class LabDetailsInner extends ProxyResource {
 
     /**
      * Get the description property: Detail description of this lab.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -105,7 +155,7 @@ public final class LabDetailsInner extends ProxyResource {
 
     /**
      * Set the description property: Detail description of this lab.
-     *
+     * 
      * @param description the description value to set.
      * @return the LabDetailsInner object itself.
      */
@@ -119,7 +169,7 @@ public final class LabDetailsInner extends ProxyResource {
 
     /**
      * Get the expirationDate property: Default expiration date for each student in this lab.
-     *
+     * 
      * @return the expirationDate value.
      */
     public OffsetDateTime expirationDate() {
@@ -128,7 +178,7 @@ public final class LabDetailsInner extends ProxyResource {
 
     /**
      * Set the expirationDate property: Default expiration date for each student in this lab.
-     *
+     * 
      * @param expirationDate the expirationDate value to set.
      * @return the LabDetailsInner object itself.
      */
@@ -142,7 +192,7 @@ public final class LabDetailsInner extends ProxyResource {
 
     /**
      * Get the effectiveDate property: Lab creation date.
-     *
+     * 
      * @return the effectiveDate value.
      */
     public OffsetDateTime effectiveDate() {
@@ -151,7 +201,7 @@ public final class LabDetailsInner extends ProxyResource {
 
     /**
      * Get the status property: The status of this lab.
-     *
+     * 
      * @return the status value.
      */
     public LabStatus status() {
@@ -160,7 +210,7 @@ public final class LabDetailsInner extends ProxyResource {
 
     /**
      * Get the maxStudentCount property: the total number of students that can be accepted to the lab.
-     *
+     * 
      * @return the maxStudentCount value.
      */
     public Float maxStudentCount() {
@@ -169,7 +219,7 @@ public final class LabDetailsInner extends ProxyResource {
 
     /**
      * Get the invitationCode property: invitation code for redeemable lab.
-     *
+     * 
      * @return the invitationCode value.
      */
     public String invitationCode() {
@@ -178,7 +228,7 @@ public final class LabDetailsInner extends ProxyResource {
 
     /**
      * Get the currency property: The type of currency being used for the value.
-     *
+     * 
      * @return the currency value.
      */
     public String currency() {
@@ -187,7 +237,7 @@ public final class LabDetailsInner extends ProxyResource {
 
     /**
      * Get the value property: Amount value.
-     *
+     * 
      * @return the value value.
      */
     public Float value() {
@@ -196,7 +246,7 @@ public final class LabDetailsInner extends ProxyResource {
 
     /**
      * Get the currencyTotalAllocatedBudgetCurrency property: The type of currency being used for the value.
-     *
+     * 
      * @return the currencyTotalAllocatedBudgetCurrency value.
      */
     public String currencyTotalAllocatedBudgetCurrency() {
@@ -205,7 +255,7 @@ public final class LabDetailsInner extends ProxyResource {
 
     /**
      * Get the valueTotalAllocatedBudgetValue property: Amount value.
-     *
+     * 
      * @return the valueTotalAllocatedBudgetValue value.
      */
     public Float valueTotalAllocatedBudgetValue() {
@@ -214,12 +264,57 @@ public final class LabDetailsInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LabDetailsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LabDetailsInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LabDetailsInner.
+     */
+    public static LabDetailsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LabDetailsInner deserializedLabDetailsInner = new LabDetailsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLabDetailsInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedLabDetailsInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedLabDetailsInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedLabDetailsInner.innerProperties = LabProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedLabDetailsInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLabDetailsInner;
+        });
     }
 }

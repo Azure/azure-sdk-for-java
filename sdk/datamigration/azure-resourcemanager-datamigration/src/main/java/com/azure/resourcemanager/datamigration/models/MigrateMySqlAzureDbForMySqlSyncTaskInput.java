@@ -6,37 +6,43 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Input for the task that migrates MySQL databases to Azure Database for MySQL for online migrations. */
+/**
+ * Input for the task that migrates MySQL databases to Azure Database for MySQL for online migrations.
+ */
 @Fluent
-public final class MigrateMySqlAzureDbForMySqlSyncTaskInput {
+public final class MigrateMySqlAzureDbForMySqlSyncTaskInput
+    implements JsonSerializable<MigrateMySqlAzureDbForMySqlSyncTaskInput> {
     /*
      * Connection information for source MySQL
      */
-    @JsonProperty(value = "sourceConnectionInfo", required = true)
     private MySqlConnectionInfo sourceConnectionInfo;
 
     /*
      * Connection information for target Azure Database for MySQL
      */
-    @JsonProperty(value = "targetConnectionInfo", required = true)
     private MySqlConnectionInfo targetConnectionInfo;
 
     /*
      * Databases to migrate
      */
-    @JsonProperty(value = "selectedDatabases", required = true)
     private List<MigrateMySqlAzureDbForMySqlSyncDatabaseInput> selectedDatabases;
 
-    /** Creates an instance of MigrateMySqlAzureDbForMySqlSyncTaskInput class. */
+    /**
+     * Creates an instance of MigrateMySqlAzureDbForMySqlSyncTaskInput class.
+     */
     public MigrateMySqlAzureDbForMySqlSyncTaskInput() {
     }
 
     /**
      * Get the sourceConnectionInfo property: Connection information for source MySQL.
-     *
+     * 
      * @return the sourceConnectionInfo value.
      */
     public MySqlConnectionInfo sourceConnectionInfo() {
@@ -45,7 +51,7 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskInput {
 
     /**
      * Set the sourceConnectionInfo property: Connection information for source MySQL.
-     *
+     * 
      * @param sourceConnectionInfo the sourceConnectionInfo value to set.
      * @return the MigrateMySqlAzureDbForMySqlSyncTaskInput object itself.
      */
@@ -56,7 +62,7 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskInput {
 
     /**
      * Get the targetConnectionInfo property: Connection information for target Azure Database for MySQL.
-     *
+     * 
      * @return the targetConnectionInfo value.
      */
     public MySqlConnectionInfo targetConnectionInfo() {
@@ -65,7 +71,7 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskInput {
 
     /**
      * Set the targetConnectionInfo property: Connection information for target Azure Database for MySQL.
-     *
+     * 
      * @param targetConnectionInfo the targetConnectionInfo value to set.
      * @return the MigrateMySqlAzureDbForMySqlSyncTaskInput object itself.
      */
@@ -76,7 +82,7 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskInput {
 
     /**
      * Get the selectedDatabases property: Databases to migrate.
-     *
+     * 
      * @return the selectedDatabases value.
      */
     public List<MigrateMySqlAzureDbForMySqlSyncDatabaseInput> selectedDatabases() {
@@ -85,50 +91,93 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskInput {
 
     /**
      * Set the selectedDatabases property: Databases to migrate.
-     *
+     * 
      * @param selectedDatabases the selectedDatabases value to set.
      * @return the MigrateMySqlAzureDbForMySqlSyncTaskInput object itself.
      */
-    public MigrateMySqlAzureDbForMySqlSyncTaskInput withSelectedDatabases(
-        List<MigrateMySqlAzureDbForMySqlSyncDatabaseInput> selectedDatabases) {
+    public MigrateMySqlAzureDbForMySqlSyncTaskInput
+        withSelectedDatabases(List<MigrateMySqlAzureDbForMySqlSyncDatabaseInput> selectedDatabases) {
         this.selectedDatabases = selectedDatabases;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sourceConnectionInfo() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceConnectionInfo in model"
-                            + " MigrateMySqlAzureDbForMySqlSyncTaskInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceConnectionInfo in model MigrateMySqlAzureDbForMySqlSyncTaskInput"));
         } else {
             sourceConnectionInfo().validate();
         }
         if (targetConnectionInfo() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetConnectionInfo in model"
-                            + " MigrateMySqlAzureDbForMySqlSyncTaskInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetConnectionInfo in model MigrateMySqlAzureDbForMySqlSyncTaskInput"));
         } else {
             targetConnectionInfo().validate();
         }
         if (selectedDatabases() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property selectedDatabases in model"
-                            + " MigrateMySqlAzureDbForMySqlSyncTaskInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property selectedDatabases in model MigrateMySqlAzureDbForMySqlSyncTaskInput"));
         } else {
             selectedDatabases().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MigrateMySqlAzureDbForMySqlSyncTaskInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sourceConnectionInfo", this.sourceConnectionInfo);
+        jsonWriter.writeJsonField("targetConnectionInfo", this.targetConnectionInfo);
+        jsonWriter.writeArrayField("selectedDatabases", this.selectedDatabases,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrateMySqlAzureDbForMySqlSyncTaskInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrateMySqlAzureDbForMySqlSyncTaskInput if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MigrateMySqlAzureDbForMySqlSyncTaskInput.
+     */
+    public static MigrateMySqlAzureDbForMySqlSyncTaskInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrateMySqlAzureDbForMySqlSyncTaskInput deserializedMigrateMySqlAzureDbForMySqlSyncTaskInput
+                = new MigrateMySqlAzureDbForMySqlSyncTaskInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceConnectionInfo".equals(fieldName)) {
+                    deserializedMigrateMySqlAzureDbForMySqlSyncTaskInput.sourceConnectionInfo
+                        = MySqlConnectionInfo.fromJson(reader);
+                } else if ("targetConnectionInfo".equals(fieldName)) {
+                    deserializedMigrateMySqlAzureDbForMySqlSyncTaskInput.targetConnectionInfo
+                        = MySqlConnectionInfo.fromJson(reader);
+                } else if ("selectedDatabases".equals(fieldName)) {
+                    List<MigrateMySqlAzureDbForMySqlSyncDatabaseInput> selectedDatabases
+                        = reader.readArray(reader1 -> MigrateMySqlAzureDbForMySqlSyncDatabaseInput.fromJson(reader1));
+                    deserializedMigrateMySqlAzureDbForMySqlSyncTaskInput.selectedDatabases = selectedDatabases;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrateMySqlAzureDbForMySqlSyncTaskInput;
+        });
+    }
 }

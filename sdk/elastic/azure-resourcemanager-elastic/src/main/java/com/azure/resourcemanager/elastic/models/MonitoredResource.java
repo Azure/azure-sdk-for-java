@@ -6,34 +6,34 @@ package com.azure.resourcemanager.elastic.models;
 
 import com.azure.resourcemanager.elastic.fluent.models.MonitoredResourceInner;
 
-/** An immutable client-side representation of MonitoredResource. */
+/**
+ * An immutable client-side representation of MonitoredResource.
+ */
 public interface MonitoredResource {
     /**
      * Gets the id property: The ARM id of the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
-     * Gets the sendingLogs property: SendingLogs
-     *
-     * <p>Flag indicating the status of the resource for sending logs operation to Elastic.
-     *
+     * Gets the sendingLogs property: Flag indicating the status of the resource for sending logs operation to Elastic.
+     * 
      * @return the sendingLogs value.
      */
     SendingLogs sendingLogs();
 
     /**
      * Gets the reasonForLogsStatus property: Reason for why the resource is sending logs (or why it is not sending).
-     *
+     * 
      * @return the reasonForLogsStatus value.
      */
     String reasonForLogsStatus();
 
     /**
      * Gets the inner com.azure.resourcemanager.elastic.fluent.models.MonitoredResourceInner object.
-     *
+     * 
      * @return the inner object.
      */
     MonitoredResourceInner innerModel();

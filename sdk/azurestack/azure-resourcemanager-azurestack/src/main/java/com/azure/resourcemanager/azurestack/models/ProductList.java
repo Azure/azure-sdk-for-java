@@ -7,25 +7,27 @@ package com.azure.resourcemanager.azurestack.models;
 import com.azure.resourcemanager.azurestack.fluent.models.ProductListInner;
 import java.util.List;
 
-/** An immutable client-side representation of ProductList. */
+/**
+ * An immutable client-side representation of ProductList.
+ */
 public interface ProductList {
     /**
      * Gets the nextLink property: URI to the next page.
-     *
+     * 
      * @return the nextLink value.
      */
     String nextLink();
 
     /**
      * Gets the value property: List of products.
-     *
+     * 
      * @return the value value.
      */
     List<Product> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.azurestack.fluent.models.ProductListInner object.
-     *
+     * 
      * @return the inner object.
      */
     ProductListInner innerModel();

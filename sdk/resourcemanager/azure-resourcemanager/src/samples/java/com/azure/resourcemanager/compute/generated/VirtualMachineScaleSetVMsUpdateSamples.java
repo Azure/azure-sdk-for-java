@@ -37,9 +37,9 @@ import com.azure.resourcemanager.compute.models.ManagedDiskParameters;
 import com.azure.resourcemanager.compute.models.NetworkApiVersion;
 import com.azure.resourcemanager.compute.models.NetworkInterfaceReference;
 import com.azure.resourcemanager.compute.models.NetworkProfile;
-import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.OSDisk;
 import com.azure.resourcemanager.compute.models.OSProfile;
+import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.PassNames;
 import com.azure.resourcemanager.compute.models.PatchSettings;
 import com.azure.resourcemanager.compute.models.Plan;
@@ -56,6 +56,7 @@ import com.azure.resourcemanager.compute.models.SshPublicKey;
 import com.azure.resourcemanager.compute.models.StorageAccountTypes;
 import com.azure.resourcemanager.compute.models.StorageProfile;
 import com.azure.resourcemanager.compute.models.UefiSettings;
+import com.azure.resourcemanager.compute.models.VMSizeProperties;
 import com.azure.resourcemanager.compute.models.VirtualHardDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachineIpTag;
 import com.azure.resourcemanager.compute.models.VirtualMachineNetworkInterfaceConfiguration;
@@ -72,12 +73,11 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetPublicIpAd
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMNetworkProfileConfiguration;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProtectionPolicy;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
-import com.azure.resourcemanager.compute.models.VMSizeProperties;
+import com.azure.resourcemanager.compute.models.WinRMConfiguration;
+import com.azure.resourcemanager.compute.models.WinRMListener;
 import com.azure.resourcemanager.compute.models.WindowsConfiguration;
 import com.azure.resourcemanager.compute.models.WindowsPatchAssessmentMode;
 import com.azure.resourcemanager.compute.models.WindowsVMGuestPatchMode;
-import com.azure.resourcemanager.compute.models.WinRMConfiguration;
-import com.azure.resourcemanager.compute.models.WinRMListener;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -88,7 +88,7 @@ import java.util.Map;
 public final class VirtualMachineScaleSetVMsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Update_MaximumSet_Gen.json
      */
     /**
@@ -290,7 +290,7 @@ public final class VirtualMachineScaleSetVMsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Update_MinimumSet_Gen.json
      */
     /**

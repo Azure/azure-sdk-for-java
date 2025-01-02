@@ -24,7 +24,8 @@ public final class DetectFromUrlImplOptions {
 
     /*
      * The 'detectionModel' associated with the detected faceIds. Supported 'detectionModel' values include
-     * 'detection_01', 'detection_02' and 'detection_03'. The default value is 'detection_01'.
+     * 'detection_01', 'detection_02' and 'detection_03'. The default value is 'detection_01'. 'detection_03' is
+     * recommended since its accuracy is improved on smaller faces (64x64 pixels) and rotated face orientations.
      */
     @Generated
     private FaceDetectionModel detectionModel;
@@ -93,7 +94,8 @@ public final class DetectFromUrlImplOptions {
     /**
      * Get the detectionModel property: The 'detectionModel' associated with the detected faceIds. Supported
      * 'detectionModel' values include 'detection_01', 'detection_02' and 'detection_03'. The default value is
-     * 'detection_01'.
+     * 'detection_01'. 'detection_03' is recommended since its accuracy is improved on smaller faces (64x64 pixels) and
+     * rotated face orientations.
      *
      * @return the detectionModel value.
      */
@@ -105,7 +107,8 @@ public final class DetectFromUrlImplOptions {
     /**
      * Set the detectionModel property: The 'detectionModel' associated with the detected faceIds. Supported
      * 'detectionModel' values include 'detection_01', 'detection_02' and 'detection_03'. The default value is
-     * 'detection_01'.
+     * 'detection_01'. 'detection_03' is recommended since its accuracy is improved on smaller faces (64x64 pixels) and
+     * rotated face orientations.
      *
      * @param detectionModel the detectionModel value to set.
      * @return the DetectFromUrlImplOptions object itself.

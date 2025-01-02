@@ -5,20 +5,31 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** EyesOn property bag. */
+/**
+ * EyesOn property bag.
+ */
 @Immutable
-public final class EyesOnSettingsProperties {
+public final class EyesOnSettingsProperties implements JsonSerializable<EyesOnSettingsProperties> {
     /*
      * Determines whether the setting is enable or disabled.
      */
-    @JsonProperty(value = "isEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isEnabled;
 
     /**
+     * Creates an instance of EyesOnSettingsProperties class.
+     */
+    public EyesOnSettingsProperties() {
+    }
+
+    /**
      * Get the isEnabled property: Determines whether the setting is enable or disabled.
-     *
+     * 
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -27,9 +38,44 @@ public final class EyesOnSettingsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EyesOnSettingsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EyesOnSettingsProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EyesOnSettingsProperties.
+     */
+    public static EyesOnSettingsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EyesOnSettingsProperties deserializedEyesOnSettingsProperties = new EyesOnSettingsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isEnabled".equals(fieldName)) {
+                    deserializedEyesOnSettingsProperties.isEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEyesOnSettingsProperties;
+        });
     }
 }

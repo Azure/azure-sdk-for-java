@@ -5,78 +5,73 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * InMageRcmFailback protected disk details.
  */
 @Fluent
-public final class InMageRcmFailbackProtectedDiskDetails {
+public final class InMageRcmFailbackProtectedDiskDetails
+    implements JsonSerializable<InMageRcmFailbackProtectedDiskDetails> {
     /*
      * The disk Id (reported by source agent).
      */
-    @JsonProperty(value = "diskId", access = JsonProperty.Access.WRITE_ONLY)
     private String diskId;
 
     /*
      * The disk name.
      */
-    @JsonProperty(value = "diskName", access = JsonProperty.Access.WRITE_ONLY)
     private String diskName;
 
     /*
      * A value indicating whether the disk is the OS disk.
      */
-    @JsonProperty(value = "isOSDisk", access = JsonProperty.Access.WRITE_ONLY)
     private String isOSDisk;
 
     /*
      * The disk capacity in bytes.
      */
-    @JsonProperty(value = "capacityInBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long capacityInBytes;
 
     /*
      * The disk Uuid (reported by vCenter).
      */
-    @JsonProperty(value = "diskUuid", access = JsonProperty.Access.WRITE_ONLY)
     private String diskUuid;
 
     /*
      * The data pending in log data store in MB.
      */
-    @JsonProperty(value = "dataPendingInLogDataStoreInMB", access = JsonProperty.Access.WRITE_ONLY)
     private Double dataPendingInLogDataStoreInMB;
 
     /*
      * The data pending at source agent in MB.
      */
-    @JsonProperty(value = "dataPendingAtSourceAgentInMB", access = JsonProperty.Access.WRITE_ONLY)
     private Double dataPendingAtSourceAgentInMB;
 
     /*
      * A value indicating whether initial replication is complete or not.
      */
-    @JsonProperty(value = "isInitialReplicationComplete", access = JsonProperty.Access.WRITE_ONLY)
     private String isInitialReplicationComplete;
 
     /*
      * The initial replication details.
      */
-    @JsonProperty(value = "irDetails")
     private InMageRcmFailbackSyncDetails irDetails;
 
     /*
      * The resync details.
      */
-    @JsonProperty(value = "resyncDetails")
     private InMageRcmFailbackSyncDetails resyncDetails;
 
     /*
      * The last sync time.
      */
-    @JsonProperty(value = "lastSyncTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastSyncTime;
 
     /**
@@ -149,8 +144,7 @@ public final class InMageRcmFailbackProtectedDiskDetails {
     }
 
     /**
-     * Get the isInitialReplicationComplete property: A value indicating whether initial replication is complete or
-     * not.
+     * Get the isInitialReplicationComplete property: A value indicating whether initial replication is complete or not.
      * 
      * @return the isInitialReplicationComplete value.
      */
@@ -219,5 +213,69 @@ public final class InMageRcmFailbackProtectedDiskDetails {
         if (resyncDetails() != null) {
             resyncDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("irDetails", this.irDetails);
+        jsonWriter.writeJsonField("resyncDetails", this.resyncDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageRcmFailbackProtectedDiskDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageRcmFailbackProtectedDiskDetails if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InMageRcmFailbackProtectedDiskDetails.
+     */
+    public static InMageRcmFailbackProtectedDiskDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageRcmFailbackProtectedDiskDetails deserializedInMageRcmFailbackProtectedDiskDetails
+                = new InMageRcmFailbackProtectedDiskDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("diskId".equals(fieldName)) {
+                    deserializedInMageRcmFailbackProtectedDiskDetails.diskId = reader.getString();
+                } else if ("diskName".equals(fieldName)) {
+                    deserializedInMageRcmFailbackProtectedDiskDetails.diskName = reader.getString();
+                } else if ("isOSDisk".equals(fieldName)) {
+                    deserializedInMageRcmFailbackProtectedDiskDetails.isOSDisk = reader.getString();
+                } else if ("capacityInBytes".equals(fieldName)) {
+                    deserializedInMageRcmFailbackProtectedDiskDetails.capacityInBytes
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("diskUuid".equals(fieldName)) {
+                    deserializedInMageRcmFailbackProtectedDiskDetails.diskUuid = reader.getString();
+                } else if ("dataPendingInLogDataStoreInMB".equals(fieldName)) {
+                    deserializedInMageRcmFailbackProtectedDiskDetails.dataPendingInLogDataStoreInMB
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("dataPendingAtSourceAgentInMB".equals(fieldName)) {
+                    deserializedInMageRcmFailbackProtectedDiskDetails.dataPendingAtSourceAgentInMB
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("isInitialReplicationComplete".equals(fieldName)) {
+                    deserializedInMageRcmFailbackProtectedDiskDetails.isInitialReplicationComplete = reader.getString();
+                } else if ("irDetails".equals(fieldName)) {
+                    deserializedInMageRcmFailbackProtectedDiskDetails.irDetails
+                        = InMageRcmFailbackSyncDetails.fromJson(reader);
+                } else if ("resyncDetails".equals(fieldName)) {
+                    deserializedInMageRcmFailbackProtectedDiskDetails.resyncDetails
+                        = InMageRcmFailbackSyncDetails.fromJson(reader);
+                } else if ("lastSyncTime".equals(fieldName)) {
+                    deserializedInMageRcmFailbackProtectedDiskDetails.lastSyncTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageRcmFailbackProtectedDiskDetails;
+        });
     }
 }

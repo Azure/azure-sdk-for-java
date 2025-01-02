@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Schema for StartMenuItem properties. */
+/**
+ * Schema for StartMenuItem properties.
+ */
 @Fluent
-public final class StartMenuItemProperties {
+public final class StartMenuItemProperties implements JsonSerializable<StartMenuItemProperties> {
     /*
      * Alias of StartMenuItem.
      */
-    @JsonProperty(value = "appAlias")
     private String appAlias;
 
     /*
      * Path to the file of StartMenuItem.
      */
-    @JsonProperty(value = "filePath")
     private String filePath;
 
     /*
      * Command line arguments for StartMenuItem.
      */
-    @JsonProperty(value = "commandLineArguments")
     private String commandLineArguments;
 
     /*
      * Path to the icon.
      */
-    @JsonProperty(value = "iconPath")
     private String iconPath;
 
     /*
      * Index of the icon.
      */
-    @JsonProperty(value = "iconIndex")
     private Integer iconIndex;
 
-    /** Creates an instance of StartMenuItemProperties class. */
+    /**
+     * Creates an instance of StartMenuItemProperties class.
+     */
     public StartMenuItemProperties() {
     }
 
     /**
      * Get the appAlias property: Alias of StartMenuItem.
-     *
+     * 
      * @return the appAlias value.
      */
     public String appAlias() {
@@ -55,7 +58,7 @@ public final class StartMenuItemProperties {
 
     /**
      * Set the appAlias property: Alias of StartMenuItem.
-     *
+     * 
      * @param appAlias the appAlias value to set.
      * @return the StartMenuItemProperties object itself.
      */
@@ -66,7 +69,7 @@ public final class StartMenuItemProperties {
 
     /**
      * Get the filePath property: Path to the file of StartMenuItem.
-     *
+     * 
      * @return the filePath value.
      */
     public String filePath() {
@@ -75,7 +78,7 @@ public final class StartMenuItemProperties {
 
     /**
      * Set the filePath property: Path to the file of StartMenuItem.
-     *
+     * 
      * @param filePath the filePath value to set.
      * @return the StartMenuItemProperties object itself.
      */
@@ -86,7 +89,7 @@ public final class StartMenuItemProperties {
 
     /**
      * Get the commandLineArguments property: Command line arguments for StartMenuItem.
-     *
+     * 
      * @return the commandLineArguments value.
      */
     public String commandLineArguments() {
@@ -95,7 +98,7 @@ public final class StartMenuItemProperties {
 
     /**
      * Set the commandLineArguments property: Command line arguments for StartMenuItem.
-     *
+     * 
      * @param commandLineArguments the commandLineArguments value to set.
      * @return the StartMenuItemProperties object itself.
      */
@@ -106,7 +109,7 @@ public final class StartMenuItemProperties {
 
     /**
      * Get the iconPath property: Path to the icon.
-     *
+     * 
      * @return the iconPath value.
      */
     public String iconPath() {
@@ -115,7 +118,7 @@ public final class StartMenuItemProperties {
 
     /**
      * Set the iconPath property: Path to the icon.
-     *
+     * 
      * @param iconPath the iconPath value to set.
      * @return the StartMenuItemProperties object itself.
      */
@@ -126,7 +129,7 @@ public final class StartMenuItemProperties {
 
     /**
      * Get the iconIndex property: Index of the icon.
-     *
+     * 
      * @return the iconIndex value.
      */
     public Integer iconIndex() {
@@ -135,7 +138,7 @@ public final class StartMenuItemProperties {
 
     /**
      * Set the iconIndex property: Index of the icon.
-     *
+     * 
      * @param iconIndex the iconIndex value to set.
      * @return the StartMenuItemProperties object itself.
      */
@@ -146,9 +149,57 @@ public final class StartMenuItemProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("appAlias", this.appAlias);
+        jsonWriter.writeStringField("filePath", this.filePath);
+        jsonWriter.writeStringField("commandLineArguments", this.commandLineArguments);
+        jsonWriter.writeStringField("iconPath", this.iconPath);
+        jsonWriter.writeNumberField("iconIndex", this.iconIndex);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StartMenuItemProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StartMenuItemProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StartMenuItemProperties.
+     */
+    public static StartMenuItemProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StartMenuItemProperties deserializedStartMenuItemProperties = new StartMenuItemProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("appAlias".equals(fieldName)) {
+                    deserializedStartMenuItemProperties.appAlias = reader.getString();
+                } else if ("filePath".equals(fieldName)) {
+                    deserializedStartMenuItemProperties.filePath = reader.getString();
+                } else if ("commandLineArguments".equals(fieldName)) {
+                    deserializedStartMenuItemProperties.commandLineArguments = reader.getString();
+                } else if ("iconPath".equals(fieldName)) {
+                    deserializedStartMenuItemProperties.iconPath = reader.getString();
+                } else if ("iconIndex".equals(fieldName)) {
+                    deserializedStartMenuItemProperties.iconIndex = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStartMenuItemProperties;
+        });
     }
 }

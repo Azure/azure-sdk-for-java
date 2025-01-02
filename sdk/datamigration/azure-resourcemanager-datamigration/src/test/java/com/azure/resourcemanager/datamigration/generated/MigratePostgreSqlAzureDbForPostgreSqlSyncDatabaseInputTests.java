@@ -13,36 +13,34 @@ import org.junit.jupiter.api.Assertions;
 public final class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"cywuggwol\",\"targetDatabaseName\":\"czbwemhairsbr\",\"migrationSetting\":{\"ggicccnxqhue\":\"wmsweypqwd\",\"zrncsdt\":\"mkttlstvlzywem\",\"bsfgytguslfea\":\"lusiy\"},\"sourceSetting\":{\"kyhejhzisxgf\":\"gq\",\"raehtwdwrft\":\"elolppvksrpqvuj\",\"rcdlbhshfwpr\":\"wib\"},\"targetSetting\":{\"c\":\"twitykhev\",\"jc\":\"edcpnmdyodnwzxl\"}}")
-                .toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput.class);
-        Assertions.assertEquals("cywuggwol", model.name());
-        Assertions.assertEquals("czbwemhairsbr", model.targetDatabaseName());
-        Assertions.assertEquals("wmsweypqwd", model.migrationSetting().get("ggicccnxqhue"));
-        Assertions.assertEquals("gq", model.sourceSetting().get("kyhejhzisxgf"));
-        Assertions.assertEquals("twitykhev", model.targetSetting().get("c"));
+        MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput model = BinaryData.fromString(
+            "{\"name\":\"toego\",\"targetDatabaseName\":\"wbw\",\"migrationSetting\":{\"cmrvexzt\":\"z\",\"gsfraoyzkoow\":\"bt\",\"aldsy\":\"lmnguxaw\"},\"sourceSetting\":{\"ykutwpf\":\"imerqfobwyznk\",\"sd\":\"pagmhrskdsnf\",\"wpusdsttwvogv\":\"akgtdlmkkzevdlh\",\"qqmoaku\":\"bejdcn\"},\"targetSetting\":{\"enuuzkopbm\":\"jzrwrdgrtw\"}}")
+            .toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput.class);
+        Assertions.assertEquals("toego", model.name());
+        Assertions.assertEquals("wbw", model.targetDatabaseName());
+        Assertions.assertEquals("z", model.migrationSetting().get("cmrvexzt"));
+        Assertions.assertEquals("imerqfobwyznk", model.sourceSetting().get("ykutwpf"));
+        Assertions.assertEquals("jzrwrdgrtw", model.targetSetting().get("enuuzkopbm"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput model =
-            new MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput()
-                .withName("cywuggwol")
-                .withTargetDatabaseName("czbwemhairsbr")
-                .withMigrationSetting(
-                    mapOf("ggicccnxqhue", "wmsweypqwd", "zrncsdt", "mkttlstvlzywem", "bsfgytguslfea", "lusiy"))
-                .withSourceSetting(mapOf("kyhejhzisxgf", "gq", "raehtwdwrft", "elolppvksrpqvuj", "rcdlbhshfwpr", "wib"))
-                .withTargetSetting(mapOf("c", "twitykhev", "jc", "edcpnmdyodnwzxl"));
+        MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput model
+            = new MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput().withName("toego")
+                .withTargetDatabaseName("wbw")
+                .withMigrationSetting(mapOf("cmrvexzt", "z", "gsfraoyzkoow", "bt", "aldsy", "lmnguxaw"))
+                .withSourceSetting(mapOf("ykutwpf", "imerqfobwyznk", "sd", "pagmhrskdsnf", "wpusdsttwvogv",
+                    "akgtdlmkkzevdlh", "qqmoaku", "bejdcn"))
+                .withTargetSetting(mapOf("enuuzkopbm", "jzrwrdgrtw"));
         model = BinaryData.fromObject(model).toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput.class);
-        Assertions.assertEquals("cywuggwol", model.name());
-        Assertions.assertEquals("czbwemhairsbr", model.targetDatabaseName());
-        Assertions.assertEquals("wmsweypqwd", model.migrationSetting().get("ggicccnxqhue"));
-        Assertions.assertEquals("gq", model.sourceSetting().get("kyhejhzisxgf"));
-        Assertions.assertEquals("twitykhev", model.targetSetting().get("c"));
+        Assertions.assertEquals("toego", model.name());
+        Assertions.assertEquals("wbw", model.targetDatabaseName());
+        Assertions.assertEquals("z", model.migrationSetting().get("cmrvexzt"));
+        Assertions.assertEquals("imerqfobwyznk", model.sourceSetting().get("ykutwpf"));
+        Assertions.assertEquals("jzrwrdgrtw", model.targetSetting().get("enuuzkopbm"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

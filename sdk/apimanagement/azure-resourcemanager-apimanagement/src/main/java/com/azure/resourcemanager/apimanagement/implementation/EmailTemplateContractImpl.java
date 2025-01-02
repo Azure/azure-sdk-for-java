@@ -93,29 +93,25 @@ public final class EmailTemplateContractImpl
     }
 
     public EmailTemplateContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEmailTemplates()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, templateName, createParameters, createIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEmailTemplates()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, templateName, createParameters, createIfMatch,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public EmailTemplateContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEmailTemplates()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, templateName, createParameters, createIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEmailTemplates()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, templateName, createParameters, createIfMatch,
+                context)
+            .getValue();
         return this;
     }
 
-    EmailTemplateContractImpl(
-        TemplateName name, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    EmailTemplateContractImpl(TemplateName name,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = new EmailTemplateContractInner();
         this.serviceManager = serviceManager;
         this.templateName = name;
@@ -130,54 +126,45 @@ public final class EmailTemplateContractImpl
     }
 
     public EmailTemplateContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEmailTemplates()
-                .updateWithResponse(
-                    resourceGroupName, serviceName, templateName, updateIfMatch, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEmailTemplates()
+            .updateWithResponse(resourceGroupName, serviceName, templateName, updateIfMatch, updateParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public EmailTemplateContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEmailTemplates()
-                .updateWithResponse(
-                    resourceGroupName, serviceName, templateName, updateIfMatch, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEmailTemplates()
+            .updateWithResponse(resourceGroupName, serviceName, templateName, updateIfMatch, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    EmailTemplateContractImpl(
-        EmailTemplateContractInner innerObject,
+    EmailTemplateContractImpl(EmailTemplateContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.templateName = TemplateName.fromString(Utils.getValueFromIdByName(innerObject.id(), "templates"));
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.templateName
+            = TemplateName.fromString(ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "templates"));
     }
 
     public EmailTemplateContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEmailTemplates()
-                .getWithResponse(resourceGroupName, serviceName, templateName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEmailTemplates()
+            .getWithResponse(resourceGroupName, serviceName, templateName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public EmailTemplateContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEmailTemplates()
-                .getWithResponse(resourceGroupName, serviceName, templateName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEmailTemplates()
+            .getWithResponse(resourceGroupName, serviceName, templateName, context)
+            .getValue();
         return this;
     }
 

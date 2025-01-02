@@ -13,8 +13,8 @@ public final class OperationEntityImpl implements OperationEntity {
 
     private final com.azure.resourcemanager.botservice.BotServiceManager serviceManager;
 
-    OperationEntityImpl(
-        OperationEntityInner innerObject, com.azure.resourcemanager.botservice.BotServiceManager serviceManager) {
+    OperationEntityImpl(OperationEntityInner innerObject,
+        com.azure.resourcemanager.botservice.BotServiceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

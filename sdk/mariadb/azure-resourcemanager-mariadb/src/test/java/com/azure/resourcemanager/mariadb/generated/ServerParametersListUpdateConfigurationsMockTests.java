@@ -6,68 +6,42 @@ package com.azure.resourcemanager.mariadb.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mariadb.MariaDBManager;
 import com.azure.resourcemanager.mariadb.fluent.models.ConfigurationInner;
 import com.azure.resourcemanager.mariadb.fluent.models.ConfigurationListResultInner;
 import com.azure.resourcemanager.mariadb.models.ConfigurationListResult;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ServerParametersListUpdateConfigurationsMockTests {
     @Test
     public void testListUpdateConfigurations() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"value\":\"maehvbbxurip\",\"description\":\"fnhtbaxkgxyw\",\"defaultValue\":\"kpyklyhp\",\"dataType\":\"odpvruudlgzib\",\"allowedValues\":\"ostgkts\",\"source\":\"dxeclzedqbcvh\"},\"id\":\"lhpl\",\"name\":\"dqkdlwwqfbu\",\"type\":\"lkxt\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"id\":\"ikkx\",\"name\":\"slol\",\"type\":\"qpvuzlmvfelf\"},{\"id\":\"gplcrpwjxeznoigb\",\"name\":\"njwmwkpnbsazejj\",\"type\":\"qkagfhsxt\"},{\"id\":\"ugzxnf\",\"name\":\"azpxdtnkdmkqjjl\",\"type\":\"uenvrkp\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MariaDBManager manager = MariaDBManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        ConfigurationListResult response = manager.serverParameters()
+            .listUpdateConfigurations("zvxurisjnhny", "xifqjzgxm",
+                new ConfigurationListResultInner()
+                    .withValue(Arrays.asList(new ConfigurationInner().withValue("wp").withSource("slirciz"),
+                        new ConfigurationInner().withValue("z").withSource("ejd"),
+                        new ConfigurationInner().withValue("v").withSource("sx"))),
+                com.azure.core.util.Context.NONE);
 
-        MariaDBManager manager =
-            MariaDBManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ConfigurationListResult response =
-            manager
-                .serverParameters()
-                .listUpdateConfigurations(
-                    "bfvoowvrv",
-                    "t",
-                    new ConfigurationListResultInner().withValue(Arrays.asList(new ConfigurationInner())),
-                    com.azure.core.util.Context.NONE);
+        Assertions.assertEquals("maehvbbxurip", response.value().get(0).value());
+        Assertions.assertEquals("dxeclzedqbcvh", response.value().get(0).source());
     }
 }

@@ -153,15 +153,9 @@ public interface SqlServer
 
     /** Container interface for all the definitions that need to be implemented. */
     interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithAdministratorLogin,
-            DefinitionStages.WithAdministratorPassword,
-            DefinitionStages.WithElasticPool,
-            DefinitionStages.WithDatabase,
-            DefinitionStages.WithFirewallRule,
-            DefinitionStages.WithPublicNetworkAccess,
-            DefinitionStages.WithCreate {
+        extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithAdministratorLogin,
+        DefinitionStages.WithAdministratorPassword, DefinitionStages.WithElasticPool, DefinitionStages.WithDatabase,
+        DefinitionStages.WithFirewallRule, DefinitionStages.WithPublicNetworkAccess, DefinitionStages.WithCreate {
     }
 
     /** Grouping of all the storage account definition stages. */
@@ -272,10 +266,9 @@ public interface SqlServer
              * @param virtualNetworkRuleName the name of the new SQL Virtual Network Rule
              * @return the first stage of the new SQL Virtual Network Rule definition
              */
-            SqlVirtualNetworkRule.DefinitionStages.Blank<? extends WithCreate> defineVirtualNetworkRule(
-                String virtualNetworkRuleName);
+            SqlVirtualNetworkRule.DefinitionStages.Blank<? extends WithCreate>
+                defineVirtualNetworkRule(String virtualNetworkRuleName);
         }
-
 
         /** The stage of SQL Server definition allowing to configure network access settings. */
         interface WithPublicNetworkAccess {
@@ -291,29 +284,16 @@ public interface SqlServer
          * A SQL Server definition with sufficient inputs to create a new SQL Server in the cloud, but exposing
          * additional optional inputs to specify.
          */
-        interface WithCreate
-            extends Creatable<SqlServer>,
-                WithActiveDirectoryAdministrator,
-                WithSystemAssignedManagedServiceIdentity,
-                WithElasticPool,
-                WithDatabase,
-                WithFirewallRule,
-                WithVirtualNetworkRule,
-                WithPublicNetworkAccess,
-                DefinitionWithTags<WithCreate> {
+        interface WithCreate extends Creatable<SqlServer>, WithActiveDirectoryAdministrator,
+            WithSystemAssignedManagedServiceIdentity, WithElasticPool, WithDatabase, WithFirewallRule,
+            WithVirtualNetworkRule, WithPublicNetworkAccess, DefinitionWithTags<WithCreate> {
         }
     }
 
     /** The template for a SQLServer update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<SqlServer>,
-            UpdateStages.WithAdministratorPassword,
-            UpdateStages.WithElasticPool,
-            UpdateStages.WithDatabase,
-            UpdateStages.WithFirewallRule,
-            UpdateStages.WithSystemAssignedManagedServiceIdentity,
-            UpdateStages.WithPublicNetworkAccess,
-            Resource.UpdateWithTags<Update> {
+    interface Update extends Appliable<SqlServer>, UpdateStages.WithAdministratorPassword, UpdateStages.WithElasticPool,
+        UpdateStages.WithDatabase, UpdateStages.WithFirewallRule, UpdateStages.WithSystemAssignedManagedServiceIdentity,
+        UpdateStages.WithPublicNetworkAccess, Resource.UpdateWithTags<Update> {
     }
 
     /** Grouping of all the SQLServer update stages. */
@@ -347,8 +327,7 @@ public interface SqlServer
              * @param elasticPoolName the name of the new SQL Elastic Pool
              * @return the first stage of the new SQL Elastic Pool definition
              */
-            SqlElasticPool.DefinitionStages.Blank<? extends Update> defineElasticPool(
-                String elasticPoolName);
+            SqlElasticPool.DefinitionStages.Blank<? extends Update> defineElasticPool(String elasticPoolName);
 
             /**
              * Removes elastic pool from the SQL Server.
@@ -386,8 +365,7 @@ public interface SqlServer
              * @param firewallRuleName the name of the new SQL Firewall rule
              * @return the first stage of the new SQL Firewall rule definition
              */
-            SqlFirewallRule.DefinitionStages.Blank<? extends Update> defineFirewallRule(
-                String firewallRuleName);
+            SqlFirewallRule.DefinitionStages.Blank<? extends Update> defineFirewallRule(String firewallRuleName);
 
             /**
              * Removes firewall rule from the SQL Server.
@@ -406,6 +384,7 @@ public interface SqlServer
              * @return the next stage of the update
              */
             Update enablePublicNetworkAccess();
+
             /**
              * Disables public network access for the SQL Server.
              *

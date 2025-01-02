@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -14,18 +17,15 @@ import java.util.Map;
  * upgrading the cluster.
  */
 @Fluent
-public final class ApplicationDeltaHealthPolicy {
+public final class ApplicationDeltaHealthPolicy implements JsonSerializable<ApplicationDeltaHealthPolicy> {
     /*
      * The delta health policy used by default to evaluate the health of a service type when upgrading the cluster.
      */
-    @JsonProperty(value = "defaultServiceTypeDeltaHealthPolicy")
     private ServiceTypeDeltaHealthPolicy defaultServiceTypeDeltaHealthPolicy;
 
     /*
      * The map with service type delta health policy per service type name. The map is empty by default.
      */
-    @JsonProperty(value = "serviceTypeDeltaHealthPolicies")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ServiceTypeDeltaHealthPolicy> serviceTypeDeltaHealthPolicies;
 
     /**
@@ -96,5 +96,49 @@ public final class ApplicationDeltaHealthPolicy {
                 }
             });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("defaultServiceTypeDeltaHealthPolicy", this.defaultServiceTypeDeltaHealthPolicy);
+        jsonWriter.writeMapField("serviceTypeDeltaHealthPolicies", this.serviceTypeDeltaHealthPolicies,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationDeltaHealthPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationDeltaHealthPolicy if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationDeltaHealthPolicy.
+     */
+    public static ApplicationDeltaHealthPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationDeltaHealthPolicy deserializedApplicationDeltaHealthPolicy = new ApplicationDeltaHealthPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("defaultServiceTypeDeltaHealthPolicy".equals(fieldName)) {
+                    deserializedApplicationDeltaHealthPolicy.defaultServiceTypeDeltaHealthPolicy
+                        = ServiceTypeDeltaHealthPolicy.fromJson(reader);
+                } else if ("serviceTypeDeltaHealthPolicies".equals(fieldName)) {
+                    Map<String, ServiceTypeDeltaHealthPolicy> serviceTypeDeltaHealthPolicies
+                        = reader.readMap(reader1 -> ServiceTypeDeltaHealthPolicy.fromJson(reader1));
+                    deserializedApplicationDeltaHealthPolicy.serviceTypeDeltaHealthPolicies
+                        = serviceTypeDeltaHealthPolicies;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationDeltaHealthPolicy;
+        });
     }
 }

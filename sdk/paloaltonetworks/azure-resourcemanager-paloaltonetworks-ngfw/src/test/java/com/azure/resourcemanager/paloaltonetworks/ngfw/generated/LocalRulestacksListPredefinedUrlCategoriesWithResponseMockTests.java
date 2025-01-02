@@ -43,13 +43,15 @@ public final class LocalRulestacksListPredefinedUrlCategoriesWithResponseMockTes
             return Mono.just(httpResponse);
         }));
 
-        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PredefinedUrlCategoriesResponse response
-            = manager.localRulestacks().listPredefinedUrlCategoriesWithResponse("hkxdxuwsaifmc", "nosbz",
-                "ehgcvkbcknjo", 988926975, com.azure.core.util.Context.NONE).getValue();
+        PredefinedUrlCategoriesResponse response = manager.localRulestacks()
+            .listPredefinedUrlCategoriesWithResponse("hkxdxuwsaifmc", "nosbz", "ehgcvkbcknjo", 988926975,
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("y", response.value().get(0).action());
         Assertions.assertEquals("xpvelszerqzevxo", response.value().get(0).name());

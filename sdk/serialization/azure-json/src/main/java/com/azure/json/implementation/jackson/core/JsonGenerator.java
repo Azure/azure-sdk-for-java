@@ -6,21 +6,36 @@
  */
 package com.azure.json.implementation.jackson.core;
 
-import java.io.*;
+import com.azure.json.implementation.jackson.core.JsonParser.NumberType;
+import com.azure.json.implementation.jackson.core.io.CharacterEscapes;
+import com.azure.json.implementation.jackson.core.util.JacksonFeatureSet;
+
+import java.io.Closeable;
+import java.io.Flushable;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.Writer;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-import com.azure.json.implementation.jackson.core.JsonParser.NumberType;
-import com.azure.json.implementation.jackson.core.io.CharacterEscapes;
-import com.azure.json.implementation.jackson.core.type.WritableTypeId;
-import com.azure.json.implementation.jackson.core.type.WritableTypeId.Inclusion;
-import com.azure.json.implementation.jackson.core.util.JacksonFeatureSet;
-import com.azure.json.implementation.jackson.core.util.VersionUtil;
-
-import static com.azure.json.implementation.jackson.core.JsonTokenId.*;
+import static com.azure.json.implementation.jackson.core.JsonTokenId.ID_EMBEDDED_OBJECT;
+import static com.azure.json.implementation.jackson.core.JsonTokenId.ID_END_ARRAY;
+import static com.azure.json.implementation.jackson.core.JsonTokenId.ID_END_OBJECT;
+import static com.azure.json.implementation.jackson.core.JsonTokenId.ID_FALSE;
+import static com.azure.json.implementation.jackson.core.JsonTokenId.ID_FIELD_NAME;
+import static com.azure.json.implementation.jackson.core.JsonTokenId.ID_NOT_AVAILABLE;
+import static com.azure.json.implementation.jackson.core.JsonTokenId.ID_NULL;
+import static com.azure.json.implementation.jackson.core.JsonTokenId.ID_NUMBER_FLOAT;
+import static com.azure.json.implementation.jackson.core.JsonTokenId.ID_NUMBER_INT;
+import static com.azure.json.implementation.jackson.core.JsonTokenId.ID_START_ARRAY;
+import static com.azure.json.implementation.jackson.core.JsonTokenId.ID_START_OBJECT;
+import static com.azure.json.implementation.jackson.core.JsonTokenId.ID_STRING;
+import static com.azure.json.implementation.jackson.core.JsonTokenId.ID_TRUE;
 
 /**
  * Base class that defines public API for writing JSON content.
@@ -48,15 +63,6 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
      */
     protected final static JacksonFeatureSet<StreamWriteCapability> DEFAULT_TEXTUAL_WRITE_CAPABILITIES
         = DEFAULT_WRITE_CAPABILITIES.with(StreamWriteCapability.CAN_WRITE_FORMATTED_NUMBERS);
-
-    /**
-     * Default set of {@link StreamWriteCapability}ies for typical binary formats,
-     * to use either as-is, or as a base with possible differences.
-     *
-     * @since 2.12
-     */
-    protected final static JacksonFeatureSet<StreamWriteCapability> DEFAULT_BINARY_WRITE_CAPABILITIES
-        = DEFAULT_WRITE_CAPABILITIES.with(StreamWriteCapability.CAN_WRITE_BINARY_NATIVELY);
 
     /**
      * Enumeration that defines all togglable features for generators.
@@ -124,7 +130,7 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
          * Feature that determines whether "exceptional" (not real number)
          * float/double values are output as quoted strings.
          * The values checked are Double.Nan,
-         * Double.POSITIVE_INFINITY and Double.NEGATIVE_INIFINTY (and 
+         * Double.POSITIVE_INFINITY and Double.NEGATIVE_INIFINTY (and
          * associated Float values).
          * If feature is disabled, these numbers are still output using
          * associated literal values, resulting in non-conformant
@@ -185,17 +191,17 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
         WRITE_NUMBERS_AS_STRINGS(false),
 
         /**
-         * Feature that determines whether {@link java.math.BigDecimal} entries are
-         * serialized using {@link java.math.BigDecimal#toPlainString()} to prevent
+         * Feature that determines whether {@link BigDecimal} entries are
+         * serialized using {@link BigDecimal#toPlainString()} to prevent
          * values to be written using scientific notation.
          *<p>
-         * NOTE: only affects generators that serialize {@link java.math.BigDecimal}s
+         * NOTE: only affects generators that serialize {@link BigDecimal}s
          * using textual representation (textual formats but potentially some binary
          * formats).
          *<p>
          * Feature is disabled by default, so default output mode is used; this generally
          * depends on how {@link BigDecimal} has been created.
-         * 
+         *
          * @since 2.3
          */
         WRITE_BIGDECIMAL_AS_PLAIN(false),
@@ -214,7 +220,7 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
          * due to having to store and check additional information.
          *<p>
          * Feature is disabled by default.
-         * 
+         *
          * @since 2.3
          */
         STRICT_DUPLICATE_DETECTION(false),
@@ -260,7 +266,7 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
             return flags;
         }
 
-        private Feature(boolean defaultState) {
+        Feature(boolean defaultState) {
             _defaultState = defaultState;
             _mask = (1 << ordinal());
         }
@@ -284,13 +290,6 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
      * /* Configuration
      * /**********************************************************************
      */
-
-    /**
-     * Object that handles pretty-printing (usually additional
-     * white space to make results more human-readable) during
-     * output. If null, no pretty-printing is done.
-     */
-    protected PrettyPrinter _cfgPrettyPrinter;
 
     /*
      * /**********************************************************************
@@ -495,9 +494,9 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
 
     /**
      * Bulk access method for getting state of all standard (non-dataformat-specific)
-     * {@link JsonGenerator.Feature}s.
-     * 
-     * @return Bit mask that defines current states of all standard {@link JsonGenerator.Feature}s.
+     * {@link Feature}s.
+     *
+     * @return Bit mask that defines current states of all standard {@link Feature}s.
      *
      * @since 2.3
      */
@@ -505,9 +504,9 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
 
     /**
      * Bulk set method for (re)setting states of all standard {@link Feature}s
-     * 
+     *
      * @since 2.3
-     * 
+     *
      * @param values Bitmask that defines which {@link Feature}s are enabled
      *    and which disabled
      *
@@ -527,12 +526,12 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
      *    setFeatureMask(newState);
      *</code>
      * but preferred as this lets caller more efficiently specify actual changes made.
-     * 
+     *
      * @param values Bit mask of set/clear state for features to change
      * @param mask Bit mask of features to change
      *
      * @return This generator, to allow call chaining
-     * 
+     *
      * @since 2.6
      */
     public JsonGenerator overrideStdFeatures(int values, int mask) {
@@ -542,30 +541,18 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
     }
 
     /**
-     * Bulk access method for getting state of all {@link FormatFeature}s, format-specific
-     * on/off configuration settings.
-     * 
-     * @return Bit mask that defines current states of all standard {@link FormatFeature}s.
-     * 
-     * @since 2.6
-     */
-    public int getFormatFeatures() {
-        return 0;
-    }
-
-    /**
      * Bulk set method for (re)setting states of {@link FormatFeature}s,
      * by specifying values (set / clear) along with a mask, to determine
      * which features to change, if any.
      *<p>
      * Default implementation will simply throw an exception to indicate that
      * the generator implementation does not support any {@link FormatFeature}s.
-     * 
+     *
      * @param values Bit mask of set/clear state for features to change
      * @param mask Bit mask of features to change
      *
      * @return This generator, to allow call chaining
-     * 
+     *
      * @since 2.6
      */
     public JsonGenerator overrideFormatFeatures(int values, int mask) {
@@ -591,9 +578,9 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
      *<p>
      * If generator does not support specified schema, {@link UnsupportedOperationException}
      * is thrown.
-     * 
+     *
      * @param schema Schema to use
-     * 
+     *
      * @throws UnsupportedOperationException if generator does not support schema
      */
     public void setSchema(FormatSchema schema) {
@@ -618,43 +605,6 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
      */
 
     /**
-     * Method for setting a custom pretty printer, which is usually
-     * used to add indentation for improved human readability.
-     * By default, generator does not do pretty printing.
-     *<p>
-     * To use the default pretty printer that comes with core
-     * Jackson distribution, call {@link #useDefaultPrettyPrinter}
-     * instead.
-     *
-     * @param pp {@code PrettyPrinter} to assign, if any; {@code null} if none
-     *
-     * @return This generator, to allow call chaining
-     */
-    public JsonGenerator setPrettyPrinter(PrettyPrinter pp) {
-        _cfgPrettyPrinter = pp;
-        return this;
-    }
-
-    /**
-     * Accessor for checking whether this generator has a configured
-     * {@link PrettyPrinter}; returns it if so, null if none configured.
-     *
-     * @return {@link PrettyPrinter} configured for this generator, if any; {@code null} if none
-     */
-    public PrettyPrinter getPrettyPrinter() {
-        return _cfgPrettyPrinter;
-    }
-
-    /**
-     * Convenience method for enabling pretty-printing using
-     * the default pretty printer
-     * ({@link com.azure.json.implementation.jackson.core.util.DefaultPrettyPrinter}).
-     *
-     * @return This generator, to allow call chaining
-     */
-    public abstract JsonGenerator useDefaultPrettyPrinter();
-
-    /**
      * Method that can be called to request that generator escapes
      * all character codes above specified code point (if positive value);
      * or, to not escape any characters except for ones that must be
@@ -670,7 +620,7 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
      *<p>
      * Default implementation does nothing; sub-classes need to redefine
      * it according to rules of supported data format.
-     * 
+     *
      * @param charCode Either -1 to indicate that no additional escaping
      *   is to be done; or highest code point not to escape (meaning higher
      *   ones will be), if positive value.
@@ -689,7 +639,7 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
      * Some generators may not support additional escaping: for example,
      * generators for binary formats that do not use escaping should
      * simply return 0.
-     * 
+     *
      * @return Currently active limitation for highest non-escaped character,
      *   if defined; or 0 to indicate no additional escaping is performed.
      */
@@ -726,7 +676,7 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
      * JSON values (default is single space character)
      *<p>
      * Default implementation throws {@link UnsupportedOperationException}.
-     * 
+     *
      * @param sep Separator to use, if any; null means that no separator is
      *   automatically added
      *
@@ -748,7 +698,7 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
      * in units (byte, char) that the generator implementation uses for buffering;
      * or -1 if this information is not available.
      * Unit used is often the same as the unit of underlying target (that is,
-     * `byte` for {@link java.io.OutputStream}, `char` for {@link java.io.Writer}),
+     * `byte` for {@link OutputStream}, `char` for {@link Writer}),
      * but may differ if buffering is done before encoding.
      * Default JSON-backed implementations do use matching units.
      *<p>
@@ -773,9 +723,9 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
     /**
      * Method that can be used to verify that given schema can be used with
      * this generator (using {@link #setSchema}).
-     * 
+     *
      * @param schema Schema to check
-     * 
+     *
      * @return True if this generator can use given schema; false if not
      */
     public boolean canUseSchema(FormatSchema schema) {
@@ -815,7 +765,7 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
      * that do support native Type Ids. Caller is expected to either
      * use a non-native notation (explicit property or such), or fail,
      * in case it can not use native type ids.
-     * 
+     *
      * @return {@code True} if this generator is capable of writing "native" Type Ids
      *   (which is typically determined by capabilities of the underlying format),
      *   {@code false} if not
@@ -862,7 +812,7 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
 
     /**
      * Introspection method to call to check whether it is possible
-     * to write numbers using {@link #writeNumber(java.lang.String)}
+     * to write numbers using {@link #writeNumber(String)}
      * using possible custom format, or not. Typically textual formats
      * allow this (and JSON specifically does), whereas binary formats
      * do not allow this (except by writing them as Strings).
@@ -921,7 +871,7 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
      * {@link #writeEndArray()}.
      *<p>
      * Default implementation simply calls {@link #writeStartArray()}.
-     * 
+     *
      * @param size Number of elements this array will have: actual
      *   number of values written (before matching call to
      *   {@link #writeEndArray()} MUST match; generator MAY verify
@@ -929,7 +879,7 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
      *
      * @throws IOException if there is either an underlying I/O problem or encoding
      *    issue at format layer
-     *   
+     *
      * @since 2.4
      *
      * @deprecated Since 2.12 Use {@link #writeStartArray(Object, int)} instead
@@ -1327,7 +1277,7 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
      * around the value if and as necessary.
      *<p>
      * Note that some backends may choose not to support this method: for
-     * example, if underlying destination is a {@link java.io.Writer}
+     * example, if underlying destination is a {@link Writer}
      * using this method would require UTF-8 decoding.
      * If so, implementation may instead choose to throw a
      * {@link UnsupportedOperationException} due to ineffectiveness
@@ -1353,7 +1303,7 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
      * around the value if and as necessary.
      *<p>
      * Note that some backends may choose not to support this method: for
-     * example, if underlying destination is a {@link java.io.Writer}
+     * example, if underlying destination is a {@link Writer}
      * using this method would require UTF-8 decoding.
      * In this case
      * generator implementation may instead choose to throw a
@@ -1510,7 +1460,7 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
      *
      * @throws IOException if there is either an underlying I/O problem or encoding
      *    issue at format layer
-     * 
+     *
      * @since 2.5
      */
     public void writeRawValue(SerializableString raw) throws IOException {
@@ -1548,7 +1498,7 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
 
     /**
      * Similar to {@link #writeBinary(Base64Variant,byte[],int,int)},
-     * but default to using the Jackson default Base64 variant 
+     * but default to using the Jackson default Base64 variant
      * (which is {@link Base64Variants#MIME_NO_LINEFEEDS}).
      *
      * @param data Buffer that contains binary data to write
@@ -1564,7 +1514,7 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
 
     /**
      * Similar to {@link #writeBinary(Base64Variant,byte[],int,int)},
-     * but assumes default to using the Jackson default Base64 variant 
+     * but assumes default to using the Jackson default Base64 variant
      * (which is {@link Base64Variants#MIME_NO_LINEFEEDS}). Also
      * assumes that whole byte array is to be output.
      *
@@ -1579,9 +1529,9 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
 
     /**
      * Similar to {@link #writeBinary(Base64Variant,InputStream,int)},
-     * but assumes default to using the Jackson default Base64 variant 
+     * but assumes default to using the Jackson default Base64 variant
      * (which is {@link Base64Variants#MIME_NO_LINEFEEDS}).
-     * 
+     *
      * @param data InputStream to use for reading binary data to write.
      *    Will not be closed after successful write operation
      * @param dataLength (optional) number of bytes that will be available;
@@ -1603,7 +1553,7 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
      * Method similar to {@link #writeBinary(Base64Variant,byte[],int,int)},
      * but where input is provided through a stream, allowing for incremental
      * writes without holding the whole input in memory.
-     * 
+     *
      * @param bv Base64 variant to use
      * @param data InputStream to use for reading binary data to write.
      *    Will not be closed after successful write operation
@@ -1615,7 +1565,7 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
      *    need not support cases where length is not known in advance; this
      *    depends on underlying data format: JSON output does NOT require length,
      *    other formats may.
-     * 
+     *
      * @return Number of bytes read from <code>data</code> and written as binary payload
      *
      * @throws IOException if there is either an underlying I/O problem or encoding
@@ -1907,172 +1857,11 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
         throw new JsonGenerationException("No native support for writing Type Ids", this);
     }
 
-    /**
-     * Replacement method for {@link #writeTypeId(Object)} which is called
-     * regardless of whether format has native type ids. If it does have native
-     * type ids, those are to be used (if configuration allows this), if not,
-     * structural type id inclusion is to be used. For JSON, for example, no
-     * native type ids exist and structural inclusion is always used.
-     *<p>
-     * NOTE: databind may choose to skip calling this method for some special cases
-     * (and instead included type id via regular write methods and/or {@link #writeTypeId}
-     * -- this is discouraged, but not illegal, and may be necessary as a work-around
-     * in some cases.
-     *
-     * @param typeIdDef Full Type Id definition
-     *
-     * @return {@link WritableTypeId} for caller to retain and pass to matching
-     *   {@link #writeTypeSuffix} call
-     *
-     * @throws IOException if there is either an underlying I/O problem or encoding
-     *    issue at format layer
-     * @throws JsonGenerationException if Type ID output is not allowed
-     *   (either at all, or specifically in this position in output)
-     *
-     * @since 2.9
-     */
-    public WritableTypeId writeTypePrefix(WritableTypeId typeIdDef) throws IOException {
-        Object id = typeIdDef.id;
-
-        final JsonToken valueShape = typeIdDef.valueShape;
-        if (canWriteTypeId()) {
-            typeIdDef.wrapperWritten = false;
-            // just rely on native type output method (sub-classes likely to override)
-            writeTypeId(id);
-        } else {
-            // No native type id; write wrappers
-            // Normally we only support String type ids (non-String reserved for native type ids)
-            String idStr = (id instanceof String) ? (String) id : String.valueOf(id);
-            typeIdDef.wrapperWritten = true;
-
-            Inclusion incl = typeIdDef.include;
-            // first: can not output "as property" if value not Object; if so, must do "as array"
-            if ((valueShape != JsonToken.START_OBJECT) && incl.requiresObjectContext()) {
-                typeIdDef.include = incl = WritableTypeId.Inclusion.WRAPPER_ARRAY;
-            }
-
-            switch (incl) {
-                case PARENT_PROPERTY:
-                    // nothing to do here, as it has to be written in suffix...
-                    break;
-
-                case PAYLOAD_PROPERTY:
-                    // only output as native type id; otherwise caller must handle using some
-                    // other mechanism, so...
-                    break;
-
-                case METADATA_PROPERTY:
-                    // must have Object context by now, so simply write as field name
-                    // Note, too, that it's bit tricky, since we must print START_OBJECT that is part
-                    // of value first -- and then NOT output it later on: hence return "early"
-                    writeStartObject(typeIdDef.forValue);
-                    writeStringField(typeIdDef.asProperty, idStr);
-                    return typeIdDef;
-
-                case WRAPPER_OBJECT:
-                    // NOTE: this is wrapper, not directly related to value to output, so don't pass
-                    writeStartObject();
-                    writeFieldName(idStr);
-                    break;
-
-                case WRAPPER_ARRAY:
-                default: // should never occur but translate as "as-array"
-                    writeStartArray(); // wrapper, not actual array object to write
-                    writeString(idStr);
-            }
-        }
-        // and finally possible start marker for value itself:
-        if (valueShape == JsonToken.START_OBJECT) {
-            writeStartObject(typeIdDef.forValue);
-        } else if (valueShape == JsonToken.START_ARRAY) {
-            // should we now set the current object?
-            writeStartArray();
-        }
-        return typeIdDef;
-    }
-
-    /**
-     * Method to call along with {@link #writeTypePrefix}, but after actual value
-     * that has type id has been completely written. This allows post-processing
-     * for some cases (for example if the actual Type Id is written at the END of
-     * the value, not before or at the beginning).
-     *
-     * @param typeIdDef Value returned by the earlier matching call to {@link #writeTypePrefix(WritableTypeId)}
-     *
-     * @throws IOException if there is either an underlying I/O problem or encoding
-     *    issue at format layer
-     * @throws JsonGenerationException if Type ID output is not allowed
-     *   (either at all, or specifically in this position in output)
-     *
-     * @return Argument {@code typeIdDef}, possibly modified
-     *
-     * @since 2.9
-     */
-    public WritableTypeId writeTypeSuffix(WritableTypeId typeIdDef) throws IOException {
-        final JsonToken valueShape = typeIdDef.valueShape;
-        // First: does value need closing?
-        if (valueShape == JsonToken.START_OBJECT) {
-            writeEndObject();
-        } else if (valueShape == JsonToken.START_ARRAY) {
-            writeEndArray();
-        }
-
-        if (typeIdDef.wrapperWritten) {
-            switch (typeIdDef.include) {
-                case WRAPPER_ARRAY:
-                    writeEndArray();
-                    break;
-
-                case PARENT_PROPERTY:
-                // unusually, need to output AFTER value. And no real wrapper...
-                {
-                    Object id = typeIdDef.id;
-                    String idStr = (id instanceof String) ? (String) id : String.valueOf(id);
-                    writeStringField(typeIdDef.asProperty, idStr);
-                }
-                    break;
-
-                case METADATA_PROPERTY:
-                case PAYLOAD_PROPERTY:
-                    // no actual wrapper; included within Object itself
-                    break;
-
-                case WRAPPER_OBJECT:
-                default: // should never occur but...
-                    writeEndObject();
-                    break;
-            }
-        }
-        return typeIdDef;
-    }
-
     /*
      * /**********************************************************************
      * /* Public API, write methods, serializing Java objects
      * /**********************************************************************
      */
-
-    /**
-     * Method for writing given Java object (POJO) as JSON.
-     * Exactly how the object gets written depends on object
-     * in question (and on codec, its configuration); for
-     * typical POJOs it will result in JSON Object, but for others JSON
-     * Array, or String or numeric value (and for nulls, JSON
-     * null literal).
-     * <b>NOTE</b>: generator must have its {@code ObjectCodec}
-     * set to non-null value; for generators created by a mapping
-     * factory this is the case, for others not.
-     *
-     * @param pojo Java value (usually POJO) to write
-     *
-     * @throws IOException if there is either an underlying I/O problem or encoding
-     *    issue at format layer
-     *
-     * @since 2.13 (to eventually replace {@link #writeObject(Object)}
-     */
-    public void writePOJO(Object pojo) throws IOException {
-        writeObject(pojo);
-    }
 
     // TODO: deprecate in 2.14 or later
     /**
@@ -2112,26 +1901,6 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
 
     /**
      * Convenience method for outputting a field entry ("member")
-     * that contains specified data in base64-encoded form.
-     * Equivalent to:
-     *<pre>
-     *  writeFieldName(fieldName);
-     *  writeBinary(value);
-     *</pre>
-     *
-     * @param fieldName Name of the field to write
-     * @param data Binary data for the field to write
-     *
-     * @throws IOException if there is either an underlying I/O problem or encoding
-     *    issue at format layer
-     */
-    public void writeBinaryField(String fieldName, byte[] data) throws IOException {
-        writeFieldName(fieldName);
-        writeBinary(data);
-    }
-
-    /**
-     * Convenience method for outputting a field entry ("member")
      * that has a boolean value. Equivalent to:
      *<pre>
      *  writeFieldName(fieldName);
@@ -2147,24 +1916,6 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
     public void writeBooleanField(String fieldName, boolean value) throws IOException {
         writeFieldName(fieldName);
         writeBoolean(value);
-    }
-
-    /**
-     * Convenience method for outputting a field entry ("member")
-     * that has JSON literal value null. Equivalent to:
-     *<pre>
-     *  writeFieldName(fieldName);
-     *  writeNull();
-     *</pre>
-     *
-     * @param fieldName Name of the field to write
-     *
-     * @throws IOException if there is either an underlying I/O problem or encoding
-     *    issue at format layer
-     */
-    public void writeNullField(String fieldName) throws IOException {
-        writeFieldName(fieldName);
-        writeNull();
     }
 
     /**
@@ -2186,226 +1937,7 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
         writeString(value);
     }
 
-    /**
-     * Convenience method for outputting a field entry ("member")
-     * that has the specified numeric value. Equivalent to:
-     *<pre>
-     *  writeFieldName(fieldName);
-     *  writeNumber(value);
-     *</pre>
-     *
-     * @param fieldName Name of the field to write
-     * @param value Numeric value of the field to write
-     *
-     * @throws IOException if there is either an underlying I/O problem or encoding
-     *    issue at format layer
-     *
-     * @since 2.11
-     */
-    public void writeNumberField(String fieldName, short value) throws IOException {
-        writeFieldName(fieldName);
-        writeNumber(value);
-    }
-
-    /**
-     * Convenience method for outputting a field entry ("member")
-     * that has the specified numeric value. Equivalent to:
-     *<pre>
-     *  writeFieldName(fieldName);
-     *  writeNumber(value);
-     *</pre>
-     *
-     * @param fieldName Name of the field to write
-     * @param value Numeric value of the field to write
-     *
-     * @throws IOException if there is either an underlying I/O problem or encoding
-     *    issue at format layer
-     */
-    public void writeNumberField(String fieldName, int value) throws IOException {
-        writeFieldName(fieldName);
-        writeNumber(value);
-    }
-
-    /**
-     * Convenience method for outputting a field entry ("member")
-     * that has the specified numeric value. Equivalent to:
-     *<pre>
-     *  writeFieldName(fieldName);
-     *  writeNumber(value);
-     *</pre>
-     *
-     * @param fieldName Name of the field to write
-     * @param value Numeric value of the field to write
-     *
-     * @throws IOException if there is either an underlying I/O problem or encoding
-     *    issue at format layer
-     */
-    public void writeNumberField(String fieldName, long value) throws IOException {
-        writeFieldName(fieldName);
-        writeNumber(value);
-    }
-
-    /**
-     * Convenience method for outputting a field entry ("member")
-     * that has the specified numeric value. Equivalent to:
-     *<pre>
-     *  writeFieldName(fieldName);
-     *  writeNumber(value);
-     *</pre>
-     *
-     * @param fieldName Name of the field to write
-     * @param value Numeric value of the field to write
-     *
-     * @throws IOException if there is either an underlying I/O problem or encoding
-     *    issue at format layer
-     *
-     * @since 2.11
-     */
-    public void writeNumberField(String fieldName, BigInteger value) throws IOException {
-        writeFieldName(fieldName);
-        writeNumber(value);
-    }
-
-    /**
-     * Convenience method for outputting a field entry ("member")
-     * that has the specified numeric value. Equivalent to:
-     *<pre>
-     *  writeFieldName(fieldName);
-     *  writeNumber(value);
-     *</pre>
-     *
-     * @param fieldName Name of the field to write
-     * @param value Numeric value of the field to write
-     *
-     * @throws IOException if there is either an underlying I/O problem or encoding
-     *    issue at format layer
-     */
-    public void writeNumberField(String fieldName, float value) throws IOException {
-        writeFieldName(fieldName);
-        writeNumber(value);
-    }
-
-    /**
-     * Convenience method for outputting a field entry ("member")
-     * that has the specified numeric value. Equivalent to:
-     *<pre>
-     *  writeFieldName(fieldName);
-     *  writeNumber(value);
-     *</pre>
-     *
-     * @param fieldName Name of the field to write
-     * @param value Numeric value of the field to write
-     *
-     * @throws IOException if there is either an underlying I/O problem or encoding
-     *    issue at format layer
-     */
-    public void writeNumberField(String fieldName, double value) throws IOException {
-        writeFieldName(fieldName);
-        writeNumber(value);
-    }
-
-    /**
-     * Convenience method for outputting a field entry ("member")
-     * that has the specified numeric value.
-     * Equivalent to:
-     *<pre>
-     *  writeFieldName(fieldName);
-     *  writeNumber(value);
-     *</pre>
-     *
-     * @param fieldName Name of the field to write
-     * @param value Numeric value of the field to write
-     *
-     * @throws IOException if there is either an underlying I/O problem or encoding
-     *    issue at format layer
-     */
-    public void writeNumberField(String fieldName, BigDecimal value) throws IOException {
-        writeFieldName(fieldName);
-        writeNumber(value);
-    }
-
-    /**
-     * Convenience method for outputting a field entry ("member")
-     * (that will contain a JSON Array value), and the START_ARRAY marker.
-     * Equivalent to:
-     *<pre>
-     *  writeFieldName(fieldName);
-     *  writeStartArray();
-     *</pre>
-     *<p>
-     * Note: caller still has to take care to close the array
-     * (by calling {#link #writeEndArray}) after writing all values
-     * of the value Array.
-     *
-     * @param fieldName Name of the field to write
-     *
-     * @throws IOException if there is either an underlying I/O problem or encoding
-     *    issue at format layer
-     */
-    public void writeArrayFieldStart(String fieldName) throws IOException {
-        writeFieldName(fieldName);
-        writeStartArray();
-    }
-
-    /**
-     * Convenience method for outputting a field entry ("member")
-     * (that will contain an Object value), and the START_OBJECT marker.
-     * Equivalent to:
-     *<pre>
-     *  writeFieldName(fieldName);
-     *  writeStartObject();
-     *</pre>
-     *<p>
-     * Note: caller still has to take care to close the Object
-     * (by calling {#link #writeEndObject}) after writing all
-     * entries of the value Object.
-     *
-     * @param fieldName Name of the field to write
-     *
-     * @throws IOException if there is either an underlying I/O problem or encoding
-     *    issue at format layer
-     */
-    public void writeObjectFieldStart(String fieldName) throws IOException {
-        writeFieldName(fieldName);
-        writeStartObject();
-    }
-
-    /**
-     * Convenience method for outputting a field entry ("member")
-     * that has contents of specific Java object as its value.
-     * Equivalent to:
-     *<pre>
-     *  writeFieldName(fieldName);
-     *  writeObject(pojo);
-     *</pre>
-     *<p>
-     * NOTE: actual serialization of POJO value requires assigned {@code ObjectCodec}
-     * and will delegate to that (usually {@code ObjectMapper} of databind layer)
-     *
-     * @param fieldName Name of the field to write
-     * @param pojo POJO value of the field to write
-     *
-     * @throws IOException if there is either an underlying I/O problem or encoding
-     *    issue at format layer
-     */
-    public void writePOJOField(String fieldName, Object pojo) throws IOException {
-        writeObjectField(fieldName, pojo);
-    }
-
     // TODO: deprecate in 2.14 or later
-    /**
-     * Older alias for {@link #writePOJOField}
-     *
-     * @param fieldName Name of the field to write
-     * @param pojo POJO value of the field to write
-     *
-     * @throws IOException if there is either an underlying I/O problem or encoding
-     *    issue at format layer
-     */
-    public void writeObjectField(String fieldName, Object pojo) throws IOException {
-        writeFieldName(fieldName);
-        writeObject(pojo);
-    }
 
     // // // But this method does need to be delegate so...
 
@@ -2420,7 +1952,7 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
      *
      * @throws IOException if there is either an underlying I/O problem or encoding
      *    issue at format layer
-     * 
+     *
      * @since 2.3
      */
     public void writeOmittedField(String fieldName) throws IOException {
@@ -2746,10 +2278,6 @@ public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
      */
     protected void _reportError(String msg) throws JsonGenerationException {
         throw new JsonGenerationException(msg, this);
-    }
-
-    protected final void _throwInternal() {
-        VersionUtil.throwInternal();
     }
 
     protected void _reportUnsupportedOperation() {

@@ -11,20 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ComputeInstanceApplicationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComputeInstanceApplication model =
-            BinaryData
-                .fromString("{\"displayName\":\"cyychunsjlp\",\"endpointUri\":\"twszhvvuic\"}")
+        ComputeInstanceApplication model
+            = BinaryData.fromString("{\"displayName\":\"lfr\",\"endpointUri\":\"qownkiuajewnahw\"}")
                 .toObject(ComputeInstanceApplication.class);
-        Assertions.assertEquals("cyychunsjlp", model.displayName());
-        Assertions.assertEquals("twszhvvuic", model.endpointUri());
+        Assertions.assertEquals("lfr", model.displayName());
+        Assertions.assertEquals("qownkiuajewnahw", model.endpointUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ComputeInstanceApplication model =
-            new ComputeInstanceApplication().withDisplayName("cyychunsjlp").withEndpointUri("twszhvvuic");
+        ComputeInstanceApplication model
+            = new ComputeInstanceApplication().withDisplayName("lfr").withEndpointUri("qownkiuajewnahw");
         model = BinaryData.fromObject(model).toObject(ComputeInstanceApplication.class);
-        Assertions.assertEquals("cyychunsjlp", model.displayName());
-        Assertions.assertEquals("twszhvvuic", model.endpointUri());
+        Assertions.assertEquals("lfr", model.displayName());
+        Assertions.assertEquals("qownkiuajewnahw", model.endpointUri());
     }
 }

@@ -14,27 +14,24 @@ import com.azure.spring.cloud.autoconfigure.implementation.context.properties.Az
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.AbstractAzureHttpConfigurationProperties;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
-import com.azure.spring.cloud.core.implementation.factory.AbstractAzureServiceClientBuilderFactory;
-import com.azure.spring.cloud.core.implementation.factory.credential.AbstractAzureCredentialBuilderFactory;
 import com.azure.spring.cloud.core.implementation.factory.credential.ClientCertificateCredentialBuilderFactory;
 import com.azure.spring.cloud.core.implementation.factory.credential.ClientSecretCredentialBuilderFactory;
 import com.azure.spring.cloud.core.implementation.factory.credential.DefaultAzureCredentialBuilderFactory;
 import com.azure.spring.cloud.core.implementation.factory.credential.ManagedIdentityCredentialBuilderFactory;
 import com.azure.spring.cloud.core.implementation.factory.credential.UsernamePasswordCredentialBuilderFactory;
 import com.azure.spring.cloud.core.provider.authentication.TokenCredentialOptionsProvider;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.BeanFactoryAware;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration;
-import org.springframework.boot.task.TaskExecutorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.util.StringUtils;
@@ -50,12 +47,16 @@ import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureC
  */
 @Configuration(proxyBeanMethods = false)
 @AutoConfigureAfter(TaskExecutionAutoConfiguration.class)
+@Import(AzureServiceClientBuilderFactoryConfiguration.class)
 public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigurationBase {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AzureTokenCredentialAutoConfiguration.class);
 
+    private final GenericApplicationContext applicationContext;
     private final IdentityClientProperties identityClientProperties;
 
-    AzureTokenCredentialAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
+    AzureTokenCredentialAutoConfiguration(GenericApplicationContext applicationContext, AzureGlobalProperties azureGlobalProperties) {
         super(azureGlobalProperties);
+        this.applicationContext = applicationContext;
         this.identityClientProperties = loadProperties(azureGlobalProperties, new IdentityClientProperties());
     }
 
@@ -68,6 +69,7 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
         if (globalTokenCredential != null) {
             return globalTokenCredential;
         } else {
+            LOGGER.debug("No global token credential found, constructing default credential.");
             return factory.build().build();
         }
     }
@@ -95,6 +97,11 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
 
             if (azureProperties.getCredential() == null) {
                 return null;
+            }
+
+            String tokenCredentialBeanName = azureProperties.getCredential().getTokenCredentialBeanName();
+            if (StringUtils.hasText(tokenCredentialBeanName)) {
+                return this.applicationContext.getBean(tokenCredentialBeanName, TokenCredential.class);
             }
 
             final TokenCredentialOptionsProvider.TokenCredentialOptions properties = azureProperties.getCredential();
@@ -201,51 +208,14 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
         return factory;
     }
 
-    /**
-     * The BeanPostProcessor to apply the default token credential to all service client builder factories.
-     * @return the BPP.
-     */
-    @Bean
-    static AzureServiceClientBuilderFactoryPostProcessor builderFactoryBeanPostProcessor() {
-        return new AzureServiceClientBuilderFactoryPostProcessor();
-    }
-
-    @SuppressWarnings("removal")
     @Bean(name = DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME)
     @ConditionalOnMissingBean(name = DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME)
     ThreadPoolTaskExecutor credentialTaskExecutor() {
-        return new TaskExecutorBuilder()
-            .corePoolSize(8)
-            .allowCoreThreadTimeOut(true)
-            .threadNamePrefix(DEFAULT_CREDENTIAL_THREAD_NAME_PREFIX)
-            .build();
-    }
-
-    static class AzureServiceClientBuilderFactoryPostProcessor implements BeanPostProcessor, BeanFactoryAware {
-
-        private BeanFactory beanFactory;
-
-        @Override
-        @SuppressWarnings({ "rawtypes", "unchecked" })
-        public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-            if (bean instanceof AbstractAzureCredentialBuilderFactory) {
-                return bean;
-            }
-
-            if (bean instanceof AbstractAzureServiceClientBuilderFactory
-                && beanFactory.containsBean(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)) {
-                AbstractAzureServiceClientBuilderFactory factory = (AbstractAzureServiceClientBuilderFactory) bean;
-                factory.setDefaultTokenCredential(
-                    (TokenCredential) beanFactory.getBean(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME));
-                factory.setTokenCredentialResolver(beanFactory.getBean(AzureTokenCredentialResolver.class));
-            }
-            return bean;
-        }
-
-        @Override
-        public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
-            this.beanFactory = beanFactory;
-        }
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(8);
+        executor.setAllowCoreThreadTimeOut(true);
+        executor.setThreadNamePrefix(DEFAULT_CREDENTIAL_THREAD_NAME_PREFIX);
+        return executor;
     }
 
     static class IdentityClientProperties extends AbstractAzureHttpConfigurationProperties {

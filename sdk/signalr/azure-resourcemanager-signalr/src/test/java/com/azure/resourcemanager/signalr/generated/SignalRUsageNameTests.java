@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class SignalRUsageNameTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SignalRUsageName model =
-            BinaryData
-                .fromString("{\"value\":\"qsl\",\"localizedValue\":\"yvxyqjp\"}")
-                .toObject(SignalRUsageName.class);
+        SignalRUsageName model = BinaryData.fromString("{\"value\":\"qsl\",\"localizedValue\":\"yvxyqjp\"}")
+            .toObject(SignalRUsageName.class);
         Assertions.assertEquals("qsl", model.value());
         Assertions.assertEquals("yvxyqjp", model.localizedValue());
     }

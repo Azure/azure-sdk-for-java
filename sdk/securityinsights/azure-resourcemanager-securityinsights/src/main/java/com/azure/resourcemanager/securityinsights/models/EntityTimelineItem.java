@@ -5,30 +5,109 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Entity timeline Item. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "kind",
-    defaultImpl = EntityTimelineItem.class)
-@JsonTypeName("EntityTimelineItem")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Activity", value = ActivityTimelineItem.class),
-    @JsonSubTypes.Type(name = "Bookmark", value = BookmarkTimelineItem.class),
-    @JsonSubTypes.Type(name = "Anomaly", value = AnomalyTimelineItem.class),
-    @JsonSubTypes.Type(name = "SecurityAlert", value = SecurityAlertTimelineItem.class)
-})
+/**
+ * Entity timeline Item.
+ */
 @Immutable
-public class EntityTimelineItem {
+public class EntityTimelineItem implements JsonSerializable<EntityTimelineItem> {
+    /*
+     * The entity query kind type.
+     */
+    private EntityTimelineKind kind = EntityTimelineKind.fromString("EntityTimelineItem");
+
+    /**
+     * Creates an instance of EntityTimelineItem class.
+     */
+    public EntityTimelineItem() {
+    }
+
+    /**
+     * Get the kind property: The entity query kind type.
+     * 
+     * @return the kind value.
+     */
+    public EntityTimelineKind kind() {
+        return this.kind;
+    }
+
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EntityTimelineItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EntityTimelineItem if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EntityTimelineItem.
+     */
+    public static EntityTimelineItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("kind".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Activity".equals(discriminatorValue)) {
+                    return ActivityTimelineItem.fromJson(readerToUse.reset());
+                } else if ("Bookmark".equals(discriminatorValue)) {
+                    return BookmarkTimelineItem.fromJson(readerToUse.reset());
+                } else if ("Anomaly".equals(discriminatorValue)) {
+                    return AnomalyTimelineItem.fromJson(readerToUse.reset());
+                } else if ("SecurityAlert".equals(discriminatorValue)) {
+                    return SecurityAlertTimelineItem.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static EntityTimelineItem fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EntityTimelineItem deserializedEntityTimelineItem = new EntityTimelineItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kind".equals(fieldName)) {
+                    deserializedEntityTimelineItem.kind = EntityTimelineKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEntityTimelineItem;
+        });
     }
 }

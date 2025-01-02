@@ -24,9 +24,9 @@ public final class ApiSpecImportRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiSpecImportRequest model
-            = new ApiSpecImportRequest().withValue("srtslhspkdeem").withFormat(ApiSpecImportSourceFormat.INLINE)
-                .withSpecification(new ApiSpecImportRequestSpecification().withName("ag").withVersion("t"));
+        ApiSpecImportRequest model = new ApiSpecImportRequest().withValue("srtslhspkdeem")
+            .withFormat(ApiSpecImportSourceFormat.INLINE)
+            .withSpecification(new ApiSpecImportRequestSpecification().withName("ag").withVersion("t"));
         model = BinaryData.fromObject(model).toObject(ApiSpecImportRequest.class);
         Assertions.assertEquals("srtslhspkdeem", model.value());
         Assertions.assertEquals(ApiSpecImportSourceFormat.INLINE, model.format());

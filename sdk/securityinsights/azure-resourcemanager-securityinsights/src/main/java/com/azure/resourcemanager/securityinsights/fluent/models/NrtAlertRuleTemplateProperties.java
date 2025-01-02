@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.AlertDetailsOverride;
 import com.azure.resourcemanager.securityinsights.models.AlertRuleTemplateDataSource;
 import com.azure.resourcemanager.securityinsights.models.AlertRuleTemplateWithMitreProperties;
@@ -13,60 +17,70 @@ import com.azure.resourcemanager.securityinsights.models.AttackTactic;
 import com.azure.resourcemanager.securityinsights.models.EntityMapping;
 import com.azure.resourcemanager.securityinsights.models.EventGroupingSettings;
 import com.azure.resourcemanager.securityinsights.models.TemplateStatus;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** NRT alert rule template properties. */
+/**
+ * NRT alert rule template properties.
+ */
 @Fluent
 public final class NrtAlertRuleTemplateProperties extends AlertRuleTemplateWithMitreProperties {
     /*
      * The query that creates alerts for this rule.
      */
-    @JsonProperty(value = "query")
     private String query;
 
     /*
      * The severity for alerts created by this alert rule.
      */
-    @JsonProperty(value = "severity")
     private AlertSeverity severity;
 
     /*
      * The version of this template - in format <a.b.c>, where all are numbers. For example <1.0.2>.
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * Dictionary of string key-value pairs of columns to be attached to the alert
      */
-    @JsonProperty(value = "customDetails")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> customDetails;
 
     /*
      * Array of the entity mappings of the alert rule
      */
-    @JsonProperty(value = "entityMappings")
     private List<EntityMapping> entityMappings;
 
     /*
      * The alert details override settings
      */
-    @JsonProperty(value = "alertDetailsOverride")
     private AlertDetailsOverride alertDetailsOverride;
 
     /*
      * The event grouping settings.
      */
-    @JsonProperty(value = "eventGroupingSettings")
     private EventGroupingSettings eventGroupingSettings;
+
+    /*
+     * The time that this alert rule template has been added.
+     */
+    private OffsetDateTime createdDateUtc;
+
+    /*
+     * The last time that this alert rule template has been updated.
+     */
+    private OffsetDateTime lastUpdatedDateUtc;
+
+    /**
+     * Creates an instance of NrtAlertRuleTemplateProperties class.
+     */
+    public NrtAlertRuleTemplateProperties() {
+    }
 
     /**
      * Get the query property: The query that creates alerts for this rule.
-     *
+     * 
      * @return the query value.
      */
     public String query() {
@@ -75,7 +89,7 @@ public final class NrtAlertRuleTemplateProperties extends AlertRuleTemplateWithM
 
     /**
      * Set the query property: The query that creates alerts for this rule.
-     *
+     * 
      * @param query the query value to set.
      * @return the NrtAlertRuleTemplateProperties object itself.
      */
@@ -86,7 +100,7 @@ public final class NrtAlertRuleTemplateProperties extends AlertRuleTemplateWithM
 
     /**
      * Get the severity property: The severity for alerts created by this alert rule.
-     *
+     * 
      * @return the severity value.
      */
     public AlertSeverity severity() {
@@ -95,7 +109,7 @@ public final class NrtAlertRuleTemplateProperties extends AlertRuleTemplateWithM
 
     /**
      * Set the severity property: The severity for alerts created by this alert rule.
-     *
+     * 
      * @param severity the severity value to set.
      * @return the NrtAlertRuleTemplateProperties object itself.
      */
@@ -107,7 +121,7 @@ public final class NrtAlertRuleTemplateProperties extends AlertRuleTemplateWithM
     /**
      * Get the version property: The version of this template - in format &lt;a.b.c&gt;, where all are numbers. For
      * example &lt;1.0.2&gt;.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -117,7 +131,7 @@ public final class NrtAlertRuleTemplateProperties extends AlertRuleTemplateWithM
     /**
      * Set the version property: The version of this template - in format &lt;a.b.c&gt;, where all are numbers. For
      * example &lt;1.0.2&gt;.
-     *
+     * 
      * @param version the version value to set.
      * @return the NrtAlertRuleTemplateProperties object itself.
      */
@@ -128,7 +142,7 @@ public final class NrtAlertRuleTemplateProperties extends AlertRuleTemplateWithM
 
     /**
      * Get the customDetails property: Dictionary of string key-value pairs of columns to be attached to the alert.
-     *
+     * 
      * @return the customDetails value.
      */
     public Map<String, String> customDetails() {
@@ -137,7 +151,7 @@ public final class NrtAlertRuleTemplateProperties extends AlertRuleTemplateWithM
 
     /**
      * Set the customDetails property: Dictionary of string key-value pairs of columns to be attached to the alert.
-     *
+     * 
      * @param customDetails the customDetails value to set.
      * @return the NrtAlertRuleTemplateProperties object itself.
      */
@@ -148,7 +162,7 @@ public final class NrtAlertRuleTemplateProperties extends AlertRuleTemplateWithM
 
     /**
      * Get the entityMappings property: Array of the entity mappings of the alert rule.
-     *
+     * 
      * @return the entityMappings value.
      */
     public List<EntityMapping> entityMappings() {
@@ -157,7 +171,7 @@ public final class NrtAlertRuleTemplateProperties extends AlertRuleTemplateWithM
 
     /**
      * Set the entityMappings property: Array of the entity mappings of the alert rule.
-     *
+     * 
      * @param entityMappings the entityMappings value to set.
      * @return the NrtAlertRuleTemplateProperties object itself.
      */
@@ -168,7 +182,7 @@ public final class NrtAlertRuleTemplateProperties extends AlertRuleTemplateWithM
 
     /**
      * Get the alertDetailsOverride property: The alert details override settings.
-     *
+     * 
      * @return the alertDetailsOverride value.
      */
     public AlertDetailsOverride alertDetailsOverride() {
@@ -177,7 +191,7 @@ public final class NrtAlertRuleTemplateProperties extends AlertRuleTemplateWithM
 
     /**
      * Set the alertDetailsOverride property: The alert details override settings.
-     *
+     * 
      * @param alertDetailsOverride the alertDetailsOverride value to set.
      * @return the NrtAlertRuleTemplateProperties object itself.
      */
@@ -188,7 +202,7 @@ public final class NrtAlertRuleTemplateProperties extends AlertRuleTemplateWithM
 
     /**
      * Get the eventGroupingSettings property: The event grouping settings.
-     *
+     * 
      * @return the eventGroupingSettings value.
      */
     public EventGroupingSettings eventGroupingSettings() {
@@ -197,7 +211,7 @@ public final class NrtAlertRuleTemplateProperties extends AlertRuleTemplateWithM
 
     /**
      * Set the eventGroupingSettings property: The event grouping settings.
-     *
+     * 
      * @param eventGroupingSettings the eventGroupingSettings value to set.
      * @return the NrtAlertRuleTemplateProperties object itself.
      */
@@ -206,51 +220,85 @@ public final class NrtAlertRuleTemplateProperties extends AlertRuleTemplateWithM
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the createdDateUtc property: The time that this alert rule template has been added.
+     * 
+     * @return the createdDateUtc value.
+     */
+    @Override
+    public OffsetDateTime createdDateUtc() {
+        return this.createdDateUtc;
+    }
+
+    /**
+     * Get the lastUpdatedDateUtc property: The last time that this alert rule template has been updated.
+     * 
+     * @return the lastUpdatedDateUtc value.
+     */
+    @Override
+    public OffsetDateTime lastUpdatedDateUtc() {
+        return this.lastUpdatedDateUtc;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NrtAlertRuleTemplateProperties withTactics(List<AttackTactic> tactics) {
         super.withTactics(tactics);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NrtAlertRuleTemplateProperties withTechniques(List<String> techniques) {
         super.withTechniques(techniques);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public NrtAlertRuleTemplateProperties withAlertRulesCreatedByTemplateCount(
-        Integer alertRulesCreatedByTemplateCount) {
+    public NrtAlertRuleTemplateProperties
+        withAlertRulesCreatedByTemplateCount(Integer alertRulesCreatedByTemplateCount) {
         super.withAlertRulesCreatedByTemplateCount(alertRulesCreatedByTemplateCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NrtAlertRuleTemplateProperties withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NrtAlertRuleTemplateProperties withDisplayName(String displayName) {
         super.withDisplayName(displayName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public NrtAlertRuleTemplateProperties withRequiredDataConnectors(
-        List<AlertRuleTemplateDataSource> requiredDataConnectors) {
+    public NrtAlertRuleTemplateProperties
+        withRequiredDataConnectors(List<AlertRuleTemplateDataSource> requiredDataConnectors) {
         super.withRequiredDataConnectors(requiredDataConnectors);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NrtAlertRuleTemplateProperties withStatus(TemplateStatus status) {
         super.withStatus(status);
@@ -259,12 +307,11 @@ public final class NrtAlertRuleTemplateProperties extends AlertRuleTemplateWithM
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (entityMappings() != null) {
             entityMappings().forEach(e -> e.validate());
         }
@@ -274,5 +321,104 @@ public final class NrtAlertRuleTemplateProperties extends AlertRuleTemplateWithM
         if (eventGroupingSettings() != null) {
             eventGroupingSettings().validate();
         }
+        if (requiredDataConnectors() != null) {
+            requiredDataConnectors().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("alertRulesCreatedByTemplateCount", alertRulesCreatedByTemplateCount());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("displayName", displayName());
+        jsonWriter.writeArrayField("requiredDataConnectors", requiredDataConnectors(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("status", status() == null ? null : status().toString());
+        jsonWriter.writeArrayField("tactics", tactics(),
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("techniques", techniques(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("query", this.query);
+        jsonWriter.writeStringField("severity", this.severity == null ? null : this.severity.toString());
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeMapField("customDetails", this.customDetails, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("entityMappings", this.entityMappings,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("alertDetailsOverride", this.alertDetailsOverride);
+        jsonWriter.writeJsonField("eventGroupingSettings", this.eventGroupingSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NrtAlertRuleTemplateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NrtAlertRuleTemplateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NrtAlertRuleTemplateProperties.
+     */
+    public static NrtAlertRuleTemplateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NrtAlertRuleTemplateProperties deserializedNrtAlertRuleTemplateProperties
+                = new NrtAlertRuleTemplateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("alertRulesCreatedByTemplateCount".equals(fieldName)) {
+                    deserializedNrtAlertRuleTemplateProperties
+                        .withAlertRulesCreatedByTemplateCount(reader.getNullable(JsonReader::getInt));
+                } else if ("lastUpdatedDateUTC".equals(fieldName)) {
+                    deserializedNrtAlertRuleTemplateProperties.lastUpdatedDateUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("createdDateUTC".equals(fieldName)) {
+                    deserializedNrtAlertRuleTemplateProperties.createdDateUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedNrtAlertRuleTemplateProperties.withDescription(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedNrtAlertRuleTemplateProperties.withDisplayName(reader.getString());
+                } else if ("requiredDataConnectors".equals(fieldName)) {
+                    List<AlertRuleTemplateDataSource> requiredDataConnectors
+                        = reader.readArray(reader1 -> AlertRuleTemplateDataSource.fromJson(reader1));
+                    deserializedNrtAlertRuleTemplateProperties.withRequiredDataConnectors(requiredDataConnectors);
+                } else if ("status".equals(fieldName)) {
+                    deserializedNrtAlertRuleTemplateProperties
+                        .withStatus(TemplateStatus.fromString(reader.getString()));
+                } else if ("tactics".equals(fieldName)) {
+                    List<AttackTactic> tactics
+                        = reader.readArray(reader1 -> AttackTactic.fromString(reader1.getString()));
+                    deserializedNrtAlertRuleTemplateProperties.withTactics(tactics);
+                } else if ("techniques".equals(fieldName)) {
+                    List<String> techniques = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNrtAlertRuleTemplateProperties.withTechniques(techniques);
+                } else if ("query".equals(fieldName)) {
+                    deserializedNrtAlertRuleTemplateProperties.query = reader.getString();
+                } else if ("severity".equals(fieldName)) {
+                    deserializedNrtAlertRuleTemplateProperties.severity = AlertSeverity.fromString(reader.getString());
+                } else if ("version".equals(fieldName)) {
+                    deserializedNrtAlertRuleTemplateProperties.version = reader.getString();
+                } else if ("customDetails".equals(fieldName)) {
+                    Map<String, String> customDetails = reader.readMap(reader1 -> reader1.getString());
+                    deserializedNrtAlertRuleTemplateProperties.customDetails = customDetails;
+                } else if ("entityMappings".equals(fieldName)) {
+                    List<EntityMapping> entityMappings = reader.readArray(reader1 -> EntityMapping.fromJson(reader1));
+                    deserializedNrtAlertRuleTemplateProperties.entityMappings = entityMappings;
+                } else if ("alertDetailsOverride".equals(fieldName)) {
+                    deserializedNrtAlertRuleTemplateProperties.alertDetailsOverride
+                        = AlertDetailsOverride.fromJson(reader);
+                } else if ("eventGroupingSettings".equals(fieldName)) {
+                    deserializedNrtAlertRuleTemplateProperties.eventGroupingSettings
+                        = EventGroupingSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNrtAlertRuleTemplateProperties;
+        });
     }
 }

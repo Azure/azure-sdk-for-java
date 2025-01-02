@@ -78,7 +78,6 @@ public final class WorkflowOutputParameter extends WorkflowParameter {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

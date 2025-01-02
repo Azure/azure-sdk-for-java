@@ -5,68 +5,70 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The properties that are associated with an input.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = InputProperties.class)
-@JsonTypeName("InputProperties")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Stream", value = StreamInputProperties.class),
-    @JsonSubTypes.Type(name = "Reference", value = ReferenceInputProperties.class) })
 @Fluent
-public class InputProperties {
+public class InputProperties implements JsonSerializable<InputProperties> {
+    /*
+     * Indicates whether the input is a source of reference data or stream data. Required on PUT (CreateOrReplace)
+     * requests.
+     */
+    private String type = "InputProperties";
+
     /*
      * Describes how data from an input is serialized or how data is serialized when written to an output. Required on
      * PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "serialization")
     private Serialization serialization;
 
     /*
      * Describes conditions applicable to the Input, Output, or the job overall, that warrant customer attention.
      */
-    @JsonProperty(value = "diagnostics", access = JsonProperty.Access.WRITE_ONLY)
     private Diagnostics diagnostics;
 
     /*
-     * The current entity tag for the input. This is an opaque string. You can use it to detect whether the resource
-     * has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations
-     * for optimistic concurrency.
+     * The current entity tag for the input. This is an opaque string. You can use it to detect whether the resource has
+     * changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations for
+     * optimistic concurrency.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Describes how input data is compressed
      */
-    @JsonProperty(value = "compression")
     private Compression compression;
 
     /*
      * partitionKey Describes a key in the input data which is used for partitioning the input data
      */
-    @JsonProperty(value = "partitionKey")
     private String partitionKey;
 
     /*
      * Settings which determine whether to read watermark events.
      */
-    @JsonProperty(value = "watermarkSettings")
     private InputWatermarkProperties watermarkSettings;
 
     /**
      * Creates an instance of InputProperties class.
      */
     public InputProperties() {
+    }
+
+    /**
+     * Get the type property: Indicates whether the input is a source of reference data or stream data. Required on PUT
+     * (CreateOrReplace) requests.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -102,6 +104,18 @@ public class InputProperties {
     }
 
     /**
+     * Set the diagnostics property: Describes conditions applicable to the Input, Output, or the job overall, that
+     * warrant customer attention.
+     * 
+     * @param diagnostics the diagnostics value to set.
+     * @return the InputProperties object itself.
+     */
+    InputProperties withDiagnostics(Diagnostics diagnostics) {
+        this.diagnostics = diagnostics;
+        return this;
+    }
+
+    /**
      * Get the etag property: The current entity tag for the input. This is an opaque string. You can use it to detect
      * whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers
      * for write operations for optimistic concurrency.
@@ -110,6 +124,19 @@ public class InputProperties {
      */
     public String etag() {
         return this.etag;
+    }
+
+    /**
+     * Set the etag property: The current entity tag for the input. This is an opaque string. You can use it to detect
+     * whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers
+     * for write operations for optimistic concurrency.
+     * 
+     * @param etag the etag value to set.
+     * @return the InputProperties object itself.
+     */
+    InputProperties withEtag(String etag) {
+        this.etag = etag;
+        return this;
     }
 
     /**
@@ -192,5 +219,84 @@ public class InputProperties {
         if (watermarkSettings() != null) {
             watermarkSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("serialization", this.serialization);
+        jsonWriter.writeJsonField("compression", this.compression);
+        jsonWriter.writeStringField("partitionKey", this.partitionKey);
+        jsonWriter.writeJsonField("watermarkSettings", this.watermarkSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InputProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InputProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InputProperties.
+     */
+    public static InputProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Stream".equals(discriminatorValue)) {
+                    return StreamInputProperties.fromJson(readerToUse.reset());
+                } else if ("Reference".equals(discriminatorValue)) {
+                    return ReferenceInputProperties.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static InputProperties fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InputProperties deserializedInputProperties = new InputProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedInputProperties.type = reader.getString();
+                } else if ("serialization".equals(fieldName)) {
+                    deserializedInputProperties.serialization = Serialization.fromJson(reader);
+                } else if ("diagnostics".equals(fieldName)) {
+                    deserializedInputProperties.diagnostics = Diagnostics.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedInputProperties.etag = reader.getString();
+                } else if ("compression".equals(fieldName)) {
+                    deserializedInputProperties.compression = Compression.fromJson(reader);
+                } else if ("partitionKey".equals(fieldName)) {
+                    deserializedInputProperties.partitionKey = reader.getString();
+                } else if ("watermarkSettings".equals(fieldName)) {
+                    deserializedInputProperties.watermarkSettings = InputWatermarkProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInputProperties;
+        });
     }
 }

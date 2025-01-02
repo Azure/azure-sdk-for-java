@@ -5,114 +5,111 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.ContentLink;
 import com.azure.resourcemanager.automation.models.RunbookParameter;
 import com.azure.resourcemanager.automation.models.RunbookProvisioningState;
 import com.azure.resourcemanager.automation.models.RunbookState;
 import com.azure.resourcemanager.automation.models.RunbookTypeEnum;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
-/** Definition of the runbook property type. */
+/**
+ * Definition of the runbook property type.
+ */
 @Fluent
-public final class RunbookPropertiesInner {
+public final class RunbookPropertiesInner implements JsonSerializable<RunbookPropertiesInner> {
     /*
      * Gets or sets the type of the runbook.
      */
-    @JsonProperty(value = "runbookType")
     private RunbookTypeEnum runbookType;
 
     /*
      * Gets or sets the published runbook content link.
      */
-    @JsonProperty(value = "publishContentLink")
     private ContentLink publishContentLink;
 
     /*
      * Gets or sets the state of the runbook.
      */
-    @JsonProperty(value = "state")
     private RunbookState state;
 
     /*
      * Gets or sets verbose log option.
      */
-    @JsonProperty(value = "logVerbose")
     private Boolean logVerbose;
 
     /*
      * Gets or sets progress log option.
      */
-    @JsonProperty(value = "logProgress")
     private Boolean logProgress;
 
     /*
      * Gets or sets the option to log activity trace of the runbook.
      */
-    @JsonProperty(value = "logActivityTrace")
     private Integer logActivityTrace;
 
     /*
      * Gets or sets the job count of the runbook.
      */
-    @JsonProperty(value = "jobCount")
     private Integer jobCount;
 
     /*
      * Gets or sets the runbook parameters.
      */
-    @JsonProperty(value = "parameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, RunbookParameter> parameters;
 
     /*
      * Gets or sets the runbook output types.
      */
-    @JsonProperty(value = "outputTypes")
     private List<String> outputTypes;
 
     /*
      * Gets or sets the draft runbook properties.
      */
-    @JsonProperty(value = "draft")
     private RunbookDraftInner draft;
 
     /*
      * Gets or sets the provisioning state of the runbook.
      */
-    @JsonProperty(value = "provisioningState")
     private RunbookProvisioningState provisioningState;
 
     /*
      * Gets or sets the last modified by.
      */
-    @JsonProperty(value = "lastModifiedBy")
     private String lastModifiedBy;
 
     /*
      * Gets or sets the creation time.
      */
-    @JsonProperty(value = "creationTime")
     private OffsetDateTime creationTime;
 
     /*
      * Gets or sets the last modified time.
      */
-    @JsonProperty(value = "lastModifiedTime")
     private OffsetDateTime lastModifiedTime;
 
     /*
      * Gets or sets the description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
+     * Creates an instance of RunbookPropertiesInner class.
+     */
+    public RunbookPropertiesInner() {
+    }
+
+    /**
      * Get the runbookType property: Gets or sets the type of the runbook.
-     *
+     * 
      * @return the runbookType value.
      */
     public RunbookTypeEnum runbookType() {
@@ -121,7 +118,7 @@ public final class RunbookPropertiesInner {
 
     /**
      * Set the runbookType property: Gets or sets the type of the runbook.
-     *
+     * 
      * @param runbookType the runbookType value to set.
      * @return the RunbookPropertiesInner object itself.
      */
@@ -132,7 +129,7 @@ public final class RunbookPropertiesInner {
 
     /**
      * Get the publishContentLink property: Gets or sets the published runbook content link.
-     *
+     * 
      * @return the publishContentLink value.
      */
     public ContentLink publishContentLink() {
@@ -141,7 +138,7 @@ public final class RunbookPropertiesInner {
 
     /**
      * Set the publishContentLink property: Gets or sets the published runbook content link.
-     *
+     * 
      * @param publishContentLink the publishContentLink value to set.
      * @return the RunbookPropertiesInner object itself.
      */
@@ -152,7 +149,7 @@ public final class RunbookPropertiesInner {
 
     /**
      * Get the state property: Gets or sets the state of the runbook.
-     *
+     * 
      * @return the state value.
      */
     public RunbookState state() {
@@ -161,7 +158,7 @@ public final class RunbookPropertiesInner {
 
     /**
      * Set the state property: Gets or sets the state of the runbook.
-     *
+     * 
      * @param state the state value to set.
      * @return the RunbookPropertiesInner object itself.
      */
@@ -172,7 +169,7 @@ public final class RunbookPropertiesInner {
 
     /**
      * Get the logVerbose property: Gets or sets verbose log option.
-     *
+     * 
      * @return the logVerbose value.
      */
     public Boolean logVerbose() {
@@ -181,7 +178,7 @@ public final class RunbookPropertiesInner {
 
     /**
      * Set the logVerbose property: Gets or sets verbose log option.
-     *
+     * 
      * @param logVerbose the logVerbose value to set.
      * @return the RunbookPropertiesInner object itself.
      */
@@ -192,7 +189,7 @@ public final class RunbookPropertiesInner {
 
     /**
      * Get the logProgress property: Gets or sets progress log option.
-     *
+     * 
      * @return the logProgress value.
      */
     public Boolean logProgress() {
@@ -201,7 +198,7 @@ public final class RunbookPropertiesInner {
 
     /**
      * Set the logProgress property: Gets or sets progress log option.
-     *
+     * 
      * @param logProgress the logProgress value to set.
      * @return the RunbookPropertiesInner object itself.
      */
@@ -212,7 +209,7 @@ public final class RunbookPropertiesInner {
 
     /**
      * Get the logActivityTrace property: Gets or sets the option to log activity trace of the runbook.
-     *
+     * 
      * @return the logActivityTrace value.
      */
     public Integer logActivityTrace() {
@@ -221,7 +218,7 @@ public final class RunbookPropertiesInner {
 
     /**
      * Set the logActivityTrace property: Gets or sets the option to log activity trace of the runbook.
-     *
+     * 
      * @param logActivityTrace the logActivityTrace value to set.
      * @return the RunbookPropertiesInner object itself.
      */
@@ -232,7 +229,7 @@ public final class RunbookPropertiesInner {
 
     /**
      * Get the jobCount property: Gets or sets the job count of the runbook.
-     *
+     * 
      * @return the jobCount value.
      */
     public Integer jobCount() {
@@ -241,7 +238,7 @@ public final class RunbookPropertiesInner {
 
     /**
      * Set the jobCount property: Gets or sets the job count of the runbook.
-     *
+     * 
      * @param jobCount the jobCount value to set.
      * @return the RunbookPropertiesInner object itself.
      */
@@ -252,7 +249,7 @@ public final class RunbookPropertiesInner {
 
     /**
      * Get the parameters property: Gets or sets the runbook parameters.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, RunbookParameter> parameters() {
@@ -261,7 +258,7 @@ public final class RunbookPropertiesInner {
 
     /**
      * Set the parameters property: Gets or sets the runbook parameters.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the RunbookPropertiesInner object itself.
      */
@@ -272,7 +269,7 @@ public final class RunbookPropertiesInner {
 
     /**
      * Get the outputTypes property: Gets or sets the runbook output types.
-     *
+     * 
      * @return the outputTypes value.
      */
     public List<String> outputTypes() {
@@ -281,7 +278,7 @@ public final class RunbookPropertiesInner {
 
     /**
      * Set the outputTypes property: Gets or sets the runbook output types.
-     *
+     * 
      * @param outputTypes the outputTypes value to set.
      * @return the RunbookPropertiesInner object itself.
      */
@@ -292,7 +289,7 @@ public final class RunbookPropertiesInner {
 
     /**
      * Get the draft property: Gets or sets the draft runbook properties.
-     *
+     * 
      * @return the draft value.
      */
     public RunbookDraftInner draft() {
@@ -301,7 +298,7 @@ public final class RunbookPropertiesInner {
 
     /**
      * Set the draft property: Gets or sets the draft runbook properties.
-     *
+     * 
      * @param draft the draft value to set.
      * @return the RunbookPropertiesInner object itself.
      */
@@ -312,7 +309,7 @@ public final class RunbookPropertiesInner {
 
     /**
      * Get the provisioningState property: Gets or sets the provisioning state of the runbook.
-     *
+     * 
      * @return the provisioningState value.
      */
     public RunbookProvisioningState provisioningState() {
@@ -321,7 +318,7 @@ public final class RunbookPropertiesInner {
 
     /**
      * Set the provisioningState property: Gets or sets the provisioning state of the runbook.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the RunbookPropertiesInner object itself.
      */
@@ -332,7 +329,7 @@ public final class RunbookPropertiesInner {
 
     /**
      * Get the lastModifiedBy property: Gets or sets the last modified by.
-     *
+     * 
      * @return the lastModifiedBy value.
      */
     public String lastModifiedBy() {
@@ -341,7 +338,7 @@ public final class RunbookPropertiesInner {
 
     /**
      * Set the lastModifiedBy property: Gets or sets the last modified by.
-     *
+     * 
      * @param lastModifiedBy the lastModifiedBy value to set.
      * @return the RunbookPropertiesInner object itself.
      */
@@ -352,7 +349,7 @@ public final class RunbookPropertiesInner {
 
     /**
      * Get the creationTime property: Gets or sets the creation time.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -361,7 +358,7 @@ public final class RunbookPropertiesInner {
 
     /**
      * Set the creationTime property: Gets or sets the creation time.
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the RunbookPropertiesInner object itself.
      */
@@ -372,7 +369,7 @@ public final class RunbookPropertiesInner {
 
     /**
      * Get the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -381,7 +378,7 @@ public final class RunbookPropertiesInner {
 
     /**
      * Set the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @param lastModifiedTime the lastModifiedTime value to set.
      * @return the RunbookPropertiesInner object itself.
      */
@@ -392,7 +389,7 @@ public final class RunbookPropertiesInner {
 
     /**
      * Get the description property: Gets or sets the description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -401,7 +398,7 @@ public final class RunbookPropertiesInner {
 
     /**
      * Set the description property: Gets or sets the description.
-     *
+     * 
      * @param description the description value to set.
      * @return the RunbookPropertiesInner object itself.
      */
@@ -412,7 +409,7 @@ public final class RunbookPropertiesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -420,17 +417,103 @@ public final class RunbookPropertiesInner {
             publishContentLink().validate();
         }
         if (parameters() != null) {
-            parameters()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (draft() != null) {
             draft().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("runbookType", this.runbookType == null ? null : this.runbookType.toString());
+        jsonWriter.writeJsonField("publishContentLink", this.publishContentLink);
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeBooleanField("logVerbose", this.logVerbose);
+        jsonWriter.writeBooleanField("logProgress", this.logProgress);
+        jsonWriter.writeNumberField("logActivityTrace", this.logActivityTrace);
+        jsonWriter.writeNumberField("jobCount", this.jobCount);
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("outputTypes", this.outputTypes, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("draft", this.draft);
+        jsonWriter.writeStringField("provisioningState",
+            this.provisioningState == null ? null : this.provisioningState.toString());
+        jsonWriter.writeStringField("lastModifiedBy", this.lastModifiedBy);
+        jsonWriter.writeStringField("creationTime",
+            this.creationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationTime));
+        jsonWriter.writeStringField("lastModifiedTime",
+            this.lastModifiedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedTime));
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunbookPropertiesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunbookPropertiesInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RunbookPropertiesInner.
+     */
+    public static RunbookPropertiesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RunbookPropertiesInner deserializedRunbookPropertiesInner = new RunbookPropertiesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("runbookType".equals(fieldName)) {
+                    deserializedRunbookPropertiesInner.runbookType = RunbookTypeEnum.fromString(reader.getString());
+                } else if ("publishContentLink".equals(fieldName)) {
+                    deserializedRunbookPropertiesInner.publishContentLink = ContentLink.fromJson(reader);
+                } else if ("state".equals(fieldName)) {
+                    deserializedRunbookPropertiesInner.state = RunbookState.fromString(reader.getString());
+                } else if ("logVerbose".equals(fieldName)) {
+                    deserializedRunbookPropertiesInner.logVerbose = reader.getNullable(JsonReader::getBoolean);
+                } else if ("logProgress".equals(fieldName)) {
+                    deserializedRunbookPropertiesInner.logProgress = reader.getNullable(JsonReader::getBoolean);
+                } else if ("logActivityTrace".equals(fieldName)) {
+                    deserializedRunbookPropertiesInner.logActivityTrace = reader.getNullable(JsonReader::getInt);
+                } else if ("jobCount".equals(fieldName)) {
+                    deserializedRunbookPropertiesInner.jobCount = reader.getNullable(JsonReader::getInt);
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, RunbookParameter> parameters
+                        = reader.readMap(reader1 -> RunbookParameter.fromJson(reader1));
+                    deserializedRunbookPropertiesInner.parameters = parameters;
+                } else if ("outputTypes".equals(fieldName)) {
+                    List<String> outputTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRunbookPropertiesInner.outputTypes = outputTypes;
+                } else if ("draft".equals(fieldName)) {
+                    deserializedRunbookPropertiesInner.draft = RunbookDraftInner.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedRunbookPropertiesInner.provisioningState
+                        = RunbookProvisioningState.fromString(reader.getString());
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedRunbookPropertiesInner.lastModifiedBy = reader.getString();
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedRunbookPropertiesInner.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedRunbookPropertiesInner.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedRunbookPropertiesInner.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRunbookPropertiesInner;
+        });
     }
 }

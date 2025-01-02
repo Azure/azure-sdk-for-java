@@ -15,8 +15,7 @@ public final class SoftwareUpdateConfigurationListResultImpl implements Software
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    SoftwareUpdateConfigurationListResultImpl(
-        SoftwareUpdateConfigurationListResultInner innerObject,
+    SoftwareUpdateConfigurationListResultImpl(SoftwareUpdateConfigurationListResultInner innerObject,
         com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

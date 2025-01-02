@@ -6,42 +6,46 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Import disk details. */
+/**
+ * Import disk details.
+ */
 @Fluent
-public final class ImportDiskDetails {
+public final class ImportDiskDetails implements JsonSerializable<ImportDiskDetails> {
     /*
      * The relative path of the manifest file on the disk.
      */
-    @JsonProperty(value = "manifestFile", required = true)
     private String manifestFile;
 
     /*
      * The Base16-encoded MD5 hash of the manifest file on the disk.
      */
-    @JsonProperty(value = "manifestHash", required = true)
     private String manifestHash;
 
     /*
      * BitLocker key used to encrypt the disk.
      */
-    @JsonProperty(value = "bitLockerKey", required = true)
     private String bitLockerKey;
 
     /*
      * Path to backed up manifest, only returned if enableManifestBackup is true.
      */
-    @JsonProperty(value = "backupManifestCloudPath", access = JsonProperty.Access.WRITE_ONLY)
     private String backupManifestCloudPath;
 
-    /** Creates an instance of ImportDiskDetails class. */
+    /**
+     * Creates an instance of ImportDiskDetails class.
+     */
     public ImportDiskDetails() {
     }
 
     /**
      * Get the manifestFile property: The relative path of the manifest file on the disk.
-     *
+     * 
      * @return the manifestFile value.
      */
     public String manifestFile() {
@@ -50,7 +54,7 @@ public final class ImportDiskDetails {
 
     /**
      * Set the manifestFile property: The relative path of the manifest file on the disk.
-     *
+     * 
      * @param manifestFile the manifestFile value to set.
      * @return the ImportDiskDetails object itself.
      */
@@ -61,7 +65,7 @@ public final class ImportDiskDetails {
 
     /**
      * Get the manifestHash property: The Base16-encoded MD5 hash of the manifest file on the disk.
-     *
+     * 
      * @return the manifestHash value.
      */
     public String manifestHash() {
@@ -70,7 +74,7 @@ public final class ImportDiskDetails {
 
     /**
      * Set the manifestHash property: The Base16-encoded MD5 hash of the manifest file on the disk.
-     *
+     * 
      * @param manifestHash the manifestHash value to set.
      * @return the ImportDiskDetails object itself.
      */
@@ -81,7 +85,7 @@ public final class ImportDiskDetails {
 
     /**
      * Get the bitLockerKey property: BitLocker key used to encrypt the disk.
-     *
+     * 
      * @return the bitLockerKey value.
      */
     public String bitLockerKey() {
@@ -90,7 +94,7 @@ public final class ImportDiskDetails {
 
     /**
      * Set the bitLockerKey property: BitLocker key used to encrypt the disk.
-     *
+     * 
      * @param bitLockerKey the bitLockerKey value to set.
      * @return the ImportDiskDetails object itself.
      */
@@ -102,7 +106,7 @@ public final class ImportDiskDetails {
     /**
      * Get the backupManifestCloudPath property: Path to backed up manifest, only returned if enableManifestBackup is
      * true.
-     *
+     * 
      * @return the backupManifestCloudPath value.
      */
     public String backupManifestCloudPath() {
@@ -111,26 +115,68 @@ public final class ImportDiskDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (manifestFile() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property manifestFile in model ImportDiskDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property manifestFile in model ImportDiskDetails"));
         }
         if (manifestHash() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property manifestHash in model ImportDiskDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property manifestHash in model ImportDiskDetails"));
         }
         if (bitLockerKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property bitLockerKey in model ImportDiskDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property bitLockerKey in model ImportDiskDetails"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ImportDiskDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("manifestFile", this.manifestFile);
+        jsonWriter.writeStringField("manifestHash", this.manifestHash);
+        jsonWriter.writeStringField("bitLockerKey", this.bitLockerKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImportDiskDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImportDiskDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ImportDiskDetails.
+     */
+    public static ImportDiskDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImportDiskDetails deserializedImportDiskDetails = new ImportDiskDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("manifestFile".equals(fieldName)) {
+                    deserializedImportDiskDetails.manifestFile = reader.getString();
+                } else if ("manifestHash".equals(fieldName)) {
+                    deserializedImportDiskDetails.manifestHash = reader.getString();
+                } else if ("bitLockerKey".equals(fieldName)) {
+                    deserializedImportDiskDetails.bitLockerKey = reader.getString();
+                } else if ("backupManifestCloudPath".equals(fieldName)) {
+                    deserializedImportDiskDetails.backupManifestCloudPath = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImportDiskDetails;
+        });
+    }
 }

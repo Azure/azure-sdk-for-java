@@ -82,16 +82,12 @@ public final class UsernamePasswordCredentials extends CredentialsBase {
     public void validate() {
         super.validate();
         if (username() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property username in model UsernamePasswordCredentials"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property username in model UsernamePasswordCredentials"));
         }
         if (password() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property password in model UsernamePasswordCredentials"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property password in model UsernamePasswordCredentials"));
         }
     }
 

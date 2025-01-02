@@ -5,33 +5,41 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Class representing the ONVIF MediaProfiles. */
+/**
+ * Class representing the ONVIF MediaProfiles.
+ */
 @Fluent
-public final class MediaProfile {
+public final class MediaProfile implements JsonSerializable<MediaProfile> {
     /*
      * The name of the Media Profile.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
-     * Object representing the URI that will be used to request for media
-     * streaming.
+     * Object representing the URI that will be used to request for media streaming.
      */
-    @JsonProperty(value = "mediaUri")
     private Object mediaUri;
 
     /*
      * The Video encoder configuration.
      */
-    @JsonProperty(value = "videoEncoderConfiguration")
     private VideoEncoderConfiguration videoEncoderConfiguration;
 
     /**
+     * Creates an instance of MediaProfile class.
+     */
+    public MediaProfile() {
+    }
+
+    /**
      * Get the name property: The name of the Media Profile.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -40,7 +48,7 @@ public final class MediaProfile {
 
     /**
      * Set the name property: The name of the Media Profile.
-     *
+     * 
      * @param name the name value to set.
      * @return the MediaProfile object itself.
      */
@@ -51,7 +59,7 @@ public final class MediaProfile {
 
     /**
      * Get the mediaUri property: Object representing the URI that will be used to request for media streaming.
-     *
+     * 
      * @return the mediaUri value.
      */
     public Object getMediaUri() {
@@ -60,7 +68,7 @@ public final class MediaProfile {
 
     /**
      * Set the mediaUri property: Object representing the URI that will be used to request for media streaming.
-     *
+     * 
      * @param mediaUri the mediaUri value to set.
      * @return the MediaProfile object itself.
      */
@@ -71,7 +79,7 @@ public final class MediaProfile {
 
     /**
      * Get the videoEncoderConfiguration property: The Video encoder configuration.
-     *
+     * 
      * @return the videoEncoderConfiguration value.
      */
     public VideoEncoderConfiguration getVideoEncoderConfiguration() {
@@ -80,12 +88,54 @@ public final class MediaProfile {
 
     /**
      * Set the videoEncoderConfiguration property: The Video encoder configuration.
-     *
+     * 
      * @param videoEncoderConfiguration the videoEncoderConfiguration value to set.
      * @return the MediaProfile object itself.
      */
     public MediaProfile setVideoEncoderConfiguration(VideoEncoderConfiguration videoEncoderConfiguration) {
         this.videoEncoderConfiguration = videoEncoderConfiguration;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeUntypedField("mediaUri", this.mediaUri);
+        jsonWriter.writeJsonField("videoEncoderConfiguration", this.videoEncoderConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MediaProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MediaProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MediaProfile.
+     */
+    public static MediaProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MediaProfile deserializedMediaProfile = new MediaProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedMediaProfile.name = reader.getString();
+                } else if ("mediaUri".equals(fieldName)) {
+                    deserializedMediaProfile.mediaUri = reader.readUntyped();
+                } else if ("videoEncoderConfiguration".equals(fieldName)) {
+                    deserializedMediaProfile.videoEncoderConfiguration = VideoEncoderConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMediaProfile;
+        });
     }
 }

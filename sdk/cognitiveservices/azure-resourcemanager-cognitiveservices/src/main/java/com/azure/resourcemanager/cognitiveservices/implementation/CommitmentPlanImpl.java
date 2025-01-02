@@ -97,25 +97,21 @@ public final class CommitmentPlanImpl implements CommitmentPlan, CommitmentPlan.
     }
 
     public CommitmentPlan create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCommitmentPlans()
-                .createOrUpdatePlan(resourceGroupName, commitmentPlanName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getCommitmentPlans()
+            .createOrUpdatePlan(resourceGroupName, commitmentPlanName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public CommitmentPlan create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCommitmentPlans()
-                .createOrUpdatePlan(resourceGroupName, commitmentPlanName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getCommitmentPlans()
+            .createOrUpdatePlan(resourceGroupName, commitmentPlanName, this.innerModel(), context);
         return this;
     }
 
-    CommitmentPlanImpl(
-        String name, com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
+    CommitmentPlanImpl(String name,
+        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = new CommitmentPlanInner();
         this.serviceManager = serviceManager;
         this.commitmentPlanName = name;
@@ -127,49 +123,40 @@ public final class CommitmentPlanImpl implements CommitmentPlan, CommitmentPlan.
     }
 
     public CommitmentPlan apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCommitmentPlans()
-                .updatePlan(resourceGroupName, commitmentPlanName, updateCommitmentPlan, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getCommitmentPlans()
+            .updatePlan(resourceGroupName, commitmentPlanName, updateCommitmentPlan, Context.NONE);
         return this;
     }
 
     public CommitmentPlan apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCommitmentPlans()
-                .updatePlan(resourceGroupName, commitmentPlanName, updateCommitmentPlan, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getCommitmentPlans()
+            .updatePlan(resourceGroupName, commitmentPlanName, updateCommitmentPlan, context);
         return this;
     }
 
-    CommitmentPlanImpl(
-        CommitmentPlanInner innerObject,
+    CommitmentPlanImpl(CommitmentPlanInner innerObject,
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.commitmentPlanName = Utils.getValueFromIdByName(innerObject.id(), "commitmentPlans");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.commitmentPlanName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "commitmentPlans");
     }
 
     public CommitmentPlan refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCommitmentPlans()
-                .getByResourceGroupWithResponse(resourceGroupName, commitmentPlanName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCommitmentPlans()
+            .getByResourceGroupWithResponse(resourceGroupName, commitmentPlanName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public CommitmentPlan refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCommitmentPlans()
-                .getByResourceGroupWithResponse(resourceGroupName, commitmentPlanName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCommitmentPlans()
+            .getByResourceGroupWithResponse(resourceGroupName, commitmentPlanName, context)
+            .getValue();
         return this;
     }
 

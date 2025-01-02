@@ -6,23 +6,25 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Definition of a single parameter for an entity.
  */
 @Fluent
-public final class GlobalParameterSpecification {
+public final class GlobalParameterSpecification implements JsonSerializable<GlobalParameterSpecification> {
     /*
      * Global Parameter type.
      */
-    @JsonProperty(value = "type", required = true)
     private GlobalParameterType type;
 
     /*
      * Value of parameter.
      */
-    @JsonProperty(value = "value", required = true)
     private Object value;
 
     /**
@@ -90,4 +92,44 @@ public final class GlobalParameterSpecification {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GlobalParameterSpecification.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeUntypedField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GlobalParameterSpecification from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GlobalParameterSpecification if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GlobalParameterSpecification.
+     */
+    public static GlobalParameterSpecification fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GlobalParameterSpecification deserializedGlobalParameterSpecification = new GlobalParameterSpecification();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedGlobalParameterSpecification.type = GlobalParameterType.fromString(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    deserializedGlobalParameterSpecification.value = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGlobalParameterSpecification;
+        });
+    }
 }

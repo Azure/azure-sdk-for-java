@@ -6,6 +6,7 @@ package com.azure.resourcemanager.securityinsights.implementation;
 
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.securityinsights.fluent.models.SettingsInner;
+import com.azure.resourcemanager.securityinsights.models.SettingKind;
 import com.azure.resourcemanager.securityinsights.models.Settings;
 
 public final class SettingsImpl implements Settings {
@@ -13,8 +14,8 @@ public final class SettingsImpl implements Settings {
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    SettingsImpl(
-        SettingsInner innerObject, com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
+    SettingsImpl(SettingsInner innerObject,
+        com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -37,6 +38,10 @@ public final class SettingsImpl implements Settings {
 
     public SystemData systemData() {
         return this.innerModel().systemData();
+    }
+
+    public SettingKind kind() {
+        return this.innerModel().kind();
     }
 
     public SettingsInner innerModel() {

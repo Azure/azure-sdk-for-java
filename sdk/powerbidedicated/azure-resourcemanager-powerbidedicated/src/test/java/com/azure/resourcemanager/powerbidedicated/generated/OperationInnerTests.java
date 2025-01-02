@@ -6,6 +6,9 @@ package com.azure.resourcemanager.powerbidedicated.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.powerbidedicated.fluent.models.OperationInner;
+import com.azure.resourcemanager.powerbidedicated.models.LogSpecification;
+import com.azure.resourcemanager.powerbidedicated.models.MetricSpecification;
+import com.azure.resourcemanager.powerbidedicated.models.MetricSpecificationDimensionsItem;
 import com.azure.resourcemanager.powerbidedicated.models.OperationDisplay;
 import com.azure.resourcemanager.powerbidedicated.models.OperationProperties;
 import com.azure.resourcemanager.powerbidedicated.models.ServiceSpecification;
@@ -15,26 +18,34 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"eiachboosflnr\",\"display\":{\"provider\":\"qpteeh\",\"resource\":\"vypyqrimzinpv\",\"operation\":\"jdkirsoodqx\",\"description\":\"rmnohj\"},\"origin\":\"kwh\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[],\"logSpecifications\":[]}}}")
-                .toObject(OperationInner.class);
-        Assertions.assertEquals("rmnohj", model.display().description());
+        OperationInner model = BinaryData.fromString(
+            "{\"name\":\"whdsoifiyip\",\"display\":{\"provider\":\"qwpgrjbzn\",\"resource\":\"cjxvsnbyxqab\",\"operation\":\"ocpcy\",\"description\":\"urzafb\"},\"origin\":\"j\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{\"name\":\"c\",\"displayName\":\"klj\",\"displayDescription\":\"bqidtqaj\",\"unit\":\"ulpkudjkrl\",\"aggregationType\":\"bzhfepgzgqexz\",\"metricFilterPattern\":\"c\",\"dimensions\":[{}]}],\"logSpecifications\":[{\"name\":\"erhhbcsglumm\",\"displayName\":\"tjaodxobnb\",\"blobDuration\":\"k\"},{\"name\":\"xo\",\"displayName\":\"jionpimexgstxgc\",\"blobDuration\":\"dg\"}]}}}")
+            .toObject(OperationInner.class);
+        Assertions.assertEquals("urzafb", model.display().description());
+        Assertions.assertEquals("klj",
+            model.properties().serviceSpecification().metricSpecifications().get(0).displayName());
+        Assertions.assertEquals("bqidtqaj",
+            model.properties().serviceSpecification().metricSpecifications().get(0).displayDescription());
+        Assertions.assertEquals("tjaodxobnb",
+            model.properties().serviceSpecification().logSpecifications().get(0).displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationInner model =
-            new OperationInner()
-                .withDisplay(new OperationDisplay().withDescription("rmnohj"))
-                .withProperties(
-                    new OperationProperties()
-                        .withServiceSpecification(
-                            new ServiceSpecification()
-                                .withMetricSpecifications(Arrays.asList())
-                                .withLogSpecifications(Arrays.asList())));
+        OperationInner model = new OperationInner().withDisplay(new OperationDisplay().withDescription("urzafb"))
+            .withProperties(new OperationProperties().withServiceSpecification(new ServiceSpecification()
+                .withMetricSpecifications(Arrays.asList(new MetricSpecification().withDisplayName("klj")
+                    .withDisplayDescription("bqidtqaj")
+                    .withDimensions(Arrays.asList(new MetricSpecificationDimensionsItem()))))
+                .withLogSpecifications(Arrays.asList(new LogSpecification().withDisplayName("tjaodxobnb"),
+                    new LogSpecification().withDisplayName("jionpimexgstxgc")))));
         model = BinaryData.fromObject(model).toObject(OperationInner.class);
-        Assertions.assertEquals("rmnohj", model.display().description());
+        Assertions.assertEquals("urzafb", model.display().description());
+        Assertions.assertEquals("klj",
+            model.properties().serviceSpecification().metricSpecifications().get(0).displayName());
+        Assertions.assertEquals("bqidtqaj",
+            model.properties().serviceSpecification().metricSpecifications().get(0).displayDescription());
+        Assertions.assertEquals("tjaodxobnb",
+            model.properties().serviceSpecification().logSpecifications().get(0).displayName());
     }
 }

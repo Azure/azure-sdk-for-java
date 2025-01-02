@@ -5,27 +5,37 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Represents severity configuration for a source subtype consumed in Fusion detection. */
+/**
+ * Represents severity configuration for a source subtype consumed in Fusion detection.
+ */
 @Fluent
-public final class FusionSubTypeSeverityFilter {
+public final class FusionSubTypeSeverityFilter implements JsonSerializable<FusionSubTypeSeverityFilter> {
     /*
      * Determines whether this source subtype supports severity configuration or not.
      */
-    @JsonProperty(value = "isSupported", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isSupported;
 
     /*
      * Individual Severity configuration settings for a given source subtype consumed in Fusion detection.
      */
-    @JsonProperty(value = "filters")
     private List<FusionSubTypeSeverityFiltersItem> filters;
 
     /**
+     * Creates an instance of FusionSubTypeSeverityFilter class.
+     */
+    public FusionSubTypeSeverityFilter() {
+    }
+
+    /**
      * Get the isSupported property: Determines whether this source subtype supports severity configuration or not.
-     *
+     * 
      * @return the isSupported value.
      */
     public Boolean isSupported() {
@@ -35,7 +45,7 @@ public final class FusionSubTypeSeverityFilter {
     /**
      * Get the filters property: Individual Severity configuration settings for a given source subtype consumed in
      * Fusion detection.
-     *
+     * 
      * @return the filters value.
      */
     public List<FusionSubTypeSeverityFiltersItem> filters() {
@@ -45,7 +55,7 @@ public final class FusionSubTypeSeverityFilter {
     /**
      * Set the filters property: Individual Severity configuration settings for a given source subtype consumed in
      * Fusion detection.
-     *
+     * 
      * @param filters the filters value to set.
      * @return the FusionSubTypeSeverityFilter object itself.
      */
@@ -56,12 +66,52 @@ public final class FusionSubTypeSeverityFilter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (filters() != null) {
             filters().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("filters", this.filters, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FusionSubTypeSeverityFilter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FusionSubTypeSeverityFilter if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FusionSubTypeSeverityFilter.
+     */
+    public static FusionSubTypeSeverityFilter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FusionSubTypeSeverityFilter deserializedFusionSubTypeSeverityFilter = new FusionSubTypeSeverityFilter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isSupported".equals(fieldName)) {
+                    deserializedFusionSubTypeSeverityFilter.isSupported = reader.getNullable(JsonReader::getBoolean);
+                } else if ("filters".equals(fieldName)) {
+                    List<FusionSubTypeSeverityFiltersItem> filters
+                        = reader.readArray(reader1 -> FusionSubTypeSeverityFiltersItem.fromJson(reader1));
+                    deserializedFusionSubTypeSeverityFilter.filters = filters;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFusionSubTypeSeverityFilter;
+        });
     }
 }

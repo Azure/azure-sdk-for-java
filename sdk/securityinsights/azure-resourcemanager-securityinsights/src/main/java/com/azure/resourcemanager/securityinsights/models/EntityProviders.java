@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The entity provider that is synced. */
+/**
+ * The entity provider that is synced.
+ */
 public final class EntityProviders extends ExpandableStringEnum<EntityProviders> {
-    /** Static value ActiveDirectory for EntityProviders. */
+    /**
+     * Static value ActiveDirectory for EntityProviders.
+     */
     public static final EntityProviders ACTIVE_DIRECTORY = fromString("ActiveDirectory");
 
-    /** Static value AzureActiveDirectory for EntityProviders. */
+    /**
+     * Static value AzureActiveDirectory for EntityProviders.
+     */
     public static final EntityProviders AZURE_ACTIVE_DIRECTORY = fromString("AzureActiveDirectory");
 
     /**
+     * Creates a new instance of EntityProviders value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EntityProviders() {
+    }
+
+    /**
      * Creates or finds a EntityProviders from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EntityProviders.
      */
-    @JsonCreator
     public static EntityProviders fromString(String name) {
         return fromString(name, EntityProviders.class);
     }
 
     /**
      * Gets known EntityProviders values.
-     *
+     * 
      * @return known EntityProviders values.
      */
     public static Collection<EntityProviders> values() {

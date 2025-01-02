@@ -75,6 +75,9 @@ public final class Table implements JsonSerializable<Table> {
         return this.rows;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

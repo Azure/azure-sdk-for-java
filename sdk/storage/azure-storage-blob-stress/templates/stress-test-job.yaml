@@ -21,7 +21,7 @@ spec:
       resources:
         limits:
           memory: 1Gi
-          cpu: "1.0"
+          cpu: "0.5"
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
     - name: main
       image:  {{ .Stress.imageTag }}
@@ -43,10 +43,11 @@ spec:
             -XX:MaxRAMPercentage=50 \
             -XX:+HeapDumpOnOutOfMemoryError \
             -XX:HeapDumpPath="${DEBUG_SHARE}" \
-            -Dreactor.schedulers.defaultBoundedElasticSize={{ .Stress.parallelRuns }} \
+            -Dreactor.schedulers.defaultBoundedElasticSize={{ default 5 .Stress.parallelRuns }} \
             -jar /app/azure-storage-blob-stress-1.0.0-beta.1-jar-with-dependencies.jar \
             {{ .Stress.testScenario }} \
-            --parallel {{ .Stress.parallelRuns }} \
+            --parallel {{ default 5 .Stress.parallelRuns }} \
+            --maxConcurrency {{ default 10 .Stress.maxConcurrency }} \
             --duration {{ mul 60 .Stress.durationMin }} \
             --size {{ .Stress.sizeBytes }} \
             {{ ternary "--sync" "" .Stress.sync }} \
@@ -63,7 +64,7 @@ spec:
       resources:
         limits:
           memory: {{ default "1Gi" .Stress.memory }}
-          cpu: {{ default 1 .Stress.cores }}
+          cpu: "0.7"
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 
 {{- end -}}

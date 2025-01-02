@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.delegatednetwork.generated;
 
-/** Samples for OrchestratorInstanceService ListByResourceGroup. */
+/**
+ * Samples for OrchestratorInstanceService ListByResourceGroup.
+ */
 public final class OrchestratorInstanceServiceListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/orchestratorInstanceListByRG.json
+     * x-ms-original-file: specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/
+     * orchestratorInstanceListByRG.json
      */
     /**
      * Sample code: Get OrchestratorInstance resources by resource group.
-     *
+     * 
      * @param manager Entry point to DelegatedNetworkManager.
      */
     public static void getOrchestratorInstanceResourcesByResourceGroup(

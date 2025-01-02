@@ -142,9 +142,8 @@ public final class B2CTenantResourceInner extends Resource {
      */
     public void validate() {
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model B2CTenantResourceInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property sku in model B2CTenantResourceInner"));
         } else {
             sku().validate();
         }

@@ -5,121 +5,112 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The details of metric specifications. */
+/**
+ * The details of metric specifications.
+ */
 @Fluent
-public final class MetricSpecifications {
+public final class MetricSpecifications implements JsonSerializable<MetricSpecifications> {
     /*
      * The name of the metric specification.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The display name of the metric specification.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The display description of the metric specification.
      */
-    @JsonProperty(value = "displayDescription")
     private String displayDescription;
 
     /*
      * The unit of the metric specification.
      */
-    @JsonProperty(value = "unit")
     private String unit;
 
     /*
      * The aggregation type of the metric specification.
      */
-    @JsonProperty(value = "aggregationType")
     private String aggregationType;
 
     /*
      * The supported aggregation types of the metric specification.
      */
-    @JsonProperty(value = "supportedAggregationTypes")
     private List<String> supportedAggregationTypes;
 
     /*
      * The supported time grain types of the metric specification.
      */
-    @JsonProperty(value = "supportedTimeGrainTypes")
     private List<String> supportedTimeGrainTypes;
 
     /*
      * The flag indicates whether enable regional mdm account or not.
      */
-    @JsonProperty(value = "enableRegionalMdmAccount")
     private Boolean enableRegionalMdmAccount;
 
     /*
      * The source mdm account.
      */
-    @JsonProperty(value = "sourceMdmAccount")
     private String sourceMdmAccount;
 
     /*
      * The source mdm namespace.
      */
-    @JsonProperty(value = "sourceMdmNamespace")
     private String sourceMdmNamespace;
 
     /*
      * The metric filter pattern.
      */
-    @JsonProperty(value = "metricFilterPattern")
     private String metricFilterPattern;
 
     /*
      * The flag indicates whether filling gap with zero.
      */
-    @JsonProperty(value = "fillGapWithZero")
     private Boolean fillGapWithZero;
 
     /*
      * The category of the metric.
      */
-    @JsonProperty(value = "category")
     private String category;
 
     /*
      * The override name of resource id dimension name.
      */
-    @JsonProperty(value = "resourceIdDimensionNameOverride")
     private String resourceIdDimensionNameOverride;
 
     /*
      * The flag indicates whether the metric is internal or not.
      */
-    @JsonProperty(value = "isInternal")
     private Boolean isInternal;
 
     /*
      * The override name of delegate metric.
      */
-    @JsonProperty(value = "delegateMetricNameOverride")
     private String delegateMetricNameOverride;
 
     /*
      * The dimensions of the metric specification.
      */
-    @JsonProperty(value = "dimensions")
     private List<Dimension> dimensions;
 
-    /** Creates an instance of MetricSpecifications class. */
+    /**
+     * Creates an instance of MetricSpecifications class.
+     */
     public MetricSpecifications() {
     }
 
     /**
      * Get the name property: The name of the metric specification.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -128,7 +119,7 @@ public final class MetricSpecifications {
 
     /**
      * Set the name property: The name of the metric specification.
-     *
+     * 
      * @param name the name value to set.
      * @return the MetricSpecifications object itself.
      */
@@ -139,7 +130,7 @@ public final class MetricSpecifications {
 
     /**
      * Get the displayName property: The display name of the metric specification.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -148,7 +139,7 @@ public final class MetricSpecifications {
 
     /**
      * Set the displayName property: The display name of the metric specification.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MetricSpecifications object itself.
      */
@@ -159,7 +150,7 @@ public final class MetricSpecifications {
 
     /**
      * Get the displayDescription property: The display description of the metric specification.
-     *
+     * 
      * @return the displayDescription value.
      */
     public String displayDescription() {
@@ -168,7 +159,7 @@ public final class MetricSpecifications {
 
     /**
      * Set the displayDescription property: The display description of the metric specification.
-     *
+     * 
      * @param displayDescription the displayDescription value to set.
      * @return the MetricSpecifications object itself.
      */
@@ -179,7 +170,7 @@ public final class MetricSpecifications {
 
     /**
      * Get the unit property: The unit of the metric specification.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -188,7 +179,7 @@ public final class MetricSpecifications {
 
     /**
      * Set the unit property: The unit of the metric specification.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the MetricSpecifications object itself.
      */
@@ -199,7 +190,7 @@ public final class MetricSpecifications {
 
     /**
      * Get the aggregationType property: The aggregation type of the metric specification.
-     *
+     * 
      * @return the aggregationType value.
      */
     public String aggregationType() {
@@ -208,7 +199,7 @@ public final class MetricSpecifications {
 
     /**
      * Set the aggregationType property: The aggregation type of the metric specification.
-     *
+     * 
      * @param aggregationType the aggregationType value to set.
      * @return the MetricSpecifications object itself.
      */
@@ -219,7 +210,7 @@ public final class MetricSpecifications {
 
     /**
      * Get the supportedAggregationTypes property: The supported aggregation types of the metric specification.
-     *
+     * 
      * @return the supportedAggregationTypes value.
      */
     public List<String> supportedAggregationTypes() {
@@ -228,7 +219,7 @@ public final class MetricSpecifications {
 
     /**
      * Set the supportedAggregationTypes property: The supported aggregation types of the metric specification.
-     *
+     * 
      * @param supportedAggregationTypes the supportedAggregationTypes value to set.
      * @return the MetricSpecifications object itself.
      */
@@ -239,7 +230,7 @@ public final class MetricSpecifications {
 
     /**
      * Get the supportedTimeGrainTypes property: The supported time grain types of the metric specification.
-     *
+     * 
      * @return the supportedTimeGrainTypes value.
      */
     public List<String> supportedTimeGrainTypes() {
@@ -248,7 +239,7 @@ public final class MetricSpecifications {
 
     /**
      * Set the supportedTimeGrainTypes property: The supported time grain types of the metric specification.
-     *
+     * 
      * @param supportedTimeGrainTypes the supportedTimeGrainTypes value to set.
      * @return the MetricSpecifications object itself.
      */
@@ -259,7 +250,7 @@ public final class MetricSpecifications {
 
     /**
      * Get the enableRegionalMdmAccount property: The flag indicates whether enable regional mdm account or not.
-     *
+     * 
      * @return the enableRegionalMdmAccount value.
      */
     public Boolean enableRegionalMdmAccount() {
@@ -268,7 +259,7 @@ public final class MetricSpecifications {
 
     /**
      * Set the enableRegionalMdmAccount property: The flag indicates whether enable regional mdm account or not.
-     *
+     * 
      * @param enableRegionalMdmAccount the enableRegionalMdmAccount value to set.
      * @return the MetricSpecifications object itself.
      */
@@ -279,7 +270,7 @@ public final class MetricSpecifications {
 
     /**
      * Get the sourceMdmAccount property: The source mdm account.
-     *
+     * 
      * @return the sourceMdmAccount value.
      */
     public String sourceMdmAccount() {
@@ -288,7 +279,7 @@ public final class MetricSpecifications {
 
     /**
      * Set the sourceMdmAccount property: The source mdm account.
-     *
+     * 
      * @param sourceMdmAccount the sourceMdmAccount value to set.
      * @return the MetricSpecifications object itself.
      */
@@ -299,7 +290,7 @@ public final class MetricSpecifications {
 
     /**
      * Get the sourceMdmNamespace property: The source mdm namespace.
-     *
+     * 
      * @return the sourceMdmNamespace value.
      */
     public String sourceMdmNamespace() {
@@ -308,7 +299,7 @@ public final class MetricSpecifications {
 
     /**
      * Set the sourceMdmNamespace property: The source mdm namespace.
-     *
+     * 
      * @param sourceMdmNamespace the sourceMdmNamespace value to set.
      * @return the MetricSpecifications object itself.
      */
@@ -319,7 +310,7 @@ public final class MetricSpecifications {
 
     /**
      * Get the metricFilterPattern property: The metric filter pattern.
-     *
+     * 
      * @return the metricFilterPattern value.
      */
     public String metricFilterPattern() {
@@ -328,7 +319,7 @@ public final class MetricSpecifications {
 
     /**
      * Set the metricFilterPattern property: The metric filter pattern.
-     *
+     * 
      * @param metricFilterPattern the metricFilterPattern value to set.
      * @return the MetricSpecifications object itself.
      */
@@ -339,7 +330,7 @@ public final class MetricSpecifications {
 
     /**
      * Get the fillGapWithZero property: The flag indicates whether filling gap with zero.
-     *
+     * 
      * @return the fillGapWithZero value.
      */
     public Boolean fillGapWithZero() {
@@ -348,7 +339,7 @@ public final class MetricSpecifications {
 
     /**
      * Set the fillGapWithZero property: The flag indicates whether filling gap with zero.
-     *
+     * 
      * @param fillGapWithZero the fillGapWithZero value to set.
      * @return the MetricSpecifications object itself.
      */
@@ -359,7 +350,7 @@ public final class MetricSpecifications {
 
     /**
      * Get the category property: The category of the metric.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -368,7 +359,7 @@ public final class MetricSpecifications {
 
     /**
      * Set the category property: The category of the metric.
-     *
+     * 
      * @param category the category value to set.
      * @return the MetricSpecifications object itself.
      */
@@ -379,7 +370,7 @@ public final class MetricSpecifications {
 
     /**
      * Get the resourceIdDimensionNameOverride property: The override name of resource id dimension name.
-     *
+     * 
      * @return the resourceIdDimensionNameOverride value.
      */
     public String resourceIdDimensionNameOverride() {
@@ -388,7 +379,7 @@ public final class MetricSpecifications {
 
     /**
      * Set the resourceIdDimensionNameOverride property: The override name of resource id dimension name.
-     *
+     * 
      * @param resourceIdDimensionNameOverride the resourceIdDimensionNameOverride value to set.
      * @return the MetricSpecifications object itself.
      */
@@ -399,7 +390,7 @@ public final class MetricSpecifications {
 
     /**
      * Get the isInternal property: The flag indicates whether the metric is internal or not.
-     *
+     * 
      * @return the isInternal value.
      */
     public Boolean isInternal() {
@@ -408,7 +399,7 @@ public final class MetricSpecifications {
 
     /**
      * Set the isInternal property: The flag indicates whether the metric is internal or not.
-     *
+     * 
      * @param isInternal the isInternal value to set.
      * @return the MetricSpecifications object itself.
      */
@@ -419,7 +410,7 @@ public final class MetricSpecifications {
 
     /**
      * Get the delegateMetricNameOverride property: The override name of delegate metric.
-     *
+     * 
      * @return the delegateMetricNameOverride value.
      */
     public String delegateMetricNameOverride() {
@@ -428,7 +419,7 @@ public final class MetricSpecifications {
 
     /**
      * Set the delegateMetricNameOverride property: The override name of delegate metric.
-     *
+     * 
      * @param delegateMetricNameOverride the delegateMetricNameOverride value to set.
      * @return the MetricSpecifications object itself.
      */
@@ -439,7 +430,7 @@ public final class MetricSpecifications {
 
     /**
      * Get the dimensions property: The dimensions of the metric specification.
-     *
+     * 
      * @return the dimensions value.
      */
     public List<Dimension> dimensions() {
@@ -448,7 +439,7 @@ public final class MetricSpecifications {
 
     /**
      * Set the dimensions property: The dimensions of the metric specification.
-     *
+     * 
      * @param dimensions the dimensions value to set.
      * @return the MetricSpecifications object itself.
      */
@@ -459,12 +450,102 @@ public final class MetricSpecifications {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dimensions() != null) {
             dimensions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("displayDescription", this.displayDescription);
+        jsonWriter.writeStringField("unit", this.unit);
+        jsonWriter.writeStringField("aggregationType", this.aggregationType);
+        jsonWriter.writeArrayField("supportedAggregationTypes", this.supportedAggregationTypes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("supportedTimeGrainTypes", this.supportedTimeGrainTypes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("enableRegionalMdmAccount", this.enableRegionalMdmAccount);
+        jsonWriter.writeStringField("sourceMdmAccount", this.sourceMdmAccount);
+        jsonWriter.writeStringField("sourceMdmNamespace", this.sourceMdmNamespace);
+        jsonWriter.writeStringField("metricFilterPattern", this.metricFilterPattern);
+        jsonWriter.writeBooleanField("fillGapWithZero", this.fillGapWithZero);
+        jsonWriter.writeStringField("category", this.category);
+        jsonWriter.writeStringField("resourceIdDimensionNameOverride", this.resourceIdDimensionNameOverride);
+        jsonWriter.writeBooleanField("isInternal", this.isInternal);
+        jsonWriter.writeStringField("delegateMetricNameOverride", this.delegateMetricNameOverride);
+        jsonWriter.writeArrayField("dimensions", this.dimensions, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetricSpecifications from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricSpecifications if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetricSpecifications.
+     */
+    public static MetricSpecifications fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetricSpecifications deserializedMetricSpecifications = new MetricSpecifications();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedMetricSpecifications.name = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMetricSpecifications.displayName = reader.getString();
+                } else if ("displayDescription".equals(fieldName)) {
+                    deserializedMetricSpecifications.displayDescription = reader.getString();
+                } else if ("unit".equals(fieldName)) {
+                    deserializedMetricSpecifications.unit = reader.getString();
+                } else if ("aggregationType".equals(fieldName)) {
+                    deserializedMetricSpecifications.aggregationType = reader.getString();
+                } else if ("supportedAggregationTypes".equals(fieldName)) {
+                    List<String> supportedAggregationTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetricSpecifications.supportedAggregationTypes = supportedAggregationTypes;
+                } else if ("supportedTimeGrainTypes".equals(fieldName)) {
+                    List<String> supportedTimeGrainTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetricSpecifications.supportedTimeGrainTypes = supportedTimeGrainTypes;
+                } else if ("enableRegionalMdmAccount".equals(fieldName)) {
+                    deserializedMetricSpecifications.enableRegionalMdmAccount
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("sourceMdmAccount".equals(fieldName)) {
+                    deserializedMetricSpecifications.sourceMdmAccount = reader.getString();
+                } else if ("sourceMdmNamespace".equals(fieldName)) {
+                    deserializedMetricSpecifications.sourceMdmNamespace = reader.getString();
+                } else if ("metricFilterPattern".equals(fieldName)) {
+                    deserializedMetricSpecifications.metricFilterPattern = reader.getString();
+                } else if ("fillGapWithZero".equals(fieldName)) {
+                    deserializedMetricSpecifications.fillGapWithZero = reader.getNullable(JsonReader::getBoolean);
+                } else if ("category".equals(fieldName)) {
+                    deserializedMetricSpecifications.category = reader.getString();
+                } else if ("resourceIdDimensionNameOverride".equals(fieldName)) {
+                    deserializedMetricSpecifications.resourceIdDimensionNameOverride = reader.getString();
+                } else if ("isInternal".equals(fieldName)) {
+                    deserializedMetricSpecifications.isInternal = reader.getNullable(JsonReader::getBoolean);
+                } else if ("delegateMetricNameOverride".equals(fieldName)) {
+                    deserializedMetricSpecifications.delegateMetricNameOverride = reader.getString();
+                } else if ("dimensions".equals(fieldName)) {
+                    List<Dimension> dimensions = reader.readArray(reader1 -> Dimension.fromJson(reader1));
+                    deserializedMetricSpecifications.dimensions = dimensions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetricSpecifications;
+        });
     }
 }

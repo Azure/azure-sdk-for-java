@@ -23,17 +23,10 @@ import java.util.List;
 
 /** Entry point to SQL Server management API. */
 @Fluent
-public interface SqlServers
-    extends SupportsCreating<SqlServer.DefinitionStages.Blank>,
-        SupportsListing<SqlServer>,
-        SupportsListingByResourceGroup<SqlServer>,
-        SupportsGettingByResourceGroup<SqlServer>,
-        SupportsGettingById<SqlServer>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<SqlServer>,
-        SupportsBatchDeletion,
-        HasManager<SqlServerManager> {
+public interface SqlServers extends SupportsCreating<SqlServer.DefinitionStages.Blank>, SupportsListing<SqlServer>,
+    SupportsListingByResourceGroup<SqlServer>, SupportsGettingByResourceGroup<SqlServer>,
+    SupportsGettingById<SqlServer>, SupportsDeletingById, SupportsDeletingByResourceGroup,
+    SupportsBatchCreation<SqlServer>, SupportsBatchDeletion, HasManager<SqlServerManager> {
 
     /** @return the SQL Server Firewall Rules API entry point */
     SqlFirewallRuleOperations firewallRules();

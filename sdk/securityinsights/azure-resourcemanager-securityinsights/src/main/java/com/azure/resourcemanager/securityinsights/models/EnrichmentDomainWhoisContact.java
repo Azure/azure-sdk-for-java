@@ -5,75 +5,77 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** An individual contact associated with this domain. */
+/**
+ * An individual contact associated with this domain.
+ */
 @Fluent
-public final class EnrichmentDomainWhoisContact {
+public final class EnrichmentDomainWhoisContact implements JsonSerializable<EnrichmentDomainWhoisContact> {
     /*
      * The name of this contact
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The organization for this contact
      */
-    @JsonProperty(value = "org")
     private String org;
 
     /*
      * A list describing the street address for this contact
      */
-    @JsonProperty(value = "street")
     private List<String> street;
 
     /*
      * The city for this contact
      */
-    @JsonProperty(value = "city")
     private String city;
 
     /*
      * The state for this contact
      */
-    @JsonProperty(value = "state")
     private String state;
 
     /*
      * The postal code for this contact
      */
-    @JsonProperty(value = "postal")
     private String postal;
 
     /*
      * The country for this contact
      */
-    @JsonProperty(value = "country")
     private String country;
 
     /*
      * The phone number for this contact
      */
-    @JsonProperty(value = "phone")
     private String phone;
 
     /*
      * The fax number for this contact
      */
-    @JsonProperty(value = "fax")
     private String fax;
 
     /*
      * The email address for this contact
      */
-    @JsonProperty(value = "email")
     private String email;
 
     /**
+     * Creates an instance of EnrichmentDomainWhoisContact class.
+     */
+    public EnrichmentDomainWhoisContact() {
+    }
+
+    /**
      * Get the name property: The name of this contact.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -82,7 +84,7 @@ public final class EnrichmentDomainWhoisContact {
 
     /**
      * Set the name property: The name of this contact.
-     *
+     * 
      * @param name the name value to set.
      * @return the EnrichmentDomainWhoisContact object itself.
      */
@@ -93,7 +95,7 @@ public final class EnrichmentDomainWhoisContact {
 
     /**
      * Get the org property: The organization for this contact.
-     *
+     * 
      * @return the org value.
      */
     public String org() {
@@ -102,7 +104,7 @@ public final class EnrichmentDomainWhoisContact {
 
     /**
      * Set the org property: The organization for this contact.
-     *
+     * 
      * @param org the org value to set.
      * @return the EnrichmentDomainWhoisContact object itself.
      */
@@ -113,7 +115,7 @@ public final class EnrichmentDomainWhoisContact {
 
     /**
      * Get the street property: A list describing the street address for this contact.
-     *
+     * 
      * @return the street value.
      */
     public List<String> street() {
@@ -122,7 +124,7 @@ public final class EnrichmentDomainWhoisContact {
 
     /**
      * Set the street property: A list describing the street address for this contact.
-     *
+     * 
      * @param street the street value to set.
      * @return the EnrichmentDomainWhoisContact object itself.
      */
@@ -133,7 +135,7 @@ public final class EnrichmentDomainWhoisContact {
 
     /**
      * Get the city property: The city for this contact.
-     *
+     * 
      * @return the city value.
      */
     public String city() {
@@ -142,7 +144,7 @@ public final class EnrichmentDomainWhoisContact {
 
     /**
      * Set the city property: The city for this contact.
-     *
+     * 
      * @param city the city value to set.
      * @return the EnrichmentDomainWhoisContact object itself.
      */
@@ -153,7 +155,7 @@ public final class EnrichmentDomainWhoisContact {
 
     /**
      * Get the state property: The state for this contact.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -162,7 +164,7 @@ public final class EnrichmentDomainWhoisContact {
 
     /**
      * Set the state property: The state for this contact.
-     *
+     * 
      * @param state the state value to set.
      * @return the EnrichmentDomainWhoisContact object itself.
      */
@@ -173,7 +175,7 @@ public final class EnrichmentDomainWhoisContact {
 
     /**
      * Get the postal property: The postal code for this contact.
-     *
+     * 
      * @return the postal value.
      */
     public String postal() {
@@ -182,7 +184,7 @@ public final class EnrichmentDomainWhoisContact {
 
     /**
      * Set the postal property: The postal code for this contact.
-     *
+     * 
      * @param postal the postal value to set.
      * @return the EnrichmentDomainWhoisContact object itself.
      */
@@ -193,7 +195,7 @@ public final class EnrichmentDomainWhoisContact {
 
     /**
      * Get the country property: The country for this contact.
-     *
+     * 
      * @return the country value.
      */
     public String country() {
@@ -202,7 +204,7 @@ public final class EnrichmentDomainWhoisContact {
 
     /**
      * Set the country property: The country for this contact.
-     *
+     * 
      * @param country the country value to set.
      * @return the EnrichmentDomainWhoisContact object itself.
      */
@@ -213,7 +215,7 @@ public final class EnrichmentDomainWhoisContact {
 
     /**
      * Get the phone property: The phone number for this contact.
-     *
+     * 
      * @return the phone value.
      */
     public String phone() {
@@ -222,7 +224,7 @@ public final class EnrichmentDomainWhoisContact {
 
     /**
      * Set the phone property: The phone number for this contact.
-     *
+     * 
      * @param phone the phone value to set.
      * @return the EnrichmentDomainWhoisContact object itself.
      */
@@ -233,7 +235,7 @@ public final class EnrichmentDomainWhoisContact {
 
     /**
      * Get the fax property: The fax number for this contact.
-     *
+     * 
      * @return the fax value.
      */
     public String fax() {
@@ -242,7 +244,7 @@ public final class EnrichmentDomainWhoisContact {
 
     /**
      * Set the fax property: The fax number for this contact.
-     *
+     * 
      * @param fax the fax value to set.
      * @return the EnrichmentDomainWhoisContact object itself.
      */
@@ -253,7 +255,7 @@ public final class EnrichmentDomainWhoisContact {
 
     /**
      * Get the email property: The email address for this contact.
-     *
+     * 
      * @return the email value.
      */
     public String email() {
@@ -262,7 +264,7 @@ public final class EnrichmentDomainWhoisContact {
 
     /**
      * Set the email property: The email address for this contact.
-     *
+     * 
      * @param email the email value to set.
      * @return the EnrichmentDomainWhoisContact object itself.
      */
@@ -273,9 +275,73 @@ public final class EnrichmentDomainWhoisContact {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("org", this.org);
+        jsonWriter.writeArrayField("street", this.street, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("city", this.city);
+        jsonWriter.writeStringField("state", this.state);
+        jsonWriter.writeStringField("postal", this.postal);
+        jsonWriter.writeStringField("country", this.country);
+        jsonWriter.writeStringField("phone", this.phone);
+        jsonWriter.writeStringField("fax", this.fax);
+        jsonWriter.writeStringField("email", this.email);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnrichmentDomainWhoisContact from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnrichmentDomainWhoisContact if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EnrichmentDomainWhoisContact.
+     */
+    public static EnrichmentDomainWhoisContact fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnrichmentDomainWhoisContact deserializedEnrichmentDomainWhoisContact = new EnrichmentDomainWhoisContact();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedEnrichmentDomainWhoisContact.name = reader.getString();
+                } else if ("org".equals(fieldName)) {
+                    deserializedEnrichmentDomainWhoisContact.org = reader.getString();
+                } else if ("street".equals(fieldName)) {
+                    List<String> street = reader.readArray(reader1 -> reader1.getString());
+                    deserializedEnrichmentDomainWhoisContact.street = street;
+                } else if ("city".equals(fieldName)) {
+                    deserializedEnrichmentDomainWhoisContact.city = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedEnrichmentDomainWhoisContact.state = reader.getString();
+                } else if ("postal".equals(fieldName)) {
+                    deserializedEnrichmentDomainWhoisContact.postal = reader.getString();
+                } else if ("country".equals(fieldName)) {
+                    deserializedEnrichmentDomainWhoisContact.country = reader.getString();
+                } else if ("phone".equals(fieldName)) {
+                    deserializedEnrichmentDomainWhoisContact.phone = reader.getString();
+                } else if ("fax".equals(fieldName)) {
+                    deserializedEnrichmentDomainWhoisContact.fax = reader.getString();
+                } else if ("email".equals(fieldName)) {
+                    deserializedEnrichmentDomainWhoisContact.email = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnrichmentDomainWhoisContact;
+        });
     }
 }

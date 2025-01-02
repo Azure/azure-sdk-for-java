@@ -10,10 +10,7 @@ module com.azure.resourcemanager.deviceprovisioningservices {
     exports com.azure.resourcemanager.deviceprovisioningservices.fluent.models;
     exports com.azure.resourcemanager.deviceprovisioningservices.models;
 
-    opens com.azure.resourcemanager.deviceprovisioningservices.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.deviceprovisioningservices.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.deviceprovisioningservices.fluent.models
+        to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.deviceprovisioningservices.models to com.azure.core, com.fasterxml.jackson.databind;
 }

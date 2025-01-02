@@ -5,34 +5,49 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The kind of the setting. */
+/**
+ * The kind of the setting.
+ */
 public final class SettingType extends ExpandableStringEnum<SettingType> {
-    /** Static value CopyableLabel for SettingType. */
+    /**
+     * Static value CopyableLabel for SettingType.
+     */
     public static final SettingType COPYABLE_LABEL = fromString("CopyableLabel");
 
-    /** Static value InstructionStepsGroup for SettingType. */
+    /**
+     * Static value InstructionStepsGroup for SettingType.
+     */
     public static final SettingType INSTRUCTION_STEPS_GROUP = fromString("InstructionStepsGroup");
 
-    /** Static value InfoMessage for SettingType. */
+    /**
+     * Static value InfoMessage for SettingType.
+     */
     public static final SettingType INFO_MESSAGE = fromString("InfoMessage");
 
     /**
+     * Creates a new instance of SettingType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SettingType() {
+    }
+
+    /**
      * Creates or finds a SettingType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SettingType.
      */
-    @JsonCreator
     public static SettingType fromString(String name) {
         return fromString(name, SettingType.class);
     }
 
     /**
      * Gets known SettingType values.
-     *
+     * 
      * @return known SettingType values.
      */
     public static Collection<SettingType> values() {

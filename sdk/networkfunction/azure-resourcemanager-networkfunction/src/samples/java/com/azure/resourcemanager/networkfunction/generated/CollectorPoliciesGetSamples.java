@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.networkfunction.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for CollectorPolicies Get. */
+/**
+ * Samples for CollectorPolicies Get.
+ */
 public final class CollectorPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/CollectorPolicyGet.json
+     * x-ms-original-file:
+     * specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/
+     * CollectorPolicyGet.json
      */
     /**
      * Sample code: Get Collection Policy.
-     *
+     * 
      * @param manager Entry point to AzureTrafficCollectorManager.
      */
-    public static void getCollectionPolicy(
-        com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager manager) {
-        manager.collectorPolicies().getWithResponse("rg1", "atc", "cp1", Context.NONE);
+    public static void
+        getCollectionPolicy(com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager manager) {
+        manager.collectorPolicies().getWithResponse("rg1", "atc", "cp1", com.azure.core.util.Context.NONE);
     }
 }

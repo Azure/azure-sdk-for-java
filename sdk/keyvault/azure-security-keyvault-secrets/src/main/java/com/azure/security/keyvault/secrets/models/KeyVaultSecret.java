@@ -141,7 +141,7 @@ public class KeyVaultSecret implements JsonSerializable<KeyVaultSecret> {
                     keyVaultSecret.properties.contentType = reader.getString();
                 } else if ("tags".equals(fieldName)) {
                     keyVaultSecret.properties.tags = reader.readMap(JsonReader::getString);
-                } else  {
+                } else {
                     reader.skipChildren();
                 }
             }
@@ -150,4 +150,3 @@ public class KeyVaultSecret implements JsonSerializable<KeyVaultSecret> {
         });
     }
 }
-

@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.education.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Grant Offer Type. */
+/**
+ * Grant Offer Type.
+ */
 public final class GrantType extends ExpandableStringEnum<GrantType> {
-    /** Static value Student for GrantType. */
+    /**
+     * Static value Student for GrantType.
+     */
     public static final GrantType STUDENT = fromString("Student");
 
-    /** Static value Academic for GrantType. */
+    /**
+     * Static value Academic for GrantType.
+     */
     public static final GrantType ACADEMIC = fromString("Academic");
 
     /**
+     * Creates a new instance of GrantType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GrantType() {
+    }
+
+    /**
      * Creates or finds a GrantType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GrantType.
      */
-    @JsonCreator
     public static GrantType fromString(String name) {
         return fromString(name, GrantType.class);
     }
 
     /**
      * Gets known GrantType values.
-     *
+     * 
      * @return known GrantType values.
      */
     public static Collection<GrantType> values() {

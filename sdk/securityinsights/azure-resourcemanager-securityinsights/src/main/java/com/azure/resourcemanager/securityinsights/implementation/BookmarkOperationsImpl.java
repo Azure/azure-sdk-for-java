@@ -21,38 +21,30 @@ public final class BookmarkOperationsImpl implements BookmarkOperations {
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    public BookmarkOperationsImpl(
-        BookmarkOperationsClient innerClient,
+    public BookmarkOperationsImpl(BookmarkOperationsClient innerClient,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public BookmarkExpandResponse expand(
-        String resourceGroupName, String workspaceName, String bookmarkId, BookmarkExpandParameters parameters) {
-        BookmarkExpandResponseInner inner =
-            this.serviceClient().expand(resourceGroupName, workspaceName, bookmarkId, parameters);
+    public Response<BookmarkExpandResponse> expandWithResponse(String resourceGroupName, String workspaceName,
+        String bookmarkId, BookmarkExpandParameters parameters, Context context) {
+        Response<BookmarkExpandResponseInner> inner = this.serviceClient()
+            .expandWithResponse(resourceGroupName, workspaceName, bookmarkId, parameters, context);
         if (inner != null) {
-            return new BookmarkExpandResponseImpl(inner, this.manager());
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new BookmarkExpandResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<BookmarkExpandResponse> expandWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String bookmarkId,
-        BookmarkExpandParameters parameters,
-        Context context) {
-        Response<BookmarkExpandResponseInner> inner =
-            this.serviceClient().expandWithResponse(resourceGroupName, workspaceName, bookmarkId, parameters, context);
+    public BookmarkExpandResponse expand(String resourceGroupName, String workspaceName, String bookmarkId,
+        BookmarkExpandParameters parameters) {
+        BookmarkExpandResponseInner inner
+            = this.serviceClient().expand(resourceGroupName, workspaceName, bookmarkId, parameters);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new BookmarkExpandResponseImpl(inner.getValue(), this.manager()));
+            return new BookmarkExpandResponseImpl(inner, this.manager());
         } else {
             return null;
         }

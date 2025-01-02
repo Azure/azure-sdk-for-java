@@ -5,7 +5,6 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -49,7 +48,6 @@ public final class LateralityDiscrepancyType extends ExpandableStringEnum<Latera
      * @return the corresponding LateralityDiscrepancyType.
      */
     @Generated
-    @JsonCreator
     public static LateralityDiscrepancyType fromString(String name) {
         return fromString(name, LateralityDiscrepancyType.class);
     }

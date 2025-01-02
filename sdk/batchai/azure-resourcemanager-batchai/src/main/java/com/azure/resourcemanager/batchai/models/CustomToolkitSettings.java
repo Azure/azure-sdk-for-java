@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Custom tool kit job settings. */
 @Fluent
 public final class CustomToolkitSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomToolkitSettings.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(CustomToolkitSettings.class);
 
     /*
      * The command line to execute on the master node.

@@ -6,48 +6,51 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The AS2 agreement envelope settings. */
+/**
+ * The AS2 agreement envelope settings.
+ */
 @Fluent
-public final class AS2EnvelopeSettings {
+public final class AS2EnvelopeSettings implements JsonSerializable<AS2EnvelopeSettings> {
     /*
      * The message content type.
      */
-    @JsonProperty(value = "messageContentType", required = true)
     private String messageContentType;
 
     /*
      * The value indicating whether to transmit file name in mime header.
      */
-    @JsonProperty(value = "transmitFileNameInMimeHeader", required = true)
     private boolean transmitFileNameInMimeHeader;
 
     /*
      * The template for file name.
      */
-    @JsonProperty(value = "fileNameTemplate", required = true)
     private String fileNameTemplate;
 
     /*
      * The value indicating whether to suspend message on file name generation error.
      */
-    @JsonProperty(value = "suspendMessageOnFileNameGenerationError", required = true)
     private boolean suspendMessageOnFileNameGenerationError;
 
     /*
      * The value indicating whether to auto generate file name.
      */
-    @JsonProperty(value = "autogenerateFileName", required = true)
     private boolean autogenerateFileName;
 
-    /** Creates an instance of AS2EnvelopeSettings class. */
+    /**
+     * Creates an instance of AS2EnvelopeSettings class.
+     */
     public AS2EnvelopeSettings() {
     }
 
     /**
      * Get the messageContentType property: The message content type.
-     *
+     * 
      * @return the messageContentType value.
      */
     public String messageContentType() {
@@ -56,7 +59,7 @@ public final class AS2EnvelopeSettings {
 
     /**
      * Set the messageContentType property: The message content type.
-     *
+     * 
      * @param messageContentType the messageContentType value to set.
      * @return the AS2EnvelopeSettings object itself.
      */
@@ -67,7 +70,7 @@ public final class AS2EnvelopeSettings {
 
     /**
      * Get the transmitFileNameInMimeHeader property: The value indicating whether to transmit file name in mime header.
-     *
+     * 
      * @return the transmitFileNameInMimeHeader value.
      */
     public boolean transmitFileNameInMimeHeader() {
@@ -76,7 +79,7 @@ public final class AS2EnvelopeSettings {
 
     /**
      * Set the transmitFileNameInMimeHeader property: The value indicating whether to transmit file name in mime header.
-     *
+     * 
      * @param transmitFileNameInMimeHeader the transmitFileNameInMimeHeader value to set.
      * @return the AS2EnvelopeSettings object itself.
      */
@@ -87,7 +90,7 @@ public final class AS2EnvelopeSettings {
 
     /**
      * Get the fileNameTemplate property: The template for file name.
-     *
+     * 
      * @return the fileNameTemplate value.
      */
     public String fileNameTemplate() {
@@ -96,7 +99,7 @@ public final class AS2EnvelopeSettings {
 
     /**
      * Set the fileNameTemplate property: The template for file name.
-     *
+     * 
      * @param fileNameTemplate the fileNameTemplate value to set.
      * @return the AS2EnvelopeSettings object itself.
      */
@@ -108,7 +111,7 @@ public final class AS2EnvelopeSettings {
     /**
      * Get the suspendMessageOnFileNameGenerationError property: The value indicating whether to suspend message on file
      * name generation error.
-     *
+     * 
      * @return the suspendMessageOnFileNameGenerationError value.
      */
     public boolean suspendMessageOnFileNameGenerationError() {
@@ -118,19 +121,19 @@ public final class AS2EnvelopeSettings {
     /**
      * Set the suspendMessageOnFileNameGenerationError property: The value indicating whether to suspend message on file
      * name generation error.
-     *
+     * 
      * @param suspendMessageOnFileNameGenerationError the suspendMessageOnFileNameGenerationError value to set.
      * @return the AS2EnvelopeSettings object itself.
      */
-    public AS2EnvelopeSettings withSuspendMessageOnFileNameGenerationError(
-        boolean suspendMessageOnFileNameGenerationError) {
+    public AS2EnvelopeSettings
+        withSuspendMessageOnFileNameGenerationError(boolean suspendMessageOnFileNameGenerationError) {
         this.suspendMessageOnFileNameGenerationError = suspendMessageOnFileNameGenerationError;
         return this;
     }
 
     /**
      * Get the autogenerateFileName property: The value indicating whether to auto generate file name.
-     *
+     * 
      * @return the autogenerateFileName value.
      */
     public boolean autogenerateFileName() {
@@ -139,7 +142,7 @@ public final class AS2EnvelopeSettings {
 
     /**
      * Set the autogenerateFileName property: The value indicating whether to auto generate file name.
-     *
+     * 
      * @param autogenerateFileName the autogenerateFileName value to set.
      * @return the AS2EnvelopeSettings object itself.
      */
@@ -150,23 +153,71 @@ public final class AS2EnvelopeSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (messageContentType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property messageContentType in model AS2EnvelopeSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property messageContentType in model AS2EnvelopeSettings"));
         }
         if (fileNameTemplate() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property fileNameTemplate in model AS2EnvelopeSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property fileNameTemplate in model AS2EnvelopeSettings"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AS2EnvelopeSettings.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("messageContentType", this.messageContentType);
+        jsonWriter.writeBooleanField("transmitFileNameInMimeHeader", this.transmitFileNameInMimeHeader);
+        jsonWriter.writeStringField("fileNameTemplate", this.fileNameTemplate);
+        jsonWriter.writeBooleanField("suspendMessageOnFileNameGenerationError",
+            this.suspendMessageOnFileNameGenerationError);
+        jsonWriter.writeBooleanField("autogenerateFileName", this.autogenerateFileName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AS2EnvelopeSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AS2EnvelopeSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AS2EnvelopeSettings.
+     */
+    public static AS2EnvelopeSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AS2EnvelopeSettings deserializedAS2EnvelopeSettings = new AS2EnvelopeSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("messageContentType".equals(fieldName)) {
+                    deserializedAS2EnvelopeSettings.messageContentType = reader.getString();
+                } else if ("transmitFileNameInMimeHeader".equals(fieldName)) {
+                    deserializedAS2EnvelopeSettings.transmitFileNameInMimeHeader = reader.getBoolean();
+                } else if ("fileNameTemplate".equals(fieldName)) {
+                    deserializedAS2EnvelopeSettings.fileNameTemplate = reader.getString();
+                } else if ("suspendMessageOnFileNameGenerationError".equals(fieldName)) {
+                    deserializedAS2EnvelopeSettings.suspendMessageOnFileNameGenerationError = reader.getBoolean();
+                } else if ("autogenerateFileName".equals(fieldName)) {
+                    deserializedAS2EnvelopeSettings.autogenerateFileName = reader.getBoolean();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAS2EnvelopeSettings;
+        });
+    }
 }

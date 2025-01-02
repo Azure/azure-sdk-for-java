@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Expansion result connected entities. */
+/**
+ * Expansion result connected entities.
+ */
 @Fluent
-public final class ConnectedEntity {
+public final class ConnectedEntity implements JsonSerializable<ConnectedEntity> {
     /*
      * Entity Id of the connected entity
      */
-    @JsonProperty(value = "targetEntityId")
     private String targetEntityId;
 
     /*
      * key-value pairs for a connected entity mapping
      */
-    @JsonProperty(value = "additionalData")
     private Object additionalData;
 
     /**
+     * Creates an instance of ConnectedEntity class.
+     */
+    public ConnectedEntity() {
+    }
+
+    /**
      * Get the targetEntityId property: Entity Id of the connected entity.
-     *
+     * 
      * @return the targetEntityId value.
      */
     public String targetEntityId() {
@@ -33,7 +43,7 @@ public final class ConnectedEntity {
 
     /**
      * Set the targetEntityId property: Entity Id of the connected entity.
-     *
+     * 
      * @param targetEntityId the targetEntityId value to set.
      * @return the ConnectedEntity object itself.
      */
@@ -44,7 +54,7 @@ public final class ConnectedEntity {
 
     /**
      * Get the additionalData property: key-value pairs for a connected entity mapping.
-     *
+     * 
      * @return the additionalData value.
      */
     public Object additionalData() {
@@ -53,7 +63,7 @@ public final class ConnectedEntity {
 
     /**
      * Set the additionalData property: key-value pairs for a connected entity mapping.
-     *
+     * 
      * @param additionalData the additionalData value to set.
      * @return the ConnectedEntity object itself.
      */
@@ -64,9 +74,48 @@ public final class ConnectedEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetEntityId", this.targetEntityId);
+        jsonWriter.writeUntypedField("additionalData", this.additionalData);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectedEntity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectedEntity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectedEntity.
+     */
+    public static ConnectedEntity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectedEntity deserializedConnectedEntity = new ConnectedEntity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetEntityId".equals(fieldName)) {
+                    deserializedConnectedEntity.targetEntityId = reader.getString();
+                } else if ("additionalData".equals(fieldName)) {
+                    deserializedConnectedEntity.additionalData = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectedEntity;
+        });
     }
 }

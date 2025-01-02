@@ -67,9 +67,7 @@ public class SchemaRegistryClientTests extends TestProxyTestBase {
             assertNotNull(schemaGroup, "'schemaGroup' cannot be null in LIVE/RECORD mode.");
         }
 
-        builder = new SchemaRegistryClientBuilder()
-            .credential(tokenCredential)
-            .fullyQualifiedNamespace(endpoint);
+        builder = new SchemaRegistryClientBuilder().credential(tokenCredential).fullyQualifiedNamespace(endpoint);
 
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(buildSyncAssertingClient(interceptorManager.getPlaybackClient()));
@@ -79,8 +77,7 @@ public class SchemaRegistryClientTests extends TestProxyTestBase {
     }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .assertSync()
+        return new AssertingHttpClientBuilder(httpClient).assertSync()
             .skipRequest((httpRequest, context) -> false)
             .build();
     }
@@ -134,8 +131,8 @@ public class SchemaRegistryClientTests extends TestProxyTestBase {
 
         // Expected that the second time we call this method, it will return a different schema because the contents
         // are different.
-        final SchemaProperties response2 = client1.registerSchema(schemaGroup, schemaName, schemaContentModified,
-            schemaFormat);
+        final SchemaProperties response2
+            = client1.registerSchema(schemaGroup, schemaName, schemaContentModified, schemaFormat);
         assertSchemaProperties(response2, null, schemaFormat, schemaGroup, schemaName);
 
         // Assert that we can get a schema based on its id. We registered a schema with client1 and its response is
@@ -159,8 +156,7 @@ public class SchemaRegistryClientTests extends TestProxyTestBase {
         final SchemaFormat schemaFormat = SchemaFormat.AVRO;
 
         // Act & Assert
-        final SchemaProperties response = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT,
-            schemaFormat);
+        final SchemaProperties response = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, schemaFormat);
         assertSchemaProperties(response, null, schemaFormat, schemaGroup, schemaName);
 
         // Assert that we can get a schema based on its id. We registered a schema with client1 and its response is
@@ -169,8 +165,8 @@ public class SchemaRegistryClientTests extends TestProxyTestBase {
         assertNotNull(schemaIdToGet);
 
         // Act & Assert
-        final SchemaProperties schemaProperties = client2.getSchemaProperties(schemaGroup, schemaName, SCHEMA_CONTENT,
-            schemaFormat);
+        final SchemaProperties schemaProperties
+            = client2.getSchemaProperties(schemaGroup, schemaName, SCHEMA_CONTENT, schemaFormat);
 
         assertEquals(schemaIdToGet, schemaProperties.getId());
         assertEquals(schemaFormat, schemaProperties.getFormat());
@@ -209,9 +205,8 @@ public class SchemaRegistryClientTests extends TestProxyTestBase {
         final SchemaFormat unknownSchemaFormat = SchemaFormat.fromString("protobuf");
 
         // Act & Assert
-        HttpResponseException e = assertThrows(HttpResponseException.class,
-            () -> client.registerSchemaWithResponse(schemaGroup, schemaName, SCHEMA_CONTENT, unknownSchemaFormat,
-                Context.NONE));
+        HttpResponseException e = assertThrows(HttpResponseException.class, () -> client
+            .registerSchemaWithResponse(schemaGroup, schemaName, SCHEMA_CONTENT, unknownSchemaFormat, Context.NONE));
         assertEquals(415, e.getResponse().getStatusCode());
     }
 
@@ -225,8 +220,8 @@ public class SchemaRegistryClientTests extends TestProxyTestBase {
         final SchemaRegistryClient client1 = builder.buildClient();
 
         // Act & Assert
-        final ResourceNotFoundException error = assertThrows(ResourceNotFoundException.class,
-            () -> client1.getSchema(schemaId));
+        final ResourceNotFoundException error
+            = assertThrows(ResourceNotFoundException.class, () -> client1.getSchema(schemaId));
 
         assertEquals(404, error.getResponse().getStatusCode());
     }
@@ -253,8 +248,8 @@ public class SchemaRegistryClientTests extends TestProxyTestBase {
         final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
 
         // Register a schema first.
-        final SchemaProperties registeredSchema = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT,
-            SchemaFormat.AVRO);
+        final SchemaProperties registeredSchema
+            = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO);
 
         assertNotNull(registeredSchema);
 

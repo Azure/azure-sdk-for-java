@@ -5,56 +5,59 @@
 package com.azure.resourcemanager.vmwarecloudsimple.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.vmwarecloudsimple.models.OperationError;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Operation status response. */
+/**
+ * Operation status response.
+ */
 @Fluent
-public final class OperationResourceInner {
+public final class OperationResourceInner implements JsonSerializable<OperationResourceInner> {
     /*
      * End time of the operation
      */
-    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTime;
 
     /*
      * Error Message if operation failed
      */
-    @JsonProperty(value = "error")
     private OperationError error;
 
     /*
      * Operation Id
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Operation ID
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Start time of the operation
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * Operation status
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
-    /** Creates an instance of OperationResourceInner class. */
+    /**
+     * Creates an instance of OperationResourceInner class.
+     */
     public OperationResourceInner() {
     }
 
     /**
      * Get the endTime property: End time of the operation.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -63,7 +66,7 @@ public final class OperationResourceInner {
 
     /**
      * Get the error property: Error Message if operation failed.
-     *
+     * 
      * @return the error value.
      */
     public OperationError error() {
@@ -72,7 +75,7 @@ public final class OperationResourceInner {
 
     /**
      * Set the error property: Error Message if operation failed.
-     *
+     * 
      * @param error the error value to set.
      * @return the OperationResourceInner object itself.
      */
@@ -83,7 +86,7 @@ public final class OperationResourceInner {
 
     /**
      * Get the id property: Operation Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -92,7 +95,7 @@ public final class OperationResourceInner {
 
     /**
      * Get the name property: Operation ID.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -101,7 +104,7 @@ public final class OperationResourceInner {
 
     /**
      * Get the startTime property: Start time of the operation.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -110,7 +113,7 @@ public final class OperationResourceInner {
 
     /**
      * Get the status property: Operation status.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -119,12 +122,60 @@ public final class OperationResourceInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (error() != null) {
             error().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationResourceInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationResourceInner.
+     */
+    public static OperationResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationResourceInner deserializedOperationResourceInner = new OperationResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endTime".equals(fieldName)) {
+                    deserializedOperationResourceInner.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("error".equals(fieldName)) {
+                    deserializedOperationResourceInner.error = OperationError.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedOperationResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedOperationResourceInner.name = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedOperationResourceInner.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("status".equals(fieldName)) {
+                    deserializedOperationResourceInner.status = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationResourceInner;
+        });
     }
 }

@@ -79,7 +79,7 @@ public final class PollResponseJavaDocCodeSnippets<T> {
 
         // Lets say we want to crete poll response with status as IN_PROGRESS
         PollResponse<String> inProgressPollResponse
-            = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, "mycustom response",
+            = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, "my custom response",
             Duration.ofMillis(2000));
         // END: com.azure.core.util.polling.pollresponse.status.value.retryAfter.properties
     }

@@ -5,55 +5,51 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The properties that are associated with an Azure SQL database data source.
  */
 @Fluent
-public class PostgreSqlDataSourceProperties {
+public class PostgreSqlDataSourceProperties implements JsonSerializable<PostgreSqlDataSourceProperties> {
     /*
      * The name of the SQL server containing the Azure SQL database. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "server")
     private String server;
 
     /*
      * The name of the Azure SQL database. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "database")
     private String database;
 
     /*
      * The name of the table in the Azure SQL database. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "table")
     private String table;
 
     /*
-     * The user name that will be used to connect to the Azure SQL database. Required on PUT (CreateOrReplace)
-     * requests.
+     * The user name that will be used to connect to the Azure SQL database. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "user")
     private String user;
 
     /*
      * The password that will be used to connect to the Azure SQL database. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /*
      * Max Writer count, currently only 1(single writer) and 0(based on query partition) are available. Optional on PUT
      * requests.
      */
-    @JsonProperty(value = "maxWriterCount")
     private Float maxWriterCount;
 
     /*
      * Authentication Mode.
      */
-    @JsonProperty(value = "authenticationMode")
     private AuthenticationMode authenticationMode;
 
     /**
@@ -218,5 +214,63 @@ public class PostgreSqlDataSourceProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("server", this.server);
+        jsonWriter.writeStringField("database", this.database);
+        jsonWriter.writeStringField("table", this.table);
+        jsonWriter.writeStringField("user", this.user);
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeNumberField("maxWriterCount", this.maxWriterCount);
+        jsonWriter.writeStringField("authenticationMode",
+            this.authenticationMode == null ? null : this.authenticationMode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PostgreSqlDataSourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PostgreSqlDataSourceProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PostgreSqlDataSourceProperties.
+     */
+    public static PostgreSqlDataSourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PostgreSqlDataSourceProperties deserializedPostgreSqlDataSourceProperties
+                = new PostgreSqlDataSourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("server".equals(fieldName)) {
+                    deserializedPostgreSqlDataSourceProperties.server = reader.getString();
+                } else if ("database".equals(fieldName)) {
+                    deserializedPostgreSqlDataSourceProperties.database = reader.getString();
+                } else if ("table".equals(fieldName)) {
+                    deserializedPostgreSqlDataSourceProperties.table = reader.getString();
+                } else if ("user".equals(fieldName)) {
+                    deserializedPostgreSqlDataSourceProperties.user = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedPostgreSqlDataSourceProperties.password = reader.getString();
+                } else if ("maxWriterCount".equals(fieldName)) {
+                    deserializedPostgreSqlDataSourceProperties.maxWriterCount
+                        = reader.getNullable(JsonReader::getFloat);
+                } else if ("authenticationMode".equals(fieldName)) {
+                    deserializedPostgreSqlDataSourceProperties.authenticationMode
+                        = AuthenticationMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPostgreSqlDataSourceProperties;
+        });
     }
 }

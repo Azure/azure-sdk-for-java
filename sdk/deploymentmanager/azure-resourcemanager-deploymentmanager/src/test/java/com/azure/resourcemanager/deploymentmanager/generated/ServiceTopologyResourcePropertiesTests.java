@@ -11,17 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceTopologyResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceTopologyResourceProperties model =
-            BinaryData
-                .fromString("{\"artifactSourceId\":\"qjnqglhqgnufoooj\"}")
-                .toObject(ServiceTopologyResourceProperties.class);
+        ServiceTopologyResourceProperties model = BinaryData.fromString("{\"artifactSourceId\":\"qjnqglhqgnufoooj\"}")
+            .toObject(ServiceTopologyResourceProperties.class);
         Assertions.assertEquals("qjnqglhqgnufoooj", model.artifactSourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceTopologyResourceProperties model =
-            new ServiceTopologyResourceProperties().withArtifactSourceId("qjnqglhqgnufoooj");
+        ServiceTopologyResourceProperties model
+            = new ServiceTopologyResourceProperties().withArtifactSourceId("qjnqglhqgnufoooj");
         model = BinaryData.fromObject(model).toObject(ServiceTopologyResourceProperties.class);
         Assertions.assertEquals("qjnqglhqgnufoooj", model.artifactSourceId());
     }

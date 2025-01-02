@@ -19,14 +19,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ProtocolPolicyTests {
     @SyncAsyncTest
-    public void withOverwrite() throws Exception {
+    public void withOverwrite() {
         final HttpPipeline pipeline = createPipeline("ftp", "ftp://www.bing.com");
         SyncAsyncExtension.execute(() -> pipeline.sendSync(createHttpRequest("https://www.bing.com"), Context.NONE),
             () -> pipeline.send(createHttpRequest("https://www.bing.com")));
     }
 
     @SyncAsyncTest
-    public void withNoOverwrite() throws Exception {
+    public void withNoOverwrite() {
         final HttpPipeline pipeline = createPipeline("ftp", false, "https://www.bing.com");
         SyncAsyncExtension.execute(() -> pipeline.sendSync(createHttpRequest("https://www.bing.com"), Context.NONE),
             () -> pipeline.send(createHttpRequest("https://www.bing.com")));

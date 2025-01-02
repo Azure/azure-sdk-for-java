@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.securityinsights.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for DomainWhois Get. */
+/**
+ * Samples for DomainWhois Get.
+ */
 public final class DomainWhoisGetSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/enrichment/GetWhoisByDomainName.json
+     * x-ms-original-file:
+     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/
+     * enrichment/GetWhoisByDomainName.json
      */
     /**
      * Sample code: Get whois information for a single domain name.
-     *
+     * 
      * @param manager Entry point to SecurityInsightsManager.
      */
     public static void getWhoisInformationForASingleDomainName(
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
-        manager.domainWhois().getWithResponse("myRg", "microsoft.com", Context.NONE);
+        manager.domainWhois().getWithResponse("myRg", "microsoft.com", com.azure.core.util.Context.NONE);
     }
 }

@@ -4,19 +4,23 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-/** Samples for BatchEndpoints Delete. */
+/**
+ * Samples for BatchEndpoints Delete.
+ */
 public final class BatchEndpointsDeleteSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/BatchEndpoint/delete.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Workspace/BatchEndpoint/delete.json
      */
     /**
-     * Sample code: Delete Batch Endpoint.
-     *
+     * Sample code: Delete Workspace Batch Endpoint.
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
-    public static void deleteBatchEndpoint(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager
-            .batchEndpoints()
+    public static void
+        deleteWorkspaceBatchEndpoint(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
+        manager.batchEndpoints()
             .delete("resourceGroup-1234", "testworkspace", "testBatchEndpoint", com.azure.core.util.Context.NONE);
     }
 }

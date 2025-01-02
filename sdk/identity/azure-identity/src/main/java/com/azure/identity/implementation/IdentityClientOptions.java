@@ -31,6 +31,7 @@ import java.util.TreeSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
+
 /**
  * Options to configure the IdentityClient.
  */
@@ -80,7 +81,6 @@ public final class IdentityClientOptions implements Cloneable {
     private boolean brokerEnabled;
     private boolean enableMsaPassthrough;
     private boolean useDefaultBrokerAccount;
-
     private boolean useImdsRetryStrategy;
 
     /**
@@ -96,8 +96,8 @@ public final class IdentityClientOptions implements Cloneable {
         perCallPolicies = new ArrayList<>();
         perRetryPolicies = new ArrayList<>();
         additionallyAllowedTenants = new HashSet<>();
-        regionalAuthority = RegionalAuthority.fromString(
-            configuration.get(Configuration.PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME));
+        regionalAuthority
+            = RegionalAuthority.fromString(configuration.get(Configuration.PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME));
         instanceDiscovery = true;
     }
 
@@ -371,7 +371,6 @@ public final class IdentityClientOptions implements Cloneable {
         return regionalAuthority;
     }
 
-
     /**
      * Configure the User Assertion Scope to be used for OnBehalfOf Authentication request.
      *
@@ -586,7 +585,6 @@ public final class IdentityClientOptions implements Cloneable {
         this.useImdsRetryStrategy = true;
     }
 
-
     /**
      * Add a per call policy.
      * @param httpPipelinePolicy the http pipeline policy to add.
@@ -686,7 +684,8 @@ public final class IdentityClientOptions implements Cloneable {
         return this;
     }
 
-    public IdentityClientOptions setBrowserCustomizationOptions(BrowserCustomizationOptions browserCustomizationOptions) {
+    public IdentityClientOptions
+        setBrowserCustomizationOptions(BrowserCustomizationOptions browserCustomizationOptions) {
         this.browserCustomizationOptions = browserCustomizationOptions;
         return this;
     }
@@ -707,13 +706,12 @@ public final class IdentityClientOptions implements Cloneable {
      * Loads the details from the specified Configuration Store.
      */
     private void loadFromConfiguration(Configuration configuration) {
-        authorityHost = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST,
-            AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
-        imdsAuthorityHost = configuration.get(AZURE_POD_IDENTITY_AUTHORITY_HOST,
-            IdentityConstants.DEFAULT_IMDS_ENDPOINT);
+        authorityHost
+            = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
+        imdsAuthorityHost
+            = configuration.get(AZURE_POD_IDENTITY_AUTHORITY_HOST, IdentityConstants.DEFAULT_IMDS_ENDPOINT);
         ValidationUtil.validateAuthHost(authorityHost, LOGGER);
-        multiTenantAuthDisabled = configuration
-            .get(AZURE_IDENTITY_DISABLE_MULTI_TENANT_AUTH, false);
+        multiTenantAuthDisabled = configuration.get(AZURE_IDENTITY_DISABLE_MULTI_TENANT_AUTH, false);
     }
 
     /**
@@ -829,35 +827,35 @@ public final class IdentityClientOptions implements Cloneable {
     }
 
     public IdentityClientOptions clone() {
-        IdentityClientOptions clone =  new IdentityClientOptions()
-            .setAdditionallyAllowedTenants(this.additionallyAllowedTenants)
-            .setAllowUnencryptedCache(this.allowUnencryptedCache)
-            .setHttpClient(this.httpClient)
-            .setAuthenticationRecord(this.authenticationRecord)
-            .setExecutorService(this.executorService)
-            .setIdentityLogOptionsImpl(this.identityLogOptionsImpl)
-            .setTokenCacheOptions(this.tokenCachePersistenceOptions)
-            .setRetryTimeout(this.retryTimeout)
-            .setRegionalAuthority(this.regionalAuthority)
-            .setHttpPipeline(this.httpPipeline)
-            .setIncludeX5c(this.includeX5c)
-            .setProxyOptions(this.proxyOptions)
-            .setMaxRetry(this.maxRetry)
-            .setIntelliJKeePassDatabasePath(this.keePassDatabasePath)
-            .setAuthorityHost(this.authorityHost)
-            .setImdsAuthorityHost(this.imdsAuthorityHost)
-            .setMultiTenantAuthDisabled(this.multiTenantAuthDisabled)
-            .setUserAssertion(this.userAssertion)
-            .setConfigurationStore(this.configuration)
-            .setPersistenceCache(this.sharedTokenCacheEnabled)
-            .setClientOptions(this.clientOptions)
-            .setHttpLogOptions(this.httpLogOptions)
-            .setRetryOptions(this.retryOptions)
-            .setRetryPolicy(this.retryPolicy)
-            .setPerCallPolicies(this.perCallPolicies)
-            .setPerRetryPolicies(this.perRetryPolicies)
-            .setBrowserCustomizationOptions(this.browserCustomizationOptions)
-            .setChained(this.isChained);
+        IdentityClientOptions clone
+            = new IdentityClientOptions().setAdditionallyAllowedTenants(this.additionallyAllowedTenants)
+                .setAllowUnencryptedCache(this.allowUnencryptedCache)
+                .setHttpClient(this.httpClient)
+                .setAuthenticationRecord(this.authenticationRecord)
+                .setExecutorService(this.executorService)
+                .setIdentityLogOptionsImpl(this.identityLogOptionsImpl)
+                .setTokenCacheOptions(this.tokenCachePersistenceOptions)
+                .setRetryTimeout(this.retryTimeout)
+                .setRegionalAuthority(this.regionalAuthority)
+                .setHttpPipeline(this.httpPipeline)
+                .setIncludeX5c(this.includeX5c)
+                .setProxyOptions(this.proxyOptions)
+                .setMaxRetry(this.maxRetry)
+                .setIntelliJKeePassDatabasePath(this.keePassDatabasePath)
+                .setAuthorityHost(this.authorityHost)
+                .setImdsAuthorityHost(this.imdsAuthorityHost)
+                .setMultiTenantAuthDisabled(this.multiTenantAuthDisabled)
+                .setUserAssertion(this.userAssertion)
+                .setConfigurationStore(this.configuration)
+                .setPersistenceCache(this.sharedTokenCacheEnabled)
+                .setClientOptions(this.clientOptions)
+                .setHttpLogOptions(this.httpLogOptions)
+                .setRetryOptions(this.retryOptions)
+                .setRetryPolicy(this.retryPolicy)
+                .setPerCallPolicies(this.perCallPolicies)
+                .setPerRetryPolicies(this.perRetryPolicies)
+                .setBrowserCustomizationOptions(this.browserCustomizationOptions)
+                .setChained(this.isChained);
 
         if (isBrokerEnabled()) {
             clone.setBrokerWindowHandle(this.brokerWindowHandle);

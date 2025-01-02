@@ -15,13 +15,8 @@ import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Mono;
 
 /** Implementation for VirtualNetworkGateways. */
-public class VirtualNetworkGatewaysImpl
-    extends GroupableResourcesImpl<
-        VirtualNetworkGateway,
-        VirtualNetworkGatewayImpl,
-        VirtualNetworkGatewayInner,
-        VirtualNetworkGatewaysClient,
-        NetworkManager>
+public class VirtualNetworkGatewaysImpl extends
+    GroupableResourcesImpl<VirtualNetworkGateway, VirtualNetworkGatewayImpl, VirtualNetworkGatewayInner, VirtualNetworkGatewaysClient, NetworkManager>
     implements VirtualNetworkGateways {
 
     public VirtualNetworkGatewaysImpl(final NetworkManager networkManager) {
@@ -41,8 +36,9 @@ public class VirtualNetworkGatewaysImpl
     // TODO: Test this
     @Override
     public PagedFlux<VirtualNetworkGateway> listAsync() {
-        return PagedConverter.mapPage(PagedConverter.mergePagedFlux(this.manager().resourceManager().resourceGroups().listAsync(),
-            rg -> inner().listByResourceGroupAsync(rg.name())), this::wrapModel);
+        return PagedConverter
+            .mapPage(PagedConverter.mergePagedFlux(this.manager().resourceManager().resourceGroups().listAsync(),
+                rg -> inner().listByResourceGroupAsync(rg.name())), this::wrapModel);
     }
 
     @Override
@@ -53,8 +49,8 @@ public class VirtualNetworkGatewaysImpl
     @Override
     public PagedFlux<VirtualNetworkGateway> listByResourceGroupAsync(String resourceGroupName) {
         if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
-            return new PagedFlux<>(() -> Mono.error(
-                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+            return new PagedFlux<>(() -> Mono
+                .error(new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
         }
         return wrapPageAsync(this.inner().listByResourceGroupAsync(resourceGroupName));
     }

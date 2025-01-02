@@ -20,58 +20,97 @@ import java.util.Map;
 
 /** An immutable client-side representation of an Azure gallery image version. */
 @Fluent
-public interface GalleryImageVersion
-    extends HasInnerModel<GalleryImageVersionInner>,
-        Indexable,
-        Refreshable<GalleryImageVersion>,
-        Updatable<GalleryImageVersion.Update>,
-        HasManager<ComputeManager> {
-    /** @return the ARM id of the image version. */
+public interface GalleryImageVersion extends HasInnerModel<GalleryImageVersionInner>, Indexable,
+    Refreshable<GalleryImageVersion>, Updatable<GalleryImageVersion.Update>, HasManager<ComputeManager> {
+    /**
+     * Gets the ARM id of the iage version.
+     *
+     * @return the ARM id of the image version.
+     */
     String id();
 
-    /** @return the default location of the image version. */
+    /**
+     * Gets the default location of the image version.
+     *
+     * @return the default location of the image version.
+     */
     String location();
 
-    /** @return the image version name. */
+    /**
+     * Gets the image version name.
+     *
+     * @return the image version name.
+     */
     String name();
 
-    /** @return the provisioningState of image version resource. */
+    /**
+     * Gets the provisioningState of image version resource.
+     *
+     * @return the provisioningState of image version resource.
+     */
     String provisioningState();
 
-    /** @return the publishingProfile configuration of the image version. */
+    /**
+     * Gets the publishingProfile configuration of the image version.
+     *
+     * @return the publishingProfile configuration of the image version.
+     */
     GalleryImageVersionPublishingProfile publishingProfile();
 
-    /** @return the regions in which the image version is available. */
+    /**
+     * Gets the regions in which the image version is available.
+     *
+     * @return the regions in which the image version is available.
+     */
     List<TargetRegion> availableRegions();
 
-    /** @return the date indicating image version's end of life. */
+    /**
+     * Gets the date indicating image version's end of life.
+     *
+     * @return the date indicating image version's end of life.
+     */
     OffsetDateTime endOfLifeDate();
 
     /**
+     * Checks whether the image version is excluded from considering as a candidate when VM is created with 'latest'
+     *     image version.
+     *
      * @return true if the image version is excluded from considering as a candidate when VM is created with 'latest'
      *     image version, false otherwise.
      */
     Boolean isExcludedFromLatest();
 
-    /** @return the replicationStatus of image version in published regions. */
+    /**
+     * Gets the replicationStatus of image version in published regions.
+     *
+     * @return the replicationStatus of image version in published regions.
+     */
     ReplicationStatus replicationStatus();
 
-    /** @return the image version storageProfile describing OS and data disks. */
+    /**
+     * Gets the image version storageProfile describing OS and data disks.
+     *
+     * @return the image version storageProfile describing OS and data disks.
+     */
     GalleryImageVersionStorageProfile storageProfile();
 
-    /** @return the tags associated with the image version. */
+    /**
+     * Gets the tags associated with the image version.
+     *
+     * @return the tags associated with the image version.
+     */
     Map<String, String> tags();
 
-    /** @return the type. */
+    /**
+     * Gets the type.
+     *
+     * @return the type.
+     */
     String type();
 
     /** The entirety of the gallery image version definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithImage,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithSource,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithImage, DefinitionStages.WithLocation,
+        DefinitionStages.WithSource, DefinitionStages.WithCreate {
     }
 
     /** Grouping of gallery image version definition stages. */
@@ -129,6 +168,22 @@ public interface GalleryImageVersion
              * @return the next definition stage
              */
             WithCreate withSourceCustomImage(VirtualMachineCustomImage customImage);
+
+            /**
+             * Specifies that the provided virtual machine needs to be used as source of the image version.
+             *
+             * @param vmId resource ID of the virtual machine
+             * @return the next definition stage
+             */
+            WithCreate withSourceVirtualMachine(String vmId);
+
+            /**
+             * Specifies that the provided virtual machine needs to be used as source of the image version.
+             *
+             * @param virtualMachine virtual machine instance
+             * @return the next definition stage
+             */
+            WithCreate withSourceVirtualMachine(VirtualMachine virtualMachine);
         }
 
         /**
@@ -193,21 +248,14 @@ public interface GalleryImageVersion
          * The stage of the definition which contains all the minimum required inputs for the resource to be created
          * (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Creatable<GalleryImageVersion>,
-                DefinitionStages.WithAvailableRegion,
-                DefinitionStages.WithEndOfLifeDate,
-                DefinitionStages.WithExcludeFromLatest,
-                DefinitionStages.WithTags {
+        interface WithCreate extends Creatable<GalleryImageVersion>, DefinitionStages.WithAvailableRegion,
+            DefinitionStages.WithEndOfLifeDate, DefinitionStages.WithExcludeFromLatest, DefinitionStages.WithTags {
         }
     }
+
     /** The template for a gallery image version update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<GalleryImageVersion>,
-            UpdateStages.WithAvailableRegion,
-            UpdateStages.WithEndOfLifeDate,
-            UpdateStages.WithExcludeFromLatest,
-            UpdateStages.WithTags {
+    interface Update extends Appliable<GalleryImageVersion>, UpdateStages.WithAvailableRegion,
+        UpdateStages.WithEndOfLifeDate, UpdateStages.WithExcludeFromLatest, UpdateStages.WithTags {
     }
 
     /** Grouping of gallery image version update stages. */

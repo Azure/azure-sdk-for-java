@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.IncidentAdditionalData;
 import com.azure.resourcemanager.securityinsights.models.IncidentClassification;
 import com.azure.resourcemanager.securityinsights.models.IncidentClassificationReason;
@@ -13,29 +17,98 @@ import com.azure.resourcemanager.securityinsights.models.IncidentOwnerInfo;
 import com.azure.resourcemanager.securityinsights.models.IncidentSeverity;
 import com.azure.resourcemanager.securityinsights.models.IncidentStatus;
 import com.azure.resourcemanager.securityinsights.models.ResourceWithEtag;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Represents an incident in Azure Security Insights. */
+/**
+ * Represents an incident in Azure Security Insights.
+ */
 @Fluent
 public final class IncidentInner extends ResourceWithEtag {
     /*
      * Incident properties
      */
-    @JsonProperty(value = "properties")
     private IncidentPropertiesInner innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of IncidentInner class.
+     */
+    public IncidentInner() {
+    }
 
     /**
      * Get the innerProperties property: Incident properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IncidentPropertiesInner innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IncidentInner withEtag(String etag) {
         super.withEtag(etag);
@@ -44,7 +117,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Get the additionalData property: Additional data on the incident.
-     *
+     * 
      * @return the additionalData value.
      */
     public IncidentAdditionalData additionalData() {
@@ -53,7 +126,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Get the classification property: The reason the incident was closed.
-     *
+     * 
      * @return the classification value.
      */
     public IncidentClassification classification() {
@@ -62,7 +135,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Set the classification property: The reason the incident was closed.
-     *
+     * 
      * @param classification the classification value to set.
      * @return the IncidentInner object itself.
      */
@@ -76,7 +149,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Get the classificationComment property: Describes the reason the incident was closed.
-     *
+     * 
      * @return the classificationComment value.
      */
     public String classificationComment() {
@@ -85,7 +158,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Set the classificationComment property: Describes the reason the incident was closed.
-     *
+     * 
      * @param classificationComment the classificationComment value to set.
      * @return the IncidentInner object itself.
      */
@@ -99,7 +172,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Get the classificationReason property: The classification reason the incident was closed with.
-     *
+     * 
      * @return the classificationReason value.
      */
     public IncidentClassificationReason classificationReason() {
@@ -108,7 +181,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Set the classificationReason property: The classification reason the incident was closed with.
-     *
+     * 
      * @param classificationReason the classificationReason value to set.
      * @return the IncidentInner object itself.
      */
@@ -122,7 +195,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Get the createdTimeUtc property: The time the incident was created.
-     *
+     * 
      * @return the createdTimeUtc value.
      */
     public OffsetDateTime createdTimeUtc() {
@@ -131,7 +204,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Get the description property: The description of the incident.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -140,7 +213,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Set the description property: The description of the incident.
-     *
+     * 
      * @param description the description value to set.
      * @return the IncidentInner object itself.
      */
@@ -154,7 +227,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Get the firstActivityTimeUtc property: The time of the first activity in the incident.
-     *
+     * 
      * @return the firstActivityTimeUtc value.
      */
     public OffsetDateTime firstActivityTimeUtc() {
@@ -163,7 +236,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Set the firstActivityTimeUtc property: The time of the first activity in the incident.
-     *
+     * 
      * @param firstActivityTimeUtc the firstActivityTimeUtc value to set.
      * @return the IncidentInner object itself.
      */
@@ -177,7 +250,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Get the incidentUrl property: The deep-link url to the incident in Azure portal.
-     *
+     * 
      * @return the incidentUrl value.
      */
     public String incidentUrl() {
@@ -186,7 +259,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Get the incidentNumber property: A sequential number.
-     *
+     * 
      * @return the incidentNumber value.
      */
     public Integer incidentNumber() {
@@ -195,7 +268,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Get the labels property: List of labels relevant to this incident.
-     *
+     * 
      * @return the labels value.
      */
     public List<IncidentLabel> labels() {
@@ -204,7 +277,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Set the labels property: List of labels relevant to this incident.
-     *
+     * 
      * @param labels the labels value to set.
      * @return the IncidentInner object itself.
      */
@@ -218,7 +291,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Get the providerName property: The name of the source provider that generated the incident.
-     *
+     * 
      * @return the providerName value.
      */
     public String providerName() {
@@ -227,7 +300,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Set the providerName property: The name of the source provider that generated the incident.
-     *
+     * 
      * @param providerName the providerName value to set.
      * @return the IncidentInner object itself.
      */
@@ -241,7 +314,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Get the providerIncidentId property: The incident ID assigned by the incident provider.
-     *
+     * 
      * @return the providerIncidentId value.
      */
     public String providerIncidentId() {
@@ -250,7 +323,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Set the providerIncidentId property: The incident ID assigned by the incident provider.
-     *
+     * 
      * @param providerIncidentId the providerIncidentId value to set.
      * @return the IncidentInner object itself.
      */
@@ -264,7 +337,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Get the lastActivityTimeUtc property: The time of the last activity in the incident.
-     *
+     * 
      * @return the lastActivityTimeUtc value.
      */
     public OffsetDateTime lastActivityTimeUtc() {
@@ -273,7 +346,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Set the lastActivityTimeUtc property: The time of the last activity in the incident.
-     *
+     * 
      * @param lastActivityTimeUtc the lastActivityTimeUtc value to set.
      * @return the IncidentInner object itself.
      */
@@ -287,7 +360,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Get the lastModifiedTimeUtc property: The last time the incident was updated.
-     *
+     * 
      * @return the lastModifiedTimeUtc value.
      */
     public OffsetDateTime lastModifiedTimeUtc() {
@@ -296,7 +369,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Get the owner property: Describes a user that the incident is assigned to.
-     *
+     * 
      * @return the owner value.
      */
     public IncidentOwnerInfo owner() {
@@ -305,7 +378,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Set the owner property: Describes a user that the incident is assigned to.
-     *
+     * 
      * @param owner the owner value to set.
      * @return the IncidentInner object itself.
      */
@@ -319,7 +392,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Get the relatedAnalyticRuleIds property: List of resource ids of Analytic rules related to the incident.
-     *
+     * 
      * @return the relatedAnalyticRuleIds value.
      */
     public List<String> relatedAnalyticRuleIds() {
@@ -328,7 +401,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Get the severity property: The severity of the incident.
-     *
+     * 
      * @return the severity value.
      */
     public IncidentSeverity severity() {
@@ -337,7 +410,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Set the severity property: The severity of the incident.
-     *
+     * 
      * @param severity the severity value to set.
      * @return the IncidentInner object itself.
      */
@@ -351,7 +424,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Get the status property: The status of the incident.
-     *
+     * 
      * @return the status value.
      */
     public IncidentStatus status() {
@@ -360,7 +433,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Set the status property: The status of the incident.
-     *
+     * 
      * @param status the status value to set.
      * @return the IncidentInner object itself.
      */
@@ -374,7 +447,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Get the teamInformation property: Describes a team for the incident.
-     *
+     * 
      * @return the teamInformation value.
      */
     public TeamInformationInner teamInformation() {
@@ -383,7 +456,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Set the teamInformation property: Describes a team for the incident.
-     *
+     * 
      * @param teamInformation the teamInformation value to set.
      * @return the IncidentInner object itself.
      */
@@ -397,7 +470,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Get the title property: The title of the incident.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -406,7 +479,7 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Set the title property: The title of the incident.
-     *
+     * 
      * @param title the title value to set.
      * @return the IncidentInner object itself.
      */
@@ -420,14 +493,61 @@ public final class IncidentInner extends ResourceWithEtag {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("etag", etag());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IncidentInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IncidentInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IncidentInner.
+     */
+    public static IncidentInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IncidentInner deserializedIncidentInner = new IncidentInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedIncidentInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedIncidentInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedIncidentInner.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedIncidentInner.withEtag(reader.getString());
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedIncidentInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedIncidentInner.innerProperties = IncidentPropertiesInner.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIncidentInner;
+        });
     }
 }

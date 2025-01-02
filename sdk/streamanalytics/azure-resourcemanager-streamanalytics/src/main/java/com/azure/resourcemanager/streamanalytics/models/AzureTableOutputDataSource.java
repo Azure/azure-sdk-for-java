@@ -5,29 +5,43 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.fluent.models.AzureTableOutputDataSourceProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes an Azure Table output data source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Microsoft.Storage/Table")
 @Fluent
 public final class AzureTableOutputDataSource extends OutputDataSource {
     /*
+     * Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests.
+     */
+    private String type = "Microsoft.Storage/Table";
+
+    /*
      * The properties that are associated with an Azure Table output. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "properties")
     private AzureTableOutputDataSourceProperties innerProperties;
 
     /**
      * Creates an instance of AzureTableOutputDataSource class.
      */
     public AzureTableOutputDataSource() {
+    }
+
+    /**
+     * Get the type property: Indicates the type of data source output will be written to. Required on PUT
+     * (CreateOrReplace) requests.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -112,8 +126,8 @@ public final class AzureTableOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the partitionKey property: This element indicates the name of a column from the SELECT statement in the
-     * query that will be used as the partition key for the Azure Table. Required on PUT (CreateOrReplace) requests.
+     * Get the partitionKey property: This element indicates the name of a column from the SELECT statement in the query
+     * that will be used as the partition key for the Azure Table. Required on PUT (CreateOrReplace) requests.
      * 
      * @return the partitionKey value.
      */
@@ -122,8 +136,8 @@ public final class AzureTableOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the partitionKey property: This element indicates the name of a column from the SELECT statement in the
-     * query that will be used as the partition key for the Azure Table. Required on PUT (CreateOrReplace) requests.
+     * Set the partitionKey property: This element indicates the name of a column from the SELECT statement in the query
+     * that will be used as the partition key for the Azure Table. Required on PUT (CreateOrReplace) requests.
      * 
      * @param partitionKey the partitionKey value to set.
      * @return the AzureTableOutputDataSource object itself.
@@ -216,9 +230,48 @@ public final class AzureTableOutputDataSource extends OutputDataSource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureTableOutputDataSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureTableOutputDataSource if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureTableOutputDataSource.
+     */
+    public static AzureTableOutputDataSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureTableOutputDataSource deserializedAzureTableOutputDataSource = new AzureTableOutputDataSource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedAzureTableOutputDataSource.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAzureTableOutputDataSource.innerProperties
+                        = AzureTableOutputDataSourceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureTableOutputDataSource;
+        });
     }
 }

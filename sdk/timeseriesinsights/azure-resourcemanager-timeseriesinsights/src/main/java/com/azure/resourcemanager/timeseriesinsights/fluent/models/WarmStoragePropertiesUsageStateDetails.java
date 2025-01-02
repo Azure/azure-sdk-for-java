@@ -5,33 +5,40 @@
 package com.azure.resourcemanager.timeseriesinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** An object that contains the details about warm storage properties usage state. */
+/**
+ * An object that contains the details about warm storage properties usage state.
+ */
 @Fluent
-public final class WarmStoragePropertiesUsageStateDetails {
+public final class WarmStoragePropertiesUsageStateDetails
+    implements JsonSerializable<WarmStoragePropertiesUsageStateDetails> {
     /*
      * A value that represents the number of properties used by the environment for S1/S2 SKU and number of properties
      * used by Warm Store for PAYG SKU
      */
-    @JsonProperty(value = "currentCount")
     private Integer currentCount;
 
     /*
      * A value that represents the maximum number of properties used allowed by the environment for S1/S2 SKU and
      * maximum number of properties allowed by Warm Store for PAYG SKU.
      */
-    @JsonProperty(value = "maxCount")
     private Integer maxCount;
 
-    /** Creates an instance of WarmStoragePropertiesUsageStateDetails class. */
+    /**
+     * Creates an instance of WarmStoragePropertiesUsageStateDetails class.
+     */
     public WarmStoragePropertiesUsageStateDetails() {
     }
 
     /**
      * Get the currentCount property: A value that represents the number of properties used by the environment for S1/S2
      * SKU and number of properties used by Warm Store for PAYG SKU.
-     *
+     * 
      * @return the currentCount value.
      */
     public Integer currentCount() {
@@ -41,7 +48,7 @@ public final class WarmStoragePropertiesUsageStateDetails {
     /**
      * Set the currentCount property: A value that represents the number of properties used by the environment for S1/S2
      * SKU and number of properties used by Warm Store for PAYG SKU.
-     *
+     * 
      * @param currentCount the currentCount value to set.
      * @return the WarmStoragePropertiesUsageStateDetails object itself.
      */
@@ -53,7 +60,7 @@ public final class WarmStoragePropertiesUsageStateDetails {
     /**
      * Get the maxCount property: A value that represents the maximum number of properties used allowed by the
      * environment for S1/S2 SKU and maximum number of properties allowed by Warm Store for PAYG SKU.
-     *
+     * 
      * @return the maxCount value.
      */
     public Integer maxCount() {
@@ -63,7 +70,7 @@ public final class WarmStoragePropertiesUsageStateDetails {
     /**
      * Set the maxCount property: A value that represents the maximum number of properties used allowed by the
      * environment for S1/S2 SKU and maximum number of properties allowed by Warm Store for PAYG SKU.
-     *
+     * 
      * @param maxCount the maxCount value to set.
      * @return the WarmStoragePropertiesUsageStateDetails object itself.
      */
@@ -74,9 +81,51 @@ public final class WarmStoragePropertiesUsageStateDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("currentCount", this.currentCount);
+        jsonWriter.writeNumberField("maxCount", this.maxCount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WarmStoragePropertiesUsageStateDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WarmStoragePropertiesUsageStateDetails if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WarmStoragePropertiesUsageStateDetails.
+     */
+    public static WarmStoragePropertiesUsageStateDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WarmStoragePropertiesUsageStateDetails deserializedWarmStoragePropertiesUsageStateDetails
+                = new WarmStoragePropertiesUsageStateDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("currentCount".equals(fieldName)) {
+                    deserializedWarmStoragePropertiesUsageStateDetails.currentCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("maxCount".equals(fieldName)) {
+                    deserializedWarmStoragePropertiesUsageStateDetails.maxCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWarmStoragePropertiesUsageStateDetails;
+        });
     }
 }

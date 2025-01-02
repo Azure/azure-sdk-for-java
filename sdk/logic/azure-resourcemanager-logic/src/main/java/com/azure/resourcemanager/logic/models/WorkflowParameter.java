@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The workflow parameters. */
+/**
+ * The workflow parameters.
+ */
 @Fluent
-public class WorkflowParameter {
+public class WorkflowParameter implements JsonSerializable<WorkflowParameter> {
     /*
      * The type.
      */
-    @JsonProperty(value = "type")
     private ParameterType type;
 
     /*
      * The value.
      */
-    @JsonProperty(value = "value")
     private Object value;
 
     /*
      * The metadata.
      */
-    @JsonProperty(value = "metadata")
     private Object metadata;
 
     /*
      * The description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of WorkflowParameter class. */
+    /**
+     * Creates an instance of WorkflowParameter class.
+     */
     public WorkflowParameter() {
     }
 
     /**
      * Get the type property: The type.
-     *
+     * 
      * @return the type value.
      */
     public ParameterType type() {
@@ -49,7 +53,7 @@ public class WorkflowParameter {
 
     /**
      * Set the type property: The type.
-     *
+     * 
      * @param type the type value to set.
      * @return the WorkflowParameter object itself.
      */
@@ -60,7 +64,7 @@ public class WorkflowParameter {
 
     /**
      * Get the value property: The value.
-     *
+     * 
      * @return the value value.
      */
     public Object value() {
@@ -69,7 +73,7 @@ public class WorkflowParameter {
 
     /**
      * Set the value property: The value.
-     *
+     * 
      * @param value the value value to set.
      * @return the WorkflowParameter object itself.
      */
@@ -80,7 +84,7 @@ public class WorkflowParameter {
 
     /**
      * Get the metadata property: The metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public Object metadata() {
@@ -89,7 +93,7 @@ public class WorkflowParameter {
 
     /**
      * Set the metadata property: The metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the WorkflowParameter object itself.
      */
@@ -100,7 +104,7 @@ public class WorkflowParameter {
 
     /**
      * Get the description property: The description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -109,7 +113,7 @@ public class WorkflowParameter {
 
     /**
      * Set the description property: The description.
-     *
+     * 
      * @param description the description value to set.
      * @return the WorkflowParameter object itself.
      */
@@ -120,9 +124,54 @@ public class WorkflowParameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeUntypedField("value", this.value);
+        jsonWriter.writeUntypedField("metadata", this.metadata);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkflowParameter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkflowParameter if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkflowParameter.
+     */
+    public static WorkflowParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkflowParameter deserializedWorkflowParameter = new WorkflowParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedWorkflowParameter.type = ParameterType.fromString(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    deserializedWorkflowParameter.value = reader.readUntyped();
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedWorkflowParameter.metadata = reader.readUntyped();
+                } else if ("description".equals(fieldName)) {
+                    deserializedWorkflowParameter.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkflowParameter;
+        });
     }
 }

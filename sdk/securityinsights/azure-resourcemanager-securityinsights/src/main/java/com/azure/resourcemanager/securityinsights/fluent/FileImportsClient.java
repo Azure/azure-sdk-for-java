@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.securityinsights.fluent.models.FileImportInner;
 
-/** An instance of this class provides access to all the operations defined in FileImportsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FileImportsClient.
+ */
 public interface FileImportsClient {
     /**
      * Gets all file imports.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,15 +32,15 @@ public interface FileImportsClient {
 
     /**
      * Gets all file imports.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param filter Filters the results, based on a Boolean condition. Optional.
      * @param orderby Sorts the results. Optional.
      * @param top Returns only the first n results. Optional.
      * @param skipToken Skiptoken is only used if a previous operation returned a partial result. If a previous response
-     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
-     *     specifies a starting point to use for subsequent calls. Optional.
+     * contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies
+     * a starting point to use for subsequent calls. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -46,18 +48,28 @@ public interface FileImportsClient {
      * @return all file imports as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<FileImportInner> list(
-        String resourceGroupName,
-        String workspaceName,
-        String filter,
-        String orderby,
-        Integer top,
-        String skipToken,
+    PagedIterable<FileImportInner> list(String resourceGroupName, String workspaceName, String filter, String orderby,
+        Integer top, String skipToken, Context context);
+
+    /**
+     * Gets a file import.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param fileImportId File import ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a file import along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<FileImportInner> getWithResponse(String resourceGroupName, String workspaceName, String fileImportId,
         Context context);
 
     /**
      * Gets a file import.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param fileImportId File import ID.
@@ -70,40 +82,8 @@ public interface FileImportsClient {
     FileImportInner get(String resourceGroupName, String workspaceName, String fileImportId);
 
     /**
-     * Gets a file import.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param fileImportId File import ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a file import along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FileImportInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String fileImportId, Context context);
-
-    /**
      * Creates the file import.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param fileImportId File import ID.
-     * @param fileImport The file import.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a file import in Azure Security Insights.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    FileImportInner create(
-        String resourceGroupName, String workspaceName, String fileImportId, FileImportInner fileImport);
-
-    /**
-     * Creates the file import.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param fileImportId File import ID.
@@ -115,16 +95,28 @@ public interface FileImportsClient {
      * @return represents a file import in Azure Security Insights along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FileImportInner> createWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String fileImportId,
-        FileImportInner fileImport,
-        Context context);
+    Response<FileImportInner> createWithResponse(String resourceGroupName, String workspaceName, String fileImportId,
+        FileImportInner fileImport, Context context);
+
+    /**
+     * Creates the file import.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param fileImportId File import ID.
+     * @param fileImport The file import.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a file import in Azure Security Insights.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    FileImportInner create(String resourceGroupName, String workspaceName, String fileImportId,
+        FileImportInner fileImport);
 
     /**
      * Delete the file import.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param fileImportId File import ID.
@@ -134,12 +126,12 @@ public interface FileImportsClient {
      * @return the {@link SyncPoller} for polling of represents a file import in Azure Security Insights.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FileImportInner>, FileImportInner> beginDelete(
-        String resourceGroupName, String workspaceName, String fileImportId);
+    SyncPoller<PollResult<FileImportInner>, FileImportInner> beginDelete(String resourceGroupName, String workspaceName,
+        String fileImportId);
 
     /**
      * Delete the file import.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param fileImportId File import ID.
@@ -150,12 +142,12 @@ public interface FileImportsClient {
      * @return the {@link SyncPoller} for polling of represents a file import in Azure Security Insights.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FileImportInner>, FileImportInner> beginDelete(
-        String resourceGroupName, String workspaceName, String fileImportId, Context context);
+    SyncPoller<PollResult<FileImportInner>, FileImportInner> beginDelete(String resourceGroupName, String workspaceName,
+        String fileImportId, Context context);
 
     /**
      * Delete the file import.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param fileImportId File import ID.
@@ -169,7 +161,7 @@ public interface FileImportsClient {
 
     /**
      * Delete the file import.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param fileImportId File import ID.

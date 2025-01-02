@@ -6,30 +6,36 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The KPI alias. */
+/**
+ * The KPI alias.
+ */
 @Fluent
-public final class KpiAlias {
+public final class KpiAlias implements JsonSerializable<KpiAlias> {
     /*
      * KPI alias name.
      */
-    @JsonProperty(value = "aliasName", required = true)
     private String aliasName;
 
     /*
      * The expression.
      */
-    @JsonProperty(value = "expression", required = true)
     private String expression;
 
-    /** Creates an instance of KpiAlias class. */
+    /**
+     * Creates an instance of KpiAlias class.
+     */
     public KpiAlias() {
     }
 
     /**
      * Get the aliasName property: KPI alias name.
-     *
+     * 
      * @return the aliasName value.
      */
     public String aliasName() {
@@ -38,7 +44,7 @@ public final class KpiAlias {
 
     /**
      * Set the aliasName property: KPI alias name.
-     *
+     * 
      * @param aliasName the aliasName value to set.
      * @return the KpiAlias object itself.
      */
@@ -49,7 +55,7 @@ public final class KpiAlias {
 
     /**
      * Get the expression property: The expression.
-     *
+     * 
      * @return the expression value.
      */
     public String expression() {
@@ -58,7 +64,7 @@ public final class KpiAlias {
 
     /**
      * Set the expression property: The expression.
-     *
+     * 
      * @param expression the expression value to set.
      * @return the KpiAlias object itself.
      */
@@ -69,21 +75,59 @@ public final class KpiAlias {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (aliasName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property aliasName in model KpiAlias"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property aliasName in model KpiAlias"));
         }
         if (expression() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property expression in model KpiAlias"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property expression in model KpiAlias"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(KpiAlias.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("aliasName", this.aliasName);
+        jsonWriter.writeStringField("expression", this.expression);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KpiAlias from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KpiAlias if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the KpiAlias.
+     */
+    public static KpiAlias fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KpiAlias deserializedKpiAlias = new KpiAlias();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("aliasName".equals(fieldName)) {
+                    deserializedKpiAlias.aliasName = reader.getString();
+                } else if ("expression".equals(fieldName)) {
+                    deserializedKpiAlias.expression = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKpiAlias;
+        });
+    }
 }

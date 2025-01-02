@@ -5,42 +5,41 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.NameProperty;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Quota usage for flexible servers.
  */
 @Fluent
-public final class QuotaUsageInner {
+public final class QuotaUsageInner implements JsonSerializable<QuotaUsageInner> {
     /*
      * Name of quota usage for flexible servers
      */
-    @JsonProperty(value = "name")
     private NameProperty name;
 
     /*
      * Quota limit
      */
-    @JsonProperty(value = "limit")
     private Long limit;
 
     /*
      * Quota unit
      */
-    @JsonProperty(value = "unit")
     private String unit;
 
     /*
      * Current Quota usage value
      */
-    @JsonProperty(value = "currentValue")
     private Long currentValue;
 
     /*
      * Fully qualified ARM resource Id
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /**
@@ -158,5 +157,53 @@ public final class QuotaUsageInner {
         if (name() != null) {
             name().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("name", this.name);
+        jsonWriter.writeNumberField("limit", this.limit);
+        jsonWriter.writeStringField("unit", this.unit);
+        jsonWriter.writeNumberField("currentValue", this.currentValue);
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QuotaUsageInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QuotaUsageInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QuotaUsageInner.
+     */
+    public static QuotaUsageInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QuotaUsageInner deserializedQuotaUsageInner = new QuotaUsageInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedQuotaUsageInner.name = NameProperty.fromJson(reader);
+                } else if ("limit".equals(fieldName)) {
+                    deserializedQuotaUsageInner.limit = reader.getNullable(JsonReader::getLong);
+                } else if ("unit".equals(fieldName)) {
+                    deserializedQuotaUsageInner.unit = reader.getString();
+                } else if ("currentValue".equals(fieldName)) {
+                    deserializedQuotaUsageInner.currentValue = reader.getNullable(JsonReader::getLong);
+                } else if ("id".equals(fieldName)) {
+                    deserializedQuotaUsageInner.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQuotaUsageInner;
+        });
     }
 }

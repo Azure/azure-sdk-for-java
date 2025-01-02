@@ -6,24 +6,26 @@ package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.TestDatasourceResultStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The result of the test input or output request.
  */
 @Fluent
-public final class TestDatasourceResultInner {
+public final class TestDatasourceResultInner implements JsonSerializable<TestDatasourceResultInner> {
     /*
      * The status of the sample output request.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private TestDatasourceResultStatus status;
 
     /*
      * Error definition properties.
      */
-    @JsonProperty(value = "error")
     private ManagementError error;
 
     /**
@@ -67,5 +69,44 @@ public final class TestDatasourceResultInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TestDatasourceResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TestDatasourceResultInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TestDatasourceResultInner.
+     */
+    public static TestDatasourceResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TestDatasourceResultInner deserializedTestDatasourceResultInner = new TestDatasourceResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedTestDatasourceResultInner.status
+                        = TestDatasourceResultStatus.fromString(reader.getString());
+                } else if ("error".equals(fieldName)) {
+                    deserializedTestDatasourceResultInner.error = ManagementError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTestDatasourceResultInner;
+        });
     }
 }

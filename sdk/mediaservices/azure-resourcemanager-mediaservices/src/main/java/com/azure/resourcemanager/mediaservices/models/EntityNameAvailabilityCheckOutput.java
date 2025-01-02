@@ -6,25 +6,27 @@ package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.resourcemanager.mediaservices.fluent.models.EntityNameAvailabilityCheckOutputInner;
 
-/** An immutable client-side representation of EntityNameAvailabilityCheckOutput. */
+/**
+ * An immutable client-side representation of EntityNameAvailabilityCheckOutput.
+ */
 public interface EntityNameAvailabilityCheckOutput {
     /**
      * Gets the nameAvailable property: Specifies if the name is available.
-     *
+     * 
      * @return the nameAvailable value.
      */
     boolean nameAvailable();
 
     /**
      * Gets the reason property: Specifies the reason if the name is not available.
-     *
+     * 
      * @return the reason value.
      */
     String reason();
 
     /**
      * Gets the message property: Specifies the detailed reason if the name is not available.
-     *
+     * 
      * @return the message value.
      */
     String message();
@@ -32,7 +34,7 @@ public interface EntityNameAvailabilityCheckOutput {
     /**
      * Gets the inner com.azure.resourcemanager.mediaservices.fluent.models.EntityNameAvailabilityCheckOutputInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     EntityNameAvailabilityCheckOutputInner innerModel();

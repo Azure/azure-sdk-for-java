@@ -5,31 +5,42 @@
 package com.azure.resourcemanager.defendereasm.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.defendereasm.models.ResourceBaseProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.defendereasm.models.ResourceState;
+import java.io.IOException;
 
-/** Label properties. */
+/**
+ * Label properties.
+ */
 @Fluent
 public final class LabelResourceProperties extends ResourceBaseProperties {
     /*
      * Label display name.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Label color.
      */
-    @JsonProperty(value = "color")
     private String color;
 
-    /** Creates an instance of LabelResourceProperties class. */
+    /*
+     * Resource provisioning state.
+     */
+    private ResourceState provisioningState;
+
+    /**
+     * Creates an instance of LabelResourceProperties class.
+     */
     public LabelResourceProperties() {
     }
 
     /**
      * Get the displayName property: Label display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -38,7 +49,7 @@ public final class LabelResourceProperties extends ResourceBaseProperties {
 
     /**
      * Set the displayName property: Label display name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the LabelResourceProperties object itself.
      */
@@ -49,7 +60,7 @@ public final class LabelResourceProperties extends ResourceBaseProperties {
 
     /**
      * Get the color property: Label color.
-     *
+     * 
      * @return the color value.
      */
     public String color() {
@@ -58,7 +69,7 @@ public final class LabelResourceProperties extends ResourceBaseProperties {
 
     /**
      * Set the color property: Label color.
-     *
+     * 
      * @param color the color value to set.
      * @return the LabelResourceProperties object itself.
      */
@@ -68,12 +79,63 @@ public final class LabelResourceProperties extends ResourceBaseProperties {
     }
 
     /**
+     * Get the provisioningState property: Resource provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public ResourceState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("color", this.color);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LabelResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LabelResourceProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LabelResourceProperties.
+     */
+    public static LabelResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LabelResourceProperties deserializedLabelResourceProperties = new LabelResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedLabelResourceProperties.provisioningState
+                        = ResourceState.fromString(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedLabelResourceProperties.displayName = reader.getString();
+                } else if ("color".equals(fieldName)) {
+                    deserializedLabelResourceProperties.color = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLabelResourceProperties;
+        });
     }
 }

@@ -22,12 +22,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public abstract class KeyVaultAccessControlClientTestBase extends KeyVaultAdministrationClientTestBase {
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultAccessControlClientTestBase.class);
 
-    protected final String servicePrincipalId =
-        Configuration.getGlobalConfiguration().get("CLIENT_OBJECTID", "f84ae8f9-c979-4750-a2fe-b350a00bebff");
+    protected final String servicePrincipalId
+        = Configuration.getGlobalConfiguration().get("CLIENT_OBJECTID", "f84ae8f9-c979-4750-a2fe-b350a00bebff");
 
     KeyVaultAccessControlClientBuilder getClientBuilder(HttpClient httpClient, boolean forCleanup) {
-        return new KeyVaultAccessControlClientBuilder()
-            .vaultUrl(getEndpoint())
+        return new KeyVaultAccessControlClientBuilder().vaultUrl(getEndpoint())
             .pipeline(getPipeline(httpClient, forCleanup));
     }
 
@@ -65,7 +64,7 @@ public abstract class KeyVaultAccessControlClientTestBase extends KeyVaultAdmini
     public abstract void deleteNonExistingRoleAssignmentDoesNotThrow(HttpClient httpClient);
 
     static void assertRoleAssignmentEquals(KeyVaultRoleAssignment roleAssignment1,
-                                           KeyVaultRoleAssignment roleAssignment2) {
+        KeyVaultRoleAssignment roleAssignment2) {
         assertEquals(roleAssignment1.getId(), roleAssignment2.getId());
         assertEquals(roleAssignment1.getName(), roleAssignment2.getName());
         assertEquals(roleAssignment1.getType(), roleAssignment2.getType());
@@ -85,7 +84,7 @@ public abstract class KeyVaultAccessControlClientTestBase extends KeyVaultAdmini
     }
 
     static void assertRoleDefinitionEquals(KeyVaultRoleDefinition roleDefinition1,
-                                           KeyVaultRoleDefinition roleDefinition2) {
+        KeyVaultRoleDefinition roleDefinition2) {
         assertEquals(roleDefinition1.getId(), roleDefinition2.getId());
         assertEquals(roleDefinition1.getName(), roleDefinition2.getName());
         assertEquals(roleDefinition1.getType(), roleDefinition2.getType());
@@ -120,7 +119,7 @@ public abstract class KeyVaultAccessControlClientTestBase extends KeyVaultAdmini
     }
 
     static void cleanUpResources(KeyVaultAccessControlClient cleanupClient, String roleDefinitionName,
-                                 String roleAssignmentName) {
+        String roleAssignmentName) {
         if (roleDefinitionName != null) {
             try {
                 cleanupClient.deleteRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName);

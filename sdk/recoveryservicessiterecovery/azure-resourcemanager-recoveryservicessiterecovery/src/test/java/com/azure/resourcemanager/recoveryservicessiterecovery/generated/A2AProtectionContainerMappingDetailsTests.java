@@ -26,10 +26,12 @@ public final class A2AProtectionContainerMappingDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        A2AProtectionContainerMappingDetails model = new A2AProtectionContainerMappingDetails()
-            .withAgentAutoUpdateStatus(AgentAutoUpdateStatus.ENABLED).withAutomationAccountArmId("xawoijpodtblxp")
-            .withAutomationAccountAuthenticationType(AutomationAccountAuthenticationType.SYSTEM_ASSIGNED_IDENTITY)
-            .withScheduleName("djodqhy").withJobScheduleName("ncn");
+        A2AProtectionContainerMappingDetails model
+            = new A2AProtectionContainerMappingDetails().withAgentAutoUpdateStatus(AgentAutoUpdateStatus.ENABLED)
+                .withAutomationAccountArmId("xawoijpodtblxp")
+                .withAutomationAccountAuthenticationType(AutomationAccountAuthenticationType.SYSTEM_ASSIGNED_IDENTITY)
+                .withScheduleName("djodqhy")
+                .withJobScheduleName("ncn");
         model = BinaryData.fromObject(model).toObject(A2AProtectionContainerMappingDetails.class);
         Assertions.assertEquals(AgentAutoUpdateStatus.ENABLED, model.agentAutoUpdateStatus());
         Assertions.assertEquals("xawoijpodtblxp", model.automationAccountArmId());

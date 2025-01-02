@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Caffe job settings. */
 @Fluent
 public final class CaffeSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CaffeSettings.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(CaffeSettings.class);
 
     /*
      * Path of the config file for the job. This property cannot be specified

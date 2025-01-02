@@ -5,32 +5,45 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The role of the contact. */
+/**
+ * The role of the contact.
+ */
 public final class Role extends ExpandableStringEnum<Role> {
-    /** Static value Noc for Role. */
+    /**
+     * Static value Noc for Role.
+     */
     public static final Role NOC = fromString("Noc");
 
-    /** Static value Policy for Role. */
+    /**
+     * Static value Policy for Role.
+     */
     public static final Role POLICY = fromString("Policy");
 
-    /** Static value Technical for Role. */
+    /**
+     * Static value Technical for Role.
+     */
     public static final Role TECHNICAL = fromString("Technical");
 
-    /** Static value Service for Role. */
+    /**
+     * Static value Service for Role.
+     */
     public static final Role SERVICE = fromString("Service");
 
-    /** Static value Escalation for Role. */
+    /**
+     * Static value Escalation for Role.
+     */
     public static final Role ESCALATION = fromString("Escalation");
 
-    /** Static value Other for Role. */
+    /**
+     * Static value Other for Role.
+     */
     public static final Role OTHER = fromString("Other");
 
     /**
      * Creates a new instance of Role value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,18 +52,17 @@ public final class Role extends ExpandableStringEnum<Role> {
 
     /**
      * Creates or finds a Role from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Role.
      */
-    @JsonCreator
     public static Role fromString(String name) {
         return fromString(name, Role.class);
     }
 
     /**
      * Gets known Role values.
-     *
+     * 
      * @return known Role values.
      */
     public static Collection<Role> values() {

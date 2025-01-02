@@ -4,43 +4,46 @@
 
 package com.azure.resourcemanager.machinelearning.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.fluent.models.WorkspaceConnectionPropertiesV2BasicResourceInner;
 
-/** An immutable client-side representation of WorkspaceConnectionPropertiesV2BasicResource. */
+/**
+ * An immutable client-side representation of WorkspaceConnectionPropertiesV2BasicResource.
+ */
 public interface WorkspaceConnectionPropertiesV2BasicResource {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the properties property: The properties property.
-     *
+     * 
      * @return the properties value.
      */
     WorkspaceConnectionPropertiesV2 properties();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
@@ -48,46 +51,55 @@ public interface WorkspaceConnectionPropertiesV2BasicResource {
     /**
      * Gets the inner
      * com.azure.resourcemanager.machinelearning.fluent.models.WorkspaceConnectionPropertiesV2BasicResourceInner object.
-     *
+     * 
      * @return the inner object.
      */
     WorkspaceConnectionPropertiesV2BasicResourceInner innerModel();
 
-    /** The entirety of the WorkspaceConnectionPropertiesV2BasicResource definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithProperties,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the WorkspaceConnectionPropertiesV2BasicResource definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithParentResource,
+        DefinitionStages.WithProperties, DefinitionStages.WithCreate {
     }
-    /** The WorkspaceConnectionPropertiesV2BasicResource definition stages. */
+
+    /**
+     * The WorkspaceConnectionPropertiesV2BasicResource definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the WorkspaceConnectionPropertiesV2BasicResource definition. */
+        /**
+         * The first stage of the WorkspaceConnectionPropertiesV2BasicResource definition.
+         */
         interface Blank extends WithParentResource {
         }
+
         /**
          * The stage of the WorkspaceConnectionPropertiesV2BasicResource definition allowing to specify parent resource.
          */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, workspaceName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param workspaceName Name of Azure Machine Learning workspace.
              * @return the next definition stage.
              */
             WithProperties withExistingWorkspace(String resourceGroupName, String workspaceName);
         }
-        /** The stage of the WorkspaceConnectionPropertiesV2BasicResource definition allowing to specify properties. */
+
+        /**
+         * The stage of the WorkspaceConnectionPropertiesV2BasicResource definition allowing to specify properties.
+         */
         interface WithProperties {
             /**
              * Specifies the properties property: The properties property..
-             *
+             * 
              * @param properties The properties property.
              * @return the next definition stage.
              */
             WithCreate withProperties(WorkspaceConnectionPropertiesV2 properties);
         }
+
         /**
          * The stage of the WorkspaceConnectionPropertiesV2BasicResource definition which contains all the minimum
          * required properties for the resource to be created, but also allows for any other optional properties to be
@@ -96,32 +108,53 @@ public interface WorkspaceConnectionPropertiesV2BasicResource {
         interface WithCreate {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             WorkspaceConnectionPropertiesV2BasicResource create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             WorkspaceConnectionPropertiesV2BasicResource create(Context context);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     WorkspaceConnectionPropertiesV2BasicResource refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
     WorkspaceConnectionPropertiesV2BasicResource refresh(Context context);
+
+    /**
+     * List all the secrets of a machine learning workspaces connections.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    Response<WorkspaceConnectionPropertiesV2BasicResource> listSecretsWithResponse(Context context);
+
+    /**
+     * List all the secrets of a machine learning workspaces connections.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    WorkspaceConnectionPropertiesV2BasicResource listSecrets();
 }

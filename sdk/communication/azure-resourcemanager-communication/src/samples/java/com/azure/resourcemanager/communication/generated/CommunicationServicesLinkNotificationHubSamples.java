@@ -21,10 +21,11 @@ public final class CommunicationServicesLinkNotificationHubSamples {
      * @param manager Entry point to CommunicationManager.
      */
     public static void linkNotificationHub(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.communicationServices().linkNotificationHubWithResponse("MyResourceGroup", "MyCommunicationResource",
-            new LinkNotificationHubParameters().withResourceId(
-                "/subscriptions/11112222-3333-4444-5555-666677778888/resourceGroups/MyOtherResourceGroup/providers/Microsoft.NotificationHubs/namespaces/MyNamespace/notificationHubs/MyHub")
-                .withConnectionString("Endpoint=sb://MyNamespace.servicebus.windows.net/;SharedAccessKey=abcd1234"),
-            com.azure.core.util.Context.NONE);
+        manager.communicationServices()
+            .linkNotificationHubWithResponse("MyResourceGroup", "MyCommunicationResource",
+                new LinkNotificationHubParameters().withResourceId(
+                    "/subscriptions/11112222-3333-4444-5555-666677778888/resourceGroups/MyOtherResourceGroup/providers/Microsoft.NotificationHubs/namespaces/MyNamespace/notificationHubs/MyHub")
+                    .withConnectionString("Endpoint=sb://MyNamespace.servicebus.windows.net/;SharedAccessKey=abcd1234"),
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -7,11 +7,13 @@ package com.azure.resourcemanager.digitaltwins.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of PrivateEndpointConnections. */
+/**
+ * Resource collection API of PrivateEndpointConnections.
+ */
 public interface PrivateEndpointConnections {
     /**
      * List private endpoint connection properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
@@ -20,12 +22,12 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the available private link connections for a Digital Twin along with {@link Response}.
      */
-    Response<PrivateEndpointConnectionsResponse> listWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<PrivateEndpointConnectionsResponse> listWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * List private endpoint connection properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -37,7 +39,7 @@ public interface PrivateEndpointConnections {
 
     /**
      * Get private endpoint connection properties for the given private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -47,12 +49,12 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private endpoint connection properties for the given private endpoint along with {@link Response}.
      */
-    Response<PrivateEndpointConnection> getWithResponse(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context);
+    Response<PrivateEndpointConnection> getWithResponse(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Get private endpoint connection properties for the given private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -65,7 +67,7 @@ public interface PrivateEndpointConnections {
 
     /**
      * Delete private endpoint connection with the specified name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -77,7 +79,7 @@ public interface PrivateEndpointConnections {
 
     /**
      * Delete private endpoint connection with the specified name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -90,7 +92,7 @@ public interface PrivateEndpointConnections {
 
     /**
      * Get private endpoint connection properties for the given private endpoint.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -101,7 +103,7 @@ public interface PrivateEndpointConnections {
 
     /**
      * Get private endpoint connection properties for the given private endpoint.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -113,7 +115,7 @@ public interface PrivateEndpointConnections {
 
     /**
      * Delete private endpoint connection with the specified name.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -123,7 +125,7 @@ public interface PrivateEndpointConnections {
 
     /**
      * Delete private endpoint connection with the specified name.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -134,7 +136,7 @@ public interface PrivateEndpointConnections {
 
     /**
      * Begins definition for a new PrivateEndpointConnection resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new PrivateEndpointConnection definition.
      */

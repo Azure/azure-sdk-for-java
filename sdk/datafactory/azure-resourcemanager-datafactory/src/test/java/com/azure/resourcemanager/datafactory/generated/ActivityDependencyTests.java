@@ -16,20 +16,21 @@ public final class ActivityDependencyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ActivityDependency model = BinaryData.fromString(
-            "{\"activity\":\"wcoezbrhub\",\"dependencyConditions\":[\"Succeeded\"],\"\":{\"okkqfqjbvleo\":\"dataygo\"}}")
+            "{\"activity\":\"nmwcpmgu\",\"dependencyConditions\":[\"Skipped\",\"Completed\",\"Completed\",\"Failed\"],\"\":{\"jjziuxxpsh\":\"datactkahzov\",\"enr\":\"dataeekulfgslqubkwd\",\"pjuohminyfl\":\"datasutujba\"}}")
             .toObject(ActivityDependency.class);
-        Assertions.assertEquals("wcoezbrhub", model.activity());
-        Assertions.assertEquals(DependencyCondition.SUCCEEDED, model.dependencyConditions().get(0));
+        Assertions.assertEquals("nmwcpmgu", model.activity());
+        Assertions.assertEquals(DependencyCondition.SKIPPED, model.dependencyConditions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ActivityDependency model = new ActivityDependency().withActivity("wcoezbrhub")
-            .withDependencyConditions(Arrays.asList(DependencyCondition.SUCCEEDED))
+        ActivityDependency model = new ActivityDependency().withActivity("nmwcpmgu")
+            .withDependencyConditions(Arrays.asList(DependencyCondition.SKIPPED, DependencyCondition.COMPLETED,
+                DependencyCondition.COMPLETED, DependencyCondition.FAILED))
             .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(ActivityDependency.class);
-        Assertions.assertEquals("wcoezbrhub", model.activity());
-        Assertions.assertEquals(DependencyCondition.SUCCEEDED, model.dependencyConditions().get(0));
+        Assertions.assertEquals("nmwcpmgu", model.activity());
+        Assertions.assertEquals(DependencyCondition.SKIPPED, model.dependencyConditions().get(0));
     }
 
     // Use "Map.of" if available

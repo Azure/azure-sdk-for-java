@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Details of a REST API operation. */
 @Fluent
 public final class OperationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(OperationInner.class);
 
     /*
      * This is of the format {provider}/{resource}/{operation}

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -97,7 +96,6 @@ public final class ReplicationProtectedItemOperation extends ExpandableStringEnu
      * @param name a name to look for.
      * @return the corresponding ReplicationProtectedItemOperation.
      */
-    @JsonCreator
     public static ReplicationProtectedItemOperation fromString(String name) {
         return fromString(name, ReplicationProtectedItemOperation.class);
     }

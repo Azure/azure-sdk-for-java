@@ -6,68 +6,72 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describe the properties needed to make a pagination call. */
+/**
+ * Describe the properties needed to make a pagination call.
+ */
 @Fluent
-public final class CodelessConnectorPollingPagingProperties {
+public final class CodelessConnectorPollingPagingProperties
+    implements JsonSerializable<CodelessConnectorPollingPagingProperties> {
     /*
      * Describes the type. could be 'None', 'PageToken', 'PageCount', 'TimeStamp'
      */
-    @JsonProperty(value = "pagingType", required = true)
     private String pagingType;
 
     /*
      * Defines the name of a next page attribute
      */
-    @JsonProperty(value = "nextPageParaName")
     private String nextPageParaName;
 
     /*
      * Defines the path to a next page token JSON
      */
-    @JsonProperty(value = "nextPageTokenJsonPath")
     private String nextPageTokenJsonPath;
 
     /*
      * Defines the path to a page count attribute
      */
-    @JsonProperty(value = "pageCountAttributePath")
     private String pageCountAttributePath;
 
     /*
      * Defines the path to a page total count attribute
      */
-    @JsonProperty(value = "pageTotalCountAttributePath")
     private String pageTotalCountAttributePath;
 
     /*
      * Defines the path to a paging time stamp attribute
      */
-    @JsonProperty(value = "pageTimeStampAttributePath")
     private String pageTimestampAttributePath;
 
     /*
      * Determines whether to search for the latest time stamp in the events list
      */
-    @JsonProperty(value = "searchTheLatestTimeStampFromEventsList")
     private String searchTheLatestTimestampFromEventsList;
 
     /*
      * Defines the name of the page size parameter
      */
-    @JsonProperty(value = "pageSizeParaName")
     private String pageSizeParaName;
 
     /*
      * Defines the paging size
      */
-    @JsonProperty(value = "pageSize")
     private Integer pageSize;
 
     /**
+     * Creates an instance of CodelessConnectorPollingPagingProperties class.
+     */
+    public CodelessConnectorPollingPagingProperties() {
+    }
+
+    /**
      * Get the pagingType property: Describes the type. could be 'None', 'PageToken', 'PageCount', 'TimeStamp'.
-     *
+     * 
      * @return the pagingType value.
      */
     public String pagingType() {
@@ -76,7 +80,7 @@ public final class CodelessConnectorPollingPagingProperties {
 
     /**
      * Set the pagingType property: Describes the type. could be 'None', 'PageToken', 'PageCount', 'TimeStamp'.
-     *
+     * 
      * @param pagingType the pagingType value to set.
      * @return the CodelessConnectorPollingPagingProperties object itself.
      */
@@ -87,7 +91,7 @@ public final class CodelessConnectorPollingPagingProperties {
 
     /**
      * Get the nextPageParaName property: Defines the name of a next page attribute.
-     *
+     * 
      * @return the nextPageParaName value.
      */
     public String nextPageParaName() {
@@ -96,7 +100,7 @@ public final class CodelessConnectorPollingPagingProperties {
 
     /**
      * Set the nextPageParaName property: Defines the name of a next page attribute.
-     *
+     * 
      * @param nextPageParaName the nextPageParaName value to set.
      * @return the CodelessConnectorPollingPagingProperties object itself.
      */
@@ -107,7 +111,7 @@ public final class CodelessConnectorPollingPagingProperties {
 
     /**
      * Get the nextPageTokenJsonPath property: Defines the path to a next page token JSON.
-     *
+     * 
      * @return the nextPageTokenJsonPath value.
      */
     public String nextPageTokenJsonPath() {
@@ -116,7 +120,7 @@ public final class CodelessConnectorPollingPagingProperties {
 
     /**
      * Set the nextPageTokenJsonPath property: Defines the path to a next page token JSON.
-     *
+     * 
      * @param nextPageTokenJsonPath the nextPageTokenJsonPath value to set.
      * @return the CodelessConnectorPollingPagingProperties object itself.
      */
@@ -127,7 +131,7 @@ public final class CodelessConnectorPollingPagingProperties {
 
     /**
      * Get the pageCountAttributePath property: Defines the path to a page count attribute.
-     *
+     * 
      * @return the pageCountAttributePath value.
      */
     public String pageCountAttributePath() {
@@ -136,7 +140,7 @@ public final class CodelessConnectorPollingPagingProperties {
 
     /**
      * Set the pageCountAttributePath property: Defines the path to a page count attribute.
-     *
+     * 
      * @param pageCountAttributePath the pageCountAttributePath value to set.
      * @return the CodelessConnectorPollingPagingProperties object itself.
      */
@@ -147,7 +151,7 @@ public final class CodelessConnectorPollingPagingProperties {
 
     /**
      * Get the pageTotalCountAttributePath property: Defines the path to a page total count attribute.
-     *
+     * 
      * @return the pageTotalCountAttributePath value.
      */
     public String pageTotalCountAttributePath() {
@@ -156,19 +160,19 @@ public final class CodelessConnectorPollingPagingProperties {
 
     /**
      * Set the pageTotalCountAttributePath property: Defines the path to a page total count attribute.
-     *
+     * 
      * @param pageTotalCountAttributePath the pageTotalCountAttributePath value to set.
      * @return the CodelessConnectorPollingPagingProperties object itself.
      */
-    public CodelessConnectorPollingPagingProperties withPageTotalCountAttributePath(
-        String pageTotalCountAttributePath) {
+    public CodelessConnectorPollingPagingProperties
+        withPageTotalCountAttributePath(String pageTotalCountAttributePath) {
         this.pageTotalCountAttributePath = pageTotalCountAttributePath;
         return this;
     }
 
     /**
      * Get the pageTimestampAttributePath property: Defines the path to a paging time stamp attribute.
-     *
+     * 
      * @return the pageTimestampAttributePath value.
      */
     public String pageTimestampAttributePath() {
@@ -177,7 +181,7 @@ public final class CodelessConnectorPollingPagingProperties {
 
     /**
      * Set the pageTimestampAttributePath property: Defines the path to a paging time stamp attribute.
-     *
+     * 
      * @param pageTimestampAttributePath the pageTimestampAttributePath value to set.
      * @return the CodelessConnectorPollingPagingProperties object itself.
      */
@@ -189,7 +193,7 @@ public final class CodelessConnectorPollingPagingProperties {
     /**
      * Get the searchTheLatestTimestampFromEventsList property: Determines whether to search for the latest time stamp
      * in the events list.
-     *
+     * 
      * @return the searchTheLatestTimestampFromEventsList value.
      */
     public String searchTheLatestTimestampFromEventsList() {
@@ -199,19 +203,19 @@ public final class CodelessConnectorPollingPagingProperties {
     /**
      * Set the searchTheLatestTimestampFromEventsList property: Determines whether to search for the latest time stamp
      * in the events list.
-     *
+     * 
      * @param searchTheLatestTimestampFromEventsList the searchTheLatestTimestampFromEventsList value to set.
      * @return the CodelessConnectorPollingPagingProperties object itself.
      */
-    public CodelessConnectorPollingPagingProperties withSearchTheLatestTimestampFromEventsList(
-        String searchTheLatestTimestampFromEventsList) {
+    public CodelessConnectorPollingPagingProperties
+        withSearchTheLatestTimestampFromEventsList(String searchTheLatestTimestampFromEventsList) {
         this.searchTheLatestTimestampFromEventsList = searchTheLatestTimestampFromEventsList;
         return this;
     }
 
     /**
      * Get the pageSizeParaName property: Defines the name of the page size parameter.
-     *
+     * 
      * @return the pageSizeParaName value.
      */
     public String pageSizeParaName() {
@@ -220,7 +224,7 @@ public final class CodelessConnectorPollingPagingProperties {
 
     /**
      * Set the pageSizeParaName property: Defines the name of the page size parameter.
-     *
+     * 
      * @param pageSizeParaName the pageSizeParaName value to set.
      * @return the CodelessConnectorPollingPagingProperties object itself.
      */
@@ -231,7 +235,7 @@ public final class CodelessConnectorPollingPagingProperties {
 
     /**
      * Get the pageSize property: Defines the paging size.
-     *
+     * 
      * @return the pageSize value.
      */
     public Integer pageSize() {
@@ -240,7 +244,7 @@ public final class CodelessConnectorPollingPagingProperties {
 
     /**
      * Set the pageSize property: Defines the paging size.
-     *
+     * 
      * @param pageSize the pageSize value to set.
      * @return the CodelessConnectorPollingPagingProperties object itself.
      */
@@ -251,17 +255,83 @@ public final class CodelessConnectorPollingPagingProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (pagingType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property pagingType in model CodelessConnectorPollingPagingProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property pagingType in model CodelessConnectorPollingPagingProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CodelessConnectorPollingPagingProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("pagingType", this.pagingType);
+        jsonWriter.writeStringField("nextPageParaName", this.nextPageParaName);
+        jsonWriter.writeStringField("nextPageTokenJsonPath", this.nextPageTokenJsonPath);
+        jsonWriter.writeStringField("pageCountAttributePath", this.pageCountAttributePath);
+        jsonWriter.writeStringField("pageTotalCountAttributePath", this.pageTotalCountAttributePath);
+        jsonWriter.writeStringField("pageTimeStampAttributePath", this.pageTimestampAttributePath);
+        jsonWriter.writeStringField("searchTheLatestTimeStampFromEventsList",
+            this.searchTheLatestTimestampFromEventsList);
+        jsonWriter.writeStringField("pageSizeParaName", this.pageSizeParaName);
+        jsonWriter.writeNumberField("pageSize", this.pageSize);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CodelessConnectorPollingPagingProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CodelessConnectorPollingPagingProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CodelessConnectorPollingPagingProperties.
+     */
+    public static CodelessConnectorPollingPagingProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CodelessConnectorPollingPagingProperties deserializedCodelessConnectorPollingPagingProperties
+                = new CodelessConnectorPollingPagingProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("pagingType".equals(fieldName)) {
+                    deserializedCodelessConnectorPollingPagingProperties.pagingType = reader.getString();
+                } else if ("nextPageParaName".equals(fieldName)) {
+                    deserializedCodelessConnectorPollingPagingProperties.nextPageParaName = reader.getString();
+                } else if ("nextPageTokenJsonPath".equals(fieldName)) {
+                    deserializedCodelessConnectorPollingPagingProperties.nextPageTokenJsonPath = reader.getString();
+                } else if ("pageCountAttributePath".equals(fieldName)) {
+                    deserializedCodelessConnectorPollingPagingProperties.pageCountAttributePath = reader.getString();
+                } else if ("pageTotalCountAttributePath".equals(fieldName)) {
+                    deserializedCodelessConnectorPollingPagingProperties.pageTotalCountAttributePath
+                        = reader.getString();
+                } else if ("pageTimeStampAttributePath".equals(fieldName)) {
+                    deserializedCodelessConnectorPollingPagingProperties.pageTimestampAttributePath
+                        = reader.getString();
+                } else if ("searchTheLatestTimeStampFromEventsList".equals(fieldName)) {
+                    deserializedCodelessConnectorPollingPagingProperties.searchTheLatestTimestampFromEventsList
+                        = reader.getString();
+                } else if ("pageSizeParaName".equals(fieldName)) {
+                    deserializedCodelessConnectorPollingPagingProperties.pageSizeParaName = reader.getString();
+                } else if ("pageSize".equals(fieldName)) {
+                    deserializedCodelessConnectorPollingPagingProperties.pageSize
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCodelessConnectorPollingPagingProperties;
+        });
+    }
 }

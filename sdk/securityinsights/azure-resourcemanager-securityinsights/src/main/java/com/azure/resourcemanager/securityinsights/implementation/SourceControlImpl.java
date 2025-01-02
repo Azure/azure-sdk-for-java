@@ -22,8 +22,7 @@ public final class SourceControlImpl implements SourceControl, SourceControl.Def
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    SourceControlImpl(
-        SourceControlInner innerObject,
+    SourceControlImpl(SourceControlInner innerObject,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -111,22 +110,18 @@ public final class SourceControlImpl implements SourceControl, SourceControl.Def
     }
 
     public SourceControl create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSourceControlsOperations()
-                .createWithResponse(resourceGroupName, workspaceName, sourceControlId, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSourceControlsOperations()
+            .createWithResponse(resourceGroupName, workspaceName, sourceControlId, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public SourceControl create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSourceControlsOperations()
-                .createWithResponse(resourceGroupName, workspaceName, sourceControlId, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSourceControlsOperations()
+            .createWithResponse(resourceGroupName, workspaceName, sourceControlId, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -137,22 +132,18 @@ public final class SourceControlImpl implements SourceControl, SourceControl.Def
     }
 
     public SourceControl refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSourceControlsOperations()
-                .getWithResponse(resourceGroupName, workspaceName, sourceControlId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSourceControlsOperations()
+            .getWithResponse(resourceGroupName, workspaceName, sourceControlId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SourceControl refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSourceControlsOperations()
-                .getWithResponse(resourceGroupName, workspaceName, sourceControlId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSourceControlsOperations()
+            .getWithResponse(resourceGroupName, workspaceName, sourceControlId, context)
+            .getValue();
         return this;
     }
 

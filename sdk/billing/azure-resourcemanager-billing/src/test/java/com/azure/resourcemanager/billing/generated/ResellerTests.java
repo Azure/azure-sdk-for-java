@@ -10,10 +10,8 @@ import com.azure.resourcemanager.billing.models.Reseller;
 public final class ResellerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Reseller model =
-            BinaryData
-                .fromString("{\"resellerId\":\"gsxnkjzkdeslpv\",\"description\":\"pwiyig\"}")
-                .toObject(Reseller.class);
+        Reseller model = BinaryData.fromString("{\"resellerId\":\"zejnhl\",\"description\":\"pbzpcpiljhahz\"}")
+            .toObject(Reseller.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -23,12 +23,11 @@ public final class MapsGeofenceGeometry implements JsonSerializable<MapsGeofence
 
     /*
      * Distance from the coordinate to the closest border of the geofence. Positive means the coordinate is outside of
-     * the geofence. If the coordinate is outside of the geofence, but more than the value of searchBuffer away from
-     * the closest geofence border, then the value is 999. Negative means the coordinate is inside of the geofence. If
-     * the coordinate is inside the polygon, but more than the value of searchBuffer away from the closest geofencing
-     * border,then the value is -999. A value of 999 means that there is great confidence the coordinate is well
-     * outside the geofence. A value of -999 means that there is great confidence the coordinate is well within the
-     * geofence.
+     * the geofence. If the coordinate is outside of the geofence, but more than the value of searchBuffer away from the
+     * closest geofence border, then the value is 999. Negative means the coordinate is inside of the geofence. If the
+     * coordinate is inside the polygon, but more than the value of searchBuffer away from the closest geofencing
+     * border,then the value is -999. A value of 999 means that there is great confidence the coordinate is well outside
+     * the geofence. A value of -999 means that there is great confidence the coordinate is well within the geofence.
      */
     private Float distance;
 
@@ -80,9 +79,9 @@ public final class MapsGeofenceGeometry implements JsonSerializable<MapsGeofence
     }
 
     /**
-     * Get the distance property: Distance from the coordinate to the closest border of the geofence. Positive means
-     * the coordinate is outside of the geofence. If the coordinate is outside of the geofence, but more than the value
-     * of searchBuffer away from the closest geofence border, then the value is 999. Negative means the coordinate is
+     * Get the distance property: Distance from the coordinate to the closest border of the geofence. Positive means the
+     * coordinate is outside of the geofence. If the coordinate is outside of the geofence, but more than the value of
+     * searchBuffer away from the closest geofence border, then the value is 999. Negative means the coordinate is
      * inside of the geofence. If the coordinate is inside the polygon, but more than the value of searchBuffer away
      * from the closest geofencing border,then the value is -999. A value of 999 means that there is great confidence
      * the coordinate is well outside the geofence. A value of -999 means that there is great confidence the coordinate
@@ -95,9 +94,9 @@ public final class MapsGeofenceGeometry implements JsonSerializable<MapsGeofence
     }
 
     /**
-     * Set the distance property: Distance from the coordinate to the closest border of the geofence. Positive means
-     * the coordinate is outside of the geofence. If the coordinate is outside of the geofence, but more than the value
-     * of searchBuffer away from the closest geofence border, then the value is 999. Negative means the coordinate is
+     * Set the distance property: Distance from the coordinate to the closest border of the geofence. Positive means the
+     * coordinate is outside of the geofence. If the coordinate is outside of the geofence, but more than the value of
+     * searchBuffer away from the closest geofence border, then the value is 999. Negative means the coordinate is
      * inside of the geofence. If the coordinate is inside the polygon, but more than the value of searchBuffer away
      * from the closest geofencing border,then the value is -999. A value of 999 means that there is great confidence
      * the coordinate is well outside the geofence. A value of -999 means that there is great confidence the coordinate
@@ -193,6 +192,9 @@ public final class MapsGeofenceGeometry implements JsonSerializable<MapsGeofence
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

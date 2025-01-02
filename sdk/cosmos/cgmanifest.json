@@ -1,86 +1,86 @@
 {
   "$schema": "https://json.schemastore.org/component-detection-manifest.json",
-  "Registrations": [
+  "version": 1,
+  "registrations": [
     {
-      "Component": {
-        "Type": "Maven",
-        "Maven": {
-          "ArtifactId": "guava",
-          "GroupId": "com.google.guava",
-          "Version": "27.0.1-jre"
+      "component": {
+        "type": "maven",
+        "maven": {
+          "groupId": "com.google.guava",
+          "artifactId": "guava",
+          "version": "27.0.1-jre"
         }
       }
     },
     {
-      "Component": {
-        "Type": "Maven",
-        "Maven": {
-          "ArtifactId": "guava",
-          "GroupId": "com.google.guava",
-          "Version": "25.0-jre"
+      "component": {
+        "type": "maven",
+        "maven": {
+          "groupId": "com.google.guava",
+          "artifactId": "guava",
+          "version": "25.0-jre"
         }
       }
     },
     {
-      "Component": {
-        "Type": "Maven",
-        "Maven": {
-          "ArtifactId": "commons-collections4",
-          "GroupId": "org.apache.commons",
-          "Version": "4.2"
+      "component": {
+        "type": "maven",
+        "maven": {
+          "groupId": "org.apache.commons",
+          "artifactId": "commons-collections4",
+          "version": "4.2"
         }
       }
     },
     {
-      "Component": {
-        "Type": "Maven",
-        "Maven": {
-          "ArtifactId": "commons-text",
-          "GroupId": "org.apache.commons",
-          "Version": "1.10.0"
+      "component": {
+        "type": "maven",
+        "maven": {
+          "groupId": "org.apache.commons",
+          "artifactId": "commons-text",
+          "version": "1.10.0"
         }
       }
     },
     {
-      "Component": {
-        "Type": "Maven",
-        "Maven": {
-          "ArtifactId": "commons-lang3",
-          "GroupId": "org.apache.commons",
-          "Version": "3.8.1"
+      "component": {
+        "type": "maven",
+        "maven": {
+          "groupId": "org.apache.commons",
+          "artifactId": "commons-lang3",
+          "version": "3.8.1"
         }
       }
     },
     {
-      "Component": {
-        "Type": "Maven",
-        "Maven": {
-          "ArtifactId": "commons-math3",
-          "GroupId": "org.apache.commons",
-          "Version": "3.6.1"
+      "component": {
+        "type": "maven",
+        "maven": {
+          "groupId": "org.apache.commons",
+          "artifactId": "commons-math3",
+          "version": "3.6.1"
         }
       }
     },
     {
-      "Component": {
-        "Type": "Maven",
-        "Maven": {
-          "ArtifactId": "java-uuid-generator",
-          "GroupId": "com.fasterxml.uuid",
-          "Version": "4.0.1"
+      "component": {
+        "type": "maven",
+        "maven": {
+          "groupId": "com.fasterxml.uuid",
+          "artifactId": "java-uuid-generator",
+          "version": "4.0.1"
         }
       }
     },
     {
-      "Component": {
-        "Type": "Maven",
-        "Maven": {
-          "ArtifactId": "commons-codec",
-          "GroupId": "commons-codec",
-          "Version": "1.14"
+      "component": {
+        "type": "maven",
+        "maven": {
+          "groupId": "commons-codec",
+          "artifactId": "commons-codec",
+          "version": "1.14"
         }
       }
     }
-  ],
-  "Version": 1
+  ]
 }

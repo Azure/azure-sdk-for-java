@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.migrationdiscoverysap.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Error definition.
  */
 @Immutable
-public final class ErrorDefinition {
+public final class ErrorDefinition implements JsonSerializable<ErrorDefinition> {
     /*
      * Service specific error code which serves as the substatus for the HTTP error code.
      */
-    @JsonProperty(value = "code", access = JsonProperty.Access.WRITE_ONLY)
     private String code;
 
     /*
      * Description of the error.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /*
      * Description of the recommendation.
      */
-    @JsonProperty(value = "recommendation", access = JsonProperty.Access.WRITE_ONLY)
     private String recommendation;
 
     /*
      * Internal error details.
      */
-    @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
     private List<ErrorDefinition> details;
 
     /**
@@ -88,5 +88,47 @@ public final class ErrorDefinition {
         if (details() != null) {
             details().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ErrorDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ErrorDefinition if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ErrorDefinition.
+     */
+    public static ErrorDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ErrorDefinition deserializedErrorDefinition = new ErrorDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedErrorDefinition.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedErrorDefinition.message = reader.getString();
+                } else if ("recommendation".equals(fieldName)) {
+                    deserializedErrorDefinition.recommendation = reader.getString();
+                } else if ("details".equals(fieldName)) {
+                    List<ErrorDefinition> details = reader.readArray(reader1 -> ErrorDefinition.fromJson(reader1));
+                    deserializedErrorDefinition.details = details;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedErrorDefinition;
+        });
     }
 }

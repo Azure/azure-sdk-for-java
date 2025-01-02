@@ -6,18 +6,20 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.resourcemanager.securityinsights.fluent.models.DataConnectorRequirementsStateInner;
 
-/** An immutable client-side representation of DataConnectorRequirementsState. */
+/**
+ * An immutable client-side representation of DataConnectorRequirementsState.
+ */
 public interface DataConnectorRequirementsState {
     /**
      * Gets the authorizationState property: Authorization state for this connector.
-     *
+     * 
      * @return the authorizationState value.
      */
     DataConnectorAuthorizationState authorizationState();
 
     /**
      * Gets the licenseState property: License state for this connector.
-     *
+     * 
      * @return the licenseState value.
      */
     DataConnectorLicenseState licenseState();
@@ -25,7 +27,7 @@ public interface DataConnectorRequirementsState {
     /**
      * Gets the inner com.azure.resourcemanager.securityinsights.fluent.models.DataConnectorRequirementsStateInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     DataConnectorRequirementsStateInner innerModel();

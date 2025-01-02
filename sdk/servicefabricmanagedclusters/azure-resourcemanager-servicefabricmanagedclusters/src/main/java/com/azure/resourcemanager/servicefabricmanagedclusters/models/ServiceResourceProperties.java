@@ -239,7 +239,6 @@ public class ServiceResourceProperties extends ServiceResourcePropertiesBase {
      */
     @Override
     public void validate() {
-        super.validate();
         if (serviceTypeName() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -251,6 +250,18 @@ public class ServiceResourceProperties extends ServiceResourcePropertiesBase {
                     "Missing required property partitionDescription in model ServiceResourceProperties"));
         } else {
             partitionDescription().validate();
+        }
+        if (correlationScheme() != null) {
+            correlationScheme().forEach(e -> e.validate());
+        }
+        if (serviceLoadMetrics() != null) {
+            serviceLoadMetrics().forEach(e -> e.validate());
+        }
+        if (servicePlacementPolicies() != null) {
+            servicePlacementPolicies().forEach(e -> e.validate());
+        }
+        if (scalingPolicies() != null) {
+            scalingPolicies().forEach(e -> e.validate());
         }
     }
 

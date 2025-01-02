@@ -41,6 +41,7 @@ class KeysImpl extends CreatableWrappersImpl<Key, KeyImpl, KeyProperties> implem
     protected KeyImpl wrapModel(String name) {
         return new KeyImpl(name, new KeyProperties(), httpPipeline, keyClient);
     }
+
     @Override
     public Key getById(String id) {
         return getByIdAsync(id).block();
@@ -71,20 +72,14 @@ class KeysImpl extends CreatableWrappersImpl<Key, KeyImpl, KeyProperties> implem
     @Override
     public Mono<Void> deleteByIdAsync(String id) {
         String name = nameFromId(id);
-        return inner
-            .beginDeleteKey(name)
-            .last()
-            .flatMap(
-                asyncPollResponse -> {
-                    if (asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
-                        return asyncPollResponse.getFinalResult();
-                    } else {
-                        return Mono
-                            .error(
-                                new RuntimeException(
-                                    "polling completed unsuccessfully with status:" + asyncPollResponse.getStatus()));
-                    }
-                });
+        return inner.beginDeleteKey(name).last().flatMap(asyncPollResponse -> {
+            if (asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+                return asyncPollResponse.getFinalResult();
+            } else {
+                return Mono.error(new RuntimeException(
+                    "polling completed unsuccessfully with status:" + asyncPollResponse.getStatus()));
+            }
+        });
     }
 
     @Override

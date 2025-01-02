@@ -5,26 +5,37 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Activity query definitions. */
+/**
+ * The Activity query definitions.
+ */
 @Fluent
-public final class ActivityEntityQueryTemplatePropertiesQueryDefinitions {
+public final class ActivityEntityQueryTemplatePropertiesQueryDefinitions
+    implements JsonSerializable<ActivityEntityQueryTemplatePropertiesQueryDefinitions> {
     /*
      * The Activity query to run on a given entity
      */
-    @JsonProperty(value = "query")
     private String query;
 
     /*
      * The dimensions we want to summarize the timeline results on, this is comma separated list
      */
-    @JsonProperty(value = "summarizeBy")
     private String summarizeBy;
 
     /**
+     * Creates an instance of ActivityEntityQueryTemplatePropertiesQueryDefinitions class.
+     */
+    public ActivityEntityQueryTemplatePropertiesQueryDefinitions() {
+    }
+
+    /**
      * Get the query property: The Activity query to run on a given entity.
-     *
+     * 
      * @return the query value.
      */
     public String query() {
@@ -33,7 +44,7 @@ public final class ActivityEntityQueryTemplatePropertiesQueryDefinitions {
 
     /**
      * Set the query property: The Activity query to run on a given entity.
-     *
+     * 
      * @param query the query value to set.
      * @return the ActivityEntityQueryTemplatePropertiesQueryDefinitions object itself.
      */
@@ -45,7 +56,7 @@ public final class ActivityEntityQueryTemplatePropertiesQueryDefinitions {
     /**
      * Get the summarizeBy property: The dimensions we want to summarize the timeline results on, this is comma
      * separated list.
-     *
+     * 
      * @return the summarizeBy value.
      */
     public String summarizeBy() {
@@ -55,7 +66,7 @@ public final class ActivityEntityQueryTemplatePropertiesQueryDefinitions {
     /**
      * Set the summarizeBy property: The dimensions we want to summarize the timeline results on, this is comma
      * separated list.
-     *
+     * 
      * @param summarizeBy the summarizeBy value to set.
      * @return the ActivityEntityQueryTemplatePropertiesQueryDefinitions object itself.
      */
@@ -66,9 +77,50 @@ public final class ActivityEntityQueryTemplatePropertiesQueryDefinitions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("query", this.query);
+        jsonWriter.writeStringField("summarizeBy", this.summarizeBy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActivityEntityQueryTemplatePropertiesQueryDefinitions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActivityEntityQueryTemplatePropertiesQueryDefinitions if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ActivityEntityQueryTemplatePropertiesQueryDefinitions.
+     */
+    public static ActivityEntityQueryTemplatePropertiesQueryDefinitions fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActivityEntityQueryTemplatePropertiesQueryDefinitions deserializedActivityEntityQueryTemplatePropertiesQueryDefinitions
+                = new ActivityEntityQueryTemplatePropertiesQueryDefinitions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("query".equals(fieldName)) {
+                    deserializedActivityEntityQueryTemplatePropertiesQueryDefinitions.query = reader.getString();
+                } else if ("summarizeBy".equals(fieldName)) {
+                    deserializedActivityEntityQueryTemplatePropertiesQueryDefinitions.summarizeBy = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActivityEntityQueryTemplatePropertiesQueryDefinitions;
+        });
     }
 }

@@ -6,22 +6,32 @@ package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.DataConnectorTenantId;
 import com.azure.resourcemanager.securityinsights.models.OfficePowerBIConnectorDataTypes;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Office Microsoft PowerBI data connector properties. */
+/**
+ * Office Microsoft PowerBI data connector properties.
+ */
 @Fluent
 public final class OfficePowerBIDataConnectorProperties extends DataConnectorTenantId {
     /*
      * The available data types for the connector.
      */
-    @JsonProperty(value = "dataTypes", required = true)
     private OfficePowerBIConnectorDataTypes dataTypes;
 
     /**
+     * Creates an instance of OfficePowerBIDataConnectorProperties class.
+     */
+    public OfficePowerBIDataConnectorProperties() {
+    }
+
+    /**
      * Get the dataTypes property: The available data types for the connector.
-     *
+     * 
      * @return the dataTypes value.
      */
     public OfficePowerBIConnectorDataTypes dataTypes() {
@@ -30,7 +40,7 @@ public final class OfficePowerBIDataConnectorProperties extends DataConnectorTen
 
     /**
      * Set the dataTypes property: The available data types for the connector.
-     *
+     * 
      * @param dataTypes the dataTypes value to set.
      * @return the OfficePowerBIDataConnectorProperties object itself.
      */
@@ -39,7 +49,9 @@ public final class OfficePowerBIDataConnectorProperties extends DataConnectorTen
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OfficePowerBIDataConnectorProperties withTenantId(String tenantId) {
         super.withTenantId(tenantId);
@@ -48,21 +60,66 @@ public final class OfficePowerBIDataConnectorProperties extends DataConnectorTen
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (dataTypes() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataTypes in model OfficePowerBIDataConnectorProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataTypes in model OfficePowerBIDataConnectorProperties"));
         } else {
             dataTypes().validate();
+        }
+        if (tenantId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property tenantId in model OfficePowerBIDataConnectorProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OfficePowerBIDataConnectorProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tenantId", tenantId());
+        jsonWriter.writeJsonField("dataTypes", this.dataTypes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OfficePowerBIDataConnectorProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OfficePowerBIDataConnectorProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OfficePowerBIDataConnectorProperties.
+     */
+    public static OfficePowerBIDataConnectorProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OfficePowerBIDataConnectorProperties deserializedOfficePowerBIDataConnectorProperties
+                = new OfficePowerBIDataConnectorProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tenantId".equals(fieldName)) {
+                    deserializedOfficePowerBIDataConnectorProperties.withTenantId(reader.getString());
+                } else if ("dataTypes".equals(fieldName)) {
+                    deserializedOfficePowerBIDataConnectorProperties.dataTypes
+                        = OfficePowerBIConnectorDataTypes.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOfficePowerBIDataConnectorProperties;
+        });
+    }
 }

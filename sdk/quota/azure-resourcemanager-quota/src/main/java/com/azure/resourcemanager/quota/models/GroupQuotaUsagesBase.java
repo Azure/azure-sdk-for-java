@@ -5,36 +5,39 @@
 package com.azure.resourcemanager.quota.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.quota.fluent.models.GroupQuotaUsagesBaseName;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Resource details with usages and GroupQuota.
  */
 @Fluent
-public final class GroupQuotaUsagesBase {
+public final class GroupQuotaUsagesBase implements JsonSerializable<GroupQuotaUsagesBase> {
     /*
-     * Name of the resource provided by the resource provider. This property is already included in the request URI, so it is a readonly property returned in the response.
+     * Name of the resource provided by the resource provider. This property is already included in the request URI, so
+     * it is a readonly property returned in the response.
      */
-    @JsonProperty(value = "name")
     private GroupQuotaUsagesBaseName innerName;
 
     /*
      * Quota/limits for the resource.
      */
-    @JsonProperty(value = "limit")
     private Long limit;
 
     /*
      * Usages for the resource.
      */
-    @JsonProperty(value = "usages")
     private Long usages;
 
     /*
-     * Representing the units of the usage quota. Possible values are: Count, Bytes, Seconds, Percent, CountPerSecond, BytesPerSecond. Based on - https://armwiki.azurewebsites.net/api_contracts/UsagesAPIContract.html?q=usages . Different RPs may have different units, Count, type as int64 should work for most of the integer values.
+     * Representing the units of the usage quota. Possible values are: Count, Bytes, Seconds, Percent, CountPerSecond,
+     * BytesPerSecond. Based on - https://armwiki.azurewebsites.net/api_contracts/UsagesAPIContract.html?q=usages .
+     * Different RPs may have different units, Count, type as int64 should work for most of the integer values.
      */
-    @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private String unit;
 
     /**
@@ -146,5 +149,49 @@ public final class GroupQuotaUsagesBase {
         if (innerName() != null) {
             innerName().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("name", this.innerName);
+        jsonWriter.writeNumberField("limit", this.limit);
+        jsonWriter.writeNumberField("usages", this.usages);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GroupQuotaUsagesBase from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GroupQuotaUsagesBase if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GroupQuotaUsagesBase.
+     */
+    public static GroupQuotaUsagesBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GroupQuotaUsagesBase deserializedGroupQuotaUsagesBase = new GroupQuotaUsagesBase();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedGroupQuotaUsagesBase.innerName = GroupQuotaUsagesBaseName.fromJson(reader);
+                } else if ("limit".equals(fieldName)) {
+                    deserializedGroupQuotaUsagesBase.limit = reader.getNullable(JsonReader::getLong);
+                } else if ("usages".equals(fieldName)) {
+                    deserializedGroupQuotaUsagesBase.usages = reader.getNullable(JsonReader::getLong);
+                } else if ("unit".equals(fieldName)) {
+                    deserializedGroupQuotaUsagesBase.unit = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGroupQuotaUsagesBase;
+        });
     }
 }

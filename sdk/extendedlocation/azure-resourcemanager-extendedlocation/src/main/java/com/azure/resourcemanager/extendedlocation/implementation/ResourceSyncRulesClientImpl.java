@@ -40,22 +40,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ResourceSyncRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceSyncRulesClient.
+ */
 public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ResourceSyncRulesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CustomLocationsManagementClientImpl client;
 
     /**
      * Initializes an instance of ResourceSyncRulesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ResourceSyncRulesClientImpl(CustomLocationsManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ResourceSyncRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ResourceSyncRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,125 +71,91 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "CustomLocationsManag")
-    private interface ResourceSyncRulesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ExtendedLocation"
-                + "/customLocations/{resourceName}/resourceSyncRules")
-        @ExpectedResponses({200})
+    public interface ResourceSyncRulesService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ExtendedLocation/customLocations/{resourceName}/resourceSyncRules")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceSyncRuleListResult>> listByCustomLocationId(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<ResourceSyncRuleListResult>> listByCustomLocationId(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ExtendedLocation/customLocations/{resourceName}/resourceSyncRules/{childResourceName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ResourceSyncRuleInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @PathParam("childResourceName") String childResourceName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ExtendedLocation"
-                + "/customLocations/{resourceName}/resourceSyncRules/{childResourceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ExtendedLocation/customLocations/{resourceName}/resourceSyncRules/{childResourceName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceSyncRuleInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
             @PathParam("childResourceName") String childResourceName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ResourceSyncRuleInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ExtendedLocation"
-                + "/customLocations/{resourceName}/resourceSyncRules/{childResourceName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ExtendedLocation/customLocations/{resourceName}/resourceSyncRules/{childResourceName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("childResourceName") String childResourceName,
-            @BodyParam("application/json") ResourceSyncRuleInner parameters,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @PathParam("childResourceName") String childResourceName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ExtendedLocation"
-                + "/customLocations/{resourceName}/resourceSyncRules/{childResourceName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ExtendedLocation/customLocations/{resourceName}/resourceSyncRules/{childResourceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
             @PathParam("childResourceName") String childResourceName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") PatchableResourceSyncRule parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ExtendedLocation"
-                + "/customLocations/{resourceName}/resourceSyncRules/{childResourceName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("childResourceName") String childResourceName,
-            @BodyParam("application/json") PatchableResourceSyncRule parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourceSyncRuleListResult>> listByCustomLocationIdNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
+     * Lists all Resource Sync Rules in a Custom Location.
+     * 
      * Gets a list of Resource Sync Rules in the specified subscription. The operation returns properties of each
      * Resource Sync Rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Custom Locations name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Resource Sync Rules in the specified subscription along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ResourceSyncRuleInner>> listByCustomLocationIdSinglePageAsync(
-        String resourceGroupName, String resourceName) {
+    private Mono<PagedResponse<ResourceSyncRuleInner>> listByCustomLocationIdSinglePageAsync(String resourceGroupName,
+        String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -195,32 +167,19 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByCustomLocationId(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            accept,
-                            context))
-            .<PagedResponse<ResourceSyncRuleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByCustomLocationId(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context))
+            .<PagedResponse<ResourceSyncRuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Lists all Resource Sync Rules in a Custom Location.
+     * 
      * Gets a list of Resource Sync Rules in the specified subscription. The operation returns properties of each
      * Resource Sync Rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Custom Locations name.
      * @param context The context to associate with this operation.
@@ -228,22 +187,18 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Resource Sync Rules in the specified subscription along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ResourceSyncRuleInner>> listByCustomLocationIdSinglePageAsync(
-        String resourceGroupName, String resourceName, Context context) {
+    private Mono<PagedResponse<ResourceSyncRuleInner>> listByCustomLocationIdSinglePageAsync(String resourceGroupName,
+        String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -255,29 +210,18 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByCustomLocationId(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByCustomLocationId(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
+     * Lists all Resource Sync Rules in a Custom Location.
+     * 
      * Gets a list of Resource Sync Rules in the specified subscription. The operation returns properties of each
      * Resource Sync Rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Custom Locations name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -286,17 +230,18 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
      * @return a list of Resource Sync Rules in the specified subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ResourceSyncRuleInner> listByCustomLocationIdAsync(
-        String resourceGroupName, String resourceName) {
-        return new PagedFlux<>(
-            () -> listByCustomLocationIdSinglePageAsync(resourceGroupName, resourceName),
+    private PagedFlux<ResourceSyncRuleInner> listByCustomLocationIdAsync(String resourceGroupName,
+        String resourceName) {
+        return new PagedFlux<>(() -> listByCustomLocationIdSinglePageAsync(resourceGroupName, resourceName),
             nextLink -> listByCustomLocationIdNextSinglePageAsync(nextLink));
     }
 
     /**
+     * Lists all Resource Sync Rules in a Custom Location.
+     * 
      * Gets a list of Resource Sync Rules in the specified subscription. The operation returns properties of each
      * Resource Sync Rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Custom Locations name.
      * @param context The context to associate with this operation.
@@ -306,24 +251,25 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
      * @return a list of Resource Sync Rules in the specified subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ResourceSyncRuleInner> listByCustomLocationIdAsync(
-        String resourceGroupName, String resourceName, Context context) {
-        return new PagedFlux<>(
-            () -> listByCustomLocationIdSinglePageAsync(resourceGroupName, resourceName, context),
+    private PagedFlux<ResourceSyncRuleInner> listByCustomLocationIdAsync(String resourceGroupName, String resourceName,
+        Context context) {
+        return new PagedFlux<>(() -> listByCustomLocationIdSinglePageAsync(resourceGroupName, resourceName, context),
             nextLink -> listByCustomLocationIdNextSinglePageAsync(nextLink, context));
     }
 
     /**
+     * Lists all Resource Sync Rules in a Custom Location.
+     * 
      * Gets a list of Resource Sync Rules in the specified subscription. The operation returns properties of each
      * Resource Sync Rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Custom Locations name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Resource Sync Rules in the specified subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of Resource Sync Rules in the specified subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceSyncRuleInner> listByCustomLocationId(String resourceGroupName, String resourceName) {
@@ -331,28 +277,32 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
     }
 
     /**
+     * Lists all Resource Sync Rules in a Custom Location.
+     * 
      * Gets a list of Resource Sync Rules in the specified subscription. The operation returns properties of each
      * Resource Sync Rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Custom Locations name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Resource Sync Rules in the specified subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of Resource Sync Rules in the specified subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ResourceSyncRuleInner> listByCustomLocationId(
-        String resourceGroupName, String resourceName, Context context) {
+    public PagedIterable<ResourceSyncRuleInner> listByCustomLocationId(String resourceGroupName, String resourceName,
+        Context context) {
         return new PagedIterable<>(listByCustomLocationIdAsync(resourceGroupName, resourceName, context));
     }
 
     /**
+     * Gets a Resource Sync Rule.
+     * 
      * Gets the details of the resourceSyncRule with a specified resource group, subscription id Custom Location
      * resource name and Resource Sync Rule name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Custom Locations name.
      * @param childResourceName Resource Sync Rule name.
@@ -360,23 +310,18 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the resourceSyncRule with a specified resource group, subscription id Custom Location
-     *     resource name and Resource Sync Rule name along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * resource name and Resource Sync Rule name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ResourceSyncRuleInner>> getWithResponseAsync(
-        String resourceGroupName, String resourceName, String childResourceName) {
+    private Mono<Response<ResourceSyncRuleInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
+        String childResourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -391,25 +336,17 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            childResourceName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, childResourceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Gets a Resource Sync Rule.
+     * 
      * Gets the details of the resourceSyncRule with a specified resource group, subscription id Custom Location
      * resource name and Resource Sync Rule name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Custom Locations name.
      * @param childResourceName Resource Sync Rule name.
@@ -418,23 +355,18 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the resourceSyncRule with a specified resource group, subscription id Custom Location
-     *     resource name and Resource Sync Rule name along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * resource name and Resource Sync Rule name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ResourceSyncRuleInner>> getWithResponseAsync(
-        String resourceGroupName, String resourceName, String childResourceName, Context context) {
+    private Mono<Response<ResourceSyncRuleInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
+        String childResourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -449,22 +381,16 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                childResourceName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, resourceName, childResourceName, accept, context);
     }
 
     /**
+     * Gets a Resource Sync Rule.
+     * 
      * Gets the details of the resourceSyncRule with a specified resource group, subscription id Custom Location
      * resource name and Resource Sync Rule name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Custom Locations name.
      * @param childResourceName Resource Sync Rule name.
@@ -472,37 +398,21 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the resourceSyncRule with a specified resource group, subscription id Custom Location
-     *     resource name and Resource Sync Rule name on successful completion of {@link Mono}.
+     * resource name and Resource Sync Rule name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ResourceSyncRuleInner> getAsync(
-        String resourceGroupName, String resourceName, String childResourceName) {
+    private Mono<ResourceSyncRuleInner> getAsync(String resourceGroupName, String resourceName,
+        String childResourceName) {
         return getWithResponseAsync(resourceGroupName, resourceName, childResourceName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
+     * Gets a Resource Sync Rule.
+     * 
      * Gets the details of the resourceSyncRule with a specified resource group, subscription id Custom Location
      * resource name and Resource Sync Rule name.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Custom Locations name.
-     * @param childResourceName Resource Sync Rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the resourceSyncRule with a specified resource group, subscription id Custom Location
-     *     resource name and Resource Sync Rule name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceSyncRuleInner get(String resourceGroupName, String resourceName, String childResourceName) {
-        return getAsync(resourceGroupName, resourceName, childResourceName).block();
-    }
-
-    /**
-     * Gets the details of the resourceSyncRule with a specified resource group, subscription id Custom Location
-     * resource name and Resource Sync Rule name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Custom Locations name.
      * @param childResourceName Resource Sync Rule name.
@@ -511,17 +421,39 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the resourceSyncRule with a specified resource group, subscription id Custom Location
-     *     resource name and Resource Sync Rule name along with {@link Response}.
+     * resource name and Resource Sync Rule name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ResourceSyncRuleInner> getWithResponse(
-        String resourceGroupName, String resourceName, String childResourceName, Context context) {
+    public Response<ResourceSyncRuleInner> getWithResponse(String resourceGroupName, String resourceName,
+        String childResourceName, Context context) {
         return getWithResponseAsync(resourceGroupName, resourceName, childResourceName, context).block();
     }
 
     /**
+     * Gets a Resource Sync Rule.
+     * 
+     * Gets the details of the resourceSyncRule with a specified resource group, subscription id Custom Location
+     * resource name and Resource Sync Rule name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName Custom Locations name.
+     * @param childResourceName Resource Sync Rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the resourceSyncRule with a specified resource group, subscription id Custom Location
+     * resource name and Resource Sync Rule name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResourceSyncRuleInner get(String resourceGroupName, String resourceName, String childResourceName) {
+        return getWithResponse(resourceGroupName, resourceName, childResourceName, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates or updates a Resource Sync Rule.
+     * 
      * Creates or updates a Resource Sync Rule in the parent Custom Location, Subscription Id and Resource Group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Custom Locations name.
      * @param childResourceName Resource Sync Rule name.
@@ -532,19 +464,15 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
      * @return resource Sync Rules definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String resourceName, String childResourceName, ResourceSyncRuleInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String resourceName, String childResourceName, ResourceSyncRuleInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -564,25 +492,17 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            childResourceName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, childResourceName, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Creates or updates a Resource Sync Rule.
+     * 
      * Creates or updates a Resource Sync Rule in the parent Custom Location, Subscription Id and Resource Group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Custom Locations name.
      * @param childResourceName Resource Sync Rule name.
@@ -594,23 +514,15 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
      * @return resource Sync Rules definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        String childResourceName,
-        ResourceSyncRuleInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String resourceName, String childResourceName, ResourceSyncRuleInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -630,22 +542,16 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                childResourceName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, resourceName, childResourceName, parameters, accept,
+            context);
     }
 
     /**
+     * Creates or updates a Resource Sync Rule.
+     * 
      * Creates or updates a Resource Sync Rule in the parent Custom Location, Subscription Id and Resource Group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Custom Locations name.
      * @param childResourceName Resource Sync Rule name.
@@ -658,21 +564,18 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ResourceSyncRuleInner>, ResourceSyncRuleInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String resourceName, String childResourceName, ResourceSyncRuleInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, resourceName, childResourceName, parameters);
-        return this
-            .client
-            .<ResourceSyncRuleInner, ResourceSyncRuleInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ResourceSyncRuleInner.class,
-                ResourceSyncRuleInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, resourceName, childResourceName, parameters);
+        return this.client.<ResourceSyncRuleInner, ResourceSyncRuleInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ResourceSyncRuleInner.class, ResourceSyncRuleInner.class,
+            this.client.getContext());
     }
 
     /**
+     * Creates or updates a Resource Sync Rule.
+     * 
      * Creates or updates a Resource Sync Rule in the parent Custom Location, Subscription Id and Resource Group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Custom Locations name.
      * @param childResourceName Resource Sync Rule name.
@@ -685,23 +588,20 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ResourceSyncRuleInner>, ResourceSyncRuleInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String resourceName,
-        String childResourceName,
-        ResourceSyncRuleInner parameters,
+        String resourceGroupName, String resourceName, String childResourceName, ResourceSyncRuleInner parameters,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, resourceName, childResourceName, parameters, context);
-        return this
-            .client
-            .<ResourceSyncRuleInner, ResourceSyncRuleInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ResourceSyncRuleInner.class, ResourceSyncRuleInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, resourceName, childResourceName, parameters, context);
+        return this.client.<ResourceSyncRuleInner, ResourceSyncRuleInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ResourceSyncRuleInner.class, ResourceSyncRuleInner.class, context);
     }
 
     /**
+     * Creates or updates a Resource Sync Rule.
+     * 
      * Creates or updates a Resource Sync Rule in the parent Custom Location, Subscription Id and Resource Group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Custom Locations name.
      * @param childResourceName Resource Sync Rule name.
@@ -714,36 +614,38 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResourceSyncRuleInner>, ResourceSyncRuleInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, String childResourceName, ResourceSyncRuleInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, childResourceName, parameters).getSyncPoller();
-    }
-
-    /**
-     * Creates or updates a Resource Sync Rule in the parent Custom Location, Subscription Id and Resource Group.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Custom Locations name.
-     * @param childResourceName Resource Sync Rule name.
-     * @param parameters Parameters supplied to create or update a Resource Sync Rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of resource Sync Rules definition.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ResourceSyncRuleInner>, ResourceSyncRuleInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String resourceName,
-        String childResourceName,
-        ResourceSyncRuleInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, childResourceName, parameters, context)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, resourceName, childResourceName, parameters)
             .getSyncPoller();
     }
 
     /**
+     * Creates or updates a Resource Sync Rule.
+     * 
      * Creates or updates a Resource Sync Rule in the parent Custom Location, Subscription Id and Resource Group.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName Custom Locations name.
+     * @param childResourceName Resource Sync Rule name.
+     * @param parameters Parameters supplied to create or update a Resource Sync Rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of resource Sync Rules definition.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ResourceSyncRuleInner>, ResourceSyncRuleInner> beginCreateOrUpdate(
+        String resourceGroupName, String resourceName, String childResourceName, ResourceSyncRuleInner parameters,
+        Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, resourceName, childResourceName, parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a Resource Sync Rule.
+     * 
+     * Creates or updates a Resource Sync Rule in the parent Custom Location, Subscription Id and Resource Group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Custom Locations name.
      * @param childResourceName Resource Sync Rule name.
@@ -754,16 +656,17 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
      * @return resource Sync Rules definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ResourceSyncRuleInner> createOrUpdateAsync(
-        String resourceGroupName, String resourceName, String childResourceName, ResourceSyncRuleInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, childResourceName, parameters)
-            .last()
+    private Mono<ResourceSyncRuleInner> createOrUpdateAsync(String resourceGroupName, String resourceName,
+        String childResourceName, ResourceSyncRuleInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, childResourceName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
+     * Creates or updates a Resource Sync Rule.
+     * 
      * Creates or updates a Resource Sync Rule in the parent Custom Location, Subscription Id and Resource Group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Custom Locations name.
      * @param childResourceName Resource Sync Rule name.
@@ -775,20 +678,17 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
      * @return resource Sync Rules definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ResourceSyncRuleInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String resourceName,
-        String childResourceName,
-        ResourceSyncRuleInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, childResourceName, parameters, context)
-            .last()
+    private Mono<ResourceSyncRuleInner> createOrUpdateAsync(String resourceGroupName, String resourceName,
+        String childResourceName, ResourceSyncRuleInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, childResourceName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
+     * Creates or updates a Resource Sync Rule.
+     * 
      * Creates or updates a Resource Sync Rule in the parent Custom Location, Subscription Id and Resource Group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Custom Locations name.
      * @param childResourceName Resource Sync Rule name.
@@ -799,14 +699,16 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
      * @return resource Sync Rules definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceSyncRuleInner createOrUpdate(
-        String resourceGroupName, String resourceName, String childResourceName, ResourceSyncRuleInner parameters) {
+    public ResourceSyncRuleInner createOrUpdate(String resourceGroupName, String resourceName, String childResourceName,
+        ResourceSyncRuleInner parameters) {
         return createOrUpdateAsync(resourceGroupName, resourceName, childResourceName, parameters).block();
     }
 
     /**
+     * Creates or updates a Resource Sync Rule.
+     * 
      * Creates or updates a Resource Sync Rule in the parent Custom Location, Subscription Id and Resource Group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Custom Locations name.
      * @param childResourceName Resource Sync Rule name.
@@ -818,19 +720,17 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
      * @return resource Sync Rules definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceSyncRuleInner createOrUpdate(
-        String resourceGroupName,
-        String resourceName,
-        String childResourceName,
-        ResourceSyncRuleInner parameters,
-        Context context) {
+    public ResourceSyncRuleInner createOrUpdate(String resourceGroupName, String resourceName, String childResourceName,
+        ResourceSyncRuleInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, resourceName, childResourceName, parameters, context).block();
     }
 
     /**
+     * Deletes a Resource Sync Rule.
+     * 
      * Deletes the Resource Sync Rule with the specified Resource Sync Rule Name, Custom Location Resource Name,
      * Resource Group, and Subscription Id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Custom Locations name.
      * @param childResourceName Resource Sync Rule name.
@@ -840,19 +740,15 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, String childResourceName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
+        String childResourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -867,25 +763,17 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            childResourceName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, childResourceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Deletes a Resource Sync Rule.
+     * 
      * Deletes the Resource Sync Rule with the specified Resource Sync Rule Name, Custom Location Resource Name,
      * Resource Group, and Subscription Id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Custom Locations name.
      * @param childResourceName Resource Sync Rule name.
@@ -896,19 +784,15 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, String childResourceName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
+        String childResourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -923,22 +807,16 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                childResourceName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, resourceName, childResourceName, accept, context);
     }
 
     /**
+     * Deletes a Resource Sync Rule.
+     * 
      * Deletes the Resource Sync Rule with the specified Resource Sync Rule Name, Custom Location Resource Name,
      * Resource Group, and Subscription Id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Custom Locations name.
      * @param childResourceName Resource Sync Rule name.
@@ -954,25 +832,11 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
     }
 
     /**
+     * Deletes a Resource Sync Rule.
+     * 
      * Deletes the Resource Sync Rule with the specified Resource Sync Rule Name, Custom Location Resource Name,
      * Resource Group, and Subscription Id.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Custom Locations name.
-     * @param childResourceName Resource Sync Rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String resourceName, String childResourceName) {
-        deleteAsync(resourceGroupName, resourceName, childResourceName).block();
-    }
-
-    /**
-     * Deletes the Resource Sync Rule with the specified Resource Sync Rule Name, Custom Location Resource Name,
-     * Resource Group, and Subscription Id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Custom Locations name.
      * @param childResourceName Resource Sync Rule name.
@@ -983,15 +847,35 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String childResourceName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String childResourceName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, resourceName, childResourceName, context).block();
     }
 
     /**
+     * Deletes a Resource Sync Rule.
+     * 
+     * Deletes the Resource Sync Rule with the specified Resource Sync Rule Name, Custom Location Resource Name,
+     * Resource Group, and Subscription Id.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName Custom Locations name.
+     * @param childResourceName Resource Sync Rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String resourceName, String childResourceName) {
+        deleteWithResponse(resourceGroupName, resourceName, childResourceName, Context.NONE);
+    }
+
+    /**
+     * Updates a Resource Sync Rule.
+     * 
      * Updates a Resource Sync Rule with the specified Resource Sync Rule name in the specified Resource Group,
      * Subscription and Custom Location name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Custom Locations name.
      * @param childResourceName Resource Sync Rule name.
@@ -1002,19 +886,15 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
      * @return resource Sync Rules definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String resourceName, String childResourceName, PatchableResourceSyncRule parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String resourceName,
+        String childResourceName, PatchableResourceSyncRule parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1034,26 +914,18 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            childResourceName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, childResourceName, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Updates a Resource Sync Rule.
+     * 
      * Updates a Resource Sync Rule with the specified Resource Sync Rule name in the specified Resource Group,
      * Subscription and Custom Location name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Custom Locations name.
      * @param childResourceName Resource Sync Rule name.
@@ -1065,23 +937,15 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
      * @return resource Sync Rules definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        String childResourceName,
-        PatchableResourceSyncRule parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String resourceName,
+        String childResourceName, PatchableResourceSyncRule parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1101,23 +965,16 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                childResourceName,
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, resourceName, childResourceName, parameters, accept, context);
     }
 
     /**
+     * Updates a Resource Sync Rule.
+     * 
      * Updates a Resource Sync Rule with the specified Resource Sync Rule name in the specified Resource Group,
      * Subscription and Custom Location name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Custom Locations name.
      * @param childResourceName Resource Sync Rule name.
@@ -1130,22 +987,19 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ResourceSyncRuleInner>, ResourceSyncRuleInner> beginUpdateAsync(
         String resourceGroupName, String resourceName, String childResourceName, PatchableResourceSyncRule parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, resourceName, childResourceName, parameters);
-        return this
-            .client
-            .<ResourceSyncRuleInner, ResourceSyncRuleInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ResourceSyncRuleInner.class,
-                ResourceSyncRuleInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, resourceName, childResourceName, parameters);
+        return this.client.<ResourceSyncRuleInner, ResourceSyncRuleInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ResourceSyncRuleInner.class, ResourceSyncRuleInner.class,
+            this.client.getContext());
     }
 
     /**
+     * Updates a Resource Sync Rule.
+     * 
      * Updates a Resource Sync Rule with the specified Resource Sync Rule name in the specified Resource Group,
      * Subscription and Custom Location name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Custom Locations name.
      * @param childResourceName Resource Sync Rule name.
@@ -1158,24 +1012,21 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ResourceSyncRuleInner>, ResourceSyncRuleInner> beginUpdateAsync(
-        String resourceGroupName,
-        String resourceName,
-        String childResourceName,
-        PatchableResourceSyncRule parameters,
+        String resourceGroupName, String resourceName, String childResourceName, PatchableResourceSyncRule parameters,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, resourceName, childResourceName, parameters, context);
-        return this
-            .client
-            .<ResourceSyncRuleInner, ResourceSyncRuleInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ResourceSyncRuleInner.class, ResourceSyncRuleInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, resourceName, childResourceName, parameters, context);
+        return this.client.<ResourceSyncRuleInner, ResourceSyncRuleInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ResourceSyncRuleInner.class, ResourceSyncRuleInner.class, context);
     }
 
     /**
+     * Updates a Resource Sync Rule.
+     * 
      * Updates a Resource Sync Rule with the specified Resource Sync Rule name in the specified Resource Group,
      * Subscription and Custom Location name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Custom Locations name.
      * @param childResourceName Resource Sync Rule name.
@@ -1186,15 +1037,17 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
      * @return the {@link SyncPoller} for polling of resource Sync Rules definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ResourceSyncRuleInner>, ResourceSyncRuleInner> beginUpdate(
-        String resourceGroupName, String resourceName, String childResourceName, PatchableResourceSyncRule parameters) {
-        return beginUpdateAsync(resourceGroupName, resourceName, childResourceName, parameters).getSyncPoller();
+    public SyncPoller<PollResult<ResourceSyncRuleInner>, ResourceSyncRuleInner> beginUpdate(String resourceGroupName,
+        String resourceName, String childResourceName, PatchableResourceSyncRule parameters) {
+        return this.beginUpdateAsync(resourceGroupName, resourceName, childResourceName, parameters).getSyncPoller();
     }
 
     /**
+     * Updates a Resource Sync Rule.
+     * 
      * Updates a Resource Sync Rule with the specified Resource Sync Rule name in the specified Resource Group,
      * Subscription and Custom Location name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Custom Locations name.
      * @param childResourceName Resource Sync Rule name.
@@ -1206,20 +1059,18 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
      * @return the {@link SyncPoller} for polling of resource Sync Rules definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ResourceSyncRuleInner>, ResourceSyncRuleInner> beginUpdate(
-        String resourceGroupName,
-        String resourceName,
-        String childResourceName,
-        PatchableResourceSyncRule parameters,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, resourceName, childResourceName, parameters, context)
+    public SyncPoller<PollResult<ResourceSyncRuleInner>, ResourceSyncRuleInner> beginUpdate(String resourceGroupName,
+        String resourceName, String childResourceName, PatchableResourceSyncRule parameters, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, resourceName, childResourceName, parameters, context)
             .getSyncPoller();
     }
 
     /**
+     * Updates a Resource Sync Rule.
+     * 
      * Updates a Resource Sync Rule with the specified Resource Sync Rule name in the specified Resource Group,
      * Subscription and Custom Location name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Custom Locations name.
      * @param childResourceName Resource Sync Rule name.
@@ -1230,17 +1081,18 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
      * @return resource Sync Rules definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ResourceSyncRuleInner> updateAsync(
-        String resourceGroupName, String resourceName, String childResourceName, PatchableResourceSyncRule parameters) {
-        return beginUpdateAsync(resourceGroupName, resourceName, childResourceName, parameters)
-            .last()
+    private Mono<ResourceSyncRuleInner> updateAsync(String resourceGroupName, String resourceName,
+        String childResourceName, PatchableResourceSyncRule parameters) {
+        return beginUpdateAsync(resourceGroupName, resourceName, childResourceName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
+     * Updates a Resource Sync Rule.
+     * 
      * Updates a Resource Sync Rule with the specified Resource Sync Rule name in the specified Resource Group,
      * Subscription and Custom Location name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Custom Locations name.
      * @param childResourceName Resource Sync Rule name.
@@ -1252,21 +1104,18 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
      * @return resource Sync Rules definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ResourceSyncRuleInner> updateAsync(
-        String resourceGroupName,
-        String resourceName,
-        String childResourceName,
-        PatchableResourceSyncRule parameters,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, resourceName, childResourceName, parameters, context)
-            .last()
+    private Mono<ResourceSyncRuleInner> updateAsync(String resourceGroupName, String resourceName,
+        String childResourceName, PatchableResourceSyncRule parameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, resourceName, childResourceName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
+     * Updates a Resource Sync Rule.
+     * 
      * Updates a Resource Sync Rule with the specified Resource Sync Rule name in the specified Resource Group,
      * Subscription and Custom Location name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Custom Locations name.
      * @param childResourceName Resource Sync Rule name.
@@ -1277,15 +1126,17 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
      * @return resource Sync Rules definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceSyncRuleInner update(
-        String resourceGroupName, String resourceName, String childResourceName, PatchableResourceSyncRule parameters) {
+    public ResourceSyncRuleInner update(String resourceGroupName, String resourceName, String childResourceName,
+        PatchableResourceSyncRule parameters) {
         return updateAsync(resourceGroupName, resourceName, childResourceName, parameters).block();
     }
 
     /**
+     * Updates a Resource Sync Rule.
+     * 
      * Updates a Resource Sync Rule with the specified Resource Sync Rule name in the specified Resource Group,
      * Subscription and Custom Location name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Custom Locations name.
      * @param childResourceName Resource Sync Rule name.
@@ -1297,24 +1148,20 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
      * @return resource Sync Rules definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceSyncRuleInner update(
-        String resourceGroupName,
-        String resourceName,
-        String childResourceName,
-        PatchableResourceSyncRule parameters,
-        Context context) {
+    public ResourceSyncRuleInner update(String resourceGroupName, String resourceName, String childResourceName,
+        PatchableResourceSyncRule parameters, Context context) {
         return updateAsync(resourceGroupName, resourceName, childResourceName, parameters, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Resource Sync Rules operation response along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceSyncRuleInner>> listByCustomLocationIdNextSinglePageAsync(String nextLink) {
@@ -1322,62 +1169,43 @@ public final class ResourceSyncRulesClientImpl implements ResourceSyncRulesClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByCustomLocationIdNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ResourceSyncRuleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ResourceSyncRuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Resource Sync Rules operation response along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ResourceSyncRuleInner>> listByCustomLocationIdNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ResourceSyncRuleInner>> listByCustomLocationIdNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByCustomLocationIdNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByCustomLocationIdNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -29,21 +29,18 @@ public final class WebPubSubsImpl implements WebPubSubs {
 
     private final com.azure.resourcemanager.webpubsub.WebPubSubManager serviceManager;
 
-    public WebPubSubsImpl(
-        WebPubSubsClient innerClient, com.azure.resourcemanager.webpubsub.WebPubSubManager serviceManager) {
+    public WebPubSubsImpl(WebPubSubsClient innerClient,
+        com.azure.resourcemanager.webpubsub.WebPubSubManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<NameAvailability> checkNameAvailabilityWithResponse(
-        String location, NameAvailabilityParameters parameters, Context context) {
-        Response<NameAvailabilityInner> inner =
-            this.serviceClient().checkNameAvailabilityWithResponse(location, parameters, context);
+    public Response<NameAvailability> checkNameAvailabilityWithResponse(String location,
+        NameAvailabilityParameters parameters, Context context) {
+        Response<NameAvailabilityInner> inner
+            = this.serviceClient().checkNameAvailabilityWithResponse(location, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new NameAvailabilityImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -61,34 +58,31 @@ public final class WebPubSubsImpl implements WebPubSubs {
 
     public PagedIterable<WebPubSubResource> list() {
         PagedIterable<WebPubSubResourceInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new WebPubSubResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WebPubSubResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<WebPubSubResource> list(Context context) {
         PagedIterable<WebPubSubResourceInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new WebPubSubResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WebPubSubResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<WebPubSubResource> listByResourceGroup(String resourceGroupName) {
         PagedIterable<WebPubSubResourceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new WebPubSubResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WebPubSubResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<WebPubSubResource> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<WebPubSubResourceInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new WebPubSubResourceImpl(inner1, this.manager()));
+        PagedIterable<WebPubSubResourceInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WebPubSubResourceImpl(inner1, this.manager()));
     }
 
-    public Response<WebPubSubResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
-        Response<WebPubSubResourceInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
+    public Response<WebPubSubResource> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context) {
+        Response<WebPubSubResourceInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new WebPubSubResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -112,15 +106,12 @@ public final class WebPubSubsImpl implements WebPubSubs {
         this.serviceClient().delete(resourceGroupName, resourceName, context);
     }
 
-    public Response<WebPubSubKeys> listKeysWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
-        Response<WebPubSubKeysInner> inner =
-            this.serviceClient().listKeysWithResponse(resourceGroupName, resourceName, context);
+    public Response<WebPubSubKeys> listKeysWithResponse(String resourceGroupName, String resourceName,
+        Context context) {
+        Response<WebPubSubKeysInner> inner
+            = this.serviceClient().listKeysWithResponse(resourceGroupName, resourceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new WebPubSubKeysImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -136,8 +127,8 @@ public final class WebPubSubsImpl implements WebPubSubs {
         }
     }
 
-    public WebPubSubKeys regenerateKey(
-        String resourceGroupName, String resourceName, RegenerateKeyParameters parameters) {
+    public WebPubSubKeys regenerateKey(String resourceGroupName, String resourceName,
+        RegenerateKeyParameters parameters) {
         WebPubSubKeysInner inner = this.serviceClient().regenerateKey(resourceGroupName, resourceName, parameters);
         if (inner != null) {
             return new WebPubSubKeysImpl(inner, this.manager());
@@ -146,10 +137,10 @@ public final class WebPubSubsImpl implements WebPubSubs {
         }
     }
 
-    public WebPubSubKeys regenerateKey(
-        String resourceGroupName, String resourceName, RegenerateKeyParameters parameters, Context context) {
-        WebPubSubKeysInner inner =
-            this.serviceClient().regenerateKey(resourceGroupName, resourceName, parameters, context);
+    public WebPubSubKeys regenerateKey(String resourceGroupName, String resourceName,
+        RegenerateKeyParameters parameters, Context context) {
+        WebPubSubKeysInner inner
+            = this.serviceClient().regenerateKey(resourceGroupName, resourceName, parameters, context);
         if (inner != null) {
             return new WebPubSubKeysImpl(inner, this.manager());
         } else {
@@ -157,15 +148,12 @@ public final class WebPubSubsImpl implements WebPubSubs {
         }
     }
 
-    public Response<SkuList> listReplicaSkusWithResponse(
-        String resourceGroupName, String resourceName, String replicaName, Context context) {
-        Response<SkuListInner> inner =
-            this.serviceClient().listReplicaSkusWithResponse(resourceGroupName, resourceName, replicaName, context);
+    public Response<SkuList> listReplicaSkusWithResponse(String resourceGroupName, String resourceName,
+        String replicaName, Context context) {
+        Response<SkuListInner> inner
+            = this.serviceClient().listReplicaSkusWithResponse(resourceGroupName, resourceName, replicaName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SkuListImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -190,13 +178,10 @@ public final class WebPubSubsImpl implements WebPubSubs {
     }
 
     public Response<SkuList> listSkusWithResponse(String resourceGroupName, String resourceName, Context context) {
-        Response<SkuListInner> inner =
-            this.serviceClient().listSkusWithResponse(resourceGroupName, resourceName, context);
+        Response<SkuListInner> inner
+            = this.serviceClient().listSkusWithResponse(resourceGroupName, resourceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SkuListImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -213,77 +198,57 @@ public final class WebPubSubsImpl implements WebPubSubs {
     }
 
     public WebPubSubResource getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "webPubSub");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "webPubSub");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
     public Response<WebPubSubResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "webPubSub");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "webPubSub");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "webPubSub");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "webPubSub");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
         }
         this.delete(resourceGroupName, resourceName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "webPubSub");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "webPubSub");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
         }
         this.delete(resourceGroupName, resourceName, context);
     }

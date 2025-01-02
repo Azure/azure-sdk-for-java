@@ -5,24 +5,27 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Sql Server family connector common linked service properties.
  */
 @Fluent
-public class SqlServerBaseLinkedServiceTypeProperties {
+public class SqlServerBaseLinkedServiceTypeProperties
+    implements JsonSerializable<SqlServerBaseLinkedServiceTypeProperties> {
     /*
      * The name or network address of the instance of SQL Server to which to connect, used by recommended version. Type:
      * string (or Expression with resultType string).
      */
-    @JsonProperty(value = "server")
     private Object server;
 
     /*
      * The name of the database, used by recommended version. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "database")
     private Object database;
 
     /*
@@ -30,14 +33,12 @@ public class SqlServerBaseLinkedServiceTypeProperties {
      * version. Possible values are true/yes/mandatory, false/no/optional and strict. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "encrypt")
     private Object encrypt;
 
     /*
      * Indicate whether the channel will be encrypted while bypassing walking the certificate chain to validate trust,
      * used by recommended version. Type: Boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "trustServerCertificate")
     private Object trustServerCertificate;
 
     /*
@@ -45,21 +46,18 @@ public class SqlServerBaseLinkedServiceTypeProperties {
      * name from the Data Source is used for certificate validation, used by recommended version. Type: string (or
      * Expression with resultType string).
      */
-    @JsonProperty(value = "hostNameInCertificate")
     private Object hostnameInCertificate;
 
     /*
      * The application workload type when connecting to a server, used by recommended version. Possible values are
      * ReadOnly and ReadWrite. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "applicationIntent")
     private Object applicationIntent;
 
     /*
      * The length of time (in seconds) to wait for a connection to the server before terminating the attempt and
      * generating an error, used by recommended version. Type: integer (or Expression with resultType integer).
      */
-    @JsonProperty(value = "connectTimeout")
     private Object connectTimeout;
 
     /*
@@ -67,7 +65,6 @@ public class SqlServerBaseLinkedServiceTypeProperties {
      * recommended version. This must be an integer between 0 and 255. Type: integer (or Expression with resultType
      * integer).
      */
-    @JsonProperty(value = "connectRetryCount")
     private Object connectRetryCount;
 
     /*
@@ -75,21 +72,18 @@ public class SqlServerBaseLinkedServiceTypeProperties {
      * connection failure, used by recommended version. This must be an integer between 1 and 60. Type: integer (or
      * Expression with resultType integer).
      */
-    @JsonProperty(value = "connectRetryInterval")
     private Object connectRetryInterval;
 
     /*
      * The minimum time, in seconds, for the connection to live in the connection pool before being destroyed, used by
      * recommended version. Type: integer (or Expression with resultType integer).
      */
-    @JsonProperty(value = "loadBalanceTimeout")
     private Object loadBalanceTimeout;
 
     /*
      * The default wait time (in seconds) before terminating the attempt to execute a command and generating an error,
      * used by recommended version. Type: integer (or Expression with resultType integer).
      */
-    @JsonProperty(value = "commandTimeout")
     private Object commandTimeout;
 
     /*
@@ -97,28 +91,24 @@ public class SqlServerBaseLinkedServiceTypeProperties {
      * account credentials are used for authentication (when true), used by recommended version. Type: Boolean (or
      * Expression with resultType boolean).
      */
-    @JsonProperty(value = "integratedSecurity")
     private Object integratedSecurity;
 
     /*
      * The name or address of the partner server to connect to if the primary server is down, used by recommended
      * version. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "failoverPartner")
     private Object failoverPartner;
 
     /*
      * The maximum number of connections allowed in the connection pool for this specific connection string, used by
      * recommended version. Type: integer (or Expression with resultType integer).
      */
-    @JsonProperty(value = "maxPoolSize")
     private Object maxPoolSize;
 
     /*
      * The minimum number of connections allowed in the connection pool for this specific connection string, used by
      * recommended version. Type: integer (or Expression with resultType integer).
      */
-    @JsonProperty(value = "minPoolSize")
     private Object minPoolSize;
 
     /*
@@ -126,7 +116,6 @@ public class SqlServerBaseLinkedServiceTypeProperties {
      * process or cancel all result sets from one batch before it can execute any other batch on that connection, used
      * by recommended version. Type: Boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "multipleActiveResultSets")
     private Object multipleActiveResultSets;
 
     /*
@@ -134,21 +123,18 @@ public class SqlServerBaseLinkedServiceTypeProperties {
      * MultiSubnetFailover=true provides faster detection of and connection to the (currently) active server, used by
      * recommended version. Type: Boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "multiSubnetFailover")
     private Object multiSubnetFailover;
 
     /*
      * The size in bytes of the network packets used to communicate with an instance of server, used by recommended
      * version. Type: integer (or Expression with resultType integer).
      */
-    @JsonProperty(value = "packetSize")
     private Object packetSize;
 
     /*
      * Indicate whether the connection will be pooled or explicitly opened every time that the connection is requested,
      * used by recommended version. Type: Boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "pooling")
     private Object pooling;
 
     /**
@@ -605,5 +591,97 @@ public class SqlServerBaseLinkedServiceTypeProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("server", this.server);
+        jsonWriter.writeUntypedField("database", this.database);
+        jsonWriter.writeUntypedField("encrypt", this.encrypt);
+        jsonWriter.writeUntypedField("trustServerCertificate", this.trustServerCertificate);
+        jsonWriter.writeUntypedField("hostNameInCertificate", this.hostnameInCertificate);
+        jsonWriter.writeUntypedField("applicationIntent", this.applicationIntent);
+        jsonWriter.writeUntypedField("connectTimeout", this.connectTimeout);
+        jsonWriter.writeUntypedField("connectRetryCount", this.connectRetryCount);
+        jsonWriter.writeUntypedField("connectRetryInterval", this.connectRetryInterval);
+        jsonWriter.writeUntypedField("loadBalanceTimeout", this.loadBalanceTimeout);
+        jsonWriter.writeUntypedField("commandTimeout", this.commandTimeout);
+        jsonWriter.writeUntypedField("integratedSecurity", this.integratedSecurity);
+        jsonWriter.writeUntypedField("failoverPartner", this.failoverPartner);
+        jsonWriter.writeUntypedField("maxPoolSize", this.maxPoolSize);
+        jsonWriter.writeUntypedField("minPoolSize", this.minPoolSize);
+        jsonWriter.writeUntypedField("multipleActiveResultSets", this.multipleActiveResultSets);
+        jsonWriter.writeUntypedField("multiSubnetFailover", this.multiSubnetFailover);
+        jsonWriter.writeUntypedField("packetSize", this.packetSize);
+        jsonWriter.writeUntypedField("pooling", this.pooling);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlServerBaseLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlServerBaseLinkedServiceTypeProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SqlServerBaseLinkedServiceTypeProperties.
+     */
+    public static SqlServerBaseLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlServerBaseLinkedServiceTypeProperties deserializedSqlServerBaseLinkedServiceTypeProperties
+                = new SqlServerBaseLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("server".equals(fieldName)) {
+                    deserializedSqlServerBaseLinkedServiceTypeProperties.server = reader.readUntyped();
+                } else if ("database".equals(fieldName)) {
+                    deserializedSqlServerBaseLinkedServiceTypeProperties.database = reader.readUntyped();
+                } else if ("encrypt".equals(fieldName)) {
+                    deserializedSqlServerBaseLinkedServiceTypeProperties.encrypt = reader.readUntyped();
+                } else if ("trustServerCertificate".equals(fieldName)) {
+                    deserializedSqlServerBaseLinkedServiceTypeProperties.trustServerCertificate = reader.readUntyped();
+                } else if ("hostNameInCertificate".equals(fieldName)) {
+                    deserializedSqlServerBaseLinkedServiceTypeProperties.hostnameInCertificate = reader.readUntyped();
+                } else if ("applicationIntent".equals(fieldName)) {
+                    deserializedSqlServerBaseLinkedServiceTypeProperties.applicationIntent = reader.readUntyped();
+                } else if ("connectTimeout".equals(fieldName)) {
+                    deserializedSqlServerBaseLinkedServiceTypeProperties.connectTimeout = reader.readUntyped();
+                } else if ("connectRetryCount".equals(fieldName)) {
+                    deserializedSqlServerBaseLinkedServiceTypeProperties.connectRetryCount = reader.readUntyped();
+                } else if ("connectRetryInterval".equals(fieldName)) {
+                    deserializedSqlServerBaseLinkedServiceTypeProperties.connectRetryInterval = reader.readUntyped();
+                } else if ("loadBalanceTimeout".equals(fieldName)) {
+                    deserializedSqlServerBaseLinkedServiceTypeProperties.loadBalanceTimeout = reader.readUntyped();
+                } else if ("commandTimeout".equals(fieldName)) {
+                    deserializedSqlServerBaseLinkedServiceTypeProperties.commandTimeout = reader.readUntyped();
+                } else if ("integratedSecurity".equals(fieldName)) {
+                    deserializedSqlServerBaseLinkedServiceTypeProperties.integratedSecurity = reader.readUntyped();
+                } else if ("failoverPartner".equals(fieldName)) {
+                    deserializedSqlServerBaseLinkedServiceTypeProperties.failoverPartner = reader.readUntyped();
+                } else if ("maxPoolSize".equals(fieldName)) {
+                    deserializedSqlServerBaseLinkedServiceTypeProperties.maxPoolSize = reader.readUntyped();
+                } else if ("minPoolSize".equals(fieldName)) {
+                    deserializedSqlServerBaseLinkedServiceTypeProperties.minPoolSize = reader.readUntyped();
+                } else if ("multipleActiveResultSets".equals(fieldName)) {
+                    deserializedSqlServerBaseLinkedServiceTypeProperties.multipleActiveResultSets
+                        = reader.readUntyped();
+                } else if ("multiSubnetFailover".equals(fieldName)) {
+                    deserializedSqlServerBaseLinkedServiceTypeProperties.multiSubnetFailover = reader.readUntyped();
+                } else if ("packetSize".equals(fieldName)) {
+                    deserializedSqlServerBaseLinkedServiceTypeProperties.packetSize = reader.readUntyped();
+                } else if ("pooling".equals(fieldName)) {
+                    deserializedSqlServerBaseLinkedServiceTypeProperties.pooling = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlServerBaseLinkedServiceTypeProperties;
+        });
     }
 }

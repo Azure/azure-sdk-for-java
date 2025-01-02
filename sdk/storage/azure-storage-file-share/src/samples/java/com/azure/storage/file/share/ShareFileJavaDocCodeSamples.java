@@ -179,7 +179,7 @@ public class ShareFileJavaDocCodeSamples {
             new Context(key1, value1));
         System.out.printf("Creating the file completed with status code %d", response.getStatusCode());
         // END: com.azure.storage.file.share.ShareFileClient.createWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-Map-Duration-Context
-}
+    }
 
     /**
      * Generates a code sample for using {@link ShareFileClient#createWithResponse(long, ShareFileHttpHeaders, FileSmbProperties,
@@ -308,7 +308,8 @@ public class ShareFileJavaDocCodeSamples {
             .setDestinationRequestConditions(requestConditions)
             .setSmbPropertiesToCopy(list)
             .setPermissionCopyModeType(PermissionCopyModeType.SOURCE)
-            .setMetadata(Collections.singletonMap("file", "metadata"));
+            .setMetadata(Collections.singletonMap("file", "metadata"))
+            .setFilePermissionFormat(FilePermissionFormat.BINARY);
 
         SyncPoller<ShareFileCopyInfo, Void> poller = fileClient.beginCopy(
             "https://{accountName}.file.core.windows.net?{SASToken}", options, Duration.ofSeconds(2));

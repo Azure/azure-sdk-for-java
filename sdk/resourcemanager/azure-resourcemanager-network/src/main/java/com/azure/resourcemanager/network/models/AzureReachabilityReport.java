@@ -12,10 +12,8 @@ import java.util.List;
 
 /** An immutable client-side representation of Azure reachability report details. */
 @Fluent
-public interface AzureReachabilityReport
-    extends Executable<AzureReachabilityReport>,
-        HasInnerModel<AzureReachabilityReportInner>,
-        HasParent<NetworkWatcher> {
+public interface AzureReachabilityReport extends Executable<AzureReachabilityReport>,
+    HasInnerModel<AzureReachabilityReportInner>, HasParent<NetworkWatcher> {
     /** @return the aggregation level of Azure reachability report. Can be Country, State or City. */
     String aggregationLevel();
 
@@ -24,15 +22,13 @@ public interface AzureReachabilityReport
 
     /** @return list of Azure reachability report items. */
     List<AzureReachabilityReportItem> reachabilityReport();
+
     /** @return parameters used to query available internet providers */
     AzureReachabilityReportParameters azureReachabilityReportParameters();
 
     /** The entirety of Azure reachability report parameters definition. */
-    interface Definition
-        extends DefinitionStages.WithProviderLocation,
-            DefinitionStages.WithStartTime,
-            DefinitionStages.WithEndTime,
-            DefinitionStages.WithExecute {
+    interface Definition extends DefinitionStages.WithProviderLocation, DefinitionStages.WithStartTime,
+        DefinitionStages.WithEndTime, DefinitionStages.WithExecute {
     }
 
     /** Grouping of Azure reachability report definition stages. */
@@ -44,12 +40,14 @@ public interface AzureReachabilityReport
              * @return the AzureReachabilityReport object itself
              */
             WithStartTime withProviderLocation(String country);
+
             /**
              * @param country the name of the country
              * @param state the name of the state
              * @return the AzureReachabilityReport object itself
              */
             WithStartTime withProviderLocation(String country, String state);
+
             /**
              * @param country the name of the country
              * @param state the name of the state
@@ -105,10 +103,8 @@ public interface AzureReachabilityReport
          * The stage of the definition which contains all the minimum required inputs for execution, but also allows for
          * any other optional settings to be specified.
          */
-        interface WithExecute
-            extends Executable<AzureReachabilityReport>,
-                DefinitionStages.WithAzureLocations,
-                DefinitionStages.WithProviders {
+        interface WithExecute extends Executable<AzureReachabilityReport>, DefinitionStages.WithAzureLocations,
+            DefinitionStages.WithProviders {
         }
     }
 }

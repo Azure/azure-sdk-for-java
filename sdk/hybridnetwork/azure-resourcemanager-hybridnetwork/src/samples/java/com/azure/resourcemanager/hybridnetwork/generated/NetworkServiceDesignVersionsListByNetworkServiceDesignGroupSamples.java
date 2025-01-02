@@ -19,7 +19,8 @@ public final class NetworkServiceDesignVersionsListByNetworkServiceDesignGroupSa
      * @param manager Entry point to HybridNetworkManager.
      */
     public static void getPublisherResource(com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.networkServiceDesignVersions().listByNetworkServiceDesignGroup("rg", "TestPublisher",
-            "TestNetworkServiceDesignGroupName", com.azure.core.util.Context.NONE);
+        manager.networkServiceDesignVersions()
+            .listByNetworkServiceDesignGroup("rg", "TestPublisher", "TestNetworkServiceDesignGroupName",
+                com.azure.core.util.Context.NONE);
     }
 }

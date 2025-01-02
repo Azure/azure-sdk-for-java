@@ -23,7 +23,8 @@ public final class InMageRcmPolicyDetailsTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InMageRcmPolicyDetails model = new InMageRcmPolicyDetails().withRecoveryPointHistoryInMinutes(1469596791)
-            .withAppConsistentFrequencyInMinutes(1577824897).withCrashConsistentFrequencyInMinutes(2133269081)
+            .withAppConsistentFrequencyInMinutes(1577824897)
+            .withCrashConsistentFrequencyInMinutes(2133269081)
             .withEnableMultiVmSync("vmyifopxf");
         model = BinaryData.fromObject(model).toObject(InMageRcmPolicyDetails.class);
         Assertions.assertEquals(1469596791, model.recoveryPointHistoryInMinutes());

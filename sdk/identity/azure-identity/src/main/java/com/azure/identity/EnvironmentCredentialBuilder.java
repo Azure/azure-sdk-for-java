@@ -26,8 +26,7 @@ import java.util.concurrent.ForkJoinPool;
  *
  * <!-- src_embed com.azure.identity.credential.environmentcredential.construct -->
  * <pre>
- * TokenCredential environmentCredential = new EnvironmentCredentialBuilder&#40;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential environmentCredential = new EnvironmentCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.environmentcredential.construct -->
  *

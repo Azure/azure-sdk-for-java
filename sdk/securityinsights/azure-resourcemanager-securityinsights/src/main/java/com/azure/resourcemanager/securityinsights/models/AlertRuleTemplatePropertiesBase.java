@@ -5,58 +5,64 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Base alert rule template property bag. */
+/**
+ * Base alert rule template property bag.
+ */
 @Fluent
-public class AlertRuleTemplatePropertiesBase {
+public class AlertRuleTemplatePropertiesBase implements JsonSerializable<AlertRuleTemplatePropertiesBase> {
     /*
      * the number of alert rules that were created by this template
      */
-    @JsonProperty(value = "alertRulesCreatedByTemplateCount")
     private Integer alertRulesCreatedByTemplateCount;
 
     /*
      * The last time that this alert rule template has been updated.
      */
-    @JsonProperty(value = "lastUpdatedDateUTC", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastUpdatedDateUtc;
 
     /*
      * The time that this alert rule template has been added.
      */
-    @JsonProperty(value = "createdDateUTC", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdDateUtc;
 
     /*
      * The description of the alert rule template.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The display name for alert rule template.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The required data sources for this template
      */
-    @JsonProperty(value = "requiredDataConnectors")
     private List<AlertRuleTemplateDataSource> requiredDataConnectors;
 
     /*
      * The alert rule template status.
      */
-    @JsonProperty(value = "status")
     private TemplateStatus status;
 
     /**
+     * Creates an instance of AlertRuleTemplatePropertiesBase class.
+     */
+    public AlertRuleTemplatePropertiesBase() {
+    }
+
+    /**
      * Get the alertRulesCreatedByTemplateCount property: the number of alert rules that were created by this template.
-     *
+     * 
      * @return the alertRulesCreatedByTemplateCount value.
      */
     public Integer alertRulesCreatedByTemplateCount() {
@@ -65,19 +71,19 @@ public class AlertRuleTemplatePropertiesBase {
 
     /**
      * Set the alertRulesCreatedByTemplateCount property: the number of alert rules that were created by this template.
-     *
+     * 
      * @param alertRulesCreatedByTemplateCount the alertRulesCreatedByTemplateCount value to set.
      * @return the AlertRuleTemplatePropertiesBase object itself.
      */
-    public AlertRuleTemplatePropertiesBase withAlertRulesCreatedByTemplateCount(
-        Integer alertRulesCreatedByTemplateCount) {
+    public AlertRuleTemplatePropertiesBase
+        withAlertRulesCreatedByTemplateCount(Integer alertRulesCreatedByTemplateCount) {
         this.alertRulesCreatedByTemplateCount = alertRulesCreatedByTemplateCount;
         return this;
     }
 
     /**
      * Get the lastUpdatedDateUtc property: The last time that this alert rule template has been updated.
-     *
+     * 
      * @return the lastUpdatedDateUtc value.
      */
     public OffsetDateTime lastUpdatedDateUtc() {
@@ -85,8 +91,19 @@ public class AlertRuleTemplatePropertiesBase {
     }
 
     /**
+     * Set the lastUpdatedDateUtc property: The last time that this alert rule template has been updated.
+     * 
+     * @param lastUpdatedDateUtc the lastUpdatedDateUtc value to set.
+     * @return the AlertRuleTemplatePropertiesBase object itself.
+     */
+    AlertRuleTemplatePropertiesBase withLastUpdatedDateUtc(OffsetDateTime lastUpdatedDateUtc) {
+        this.lastUpdatedDateUtc = lastUpdatedDateUtc;
+        return this;
+    }
+
+    /**
      * Get the createdDateUtc property: The time that this alert rule template has been added.
-     *
+     * 
      * @return the createdDateUtc value.
      */
     public OffsetDateTime createdDateUtc() {
@@ -94,8 +111,19 @@ public class AlertRuleTemplatePropertiesBase {
     }
 
     /**
+     * Set the createdDateUtc property: The time that this alert rule template has been added.
+     * 
+     * @param createdDateUtc the createdDateUtc value to set.
+     * @return the AlertRuleTemplatePropertiesBase object itself.
+     */
+    AlertRuleTemplatePropertiesBase withCreatedDateUtc(OffsetDateTime createdDateUtc) {
+        this.createdDateUtc = createdDateUtc;
+        return this;
+    }
+
+    /**
      * Get the description property: The description of the alert rule template.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -104,7 +132,7 @@ public class AlertRuleTemplatePropertiesBase {
 
     /**
      * Set the description property: The description of the alert rule template.
-     *
+     * 
      * @param description the description value to set.
      * @return the AlertRuleTemplatePropertiesBase object itself.
      */
@@ -115,7 +143,7 @@ public class AlertRuleTemplatePropertiesBase {
 
     /**
      * Get the displayName property: The display name for alert rule template.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -124,7 +152,7 @@ public class AlertRuleTemplatePropertiesBase {
 
     /**
      * Set the displayName property: The display name for alert rule template.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the AlertRuleTemplatePropertiesBase object itself.
      */
@@ -135,7 +163,7 @@ public class AlertRuleTemplatePropertiesBase {
 
     /**
      * Get the requiredDataConnectors property: The required data sources for this template.
-     *
+     * 
      * @return the requiredDataConnectors value.
      */
     public List<AlertRuleTemplateDataSource> requiredDataConnectors() {
@@ -144,19 +172,19 @@ public class AlertRuleTemplatePropertiesBase {
 
     /**
      * Set the requiredDataConnectors property: The required data sources for this template.
-     *
+     * 
      * @param requiredDataConnectors the requiredDataConnectors value to set.
      * @return the AlertRuleTemplatePropertiesBase object itself.
      */
-    public AlertRuleTemplatePropertiesBase withRequiredDataConnectors(
-        List<AlertRuleTemplateDataSource> requiredDataConnectors) {
+    public AlertRuleTemplatePropertiesBase
+        withRequiredDataConnectors(List<AlertRuleTemplateDataSource> requiredDataConnectors) {
         this.requiredDataConnectors = requiredDataConnectors;
         return this;
     }
 
     /**
      * Get the status property: The alert rule template status.
-     *
+     * 
      * @return the status value.
      */
     public TemplateStatus status() {
@@ -165,7 +193,7 @@ public class AlertRuleTemplatePropertiesBase {
 
     /**
      * Set the status property: The alert rule template status.
-     *
+     * 
      * @param status the status value to set.
      * @return the AlertRuleTemplatePropertiesBase object itself.
      */
@@ -176,12 +204,71 @@ public class AlertRuleTemplatePropertiesBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (requiredDataConnectors() != null) {
             requiredDataConnectors().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("alertRulesCreatedByTemplateCount", this.alertRulesCreatedByTemplateCount);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeArrayField("requiredDataConnectors", this.requiredDataConnectors,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AlertRuleTemplatePropertiesBase from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AlertRuleTemplatePropertiesBase if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AlertRuleTemplatePropertiesBase.
+     */
+    public static AlertRuleTemplatePropertiesBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AlertRuleTemplatePropertiesBase deserializedAlertRuleTemplatePropertiesBase
+                = new AlertRuleTemplatePropertiesBase();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("alertRulesCreatedByTemplateCount".equals(fieldName)) {
+                    deserializedAlertRuleTemplatePropertiesBase.alertRulesCreatedByTemplateCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("lastUpdatedDateUTC".equals(fieldName)) {
+                    deserializedAlertRuleTemplatePropertiesBase.lastUpdatedDateUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("createdDateUTC".equals(fieldName)) {
+                    deserializedAlertRuleTemplatePropertiesBase.createdDateUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedAlertRuleTemplatePropertiesBase.description = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedAlertRuleTemplatePropertiesBase.displayName = reader.getString();
+                } else if ("requiredDataConnectors".equals(fieldName)) {
+                    List<AlertRuleTemplateDataSource> requiredDataConnectors
+                        = reader.readArray(reader1 -> AlertRuleTemplateDataSource.fromJson(reader1));
+                    deserializedAlertRuleTemplatePropertiesBase.requiredDataConnectors = requiredDataConnectors;
+                } else if ("status".equals(fieldName)) {
+                    deserializedAlertRuleTemplatePropertiesBase.status = TemplateStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAlertRuleTemplatePropertiesBase;
+        });
     }
 }

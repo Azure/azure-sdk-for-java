@@ -46,8 +46,8 @@ public final class CustomHmacAuthenticationPolicy implements HttpPipelinePolicy 
     // that the locale remain US. In other locals the values that are generated
     // for the day and month strings may be different. (e.g. Canada day strings
     // have a '.' at the end)
-    static final DateTimeFormatter HMAC_DATETIMEFORMATTER_PATTERN =
-        DateTimeFormatter.ofPattern("E, dd MMM yyyy HH:mm:ss 'GMT'", Locale.US);
+    static final DateTimeFormatter HMAC_DATETIMEFORMATTER_PATTERN
+        = DateTimeFormatter.ofPattern("E, dd MMM yyyy HH:mm:ss 'GMT'", Locale.US);
 
     private final AzureKeyCredential credential;
     private final String acsResource;
@@ -70,8 +70,8 @@ public final class CustomHmacAuthenticationPolicy implements HttpPipelinePolicy 
             : context.getHttpRequest().getBody();
 
         if (!"https".equals(context.getHttpRequest().getUrl().getProtocol())) {
-            return Mono.error(
-                new RuntimeException("AzureKeyCredential requires a URL using the HTTPS protocol scheme"));
+            return Mono
+                .error(new RuntimeException("AzureKeyCredential requires a URL using the HTTPS protocol scheme"));
         }
 
         try {
@@ -86,21 +86,20 @@ public final class CustomHmacAuthenticationPolicy implements HttpPipelinePolicy 
                 } catch (NoSuchAlgorithmException e) {
                     throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
                 }
-            }, MessageDigest::update)
-                .flatMap(messageDigest -> {
-                    addAuthenticationHeaders(acsResource, hostnameToSignWith,
-                        context.getHttpRequest().getHttpMethod().toString(), messageDigest,
-                        context.getHttpRequest().getHeaders());
+            }, MessageDigest::update).flatMap(messageDigest -> {
+                addAuthenticationHeaders(acsResource, hostnameToSignWith,
+                    context.getHttpRequest().getHttpMethod().toString(), messageDigest,
+                    context.getHttpRequest().getHeaders());
 
-                    return next.process();
-                });
+                return next.process();
+            });
         } catch (RuntimeException r) {
             return Mono.error(r);
         }
     }
 
-    private void addAuthenticationHeaders(String acsResource, URL url, String httpMethod,
-        MessageDigest messageDigest, HttpHeaders headers) {
+    private void addAuthenticationHeaders(String acsResource, URL url, String httpMethod, MessageDigest messageDigest,
+        HttpHeaders headers) {
         final String contentHash = Base64.getEncoder().encodeToString(messageDigest.digest());
         headers.set(X_FORWARDED_HOST, acsResource);
         headers.set(HttpHeaderName.HOST, acsResource);
@@ -133,8 +132,8 @@ public final class CustomHmacAuthenticationPolicy implements HttpPipelinePolicy 
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
 
-        final String signature =
-            Base64.getEncoder().encodeToString(sha256HMAC.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8)));
+        final String signature
+            = Base64.getEncoder().encodeToString(sha256HMAC.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8)));
         String authorization = "HMAC-SHA256 SignedHeaders=x-ms-date;host;x-ms-content-sha256&Signature=" + signature;
         headers.set(HttpHeaderName.AUTHORIZATION, authorization);
         headers.set(X_MS_STRING_TO_SIGN_HEADER,

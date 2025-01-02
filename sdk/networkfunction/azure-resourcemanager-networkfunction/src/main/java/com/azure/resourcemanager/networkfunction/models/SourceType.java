@@ -5,28 +5,39 @@
 package com.azure.resourcemanager.networkfunction.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Ingestion source type. */
+/**
+ * Ingestion source type.
+ */
 public final class SourceType extends ExpandableStringEnum<SourceType> {
-    /** Static value Resource for SourceType. */
+    /**
+     * Static value Resource for SourceType.
+     */
     public static final SourceType RESOURCE = fromString("Resource");
 
     /**
+     * Creates a new instance of SourceType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SourceType() {
+    }
+
+    /**
      * Creates or finds a SourceType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SourceType.
      */
-    @JsonCreator
     public static SourceType fromString(String name) {
         return fromString(name, SourceType.class);
     }
 
     /**
      * Gets known SourceType values.
-     *
+     * 
      * @return known SourceType values.
      */
     public static Collection<SourceType> values() {

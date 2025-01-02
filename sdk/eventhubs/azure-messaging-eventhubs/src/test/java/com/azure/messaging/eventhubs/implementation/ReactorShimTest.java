@@ -46,16 +46,14 @@ public class ReactorShimTest {
         Flux<String> producer = Flux.<String>create(sink -> {
             sink.onRequest(request -> {
                 if (request != Long.MAX_VALUE) {
-                    LongStream.range(0, request)
-                        .mapToObj(String::valueOf)
-                        .forEach(message -> {
-                            try {
-                                TimeUnit.MILLISECONDS.sleep(eventProduceDelayInMillis);
-                            } catch (InterruptedException e) {
-                                // Expected if thread was in sleep while disposing the subscription.
-                            }
-                            sink.next(message);
-                        });
+                    LongStream.range(0, request).mapToObj(String::valueOf).forEach(message -> {
+                        try {
+                            TimeUnit.MILLISECONDS.sleep(eventProduceDelayInMillis);
+                        } catch (InterruptedException e) {
+                            // Expected if thread was in sleep while disposing the subscription.
+                        }
+                        sink.next(message);
+                    });
                 } else {
                     sink.error(new RuntimeException("No_Backpressure unsupported"));
                 }

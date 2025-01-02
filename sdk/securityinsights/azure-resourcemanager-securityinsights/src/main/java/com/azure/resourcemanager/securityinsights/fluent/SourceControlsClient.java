@@ -11,11 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.securityinsights.fluent.models.RepoInner;
 import com.azure.resourcemanager.securityinsights.models.RepoType;
 
-/** An instance of this class provides access to all the operations defined in SourceControlsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SourceControlsClient.
+ */
 public interface SourceControlsClient {
     /**
      * Gets a list of repositories metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param repoType The repo type.
@@ -29,7 +31,7 @@ public interface SourceControlsClient {
 
     /**
      * Gets a list of repositories metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param repoType The repo type.
@@ -40,6 +42,6 @@ public interface SourceControlsClient {
      * @return a list of repositories metadata as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RepoInner> listRepositories(
-        String resourceGroupName, String workspaceName, RepoType repoType, Context context);
+    PagedIterable<RepoInner> listRepositories(String resourceGroupName, String workspaceName, RepoType repoType,
+        Context context);
 }

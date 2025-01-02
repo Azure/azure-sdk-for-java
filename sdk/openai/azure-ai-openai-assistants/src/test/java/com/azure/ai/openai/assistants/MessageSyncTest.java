@@ -33,7 +33,8 @@ public class MessageSyncTest extends AssistantsClientTestBase {
         String threadId = createThread(client);
         createMessageRunner(message -> {
             // Create a message
-            ThreadMessage threadMessage = client.createMessage(threadId, new ThreadMessageOptions(MessageRole.USER, message));
+            ThreadMessage threadMessage
+                = client.createMessage(threadId, new ThreadMessageOptions(MessageRole.USER, message));
             String threadMessageId = threadMessage.getId();
             assertNotNull(threadMessageId);
             assertEquals(threadId, threadMessage.getThreadId());
@@ -73,7 +74,8 @@ public class MessageSyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void messageResponseOperationCreateRetrieveUpdate(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
+    public void messageResponseOperationCreateRetrieveUpdate(HttpClient httpClient,
+        AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
         String threadId = createThread(client);
         createMessageRunner(message -> {
@@ -87,8 +89,10 @@ public class MessageSyncTest extends AssistantsClientTestBase {
             validateThreadMessage(threadMessage, threadId);
             String threadMessageId = threadMessage.getId();
             // Retrieve the message
-            Response<BinaryData> retrievedMessageResponse = client.getMessageWithResponse(threadId, threadMessageId, new RequestOptions());
-            ThreadMessage messageRetrieved = assertAndGetValueFromResponse(retrievedMessageResponse, ThreadMessage.class, 200);
+            Response<BinaryData> retrievedMessageResponse
+                = client.getMessageWithResponse(threadId, threadMessageId, new RequestOptions());
+            ThreadMessage messageRetrieved
+                = assertAndGetValueFromResponse(retrievedMessageResponse, ThreadMessage.class, 200);
             validateThreadMessage(messageRetrieved, threadId);
             // Update the message
             Map<String, String> metadataUpdate = new HashMap<>();
@@ -97,8 +101,10 @@ public class MessageSyncTest extends AssistantsClientTestBase {
             Map<String, Object> requestObj = new HashMap<>();
             requestObj.put("metadata", metadataUpdate);
             BinaryData requestUpdate = BinaryData.fromObject(requestObj);
-            Response<BinaryData> updatedMessageResponse = client.updateMessageWithResponse(threadId, threadMessageId, requestUpdate, new RequestOptions());
-            ThreadMessage updatedMessage = assertAndGetValueFromResponse(updatedMessageResponse, ThreadMessage.class, 200);
+            Response<BinaryData> updatedMessageResponse
+                = client.updateMessageWithResponse(threadId, threadMessageId, requestUpdate, new RequestOptions());
+            ThreadMessage updatedMessage
+                = assertAndGetValueFromResponse(updatedMessageResponse, ThreadMessage.class, 200);
             assertEquals(threadMessageId, updatedMessage.getId());
             assertEquals(threadId, updatedMessage.getThreadId());
             assertNotNull(updatedMessage.getCreatedAt());
@@ -123,9 +129,11 @@ public class MessageSyncTest extends AssistantsClientTestBase {
         String threadId = createThread(client);
         createMessageRunner(message -> {
             // Create two messages in user role
-            ThreadMessage threadMessage = client.createMessage(threadId, new ThreadMessageOptions(MessageRole.USER, message));
+            ThreadMessage threadMessage
+                = client.createMessage(threadId, new ThreadMessageOptions(MessageRole.USER, message));
             validateThreadMessage(threadMessage, threadId);
-            ThreadMessage threadMessage2 = client.createMessage(threadId, new ThreadMessageOptions(MessageRole.USER, message + "second message"));
+            ThreadMessage threadMessage2 = client.createMessage(threadId,
+                new ThreadMessageOptions(MessageRole.USER, message + "second message"));
             validateThreadMessage(threadMessage2, threadId);
             // List messages
             PageableList<ThreadMessage> listedMessages = client.listMessages(threadId);
@@ -133,7 +141,8 @@ public class MessageSyncTest extends AssistantsClientTestBase {
             assertNotNull(listedMessages.getData());
             assertEquals(2, listedMessages.getData().size());
             // List messages with response
-            Response<BinaryData> listedMessagesResponse = client.listMessagesWithResponse(threadId, new RequestOptions());
+            Response<BinaryData> listedMessagesResponse
+                = client.listMessagesWithResponse(threadId, new RequestOptions());
             PageableList<ThreadMessage> listedMessagesWithResponse = asserAndGetPageableListFromResponse(
                 listedMessagesResponse, 200, reader -> reader.readArray(ThreadMessage::fromJson));
             assertNotNull(listedMessagesWithResponse);

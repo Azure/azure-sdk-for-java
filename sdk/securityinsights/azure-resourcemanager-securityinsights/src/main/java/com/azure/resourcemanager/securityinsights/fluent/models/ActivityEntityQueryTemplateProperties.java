@@ -5,69 +5,72 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.ActivityEntityQueryTemplatePropertiesQueryDefinitions;
 import com.azure.resourcemanager.securityinsights.models.DataTypeDefinitions;
 import com.azure.resourcemanager.securityinsights.models.EntityType;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Describes activity entity query properties. */
+/**
+ * Describes activity entity query properties.
+ */
 @Fluent
-public final class ActivityEntityQueryTemplateProperties {
+public final class ActivityEntityQueryTemplateProperties
+    implements JsonSerializable<ActivityEntityQueryTemplateProperties> {
     /*
      * The entity query title
      */
-    @JsonProperty(value = "title")
     private String title;
 
     /*
      * The entity query content to display in timeline
      */
-    @JsonProperty(value = "content")
     private String content;
 
     /*
      * The entity query description
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The Activity query definitions
      */
-    @JsonProperty(value = "queryDefinitions")
     private ActivityEntityQueryTemplatePropertiesQueryDefinitions queryDefinitions;
 
     /*
      * List of required data types for the given entity query template
      */
-    @JsonProperty(value = "dataTypes")
     private List<DataTypeDefinitions> dataTypes;
 
     /*
      * The type of the query's source entity
      */
-    @JsonProperty(value = "inputEntityType")
     private EntityType inputEntityType;
 
     /*
      * List of the fields of the source entity that are required to run the query
      */
-    @JsonProperty(value = "requiredInputFieldsSets")
     private List<List<String>> requiredInputFieldsSets;
 
     /*
      * The query applied only to entities matching to all filters
      */
-    @JsonProperty(value = "entitiesFilter")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, List<String>> entitiesFilter;
 
     /**
+     * Creates an instance of ActivityEntityQueryTemplateProperties class.
+     */
+    public ActivityEntityQueryTemplateProperties() {
+    }
+
+    /**
      * Get the title property: The entity query title.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -76,7 +79,7 @@ public final class ActivityEntityQueryTemplateProperties {
 
     /**
      * Set the title property: The entity query title.
-     *
+     * 
      * @param title the title value to set.
      * @return the ActivityEntityQueryTemplateProperties object itself.
      */
@@ -87,7 +90,7 @@ public final class ActivityEntityQueryTemplateProperties {
 
     /**
      * Get the content property: The entity query content to display in timeline.
-     *
+     * 
      * @return the content value.
      */
     public String content() {
@@ -96,7 +99,7 @@ public final class ActivityEntityQueryTemplateProperties {
 
     /**
      * Set the content property: The entity query content to display in timeline.
-     *
+     * 
      * @param content the content value to set.
      * @return the ActivityEntityQueryTemplateProperties object itself.
      */
@@ -107,7 +110,7 @@ public final class ActivityEntityQueryTemplateProperties {
 
     /**
      * Get the description property: The entity query description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -116,7 +119,7 @@ public final class ActivityEntityQueryTemplateProperties {
 
     /**
      * Set the description property: The entity query description.
-     *
+     * 
      * @param description the description value to set.
      * @return the ActivityEntityQueryTemplateProperties object itself.
      */
@@ -127,7 +130,7 @@ public final class ActivityEntityQueryTemplateProperties {
 
     /**
      * Get the queryDefinitions property: The Activity query definitions.
-     *
+     * 
      * @return the queryDefinitions value.
      */
     public ActivityEntityQueryTemplatePropertiesQueryDefinitions queryDefinitions() {
@@ -136,19 +139,19 @@ public final class ActivityEntityQueryTemplateProperties {
 
     /**
      * Set the queryDefinitions property: The Activity query definitions.
-     *
+     * 
      * @param queryDefinitions the queryDefinitions value to set.
      * @return the ActivityEntityQueryTemplateProperties object itself.
      */
-    public ActivityEntityQueryTemplateProperties withQueryDefinitions(
-        ActivityEntityQueryTemplatePropertiesQueryDefinitions queryDefinitions) {
+    public ActivityEntityQueryTemplateProperties
+        withQueryDefinitions(ActivityEntityQueryTemplatePropertiesQueryDefinitions queryDefinitions) {
         this.queryDefinitions = queryDefinitions;
         return this;
     }
 
     /**
      * Get the dataTypes property: List of required data types for the given entity query template.
-     *
+     * 
      * @return the dataTypes value.
      */
     public List<DataTypeDefinitions> dataTypes() {
@@ -157,7 +160,7 @@ public final class ActivityEntityQueryTemplateProperties {
 
     /**
      * Set the dataTypes property: List of required data types for the given entity query template.
-     *
+     * 
      * @param dataTypes the dataTypes value to set.
      * @return the ActivityEntityQueryTemplateProperties object itself.
      */
@@ -168,7 +171,7 @@ public final class ActivityEntityQueryTemplateProperties {
 
     /**
      * Get the inputEntityType property: The type of the query's source entity.
-     *
+     * 
      * @return the inputEntityType value.
      */
     public EntityType inputEntityType() {
@@ -177,7 +180,7 @@ public final class ActivityEntityQueryTemplateProperties {
 
     /**
      * Set the inputEntityType property: The type of the query's source entity.
-     *
+     * 
      * @param inputEntityType the inputEntityType value to set.
      * @return the ActivityEntityQueryTemplateProperties object itself.
      */
@@ -189,7 +192,7 @@ public final class ActivityEntityQueryTemplateProperties {
     /**
      * Get the requiredInputFieldsSets property: List of the fields of the source entity that are required to run the
      * query.
-     *
+     * 
      * @return the requiredInputFieldsSets value.
      */
     public List<List<String>> requiredInputFieldsSets() {
@@ -199,19 +202,19 @@ public final class ActivityEntityQueryTemplateProperties {
     /**
      * Set the requiredInputFieldsSets property: List of the fields of the source entity that are required to run the
      * query.
-     *
+     * 
      * @param requiredInputFieldsSets the requiredInputFieldsSets value to set.
      * @return the ActivityEntityQueryTemplateProperties object itself.
      */
-    public ActivityEntityQueryTemplateProperties withRequiredInputFieldsSets(
-        List<List<String>> requiredInputFieldsSets) {
+    public ActivityEntityQueryTemplateProperties
+        withRequiredInputFieldsSets(List<List<String>> requiredInputFieldsSets) {
         this.requiredInputFieldsSets = requiredInputFieldsSets;
         return this;
     }
 
     /**
      * Get the entitiesFilter property: The query applied only to entities matching to all filters.
-     *
+     * 
      * @return the entitiesFilter value.
      */
     public Map<String, List<String>> entitiesFilter() {
@@ -220,7 +223,7 @@ public final class ActivityEntityQueryTemplateProperties {
 
     /**
      * Set the entitiesFilter property: The query applied only to entities matching to all filters.
-     *
+     * 
      * @param entitiesFilter the entitiesFilter value to set.
      * @return the ActivityEntityQueryTemplateProperties object itself.
      */
@@ -231,7 +234,7 @@ public final class ActivityEntityQueryTemplateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -241,5 +244,74 @@ public final class ActivityEntityQueryTemplateProperties {
         if (dataTypes() != null) {
             dataTypes().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("content", this.content);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeJsonField("queryDefinitions", this.queryDefinitions);
+        jsonWriter.writeArrayField("dataTypes", this.dataTypes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("inputEntityType",
+            this.inputEntityType == null ? null : this.inputEntityType.toString());
+        jsonWriter.writeArrayField("requiredInputFieldsSets", this.requiredInputFieldsSets,
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
+        jsonWriter.writeMapField("entitiesFilter", this.entitiesFilter,
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActivityEntityQueryTemplateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActivityEntityQueryTemplateProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ActivityEntityQueryTemplateProperties.
+     */
+    public static ActivityEntityQueryTemplateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActivityEntityQueryTemplateProperties deserializedActivityEntityQueryTemplateProperties
+                = new ActivityEntityQueryTemplateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("title".equals(fieldName)) {
+                    deserializedActivityEntityQueryTemplateProperties.title = reader.getString();
+                } else if ("content".equals(fieldName)) {
+                    deserializedActivityEntityQueryTemplateProperties.content = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedActivityEntityQueryTemplateProperties.description = reader.getString();
+                } else if ("queryDefinitions".equals(fieldName)) {
+                    deserializedActivityEntityQueryTemplateProperties.queryDefinitions
+                        = ActivityEntityQueryTemplatePropertiesQueryDefinitions.fromJson(reader);
+                } else if ("dataTypes".equals(fieldName)) {
+                    List<DataTypeDefinitions> dataTypes
+                        = reader.readArray(reader1 -> DataTypeDefinitions.fromJson(reader1));
+                    deserializedActivityEntityQueryTemplateProperties.dataTypes = dataTypes;
+                } else if ("inputEntityType".equals(fieldName)) {
+                    deserializedActivityEntityQueryTemplateProperties.inputEntityType
+                        = EntityType.fromString(reader.getString());
+                } else if ("requiredInputFieldsSets".equals(fieldName)) {
+                    List<List<String>> requiredInputFieldsSets
+                        = reader.readArray(reader1 -> reader1.readArray(reader2 -> reader2.getString()));
+                    deserializedActivityEntityQueryTemplateProperties.requiredInputFieldsSets = requiredInputFieldsSets;
+                } else if ("entitiesFilter".equals(fieldName)) {
+                    Map<String, List<String>> entitiesFilter
+                        = reader.readMap(reader1 -> reader1.readArray(reader2 -> reader2.getString()));
+                    deserializedActivityEntityQueryTemplateProperties.entitiesFilter = entitiesFilter;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActivityEntityQueryTemplateProperties;
+        });
     }
 }

@@ -20,7 +20,7 @@ public final class ConfigurationGroupValuesDeleteSamples {
      */
     public static void
         deleteHybridConfigurationGroupResource(com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.configurationGroupValues().delete("rg1", "testConfigurationGroupValue",
-            com.azure.core.util.Context.NONE);
+        manager.configurationGroupValues()
+            .delete("rg1", "testConfigurationGroupValue", com.azure.core.util.Context.NONE);
     }
 }

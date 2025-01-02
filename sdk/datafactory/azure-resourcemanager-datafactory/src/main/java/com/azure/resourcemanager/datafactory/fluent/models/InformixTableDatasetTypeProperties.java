@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Informix table dataset properties.
  */
 @Fluent
-public final class InformixTableDatasetTypeProperties {
+public final class InformixTableDatasetTypeProperties implements JsonSerializable<InformixTableDatasetTypeProperties> {
     /*
      * The Informix table name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "tableName")
     private Object tableName;
 
     /**
@@ -50,5 +53,42 @@ public final class InformixTableDatasetTypeProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("tableName", this.tableName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InformixTableDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InformixTableDatasetTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InformixTableDatasetTypeProperties.
+     */
+    public static InformixTableDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InformixTableDatasetTypeProperties deserializedInformixTableDatasetTypeProperties
+                = new InformixTableDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tableName".equals(fieldName)) {
+                    deserializedInformixTableDatasetTypeProperties.tableName = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInformixTableDatasetTypeProperties;
+        });
     }
 }

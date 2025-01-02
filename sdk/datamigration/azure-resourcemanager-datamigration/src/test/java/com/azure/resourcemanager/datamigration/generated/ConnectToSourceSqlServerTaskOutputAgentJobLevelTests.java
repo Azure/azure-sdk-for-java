@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datamigration.models.ConnectToSourceSqlServerTa
 public final class ConnectToSourceSqlServerTaskOutputAgentJobLevelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConnectToSourceSqlServerTaskOutputAgentJobLevel model =
-            BinaryData
-                .fromString(
-                    "{\"resultType\":\"AgentJobLevelOutput\",\"name\":\"pvjymjhxxjyng\",\"jobCategory\":\"ivkrtsw\",\"isEnabled\":false,\"jobOwner\":\"vszjfauvjfdxxi\",\"lastExecutedOn\":\"2021-01-09T05:59Z\",\"migrationEligibility\":{\"isEligibleForMigration\":true,\"validationMessages\":[\"qtdo\",\"mcbxvwvxysl\",\"bhsfxob\"]},\"id\":\"tkblmpewww\"}")
-                .toObject(ConnectToSourceSqlServerTaskOutputAgentJobLevel.class);
+        ConnectToSourceSqlServerTaskOutputAgentJobLevel model = BinaryData.fromString(
+            "{\"resultType\":\"AgentJobLevelOutput\",\"name\":\"lwn\",\"jobCategory\":\"hjdauwhvylwz\",\"isEnabled\":true,\"jobOwner\":\"xujznbmpowu\",\"lastExecutedOn\":\"2020-12-27T11:29:17Z\",\"migrationEligibility\":{\"isEligibleForMigration\":false,\"validationMessages\":[\"ualupjmkh\",\"xobbcswsrt\",\"riplrbpbewtg\"]},\"id\":\"gblcgwxzvlvq\"}")
+            .toObject(ConnectToSourceSqlServerTaskOutputAgentJobLevel.class);
     }
 
     @org.junit.jupiter.api.Test

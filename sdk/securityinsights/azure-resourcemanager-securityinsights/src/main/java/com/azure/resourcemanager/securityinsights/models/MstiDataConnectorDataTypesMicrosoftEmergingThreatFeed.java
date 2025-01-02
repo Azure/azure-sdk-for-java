@@ -6,20 +6,30 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Data type for Microsoft Threat Intelligence Platforms data connector. */
+/**
+ * Data type for Microsoft Threat Intelligence Platforms data connector.
+ */
 @Fluent
 public final class MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed extends DataConnectorDataTypeCommon {
     /*
      * lookback period
      */
-    @JsonProperty(value = "lookbackPeriod", required = true)
     private String lookbackPeriod;
 
     /**
+     * Creates an instance of MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed class.
+     */
+    public MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed() {
+    }
+
+    /**
      * Get the lookbackPeriod property: lookback period.
-     *
+     * 
      * @return the lookbackPeriod value.
      */
     public String lookbackPeriod() {
@@ -28,7 +38,7 @@ public final class MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed extends
 
     /**
      * Set the lookbackPeriod property: lookback period.
-     *
+     * 
      * @param lookbackPeriod the lookbackPeriod value to set.
      * @return the MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed object itself.
      */
@@ -37,7 +47,9 @@ public final class MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed extends
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed withState(DataTypeState state) {
         super.withState(state);
@@ -46,21 +58,67 @@ public final class MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed extends
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (lookbackPeriod() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property lookbackPeriod in model"
-                            + " MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property lookbackPeriod in model MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed"));
+        }
+        if (state() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property state in model MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed"));
         }
     }
 
-    private static final ClientLogger LOGGER =
-        new ClientLogger(MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed.class);
+    private static final ClientLogger LOGGER
+        = new ClientLogger(MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", state() == null ? null : state().toString());
+        jsonWriter.writeStringField("lookbackPeriod", this.lookbackPeriod);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed.
+     */
+    public static MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed deserializedMstiDataConnectorDataTypesMicrosoftEmergingThreatFeed
+                = new MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedMstiDataConnectorDataTypesMicrosoftEmergingThreatFeed
+                        .withState(DataTypeState.fromString(reader.getString()));
+                } else if ("lookbackPeriod".equals(fieldName)) {
+                    deserializedMstiDataConnectorDataTypesMicrosoftEmergingThreatFeed.lookbackPeriod
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMstiDataConnectorDataTypesMicrosoftEmergingThreatFeed;
+        });
+    }
 }

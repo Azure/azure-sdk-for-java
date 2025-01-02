@@ -19,8 +19,7 @@ public final class EntitiesRelationsImpl implements EntitiesRelations {
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    public EntitiesRelationsImpl(
-        EntitiesRelationsClient innerClient,
+    public EntitiesRelationsImpl(EntitiesRelationsClient innerClient,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -28,23 +27,14 @@ public final class EntitiesRelationsImpl implements EntitiesRelations {
 
     public PagedIterable<Relation> list(String resourceGroupName, String workspaceName, String entityId) {
         PagedIterable<RelationInner> inner = this.serviceClient().list(resourceGroupName, workspaceName, entityId);
-        return Utils.mapPage(inner, inner1 -> new RelationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RelationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Relation> list(
-        String resourceGroupName,
-        String workspaceName,
-        String entityId,
-        String filter,
-        String orderby,
-        Integer top,
-        String skipToken,
-        Context context) {
-        PagedIterable<RelationInner> inner =
-            this
-                .serviceClient()
-                .list(resourceGroupName, workspaceName, entityId, filter, orderby, top, skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new RelationImpl(inner1, this.manager()));
+    public PagedIterable<Relation> list(String resourceGroupName, String workspaceName, String entityId, String filter,
+        String orderby, Integer top, String skipToken, Context context) {
+        PagedIterable<RelationInner> inner = this.serviceClient()
+            .list(resourceGroupName, workspaceName, entityId, filter, orderby, top, skipToken, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RelationImpl(inner1, this.manager()));
     }
 
     private EntitiesRelationsClient serviceClient() {

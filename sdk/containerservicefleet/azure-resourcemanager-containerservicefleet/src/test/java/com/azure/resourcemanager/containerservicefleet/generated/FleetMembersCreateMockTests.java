@@ -21,7 +21,7 @@ public final class FleetMembersCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"clusterResourceId\":\"k\",\"group\":\"tppjflcx\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"konzmnsik\",\"id\":\"kqze\",\"name\":\"qkdltfz\",\"type\":\"mhhv\"}";
+            = "{\"properties\":{\"clusterResourceId\":\"plvwiwubmwmbes\",\"group\":\"nkww\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"flcxoga\",\"id\":\"onz\",\"name\":\"nsikvmkqzeqqkdl\",\"type\":\"fzxmhhvhgureodkw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,15 +31,15 @@ public final class FleetMembersCreateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         FleetMember response = manager.fleetMembers()
-            .define("dzu")
-            .withExistingFleet("xzb", "cblylpstdbhhxsr")
-            .withClusterResourceId("rsc")
-            .withGroup("t")
-            .withIfMatch("d")
-            .withIfNoneMatch("lvwiwubmwmbesl")
+            .define("od")
+            .withExistingFleet("iydmcwyhzdxs", "adbzmnvdfznud")
+            .withClusterResourceId("zbn")
+            .withGroup("lylpstdb")
+            .withIfMatch("emwabnet")
+            .withIfNoneMatch("hhszh")
             .create();
 
-        Assertions.assertEquals("k", response.clusterResourceId());
-        Assertions.assertEquals("tppjflcx", response.group());
+        Assertions.assertEquals("plvwiwubmwmbes", response.clusterResourceId());
+        Assertions.assertEquals("nkww", response.group());
     }
 }

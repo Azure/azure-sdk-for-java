@@ -18,7 +18,7 @@ public final class DataDiskTests {
             .toObject(DataDisk.class);
         Assertions.assertEquals(CachingType.READ_WRITE, model.caching());
         Assertions.assertEquals(1555370196, model.diskSizeGiB());
-        Assertions.assertEquals(StorageAccountType.STANDARD_SSD_ZRS, model.storageAccountType());
+        Assertions.assertEquals(StorageAccountType.STANDARD_SSDZRS, model.storageAccountType());
         Assertions.assertEquals("uizga", model.driveLetter());
     }
 
@@ -26,12 +26,12 @@ public final class DataDiskTests {
     public void testSerialize() throws Exception {
         DataDisk model = new DataDisk().withCaching(CachingType.READ_WRITE)
             .withDiskSizeGiB(1555370196)
-            .withStorageAccountType(StorageAccountType.STANDARD_SSD_ZRS)
+            .withStorageAccountType(StorageAccountType.STANDARD_SSDZRS)
             .withDriveLetter("uizga");
         model = BinaryData.fromObject(model).toObject(DataDisk.class);
         Assertions.assertEquals(CachingType.READ_WRITE, model.caching());
         Assertions.assertEquals(1555370196, model.diskSizeGiB());
-        Assertions.assertEquals(StorageAccountType.STANDARD_SSD_ZRS, model.storageAccountType());
+        Assertions.assertEquals(StorageAccountType.STANDARD_SSDZRS, model.storageAccountType());
         Assertions.assertEquals("uizga", model.driveLetter());
     }
 }

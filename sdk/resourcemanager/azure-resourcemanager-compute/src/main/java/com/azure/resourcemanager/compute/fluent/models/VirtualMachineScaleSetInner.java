@@ -20,10 +20,12 @@ import com.azure.resourcemanager.compute.models.ResiliencyPolicy;
 import com.azure.resourcemanager.compute.models.ScaleInPolicy;
 import com.azure.resourcemanager.compute.models.ScheduledEventsPolicy;
 import com.azure.resourcemanager.compute.models.Sku;
+import com.azure.resourcemanager.compute.models.SkuProfile;
 import com.azure.resourcemanager.compute.models.SpotRestorePolicy;
 import com.azure.resourcemanager.compute.models.UpgradePolicy;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetIdentity;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProfile;
+import com.azure.resourcemanager.compute.models.ZonalPlatformFaultDomainAlignMode;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -58,7 +60,7 @@ public final class VirtualMachineScaleSetInner extends Resource {
     private VirtualMachineScaleSetIdentity identity;
 
     /*
-     * The virtual machine scale set zones. NOTE: Availability zones can only be set when you create the scale set
+     * The virtual machine scale set zones.
      */
     private List<String> zones;
 
@@ -74,9 +76,9 @@ public final class VirtualMachineScaleSetInner extends Resource {
     private String etag;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -84,9 +86,9 @@ public final class VirtualMachineScaleSetInner extends Resource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of VirtualMachineScaleSetInner class.
@@ -172,8 +174,7 @@ public final class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Get the zones property: The virtual machine scale set zones. NOTE: Availability zones can only be set when you
-     * create the scale set.
+     * Get the zones property: The virtual machine scale set zones.
      * 
      * @return the zones value.
      */
@@ -182,8 +183,7 @@ public final class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Set the zones property: The virtual machine scale set zones. NOTE: Availability zones can only be set when you
-     * create the scale set.
+     * Set the zones property: The virtual machine scale set zones.
      * 
      * @param zones the zones value to set.
      * @return the VirtualMachineScaleSetInner object itself.
@@ -224,13 +224,13 @@ public final class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -244,13 +244,13 @@ public final class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -736,6 +736,55 @@ public final class VirtualMachineScaleSetInner extends Resource {
             this.innerProperties = new VirtualMachineScaleSetProperties();
         }
         this.innerProperties().withResiliencyPolicy(resiliencyPolicy);
+        return this;
+    }
+
+    /**
+     * Get the zonalPlatformFaultDomainAlignMode property: Specifies the align mode between Virtual Machine Scale Set
+     * compute and storage Fault Domain count.
+     * 
+     * @return the zonalPlatformFaultDomainAlignMode value.
+     */
+    public ZonalPlatformFaultDomainAlignMode zonalPlatformFaultDomainAlignMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().zonalPlatformFaultDomainAlignMode();
+    }
+
+    /**
+     * Set the zonalPlatformFaultDomainAlignMode property: Specifies the align mode between Virtual Machine Scale Set
+     * compute and storage Fault Domain count.
+     * 
+     * @param zonalPlatformFaultDomainAlignMode the zonalPlatformFaultDomainAlignMode value to set.
+     * @return the VirtualMachineScaleSetInner object itself.
+     */
+    public VirtualMachineScaleSetInner
+        withZonalPlatformFaultDomainAlignMode(ZonalPlatformFaultDomainAlignMode zonalPlatformFaultDomainAlignMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetProperties();
+        }
+        this.innerProperties().withZonalPlatformFaultDomainAlignMode(zonalPlatformFaultDomainAlignMode);
+        return this;
+    }
+
+    /**
+     * Get the skuProfile property: Specifies the sku profile for the virtual machine scale set.
+     * 
+     * @return the skuProfile value.
+     */
+    public SkuProfile skuProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().skuProfile();
+    }
+
+    /**
+     * Set the skuProfile property: Specifies the sku profile for the virtual machine scale set.
+     * 
+     * @param skuProfile the skuProfile value to set.
+     * @return the VirtualMachineScaleSetInner object itself.
+     */
+    public VirtualMachineScaleSetInner withSkuProfile(SkuProfile skuProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetProperties();
+        }
+        this.innerProperties().withSkuProfile(skuProfile);
         return this;
     }
 

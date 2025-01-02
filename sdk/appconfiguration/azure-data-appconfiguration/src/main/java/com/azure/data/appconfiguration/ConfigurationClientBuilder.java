@@ -108,13 +108,10 @@ import static com.azure.data.appconfiguration.implementation.ClientConstants.APP
  * @see ConfigurationAsyncClient
  * @see ConfigurationClient
  */
-@ServiceClientBuilder(serviceClients = {ConfigurationAsyncClient.class, ConfigurationClient.class})
-public final class ConfigurationClientBuilder implements
-    TokenCredentialTrait<ConfigurationClientBuilder>,
-    ConnectionStringTrait<ConfigurationClientBuilder>,
-    HttpTrait<ConfigurationClientBuilder>,
-    ConfigurationTrait<ConfigurationClientBuilder>,
-    EndpointTrait<ConfigurationClientBuilder> {
+@ServiceClientBuilder(serviceClients = { ConfigurationAsyncClient.class, ConfigurationClient.class })
+public final class ConfigurationClientBuilder implements TokenCredentialTrait<ConfigurationClientBuilder>,
+    ConnectionStringTrait<ConfigurationClientBuilder>, HttpTrait<ConfigurationClientBuilder>,
+    ConfigurationTrait<ConfigurationClientBuilder>, EndpointTrait<ConfigurationClientBuilder> {
 
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
@@ -125,8 +122,7 @@ public final class ConfigurationClientBuilder implements
         Map<String, String> properties = CoreUtils.getProperties("azure-data-appconfiguration.properties");
         CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
         CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
-        ADD_HEADERS_POLICY = new AddHeadersPolicy(new HttpHeaders()
-            .set("x-ms-return-client-request-id", "true")
+        ADD_HEADERS_POLICY = new AddHeadersPolicy(new HttpHeaders().set("x-ms-return-client-request-id", "true")
             .set(HttpHeaderName.CONTENT_TYPE, "application/json")
             .set(HttpHeaderName.ACCEPT, "application/vnd.microsoft.azconfig.kv+json"));
     }
@@ -221,8 +217,8 @@ public final class ConfigurationClientBuilder implements
                 + "TokenCredential should be null if using connection string, vice versa."));
         } else if (tokenCredential == null) {
             if (connectionString.isEmpty()) {
-                throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("'connectionString' cannot be an empty string."));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'connectionString' cannot be an empty string."));
             }
             credentialsLocal = new ConfigurationClientCredentials(connectionString);
             endpointLocal = credentialsLocal.getBaseUri();
@@ -231,9 +227,8 @@ public final class ConfigurationClientBuilder implements
         }
 
         // Service version
-        ConfigurationServiceVersion serviceVersion = (version != null)
-            ? version
-            : ConfigurationServiceVersion.getLatest();
+        ConfigurationServiceVersion serviceVersion
+            = (version != null) ? version : ConfigurationServiceVersion.getLatest();
         // Don't share the default auto-created pipeline between App Configuration client instances.
         HttpPipeline buildPipeline = (pipeline == null)
             ? createDefaultHttpPipeline(syncTokenPolicy, credentialsLocal, tokenCredentialLocal)
@@ -245,9 +240,8 @@ public final class ConfigurationClientBuilder implements
     private HttpPipeline createDefaultHttpPipeline(SyncTokenPolicy syncTokenPolicy,
         ConfigurationClientCredentials credentials, TokenCredential tokenCredential) {
         // Global Env configuration store
-        Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
         // Endpoint
         String buildEndpoint = endpoint;
@@ -260,8 +254,8 @@ public final class ConfigurationClientBuilder implements
         ClientOptions localClientOptions = clientOptions != null ? clientOptions : DEFAULT_CLIENT_OPTIONS;
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(
-            getApplicationId(localClientOptions, httpLogOptions), CLIENT_NAME, CLIENT_VERSION, buildConfiguration));
+        policies.add(new UserAgentPolicy(getApplicationId(localClientOptions, httpLogOptions), CLIENT_NAME,
+            CLIENT_VERSION, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
         policies.add(ADD_HEADERS_POLICY);
@@ -276,8 +270,7 @@ public final class ConfigurationClientBuilder implements
 
         if (tokenCredential != null) {
             // User token based policy
-            policies.add(
-                new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
         } else if (credentials != null) {
             // Use credentialS based policy
             policies.add(new ConfigurationCredentialsPolicy(credentials));
@@ -290,17 +283,15 @@ public final class ConfigurationClientBuilder implements
         policies.addAll(perRetryPolicies);
 
         List<HttpHeader> httpHeaderList = new ArrayList<>();
-        localClientOptions.getHeaders().forEach(
-            header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+        localClientOptions.getHeaders()
+            .forEach(header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
         policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
-
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
         // customized pipeline
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .tracer(createTracer(clientOptions))
             .clientOptions(localClientOptions)
@@ -547,4 +538,3 @@ public final class ConfigurationClientBuilder implements
         return this;
     }
 }
-

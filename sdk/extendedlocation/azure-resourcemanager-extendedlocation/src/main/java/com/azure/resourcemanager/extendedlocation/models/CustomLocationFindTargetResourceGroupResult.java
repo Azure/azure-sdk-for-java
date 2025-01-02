@@ -6,13 +6,15 @@ package com.azure.resourcemanager.extendedlocation.models;
 
 import com.azure.resourcemanager.extendedlocation.fluent.models.CustomLocationFindTargetResourceGroupResultInner;
 
-/** An immutable client-side representation of CustomLocationFindTargetResourceGroupResult. */
+/**
+ * An immutable client-side representation of CustomLocationFindTargetResourceGroupResult.
+ */
 public interface CustomLocationFindTargetResourceGroupResult {
     /**
      * Gets the matchedResourceSyncRule property: The matching resource sync rule is the particular resource sync rule
      * that matched the match expressions and labels and had lowest priority. This is the rule responsible for mapping
      * the target resource to the target resource group.
-     *
+     * 
      * @return the matchedResourceSyncRule value.
      */
     String matchedResourceSyncRule();
@@ -21,7 +23,7 @@ public interface CustomLocationFindTargetResourceGroupResult {
      * Gets the targetResourceGroup property: The target resource group of matching resource sync rule. The labels from
      * the request will be used to find out matching resource sync rule against the selector property of the resource
      * sync rule. The one with highest priority will be returned if there are multiple matching rules.
-     *
+     * 
      * @return the targetResourceGroup value.
      */
     String targetResourceGroup();
@@ -29,7 +31,7 @@ public interface CustomLocationFindTargetResourceGroupResult {
     /**
      * Gets the inner
      * com.azure.resourcemanager.extendedlocation.fluent.models.CustomLocationFindTargetResourceGroupResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     CustomLocationFindTargetResourceGroupResultInner innerModel();

@@ -40,7 +40,6 @@ class AzureApplicationCredentialBuilder extends CredentialBuilderBase<AzureAppli
         return this;
     }
 
-
     /**
      * Specifies the client ID of user assigned or system assigned identity, when this credential is running
      * in an environment with managed identities. If unset, the value in the AZURE_CLIENT_ID environment variable
@@ -95,8 +94,8 @@ class AzureApplicationCredentialBuilder extends CredentialBuilderBase<AzureAppli
      */
     public AzureApplicationCredential build() {
         if (managedIdentityClientId != null && managedIdentityResourceId != null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException("Only one of managedIdentityClientId and managedIdentityResourceId can be specified."));
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
+                "Only one of managedIdentityClientId and managedIdentityResourceId can be specified."));
         }
 
         return new AzureApplicationCredential(getCredentialsChain());
@@ -105,8 +104,8 @@ class AzureApplicationCredentialBuilder extends CredentialBuilderBase<AzureAppli
     private ArrayList<TokenCredential> getCredentialsChain() {
         ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(2);
         output.add(new EnvironmentCredential(identityClientOptions));
-        output.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId, identityClientOptions));
+        output.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId, null,
+            identityClientOptions));
         return output;
     }
 }
-

@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.powerbidedicated.generated;
 
-/** Samples for Capacities Suspend. */
+/**
+ * Samples for Capacities Suspend.
+ */
 public final class CapacitiesSuspendSamples {
     /*
-     * x-ms-original-file: specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/suspendCapacity.json
+     * x-ms-original-file:
+     * specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/
+     * suspendCapacity.json
      */
     /**
      * Sample code: Suspend capacity.
-     *
+     * 
      * @param manager Entry point to PowerBIDedicatedManager.
      */
     public static void suspendCapacity(com.azure.resourcemanager.powerbidedicated.PowerBIDedicatedManager manager) {

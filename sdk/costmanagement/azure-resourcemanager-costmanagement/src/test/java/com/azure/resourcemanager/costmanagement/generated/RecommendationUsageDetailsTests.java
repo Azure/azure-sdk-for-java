@@ -12,17 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class RecommendationUsageDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecommendationUsageDetails model =
-            BinaryData
-                .fromString("{\"usageGrain\":\"Daily\",\"charges\":[]}")
-                .toObject(RecommendationUsageDetails.class);
-        Assertions.assertEquals(Grain.DAILY, model.usageGrain());
+        RecommendationUsageDetails model = BinaryData.fromString("{\"usageGrain\":\"Monthly\",\"charges\":[]}")
+            .toObject(RecommendationUsageDetails.class);
+        Assertions.assertEquals(Grain.MONTHLY, model.usageGrain());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecommendationUsageDetails model = new RecommendationUsageDetails().withUsageGrain(Grain.DAILY);
+        RecommendationUsageDetails model = new RecommendationUsageDetails().withUsageGrain(Grain.MONTHLY);
         model = BinaryData.fromObject(model).toObject(RecommendationUsageDetails.class);
-        Assertions.assertEquals(Grain.DAILY, model.usageGrain());
+        Assertions.assertEquals(Grain.MONTHLY, model.usageGrain());
     }
 }

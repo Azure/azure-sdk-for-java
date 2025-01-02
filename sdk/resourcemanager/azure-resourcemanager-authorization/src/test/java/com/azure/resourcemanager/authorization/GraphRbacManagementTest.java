@@ -29,21 +29,10 @@ public abstract class GraphRbacManagementTest extends ResourceManagerTestProxyTe
     protected ResourceManager resourceManager;
 
     @Override
-    protected HttpPipeline buildHttpPipeline(
-        TokenCredential credential,
-        AzureProfile profile,
-        HttpLogOptions httpLogOptions,
-        List<HttpPipelinePolicy> policies,
-        HttpClient httpClient) {
-        return HttpPipelineProvider.buildHttpPipeline(
-            credential,
-            profile,
-            null,
-            httpLogOptions,
-            null,
-            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
-            policies,
-            httpClient);
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile,
+        HttpLogOptions httpLogOptions, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(credential, profile, null, httpLogOptions, null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, httpClient);
     }
 
     @Override
@@ -52,7 +41,6 @@ public abstract class GraphRbacManagementTest extends ResourceManagerTestProxyTe
         authorizationManager = buildManager(AuthorizationManager.class, httpPipeline, profile);
         resourceManager = buildManager(ResourceManager.class, httpPipeline, profile);
     }
-
 
     @Override
     protected void cleanUpResources() {
@@ -69,8 +57,6 @@ public abstract class GraphRbacManagementTest extends ResourceManagerTestProxyTe
     }
 
     protected byte[] replaceCRLF(byte[] bytes) {
-        return new String(bytes, StandardCharsets.UTF_8)
-            .replace("\r\n", "\n")
-            .getBytes(StandardCharsets.UTF_8);
+        return new String(bytes, StandardCharsets.UTF_8).replace("\r\n", "\n").getBytes(StandardCharsets.UTF_8);
     }
 }

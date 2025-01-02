@@ -13,11 +13,13 @@ import com.azure.resourcemanager.apimanagement.fluent.models.AuthorizationAccess
 import com.azure.resourcemanager.apimanagement.models.AuthorizationAccessPoliciesCreateOrUpdateResponse;
 import com.azure.resourcemanager.apimanagement.models.AuthorizationAccessPoliciesGetResponse;
 
-/** An instance of this class provides access to all the operations defined in AuthorizationAccessPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AuthorizationAccessPoliciesClient.
+ */
 public interface AuthorizationAccessPoliciesClient {
     /**
      * Lists a collection of authorization access policy defined within a authorization.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.
@@ -28,20 +30,20 @@ public interface AuthorizationAccessPoliciesClient {
      * @return paged Authorization Access Policy list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AuthorizationAccessPolicyContractInner> listByAuthorization(
-        String resourceGroupName, String serviceName, String authorizationProviderId, String authorizationId);
+    PagedIterable<AuthorizationAccessPolicyContractInner> listByAuthorization(String resourceGroupName,
+        String serviceName, String authorizationProviderId, String authorizationId);
 
     /**
      * Lists a collection of authorization access policy defined within a authorization.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.
      * @param authorizationId Identifier of the authorization.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| displayName | filter | ge, le, eq, ne,
-     *     gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| displayName | filter | ge, le, eq, ne, gt, lt
+     * | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -51,19 +53,13 @@ public interface AuthorizationAccessPoliciesClient {
      * @return paged Authorization Access Policy list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AuthorizationAccessPolicyContractInner> listByAuthorization(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<AuthorizationAccessPolicyContractInner> listByAuthorization(String resourceGroupName,
+        String serviceName, String authorizationProviderId, String authorizationId, String filter, Integer top,
+        Integer skip, Context context);
 
     /**
      * Gets the details of the authorization access policy specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.
@@ -76,17 +72,12 @@ public interface AuthorizationAccessPoliciesClient {
      * @return the details of the authorization access policy specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthorizationAccessPoliciesGetResponse getWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId,
-        Context context);
+    AuthorizationAccessPoliciesGetResponse getWithResponse(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId, String authorizationAccessPolicyId, Context context);
 
     /**
      * Gets the details of the authorization access policy specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.
@@ -98,16 +89,12 @@ public interface AuthorizationAccessPoliciesClient {
      * @return the details of the authorization access policy specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthorizationAccessPolicyContractInner get(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId);
+    AuthorizationAccessPolicyContractInner get(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId, String authorizationAccessPolicyId);
 
     /**
      * Creates or updates Authorization Access Policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.
@@ -122,19 +109,13 @@ public interface AuthorizationAccessPoliciesClient {
      * @return authorization access policy contract.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthorizationAccessPoliciesCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId,
-        AuthorizationAccessPolicyContractInner parameters,
-        String ifMatch,
-        Context context);
+    AuthorizationAccessPoliciesCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName,
+        String serviceName, String authorizationProviderId, String authorizationId, String authorizationAccessPolicyId,
+        AuthorizationAccessPolicyContractInner parameters, String ifMatch, Context context);
 
     /**
      * Creates or updates Authorization Access Policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.
@@ -147,24 +128,20 @@ public interface AuthorizationAccessPoliciesClient {
      * @return authorization access policy contract.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthorizationAccessPolicyContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId,
+    AuthorizationAccessPolicyContractInner createOrUpdate(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId, String authorizationAccessPolicyId,
         AuthorizationAccessPolicyContractInner parameters);
 
     /**
      * Deletes specific access policy from the Authorization.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.
      * @param authorizationId Identifier of the authorization.
      * @param authorizationAccessPolicyId Identifier of the authorization access policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -172,35 +149,24 @@ public interface AuthorizationAccessPoliciesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId,
-        String ifMatch,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String authorizationProviderId,
+        String authorizationId, String authorizationAccessPolicyId, String ifMatch, Context context);
 
     /**
      * Deletes specific access policy from the Authorization.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.
      * @param authorizationId Identifier of the authorization.
      * @param authorizationAccessPolicyId Identifier of the authorization access policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId,
-        String ifMatch);
+    void delete(String resourceGroupName, String serviceName, String authorizationProviderId, String authorizationId,
+        String authorizationAccessPolicyId, String ifMatch);
 }

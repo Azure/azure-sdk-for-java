@@ -148,17 +148,17 @@ public final class SecretKey implements JsonSerializable<SecretKey> {
                         if ("enabled".equals(fieldName)) {
                             secretKey.properties.enabled = reader.getNullable(JsonReader::getBoolean);
                         } else if ("nbf".equals(fieldName)) {
-                            secretKey.properties.notBefore = reader.getNullable(nonNull ->
-                                OffsetDateTime.ofInstant(Instant.ofEpochSecond(nonNull.getLong()), ZoneOffset.UTC));
+                            secretKey.properties.notBefore = reader.getNullable(nonNull -> OffsetDateTime
+                                .ofInstant(Instant.ofEpochSecond(nonNull.getLong()), ZoneOffset.UTC));
                         } else if ("exp".equals(fieldName)) {
-                            secretKey.properties.expiresOn = reader.getNullable(nonNull ->
-                                OffsetDateTime.ofInstant(Instant.ofEpochSecond(nonNull.getLong()), ZoneOffset.UTC));
+                            secretKey.properties.expiresOn = reader.getNullable(nonNull -> OffsetDateTime
+                                .ofInstant(Instant.ofEpochSecond(nonNull.getLong()), ZoneOffset.UTC));
                         } else if ("created".equals(fieldName)) {
-                            secretKey.properties.createdOn = reader.getNullable(nonNull ->
-                                OffsetDateTime.ofInstant(Instant.ofEpochSecond(nonNull.getLong()), ZoneOffset.UTC));
+                            secretKey.properties.createdOn = reader.getNullable(nonNull -> OffsetDateTime
+                                .ofInstant(Instant.ofEpochSecond(nonNull.getLong()), ZoneOffset.UTC));
                         } else if ("updated".equals(fieldName)) {
-                            secretKey.properties.updatedOn = reader.getNullable(nonNull ->
-                                OffsetDateTime.ofInstant(Instant.ofEpochSecond(nonNull.getLong()), ZoneOffset.UTC));
+                            secretKey.properties.updatedOn = reader.getNullable(nonNull -> OffsetDateTime
+                                .ofInstant(Instant.ofEpochSecond(nonNull.getLong()), ZoneOffset.UTC));
                         } else if ("recoverableDays".equals(fieldName)) {
                             secretKey.properties.recoverableDays = reader.getNullable(JsonReader::getInt);
                         } else if ("recoveryLevel".equals(fieldName)) {

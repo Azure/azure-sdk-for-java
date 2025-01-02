@@ -12,88 +12,90 @@ import com.azure.resourcemanager.webpubsub.fluent.models.WebPubSubResourceInner;
 import java.util.List;
 import java.util.Map;
 
-/** An immutable client-side representation of WebPubSubResource. */
+/**
+ * An immutable client-side representation of WebPubSubResource.
+ */
 public interface WebPubSubResource {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the sku property: The billing information of the resource.
-     *
+     * 
      * @return the sku value.
      */
     ResourceSku sku();
 
     /**
      * Gets the kind property: The kind of the service.
-     *
+     * 
      * @return the kind value.
      */
     ServiceKind kind();
 
     /**
      * Gets the identity property: A class represent managed identities used for request and response.
-     *
+     * 
      * @return the identity value.
      */
     ManagedIdentity identity();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
 
     /**
      * Gets the externalIp property: The publicly accessible IP of the resource.
-     *
+     * 
      * @return the externalIp value.
      */
     String externalIp();
 
     /**
      * Gets the hostname property: FQDN of the service instance.
-     *
+     * 
      * @return the hostname value.
      */
     String hostname();
@@ -101,7 +103,7 @@ public interface WebPubSubResource {
     /**
      * Gets the publicPort property: The publicly accessible port of the resource which is designed for browser/client
      * side usage.
-     *
+     * 
      * @return the publicPort value.
      */
     Integer publicPort();
@@ -109,156 +111,172 @@ public interface WebPubSubResource {
     /**
      * Gets the serverPort property: The publicly accessible port of the resource which is designed for customer server
      * side usage.
-     *
+     * 
      * @return the serverPort value.
      */
     Integer serverPort();
 
     /**
      * Gets the version property: Version of the resource. Probably you need the same or higher version of client SDKs.
-     *
+     * 
      * @return the version value.
      */
     String version();
 
     /**
      * Gets the privateEndpointConnections property: Private endpoint connections to the resource.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     List<PrivateEndpointConnection> privateEndpointConnections();
 
     /**
      * Gets the sharedPrivateLinkResources property: The list of shared private link resources.
-     *
+     * 
      * @return the sharedPrivateLinkResources value.
      */
     List<SharedPrivateLinkResource> sharedPrivateLinkResources();
 
     /**
      * Gets the tls property: TLS settings for the resource.
-     *
+     * 
      * @return the tls value.
      */
     WebPubSubTlsSettings tls();
 
     /**
      * Gets the hostnamePrefix property: Deprecated.
-     *
+     * 
      * @return the hostnamePrefix value.
      */
     String hostnamePrefix();
 
     /**
      * Gets the liveTraceConfiguration property: Live trace configuration of a Microsoft.SignalRService resource.
-     *
+     * 
      * @return the liveTraceConfiguration value.
      */
     LiveTraceConfiguration liveTraceConfiguration();
 
     /**
      * Gets the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService resource.
-     *
+     * 
      * @return the resourceLogConfiguration value.
      */
     ResourceLogConfiguration resourceLogConfiguration();
 
     /**
      * Gets the networkACLs property: Network ACLs for the resource.
-     *
+     * 
      * @return the networkACLs value.
      */
     WebPubSubNetworkACLs networkACLs();
 
     /**
-     * Gets the publicNetworkAccess property: Enable or disable public network access. Default to "Enabled". When it's
-     * Enabled, network ACLs still apply. When it's Disabled, public network access is always disabled no matter what
-     * you set in network ACLs.
-     *
+     * Gets the publicNetworkAccess property: Enable or disable public network access. Default to "Enabled".
+     * When it's Enabled, network ACLs still apply.
+     * When it's Disabled, public network access is always disabled no matter what you set in network ACLs.
+     * 
      * @return the publicNetworkAccess value.
      */
     String publicNetworkAccess();
 
     /**
-     * Gets the disableLocalAuth property: DisableLocalAuth Enable or disable local auth with AccessKey When set as
-     * true, connection with AccessKey=xxx won't work.
-     *
+     * Gets the disableLocalAuth property: DisableLocalAuth
+     * Enable or disable local auth with AccessKey
+     * When set as true, connection with AccessKey=xxx won't work.
+     * 
      * @return the disableLocalAuth value.
      */
     Boolean disableLocalAuth();
 
     /**
-     * Gets the disableAadAuth property: DisableLocalAuth Enable or disable aad auth When set as true, connection with
-     * AuthType=aad won't work.
-     *
+     * Gets the disableAadAuth property: DisableLocalAuth
+     * Enable or disable aad auth
+     * When set as true, connection with AuthType=aad won't work.
+     * 
      * @return the disableAadAuth value.
      */
     Boolean disableAadAuth();
 
     /**
-     * Gets the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled". When it's
-     * Disabled, new connections will not be routed to this endpoint, however existing connections will not be affected.
+     * Gets the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled".
+     * When it's Disabled, new connections will not be routed to this endpoint, however existing connections will not be
+     * affected.
      * This property is replica specific. Disable the regional endpoint without replica is not allowed.
-     *
+     * 
      * @return the regionEndpointEnabled value.
      */
     String regionEndpointEnabled();
 
     /**
-     * Gets the resourceStopped property: Stop or start the resource. Default to "false". When it's true, the data plane
-     * of the resource is shutdown. When it's false, the data plane of the resource is started.
-     *
+     * Gets the resourceStopped property: Stop or start the resource. Default to "False".
+     * When it's true, the data plane of the resource is shutdown.
+     * When it's false, the data plane of the resource is started.
+     * 
      * @return the resourceStopped value.
      */
     String resourceStopped();
 
     /**
+     * Gets the socketIO property: SocketIO settings for the resource.
+     * 
+     * @return the socketIO value.
+     */
+    WebPubSubSocketIOSettings socketIO();
+
+    /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.webpubsub.fluent.models.WebPubSubResourceInner object.
-     *
+     * 
      * @return the inner object.
      */
     WebPubSubResourceInner innerModel();
 
-    /** The entirety of the WebPubSubResource definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the WebPubSubResource definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
-    /** The WebPubSubResource definition stages. */
+    /**
+     * The WebPubSubResource definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the WebPubSubResource definition. */
+        /**
+         * The first stage of the WebPubSubResource definition.
+         */
         interface Blank extends WithLocation {
         }
 
-        /** The stage of the WebPubSubResource definition allowing to specify location. */
+        /**
+         * The stage of the WebPubSubResource definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -266,18 +284,20 @@ public interface WebPubSubResource {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
             WithResourceGroup withRegion(String location);
         }
 
-        /** The stage of the WebPubSubResource definition allowing to specify parent resource. */
+        /**
+         * The stage of the WebPubSubResource definition allowing to specify parent resource.
+         */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
@@ -288,398 +308,478 @@ public interface WebPubSubResource {
          * The stage of the WebPubSubResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithSku,
-                DefinitionStages.WithKind,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithTls,
-                DefinitionStages.WithLiveTraceConfiguration,
-                DefinitionStages.WithResourceLogConfiguration,
-                DefinitionStages.WithNetworkACLs,
-                DefinitionStages.WithPublicNetworkAccess,
-                DefinitionStages.WithDisableLocalAuth,
-                DefinitionStages.WithDisableAadAuth,
-                DefinitionStages.WithRegionEndpointEnabled,
-                DefinitionStages.WithResourceStopped {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithSku, DefinitionStages.WithKind,
+            DefinitionStages.WithIdentity, DefinitionStages.WithTls, DefinitionStages.WithLiveTraceConfiguration,
+            DefinitionStages.WithResourceLogConfiguration, DefinitionStages.WithNetworkACLs,
+            DefinitionStages.WithPublicNetworkAccess, DefinitionStages.WithDisableLocalAuth,
+            DefinitionStages.WithDisableAadAuth, DefinitionStages.WithRegionEndpointEnabled,
+            DefinitionStages.WithResourceStopped, DefinitionStages.WithSocketIO {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             WebPubSubResource create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             WebPubSubResource create(Context context);
         }
 
-        /** The stage of the WebPubSubResource definition allowing to specify tags. */
+        /**
+         * The stage of the WebPubSubResource definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
 
-        /** The stage of the WebPubSubResource definition allowing to specify sku. */
+        /**
+         * The stage of the WebPubSubResource definition allowing to specify sku.
+         */
         interface WithSku {
             /**
              * Specifies the sku property: The billing information of the resource..
-             *
+             * 
              * @param sku The billing information of the resource.
              * @return the next definition stage.
              */
             WithCreate withSku(ResourceSku sku);
         }
 
-        /** The stage of the WebPubSubResource definition allowing to specify kind. */
+        /**
+         * The stage of the WebPubSubResource definition allowing to specify kind.
+         */
         interface WithKind {
             /**
              * Specifies the kind property: The kind of the service.
-             *
+             * 
              * @param kind The kind of the service.
              * @return the next definition stage.
              */
             WithCreate withKind(ServiceKind kind);
         }
 
-        /** The stage of the WebPubSubResource definition allowing to specify identity. */
+        /**
+         * The stage of the WebPubSubResource definition allowing to specify identity.
+         */
         interface WithIdentity {
             /**
              * Specifies the identity property: A class represent managed identities used for request and response.
-             *
+             * 
              * @param identity A class represent managed identities used for request and response.
              * @return the next definition stage.
              */
             WithCreate withIdentity(ManagedIdentity identity);
         }
 
-        /** The stage of the WebPubSubResource definition allowing to specify tls. */
+        /**
+         * The stage of the WebPubSubResource definition allowing to specify tls.
+         */
         interface WithTls {
             /**
              * Specifies the tls property: TLS settings for the resource.
-             *
+             * 
              * @param tls TLS settings for the resource.
              * @return the next definition stage.
              */
             WithCreate withTls(WebPubSubTlsSettings tls);
         }
 
-        /** The stage of the WebPubSubResource definition allowing to specify liveTraceConfiguration. */
+        /**
+         * The stage of the WebPubSubResource definition allowing to specify liveTraceConfiguration.
+         */
         interface WithLiveTraceConfiguration {
             /**
              * Specifies the liveTraceConfiguration property: Live trace configuration of a Microsoft.SignalRService
              * resource..
-             *
+             * 
              * @param liveTraceConfiguration Live trace configuration of a Microsoft.SignalRService resource.
              * @return the next definition stage.
              */
             WithCreate withLiveTraceConfiguration(LiveTraceConfiguration liveTraceConfiguration);
         }
 
-        /** The stage of the WebPubSubResource definition allowing to specify resourceLogConfiguration. */
+        /**
+         * The stage of the WebPubSubResource definition allowing to specify resourceLogConfiguration.
+         */
         interface WithResourceLogConfiguration {
             /**
              * Specifies the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService
              * resource..
-             *
+             * 
              * @param resourceLogConfiguration Resource log configuration of a Microsoft.SignalRService resource.
              * @return the next definition stage.
              */
             WithCreate withResourceLogConfiguration(ResourceLogConfiguration resourceLogConfiguration);
         }
 
-        /** The stage of the WebPubSubResource definition allowing to specify networkACLs. */
+        /**
+         * The stage of the WebPubSubResource definition allowing to specify networkACLs.
+         */
         interface WithNetworkACLs {
             /**
              * Specifies the networkACLs property: Network ACLs for the resource.
-             *
+             * 
              * @param networkACLs Network ACLs for the resource.
              * @return the next definition stage.
              */
             WithCreate withNetworkACLs(WebPubSubNetworkACLs networkACLs);
         }
 
-        /** The stage of the WebPubSubResource definition allowing to specify publicNetworkAccess. */
+        /**
+         * The stage of the WebPubSubResource definition allowing to specify publicNetworkAccess.
+         */
         interface WithPublicNetworkAccess {
             /**
              * Specifies the publicNetworkAccess property: Enable or disable public network access. Default to
-             * "Enabled". When it's Enabled, network ACLs still apply. When it's Disabled, public network access is
-             * always disabled no matter what you set in network ACLs..
-             *
-             * @param publicNetworkAccess Enable or disable public network access. Default to "Enabled". When it's
-             *     Enabled, network ACLs still apply. When it's Disabled, public network access is always disabled no
-             *     matter what you set in network ACLs.
+             * "Enabled".
+             * When it's Enabled, network ACLs still apply.
+             * When it's Disabled, public network access is always disabled no matter what you set in network ACLs..
+             * 
+             * @param publicNetworkAccess Enable or disable public network access. Default to "Enabled".
+             * When it's Enabled, network ACLs still apply.
+             * When it's Disabled, public network access is always disabled no matter what you set in network ACLs.
              * @return the next definition stage.
              */
             WithCreate withPublicNetworkAccess(String publicNetworkAccess);
         }
 
-        /** The stage of the WebPubSubResource definition allowing to specify disableLocalAuth. */
+        /**
+         * The stage of the WebPubSubResource definition allowing to specify disableLocalAuth.
+         */
         interface WithDisableLocalAuth {
             /**
-             * Specifies the disableLocalAuth property: DisableLocalAuth Enable or disable local auth with AccessKey
+             * Specifies the disableLocalAuth property: DisableLocalAuth
+             * Enable or disable local auth with AccessKey
              * When set as true, connection with AccessKey=xxx won't work..
-             *
-             * @param disableLocalAuth DisableLocalAuth Enable or disable local auth with AccessKey When set as true,
-             *     connection with AccessKey=xxx won't work.
+             * 
+             * @param disableLocalAuth DisableLocalAuth
+             * Enable or disable local auth with AccessKey
+             * When set as true, connection with AccessKey=xxx won't work.
              * @return the next definition stage.
              */
             WithCreate withDisableLocalAuth(Boolean disableLocalAuth);
         }
 
-        /** The stage of the WebPubSubResource definition allowing to specify disableAadAuth. */
+        /**
+         * The stage of the WebPubSubResource definition allowing to specify disableAadAuth.
+         */
         interface WithDisableAadAuth {
             /**
-             * Specifies the disableAadAuth property: DisableLocalAuth Enable or disable aad auth When set as true,
-             * connection with AuthType=aad won't work..
-             *
-             * @param disableAadAuth DisableLocalAuth Enable or disable aad auth When set as true, connection with
-             *     AuthType=aad won't work.
+             * Specifies the disableAadAuth property: DisableLocalAuth
+             * Enable or disable aad auth
+             * When set as true, connection with AuthType=aad won't work..
+             * 
+             * @param disableAadAuth DisableLocalAuth
+             * Enable or disable aad auth
+             * When set as true, connection with AuthType=aad won't work.
              * @return the next definition stage.
              */
             WithCreate withDisableAadAuth(Boolean disableAadAuth);
         }
 
-        /** The stage of the WebPubSubResource definition allowing to specify regionEndpointEnabled. */
+        /**
+         * The stage of the WebPubSubResource definition allowing to specify regionEndpointEnabled.
+         */
         interface WithRegionEndpointEnabled {
             /**
              * Specifies the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to
-             * "Enabled". When it's Disabled, new connections will not be routed to this endpoint, however existing
-             * connections will not be affected. This property is replica specific. Disable the regional endpoint
-             * without replica is not allowed..
-             *
-             * @param regionEndpointEnabled Enable or disable the regional endpoint. Default to "Enabled". When it's
-             *     Disabled, new connections will not be routed to this endpoint, however existing connections will not
-             *     be affected. This property is replica specific. Disable the regional endpoint without replica is not
-             *     allowed.
+             * "Enabled".
+             * When it's Disabled, new connections will not be routed to this endpoint, however existing connections
+             * will not be affected.
+             * This property is replica specific. Disable the regional endpoint without replica is not allowed..
+             * 
+             * @param regionEndpointEnabled Enable or disable the regional endpoint. Default to "Enabled".
+             * When it's Disabled, new connections will not be routed to this endpoint, however existing connections
+             * will not be affected.
+             * This property is replica specific. Disable the regional endpoint without replica is not allowed.
              * @return the next definition stage.
              */
             WithCreate withRegionEndpointEnabled(String regionEndpointEnabled);
         }
 
-        /** The stage of the WebPubSubResource definition allowing to specify resourceStopped. */
+        /**
+         * The stage of the WebPubSubResource definition allowing to specify resourceStopped.
+         */
         interface WithResourceStopped {
             /**
-             * Specifies the resourceStopped property: Stop or start the resource. Default to "false". When it's true,
-             * the data plane of the resource is shutdown. When it's false, the data plane of the resource is started..
-             *
-             * @param resourceStopped Stop or start the resource. Default to "false". When it's true, the data plane of
-             *     the resource is shutdown. When it's false, the data plane of the resource is started.
+             * Specifies the resourceStopped property: Stop or start the resource. Default to "False".
+             * When it's true, the data plane of the resource is shutdown.
+             * When it's false, the data plane of the resource is started..
+             * 
+             * @param resourceStopped Stop or start the resource. Default to "False".
+             * When it's true, the data plane of the resource is shutdown.
+             * When it's false, the data plane of the resource is started.
              * @return the next definition stage.
              */
             WithCreate withResourceStopped(String resourceStopped);
+        }
+
+        /**
+         * The stage of the WebPubSubResource definition allowing to specify socketIO.
+         */
+        interface WithSocketIO {
+            /**
+             * Specifies the socketIO property: SocketIO settings for the resource.
+             * 
+             * @param socketIO SocketIO settings for the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withSocketIO(WebPubSubSocketIOSettings socketIO);
         }
     }
 
     /**
      * Begins update for the WebPubSubResource resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     WebPubSubResource.Update update();
 
-    /** The template for WebPubSubResource update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithSku,
-            UpdateStages.WithIdentity,
-            UpdateStages.WithTls,
-            UpdateStages.WithLiveTraceConfiguration,
-            UpdateStages.WithResourceLogConfiguration,
-            UpdateStages.WithNetworkACLs,
-            UpdateStages.WithPublicNetworkAccess,
-            UpdateStages.WithDisableLocalAuth,
-            UpdateStages.WithDisableAadAuth,
-            UpdateStages.WithRegionEndpointEnabled,
-            UpdateStages.WithResourceStopped {
+    /**
+     * The template for WebPubSubResource update.
+     */
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithSku, UpdateStages.WithIdentity,
+        UpdateStages.WithTls, UpdateStages.WithLiveTraceConfiguration, UpdateStages.WithResourceLogConfiguration,
+        UpdateStages.WithNetworkACLs, UpdateStages.WithPublicNetworkAccess, UpdateStages.WithDisableLocalAuth,
+        UpdateStages.WithDisableAadAuth, UpdateStages.WithRegionEndpointEnabled, UpdateStages.WithResourceStopped,
+        UpdateStages.WithSocketIO {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         WebPubSubResource apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         WebPubSubResource apply(Context context);
     }
 
-    /** The WebPubSubResource update stages. */
+    /**
+     * The WebPubSubResource update stages.
+     */
     interface UpdateStages {
-        /** The stage of the WebPubSubResource update allowing to specify tags. */
+        /**
+         * The stage of the WebPubSubResource update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
         }
 
-        /** The stage of the WebPubSubResource update allowing to specify sku. */
+        /**
+         * The stage of the WebPubSubResource update allowing to specify sku.
+         */
         interface WithSku {
             /**
              * Specifies the sku property: The billing information of the resource..
-             *
+             * 
              * @param sku The billing information of the resource.
              * @return the next definition stage.
              */
             Update withSku(ResourceSku sku);
         }
 
-        /** The stage of the WebPubSubResource update allowing to specify identity. */
+        /**
+         * The stage of the WebPubSubResource update allowing to specify identity.
+         */
         interface WithIdentity {
             /**
              * Specifies the identity property: A class represent managed identities used for request and response.
-             *
+             * 
              * @param identity A class represent managed identities used for request and response.
              * @return the next definition stage.
              */
             Update withIdentity(ManagedIdentity identity);
         }
 
-        /** The stage of the WebPubSubResource update allowing to specify tls. */
+        /**
+         * The stage of the WebPubSubResource update allowing to specify tls.
+         */
         interface WithTls {
             /**
              * Specifies the tls property: TLS settings for the resource.
-             *
+             * 
              * @param tls TLS settings for the resource.
              * @return the next definition stage.
              */
             Update withTls(WebPubSubTlsSettings tls);
         }
 
-        /** The stage of the WebPubSubResource update allowing to specify liveTraceConfiguration. */
+        /**
+         * The stage of the WebPubSubResource update allowing to specify liveTraceConfiguration.
+         */
         interface WithLiveTraceConfiguration {
             /**
              * Specifies the liveTraceConfiguration property: Live trace configuration of a Microsoft.SignalRService
              * resource..
-             *
+             * 
              * @param liveTraceConfiguration Live trace configuration of a Microsoft.SignalRService resource.
              * @return the next definition stage.
              */
             Update withLiveTraceConfiguration(LiveTraceConfiguration liveTraceConfiguration);
         }
 
-        /** The stage of the WebPubSubResource update allowing to specify resourceLogConfiguration. */
+        /**
+         * The stage of the WebPubSubResource update allowing to specify resourceLogConfiguration.
+         */
         interface WithResourceLogConfiguration {
             /**
              * Specifies the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService
              * resource..
-             *
+             * 
              * @param resourceLogConfiguration Resource log configuration of a Microsoft.SignalRService resource.
              * @return the next definition stage.
              */
             Update withResourceLogConfiguration(ResourceLogConfiguration resourceLogConfiguration);
         }
 
-        /** The stage of the WebPubSubResource update allowing to specify networkACLs. */
+        /**
+         * The stage of the WebPubSubResource update allowing to specify networkACLs.
+         */
         interface WithNetworkACLs {
             /**
              * Specifies the networkACLs property: Network ACLs for the resource.
-             *
+             * 
              * @param networkACLs Network ACLs for the resource.
              * @return the next definition stage.
              */
             Update withNetworkACLs(WebPubSubNetworkACLs networkACLs);
         }
 
-        /** The stage of the WebPubSubResource update allowing to specify publicNetworkAccess. */
+        /**
+         * The stage of the WebPubSubResource update allowing to specify publicNetworkAccess.
+         */
         interface WithPublicNetworkAccess {
             /**
              * Specifies the publicNetworkAccess property: Enable or disable public network access. Default to
-             * "Enabled". When it's Enabled, network ACLs still apply. When it's Disabled, public network access is
-             * always disabled no matter what you set in network ACLs..
-             *
-             * @param publicNetworkAccess Enable or disable public network access. Default to "Enabled". When it's
-             *     Enabled, network ACLs still apply. When it's Disabled, public network access is always disabled no
-             *     matter what you set in network ACLs.
+             * "Enabled".
+             * When it's Enabled, network ACLs still apply.
+             * When it's Disabled, public network access is always disabled no matter what you set in network ACLs..
+             * 
+             * @param publicNetworkAccess Enable or disable public network access. Default to "Enabled".
+             * When it's Enabled, network ACLs still apply.
+             * When it's Disabled, public network access is always disabled no matter what you set in network ACLs.
              * @return the next definition stage.
              */
             Update withPublicNetworkAccess(String publicNetworkAccess);
         }
 
-        /** The stage of the WebPubSubResource update allowing to specify disableLocalAuth. */
+        /**
+         * The stage of the WebPubSubResource update allowing to specify disableLocalAuth.
+         */
         interface WithDisableLocalAuth {
             /**
-             * Specifies the disableLocalAuth property: DisableLocalAuth Enable or disable local auth with AccessKey
+             * Specifies the disableLocalAuth property: DisableLocalAuth
+             * Enable or disable local auth with AccessKey
              * When set as true, connection with AccessKey=xxx won't work..
-             *
-             * @param disableLocalAuth DisableLocalAuth Enable or disable local auth with AccessKey When set as true,
-             *     connection with AccessKey=xxx won't work.
+             * 
+             * @param disableLocalAuth DisableLocalAuth
+             * Enable or disable local auth with AccessKey
+             * When set as true, connection with AccessKey=xxx won't work.
              * @return the next definition stage.
              */
             Update withDisableLocalAuth(Boolean disableLocalAuth);
         }
 
-        /** The stage of the WebPubSubResource update allowing to specify disableAadAuth. */
+        /**
+         * The stage of the WebPubSubResource update allowing to specify disableAadAuth.
+         */
         interface WithDisableAadAuth {
             /**
-             * Specifies the disableAadAuth property: DisableLocalAuth Enable or disable aad auth When set as true,
-             * connection with AuthType=aad won't work..
-             *
-             * @param disableAadAuth DisableLocalAuth Enable or disable aad auth When set as true, connection with
-             *     AuthType=aad won't work.
+             * Specifies the disableAadAuth property: DisableLocalAuth
+             * Enable or disable aad auth
+             * When set as true, connection with AuthType=aad won't work..
+             * 
+             * @param disableAadAuth DisableLocalAuth
+             * Enable or disable aad auth
+             * When set as true, connection with AuthType=aad won't work.
              * @return the next definition stage.
              */
             Update withDisableAadAuth(Boolean disableAadAuth);
         }
 
-        /** The stage of the WebPubSubResource update allowing to specify regionEndpointEnabled. */
+        /**
+         * The stage of the WebPubSubResource update allowing to specify regionEndpointEnabled.
+         */
         interface WithRegionEndpointEnabled {
             /**
              * Specifies the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to
-             * "Enabled". When it's Disabled, new connections will not be routed to this endpoint, however existing
-             * connections will not be affected. This property is replica specific. Disable the regional endpoint
-             * without replica is not allowed..
-             *
-             * @param regionEndpointEnabled Enable or disable the regional endpoint. Default to "Enabled". When it's
-             *     Disabled, new connections will not be routed to this endpoint, however existing connections will not
-             *     be affected. This property is replica specific. Disable the regional endpoint without replica is not
-             *     allowed.
+             * "Enabled".
+             * When it's Disabled, new connections will not be routed to this endpoint, however existing connections
+             * will not be affected.
+             * This property is replica specific. Disable the regional endpoint without replica is not allowed..
+             * 
+             * @param regionEndpointEnabled Enable or disable the regional endpoint. Default to "Enabled".
+             * When it's Disabled, new connections will not be routed to this endpoint, however existing connections
+             * will not be affected.
+             * This property is replica specific. Disable the regional endpoint without replica is not allowed.
              * @return the next definition stage.
              */
             Update withRegionEndpointEnabled(String regionEndpointEnabled);
         }
 
-        /** The stage of the WebPubSubResource update allowing to specify resourceStopped. */
+        /**
+         * The stage of the WebPubSubResource update allowing to specify resourceStopped.
+         */
         interface WithResourceStopped {
             /**
-             * Specifies the resourceStopped property: Stop or start the resource. Default to "false". When it's true,
-             * the data plane of the resource is shutdown. When it's false, the data plane of the resource is started..
-             *
-             * @param resourceStopped Stop or start the resource. Default to "false". When it's true, the data plane of
-             *     the resource is shutdown. When it's false, the data plane of the resource is started.
+             * Specifies the resourceStopped property: Stop or start the resource. Default to "False".
+             * When it's true, the data plane of the resource is shutdown.
+             * When it's false, the data plane of the resource is started..
+             * 
+             * @param resourceStopped Stop or start the resource. Default to "False".
+             * When it's true, the data plane of the resource is shutdown.
+             * When it's false, the data plane of the resource is started.
              * @return the next definition stage.
              */
             Update withResourceStopped(String resourceStopped);
+        }
+
+        /**
+         * The stage of the WebPubSubResource update allowing to specify socketIO.
+         */
+        interface WithSocketIO {
+            /**
+             * Specifies the socketIO property: SocketIO settings for the resource.
+             * 
+             * @param socketIO SocketIO settings for the resource.
+             * @return the next definition stage.
+             */
+            Update withSocketIO(WebPubSubSocketIOSettings socketIO);
         }
     }
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     WebPubSubResource refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
@@ -687,7 +787,7 @@ public interface WebPubSubResource {
 
     /**
      * Get the access keys of the resource.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -698,7 +798,7 @@ public interface WebPubSubResource {
 
     /**
      * Get the access keys of the resource.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the access keys of the resource.
@@ -707,7 +807,7 @@ public interface WebPubSubResource {
 
     /**
      * Regenerate the access key for the resource. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
-     *
+     * 
      * @param parameters Parameter that describes the Regenerate Key Operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -718,7 +818,7 @@ public interface WebPubSubResource {
 
     /**
      * Regenerate the access key for the resource. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
-     *
+     * 
      * @param parameters Parameter that describes the Regenerate Key Operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -730,7 +830,7 @@ public interface WebPubSubResource {
 
     /**
      * Operation to restart a resource.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
@@ -738,7 +838,7 @@ public interface WebPubSubResource {
 
     /**
      * Operation to restart a resource.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

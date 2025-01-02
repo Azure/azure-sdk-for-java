@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.loganalytics.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -54,327 +55,383 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the OperationalInsightsManagementClientImpl type. */
+/**
+ * Initializes a new instance of the OperationalInsightsManagementClientImpl type.
+ */
 @ServiceClient(builder = OperationalInsightsManagementClientBuilder.class)
 public final class OperationalInsightsManagementClientImpl implements OperationalInsightsManagementClient {
-    /** The ID of the target subscription. */
+    /**
+     * The ID of the target subscription.
+     */
     private final String subscriptionId;
 
     /**
      * Gets The ID of the target subscription.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The QueryPacksClient object to access its operations. */
+    /**
+     * The QueryPacksClient object to access its operations.
+     */
     private final QueryPacksClient queryPacks;
 
     /**
      * Gets the QueryPacksClient object to access its operations.
-     *
+     * 
      * @return the QueryPacksClient object.
      */
     public QueryPacksClient getQueryPacks() {
         return this.queryPacks;
     }
 
-    /** The QueriesClient object to access its operations. */
+    /**
+     * The QueriesClient object to access its operations.
+     */
     private final QueriesClient queries;
 
     /**
      * Gets the QueriesClient object to access its operations.
-     *
+     * 
      * @return the QueriesClient object.
      */
     public QueriesClient getQueries() {
         return this.queries;
     }
 
-    /** The DataExportsClient object to access its operations. */
+    /**
+     * The DataExportsClient object to access its operations.
+     */
     private final DataExportsClient dataExports;
 
     /**
      * Gets the DataExportsClient object to access its operations.
-     *
+     * 
      * @return the DataExportsClient object.
      */
     public DataExportsClient getDataExports() {
         return this.dataExports;
     }
 
-    /** The DataSourcesClient object to access its operations. */
+    /**
+     * The DataSourcesClient object to access its operations.
+     */
     private final DataSourcesClient dataSources;
 
     /**
      * Gets the DataSourcesClient object to access its operations.
-     *
+     * 
      * @return the DataSourcesClient object.
      */
     public DataSourcesClient getDataSources() {
         return this.dataSources;
     }
 
-    /** The IntelligencePacksClient object to access its operations. */
+    /**
+     * The IntelligencePacksClient object to access its operations.
+     */
     private final IntelligencePacksClient intelligencePacks;
 
     /**
      * Gets the IntelligencePacksClient object to access its operations.
-     *
+     * 
      * @return the IntelligencePacksClient object.
      */
     public IntelligencePacksClient getIntelligencePacks() {
         return this.intelligencePacks;
     }
 
-    /** The LinkedServicesClient object to access its operations. */
+    /**
+     * The LinkedServicesClient object to access its operations.
+     */
     private final LinkedServicesClient linkedServices;
 
     /**
      * Gets the LinkedServicesClient object to access its operations.
-     *
+     * 
      * @return the LinkedServicesClient object.
      */
     public LinkedServicesClient getLinkedServices() {
         return this.linkedServices;
     }
 
-    /** The LinkedStorageAccountsClient object to access its operations. */
+    /**
+     * The LinkedStorageAccountsClient object to access its operations.
+     */
     private final LinkedStorageAccountsClient linkedStorageAccounts;
 
     /**
      * Gets the LinkedStorageAccountsClient object to access its operations.
-     *
+     * 
      * @return the LinkedStorageAccountsClient object.
      */
     public LinkedStorageAccountsClient getLinkedStorageAccounts() {
         return this.linkedStorageAccounts;
     }
 
-    /** The ManagementGroupsClient object to access its operations. */
+    /**
+     * The ManagementGroupsClient object to access its operations.
+     */
     private final ManagementGroupsClient managementGroups;
 
     /**
      * Gets the ManagementGroupsClient object to access its operations.
-     *
+     * 
      * @return the ManagementGroupsClient object.
      */
     public ManagementGroupsClient getManagementGroups() {
         return this.managementGroups;
     }
 
-    /** The OperationStatusesClient object to access its operations. */
+    /**
+     * The OperationStatusesClient object to access its operations.
+     */
     private final OperationStatusesClient operationStatuses;
 
     /**
      * Gets the OperationStatusesClient object to access its operations.
-     *
+     * 
      * @return the OperationStatusesClient object.
      */
     public OperationStatusesClient getOperationStatuses() {
         return this.operationStatuses;
     }
 
-    /** The SharedKeysOperationsClient object to access its operations. */
+    /**
+     * The SharedKeysOperationsClient object to access its operations.
+     */
     private final SharedKeysOperationsClient sharedKeysOperations;
 
     /**
      * Gets the SharedKeysOperationsClient object to access its operations.
-     *
+     * 
      * @return the SharedKeysOperationsClient object.
      */
     public SharedKeysOperationsClient getSharedKeysOperations() {
         return this.sharedKeysOperations;
     }
 
-    /** The UsagesClient object to access its operations. */
+    /**
+     * The UsagesClient object to access its operations.
+     */
     private final UsagesClient usages;
 
     /**
      * Gets the UsagesClient object to access its operations.
-     *
+     * 
      * @return the UsagesClient object.
      */
     public UsagesClient getUsages() {
         return this.usages;
     }
 
-    /** The StorageInsightConfigsClient object to access its operations. */
+    /**
+     * The StorageInsightConfigsClient object to access its operations.
+     */
     private final StorageInsightConfigsClient storageInsightConfigs;
 
     /**
      * Gets the StorageInsightConfigsClient object to access its operations.
-     *
+     * 
      * @return the StorageInsightConfigsClient object.
      */
     public StorageInsightConfigsClient getStorageInsightConfigs() {
         return this.storageInsightConfigs;
     }
 
-    /** The SavedSearchesClient object to access its operations. */
+    /**
+     * The SavedSearchesClient object to access its operations.
+     */
     private final SavedSearchesClient savedSearches;
 
     /**
      * Gets the SavedSearchesClient object to access its operations.
-     *
+     * 
      * @return the SavedSearchesClient object.
      */
     public SavedSearchesClient getSavedSearches() {
         return this.savedSearches;
     }
 
-    /** The AvailableServiceTiersClient object to access its operations. */
+    /**
+     * The AvailableServiceTiersClient object to access its operations.
+     */
     private final AvailableServiceTiersClient availableServiceTiers;
 
     /**
      * Gets the AvailableServiceTiersClient object to access its operations.
-     *
+     * 
      * @return the AvailableServiceTiersClient object.
      */
     public AvailableServiceTiersClient getAvailableServiceTiers() {
         return this.availableServiceTiers;
     }
 
-    /** The GatewaysClient object to access its operations. */
+    /**
+     * The GatewaysClient object to access its operations.
+     */
     private final GatewaysClient gateways;
 
     /**
      * Gets the GatewaysClient object to access its operations.
-     *
+     * 
      * @return the GatewaysClient object.
      */
     public GatewaysClient getGateways() {
         return this.gateways;
     }
 
-    /** The SchemasClient object to access its operations. */
+    /**
+     * The SchemasClient object to access its operations.
+     */
     private final SchemasClient schemas;
 
     /**
      * Gets the SchemasClient object to access its operations.
-     *
+     * 
      * @return the SchemasClient object.
      */
     public SchemasClient getSchemas() {
         return this.schemas;
     }
 
-    /** The WorkspacePurgesClient object to access its operations. */
+    /**
+     * The WorkspacePurgesClient object to access its operations.
+     */
     private final WorkspacePurgesClient workspacePurges;
 
     /**
      * Gets the WorkspacePurgesClient object to access its operations.
-     *
+     * 
      * @return the WorkspacePurgesClient object.
      */
     public WorkspacePurgesClient getWorkspacePurges() {
         return this.workspacePurges;
     }
 
-    /** The ClustersClient object to access its operations. */
+    /**
+     * The ClustersClient object to access its operations.
+     */
     private final ClustersClient clusters;
 
     /**
      * Gets the ClustersClient object to access its operations.
-     *
+     * 
      * @return the ClustersClient object.
      */
     public ClustersClient getClusters() {
         return this.clusters;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The WorkspacesClient object to access its operations. */
+    /**
+     * The WorkspacesClient object to access its operations.
+     */
     private final WorkspacesClient workspaces;
 
     /**
      * Gets the WorkspacesClient object to access its operations.
-     *
+     * 
      * @return the WorkspacesClient object.
      */
     public WorkspacesClient getWorkspaces() {
         return this.workspaces;
     }
 
-    /** The DeletedWorkspacesClient object to access its operations. */
+    /**
+     * The DeletedWorkspacesClient object to access its operations.
+     */
     private final DeletedWorkspacesClient deletedWorkspaces;
 
     /**
      * Gets the DeletedWorkspacesClient object to access its operations.
-     *
+     * 
      * @return the DeletedWorkspacesClient object.
      */
     public DeletedWorkspacesClient getDeletedWorkspaces() {
         return this.deletedWorkspaces;
     }
 
-    /** The TablesClient object to access its operations. */
+    /**
+     * The TablesClient object to access its operations.
+     */
     private final TablesClient tables;
 
     /**
      * Gets the TablesClient object to access its operations.
-     *
+     * 
      * @return the TablesClient object.
      */
     public TablesClient getTables() {
@@ -383,7 +440,7 @@ public final class OperationalInsightsManagementClientImpl implements Operationa
 
     /**
      * Initializes an instance of OperationalInsightsManagementClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -391,13 +448,8 @@ public final class OperationalInsightsManagementClientImpl implements Operationa
      * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
-    OperationalInsightsManagementClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    OperationalInsightsManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
@@ -429,7 +481,7 @@ public final class OperationalInsightsManagementClientImpl implements Operationa
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -438,7 +490,7 @@ public final class OperationalInsightsManagementClientImpl implements Operationa
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -448,7 +500,7 @@ public final class OperationalInsightsManagementClientImpl implements Operationa
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -458,26 +510,15 @@ public final class OperationalInsightsManagementClientImpl implements Operationa
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -490,19 +531,16 @@ public final class OperationalInsightsManagementClientImpl implements Operationa
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -543,7 +581,7 @@ public final class OperationalInsightsManagementClientImpl implements Operationa
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

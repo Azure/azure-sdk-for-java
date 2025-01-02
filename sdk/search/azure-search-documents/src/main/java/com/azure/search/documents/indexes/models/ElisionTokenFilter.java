@@ -10,8 +10,8 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Removes elisions. For example, "l'avion" (the plane) will be converted to "avion" (plane). This token filter is

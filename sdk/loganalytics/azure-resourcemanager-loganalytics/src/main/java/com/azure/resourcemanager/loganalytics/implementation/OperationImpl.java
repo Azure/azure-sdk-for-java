@@ -13,8 +13,8 @@ public final class OperationImpl implements Operation {
 
     private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
-    OperationImpl(
-        OperationInner innerObject, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
+    OperationImpl(OperationInner innerObject,
+        com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

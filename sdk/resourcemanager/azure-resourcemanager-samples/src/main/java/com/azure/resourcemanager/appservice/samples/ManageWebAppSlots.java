@@ -37,17 +37,15 @@ public final class ManageWebAppSlots {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         // New resources
-        final String resourceGroupName     = Utils.randomResourceName(azureResourceManager, "rg", 24);
-        final String app1Name       = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
-        final String app2Name       = Utils.randomResourceName(azureResourceManager, "webapp2-", 20);
-        final String app3Name       = Utils.randomResourceName(azureResourceManager, "webapp3-", 20);
-        final String slotName       = "staging";
+        final String resourceGroupName = Utils.randomResourceName(azureResourceManager, "rg", 24);
+        final String app1Name = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
+        final String app2Name = Utils.randomResourceName(azureResourceManager, "webapp2-", 20);
+        final String app3Name = Utils.randomResourceName(azureResourceManager, "webapp3-", 20);
+        final String slotName = "staging";
 
         try {
 
-            azureResourceManager.resourceGroups().define(resourceGroupName)
-                    .withRegion(Region.US_EAST)
-                    .create();
+            azureResourceManager.resourceGroups().define(resourceGroupName).withRegion(Region.US_EAST).create();
 
             //============================================================
             // Create 3 web apps with 3 new app service plans in different regions
@@ -55,7 +53,6 @@ public final class ManageWebAppSlots {
             WebApp app1 = createWebApp(azureResourceManager, app1Name, Region.US_EAST, resourceGroupName);
             WebApp app2 = createWebApp(azureResourceManager, app2Name, Region.EUROPE_WEST, resourceGroupName);
             WebApp app3 = createWebApp(azureResourceManager, app3Name, Region.ASIA_EAST, resourceGroupName);
-
 
             //============================================================
             // Create a deployment slot under each web app with auto swap
@@ -89,6 +86,7 @@ public final class ManageWebAppSlots {
             }
         }
     }
+
     /**
      * Main entry point.
      * @param args the parameters
@@ -105,8 +103,7 @@ public final class ManageWebAppSlots {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
@@ -122,23 +119,24 @@ public final class ManageWebAppSlots {
         }
     }
 
-    private static WebApp createWebApp(AzureResourceManager azureResourceManager, String appName, Region region, String resourceGroupName) {
+    private static WebApp createWebApp(AzureResourceManager azureResourceManager, String appName, Region region,
+        String resourceGroupName) {
         final String appUrl = appName + SUFFIX;
 
         System.out.println("Creating web app " + appName + " with master branch...");
 
         WebApp app = azureResourceManager.webApps()
-                .define(appName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroupName)
-                .withNewWindowsPlan(PricingTier.STANDARD_S1)
-                .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
-                .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
-                .defineSourceControl()
-                    .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test.git")
-                    .withBranch("master")
-                    .attach()
-                .create();
+            .define(appName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroupName)
+            .withNewWindowsPlan(PricingTier.STANDARD_S1)
+            .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
+            .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
+            .defineSourceControl()
+            .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test.git")
+            .withBranch("master")
+            .attach()
+            .create();
 
         System.out.println("Created web app " + app.name());
         Utils.print(app);
@@ -152,10 +150,10 @@ public final class ManageWebAppSlots {
         System.out.println("Creating a slot " + slotName + " with auto swap turned on...");
 
         DeploymentSlot slot = app.deploymentSlots()
-                .define(slotName)
-                .withConfigurationFromParent()
-                .withAutoSwapSlotName("production")
-                .create();
+            .define(slotName)
+            .withConfigurationFromParent()
+            .withAutoSwapSlotName("production")
+            .create();
 
         System.out.println("Created slot " + slot.name());
         Utils.print(slot);
@@ -168,11 +166,11 @@ public final class ManageWebAppSlots {
         System.out.println("Deploying staging branch to slot " + slot.name() + "...");
 
         slot.update()
-                .defineSourceControl()
-                    .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test.git")
-                    .withBranch("staging")
-                    .attach()
-                .apply();
+            .defineSourceControl()
+            .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test.git")
+            .withBranch("staging")
+            .attach()
+            .apply();
 
         System.out.println("Deployed staging branch to slot " + slot.name());
 

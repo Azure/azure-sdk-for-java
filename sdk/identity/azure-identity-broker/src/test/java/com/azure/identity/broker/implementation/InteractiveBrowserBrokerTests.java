@@ -21,7 +21,7 @@ public class InteractiveBrowserBrokerTests {
     }
 
     @Test
-    @EnabledOnOs({OS.MAC, OS.LINUX})
+    @EnabledOnOs({ OS.MAC, OS.LINUX })
     public void msalRuntimeErrorThrown() {
         Assertions.assertThrows(ExceptionInInitializerError.class, () -> {
             IBroker broker = InteractiveBrowserBroker.getMsalRuntimeBroker();

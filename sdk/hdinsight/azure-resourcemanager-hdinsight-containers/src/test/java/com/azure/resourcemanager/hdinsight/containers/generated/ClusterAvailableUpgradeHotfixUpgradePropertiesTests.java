@@ -14,39 +14,46 @@ public final class ClusterAvailableUpgradeHotfixUpgradePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterAvailableUpgradeHotfixUpgradeProperties model = BinaryData.fromString(
-            "{\"upgradeType\":\"HotfixUpgrade\",\"description\":\"ltmm\",\"sourceOssVersion\":\"hyeozphvwau\",\"sourceClusterVersion\":\"ncyg\",\"sourceBuildNumber\":\"kvi\",\"targetOssVersion\":\"dscwxqupevzhf\",\"targetClusterVersion\":\"otxhojujby\",\"targetBuildNumber\":\"lmcuvhixb\",\"componentName\":\"yfwnylr\",\"severity\":\"low\",\"extendedProperties\":\"sttp\",\"createdTime\":\"2021-06-29T07:31:54Z\"}")
+            "{\"upgradeType\":\"HotfixUpgrade\",\"description\":\"lnpkciay\",\"sourceOssVersion\":\"iykhy\",\"sourceClusterVersion\":\"fvjlboxqvkjlmx\",\"sourceBuildNumber\":\"mdy\",\"targetOssVersion\":\"dwdigumb\",\"targetClusterVersion\":\"aauzzptjazysd\",\"targetBuildNumber\":\"ezwwv\",\"componentName\":\"qyuvvfonkp\",\"severity\":\"medium\",\"extendedProperties\":\"ikvylauya\",\"createdTime\":\"2021-08-12T09:12:49Z\"}")
             .toObject(ClusterAvailableUpgradeHotfixUpgradeProperties.class);
-        Assertions.assertEquals("ltmm", model.description());
-        Assertions.assertEquals("hyeozphvwau", model.sourceOssVersion());
-        Assertions.assertEquals("ncyg", model.sourceClusterVersion());
-        Assertions.assertEquals("kvi", model.sourceBuildNumber());
-        Assertions.assertEquals("dscwxqupevzhf", model.targetOssVersion());
-        Assertions.assertEquals("otxhojujby", model.targetClusterVersion());
-        Assertions.assertEquals("lmcuvhixb", model.targetBuildNumber());
-        Assertions.assertEquals("yfwnylr", model.componentName());
-        Assertions.assertEquals(Severity.LOW, model.severity());
-        Assertions.assertEquals("sttp", model.extendedProperties());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-29T07:31:54Z"), model.createdTime());
+        Assertions.assertEquals("lnpkciay", model.description());
+        Assertions.assertEquals("iykhy", model.sourceOssVersion());
+        Assertions.assertEquals("fvjlboxqvkjlmx", model.sourceClusterVersion());
+        Assertions.assertEquals("mdy", model.sourceBuildNumber());
+        Assertions.assertEquals("dwdigumb", model.targetOssVersion());
+        Assertions.assertEquals("aauzzptjazysd", model.targetClusterVersion());
+        Assertions.assertEquals("ezwwv", model.targetBuildNumber());
+        Assertions.assertEquals("qyuvvfonkp", model.componentName());
+        Assertions.assertEquals(Severity.MEDIUM, model.severity());
+        Assertions.assertEquals("ikvylauya", model.extendedProperties());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-12T09:12:49Z"), model.createdTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterAvailableUpgradeHotfixUpgradeProperties model = new ClusterAvailableUpgradeHotfixUpgradeProperties()
-            .withDescription("ltmm").withSourceOssVersion("hyeozphvwau").withSourceClusterVersion("ncyg")
-            .withSourceBuildNumber("kvi").withTargetOssVersion("dscwxqupevzhf").withTargetClusterVersion("otxhojujby")
-            .withTargetBuildNumber("lmcuvhixb").withComponentName("yfwnylr").withSeverity(Severity.LOW)
-            .withExtendedProperties("sttp").withCreatedTime(OffsetDateTime.parse("2021-06-29T07:31:54Z"));
+        ClusterAvailableUpgradeHotfixUpgradeProperties model
+            = new ClusterAvailableUpgradeHotfixUpgradeProperties().withDescription("lnpkciay")
+                .withSourceOssVersion("iykhy")
+                .withSourceClusterVersion("fvjlboxqvkjlmx")
+                .withSourceBuildNumber("mdy")
+                .withTargetOssVersion("dwdigumb")
+                .withTargetClusterVersion("aauzzptjazysd")
+                .withTargetBuildNumber("ezwwv")
+                .withComponentName("qyuvvfonkp")
+                .withSeverity(Severity.MEDIUM)
+                .withExtendedProperties("ikvylauya")
+                .withCreatedTime(OffsetDateTime.parse("2021-08-12T09:12:49Z"));
         model = BinaryData.fromObject(model).toObject(ClusterAvailableUpgradeHotfixUpgradeProperties.class);
-        Assertions.assertEquals("ltmm", model.description());
-        Assertions.assertEquals("hyeozphvwau", model.sourceOssVersion());
-        Assertions.assertEquals("ncyg", model.sourceClusterVersion());
-        Assertions.assertEquals("kvi", model.sourceBuildNumber());
-        Assertions.assertEquals("dscwxqupevzhf", model.targetOssVersion());
-        Assertions.assertEquals("otxhojujby", model.targetClusterVersion());
-        Assertions.assertEquals("lmcuvhixb", model.targetBuildNumber());
-        Assertions.assertEquals("yfwnylr", model.componentName());
-        Assertions.assertEquals(Severity.LOW, model.severity());
-        Assertions.assertEquals("sttp", model.extendedProperties());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-29T07:31:54Z"), model.createdTime());
+        Assertions.assertEquals("lnpkciay", model.description());
+        Assertions.assertEquals("iykhy", model.sourceOssVersion());
+        Assertions.assertEquals("fvjlboxqvkjlmx", model.sourceClusterVersion());
+        Assertions.assertEquals("mdy", model.sourceBuildNumber());
+        Assertions.assertEquals("dwdigumb", model.targetOssVersion());
+        Assertions.assertEquals("aauzzptjazysd", model.targetClusterVersion());
+        Assertions.assertEquals("ezwwv", model.targetBuildNumber());
+        Assertions.assertEquals("qyuvvfonkp", model.componentName());
+        Assertions.assertEquals(Severity.MEDIUM, model.severity());
+        Assertions.assertEquals("ikvylauya", model.extendedProperties());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-12T09:12:49Z"), model.createdTime());
     }
 }

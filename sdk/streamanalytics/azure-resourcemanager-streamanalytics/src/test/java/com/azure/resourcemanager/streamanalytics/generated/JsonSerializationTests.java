@@ -13,19 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class JsonSerializationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JsonSerialization model = BinaryData
-            .fromString("{\"type\":\"Json\",\"properties\":{\"encoding\":\"UTF8\",\"format\":\"LineSeparated\"}}")
-            .toObject(JsonSerialization.class);
+        JsonSerialization model
+            = BinaryData.fromString("{\"type\":\"Json\",\"properties\":{\"encoding\":\"UTF8\",\"format\":\"Array\"}}")
+                .toObject(JsonSerialization.class);
         Assertions.assertEquals(Encoding.UTF8, model.encoding());
-        Assertions.assertEquals(JsonOutputSerializationFormat.LINE_SEPARATED, model.format());
+        Assertions.assertEquals(JsonOutputSerializationFormat.ARRAY, model.format());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JsonSerialization model = new JsonSerialization().withEncoding(Encoding.UTF8)
-            .withFormat(JsonOutputSerializationFormat.LINE_SEPARATED);
+        JsonSerialization model
+            = new JsonSerialization().withEncoding(Encoding.UTF8).withFormat(JsonOutputSerializationFormat.ARRAY);
         model = BinaryData.fromObject(model).toObject(JsonSerialization.class);
         Assertions.assertEquals(Encoding.UTF8, model.encoding());
-        Assertions.assertEquals(JsonOutputSerializationFormat.LINE_SEPARATED, model.format());
+        Assertions.assertEquals(JsonOutputSerializationFormat.ARRAY, model.format());
     }
 }

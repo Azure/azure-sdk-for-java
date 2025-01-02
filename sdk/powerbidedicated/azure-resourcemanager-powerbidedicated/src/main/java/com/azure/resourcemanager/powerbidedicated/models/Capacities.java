@@ -8,31 +8,33 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Capacities. */
+/**
+ * Resource collection API of Capacities.
+ */
 public interface Capacities {
     /**
      * Gets details about the specified dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     *     maximum of 63.
+     * maximum of 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details about the specified dedicated capacity along with {@link Response}.
      */
-    Response<DedicatedCapacity> getByResourceGroupWithResponse(
-        String resourceGroupName, String dedicatedCapacityName, Context context);
+    Response<DedicatedCapacity> getByResourceGroupWithResponse(String resourceGroupName, String dedicatedCapacityName,
+        Context context);
 
     /**
      * Gets details about the specified dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     *     maximum of 63.
+     * maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -42,11 +44,11 @@ public interface Capacities {
 
     /**
      * Deletes the specified Dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -55,11 +57,11 @@ public interface Capacities {
 
     /**
      * Deletes the specified Dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -69,11 +71,11 @@ public interface Capacities {
 
     /**
      * Suspends operation of the specified dedicated capacity instance.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -82,11 +84,11 @@ public interface Capacities {
 
     /**
      * Suspends operation of the specified dedicated capacity instance.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -96,11 +98,11 @@ public interface Capacities {
 
     /**
      * Resumes operation of the specified Dedicated capacity instance.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -109,11 +111,11 @@ public interface Capacities {
 
     /**
      * Resumes operation of the specified Dedicated capacity instance.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -123,34 +125,34 @@ public interface Capacities {
 
     /**
      * Gets all the Dedicated capacities for the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Dedicated capacities for the given resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the Dedicated capacities for the given resource group as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<DedicatedCapacity> listByResourceGroup(String resourceGroupName);
 
     /**
      * Gets all the Dedicated capacities for the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Dedicated capacities for the given resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the Dedicated capacities for the given resource group as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<DedicatedCapacity> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Lists all the Dedicated capacities for the given subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an array of Dedicated capacities resources as paginated response with {@link PagedIterable}.
@@ -159,7 +161,7 @@ public interface Capacities {
 
     /**
      * Lists all the Dedicated capacities for the given subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -170,7 +172,7 @@ public interface Capacities {
 
     /**
      * Lists eligible SKUs for PowerBI Dedicated resource provider.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -181,7 +183,7 @@ public interface Capacities {
 
     /**
      * Lists eligible SKUs for PowerBI Dedicated resource provider.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents enumerating SKUs for new resources.
@@ -190,27 +192,27 @@ public interface Capacities {
 
     /**
      * Lists eligible SKUs for a PowerBI Dedicated resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents enumerating SKUs for existing resources along with {@link Response}.
      */
-    Response<SkuEnumerationForExistingResourceResult> listSkusForCapacityWithResponse(
-        String resourceGroupName, String dedicatedCapacityName, Context context);
+    Response<SkuEnumerationForExistingResourceResult> listSkusForCapacityWithResponse(String resourceGroupName,
+        String dedicatedCapacityName, Context context);
 
     /**
      * Lists eligible SKUs for a PowerBI Dedicated resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -220,7 +222,7 @@ public interface Capacities {
 
     /**
      * Check the name availability in the target location.
-     *
+     * 
      * @param location The region name which the operation will lookup into.
      * @param capacityParameters The name of the capacity.
      * @param context The context to associate with this operation.
@@ -229,12 +231,12 @@ public interface Capacities {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the checking result of capacity name availability along with {@link Response}.
      */
-    Response<CheckCapacityNameAvailabilityResult> checkNameAvailabilityWithResponse(
-        String location, CheckCapacityNameAvailabilityParameters capacityParameters, Context context);
+    Response<CheckCapacityNameAvailabilityResult> checkNameAvailabilityWithResponse(String location,
+        CheckCapacityNameAvailabilityParameters capacityParameters, Context context);
 
     /**
      * Check the name availability in the target location.
-     *
+     * 
      * @param location The region name which the operation will lookup into.
      * @param capacityParameters The name of the capacity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -242,12 +244,12 @@ public interface Capacities {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the checking result of capacity name availability.
      */
-    CheckCapacityNameAvailabilityResult checkNameAvailability(
-        String location, CheckCapacityNameAvailabilityParameters capacityParameters);
+    CheckCapacityNameAvailabilityResult checkNameAvailability(String location,
+        CheckCapacityNameAvailabilityParameters capacityParameters);
 
     /**
      * Gets details about the specified dedicated capacity.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -258,7 +260,7 @@ public interface Capacities {
 
     /**
      * Gets details about the specified dedicated capacity.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -270,7 +272,7 @@ public interface Capacities {
 
     /**
      * Deletes the specified Dedicated capacity.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -280,7 +282,7 @@ public interface Capacities {
 
     /**
      * Deletes the specified Dedicated capacity.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -291,7 +293,7 @@ public interface Capacities {
 
     /**
      * Begins definition for a new DedicatedCapacity resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new DedicatedCapacity definition.
      */

@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RolloutInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RolloutInner model =
-            BinaryData
-                .fromString(
-                    "{\"identity\":{\"type\":\"tumkdosvqwhbm\",\"identityIds\":[\"bbjfddgmbmbexp\",\"bhtqqrolfpfpsa\",\"gbquxigj\",\"jgzjaoyfhrtx\"]},\"properties\":{\"status\":\"erkujys\",\"totalRetryAttempts\":709635131,\"operationInfo\":{\"retryAttempt\":1644570632,\"skipSucceededOnRetry\":true,\"startTime\":\"2021-11-11T16:20:30Z\",\"endTime\":\"2021-11-26T22:23:23Z\"},\"services\":[{\"name\":\"kcprbnw\",\"serviceUnits\":[],\"targetLocation\":\"gjvtbv\",\"targetSubscriptionId\":\"ysszdnrujqguh\"},{\"name\":\"ouqfprwz\",\"serviceUnits\":[],\"targetLocation\":\"nguitnwuizgazxu\",\"targetSubscriptionId\":\"izuckyfihrfidfvz\"}],\"buildVersion\":\"dzuhtymwi\",\"artifactSourceId\":\"kfthwxmntei\",\"targetServiceTopologyId\":\"aop\",\"stepGroups\":[{\"name\":\"mijcmmxdcufufs\",\"dependsOnStepGroups\":[],\"preDeploymentSteps\":[],\"deploymentTargetId\":\"mzidnsezcxtb\",\"postDeploymentSteps\":[]}]},\"location\":\"gfycc\",\"tags\":{\"flnrosfqpteehzz\":\"wmdwzjeiachboo\",\"swjdkirso\":\"ypyqrimzinp\"},\"id\":\"dqxhcrmnohjtckwh\",\"name\":\"soifiyipjxsqw\",\"type\":\"gr\"}")
-                .toObject(RolloutInner.class);
+        RolloutInner model = BinaryData.fromString(
+            "{\"identity\":{\"type\":\"tumkdosvqwhbm\",\"identityIds\":[\"bbjfddgmbmbexp\",\"bhtqqrolfpfpsa\",\"gbquxigj\",\"jgzjaoyfhrtx\"]},\"properties\":{\"status\":\"erkujys\",\"totalRetryAttempts\":709635131,\"operationInfo\":{\"retryAttempt\":1644570632,\"skipSucceededOnRetry\":true,\"startTime\":\"2021-11-11T16:20:30Z\",\"endTime\":\"2021-11-26T22:23:23Z\"},\"services\":[{\"name\":\"kcprbnw\",\"serviceUnits\":[],\"targetLocation\":\"gjvtbv\",\"targetSubscriptionId\":\"ysszdnrujqguh\"},{\"name\":\"ouqfprwz\",\"serviceUnits\":[],\"targetLocation\":\"nguitnwuizgazxu\",\"targetSubscriptionId\":\"izuckyfihrfidfvz\"}],\"buildVersion\":\"dzuhtymwi\",\"artifactSourceId\":\"kfthwxmntei\",\"targetServiceTopologyId\":\"aop\",\"stepGroups\":[{\"name\":\"mijcmmxdcufufs\",\"dependsOnStepGroups\":[],\"preDeploymentSteps\":[],\"deploymentTargetId\":\"mzidnsezcxtb\",\"postDeploymentSteps\":[]}]},\"location\":\"gfycc\",\"tags\":{\"flnrosfqpteehzz\":\"wmdwzjeiachboo\",\"swjdkirso\":\"ypyqrimzinp\"},\"id\":\"dqxhcrmnohjtckwh\",\"name\":\"soifiyipjxsqw\",\"type\":\"gr\"}")
+            .toObject(RolloutInner.class);
         Assertions.assertEquals("gfycc", model.location());
         Assertions.assertEquals("wmdwzjeiachboo", model.tags().get("flnrosfqpteehzz"));
         Assertions.assertEquals("tumkdosvqwhbm", model.identity().type());
@@ -34,26 +32,18 @@ public final class RolloutInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RolloutInner model =
-            new RolloutInner()
-                .withLocation("gfycc")
-                .withTags(mapOf("flnrosfqpteehzz", "wmdwzjeiachboo", "swjdkirso", "ypyqrimzinp"))
-                .withIdentity(
-                    new Identity()
-                        .withType("tumkdosvqwhbm")
-                        .withIdentityIds(Arrays.asList("bbjfddgmbmbexp", "bhtqqrolfpfpsa", "gbquxigj", "jgzjaoyfhrtx")))
-                .withBuildVersion("dzuhtymwi")
-                .withArtifactSourceId("kfthwxmntei")
-                .withTargetServiceTopologyId("aop")
-                .withStepGroups(
-                    Arrays
-                        .asList(
-                            new StepGroup()
-                                .withName("mijcmmxdcufufs")
-                                .withDependsOnStepGroups(Arrays.asList())
-                                .withPreDeploymentSteps(Arrays.asList())
-                                .withDeploymentTargetId("mzidnsezcxtb")
-                                .withPostDeploymentSteps(Arrays.asList())));
+        RolloutInner model = new RolloutInner().withLocation("gfycc")
+            .withTags(mapOf("flnrosfqpteehzz", "wmdwzjeiachboo", "swjdkirso", "ypyqrimzinp"))
+            .withIdentity(new Identity().withType("tumkdosvqwhbm")
+                .withIdentityIds(Arrays.asList("bbjfddgmbmbexp", "bhtqqrolfpfpsa", "gbquxigj", "jgzjaoyfhrtx")))
+            .withBuildVersion("dzuhtymwi")
+            .withArtifactSourceId("kfthwxmntei")
+            .withTargetServiceTopologyId("aop")
+            .withStepGroups(Arrays.asList(new StepGroup().withName("mijcmmxdcufufs")
+                .withDependsOnStepGroups(Arrays.asList())
+                .withPreDeploymentSteps(Arrays.asList())
+                .withDeploymentTargetId("mzidnsezcxtb")
+                .withPostDeploymentSteps(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(RolloutInner.class);
         Assertions.assertEquals("gfycc", model.location());
         Assertions.assertEquals("wmdwzjeiachboo", model.tags().get("flnrosfqpteehzz"));

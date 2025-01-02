@@ -14,7 +14,7 @@ import java.util.Map;
 public final class PrivateZonesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/PrivateZonePatch.json
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/PrivateZonePatch.json
      */
     /**
      * Sample code: PATCH Private DNS Zone.

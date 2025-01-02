@@ -34,9 +34,7 @@ public class MockClientTests {
 
         WebPubSubClientBuilder builder = new WebPubSubClientBuilder();
         builder.webSocketClient = mockWsClient;
-        WebPubSubClient client = builder
-            .clientAccessUrl("mock")
-            .buildClient();
+        WebPubSubClient client = builder.clientAccessUrl("mock").buildClient();
 
         Assertions.assertThrows(ConnectFailedException.class, client::start);
     }
@@ -55,9 +53,7 @@ public class MockClientTests {
 
         WebPubSubClientBuilder builder = new WebPubSubClientBuilder();
         builder.webSocketClient = mockWsClient;
-        WebPubSubClient client = builder
-            .clientAccessUrl("mock")
-            .buildClient();
+        WebPubSubClient client = builder.clientAccessUrl("mock").buildClient();
 
         client.addOnConnectedEventHandler(event -> {
             events.add(event);

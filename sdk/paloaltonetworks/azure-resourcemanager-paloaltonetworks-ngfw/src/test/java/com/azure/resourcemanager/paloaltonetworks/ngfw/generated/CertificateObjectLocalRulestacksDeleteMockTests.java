@@ -41,12 +41,13 @@ public final class CertificateObjectLocalRulestacksDeleteMockTests {
             return Mono.just(httpResponse);
         }));
 
-        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.certificateObjectLocalRulestacks().delete("ptdmkrrbhmpful", "be", "gybpmfb",
-            com.azure.core.util.Context.NONE);
+        manager.certificateObjectLocalRulestacks()
+            .delete("ptdmkrrbhmpful", "be", "gybpmfb", com.azure.core.util.Context.NONE);
 
     }
 }

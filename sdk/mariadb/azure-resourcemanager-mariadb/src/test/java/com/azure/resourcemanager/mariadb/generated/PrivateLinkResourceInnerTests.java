@@ -10,11 +10,9 @@ import com.azure.resourcemanager.mariadb.fluent.models.PrivateLinkResourceInner;
 public final class PrivateLinkResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"groupId\":\"uflrwd\",\"requiredMembers\":[\"lxyjr\",\"sag\"]},\"id\":\"fcnihgwq\",\"name\":\"pnedgf\",\"type\":\"cvkcvqvpkeqdcv\"}")
-                .toObject(PrivateLinkResourceInner.class);
+        PrivateLinkResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"groupId\":\"qiiobyuqer\",\"requiredMembers\":[\"pqwcciuqgbdbutau\"]},\"id\":\"fbtkuwhhmhyk\",\"name\":\"joxafnndlpi\",\"type\":\"hkoymkcdyhbp\"}")
+            .toObject(PrivateLinkResourceInner.class);
     }
 
     @org.junit.jupiter.api.Test

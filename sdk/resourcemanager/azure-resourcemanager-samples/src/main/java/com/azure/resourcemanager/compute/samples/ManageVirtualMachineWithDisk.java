@@ -49,64 +49,68 @@ public final class ManageVirtualMachineWithDisk {
         final String publicIPDnsLabel = Utils.randomResourceName(azureResourceManager, "pip", 15);
         final String userName = "tirekicker";
         final String sshPublicKey = Utils.sshPublicKey();
-        final Region region = Region.US_WEST;
+        final Region region = Region.US_WEST2;
 
         try {
             // Creates an empty data disk to attach to the virtual machine
             //
             System.out.println("Creating an empty managed disk");
 
-            Disk dataDisk1 = azureResourceManager.disks().define(Utils.randomResourceName(azureResourceManager, "dsk-", 15))
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName)
-                    .withData()
-                    .withSizeInGB(50)
-                    .create();
+            Disk dataDisk1 = azureResourceManager.disks()
+                .define(Utils.randomResourceName(azureResourceManager, "dsk-", 15))
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withData()
+                .withSizeInGB(50)
+                .create();
 
             System.out.println("Created managed disk");
 
             // Prepare first creatable data disk
             //
-            Creatable<Disk> dataDiskCreatable1 = azureResourceManager.disks().define(Utils.randomResourceName(azureResourceManager, "dsk-", 15))
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withData()
-                    .withSizeInGB(100);
+            Creatable<Disk> dataDiskCreatable1 = azureResourceManager.disks()
+                .define(Utils.randomResourceName(azureResourceManager, "dsk-", 15))
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withData()
+                .withSizeInGB(100);
 
             // Prepare second creatable data disk
             //
-            Creatable<Disk> dataDiskCreatable2 = azureResourceManager.disks().define(Utils.randomResourceName(azureResourceManager, "dsk-", 15))
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withData()
-                    .withSizeInGB(50)
-                    .withSku(DiskSkuTypes.STANDARD_LRS);
+            Creatable<Disk> dataDiskCreatable2 = azureResourceManager.disks()
+                .define(Utils.randomResourceName(azureResourceManager, "dsk-", 15))
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withData()
+                .withSizeInGB(50)
+                .withSku(DiskSkuTypes.STANDARD_LRS);
 
             //======================================================================
             // Create a Linux VM using a PIR image with managed OS and Data disks
 
             System.out.println("Creating a managed Linux VM");
 
-            VirtualMachine linuxVM = azureResourceManager.virtualMachines().define(linuxVMName1)
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName)
-                    .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withNewPrimaryPublicIPAddress(publicIPDnsLabel)
-                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                    .withRootUsername(userName)
-                    .withSsh(sshPublicKey)
+            VirtualMachine linuxVM = azureResourceManager.virtualMachines()
+                .define(linuxVMName1)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withNewPrimaryPublicIPAddress(publicIPDnsLabel)
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                .withRootUsername(userName)
+                .withSsh(sshPublicKey)
 
-                    // Begin: Managed data disks
-                    .withNewDataDisk(100)
-                    .withNewDataDisk(100, 1, CachingTypes.READ_WRITE)
-                    .withNewDataDisk(dataDiskCreatable1)
-                    .withNewDataDisk(dataDiskCreatable2, 2, CachingTypes.READ_ONLY)
-                    .withExistingDataDisk(dataDisk1)
+                // Begin: Managed data disks
+                .withNewDataDisk(100)
+                .withNewDataDisk(100, 1, CachingTypes.READ_WRITE)
+                .withNewDataDisk(dataDiskCreatable1)
+                .withNewDataDisk(dataDiskCreatable2, 2, CachingTypes.READ_ONLY)
+                .withExistingDataDisk(dataDisk1)
 
-                    // End: Managed data disks
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D4a_v4"))
-                    .create();
+                // End: Managed data disks
+                .withSize(VirtualMachineSizeTypes.STANDARD_DS2_V2)
+                .create();
 
             System.out.println("Created a Linux VM with managed OS and data disks: " + linuxVM.id());
             Utils.print(linuxVM);
@@ -118,11 +122,7 @@ public final class ManageVirtualMachineWithDisk {
 
             String lun3DiskId = linuxVM.dataDisks().get(3).id();
 
-            linuxVM.update()
-                    .withoutDataDisk(3)
-                    .withoutDataDisk(4)
-                    .withNewDataDisk(200)
-                    .apply();
+            linuxVM.update().withoutDataDisk(3).withoutDataDisk(4).withNewDataDisk(200).apply();
 
             System.out.println("Updated Linux VM: " + linuxVM.id());
             Utils.print(linuxVM);
@@ -158,18 +158,14 @@ public final class ManageVirtualMachineWithDisk {
 
             System.out.println("Update OS disk: " + osDisk.id());
 
-            osDisk.update()
-                    .withSizeInGB(2 * osDisk.sizeInGB())
-                    .apply();
+            osDisk.update().withSizeInGB(2 * osDisk.sizeInGB()).apply();
 
             System.out.println("OS disk updated");
 
             for (Disk dataDisk : dataDisks) {
                 System.out.println("Update data disk: " + dataDisk.id());
 
-                dataDisk.update()
-                        .withSizeInGB(dataDisk.sizeInGB() + 10)
-                        .apply();
+                dataDisk.update().withSizeInGB(dataDisk.sizeInGB() + 10).apply();
 
                 System.out.println("Data disk updated");
             }
@@ -212,8 +208,7 @@ public final class ManageVirtualMachineWithDisk {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

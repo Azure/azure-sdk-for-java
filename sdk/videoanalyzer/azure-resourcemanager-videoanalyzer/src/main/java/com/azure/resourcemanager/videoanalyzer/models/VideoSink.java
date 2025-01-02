@@ -132,9 +132,8 @@ public final class VideoSink extends SinkNodeBase {
     public void validate() {
         super.validate();
         if (videoName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property videoName in model VideoSink"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property videoName in model VideoSink"));
         }
         if (videoCreationProperties() != null) {
             videoCreationProperties().validate();

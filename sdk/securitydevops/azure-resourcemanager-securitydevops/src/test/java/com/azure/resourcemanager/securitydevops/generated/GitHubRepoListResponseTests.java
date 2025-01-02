@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Test;
 public final class GitHubRepoListResponseTests {
     @Test
     public void testDeserialize() {
-        GitHubRepoListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"accountId\":2704236244531071102,\"repoUrl\":\"znorcj\",\"ownerName\":\"snb\"},\"id\":\"qabnmoc\",\"name\":\"cyshurzafbljjgp\",\"type\":\"toqcjmklja\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"accountId\":8304735873585257815,\"repoUrl\":\"jzyulpk\",\"ownerName\":\"jkrlkhbzhfepg\"},\"id\":\"qex\",\"name\":\"locx\",\"type\":\"c\"}],\"nextLink\":\"ierhhbcsglummaj\"}")
-                .toObject(GitHubRepoListResponse.class);
+        GitHubRepoListResponse model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"accountId\":2704236244531071102,\"repoUrl\":\"znorcj\",\"ownerName\":\"snb\"},\"id\":\"qabnmoc\",\"name\":\"cyshurzafbljjgp\",\"type\":\"toqcjmklja\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"accountId\":8304735873585257815,\"repoUrl\":\"jzyulpk\",\"ownerName\":\"jkrlkhbzhfepg\"},\"id\":\"qex\",\"name\":\"locx\",\"type\":\"c\"}],\"nextLink\":\"ierhhbcsglummaj\"}")
+            .toObject(GitHubRepoListResponse.class);
         Assertions.assertEquals(ProvisioningState.SUCCEEDED, model.value().get(0).properties().provisioningState());
         Assertions.assertEquals(2704236244531071102L, model.value().get(0).properties().accountId());
         Assertions.assertEquals("znorcj", model.value().get(0).properties().repoUrl());
@@ -30,26 +28,18 @@ public final class GitHubRepoListResponseTests {
 
     @Test
     public void testSerialize() {
-        GitHubRepoListResponse model =
-            new GitHubRepoListResponse()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new GitHubRepoInner()
-                                .withProperties(
-                                    new GitHubRepoProperties()
-                                        .withProvisioningState(ProvisioningState.SUCCEEDED)
-                                        .withAccountId(2704236244531071102L)
-                                        .withRepoUrl("znorcj")
-                                        .withOwnerName("snb")),
-                            new GitHubRepoInner()
-                                .withProperties(
-                                    new GitHubRepoProperties()
-                                        .withProvisioningState(ProvisioningState.SUCCEEDED)
-                                        .withAccountId(8304735873585257815L)
-                                        .withRepoUrl("jzyulpk")
-                                        .withOwnerName("jkrlkhbzhfepg"))))
-                .withNextLink("ierhhbcsglummaj");
+        GitHubRepoListResponse model = new GitHubRepoListResponse().withValue(Arrays.asList(
+            new GitHubRepoInner()
+                .withProperties(new GitHubRepoProperties().withProvisioningState(ProvisioningState.SUCCEEDED)
+                    .withAccountId(2704236244531071102L)
+                    .withRepoUrl("znorcj")
+                    .withOwnerName("snb")),
+            new GitHubRepoInner()
+                .withProperties(new GitHubRepoProperties().withProvisioningState(ProvisioningState.SUCCEEDED)
+                    .withAccountId(8304735873585257815L)
+                    .withRepoUrl("jzyulpk")
+                    .withOwnerName("jkrlkhbzhfepg"))))
+            .withNextLink("ierhhbcsglummaj");
         model = BinaryData.fromObject(model).toObject(GitHubRepoListResponse.class);
         Assertions.assertEquals(ProvisioningState.SUCCEEDED, model.value().get(0).properties().provisioningState());
         Assertions.assertEquals(2704236244531071102L, model.value().get(0).properties().accountId());

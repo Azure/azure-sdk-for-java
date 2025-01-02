@@ -113,8 +113,7 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
         ConnectionCacheWrapper connectionCacheWrapper, Runnable onClientClose) {
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.entityType = Objects.requireNonNull(entityType, "'entityType' cannot be null.");
-        Objects.requireNonNull(connectionCacheWrapper,
-            "'connectionSupport' cannot be null.");
+        Objects.requireNonNull(connectionCacheWrapper, "'connectionSupport' cannot be null.");
         this.connectionProcessor = connectionCacheWrapper.getConnection();
         this.fullyQualifiedNamespace = connectionCacheWrapper.getFullyQualifiedNamespace();
         this.onClientClose = onClientClose;
@@ -169,13 +168,11 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
      */
     public Flux<RuleProperties> listRules() {
         if (isDisposed.get()) {
-            return fluxError(LOGGER, new IllegalStateException(
-                String.format(INVALID_OPERATION_DISPOSED_RULE_MANAGER, "getRules")
-            ));
+            return fluxError(LOGGER,
+                new IllegalStateException(String.format(INVALID_OPERATION_DISPOSED_RULE_MANAGER, "getRules")));
         }
 
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+        return connectionProcessor.flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMapMany(ServiceBusManagementNode::listRules);
     }
 
@@ -192,9 +189,8 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
      */
     public Mono<Void> deleteRule(String ruleName) {
         if (isDisposed.get()) {
-            return monoError(LOGGER, new IllegalStateException(
-                String.format(INVALID_OPERATION_DISPOSED_RULE_MANAGER, "deleteRule")
-            ));
+            return monoError(LOGGER,
+                new IllegalStateException(String.format(INVALID_OPERATION_DISPOSED_RULE_MANAGER, "deleteRule")));
         }
 
         if (ruleName == null) {
@@ -203,8 +199,7 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
             return monoError(LOGGER, new IllegalArgumentException("'ruleName' cannot be an empty string."));
         }
 
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+        return connectionProcessor.flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(managementNode -> managementNode.deleteRule(ruleName));
     }
 
@@ -223,9 +218,8 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
 
     private Mono<Void> createRuleInternal(String ruleName, CreateRuleOptions options) {
         if (isDisposed.get()) {
-            return monoError(LOGGER, new IllegalStateException(
-                String.format(INVALID_OPERATION_DISPOSED_RULE_MANAGER, "createRule")
-            ));
+            return monoError(LOGGER,
+                new IllegalStateException(String.format(INVALID_OPERATION_DISPOSED_RULE_MANAGER, "createRule")));
         }
 
         if (ruleName == null) {
@@ -234,8 +228,7 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
             return monoError(LOGGER, new IllegalArgumentException("'ruleName' cannot be an empty string."));
         }
 
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+        return connectionProcessor.flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(managementNode -> managementNode.createRule(ruleName, options));
     }
 }

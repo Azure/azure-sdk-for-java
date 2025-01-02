@@ -25,10 +25,7 @@ public class KubernetesClusterAgentPoolImplTests {
     void testGetAgentPoolInner() throws Exception {
         // test case for the manual conversion of ManagedClusterAgentPoolProfile to AgentPoolInner
 
-        Set<String> excludeMethods = new HashSet<>(Arrays.asList(
-            "name",
-            "type",
-            "vnetSubnetId"  // skip because this had to be a well-formed resource ID
+        Set<String> excludeMethods = new HashSet<>(Arrays.asList("name", "type", "vnetSubnetId"  // skip because this had to be a well-formed resource ID
         ));
 
         Map<String, Object> mockValues = new HashMap<>();

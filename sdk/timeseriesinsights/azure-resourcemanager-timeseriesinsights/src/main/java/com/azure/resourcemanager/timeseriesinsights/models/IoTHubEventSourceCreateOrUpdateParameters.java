@@ -6,53 +6,76 @@ package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.timeseriesinsights.fluent.models.IoTHubEventSourceCreationProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Parameters supplied to the Create or Update Event Source operation for an IoTHub event source. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("Microsoft.IoTHub")
+/**
+ * Parameters supplied to the Create or Update Event Source operation for an IoTHub event source.
+ */
 @Fluent
 public final class IoTHubEventSourceCreateOrUpdateParameters extends EventSourceCreateOrUpdateParameters {
     /*
+     * The kind of the event source.
+     */
+    private EventSourceKind kind = EventSourceKind.MICROSOFT_IO_THUB;
+
+    /*
      * Properties of the IoTHub event source that are required on create or update requests.
      */
-    @JsonProperty(value = "properties", required = true)
     private IoTHubEventSourceCreationProperties innerProperties = new IoTHubEventSourceCreationProperties();
 
-    /** Creates an instance of IoTHubEventSourceCreateOrUpdateParameters class. */
+    /**
+     * Creates an instance of IoTHubEventSourceCreateOrUpdateParameters class.
+     */
     public IoTHubEventSourceCreateOrUpdateParameters() {
+    }
+
+    /**
+     * Get the kind property: The kind of the event source.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public EventSourceKind kind() {
+        return this.kind;
     }
 
     /**
      * Get the innerProperties property: Properties of the IoTHub event source that are required on create or update
      * requests.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IoTHubEventSourceCreationProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IoTHubEventSourceCreateOrUpdateParameters withLocalTimestamp(LocalTimestamp localTimestamp) {
         super.withLocalTimestamp(localTimestamp);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IoTHubEventSourceCreateOrUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IoTHubEventSourceCreateOrUpdateParameters withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -62,7 +85,7 @@ public final class IoTHubEventSourceCreateOrUpdateParameters extends EventSource
     /**
      * Get the sharedAccessKey property: The value of the Shared Access Policy key that grants the Time Series Insights
      * service read access to the iot hub. This property is not shown in event source responses.
-     *
+     * 
      * @return the sharedAccessKey value.
      */
     public String sharedAccessKey() {
@@ -72,7 +95,7 @@ public final class IoTHubEventSourceCreateOrUpdateParameters extends EventSource
     /**
      * Set the sharedAccessKey property: The value of the Shared Access Policy key that grants the Time Series Insights
      * service read access to the iot hub. This property is not shown in event source responses.
-     *
+     * 
      * @param sharedAccessKey the sharedAccessKey value to set.
      * @return the IoTHubEventSourceCreateOrUpdateParameters object itself.
      */
@@ -86,7 +109,7 @@ public final class IoTHubEventSourceCreateOrUpdateParameters extends EventSource
 
     /**
      * Get the iotHubName property: The name of the iot hub.
-     *
+     * 
      * @return the iotHubName value.
      */
     public String iotHubName() {
@@ -95,7 +118,7 @@ public final class IoTHubEventSourceCreateOrUpdateParameters extends EventSource
 
     /**
      * Set the iotHubName property: The name of the iot hub.
-     *
+     * 
      * @param iotHubName the iotHubName value to set.
      * @return the IoTHubEventSourceCreateOrUpdateParameters object itself.
      */
@@ -110,7 +133,7 @@ public final class IoTHubEventSourceCreateOrUpdateParameters extends EventSource
     /**
      * Get the consumerGroupName property: The name of the iot hub's consumer group that holds the partitions from which
      * events will be read.
-     *
+     * 
      * @return the consumerGroupName value.
      */
     public String consumerGroupName() {
@@ -120,7 +143,7 @@ public final class IoTHubEventSourceCreateOrUpdateParameters extends EventSource
     /**
      * Set the consumerGroupName property: The name of the iot hub's consumer group that holds the partitions from which
      * events will be read.
-     *
+     * 
      * @param consumerGroupName the consumerGroupName value to set.
      * @return the IoTHubEventSourceCreateOrUpdateParameters object itself.
      */
@@ -135,7 +158,7 @@ public final class IoTHubEventSourceCreateOrUpdateParameters extends EventSource
     /**
      * Get the keyName property: The name of the Shared Access Policy key that grants the Time Series Insights service
      * access to the iot hub. This shared access policy key must grant 'service connect' permissions to the iot hub.
-     *
+     * 
      * @return the keyName value.
      */
     public String keyName() {
@@ -145,7 +168,7 @@ public final class IoTHubEventSourceCreateOrUpdateParameters extends EventSource
     /**
      * Set the keyName property: The name of the Shared Access Policy key that grants the Time Series Insights service
      * access to the iot hub. This shared access policy key must grant 'service connect' permissions to the iot hub.
-     *
+     * 
      * @param keyName the keyName value to set.
      * @return the IoTHubEventSourceCreateOrUpdateParameters object itself.
      */
@@ -159,7 +182,7 @@ public final class IoTHubEventSourceCreateOrUpdateParameters extends EventSource
 
     /**
      * Get the eventSourceResourceId property: The resource id of the event source in Azure Resource Manager.
-     *
+     * 
      * @return the eventSourceResourceId value.
      */
     public String eventSourceResourceId() {
@@ -168,7 +191,7 @@ public final class IoTHubEventSourceCreateOrUpdateParameters extends EventSource
 
     /**
      * Set the eventSourceResourceId property: The resource id of the event source in Azure Resource Manager.
-     *
+     * 
      * @param eventSourceResourceId the eventSourceResourceId value to set.
      * @return the IoTHubEventSourceCreateOrUpdateParameters object itself.
      */
@@ -184,7 +207,7 @@ public final class IoTHubEventSourceCreateOrUpdateParameters extends EventSource
      * Get the timestampPropertyName property: The event property that will be used as the event source's timestamp. If
      * a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation
      * time will be used.
-     *
+     * 
      * @return the timestampPropertyName value.
      */
     public String timestampPropertyName() {
@@ -195,7 +218,7 @@ public final class IoTHubEventSourceCreateOrUpdateParameters extends EventSource
      * Set the timestampPropertyName property: The event property that will be used as the event source's timestamp. If
      * a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation
      * time will be used.
-     *
+     * 
      * @param timestampPropertyName the timestampPropertyName value to set.
      * @return the IoTHubEventSourceCreateOrUpdateParameters object itself.
      */
@@ -211,7 +234,7 @@ public final class IoTHubEventSourceCreateOrUpdateParameters extends EventSource
      * Get the localTimestamp property: An object that represents the local timestamp property. It contains the format
      * of local timestamp that needs to be used and the corresponding timezone offset information. If a value isn't
      * specified for localTimestamp, or if null, then the local timestamp will not be ingressed with the events.
-     *
+     * 
      * @return the localTimestamp value.
      */
     public LocalTimestamp localTimestampPropertiesLocalTimestamp() {
@@ -222,12 +245,12 @@ public final class IoTHubEventSourceCreateOrUpdateParameters extends EventSource
      * Set the localTimestamp property: An object that represents the local timestamp property. It contains the format
      * of local timestamp that needs to be used and the corresponding timezone offset information. If a value isn't
      * specified for localTimestamp, or if null, then the local timestamp will not be ingressed with the events.
-     *
+     * 
      * @param localTimestamp the localTimestamp value to set.
      * @return the IoTHubEventSourceCreateOrUpdateParameters object itself.
      */
-    public IoTHubEventSourceCreateOrUpdateParameters withLocalTimestampPropertiesLocalTimestamp(
-        LocalTimestamp localTimestamp) {
+    public IoTHubEventSourceCreateOrUpdateParameters
+        withLocalTimestampPropertiesLocalTimestamp(LocalTimestamp localTimestamp) {
         if (this.innerProperties() == null) {
             this.innerProperties = new IoTHubEventSourceCreationProperties();
         }
@@ -238,7 +261,7 @@ public final class IoTHubEventSourceCreateOrUpdateParameters extends EventSource
     /**
      * Get the type property: The type of the ingressStartAt, It can be "EarliestAvailable", "EventSourceCreationTime",
      * "CustomEnqueuedTime".
-     *
+     * 
      * @return the type value.
      */
     public IngressStartAtType type() {
@@ -248,7 +271,7 @@ public final class IoTHubEventSourceCreateOrUpdateParameters extends EventSource
     /**
      * Set the type property: The type of the ingressStartAt, It can be "EarliestAvailable", "EventSourceCreationTime",
      * "CustomEnqueuedTime".
-     *
+     * 
      * @param type the type value to set.
      * @return the IoTHubEventSourceCreateOrUpdateParameters object itself.
      */
@@ -263,7 +286,7 @@ public final class IoTHubEventSourceCreateOrUpdateParameters extends EventSource
     /**
      * Get the time property: ISO8601 UTC datetime with seconds precision (milliseconds are optional), specifying the
      * date and time that will be the starting point for Events to be consumed.
-     *
+     * 
      * @return the time value.
      */
     public String time() {
@@ -273,7 +296,7 @@ public final class IoTHubEventSourceCreateOrUpdateParameters extends EventSource
     /**
      * Set the time property: ISO8601 UTC datetime with seconds precision (milliseconds are optional), specifying the
      * date and time that will be the starting point for Events to be consumed.
-     *
+     * 
      * @param time the time value to set.
      * @return the IoTHubEventSourceCreateOrUpdateParameters object itself.
      */
@@ -287,7 +310,7 @@ public final class IoTHubEventSourceCreateOrUpdateParameters extends EventSource
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -296,7 +319,7 @@ public final class IoTHubEventSourceCreateOrUpdateParameters extends EventSource
 
     /**
      * Get the creationTime property: The time the resource was created.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -305,22 +328,81 @@ public final class IoTHubEventSourceCreateOrUpdateParameters extends EventSource
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model"
-                            + " IoTHubEventSourceCreateOrUpdateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model IoTHubEventSourceCreateOrUpdateParameters"));
         } else {
             innerProperties().validate();
+        }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model IoTHubEventSourceCreateOrUpdateParameters"));
+        }
+        if (localTimestamp() != null) {
+            localTimestamp().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IoTHubEventSourceCreateOrUpdateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("localTimestamp", localTimestamp());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IoTHubEventSourceCreateOrUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IoTHubEventSourceCreateOrUpdateParameters if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IoTHubEventSourceCreateOrUpdateParameters.
+     */
+    public static IoTHubEventSourceCreateOrUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IoTHubEventSourceCreateOrUpdateParameters deserializedIoTHubEventSourceCreateOrUpdateParameters
+                = new IoTHubEventSourceCreateOrUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedIoTHubEventSourceCreateOrUpdateParameters.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedIoTHubEventSourceCreateOrUpdateParameters.withTags(tags);
+                } else if ("localTimestamp".equals(fieldName)) {
+                    deserializedIoTHubEventSourceCreateOrUpdateParameters
+                        .withLocalTimestamp(LocalTimestamp.fromJson(reader));
+                } else if ("properties".equals(fieldName)) {
+                    deserializedIoTHubEventSourceCreateOrUpdateParameters.innerProperties
+                        = IoTHubEventSourceCreationProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedIoTHubEventSourceCreateOrUpdateParameters.kind
+                        = EventSourceKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIoTHubEventSourceCreateOrUpdateParameters;
+        });
+    }
 }

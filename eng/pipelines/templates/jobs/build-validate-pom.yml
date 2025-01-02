@@ -66,7 +66,7 @@ jobs:
       - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
       - ${{ each artifact in parameters.Artifacts }}:
-        - task: Maven@3
+        - task: Maven@4
           displayName: 'Prepare POM: ${{artifact.groupId}}:${{artifact.name}}'
           inputs:
             mavenPomFile: sdk/${{parameters.ServiceDirectory}}/${{artifact.name}}/pom.xml

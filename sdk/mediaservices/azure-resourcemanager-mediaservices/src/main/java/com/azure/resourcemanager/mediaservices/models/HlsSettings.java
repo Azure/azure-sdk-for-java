@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The HLS setting for a track. */
+/**
+ * The HLS setting for a track.
+ */
 @Fluent
-public final class HlsSettings {
+public final class HlsSettings implements JsonSerializable<HlsSettings> {
     /*
      * The default for the HLS setting.
      */
-    @JsonProperty(value = "default")
     private Boolean defaultProperty;
 
     /*
      * The forced for the HLS setting.
      */
-    @JsonProperty(value = "forced")
     private Boolean forced;
 
     /*
      * The characteristics for the HLS setting.
      */
-    @JsonProperty(value = "characteristics")
     private String characteristics;
 
-    /** Creates an instance of HlsSettings class. */
+    /**
+     * Creates an instance of HlsSettings class.
+     */
     public HlsSettings() {
     }
 
     /**
      * Get the defaultProperty property: The default for the HLS setting.
-     *
+     * 
      * @return the defaultProperty value.
      */
     public Boolean defaultProperty() {
@@ -43,7 +48,7 @@ public final class HlsSettings {
 
     /**
      * Set the defaultProperty property: The default for the HLS setting.
-     *
+     * 
      * @param defaultProperty the defaultProperty value to set.
      * @return the HlsSettings object itself.
      */
@@ -54,7 +59,7 @@ public final class HlsSettings {
 
     /**
      * Get the forced property: The forced for the HLS setting.
-     *
+     * 
      * @return the forced value.
      */
     public Boolean forced() {
@@ -63,7 +68,7 @@ public final class HlsSettings {
 
     /**
      * Set the forced property: The forced for the HLS setting.
-     *
+     * 
      * @param forced the forced value to set.
      * @return the HlsSettings object itself.
      */
@@ -74,7 +79,7 @@ public final class HlsSettings {
 
     /**
      * Get the characteristics property: The characteristics for the HLS setting.
-     *
+     * 
      * @return the characteristics value.
      */
     public String characteristics() {
@@ -83,7 +88,7 @@ public final class HlsSettings {
 
     /**
      * Set the characteristics property: The characteristics for the HLS setting.
-     *
+     * 
      * @param characteristics the characteristics value to set.
      * @return the HlsSettings object itself.
      */
@@ -94,9 +99,51 @@ public final class HlsSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("default", this.defaultProperty);
+        jsonWriter.writeBooleanField("forced", this.forced);
+        jsonWriter.writeStringField("characteristics", this.characteristics);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HlsSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HlsSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HlsSettings.
+     */
+    public static HlsSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HlsSettings deserializedHlsSettings = new HlsSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("default".equals(fieldName)) {
+                    deserializedHlsSettings.defaultProperty = reader.getNullable(JsonReader::getBoolean);
+                } else if ("forced".equals(fieldName)) {
+                    deserializedHlsSettings.forced = reader.getNullable(JsonReader::getBoolean);
+                } else if ("characteristics".equals(fieldName)) {
+                    deserializedHlsSettings.characteristics = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHlsSettings;
+        });
     }
 }

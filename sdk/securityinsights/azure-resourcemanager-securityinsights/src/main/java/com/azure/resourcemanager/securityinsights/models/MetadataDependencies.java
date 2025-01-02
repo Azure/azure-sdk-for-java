@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,47 +18,47 @@ import java.util.List;
  * operator/criteria for complex dependencies.
  */
 @Fluent
-public final class MetadataDependencies {
+public final class MetadataDependencies implements JsonSerializable<MetadataDependencies> {
     /*
      * Id of the content item we depend on
      */
-    @JsonProperty(value = "contentId")
     private String contentId;
 
     /*
      * Type of the content item we depend on
      */
-    @JsonProperty(value = "kind")
     private Kind kind;
 
     /*
-     * Version of the the content item we depend on.  Can be blank, * or missing to indicate any version fulfills the
-     * dependency.  If version does not match our defined numeric format then an exact match is required.
+     * Version of the the content item we depend on. Can be blank, * or missing to indicate any version fulfills the
+     * dependency. If version does not match our defined numeric format then an exact match is required.
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * Name of the content item
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Operator used for list of dependencies in criteria array.
      */
-    @JsonProperty(value = "operator")
     private Operator operator;
 
     /*
      * This is the list of dependencies we must fulfill, according to the AND/OR operator
      */
-    @JsonProperty(value = "criteria")
     private List<MetadataDependencies> criteria;
 
     /**
+     * Creates an instance of MetadataDependencies class.
+     */
+    public MetadataDependencies() {
+    }
+
+    /**
      * Get the contentId property: Id of the content item we depend on.
-     *
+     * 
      * @return the contentId value.
      */
     public String contentId() {
@@ -63,7 +67,7 @@ public final class MetadataDependencies {
 
     /**
      * Set the contentId property: Id of the content item we depend on.
-     *
+     * 
      * @param contentId the contentId value to set.
      * @return the MetadataDependencies object itself.
      */
@@ -74,7 +78,7 @@ public final class MetadataDependencies {
 
     /**
      * Get the kind property: Type of the content item we depend on.
-     *
+     * 
      * @return the kind value.
      */
     public Kind kind() {
@@ -83,7 +87,7 @@ public final class MetadataDependencies {
 
     /**
      * Set the kind property: Type of the content item we depend on.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the MetadataDependencies object itself.
      */
@@ -96,7 +100,7 @@ public final class MetadataDependencies {
      * Get the version property: Version of the the content item we depend on. Can be blank, * or missing to indicate
      * any version fulfills the dependency. If version does not match our defined numeric format then an exact match is
      * required.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -107,7 +111,7 @@ public final class MetadataDependencies {
      * Set the version property: Version of the the content item we depend on. Can be blank, * or missing to indicate
      * any version fulfills the dependency. If version does not match our defined numeric format then an exact match is
      * required.
-     *
+     * 
      * @param version the version value to set.
      * @return the MetadataDependencies object itself.
      */
@@ -118,7 +122,7 @@ public final class MetadataDependencies {
 
     /**
      * Get the name property: Name of the content item.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -127,7 +131,7 @@ public final class MetadataDependencies {
 
     /**
      * Set the name property: Name of the content item.
-     *
+     * 
      * @param name the name value to set.
      * @return the MetadataDependencies object itself.
      */
@@ -138,7 +142,7 @@ public final class MetadataDependencies {
 
     /**
      * Get the operator property: Operator used for list of dependencies in criteria array.
-     *
+     * 
      * @return the operator value.
      */
     public Operator operator() {
@@ -147,7 +151,7 @@ public final class MetadataDependencies {
 
     /**
      * Set the operator property: Operator used for list of dependencies in criteria array.
-     *
+     * 
      * @param operator the operator value to set.
      * @return the MetadataDependencies object itself.
      */
@@ -158,7 +162,7 @@ public final class MetadataDependencies {
 
     /**
      * Get the criteria property: This is the list of dependencies we must fulfill, according to the AND/OR operator.
-     *
+     * 
      * @return the criteria value.
      */
     public List<MetadataDependencies> criteria() {
@@ -167,7 +171,7 @@ public final class MetadataDependencies {
 
     /**
      * Set the criteria property: This is the list of dependencies we must fulfill, according to the AND/OR operator.
-     *
+     * 
      * @param criteria the criteria value to set.
      * @return the MetadataDependencies object itself.
      */
@@ -178,12 +182,65 @@ public final class MetadataDependencies {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (criteria() != null) {
             criteria().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("contentId", this.contentId);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("operator", this.operator == null ? null : this.operator.toString());
+        jsonWriter.writeArrayField("criteria", this.criteria, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetadataDependencies from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetadataDependencies if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetadataDependencies.
+     */
+    public static MetadataDependencies fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetadataDependencies deserializedMetadataDependencies = new MetadataDependencies();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("contentId".equals(fieldName)) {
+                    deserializedMetadataDependencies.contentId = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedMetadataDependencies.kind = Kind.fromString(reader.getString());
+                } else if ("version".equals(fieldName)) {
+                    deserializedMetadataDependencies.version = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedMetadataDependencies.name = reader.getString();
+                } else if ("operator".equals(fieldName)) {
+                    deserializedMetadataDependencies.operator = Operator.fromString(reader.getString());
+                } else if ("criteria".equals(fieldName)) {
+                    List<MetadataDependencies> criteria
+                        = reader.readArray(reader1 -> MetadataDependencies.fromJson(reader1));
+                    deserializedMetadataDependencies.criteria = criteria;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetadataDependencies;
+        });
     }
 }

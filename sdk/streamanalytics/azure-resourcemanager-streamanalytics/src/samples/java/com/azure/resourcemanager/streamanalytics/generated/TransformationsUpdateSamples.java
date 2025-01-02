@@ -22,7 +22,8 @@ public final class TransformationsUpdateSamples {
      */
     public static void updateATransformation(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
         Transformation resource = manager.transformations()
-            .getWithResponse("sjrg4423", "sj8374", "transformation952", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("sjrg4423", "sj8374", "transformation952", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withQuery("New query").apply();
     }
 }

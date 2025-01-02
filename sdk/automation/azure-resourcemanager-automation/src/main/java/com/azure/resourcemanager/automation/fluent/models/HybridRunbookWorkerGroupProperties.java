@@ -5,28 +5,38 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.GroupTypeEnum;
 import com.azure.resourcemanager.automation.models.RunAsCredentialAssociationProperty;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Definition of hybrid runbook worker group property. */
+/**
+ * Definition of hybrid runbook worker group property.
+ */
 @Fluent
-public final class HybridRunbookWorkerGroupProperties {
+public final class HybridRunbookWorkerGroupProperties implements JsonSerializable<HybridRunbookWorkerGroupProperties> {
     /*
      * Type of the HybridWorkerGroup.
      */
-    @JsonProperty(value = "groupType")
     private GroupTypeEnum groupType;
 
     /*
      * Sets the credential of a worker group.
      */
-    @JsonProperty(value = "credential")
     private RunAsCredentialAssociationProperty credential;
 
     /**
+     * Creates an instance of HybridRunbookWorkerGroupProperties class.
+     */
+    public HybridRunbookWorkerGroupProperties() {
+    }
+
+    /**
      * Get the groupType property: Type of the HybridWorkerGroup.
-     *
+     * 
      * @return the groupType value.
      */
     public GroupTypeEnum groupType() {
@@ -35,7 +45,7 @@ public final class HybridRunbookWorkerGroupProperties {
 
     /**
      * Set the groupType property: Type of the HybridWorkerGroup.
-     *
+     * 
      * @param groupType the groupType value to set.
      * @return the HybridRunbookWorkerGroupProperties object itself.
      */
@@ -46,7 +56,7 @@ public final class HybridRunbookWorkerGroupProperties {
 
     /**
      * Get the credential property: Sets the credential of a worker group.
-     *
+     * 
      * @return the credential value.
      */
     public RunAsCredentialAssociationProperty credential() {
@@ -55,7 +65,7 @@ public final class HybridRunbookWorkerGroupProperties {
 
     /**
      * Set the credential property: Sets the credential of a worker group.
-     *
+     * 
      * @param credential the credential value to set.
      * @return the HybridRunbookWorkerGroupProperties object itself.
      */
@@ -66,12 +76,54 @@ public final class HybridRunbookWorkerGroupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (credential() != null) {
             credential().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("groupType", this.groupType == null ? null : this.groupType.toString());
+        jsonWriter.writeJsonField("credential", this.credential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HybridRunbookWorkerGroupProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HybridRunbookWorkerGroupProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HybridRunbookWorkerGroupProperties.
+     */
+    public static HybridRunbookWorkerGroupProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HybridRunbookWorkerGroupProperties deserializedHybridRunbookWorkerGroupProperties
+                = new HybridRunbookWorkerGroupProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("groupType".equals(fieldName)) {
+                    deserializedHybridRunbookWorkerGroupProperties.groupType
+                        = GroupTypeEnum.fromString(reader.getString());
+                } else if ("credential".equals(fieldName)) {
+                    deserializedHybridRunbookWorkerGroupProperties.credential
+                        = RunAsCredentialAssociationProperty.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHybridRunbookWorkerGroupProperties;
+        });
     }
 }

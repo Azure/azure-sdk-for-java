@@ -238,14 +238,14 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      *
      * &#47;&#47; Create a PagedFlux from a PagedFlux with all exceptions mapped to a specific exception.
      * final PagedFlux&lt;Integer&gt; pagedFlux = createAnInstance&#40;&#41;;
-     * final Supplier&lt;PageRetriever&lt;String, PagedResponse&lt;Integer&gt;&gt;&gt; eprovider = &#40;&#41; -&gt;
+     * final Supplier&lt;PageRetriever&lt;String, PagedResponse&lt;Integer&gt;&gt;&gt; exceptionProvider = &#40;&#41; -&gt;
      *     &#40;continuationToken, pageSize&#41; -&gt; &#123;
      *         Flux&lt;PagedResponse&lt;Integer&gt;&gt; flux = &#40;continuationToken == null&#41;
      *             ? pagedFlux.byPage&#40;&#41;
      *             : pagedFlux.byPage&#40;continuationToken&#41;;
      *         return flux.onErrorMap&#40;Exception.class, PaginationException::new&#41;;
      *     &#125;;
-     * final PagedFlux&lt;Integer&gt; exceptionMappedPagedFlux = PagedFlux.create&#40;eprovider&#41;;
+     * final PagedFlux&lt;Integer&gt; exceptionMappedPagedFlux = PagedFlux.create&#40;exceptionProvider&#41;;
      * </pre>
      * <!-- end com.azure.core.http.rest.pagedflux.create.decoration -->
      *

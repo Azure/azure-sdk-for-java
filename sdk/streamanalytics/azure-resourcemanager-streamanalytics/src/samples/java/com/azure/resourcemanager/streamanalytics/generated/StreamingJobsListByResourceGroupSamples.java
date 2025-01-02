@@ -22,8 +22,9 @@ public final class StreamingJobsListByResourceGroupSamples {
     public static void
         listAllStreamingJobsInAResourceGroupAndUseTheExpandODataQueryParameterToExpandInputsOutputsTransformationAndFunctions(
             com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.streamingJobs().listByResourceGroup("sjrg3276", "inputs,outputs,transformation,functions",
-            com.azure.core.util.Context.NONE);
+        manager.streamingJobs()
+            .listByResourceGroup("sjrg3276", "inputs,outputs,transformation,functions",
+                com.azure.core.util.Context.NONE);
     }
 
     /*

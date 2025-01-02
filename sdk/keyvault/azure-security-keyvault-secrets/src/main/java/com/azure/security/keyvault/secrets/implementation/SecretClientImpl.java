@@ -163,8 +163,8 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> setSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData parameters,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
 
         @Put("/secrets/{secret-name}")
         @ExpectedResponses({ 200 })
@@ -174,8 +174,8 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> setSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData parameters,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
 
         @Delete("/secrets/{secret-name}")
         @ExpectedResponses({ 200 })
@@ -185,7 +185,7 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> deleteSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/secrets/{secret-name}")
         @ExpectedResponses({ 200 })
@@ -195,7 +195,7 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> deleteSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Patch("/secrets/{secret-name}/{secret-version}")
         @ExpectedResponses({ 200 })
@@ -205,8 +205,9 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
-            @PathParam("secret-version") String secretVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
+            @PathParam("secret-version") String secretVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData parameters,
+            RequestOptions requestOptions, Context context);
 
         @Patch("/secrets/{secret-name}/{secret-version}")
         @ExpectedResponses({ 200 })
@@ -216,8 +217,9 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
-            @PathParam("secret-version") String secretVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
+            @PathParam("secret-version") String secretVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData parameters,
+            RequestOptions requestOptions, Context context);
 
         @Get("/secrets/{secret-name}/{secret-version}")
         @ExpectedResponses({ 200 })
@@ -227,7 +229,7 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
-            @PathParam("secret-version") String secretVersion, @HeaderParam("accept") String accept,
+            @PathParam("secret-version") String secretVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/secrets/{secret-name}/{secret-version}")
@@ -238,7 +240,7 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
-            @PathParam("secret-version") String secretVersion, @HeaderParam("accept") String accept,
+            @PathParam("secret-version") String secretVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/secrets")
@@ -248,7 +250,7 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSecrets(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/secrets")
@@ -258,7 +260,7 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSecretsSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/secrets/{secret-name}/versions")
@@ -269,7 +271,7 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSecretVersions(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/secrets/{secret-name}/versions")
         @ExpectedResponses({ 200 })
@@ -279,7 +281,7 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSecretVersionsSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/deletedsecrets")
         @ExpectedResponses({ 200 })
@@ -288,7 +290,7 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getDeletedSecrets(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/deletedsecrets")
@@ -298,7 +300,7 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getDeletedSecretsSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/deletedsecrets/{secret-name}")
@@ -309,7 +311,7 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getDeletedSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/deletedsecrets/{secret-name}")
         @ExpectedResponses({ 200 })
@@ -319,7 +321,7 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getDeletedSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/deletedsecrets/{secret-name}")
         @ExpectedResponses({ 204 })
@@ -329,7 +331,7 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> purgeDeletedSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/deletedsecrets/{secret-name}")
         @ExpectedResponses({ 204 })
@@ -339,7 +341,7 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> purgeDeletedSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/deletedsecrets/{secret-name}/recover")
         @ExpectedResponses({ 200 })
@@ -349,7 +351,7 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> recoverDeletedSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/deletedsecrets/{secret-name}/recover")
         @ExpectedResponses({ 200 })
@@ -359,7 +361,7 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> recoverDeletedSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/secrets/{secret-name}/backup")
         @ExpectedResponses({ 200 })
@@ -369,7 +371,7 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> backupSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/secrets/{secret-name}/backup")
         @ExpectedResponses({ 200 })
@@ -379,7 +381,7 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> backupSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/secrets/restore")
         @ExpectedResponses({ 200 })
@@ -388,8 +390,9 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> restoreSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData parameters,
+            RequestOptions requestOptions, Context context);
 
         @Post("/secrets/restore")
         @ExpectedResponses({ 200 })
@@ -398,8 +401,9 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> restoreSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData parameters,
+            RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -408,7 +412,7 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSecretsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("accept") String accept,
+            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
@@ -418,7 +422,7 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSecretsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("accept") String accept,
+            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
@@ -428,7 +432,7 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSecretVersionsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("accept") String accept,
+            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
@@ -438,7 +442,7 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSecretVersionsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("accept") String accept,
+            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
@@ -448,7 +452,7 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getDeletedSecretsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("accept") String accept,
+            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
@@ -458,7 +462,7 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getDeletedSecretsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("accept") String accept,
+            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
     }
 
@@ -469,7 +473,8 @@ public final class SecretClientImpl {
      * creates a new version of that secret. This operation requires the secrets/set permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value: String (Required)
      *     tags (Optional): {
@@ -486,11 +491,13 @@ public final class SecretClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value: String (Optional)
      *     id: String (Optional)
@@ -510,7 +517,8 @@ public final class SecretClientImpl {
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param secretName The name of the secret. The value you provide may be copied globally for the purpose of running
      * the service. The value provided should not include personally identifiable or sensitive information.
@@ -526,9 +534,11 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> setSecretWithResponseAsync(String secretName, BinaryData parameters,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.setSecret(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), secretName, accept, parameters, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.setSecret(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+                secretName, contentType, accept, parameters, requestOptions, context));
     }
 
     /**
@@ -538,7 +548,8 @@ public final class SecretClientImpl {
      * creates a new version of that secret. This operation requires the secrets/set permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value: String (Required)
      *     tags (Optional): {
@@ -555,11 +566,13 @@ public final class SecretClientImpl {
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value: String (Optional)
      *     id: String (Optional)
@@ -579,7 +592,8 @@ public final class SecretClientImpl {
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param secretName The name of the secret. The value you provide may be copied globally for the purpose of running
      * the service. The value provided should not include personally identifiable or sensitive information.
@@ -594,9 +608,10 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> setSecretWithResponse(String secretName, BinaryData parameters,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.setSecretSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), secretName, accept,
-            parameters, requestOptions, Context.NONE);
+        return service.setSecretSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), secretName,
+            contentType, accept, parameters, requestOptions, Context.NONE);
     }
 
     /**
@@ -606,7 +621,8 @@ public final class SecretClientImpl {
      * version of a secret. This operation requires the secrets/delete permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value: String (Optional)
      *     id: String (Optional)
@@ -629,7 +645,8 @@ public final class SecretClientImpl {
      *     scheduledPurgeDate: Long (Optional)
      *     deletedDate: Long (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param secretName The name of the secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -654,7 +671,8 @@ public final class SecretClientImpl {
      * version of a secret. This operation requires the secrets/delete permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value: String (Optional)
      *     id: String (Optional)
@@ -677,7 +695,8 @@ public final class SecretClientImpl {
      *     scheduledPurgeDate: Long (Optional)
      *     deletedDate: Long (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param secretName The name of the secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -703,7 +722,8 @@ public final class SecretClientImpl {
      * secrets/set permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     contentType: String (Optional)
      *     attributes (Optional): {
@@ -719,11 +739,13 @@ public final class SecretClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value: String (Optional)
      *     id: String (Optional)
@@ -743,7 +765,8 @@ public final class SecretClientImpl {
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param secretName The name of the secret.
      * @param secretVersion The version of the secret.
@@ -759,10 +782,11 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateSecretWithResponseAsync(String secretName, String secretVersion,
         BinaryData parameters, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateSecret(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-                secretName, secretVersion, accept, parameters, requestOptions, context));
+                secretName, secretVersion, contentType, accept, parameters, requestOptions, context));
     }
 
     /**
@@ -773,7 +797,8 @@ public final class SecretClientImpl {
      * secrets/set permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     contentType: String (Optional)
      *     attributes (Optional): {
@@ -789,11 +814,13 @@ public final class SecretClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value: String (Optional)
      *     id: String (Optional)
@@ -813,7 +840,8 @@ public final class SecretClientImpl {
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param secretName The name of the secret.
      * @param secretVersion The version of the secret.
@@ -828,9 +856,10 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateSecretWithResponse(String secretName, String secretVersion, BinaryData parameters,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSecretSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), secretName,
-            secretVersion, accept, parameters, requestOptions, Context.NONE);
+            secretVersion, contentType, accept, parameters, requestOptions, Context.NONE);
     }
 
     /**
@@ -840,7 +869,8 @@ public final class SecretClientImpl {
      * permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value: String (Optional)
      *     id: String (Optional)
@@ -860,7 +890,8 @@ public final class SecretClientImpl {
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param secretName The name of the secret.
      * @param secretVersion The version of the secret. This URI fragment is optional. If not specified, the latest
@@ -870,7 +901,9 @@ public final class SecretClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a secret consisting of a value, id and its attributes along with {@link Response} on successful
+     * @return a specified secret from a given key vault.
+     * 
+     * The GET operation is applicable to any secret stored in Azure Key Vault along with {@link Response} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -888,7 +921,8 @@ public final class SecretClientImpl {
      * permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value: String (Optional)
      *     id: String (Optional)
@@ -908,7 +942,8 @@ public final class SecretClientImpl {
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param secretName The name of the secret.
      * @param secretVersion The version of the secret. This URI fragment is optional. If not specified, the latest
@@ -918,7 +953,9 @@ public final class SecretClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a secret consisting of a value, id and its attributes along with {@link Response}.
+     * @return a specified secret from a given key vault.
+     * 
+     * The GET operation is applicable to any secret stored in Azure Key Vault along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getSecretWithResponse(String secretName, String secretVersion,
@@ -944,7 +981,8 @@ public final class SecretClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -962,7 +1000,8 @@ public final class SecretClientImpl {
      *     contentType: String (Optional)
      *     managed: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -997,7 +1036,8 @@ public final class SecretClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -1015,7 +1055,8 @@ public final class SecretClientImpl {
      *     contentType: String (Optional)
      *     managed: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1049,7 +1090,8 @@ public final class SecretClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -1067,7 +1109,8 @@ public final class SecretClientImpl {
      *     contentType: String (Optional)
      *     managed: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1101,7 +1144,8 @@ public final class SecretClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -1119,7 +1163,8 @@ public final class SecretClientImpl {
      *     contentType: String (Optional)
      *     managed: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1152,7 +1197,8 @@ public final class SecretClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -1170,7 +1216,8 @@ public final class SecretClientImpl {
      *     contentType: String (Optional)
      *     managed: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param secretName The name of the secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1206,7 +1253,8 @@ public final class SecretClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -1224,7 +1272,8 @@ public final class SecretClientImpl {
      *     contentType: String (Optional)
      *     managed: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param secretName The name of the secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1258,7 +1307,8 @@ public final class SecretClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -1276,7 +1326,8 @@ public final class SecretClientImpl {
      *     contentType: String (Optional)
      *     managed: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param secretName The name of the secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1310,7 +1361,8 @@ public final class SecretClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -1328,7 +1380,8 @@ public final class SecretClientImpl {
      *     contentType: String (Optional)
      *     managed: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param secretName The name of the secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1362,7 +1415,8 @@ public final class SecretClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -1383,7 +1437,8 @@ public final class SecretClientImpl {
      *     scheduledPurgeDate: Long (Optional)
      *     deletedDate: Long (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1417,7 +1472,8 @@ public final class SecretClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -1438,7 +1494,8 @@ public final class SecretClientImpl {
      *     scheduledPurgeDate: Long (Optional)
      *     deletedDate: Long (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1471,7 +1528,8 @@ public final class SecretClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -1492,7 +1550,8 @@ public final class SecretClientImpl {
      *     scheduledPurgeDate: Long (Optional)
      *     deletedDate: Long (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1525,7 +1584,8 @@ public final class SecretClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -1546,7 +1606,8 @@ public final class SecretClientImpl {
      *     scheduledPurgeDate: Long (Optional)
      *     deletedDate: Long (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1571,7 +1632,8 @@ public final class SecretClientImpl {
      * requires the secrets/get permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value: String (Optional)
      *     id: String (Optional)
@@ -1594,7 +1656,8 @@ public final class SecretClientImpl {
      *     scheduledPurgeDate: Long (Optional)
      *     deletedDate: Long (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param secretName The name of the secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1602,8 +1665,10 @@ public final class SecretClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a Deleted Secret consisting of its previous id, attributes and its tags, as well as information on when
-     * it will be purged along with {@link Response} on successful completion of {@link Mono}.
+     * @return the specified deleted secret.
+     * 
+     * The Get Deleted Secret operation returns the specified deleted secret along with its attributes along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeletedSecretWithResponseAsync(String secretName,
@@ -1620,7 +1685,8 @@ public final class SecretClientImpl {
      * requires the secrets/get permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value: String (Optional)
      *     id: String (Optional)
@@ -1643,7 +1709,8 @@ public final class SecretClientImpl {
      *     scheduledPurgeDate: Long (Optional)
      *     deletedDate: Long (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param secretName The name of the secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1651,8 +1718,10 @@ public final class SecretClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a Deleted Secret consisting of its previous id, attributes and its tags, as well as information on when
-     * it will be purged along with {@link Response}.
+     * @return the specified deleted secret.
+     * 
+     * The Get Deleted Secret operation returns the specified deleted secret along with its attributes along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeletedSecretWithResponse(String secretName, RequestOptions requestOptions) {
@@ -1712,7 +1781,8 @@ public final class SecretClientImpl {
      * vault. This operation requires the secrets/recover permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value: String (Optional)
      *     id: String (Optional)
@@ -1732,7 +1802,8 @@ public final class SecretClientImpl {
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param secretName The name of the deleted secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1758,7 +1829,8 @@ public final class SecretClientImpl {
      * vault. This operation requires the secrets/recover permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value: String (Optional)
      *     id: String (Optional)
@@ -1778,7 +1850,8 @@ public final class SecretClientImpl {
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param secretName The name of the deleted secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1802,11 +1875,13 @@ public final class SecretClientImpl {
      * downloaded. This operation requires the secrets/backup permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value: Base64Url (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param secretName The name of the secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1831,11 +1906,13 @@ public final class SecretClientImpl {
      * downloaded. This operation requires the secrets/backup permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value: Base64Url (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param secretName The name of the secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1859,15 +1936,18 @@ public final class SecretClientImpl {
      * permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value: Base64Url (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value: String (Optional)
      *     id: String (Optional)
@@ -1887,7 +1967,8 @@ public final class SecretClientImpl {
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param parameters The parameters to restore the secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1901,9 +1982,10 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> restoreSecretWithResponseAsync(BinaryData parameters,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.restoreSecret(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), accept, parameters, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, accept, parameters, requestOptions, context));
     }
 
     /**
@@ -1913,15 +1995,18 @@ public final class SecretClientImpl {
      * permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value: Base64Url (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value: String (Optional)
      *     id: String (Optional)
@@ -1941,7 +2026,8 @@ public final class SecretClientImpl {
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param parameters The parameters to restore the secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1953,9 +2039,10 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> restoreSecretWithResponse(BinaryData parameters, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.restoreSecretSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), accept,
-            parameters, requestOptions, Context.NONE);
+        return service.restoreSecretSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), contentType,
+            accept, parameters, requestOptions, Context.NONE);
     }
 
     /**
@@ -1964,7 +2051,8 @@ public final class SecretClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -1982,7 +2070,8 @@ public final class SecretClientImpl {
      *     contentType: String (Optional)
      *     managed: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2009,7 +2098,8 @@ public final class SecretClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -2027,7 +2117,8 @@ public final class SecretClientImpl {
      *     contentType: String (Optional)
      *     managed: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2052,7 +2143,8 @@ public final class SecretClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -2070,7 +2162,8 @@ public final class SecretClientImpl {
      *     contentType: String (Optional)
      *     managed: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2096,7 +2189,8 @@ public final class SecretClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -2114,7 +2208,8 @@ public final class SecretClientImpl {
      *     contentType: String (Optional)
      *     managed: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2139,7 +2234,8 @@ public final class SecretClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -2160,7 +2256,8 @@ public final class SecretClientImpl {
      *     scheduledPurgeDate: Long (Optional)
      *     deletedDate: Long (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2186,7 +2283,8 @@ public final class SecretClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -2207,7 +2305,8 @@ public final class SecretClientImpl {
      *     scheduledPurgeDate: Long (Optional)
      *     deletedDate: Long (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

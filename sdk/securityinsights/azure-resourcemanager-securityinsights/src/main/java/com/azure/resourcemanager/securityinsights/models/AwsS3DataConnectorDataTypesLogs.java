@@ -5,11 +5,26 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Logs data type. */
+/**
+ * Logs data type.
+ */
 @Fluent
 public final class AwsS3DataConnectorDataTypesLogs extends DataConnectorDataTypeCommon {
-    /** {@inheritDoc} */
+    /**
+     * Creates an instance of AwsS3DataConnectorDataTypesLogs class.
+     */
+    public AwsS3DataConnectorDataTypesLogs() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AwsS3DataConnectorDataTypesLogs withState(DataTypeState state) {
         super.withState(state);
@@ -18,11 +33,55 @@ public final class AwsS3DataConnectorDataTypesLogs extends DataConnectorDataType
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (state() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property state in model AwsS3DataConnectorDataTypesLogs"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AwsS3DataConnectorDataTypesLogs.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", state() == null ? null : state().toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AwsS3DataConnectorDataTypesLogs from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AwsS3DataConnectorDataTypesLogs if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AwsS3DataConnectorDataTypesLogs.
+     */
+    public static AwsS3DataConnectorDataTypesLogs fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AwsS3DataConnectorDataTypesLogs deserializedAwsS3DataConnectorDataTypesLogs
+                = new AwsS3DataConnectorDataTypesLogs();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedAwsS3DataConnectorDataTypesLogs.withState(DataTypeState.fromString(reader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAwsS3DataConnectorDataTypesLogs;
+        });
     }
 }

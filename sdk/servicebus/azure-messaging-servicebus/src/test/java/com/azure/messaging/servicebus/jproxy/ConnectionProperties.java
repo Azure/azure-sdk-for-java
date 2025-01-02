@@ -23,9 +23,9 @@ class ConnectionProperties implements Closeable {
     private volatile ProxyConnectionState proxyConnectionState;
 
     ConnectionProperties(ProxyConnectionState proxyConnectionState, AsynchronousSocketChannel clientSocket,
-                         AsynchronousSocketChannel outgoingSocket) {
-        this.proxyConnectionState = Objects.requireNonNull(proxyConnectionState,
-            "'proxyConnectionState' cannot be null.");
+        AsynchronousSocketChannel outgoingSocket) {
+        this.proxyConnectionState
+            = Objects.requireNonNull(proxyConnectionState, "'proxyConnectionState' cannot be null.");
         this.clientSocket = Objects.requireNonNull(clientSocket, "'clientSocket' cannot be null.");
         this.outgoingSocket = Objects.requireNonNull(outgoingSocket, "'outgoingSocket' cannot be null.");
     }
@@ -82,8 +82,7 @@ class ConnectionProperties implements Closeable {
             // It's possible to get this IOException when we've closed the socket after disposing of the client.
         }
 
-        return String.format("ConnectionProperties [state='%s', client='%s', service='%s']",
-            proxyConnectionState,
+        return String.format("ConnectionProperties [state='%s', client='%s', service='%s']", proxyConnectionState,
             clientAddress != null ? clientAddress.toString() : "n/a",
             serviceAddress != null ? serviceAddress.toString() : "n/a");
     }

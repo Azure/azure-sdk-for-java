@@ -52,19 +52,17 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
 
         // Create an empty managed disk
         //
-        Disk disk =
-            computeManager
-                .disks()
-                .define(diskName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup.name())
-                .withData()
-                .withSizeInGB(100)
-                // Start option
-                .withSku(DiskSkuTypes.STANDARD_LRS)
-                .withTag("tkey1", "tval1")
-                // End option
-                .create();
+        Disk disk = computeManager.disks()
+            .define(diskName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup.name())
+            .withData()
+            .withSizeInGB(100)
+            // Start option
+            .withSku(DiskSkuTypes.STANDARD_LRS)
+            .withTag("tkey1", "tval1")
+            // End option
+            .create();
 
         Assertions.assertNotNull(disk.id());
         Assertions.assertTrue(disk.name().equalsIgnoreCase(diskName));
@@ -109,31 +107,27 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
 
         // Create an empty  managed disk
         //
-        Disk emptyDisk =
-            computeManager
-                .disks()
-                .define(diskName1)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup.name())
-                .withData()
-                .withSizeInGB(100)
-                .create();
+        Disk emptyDisk = computeManager.disks()
+            .define(diskName1)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup.name())
+            .withData()
+            .withSizeInGB(100)
+            .create();
 
         // Create a managed disk from existing managed disk
         //
-        Disk disk =
-            computeManager
-                .disks()
-                .define(diskName2)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup.name())
-                .withData()
-                .fromDisk(emptyDisk)
-                // Start Option
-                .withSizeInGB(200)
-                .withSku(DiskSkuTypes.STANDARD_LRS)
-                // End Option
-                .create();
+        Disk disk = computeManager.disks()
+            .define(diskName2)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup.name())
+            .withData()
+            .fromDisk(emptyDisk)
+            // Start Option
+            .withSizeInGB(200)
+            .withSku(DiskSkuTypes.STANDARD_LRS)
+            // End Option
+            .create();
 
         disk = computeManager.disks().getById(disk.id());
 
@@ -160,17 +154,15 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
 
         // Create a managed disk from upload
         //
-        Disk disk =
-            computeManager
-                .disks()
-                .define(diskName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup.name())
-                .withData()
-                .withUploadSizeInMB(1000)
-                .withSku(DiskSkuTypes.STANDARD_LRS)
-                // End Option
-                .create();
+        Disk disk = computeManager.disks()
+            .define(diskName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup.name())
+            .withData()
+            .withUploadSizeInMB(1000)
+            .withSku(DiskSkuTypes.STANDARD_LRS)
+            // End Option
+            .create();
 
         disk = computeManager.disks().getById(disk.id());
 
@@ -195,26 +187,22 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
 
         ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
-        Disk emptyDisk =
-            computeManager
-                .disks()
-                .define(emptyDiskName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withData()
-                .withSizeInGB(100)
-                .create();
+        Disk emptyDisk = computeManager.disks()
+            .define(emptyDiskName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withData()
+            .withSizeInGB(100)
+            .create();
 
-        Snapshot snapshot =
-            computeManager
-                .snapshots()
-                .define(snapshotName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withDataFromDisk(emptyDisk)
-                .withSizeInGB(200)
-                .withSku(SnapshotSkuType.STANDARD_LRS)
-                .create();
+        Snapshot snapshot = computeManager.snapshots()
+            .define(snapshotName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withDataFromDisk(emptyDisk)
+            .withSizeInGB(200)
+            .withSku(SnapshotSkuType.STANDARD_LRS)
+            .create();
 
         Assertions.assertNotNull(snapshot.id());
         Assertions.assertTrue(snapshot.name().equalsIgnoreCase(snapshotName));
@@ -226,16 +214,14 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
         Assertions.assertEquals(snapshot.source().type(), CreationSourceType.COPIED_FROM_DISK);
         assertResourceIdEquals(snapshot.source().sourceId(), emptyDisk.id());
 
-        Disk fromSnapshotDisk =
-            computeManager
-                .disks()
-                .define(snapshotBasedDiskName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withData()
-                .fromSnapshot(snapshot)
-                .withSizeInGB(300)
-                .create();
+        Disk fromSnapshotDisk = computeManager.disks()
+            .define(snapshotBasedDiskName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withData()
+            .fromSnapshot(snapshot)
+            .withSizeInGB(300)
+            .create();
 
         Assertions.assertNotNull(fromSnapshotDisk.id());
         Assertions.assertTrue(fromSnapshotDisk.name().equalsIgnoreCase(snapshotBasedDiskName));
@@ -264,27 +250,23 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
         ResourceGroup resourceGroup2 = resourceManager.resourceGroups().define(rgName2).withRegion(region2).create();
 
         // create disk to copy
-        Disk emptyDisk =
-            computeManager
-                .disks()
-                .define(emptyDiskName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withData()
-                .withSizeInGB(100)
-                .create();
+        Disk emptyDisk = computeManager.disks()
+            .define(emptyDiskName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withData()
+            .withSizeInGB(100)
+            .create();
 
         // create incremental snapshot from the disk
-        Snapshot snapshot =
-            computeManager
-                .snapshots()
-                .define(snapshotName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withDataFromDisk(emptyDisk)
-                .withSku(SnapshotSkuType.STANDARD_LRS)
-                .withIncremental(true)
-                .create();
+        Snapshot snapshot = computeManager.snapshots()
+            .define(snapshotName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withDataFromDisk(emptyDisk)
+            .withSku(SnapshotSkuType.STANDARD_LRS)
+            .withIncremental(true)
+            .create();
 
         Assertions.assertTrue(snapshot.incremental());
         Assertions.assertEquals(CreationSourceType.COPIED_FROM_DISK, snapshot.source().type());
@@ -292,16 +274,14 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
         Assertions.assertThrows(IllegalStateException.class, snapshot::awaitCopyStartCompletion);
 
         // copy the snapshot to the same region
-        Snapshot snapshotSameRegion =
-            computeManager
-                .snapshots()
-                .define(snapshotName2)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withDataFromSnapshot(snapshot)
-                .withCopyStart()
-                .withIncremental(true)
-                .create();
+        Snapshot snapshotSameRegion = computeManager.snapshots()
+            .define(snapshotName2)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withDataFromSnapshot(snapshot)
+            .withCopyStart()
+            .withIncremental(true)
+            .create();
 
         Assertions.assertTrue(snapshotSameRegion.incremental());
         Assertions.assertEquals(CreationSourceType.COPIED_FROM_SNAPSHOT, snapshotSameRegion.source().type());
@@ -310,12 +290,9 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
         // we don't wait for CopyStart to finish, so it should be in progress
         Assertions.assertNotEquals(100, snapshotSameRegion.copyCompletionPercent());
 
-        computeManager
-            .snapshots()
-            .deleteById(snapshotSameRegion.id());
+        computeManager.snapshots().deleteById(snapshotSameRegion.id());
 
-        Snapshot snapshotSameRegion2 = computeManager
-            .snapshots()
+        Snapshot snapshotSameRegion2 = computeManager.snapshots()
             .define(snapshotName2)
             .withRegion(region)
             .withExistingResourceGroup(resourceGroup)
@@ -327,16 +304,14 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
         Assertions.assertTrue(snapshotSameRegion2.awaitCopyStartCompletion(Duration.ofHours(24)));
 
         // copy the snapshot to a new region
-        Snapshot snapshotNewRegion =
-            computeManager
-                .snapshots()
-                .define(newRegionSnapshotName)
-                .withRegion(region2)
-                .withExistingResourceGroup(resourceGroup2)
-                .withDataFromSnapshot(snapshot)
-                .withCopyStart()
-                .withIncremental(true)
-                .create();
+        Snapshot snapshotNewRegion = computeManager.snapshots()
+            .define(newRegionSnapshotName)
+            .withRegion(region2)
+            .withExistingResourceGroup(resourceGroup2)
+            .withDataFromSnapshot(snapshot)
+            .withCopyStart()
+            .withIncremental(true)
+            .create();
         snapshotNewRegion.awaitCopyStartCompletion();
 
         Assertions.assertTrue(snapshotNewRegion.incremental());
@@ -346,16 +321,14 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
         Assertions.assertNull(snapshotNewRegion.copyCompletionError());
 
         // create disk from snapshot in the new region
-        Disk fromSnapshotDisk =
-            computeManager
-                .disks()
-                .define(snapshotBasedDiskName)
-                .withRegion(region2)
-                .withExistingResourceGroup(resourceGroup2)
-                .withData()
-                .fromSnapshot(snapshotNewRegion)
-                .withSizeInGB(300)
-                .create();
+        Disk fromSnapshotDisk = computeManager.disks()
+            .define(snapshotBasedDiskName)
+            .withRegion(region2)
+            .withExistingResourceGroup(resourceGroup2)
+            .withData()
+            .fromSnapshot(snapshotNewRegion)
+            .withSizeInGB(300)
+            .create();
 
         Assertions.assertNotNull(fromSnapshotDisk.id());
         Assertions.assertTrue(fromSnapshotDisk.name().equalsIgnoreCase(snapshotBasedDiskName));
@@ -373,33 +346,29 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
         String diskName = generateRandomResourceName("disk", 15);
 
         // logical sector size is null for standard SKU
-        Disk defaultDisk =
-            computeManager
-                .disks()
-                .define("default_disk")
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .withData()
-                .withSizeInGB(1)
-                .withSku(DiskSkuTypes.STANDARD_LRS)
-                .create();
+        Disk defaultDisk = computeManager.disks()
+            .define("default_disk")
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withData()
+            .withSizeInGB(1)
+            .withSku(DiskSkuTypes.STANDARD_LRS)
+            .create();
 
         defaultDisk.refresh();
 
         Assertions.assertNull(defaultDisk.logicalSectorSizeInBytes());
 
         // can specify logical sector size on PREMIUM_V2_LRS
-        Disk disk =
-            computeManager
-                .disks()
-                .define(diskName)
-                .withRegion(Region.US_EAST)
-                .withExistingResourceGroup(rgName)
-                .withData()
-                .withSizeInGB(10)
-                .withSku(DiskSkuTypes.PREMIUM_V2_LRS)
-                .withLogicalSectorSizeInBytes(512)
-                .create();
+        Disk disk = computeManager.disks()
+            .define(diskName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withData()
+            .withSizeInGB(10)
+            .withSku(DiskSkuTypes.PREMIUM_V2_LRS)
+            .withLogicalSectorSizeInBytes(512)
+            .create();
 
         disk.refresh();
 
@@ -409,17 +378,15 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
 
     @Test
     public void canCreateAndUpdateManagedDiskWithHyperVGeneration() {
-        Disk disk =
-            computeManager
-                .disks()
-                .define(generateRandomResourceName("disk", 15))
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .withData()
-                .withSizeInGB(1)
-                .withSku(DiskSkuTypes.STANDARD_LRS)
-                .withHyperVGeneration(HyperVGeneration.V1)
-                .create();
+        Disk disk = computeManager.disks()
+            .define(generateRandomResourceName("disk", 15))
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withData()
+            .withSizeInGB(1)
+            .withSku(DiskSkuTypes.STANDARD_LRS)
+            .withHyperVGeneration(HyperVGeneration.V1)
+            .create();
         disk.refresh();
         Assertions.assertEquals(disk.hyperVGeneration(), HyperVGeneration.V1);
 
@@ -435,16 +402,14 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
 
         // Create an empty  managed disk
         //
-        Disk disk =
-            computeManager
-                .disks()
-                .define(diskName1)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup.name())
-                .withData()
-                .withSizeInGB(100)
-                .disablePublicNetworkAccess()
-                .create();
+        Disk disk = computeManager.disks()
+            .define(diskName1)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup.name())
+            .withData()
+            .withSizeInGB(100)
+            .disablePublicNetworkAccess()
+            .create();
 
         disk.refresh();
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, disk.publicNetworkAccess());

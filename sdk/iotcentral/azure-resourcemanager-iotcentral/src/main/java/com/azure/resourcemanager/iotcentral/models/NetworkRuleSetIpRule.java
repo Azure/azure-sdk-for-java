@@ -5,26 +5,50 @@
 package com.azure.resourcemanager.iotcentral.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** An object for an IP range that will be allowed access. */
+/**
+ * An object for an IP range that will be allowed access.
+ */
 @Fluent
-public final class NetworkRuleSetIpRule {
+public final class NetworkRuleSetIpRule implements JsonSerializable<NetworkRuleSetIpRule> {
+    /*
+     * The network action for the IP mask.
+     */
+    private IpRuleAction action;
+
     /*
      * The readable name of the IP rule.
      */
-    @JsonProperty(value = "filterName")
     private String filterName;
 
     /*
      * The CIDR block defining the IP range.
      */
-    @JsonProperty(value = "ipMask")
     private String ipMask;
 
     /**
+     * Creates an instance of NetworkRuleSetIpRule class.
+     */
+    public NetworkRuleSetIpRule() {
+    }
+
+    /**
+     * Get the action property: The network action for the IP mask.
+     * 
+     * @return the action value.
+     */
+    public IpRuleAction action() {
+        return this.action;
+    }
+
+    /**
      * Get the filterName property: The readable name of the IP rule.
-     *
+     * 
      * @return the filterName value.
      */
     public String filterName() {
@@ -33,7 +57,7 @@ public final class NetworkRuleSetIpRule {
 
     /**
      * Set the filterName property: The readable name of the IP rule.
-     *
+     * 
      * @param filterName the filterName value to set.
      * @return the NetworkRuleSetIpRule object itself.
      */
@@ -44,7 +68,7 @@ public final class NetworkRuleSetIpRule {
 
     /**
      * Get the ipMask property: The CIDR block defining the IP range.
-     *
+     * 
      * @return the ipMask value.
      */
     public String ipMask() {
@@ -53,7 +77,7 @@ public final class NetworkRuleSetIpRule {
 
     /**
      * Set the ipMask property: The CIDR block defining the IP range.
-     *
+     * 
      * @param ipMask the ipMask value to set.
      * @return the NetworkRuleSetIpRule object itself.
      */
@@ -64,9 +88,50 @@ public final class NetworkRuleSetIpRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("filterName", this.filterName);
+        jsonWriter.writeStringField("ipMask", this.ipMask);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkRuleSetIpRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkRuleSetIpRule if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkRuleSetIpRule.
+     */
+    public static NetworkRuleSetIpRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkRuleSetIpRule deserializedNetworkRuleSetIpRule = new NetworkRuleSetIpRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("action".equals(fieldName)) {
+                    deserializedNetworkRuleSetIpRule.action = IpRuleAction.fromString(reader.getString());
+                } else if ("filterName".equals(fieldName)) {
+                    deserializedNetworkRuleSetIpRule.filterName = reader.getString();
+                } else if ("ipMask".equals(fieldName)) {
+                    deserializedNetworkRuleSetIpRule.ipMask = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkRuleSetIpRule;
+        });
     }
 }

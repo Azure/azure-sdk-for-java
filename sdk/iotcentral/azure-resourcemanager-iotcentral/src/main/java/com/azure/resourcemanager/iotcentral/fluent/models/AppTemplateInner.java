@@ -5,64 +5,68 @@
 package com.azure.resourcemanager.iotcentral.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.iotcentral.models.AppTemplateLocations;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** IoT Central Application Template. */
+/**
+ * IoT Central Application Template.
+ */
 @Immutable
-public final class AppTemplateInner {
+public final class AppTemplateInner implements JsonSerializable<AppTemplateInner> {
     /*
      * The ID of the template.
      */
-    @JsonProperty(value = "manifestId", access = JsonProperty.Access.WRITE_ONLY)
     private String manifestId;
 
     /*
      * The version of the template.
      */
-    @JsonProperty(value = "manifestVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String manifestVersion;
 
     /*
      * The name of the template.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The title of the template.
      */
-    @JsonProperty(value = "title", access = JsonProperty.Access.WRITE_ONLY)
     private String title;
 
     /*
      * The order of the template in the templates list.
      */
-    @JsonProperty(value = "order", access = JsonProperty.Access.WRITE_ONLY)
     private Float order;
 
     /*
      * The description of the template.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * The industry of the template.
      */
-    @JsonProperty(value = "industry", access = JsonProperty.Access.WRITE_ONLY)
     private String industry;
 
     /*
      * A list of locations that support the template.
      */
-    @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
     private List<AppTemplateLocations> locations;
 
     /**
+     * Creates an instance of AppTemplateInner class.
+     */
+    public AppTemplateInner() {
+    }
+
+    /**
      * Get the manifestId property: The ID of the template.
-     *
+     * 
      * @return the manifestId value.
      */
     public String manifestId() {
@@ -71,7 +75,7 @@ public final class AppTemplateInner {
 
     /**
      * Get the manifestVersion property: The version of the template.
-     *
+     * 
      * @return the manifestVersion value.
      */
     public String manifestVersion() {
@@ -80,7 +84,7 @@ public final class AppTemplateInner {
 
     /**
      * Get the name property: The name of the template.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -89,7 +93,7 @@ public final class AppTemplateInner {
 
     /**
      * Get the title property: The title of the template.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -98,7 +102,7 @@ public final class AppTemplateInner {
 
     /**
      * Get the order property: The order of the template in the templates list.
-     *
+     * 
      * @return the order value.
      */
     public Float order() {
@@ -107,7 +111,7 @@ public final class AppTemplateInner {
 
     /**
      * Get the description property: The description of the template.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -116,7 +120,7 @@ public final class AppTemplateInner {
 
     /**
      * Get the industry property: The industry of the template.
-     *
+     * 
      * @return the industry value.
      */
     public String industry() {
@@ -125,7 +129,7 @@ public final class AppTemplateInner {
 
     /**
      * Get the locations property: A list of locations that support the template.
-     *
+     * 
      * @return the locations value.
      */
     public List<AppTemplateLocations> locations() {
@@ -134,12 +138,63 @@ public final class AppTemplateInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (locations() != null) {
             locations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AppTemplateInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AppTemplateInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AppTemplateInner.
+     */
+    public static AppTemplateInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AppTemplateInner deserializedAppTemplateInner = new AppTemplateInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("manifestId".equals(fieldName)) {
+                    deserializedAppTemplateInner.manifestId = reader.getString();
+                } else if ("manifestVersion".equals(fieldName)) {
+                    deserializedAppTemplateInner.manifestVersion = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAppTemplateInner.name = reader.getString();
+                } else if ("title".equals(fieldName)) {
+                    deserializedAppTemplateInner.title = reader.getString();
+                } else if ("order".equals(fieldName)) {
+                    deserializedAppTemplateInner.order = reader.getNullable(JsonReader::getFloat);
+                } else if ("description".equals(fieldName)) {
+                    deserializedAppTemplateInner.description = reader.getString();
+                } else if ("industry".equals(fieldName)) {
+                    deserializedAppTemplateInner.industry = reader.getString();
+                } else if ("locations".equals(fieldName)) {
+                    List<AppTemplateLocations> locations
+                        = reader.readArray(reader1 -> AppTemplateLocations.fromJson(reader1));
+                    deserializedAppTemplateInner.locations = locations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAppTemplateInner;
+        });
     }
 }

@@ -3,7 +3,6 @@
 
 package com.azure.search.documents;
 
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.models.GeoPoint;
 import com.azure.core.models.GeoPosition;
 import com.azure.core.test.TestMode;
@@ -39,8 +38,7 @@ public class GeographyPointTests extends SearchTestBase {
     private static final List<SearchField> SEARCH_FIELDS = Arrays.asList(
         new SearchField("id", SearchFieldDataType.STRING).setKey(true),
         new SearchField("geography_point", SearchFieldDataType.GEOGRAPHY_POINT).setFilterable(true).setSortable(true),
-        new SearchField("description", SearchFieldDataType.STRING).setSearchable(true)
-    );
+        new SearchField("description", SearchFieldDataType.STRING).setSearchable(true));
 
     private static final GeoPoint SPACE_NEEDLE = new GeoPoint(-122.348616, 47.622151);
     private static final GeoPoint PIKES_PLACE_MARKET = new GeoPoint(-122.340529, 47.608564);
@@ -55,8 +53,7 @@ public class GeographyPointTests extends SearchTestBase {
     private SearchAsyncClient searchAsyncClient;
 
     private static List<SimpleDocument> getDocuments() {
-        return Arrays.asList(
-            new SimpleDocument("1", SPACE_NEEDLE, "Tourist location"),
+        return Arrays.asList(new SimpleDocument("1", SPACE_NEEDLE, "Tourist location"),
             new SimpleDocument("2", PIKES_PLACE_MARKET, "Tourist location"),
             new SimpleDocument("3", PARADISE_VISITOR_CENTER, "Tourist location"),
             new SimpleDocument("4", EMPIRE_STATE_BUILDER, "Tourist location"));
@@ -69,9 +66,8 @@ public class GeographyPointTests extends SearchTestBase {
     @BeforeAll
     public static void createSharedIndex() {
         if (TEST_MODE != TestMode.PLAYBACK) {
-            searchIndexClient = new SearchIndexClientBuilder()
-                .endpoint(ENDPOINT)
-                .credential(new AzureKeyCredential(API_KEY))
+            searchIndexClient = new SearchIndexClientBuilder().endpoint(ENDPOINT)
+                .credential(TestHelpers.getTestTokenCredential())
                 .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
                 .buildClient();
 
@@ -109,7 +105,8 @@ public class GeographyPointTests extends SearchTestBase {
 
         compareMaps(expectedDocuments, actualDocuments, Assertions::assertEquals);
 
-        actualDocuments = searchClient.search("Tourist location", new SearchOptions().setOrderBy("id"), Context.NONE).stream()
+        actualDocuments = searchClient.search("Tourist location", new SearchOptions().setOrderBy("id"), Context.NONE)
+            .stream()
             .map(doc -> doc.getDocument(SimpleDocument.class))
             .collect(Collectors.toMap(SimpleDocument::getId, Function.identity()));
 
@@ -128,8 +125,8 @@ public class GeographyPointTests extends SearchTestBase {
             .assertNext(actualDocuments -> compareMaps(expectedDocuments, actualDocuments, Assertions::assertEquals))
             .verifyComplete();
 
-        Mono<Map<String, SimpleDocument>> searchDocumentsMono =
-            searchAsyncClient.search("Tourist location", new SearchOptions().setOrderBy("id"))
+        Mono<Map<String, SimpleDocument>> searchDocumentsMono
+            = searchAsyncClient.search("Tourist location", new SearchOptions().setOrderBy("id"))
                 .map(doc -> doc.getDocument(SimpleDocument.class))
                 .collectMap(SimpleDocument::getId);
 

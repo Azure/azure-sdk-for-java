@@ -16,22 +16,30 @@ public final class IoTSecurityAggregatedRecommendationListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IoTSecurityAggregatedRecommendationList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"recommendationName\":\"uhplrvkmjcwmjv\",\"recommendationDisplayName\":\"fggc\",\"description\":\"yylizrz\",\"recommendationTypeId\":\"psfxsf\",\"detectedBy\":\"tl\",\"remediationSteps\":\"mvagbwidqlvhuko\",\"reportedSeverity\":\"High\",\"healthyDevices\":229689641193790417,\"unhealthyDeviceCount\":3903457587821133847,\"logAnalyticsQuery\":\"nmjmvlwyzgiblk\"},\"tags\":{\"uyjucejikzo\":\"llfojuidjp\",\"ikyju\":\"ovvtzejetjkln\",\"bqzolxr\":\"k\",\"pcrrk\":\"vhqjwtrhtgvg\"},\"id\":\"lawjmjsmwrok\",\"name\":\"dxfzzzwyjaf\",\"type\":\"tlhguynuchl\"}],\"nextLink\":\"ltxdwhmozu\"}")
+            "{\"value\":[{\"properties\":{\"recommendationName\":\"pgylg\",\"recommendationDisplayName\":\"itxmedjvcslynqww\",\"description\":\"wzz\",\"recommendationTypeId\":\"gktrmgucnapkte\",\"detectedBy\":\"llwptfdy\",\"remediationSteps\":\"fqbuaceopzf\",\"reportedSeverity\":\"Low\",\"healthyDevices\":1682904075393771384,\"unhealthyDeviceCount\":390727694338753786,\"logAnalyticsQuery\":\"cq\"},\"tags\":{\"dahzxctobg\":\"ol\",\"postmgrcfbunrm\":\"kdmoi\",\"ymjhxxjyngudivkr\":\"qjhhkxbpv\"},\"id\":\"swbxqz\",\"name\":\"szjfauvjfdxxivet\",\"type\":\"t\"},{\"properties\":{\"recommendationName\":\"qtdo\",\"recommendationDisplayName\":\"cbxvwvxyslqbh\",\"description\":\"xoblytkbl\",\"recommendationTypeId\":\"ewwwfbkrvrnsv\",\"detectedBy\":\"q\",\"remediationSteps\":\"hxcr\",\"reportedSeverity\":\"Low\",\"healthyDevices\":1071359428326279323,\"unhealthyDeviceCount\":740852722562408962,\"logAnalyticsQuery\":\"v\"},\"tags\":{\"ybsrfbjfdtwss\":\"sqfsubcgjbirxb\",\"tpvjzbexilzznfqq\":\"t\",\"taruoujmkcj\":\"vwpm\",\"ervnaenqpehi\":\"wqytjrybnwjewgdr\"},\"id\":\"doy\",\"name\":\"mifthnzdnd\",\"type\":\"l\"}],\"nextLink\":\"ayqigynduhav\"}")
             .toObject(IoTSecurityAggregatedRecommendationList.class);
-        Assertions.assertEquals("llfojuidjp", model.value().get(0).tags().get("uyjucejikzo"));
-        Assertions.assertEquals("uhplrvkmjcwmjv", model.value().get(0).recommendationName());
+        Assertions.assertEquals("ol", model.value().get(0).tags().get("dahzxctobg"));
+        Assertions.assertEquals("pgylg", model.value().get(0).recommendationName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IoTSecurityAggregatedRecommendationList model = new IoTSecurityAggregatedRecommendationList()
-            .withValue(Arrays.asList(new IoTSecurityAggregatedRecommendationInner()
-                .withTags(mapOf("uyjucejikzo", "llfojuidjp", "ikyju", "ovvtzejetjkln", "bqzolxr", "k", "pcrrk",
-                    "vhqjwtrhtgvg"))
-                .withRecommendationName("uhplrvkmjcwmjv")));
+        IoTSecurityAggregatedRecommendationList model
+            = new IoTSecurityAggregatedRecommendationList()
+                .withValue(
+                    Arrays
+                        .asList(
+                            new IoTSecurityAggregatedRecommendationInner()
+                                .withTags(mapOf("dahzxctobg", "ol", "postmgrcfbunrm", "kdmoi", "ymjhxxjyngudivkr",
+                                    "qjhhkxbpv"))
+                                .withRecommendationName("pgylg"),
+                            new IoTSecurityAggregatedRecommendationInner()
+                                .withTags(mapOf("ybsrfbjfdtwss", "sqfsubcgjbirxb", "tpvjzbexilzznfqq", "t",
+                                    "taruoujmkcj", "vwpm", "ervnaenqpehi", "wqytjrybnwjewgdr"))
+                                .withRecommendationName("qtdo")));
         model = BinaryData.fromObject(model).toObject(IoTSecurityAggregatedRecommendationList.class);
-        Assertions.assertEquals("llfojuidjp", model.value().get(0).tags().get("uyjucejikzo"));
-        Assertions.assertEquals("uhplrvkmjcwmjv", model.value().get(0).recommendationName());
+        Assertions.assertEquals("ol", model.value().get(0).tags().get("dahzxctobg"));
+        Assertions.assertEquals("pgylg", model.value().get(0).recommendationName());
     }
 
     // Use "Map.of" if available

@@ -26,8 +26,7 @@ public final class SavingsPlansImpl implements SavingsPlans {
 
     private final com.azure.resourcemanager.billingbenefits.BillingBenefitsManager serviceManager;
 
-    public SavingsPlansImpl(
-        SavingsPlansClient innerClient,
+    public SavingsPlansImpl(SavingsPlansClient innerClient,
         com.azure.resourcemanager.billingbenefits.BillingBenefitsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -35,41 +34,32 @@ public final class SavingsPlansImpl implements SavingsPlans {
 
     public PagedIterable<SavingsPlanModel> list(String savingsPlanOrderId) {
         PagedIterable<SavingsPlanModelInner> inner = this.serviceClient().list(savingsPlanOrderId);
-        return Utils.mapPage(inner, inner1 -> new SavingsPlanModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SavingsPlanModelImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SavingsPlanModel> list(String savingsPlanOrderId, Context context) {
         PagedIterable<SavingsPlanModelInner> inner = this.serviceClient().list(savingsPlanOrderId, context);
-        return Utils.mapPage(inner, inner1 -> new SavingsPlanModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SavingsPlanModelImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SavingsPlanModel> listAll() {
         PagedIterable<SavingsPlanModelInner> inner = this.serviceClient().listAll();
-        return Utils.mapPage(inner, inner1 -> new SavingsPlanModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SavingsPlanModelImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<SavingsPlanModel> listAll(
-        String filter,
-        String orderby,
-        String refreshSummary,
-        Float skiptoken,
-        String selectedState,
-        Float take,
+    public PagedIterable<SavingsPlanModel> listAll(String filter, String orderby, String refreshSummary,
+        Float skiptoken, String selectedState, Float take, Context context) {
+        PagedIterable<SavingsPlanModelInner> inner
+            = this.serviceClient().listAll(filter, orderby, refreshSummary, skiptoken, selectedState, take, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SavingsPlanModelImpl(inner1, this.manager()));
+    }
+
+    public Response<SavingsPlanModel> getWithResponse(String savingsPlanOrderId, String savingsPlanId, String expand,
         Context context) {
-        PagedIterable<SavingsPlanModelInner> inner =
-            this.serviceClient().listAll(filter, orderby, refreshSummary, skiptoken, selectedState, take, context);
-        return Utils.mapPage(inner, inner1 -> new SavingsPlanModelImpl(inner1, this.manager()));
-    }
-
-    public Response<SavingsPlanModel> getWithResponse(
-        String savingsPlanOrderId, String savingsPlanId, String expand, Context context) {
-        Response<SavingsPlanModelInner> inner =
-            this.serviceClient().getWithResponse(savingsPlanOrderId, savingsPlanId, expand, context);
+        Response<SavingsPlanModelInner> inner
+            = this.serviceClient().getWithResponse(savingsPlanOrderId, savingsPlanId, expand, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SavingsPlanModelImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -85,15 +75,12 @@ public final class SavingsPlansImpl implements SavingsPlans {
         }
     }
 
-    public Response<SavingsPlanModel> updateWithResponse(
-        String savingsPlanOrderId, String savingsPlanId, SavingsPlanUpdateRequest body, Context context) {
-        SavingsPlansUpdateResponse inner =
-            this.serviceClient().updateWithResponse(savingsPlanOrderId, savingsPlanId, body, context);
+    public Response<SavingsPlanModel> updateWithResponse(String savingsPlanOrderId, String savingsPlanId,
+        SavingsPlanUpdateRequest body, Context context) {
+        SavingsPlansUpdateResponse inner
+            = this.serviceClient().updateWithResponse(savingsPlanOrderId, savingsPlanId, body, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SavingsPlanModelImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -109,25 +96,22 @@ public final class SavingsPlansImpl implements SavingsPlans {
         }
     }
 
-    public Response<SavingsPlanValidateResponse> validateUpdateWithResponse(
-        String savingsPlanOrderId, String savingsPlanId, SavingsPlanUpdateValidateRequest body, Context context) {
-        Response<SavingsPlanValidateResponseInner> inner =
-            this.serviceClient().validateUpdateWithResponse(savingsPlanOrderId, savingsPlanId, body, context);
+    public Response<SavingsPlanValidateResponse> validateUpdateWithResponse(String savingsPlanOrderId,
+        String savingsPlanId, SavingsPlanUpdateValidateRequest body, Context context) {
+        Response<SavingsPlanValidateResponseInner> inner
+            = this.serviceClient().validateUpdateWithResponse(savingsPlanOrderId, savingsPlanId, body, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SavingsPlanValidateResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public SavingsPlanValidateResponse validateUpdate(
-        String savingsPlanOrderId, String savingsPlanId, SavingsPlanUpdateValidateRequest body) {
-        SavingsPlanValidateResponseInner inner =
-            this.serviceClient().validateUpdate(savingsPlanOrderId, savingsPlanId, body);
+    public SavingsPlanValidateResponse validateUpdate(String savingsPlanOrderId, String savingsPlanId,
+        SavingsPlanUpdateValidateRequest body) {
+        SavingsPlanValidateResponseInner inner
+            = this.serviceClient().validateUpdate(savingsPlanOrderId, savingsPlanId, body);
         if (inner != null) {
             return new SavingsPlanValidateResponseImpl(inner, this.manager());
         } else {

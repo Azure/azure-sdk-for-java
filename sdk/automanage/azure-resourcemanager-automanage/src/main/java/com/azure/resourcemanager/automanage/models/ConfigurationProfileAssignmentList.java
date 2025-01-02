@@ -5,22 +5,33 @@
 package com.azure.resourcemanager.automanage.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automanage.fluent.models.ConfigurationProfileAssignmentInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response of the list configuration profile assignment operation. */
+/**
+ * The response of the list configuration profile assignment operation.
+ */
 @Fluent
-public final class ConfigurationProfileAssignmentList {
+public final class ConfigurationProfileAssignmentList implements JsonSerializable<ConfigurationProfileAssignmentList> {
     /*
      * Result of the list configuration profile assignment operation.
      */
-    @JsonProperty(value = "value")
     private List<ConfigurationProfileAssignmentInner> value;
 
     /**
+     * Creates an instance of ConfigurationProfileAssignmentList class.
+     */
+    public ConfigurationProfileAssignmentList() {
+    }
+
+    /**
      * Get the value property: Result of the list configuration profile assignment operation.
-     *
+     * 
      * @return the value value.
      */
     public List<ConfigurationProfileAssignmentInner> value() {
@@ -29,7 +40,7 @@ public final class ConfigurationProfileAssignmentList {
 
     /**
      * Set the value property: Result of the list configuration profile assignment operation.
-     *
+     * 
      * @param value the value value to set.
      * @return the ConfigurationProfileAssignmentList object itself.
      */
@@ -40,12 +51,51 @@ public final class ConfigurationProfileAssignmentList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfigurationProfileAssignmentList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfigurationProfileAssignmentList if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConfigurationProfileAssignmentList.
+     */
+    public static ConfigurationProfileAssignmentList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfigurationProfileAssignmentList deserializedConfigurationProfileAssignmentList
+                = new ConfigurationProfileAssignmentList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ConfigurationProfileAssignmentInner> value
+                        = reader.readArray(reader1 -> ConfigurationProfileAssignmentInner.fromJson(reader1));
+                    deserializedConfigurationProfileAssignmentList.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfigurationProfileAssignmentList;
+        });
     }
 }

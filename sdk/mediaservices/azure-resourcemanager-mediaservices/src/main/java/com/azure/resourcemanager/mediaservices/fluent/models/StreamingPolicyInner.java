@@ -7,35 +7,55 @@ package com.azure.resourcemanager.mediaservices.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mediaservices.models.CommonEncryptionCbcs;
 import com.azure.resourcemanager.mediaservices.models.CommonEncryptionCenc;
 import com.azure.resourcemanager.mediaservices.models.EnvelopeEncryption;
 import com.azure.resourcemanager.mediaservices.models.NoEncryption;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** A Streaming Policy resource. */
+/**
+ * A Streaming Policy resource.
+ */
 @Fluent
 public final class StreamingPolicyInner extends ProxyResource {
     /*
      * Class to specify properties of Streaming Policy
      */
-    @JsonProperty(value = "properties")
     private StreamingPolicyProperties innerProperties;
 
     /*
      * The system metadata relating to this resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of StreamingPolicyInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of StreamingPolicyInner class.
+     */
     public StreamingPolicyInner() {
     }
 
     /**
      * Get the innerProperties property: Class to specify properties of Streaming Policy.
-     *
+     * 
      * @return the innerProperties value.
      */
     private StreamingPolicyProperties innerProperties() {
@@ -44,7 +64,7 @@ public final class StreamingPolicyInner extends ProxyResource {
 
     /**
      * Get the systemData property: The system metadata relating to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -52,8 +72,38 @@ public final class StreamingPolicyInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the created property: Creation time of Streaming Policy.
-     *
+     * 
      * @return the created value.
      */
     public OffsetDateTime created() {
@@ -62,7 +112,7 @@ public final class StreamingPolicyInner extends ProxyResource {
 
     /**
      * Get the defaultContentKeyPolicyName property: Default ContentKey used by current Streaming Policy.
-     *
+     * 
      * @return the defaultContentKeyPolicyName value.
      */
     public String defaultContentKeyPolicyName() {
@@ -71,7 +121,7 @@ public final class StreamingPolicyInner extends ProxyResource {
 
     /**
      * Set the defaultContentKeyPolicyName property: Default ContentKey used by current Streaming Policy.
-     *
+     * 
      * @param defaultContentKeyPolicyName the defaultContentKeyPolicyName value to set.
      * @return the StreamingPolicyInner object itself.
      */
@@ -85,7 +135,7 @@ public final class StreamingPolicyInner extends ProxyResource {
 
     /**
      * Get the envelopeEncryption property: Configuration of EnvelopeEncryption.
-     *
+     * 
      * @return the envelopeEncryption value.
      */
     public EnvelopeEncryption envelopeEncryption() {
@@ -94,7 +144,7 @@ public final class StreamingPolicyInner extends ProxyResource {
 
     /**
      * Set the envelopeEncryption property: Configuration of EnvelopeEncryption.
-     *
+     * 
      * @param envelopeEncryption the envelopeEncryption value to set.
      * @return the StreamingPolicyInner object itself.
      */
@@ -108,7 +158,7 @@ public final class StreamingPolicyInner extends ProxyResource {
 
     /**
      * Get the commonEncryptionCenc property: Configuration of CommonEncryptionCenc.
-     *
+     * 
      * @return the commonEncryptionCenc value.
      */
     public CommonEncryptionCenc commonEncryptionCenc() {
@@ -117,7 +167,7 @@ public final class StreamingPolicyInner extends ProxyResource {
 
     /**
      * Set the commonEncryptionCenc property: Configuration of CommonEncryptionCenc.
-     *
+     * 
      * @param commonEncryptionCenc the commonEncryptionCenc value to set.
      * @return the StreamingPolicyInner object itself.
      */
@@ -131,7 +181,7 @@ public final class StreamingPolicyInner extends ProxyResource {
 
     /**
      * Get the commonEncryptionCbcs property: Configuration of CommonEncryptionCbcs.
-     *
+     * 
      * @return the commonEncryptionCbcs value.
      */
     public CommonEncryptionCbcs commonEncryptionCbcs() {
@@ -140,7 +190,7 @@ public final class StreamingPolicyInner extends ProxyResource {
 
     /**
      * Set the commonEncryptionCbcs property: Configuration of CommonEncryptionCbcs.
-     *
+     * 
      * @param commonEncryptionCbcs the commonEncryptionCbcs value to set.
      * @return the StreamingPolicyInner object itself.
      */
@@ -154,7 +204,7 @@ public final class StreamingPolicyInner extends ProxyResource {
 
     /**
      * Get the noEncryption property: Configurations of NoEncryption.
-     *
+     * 
      * @return the noEncryption value.
      */
     public NoEncryption noEncryption() {
@@ -163,7 +213,7 @@ public final class StreamingPolicyInner extends ProxyResource {
 
     /**
      * Set the noEncryption property: Configurations of NoEncryption.
-     *
+     * 
      * @param noEncryption the noEncryption value to set.
      * @return the StreamingPolicyInner object itself.
      */
@@ -177,12 +227,57 @@ public final class StreamingPolicyInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StreamingPolicyInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StreamingPolicyInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StreamingPolicyInner.
+     */
+    public static StreamingPolicyInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StreamingPolicyInner deserializedStreamingPolicyInner = new StreamingPolicyInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedStreamingPolicyInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedStreamingPolicyInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedStreamingPolicyInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedStreamingPolicyInner.innerProperties = StreamingPolicyProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedStreamingPolicyInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStreamingPolicyInner;
+        });
     }
 }

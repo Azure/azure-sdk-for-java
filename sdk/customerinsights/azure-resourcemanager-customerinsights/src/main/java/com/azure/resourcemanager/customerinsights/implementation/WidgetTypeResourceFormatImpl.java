@@ -15,8 +15,7 @@ public final class WidgetTypeResourceFormatImpl implements WidgetTypeResourceFor
 
     private final com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager;
 
-    WidgetTypeResourceFormatImpl(
-        WidgetTypeResourceFormatInner innerObject,
+    WidgetTypeResourceFormatImpl(WidgetTypeResourceFormatInner innerObject,
         com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

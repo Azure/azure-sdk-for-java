@@ -5,22 +5,33 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.UebaDataSources;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Ueba property bag. */
+/**
+ * Ueba property bag.
+ */
 @Fluent
-public final class UebaProperties {
+public final class UebaProperties implements JsonSerializable<UebaProperties> {
     /*
      * The relevant data sources that enriched by ueba
      */
-    @JsonProperty(value = "dataSources")
     private List<UebaDataSources> dataSources;
 
     /**
+     * Creates an instance of UebaProperties class.
+     */
+    public UebaProperties() {
+    }
+
+    /**
      * Get the dataSources property: The relevant data sources that enriched by ueba.
-     *
+     * 
      * @return the dataSources value.
      */
     public List<UebaDataSources> dataSources() {
@@ -29,7 +40,7 @@ public final class UebaProperties {
 
     /**
      * Set the dataSources property: The relevant data sources that enriched by ueba.
-     *
+     * 
      * @param dataSources the dataSources value to set.
      * @return the UebaProperties object itself.
      */
@@ -40,9 +51,48 @@ public final class UebaProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("dataSources", this.dataSources,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UebaProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UebaProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UebaProperties.
+     */
+    public static UebaProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UebaProperties deserializedUebaProperties = new UebaProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataSources".equals(fieldName)) {
+                    List<UebaDataSources> dataSources
+                        = reader.readArray(reader1 -> UebaDataSources.fromString(reader1.getString()));
+                    deserializedUebaProperties.dataSources = dataSources;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUebaProperties;
+        });
     }
 }

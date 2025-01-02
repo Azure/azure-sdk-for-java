@@ -11,7 +11,8 @@ import com.azure.resourcemanager.support.fluent.models.CommunicationDetailsInner
  */
 public final class CommunicationsNoSubscriptionCreateSamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/CreateNoSubscriptionSupportTicketCommunication.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/
+     * CreateNoSubscriptionSupportTicketCommunication.json
      */
     /**
      * Sample code: AddCommunicationToNoSubscriptionTicket.

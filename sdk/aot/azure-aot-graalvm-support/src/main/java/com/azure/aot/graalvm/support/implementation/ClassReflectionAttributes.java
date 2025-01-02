@@ -39,19 +39,15 @@ public final class ClassReflectionAttributes {
     }
 
     public static ClassReflectionAttributes createWithAllDeclared(String name) {
-        return new ClassReflectionAttributes(name, EnumSet.of(
-            ReflectionAttributes.DECLARED_CLASSES,
-            ReflectionAttributes.DECLARED_FIELDS,
-            ReflectionAttributes.DECLARED_CONSTRUCTORS,
-            ReflectionAttributes.DECLARED_METHODS));
+        return new ClassReflectionAttributes(name,
+            EnumSet.of(ReflectionAttributes.DECLARED_CLASSES, ReflectionAttributes.DECLARED_FIELDS,
+                ReflectionAttributes.DECLARED_CONSTRUCTORS, ReflectionAttributes.DECLARED_METHODS));
     }
 
     public static ClassReflectionAttributes createWithAllPublic(String name) {
-        return new ClassReflectionAttributes(name, EnumSet.of(
-            ReflectionAttributes.PUBLIC_CLASSES,
-            ReflectionAttributes.PUBLIC_FIELDS,
-            ReflectionAttributes.PUBLIC_CONSTRUCTORS,
-            ReflectionAttributes.PUBLIC_METHODS));
+        return new ClassReflectionAttributes(name,
+            EnumSet.of(ReflectionAttributes.PUBLIC_CLASSES, ReflectionAttributes.PUBLIC_FIELDS,
+                ReflectionAttributes.PUBLIC_CONSTRUCTORS, ReflectionAttributes.PUBLIC_METHODS));
     }
 
     public String getName() {

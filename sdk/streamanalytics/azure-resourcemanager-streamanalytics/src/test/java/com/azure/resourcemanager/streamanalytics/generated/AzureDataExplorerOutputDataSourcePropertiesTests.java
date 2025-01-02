@@ -23,8 +23,11 @@ public final class AzureDataExplorerOutputDataSourcePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureDataExplorerOutputDataSourceProperties model = new AzureDataExplorerOutputDataSourceProperties()
-            .withCluster("neuyow").withDatabase("d").withTable("t").withAuthenticationMode(AuthenticationMode.MSI);
+        AzureDataExplorerOutputDataSourceProperties model
+            = new AzureDataExplorerOutputDataSourceProperties().withCluster("neuyow")
+                .withDatabase("d")
+                .withTable("t")
+                .withAuthenticationMode(AuthenticationMode.MSI);
         model = BinaryData.fromObject(model).toObject(AzureDataExplorerOutputDataSourceProperties.class);
         Assertions.assertEquals("neuyow", model.cluster());
         Assertions.assertEquals("d", model.database());

@@ -5,21 +5,18 @@ package com.azure.core.http.jdk.httpclient.implementation;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.implementation.util.HttpHeadersAccessHelper;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.SharedExecutorService;
 
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Utility class for JDK HttpClient.
  */
 public final class JdkHttpUtils {
-    // Singleton timer to schedule timeout tasks.
-    // TODO (alzimmer): Make sure one thread is sufficient for all timeout tasks.
-    private static final Timer TIMER = new Timer("azure-jdk-httpclient-network-timeout-tracker", true);
-
     /**
      * Converts the given JDK Http headers to azure-core Http header.
      *
@@ -64,13 +61,14 @@ public final class JdkHttpUtils {
     }
 
     /**
-     * Schedules a timeout task to be executed after the given timeout.
+     * Schedules a task to be executed after the given timeout.
      *
      * @param task The task to be executed.
      * @param timeoutMillis The timeout in milliseconds.
+     * @return A {@link ScheduledFuture} that will run the task in the future.
      */
-    public static void scheduleTimeoutTask(TimerTask task, long timeoutMillis) {
-        TIMER.schedule(task, timeoutMillis);
+    public static ScheduledFuture<?> scheduleTimeoutTask(Runnable task, long timeoutMillis) {
+        return SharedExecutorService.getInstance().schedule(task, timeoutMillis, TimeUnit.MILLISECONDS);
     }
 
     private JdkHttpUtils() {

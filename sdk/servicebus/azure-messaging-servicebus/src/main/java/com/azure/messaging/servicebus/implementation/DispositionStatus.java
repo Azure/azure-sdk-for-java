@@ -6,11 +6,7 @@ package com.azure.messaging.servicebus.implementation;
  * Message settlement status.
  */
 public enum DispositionStatus {
-    COMPLETED("completed"),
-    DEFERRED("defered"),
-    SUSPENDED("suspended"),
-    ABANDONED("abandoned"),
-    RELEASED("released");
+    COMPLETED("completed"), DEFERRED("defered"), SUSPENDED("suspended"), ABANDONED("abandoned"), RELEASED("released");
 
     private final String value;
 

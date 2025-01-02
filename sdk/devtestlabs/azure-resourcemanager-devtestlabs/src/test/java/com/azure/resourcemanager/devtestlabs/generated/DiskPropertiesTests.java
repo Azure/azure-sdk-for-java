@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DiskPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiskProperties model =
-            BinaryData
-                .fromString(
-                    "{\"diskType\":\"Standard\",\"diskSizeGiB\":102339077,\"leasedByLabVmId\":\"zhokvbwnhh\",\"diskBlobName\":\"lgehg\",\"diskUri\":\"ipifhpfeoajvg\",\"storageAccountId\":\"txjcsheafidlt\",\"createdDate\":\"2021-07-18T03:03:02Z\",\"hostCaching\":\"esmkssjhoiftxfkf\",\"managedDiskId\":\"gpr\",\"provisioningState\":\"tillucbiqtg\",\"uniqueIdentifier\":\"ohmcwsld\"}")
-                .toObject(DiskProperties.class);
+        DiskProperties model = BinaryData.fromString(
+            "{\"diskType\":\"Standard\",\"diskSizeGiB\":102339077,\"leasedByLabVmId\":\"zhokvbwnhh\",\"diskBlobName\":\"lgehg\",\"diskUri\":\"ipifhpfeoajvg\",\"storageAccountId\":\"txjcsheafidlt\",\"createdDate\":\"2021-07-18T03:03:02Z\",\"hostCaching\":\"esmkssjhoiftxfkf\",\"managedDiskId\":\"gpr\",\"provisioningState\":\"tillucbiqtg\",\"uniqueIdentifier\":\"ohmcwsld\"}")
+            .toObject(DiskProperties.class);
         Assertions.assertEquals(StorageType.STANDARD, model.diskType());
         Assertions.assertEquals(102339077, model.diskSizeGiB());
         Assertions.assertEquals("zhokvbwnhh", model.leasedByLabVmId());
@@ -29,16 +27,14 @@ public final class DiskPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiskProperties model =
-            new DiskProperties()
-                .withDiskType(StorageType.STANDARD)
-                .withDiskSizeGiB(102339077)
-                .withLeasedByLabVmId("zhokvbwnhh")
-                .withDiskBlobName("lgehg")
-                .withDiskUri("ipifhpfeoajvg")
-                .withStorageAccountId("txjcsheafidlt")
-                .withHostCaching("esmkssjhoiftxfkf")
-                .withManagedDiskId("gpr");
+        DiskProperties model = new DiskProperties().withDiskType(StorageType.STANDARD)
+            .withDiskSizeGiB(102339077)
+            .withLeasedByLabVmId("zhokvbwnhh")
+            .withDiskBlobName("lgehg")
+            .withDiskUri("ipifhpfeoajvg")
+            .withStorageAccountId("txjcsheafidlt")
+            .withHostCaching("esmkssjhoiftxfkf")
+            .withManagedDiskId("gpr");
         model = BinaryData.fromObject(model).toObject(DiskProperties.class);
         Assertions.assertEquals(StorageType.STANDARD, model.diskType());
         Assertions.assertEquals(102339077, model.diskSizeGiB());

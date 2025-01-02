@@ -76,20 +76,16 @@ public final class ApplicationImpl implements Application, Application.Definitio
     }
 
     public Application create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplications()
-                .create(resourceGroupName, clusterName, applicationName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getApplications()
+            .create(resourceGroupName, clusterName, applicationName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Application create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplications()
-                .create(resourceGroupName, clusterName, applicationName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getApplications()
+            .create(resourceGroupName, clusterName, applicationName, this.innerModel(), context);
         return this;
     }
 
@@ -100,22 +96,18 @@ public final class ApplicationImpl implements Application, Application.Definitio
     }
 
     public Application refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplications()
-                .getWithResponse(resourceGroupName, clusterName, applicationName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplications()
+            .getWithResponse(resourceGroupName, clusterName, applicationName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Application refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplications()
-                .getWithResponse(resourceGroupName, clusterName, applicationName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplications()
+            .getWithResponse(resourceGroupName, clusterName, applicationName, context)
+            .getValue();
         return this;
     }
 

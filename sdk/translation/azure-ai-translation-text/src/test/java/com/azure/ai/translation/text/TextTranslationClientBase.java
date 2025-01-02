@@ -21,7 +21,6 @@ import com.azure.identity.AzurePipelinesCredentialBuilder;
 import com.azure.identity.AzureCliCredentialBuilder;
 import com.azure.identity.ChainedTokenCredentialBuilder;
 
-
 import java.util.Arrays;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -50,11 +49,11 @@ public class TextTranslationClientBase extends TestProxyTestBase {
     }
 
     TextTranslationClient getClient(String endpoint) {
-        TextTranslationClientBuilder textTranslationClientbuilder = new TextTranslationClientBuilder()
-            .credential(new AzureKeyCredential(getKey()))
-            .region(getRegion())
-            .endpoint(endpoint)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        TextTranslationClientBuilder textTranslationClientbuilder
+            = new TextTranslationClientBuilder().credential(new AzureKeyCredential(getKey()))
+                .region(getRegion())
+                .endpoint(endpoint)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
         if (interceptorManager.isPlaybackMode()) {
             textTranslationClientbuilder.httpClient(interceptorManager.getPlaybackClient());
@@ -107,10 +106,10 @@ public class TextTranslationClientBase extends TestProxyTestBase {
     }
 
     TextTranslationClient getTranslationClientWithToken() throws IOException {
-        TextTranslationClientBuilder textTranslationClientbuilder = new TextTranslationClientBuilder()
-            .credential(getTokenCredential())
-            .endpoint(getEndpoint())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        TextTranslationClientBuilder textTranslationClientbuilder
+            = new TextTranslationClientBuilder().credential(getTokenCredential())
+                .endpoint(getEndpoint())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
         if (getTestMode() == TestMode.PLAYBACK) {
             textTranslationClientbuilder.httpClient(interceptorManager.getPlaybackClient());
@@ -121,11 +120,11 @@ public class TextTranslationClientBase extends TestProxyTestBase {
     }
 
     TextTranslationClient getTranslationClientWithAadAuth() {
-        TextTranslationClientBuilder textTranslationClientbuilder = new TextTranslationClientBuilder()
-            .credential(getAadUserToken())
-            .region(getAadRegion())
-            .resourceId(getResourceId())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        TextTranslationClientBuilder textTranslationClientbuilder
+            = new TextTranslationClientBuilder().credential(getAadUserToken())
+                .region(getAadRegion())
+                .resourceId(getResourceId())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
         if (getTestMode() == TestMode.PLAYBACK) {
             textTranslationClientbuilder.httpClient(interceptorManager.getPlaybackClient());
@@ -163,16 +162,15 @@ public class TextTranslationClientBase extends TestProxyTestBase {
 
     public static TokenCredential getIdentityTestCredential(InterceptorManager interceptorManager) {
         if (interceptorManager.isPlaybackMode()) {
-            return  new MockTokenCredential();
+            return new MockTokenCredential();
         }
 
         Configuration config = Configuration.getGlobalConfiguration();
 
-        ChainedTokenCredentialBuilder builder = new ChainedTokenCredentialBuilder()
-            .addLast(new EnvironmentCredentialBuilder().build())
-            .addLast(new AzureCliCredentialBuilder().build())
-            .addLast(new AzureDeveloperCliCredentialBuilder().build());
-
+        ChainedTokenCredentialBuilder builder
+            = new ChainedTokenCredentialBuilder().addLast(new EnvironmentCredentialBuilder().build())
+                .addLast(new AzureCliCredentialBuilder().build())
+                .addLast(new AzureDeveloperCliCredentialBuilder().build());
 
         String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
         String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
@@ -184,8 +182,7 @@ public class TextTranslationClientBase extends TestProxyTestBase {
             && !CoreUtils.isNullOrEmpty(tenantId)
             && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
 
-            builder.addLast(new AzurePipelinesCredentialBuilder()
-                .systemAccessToken(systemAccessToken)
+            builder.addLast(new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
                 .clientId(clientId)
                 .tenantId(tenantId)
                 .serviceConnectionId(serviceConnectionId)

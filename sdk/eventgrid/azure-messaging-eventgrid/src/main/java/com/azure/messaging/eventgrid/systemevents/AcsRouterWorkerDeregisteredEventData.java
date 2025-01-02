@@ -48,6 +48,9 @@ public final class AcsRouterWorkerDeregisteredEventData
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

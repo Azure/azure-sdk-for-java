@@ -13,7 +13,8 @@ public final class CredentialBuilderBaseHelper {
     private static final ClientLogger LOGGER = new ClientLogger(CredentialBuilderBaseHelper.class);
     private static CredentialBuilderBaseAccessor accessor;
 
-    private CredentialBuilderBaseHelper() { }
+    private CredentialBuilderBaseHelper() {
+    }
 
     public interface CredentialBuilderBaseAccessor {
         IdentityClientOptions getClientOptions(CredentialBuilderBase<?> builder);
@@ -28,7 +29,8 @@ public final class CredentialBuilderBaseHelper {
 
     public static CredentialBuilderBaseAccessor getAccessor() {
         if (accessor == null) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException("CredentialBuilderBaseHelper must be initialized"));
+            throw LOGGER
+                .logExceptionAsError(new IllegalStateException("CredentialBuilderBaseHelper must be initialized"));
         }
         return accessor;
     }

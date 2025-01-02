@@ -10,7 +10,6 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.security.PrivilegedExceptionAction;
 
 /**
  * Implementation for {@link ReflectionUtilsApi} using {@code java.lang.invoke} to handle reflectively invoking APIs.
@@ -195,7 +194,7 @@ final class ReflectionUtilsMethodHandle implements ReflectionUtilsApi {
             return (MethodHandles.Lookup) METHOD_HANDLES_PRIVATE_LOOKUP_IN_METHOD_HANDLE.invokeExact(targetClass,
                 LOOKUP);
         } else {
-            return java.security.AccessController.doPrivileged((PrivilegedExceptionAction<MethodHandles.Lookup>) () -> {
+            return AccessControllerUtils.doPrivilegedException(() -> {
                 try {
                     return (MethodHandles.Lookup) METHOD_HANDLES_PRIVATE_LOOKUP_IN_METHOD_HANDLE
                         .invokeExact(targetClass, LOOKUP);

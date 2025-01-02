@@ -5,33 +5,66 @@
 package com.azure.resourcemanager.networkcloud.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.models.AgentPoolUpgradeSettings;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.networkcloud.models.NodePoolAdministratorConfigurationPatch;
+import java.io.IOException;
 
-/** AgentPoolPatchProperties represents the properties of an agent pool that can be modified. */
+/**
+ * AgentPoolPatchProperties represents the properties of an agent pool that can be modified.
+ */
 @Fluent
-public final class AgentPoolPatchProperties {
+public final class AgentPoolPatchProperties implements JsonSerializable<AgentPoolPatchProperties> {
+    /*
+     * The configuration of administrator credentials for the control plane nodes.
+     */
+    private NodePoolAdministratorConfigurationPatch administratorConfiguration;
+
     /*
      * The number of virtual machines that use this configuration.
      */
-    @JsonProperty(value = "count")
     private Long count;
 
     /*
-     * AgentPoolUpgradeSettings specifies the upgrade settings for an agent pool.
-     *
      * The configuration of the agent pool.
      */
-    @JsonProperty(value = "upgradeSettings")
     private AgentPoolUpgradeSettings upgradeSettings;
 
-    /** Creates an instance of AgentPoolPatchProperties class. */
+    /**
+     * Creates an instance of AgentPoolPatchProperties class.
+     */
     public AgentPoolPatchProperties() {
     }
 
     /**
+     * Get the administratorConfiguration property: The configuration of administrator credentials for the control plane
+     * nodes.
+     * 
+     * @return the administratorConfiguration value.
+     */
+    public NodePoolAdministratorConfigurationPatch administratorConfiguration() {
+        return this.administratorConfiguration;
+    }
+
+    /**
+     * Set the administratorConfiguration property: The configuration of administrator credentials for the control plane
+     * nodes.
+     * 
+     * @param administratorConfiguration the administratorConfiguration value to set.
+     * @return the AgentPoolPatchProperties object itself.
+     */
+    public AgentPoolPatchProperties
+        withAdministratorConfiguration(NodePoolAdministratorConfigurationPatch administratorConfiguration) {
+        this.administratorConfiguration = administratorConfiguration;
+        return this;
+    }
+
+    /**
      * Get the count property: The number of virtual machines that use this configuration.
-     *
+     * 
      * @return the count value.
      */
     public Long count() {
@@ -40,7 +73,7 @@ public final class AgentPoolPatchProperties {
 
     /**
      * Set the count property: The number of virtual machines that use this configuration.
-     *
+     * 
      * @param count the count value to set.
      * @return the AgentPoolPatchProperties object itself.
      */
@@ -50,10 +83,8 @@ public final class AgentPoolPatchProperties {
     }
 
     /**
-     * Get the upgradeSettings property: AgentPoolUpgradeSettings specifies the upgrade settings for an agent pool.
-     *
-     * <p>The configuration of the agent pool.
-     *
+     * Get the upgradeSettings property: The configuration of the agent pool.
+     * 
      * @return the upgradeSettings value.
      */
     public AgentPoolUpgradeSettings upgradeSettings() {
@@ -61,10 +92,8 @@ public final class AgentPoolPatchProperties {
     }
 
     /**
-     * Set the upgradeSettings property: AgentPoolUpgradeSettings specifies the upgrade settings for an agent pool.
-     *
-     * <p>The configuration of the agent pool.
-     *
+     * Set the upgradeSettings property: The configuration of the agent pool.
+     * 
      * @param upgradeSettings the upgradeSettings value to set.
      * @return the AgentPoolPatchProperties object itself.
      */
@@ -75,12 +104,58 @@ public final class AgentPoolPatchProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (administratorConfiguration() != null) {
+            administratorConfiguration().validate();
+        }
         if (upgradeSettings() != null) {
             upgradeSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("administratorConfiguration", this.administratorConfiguration);
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeJsonField("upgradeSettings", this.upgradeSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AgentPoolPatchProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AgentPoolPatchProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AgentPoolPatchProperties.
+     */
+    public static AgentPoolPatchProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AgentPoolPatchProperties deserializedAgentPoolPatchProperties = new AgentPoolPatchProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("administratorConfiguration".equals(fieldName)) {
+                    deserializedAgentPoolPatchProperties.administratorConfiguration
+                        = NodePoolAdministratorConfigurationPatch.fromJson(reader);
+                } else if ("count".equals(fieldName)) {
+                    deserializedAgentPoolPatchProperties.count = reader.getNullable(JsonReader::getLong);
+                } else if ("upgradeSettings".equals(fieldName)) {
+                    deserializedAgentPoolPatchProperties.upgradeSettings = AgentPoolUpgradeSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAgentPoolPatchProperties;
+        });
     }
 }

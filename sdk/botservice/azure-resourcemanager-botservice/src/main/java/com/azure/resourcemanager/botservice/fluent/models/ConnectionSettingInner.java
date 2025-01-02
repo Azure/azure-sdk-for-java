@@ -6,49 +6,70 @@ package com.azure.resourcemanager.botservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.botservice.models.ConnectionSettingProperties;
 import com.azure.resourcemanager.botservice.models.Kind;
 import com.azure.resourcemanager.botservice.models.Sku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Bot channel resource definition. */
+/**
+ * Bot channel resource definition.
+ */
 @Fluent
 public final class ConnectionSettingInner extends Resource {
     /*
      * The set of properties specific to bot channel resource
      */
-    @JsonProperty(value = "properties")
     private ConnectionSettingProperties properties;
 
     /*
      * Gets or sets the SKU of the resource.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
      * Required. Gets or sets the Kind of the resource.
      */
-    @JsonProperty(value = "kind")
     private Kind kind;
 
     /*
      * Entity Tag
      */
-    @JsonProperty(value = "etag")
     private String etag;
 
     /*
      * Entity zones
      */
-    @JsonProperty(value = "zones", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> zones;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ConnectionSettingInner class.
+     */
+    public ConnectionSettingInner() {
+    }
 
     /**
      * Get the properties property: The set of properties specific to bot channel resource.
-     *
+     * 
      * @return the properties value.
      */
     public ConnectionSettingProperties properties() {
@@ -57,7 +78,7 @@ public final class ConnectionSettingInner extends Resource {
 
     /**
      * Set the properties property: The set of properties specific to bot channel resource.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ConnectionSettingInner object itself.
      */
@@ -68,7 +89,7 @@ public final class ConnectionSettingInner extends Resource {
 
     /**
      * Get the sku property: Gets or sets the SKU of the resource.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -77,7 +98,7 @@ public final class ConnectionSettingInner extends Resource {
 
     /**
      * Set the sku property: Gets or sets the SKU of the resource.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ConnectionSettingInner object itself.
      */
@@ -88,7 +109,7 @@ public final class ConnectionSettingInner extends Resource {
 
     /**
      * Get the kind property: Required. Gets or sets the Kind of the resource.
-     *
+     * 
      * @return the kind value.
      */
     public Kind kind() {
@@ -97,7 +118,7 @@ public final class ConnectionSettingInner extends Resource {
 
     /**
      * Set the kind property: Required. Gets or sets the Kind of the resource.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the ConnectionSettingInner object itself.
      */
@@ -108,7 +129,7 @@ public final class ConnectionSettingInner extends Resource {
 
     /**
      * Get the etag property: Entity Tag.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -117,7 +138,7 @@ public final class ConnectionSettingInner extends Resource {
 
     /**
      * Set the etag property: Entity Tag.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the ConnectionSettingInner object itself.
      */
@@ -128,21 +149,55 @@ public final class ConnectionSettingInner extends Resource {
 
     /**
      * Get the zones property: Entity zones.
-     *
+     * 
      * @return the zones value.
      */
     public List<String> zones() {
         return this.zones;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConnectionSettingInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConnectionSettingInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -151,7 +206,7 @@ public final class ConnectionSettingInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -161,5 +216,67 @@ public final class ConnectionSettingInner extends Resource {
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeStringField("etag", this.etag);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionSettingInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionSettingInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectionSettingInner.
+     */
+    public static ConnectionSettingInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionSettingInner deserializedConnectionSettingInner = new ConnectionSettingInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedConnectionSettingInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedConnectionSettingInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedConnectionSettingInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedConnectionSettingInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedConnectionSettingInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedConnectionSettingInner.properties = ConnectionSettingProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedConnectionSettingInner.sku = Sku.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedConnectionSettingInner.kind = Kind.fromString(reader.getString());
+                } else if ("etag".equals(fieldName)) {
+                    deserializedConnectionSettingInner.etag = reader.getString();
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedConnectionSettingInner.zones = zones;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionSettingInner;
+        });
     }
 }

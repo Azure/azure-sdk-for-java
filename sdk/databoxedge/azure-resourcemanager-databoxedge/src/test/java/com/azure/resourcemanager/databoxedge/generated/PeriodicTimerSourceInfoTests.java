@@ -12,25 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class PeriodicTimerSourceInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PeriodicTimerSourceInfo model =
-            BinaryData
-                .fromString("{\"startTime\":\"2021-07-20T00:55:01Z\",\"schedule\":\"raehtwdwrft\",\"topic\":\"iby\"}")
-                .toObject(PeriodicTimerSourceInfo.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-20T00:55:01Z"), model.startTime());
-        Assertions.assertEquals("raehtwdwrft", model.schedule());
-        Assertions.assertEquals("iby", model.topic());
+        PeriodicTimerSourceInfo model = BinaryData
+            .fromString("{\"startTime\":\"2021-09-27T16:09:30Z\",\"schedule\":\"rjqc\",\"topic\":\"gzpfrla\"}")
+            .toObject(PeriodicTimerSourceInfo.class);
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-27T16:09:30Z"), model.startTime());
+        Assertions.assertEquals("rjqc", model.schedule());
+        Assertions.assertEquals("gzpfrla", model.topic());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PeriodicTimerSourceInfo model =
-            new PeriodicTimerSourceInfo()
-                .withStartTime(OffsetDateTime.parse("2021-07-20T00:55:01Z"))
-                .withSchedule("raehtwdwrft")
-                .withTopic("iby");
+        PeriodicTimerSourceInfo model
+            = new PeriodicTimerSourceInfo().withStartTime(OffsetDateTime.parse("2021-09-27T16:09:30Z"))
+                .withSchedule("rjqc")
+                .withTopic("gzpfrla");
         model = BinaryData.fromObject(model).toObject(PeriodicTimerSourceInfo.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-20T00:55:01Z"), model.startTime());
-        Assertions.assertEquals("raehtwdwrft", model.schedule());
-        Assertions.assertEquals("iby", model.topic());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-27T16:09:30Z"), model.startTime());
+        Assertions.assertEquals("rjqc", model.schedule());
+        Assertions.assertEquals("gzpfrla", model.topic());
     }
 }

@@ -118,8 +118,8 @@ public interface B2CTenantsClient {
      * @return the Azure AD B2C tenant resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<B2CTenantResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<B2CTenantResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Initiates an async request to create both the Azure AD B2C tenant and the corresponding Azure resource linked to
@@ -135,8 +135,8 @@ public interface B2CTenantsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<B2CTenantResourceInner>, B2CTenantResourceInner> beginCreate(
-        String resourceGroupName, String resourceName, CreateTenantRequestBody createTenantRequestBody);
+    SyncPoller<PollResult<B2CTenantResourceInner>, B2CTenantResourceInner> beginCreate(String resourceGroupName,
+        String resourceName, CreateTenantRequestBody createTenantRequestBody);
 
     /**
      * Initiates an async request to create both the Azure AD B2C tenant and the corresponding Azure resource linked to
@@ -153,11 +153,8 @@ public interface B2CTenantsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<B2CTenantResourceInner>, B2CTenantResourceInner> beginCreate(
-        String resourceGroupName,
-        String resourceName,
-        CreateTenantRequestBody createTenantRequestBody,
-        Context context);
+    SyncPoller<PollResult<B2CTenantResourceInner>, B2CTenantResourceInner> beginCreate(String resourceGroupName,
+        String resourceName, CreateTenantRequestBody createTenantRequestBody, Context context);
 
     /**
      * Initiates an async request to create both the Azure AD B2C tenant and the corresponding Azure resource linked to
@@ -173,8 +170,8 @@ public interface B2CTenantsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    B2CTenantResourceInner create(
-        String resourceGroupName, String resourceName, CreateTenantRequestBody createTenantRequestBody);
+    B2CTenantResourceInner create(String resourceGroupName, String resourceName,
+        CreateTenantRequestBody createTenantRequestBody);
 
     /**
      * Initiates an async request to create both the Azure AD B2C tenant and the corresponding Azure resource linked to
@@ -205,11 +202,8 @@ public interface B2CTenantsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    B2CTenantResourceInner create(
-        String resourceGroupName,
-        String resourceName,
-        CreateTenantRequestBody createTenantRequestBody,
-        Context context);
+    B2CTenantResourceInner create(String resourceGroupName, String resourceName,
+        CreateTenantRequestBody createTenantRequestBody, Context context);
 
     /**
      * Update the Azure AD B2C tenant resource.
@@ -237,8 +231,8 @@ public interface B2CTenantsClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<B2CTenantResourceInner> updateWithResponse(
-        String resourceGroupName, String resourceName, B2CTenantUpdateRequest updateTenantRequestBody, Context context);
+    Response<B2CTenantResourceInner> updateWithResponse(String resourceGroupName, String resourceName,
+        B2CTenantUpdateRequest updateTenantRequestBody, Context context);
 
     /**
      * Initiates an async operation to delete the Azure AD B2C tenant and Azure resource. The resource deletion can only

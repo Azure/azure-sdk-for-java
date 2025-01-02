@@ -17,106 +17,93 @@ import org.junit.jupiter.api.Assertions;
 public final class ProductNestedPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProductNestedProperties model =
-            BinaryData
-                .fromString(
-                    "{\"displayName\":\"jpgd\",\"description\":\"ocjjxhvpmouexh\",\"publisherDisplayName\":\"xibqeojnx\",\"publisherIdentifier\":\"zvddntwndeicbtwn\",\"offer\":\"aoqvuh\",\"offerVersion\":\"cffcyddglmj\",\"sku\":\"jqkwpyeicx\",\"billingPartNumber\":\"ciwqvhk\",\"vmExtensionType\":\"xuigdtopbobj\",\"galleryItemIdentity\":\"hm\",\"iconUris\":{\"large\":\"a\",\"wide\":\"uhrzayvvt\",\"medium\":\"vdfgiotk\",\"small\":\"utqxlngx\",\"hero\":\"fgugnxkrxdqmid\"},\"links\":[{\"displayName\":\"rvqdra\",\"uri\":\"jybige\"},{\"displayName\":\"qfbow\",\"uri\":\"anyktzlcuiywg\"}],\"legalTerms\":\"wgndrvynhzgpp\",\"privacyPolicy\":\"cgyncocpecf\",\"payloadLength\":3972915979218676808,\"productKind\":\"ofsx\",\"productProperties\":{\"version\":\"v\"},\"compatibility\":{\"isCompatible\":true,\"message\":\"qabcypm\",\"description\":\"kwlzuvccfwnfn\",\"issues\":[\"ADFSIdentitySystemRequired\",\"LowerDeviceVersionRequired\"]}}")
-                .toObject(ProductNestedProperties.class);
-        Assertions.assertEquals("jpgd", model.displayName());
-        Assertions.assertEquals("ocjjxhvpmouexh", model.description());
-        Assertions.assertEquals("xibqeojnx", model.publisherDisplayName());
-        Assertions.assertEquals("zvddntwndeicbtwn", model.publisherIdentifier());
-        Assertions.assertEquals("aoqvuh", model.offer());
-        Assertions.assertEquals("cffcyddglmj", model.offerVersion());
-        Assertions.assertEquals("jqkwpyeicx", model.sku());
-        Assertions.assertEquals("ciwqvhk", model.billingPartNumber());
-        Assertions.assertEquals("xuigdtopbobj", model.vmExtensionType());
-        Assertions.assertEquals("hm", model.galleryItemIdentity());
-        Assertions.assertEquals("a", model.iconUris().large());
-        Assertions.assertEquals("uhrzayvvt", model.iconUris().wide());
-        Assertions.assertEquals("vdfgiotk", model.iconUris().medium());
-        Assertions.assertEquals("utqxlngx", model.iconUris().small());
-        Assertions.assertEquals("fgugnxkrxdqmid", model.iconUris().hero());
-        Assertions.assertEquals("rvqdra", model.links().get(0).displayName());
-        Assertions.assertEquals("jybige", model.links().get(0).uri());
-        Assertions.assertEquals("wgndrvynhzgpp", model.legalTerms());
-        Assertions.assertEquals("cgyncocpecf", model.privacyPolicy());
-        Assertions.assertEquals(3972915979218676808L, model.payloadLength());
-        Assertions.assertEquals("ofsx", model.productKind());
-        Assertions.assertEquals("v", model.productProperties().version());
+        ProductNestedProperties model = BinaryData.fromString(
+            "{\"displayName\":\"yvxyqjp\",\"description\":\"attpngjcrcczsq\",\"publisherDisplayName\":\"hvmdajvnysounq\",\"publisherIdentifier\":\"a\",\"offer\":\"ae\",\"offerVersion\":\"fhyhltrpmopjmcma\",\"sku\":\"okth\",\"billingPartNumber\":\"iuaod\",\"vmExtensionType\":\"cpkvxodp\",\"galleryItemIdentity\":\"zmyzydagf\",\"iconUris\":{\"large\":\"bezy\",\"wide\":\"okktwhrdxw\",\"medium\":\"wqsmbsur\",\"small\":\"imoryocfsfksym\",\"hero\":\"ys\"},\"links\":[{\"displayName\":\"uxh\",\"uri\":\"udxorrqn\"}],\"legalTerms\":\"oczvy\",\"privacyPolicy\":\"qrvkdv\",\"payloadLength\":3055369044346357730,\"productKind\":\"mvvd\",\"productProperties\":{\"version\":\"t\"},\"compatibility\":{\"isCompatible\":true,\"message\":\"lexxbczwtru\",\"description\":\"qzbqjvsov\",\"issues\":[\"HigherDeviceVersionRequired\",\"DevelopmentBillingModelRequired\"]}}")
+            .toObject(ProductNestedProperties.class);
+        Assertions.assertEquals("yvxyqjp", model.displayName());
+        Assertions.assertEquals("attpngjcrcczsq", model.description());
+        Assertions.assertEquals("hvmdajvnysounq", model.publisherDisplayName());
+        Assertions.assertEquals("a", model.publisherIdentifier());
+        Assertions.assertEquals("ae", model.offer());
+        Assertions.assertEquals("fhyhltrpmopjmcma", model.offerVersion());
+        Assertions.assertEquals("okth", model.sku());
+        Assertions.assertEquals("iuaod", model.billingPartNumber());
+        Assertions.assertEquals("cpkvxodp", model.vmExtensionType());
+        Assertions.assertEquals("zmyzydagf", model.galleryItemIdentity());
+        Assertions.assertEquals("bezy", model.iconUris().large());
+        Assertions.assertEquals("okktwhrdxw", model.iconUris().wide());
+        Assertions.assertEquals("wqsmbsur", model.iconUris().medium());
+        Assertions.assertEquals("imoryocfsfksym", model.iconUris().small());
+        Assertions.assertEquals("ys", model.iconUris().hero());
+        Assertions.assertEquals("uxh", model.links().get(0).displayName());
+        Assertions.assertEquals("udxorrqn", model.links().get(0).uri());
+        Assertions.assertEquals("oczvy", model.legalTerms());
+        Assertions.assertEquals("qrvkdv", model.privacyPolicy());
+        Assertions.assertEquals(3055369044346357730L, model.payloadLength());
+        Assertions.assertEquals("mvvd", model.productKind());
+        Assertions.assertEquals("t", model.productProperties().version());
         Assertions.assertEquals(true, model.compatibility().isCompatible());
-        Assertions.assertEquals("qabcypm", model.compatibility().message());
-        Assertions.assertEquals("kwlzuvccfwnfn", model.compatibility().description());
-        Assertions.assertEquals(CompatibilityIssue.ADFSIDENTITY_SYSTEM_REQUIRED, model.compatibility().issues().get(0));
+        Assertions.assertEquals("lexxbczwtru", model.compatibility().message());
+        Assertions.assertEquals("qzbqjvsov", model.compatibility().description());
+        Assertions.assertEquals(CompatibilityIssue.HIGHER_DEVICE_VERSION_REQUIRED,
+            model.compatibility().issues().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProductNestedProperties model =
-            new ProductNestedProperties()
-                .withDisplayName("jpgd")
-                .withDescription("ocjjxhvpmouexh")
-                .withPublisherDisplayName("xibqeojnx")
-                .withPublisherIdentifier("zvddntwndeicbtwn")
-                .withOffer("aoqvuh")
-                .withOfferVersion("cffcyddglmj")
-                .withSku("jqkwpyeicx")
-                .withBillingPartNumber("ciwqvhk")
-                .withVmExtensionType("xuigdtopbobj")
-                .withGalleryItemIdentity("hm")
-                .withIconUris(
-                    new IconUris()
-                        .withLarge("a")
-                        .withWide("uhrzayvvt")
-                        .withMedium("vdfgiotk")
-                        .withSmall("utqxlngx")
-                        .withHero("fgugnxkrxdqmid"))
-                .withLinks(
-                    Arrays
-                        .asList(
-                            new ProductLink().withDisplayName("rvqdra").withUri("jybige"),
-                            new ProductLink().withDisplayName("qfbow").withUri("anyktzlcuiywg")))
-                .withLegalTerms("wgndrvynhzgpp")
-                .withPrivacyPolicy("cgyncocpecf")
-                .withPayloadLength(3972915979218676808L)
-                .withProductKind("ofsx")
-                .withProductProperties(new ProductProperties().withVersion("v"))
-                .withCompatibility(
-                    new Compatibility()
-                        .withIsCompatible(true)
-                        .withMessage("qabcypm")
-                        .withDescription("kwlzuvccfwnfn")
-                        .withIssues(
-                            Arrays
-                                .asList(
-                                    CompatibilityIssue.ADFSIDENTITY_SYSTEM_REQUIRED,
-                                    CompatibilityIssue.LOWER_DEVICE_VERSION_REQUIRED)));
+        ProductNestedProperties model = new ProductNestedProperties().withDisplayName("yvxyqjp")
+            .withDescription("attpngjcrcczsq")
+            .withPublisherDisplayName("hvmdajvnysounq")
+            .withPublisherIdentifier("a")
+            .withOffer("ae")
+            .withOfferVersion("fhyhltrpmopjmcma")
+            .withSku("okth")
+            .withBillingPartNumber("iuaod")
+            .withVmExtensionType("cpkvxodp")
+            .withGalleryItemIdentity("zmyzydagf")
+            .withIconUris(new IconUris().withLarge("bezy")
+                .withWide("okktwhrdxw")
+                .withMedium("wqsmbsur")
+                .withSmall("imoryocfsfksym")
+                .withHero("ys"))
+            .withLinks(Arrays.asList(new ProductLink().withDisplayName("uxh").withUri("udxorrqn")))
+            .withLegalTerms("oczvy")
+            .withPrivacyPolicy("qrvkdv")
+            .withPayloadLength(3055369044346357730L)
+            .withProductKind("mvvd")
+            .withProductProperties(new ProductProperties().withVersion("t"))
+            .withCompatibility(new Compatibility().withIsCompatible(true)
+                .withMessage("lexxbczwtru")
+                .withDescription("qzbqjvsov")
+                .withIssues(Arrays.asList(CompatibilityIssue.HIGHER_DEVICE_VERSION_REQUIRED,
+                    CompatibilityIssue.DEVELOPMENT_BILLING_MODEL_REQUIRED)));
         model = BinaryData.fromObject(model).toObject(ProductNestedProperties.class);
-        Assertions.assertEquals("jpgd", model.displayName());
-        Assertions.assertEquals("ocjjxhvpmouexh", model.description());
-        Assertions.assertEquals("xibqeojnx", model.publisherDisplayName());
-        Assertions.assertEquals("zvddntwndeicbtwn", model.publisherIdentifier());
-        Assertions.assertEquals("aoqvuh", model.offer());
-        Assertions.assertEquals("cffcyddglmj", model.offerVersion());
-        Assertions.assertEquals("jqkwpyeicx", model.sku());
-        Assertions.assertEquals("ciwqvhk", model.billingPartNumber());
-        Assertions.assertEquals("xuigdtopbobj", model.vmExtensionType());
-        Assertions.assertEquals("hm", model.galleryItemIdentity());
-        Assertions.assertEquals("a", model.iconUris().large());
-        Assertions.assertEquals("uhrzayvvt", model.iconUris().wide());
-        Assertions.assertEquals("vdfgiotk", model.iconUris().medium());
-        Assertions.assertEquals("utqxlngx", model.iconUris().small());
-        Assertions.assertEquals("fgugnxkrxdqmid", model.iconUris().hero());
-        Assertions.assertEquals("rvqdra", model.links().get(0).displayName());
-        Assertions.assertEquals("jybige", model.links().get(0).uri());
-        Assertions.assertEquals("wgndrvynhzgpp", model.legalTerms());
-        Assertions.assertEquals("cgyncocpecf", model.privacyPolicy());
-        Assertions.assertEquals(3972915979218676808L, model.payloadLength());
-        Assertions.assertEquals("ofsx", model.productKind());
-        Assertions.assertEquals("v", model.productProperties().version());
+        Assertions.assertEquals("yvxyqjp", model.displayName());
+        Assertions.assertEquals("attpngjcrcczsq", model.description());
+        Assertions.assertEquals("hvmdajvnysounq", model.publisherDisplayName());
+        Assertions.assertEquals("a", model.publisherIdentifier());
+        Assertions.assertEquals("ae", model.offer());
+        Assertions.assertEquals("fhyhltrpmopjmcma", model.offerVersion());
+        Assertions.assertEquals("okth", model.sku());
+        Assertions.assertEquals("iuaod", model.billingPartNumber());
+        Assertions.assertEquals("cpkvxodp", model.vmExtensionType());
+        Assertions.assertEquals("zmyzydagf", model.galleryItemIdentity());
+        Assertions.assertEquals("bezy", model.iconUris().large());
+        Assertions.assertEquals("okktwhrdxw", model.iconUris().wide());
+        Assertions.assertEquals("wqsmbsur", model.iconUris().medium());
+        Assertions.assertEquals("imoryocfsfksym", model.iconUris().small());
+        Assertions.assertEquals("ys", model.iconUris().hero());
+        Assertions.assertEquals("uxh", model.links().get(0).displayName());
+        Assertions.assertEquals("udxorrqn", model.links().get(0).uri());
+        Assertions.assertEquals("oczvy", model.legalTerms());
+        Assertions.assertEquals("qrvkdv", model.privacyPolicy());
+        Assertions.assertEquals(3055369044346357730L, model.payloadLength());
+        Assertions.assertEquals("mvvd", model.productKind());
+        Assertions.assertEquals("t", model.productProperties().version());
         Assertions.assertEquals(true, model.compatibility().isCompatible());
-        Assertions.assertEquals("qabcypm", model.compatibility().message());
-        Assertions.assertEquals("kwlzuvccfwnfn", model.compatibility().description());
-        Assertions.assertEquals(CompatibilityIssue.ADFSIDENTITY_SYSTEM_REQUIRED, model.compatibility().issues().get(0));
+        Assertions.assertEquals("lexxbczwtru", model.compatibility().message());
+        Assertions.assertEquals("qzbqjvsov", model.compatibility().description());
+        Assertions.assertEquals(CompatibilityIssue.HIGHER_DEVICE_VERSION_REQUIRED,
+            model.compatibility().issues().get(0));
     }
 }

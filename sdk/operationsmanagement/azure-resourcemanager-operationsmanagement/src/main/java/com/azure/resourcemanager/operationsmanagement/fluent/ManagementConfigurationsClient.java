@@ -11,13 +11,15 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.operationsmanagement.fluent.models.ManagementConfigurationInner;
 import com.azure.resourcemanager.operationsmanagement.fluent.models.ManagementConfigurationPropertiesListInner;
 
-/** An instance of this class provides access to all the operations defined in ManagementConfigurationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ManagementConfigurationsClient.
+ */
 public interface ManagementConfigurationsClient {
     /**
      * Retrieves the ManagementConfigurations list for the subscription
-     *
-     * <p>Retrieves the ManagementConfigurations list.
-     *
+     * 
+     * Retrieves the ManagementConfigurations list.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -29,9 +31,9 @@ public interface ManagementConfigurationsClient {
 
     /**
      * Retrieves the ManagementConfigurations list for the subscription
-     *
-     * <p>Retrieves the ManagementConfigurations list.
-     *
+     * 
+     * Retrieves the ManagementConfigurations list.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of ManagementConfiguration response.
@@ -41,9 +43,9 @@ public interface ManagementConfigurationsClient {
 
     /**
      * Create/Update ManagementConfiguration.
-     *
-     * <p>Creates or updates the ManagementConfiguration.
-     *
+     * 
+     * Creates or updates the ManagementConfiguration.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
      * @param parameters The parameters required to create OMS Solution.
@@ -54,17 +56,14 @@ public interface ManagementConfigurationsClient {
      * @return the container for solution along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagementConfigurationInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String managementConfigurationName,
-        ManagementConfigurationInner parameters,
-        Context context);
+    Response<ManagementConfigurationInner> createOrUpdateWithResponse(String resourceGroupName,
+        String managementConfigurationName, ManagementConfigurationInner parameters, Context context);
 
     /**
      * Create/Update ManagementConfiguration.
-     *
-     * <p>Creates or updates the ManagementConfiguration.
-     *
+     * 
+     * Creates or updates the ManagementConfiguration.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
      * @param parameters The parameters required to create OMS Solution.
@@ -74,14 +73,14 @@ public interface ManagementConfigurationsClient {
      * @return the container for solution.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagementConfigurationInner createOrUpdate(
-        String resourceGroupName, String managementConfigurationName, ManagementConfigurationInner parameters);
+    ManagementConfigurationInner createOrUpdate(String resourceGroupName, String managementConfigurationName,
+        ManagementConfigurationInner parameters);
 
     /**
      * Deletes the ManagementConfiguration
-     *
-     * <p>Deletes the ManagementConfiguration in the subscription.
-     *
+     * 
+     * Deletes the ManagementConfiguration in the subscription.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
      * @param context The context to associate with this operation.
@@ -95,9 +94,9 @@ public interface ManagementConfigurationsClient {
 
     /**
      * Deletes the ManagementConfiguration
-     *
-     * <p>Deletes the ManagementConfiguration in the subscription.
-     *
+     * 
+     * Deletes the ManagementConfiguration in the subscription.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -109,9 +108,9 @@ public interface ManagementConfigurationsClient {
 
     /**
      * Retrieve ManagementConfiguration.
-     *
-     * <p>Retrieves the user ManagementConfiguration.
-     *
+     * 
+     * Retrieves the user ManagementConfiguration.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
      * @param context The context to associate with this operation.
@@ -121,14 +120,14 @@ public interface ManagementConfigurationsClient {
      * @return the container for solution along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagementConfigurationInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String managementConfigurationName, Context context);
+    Response<ManagementConfigurationInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String managementConfigurationName, Context context);
 
     /**
      * Retrieve ManagementConfiguration.
-     *
-     * <p>Retrieves the user ManagementConfiguration.
-     *
+     * 
+     * Retrieves the user ManagementConfiguration.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

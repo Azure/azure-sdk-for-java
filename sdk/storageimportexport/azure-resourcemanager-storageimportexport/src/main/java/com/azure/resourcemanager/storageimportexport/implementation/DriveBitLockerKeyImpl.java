@@ -12,8 +12,7 @@ public final class DriveBitLockerKeyImpl implements DriveBitLockerKey {
 
     private final com.azure.resourcemanager.storageimportexport.StorageImportExportManager serviceManager;
 
-    DriveBitLockerKeyImpl(
-        DriveBitLockerKeyInner innerObject,
+    DriveBitLockerKeyImpl(DriveBitLockerKeyInner innerObject,
         com.azure.resourcemanager.storageimportexport.StorageImportExportManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

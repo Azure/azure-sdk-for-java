@@ -5,43 +5,136 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Data connector requirements properties. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "kind",
-    defaultImpl = DataConnectorsCheckRequirements.class)
-@JsonTypeName("DataConnectorsCheckRequirements")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AzureActiveDirectory", value = AadCheckRequirements.class),
-    @JsonSubTypes.Type(name = "AzureAdvancedThreatProtection", value = AatpCheckRequirements.class),
-    @JsonSubTypes.Type(name = "AzureSecurityCenter", value = AscCheckRequirements.class),
-    @JsonSubTypes.Type(name = "AmazonWebServicesCloudTrail", value = AwsCloudTrailCheckRequirements.class),
-    @JsonSubTypes.Type(name = "AmazonWebServicesS3", value = AwsS3CheckRequirements.class),
-    @JsonSubTypes.Type(name = "Dynamics365", value = Dynamics365CheckRequirements.class),
-    @JsonSubTypes.Type(name = "MicrosoftCloudAppSecurity", value = McasCheckRequirements.class),
-    @JsonSubTypes.Type(name = "MicrosoftDefenderAdvancedThreatProtection", value = MdatpCheckRequirements.class),
-    @JsonSubTypes.Type(name = "MicrosoftThreatIntelligence", value = MstiCheckRequirements.class),
-    @JsonSubTypes.Type(name = "MicrosoftThreatProtection", value = MtpCheckRequirements.class),
-    @JsonSubTypes.Type(name = "OfficeATP", value = OfficeAtpCheckRequirements.class),
-    @JsonSubTypes.Type(name = "OfficeIRM", value = OfficeIrmCheckRequirements.class),
-    @JsonSubTypes.Type(name = "Office365Project", value = Office365ProjectCheckRequirements.class),
-    @JsonSubTypes.Type(name = "OfficePowerBI", value = OfficePowerBICheckRequirements.class),
-    @JsonSubTypes.Type(name = "ThreatIntelligence", value = TICheckRequirements.class),
-    @JsonSubTypes.Type(name = "ThreatIntelligenceTaxii", value = TiTaxiiCheckRequirements.class),
-    @JsonSubTypes.Type(name = "IOT", value = IoTCheckRequirements.class)
-})
+/**
+ * Data connector requirements properties.
+ */
 @Immutable
-public class DataConnectorsCheckRequirements {
+public class DataConnectorsCheckRequirements implements JsonSerializable<DataConnectorsCheckRequirements> {
+    /*
+     * Describes the kind of connector to be checked.
+     */
+    private DataConnectorKind kind = DataConnectorKind.fromString("DataConnectorsCheckRequirements");
+
+    /**
+     * Creates an instance of DataConnectorsCheckRequirements class.
+     */
+    public DataConnectorsCheckRequirements() {
+    }
+
+    /**
+     * Get the kind property: Describes the kind of connector to be checked.
+     * 
+     * @return the kind value.
+     */
+    public DataConnectorKind kind() {
+        return this.kind;
+    }
+
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataConnectorsCheckRequirements from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataConnectorsCheckRequirements if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataConnectorsCheckRequirements.
+     */
+    public static DataConnectorsCheckRequirements fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("kind".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzureActiveDirectory".equals(discriminatorValue)) {
+                    return AadCheckRequirements.fromJson(readerToUse.reset());
+                } else if ("AzureAdvancedThreatProtection".equals(discriminatorValue)) {
+                    return AatpCheckRequirements.fromJson(readerToUse.reset());
+                } else if ("AzureSecurityCenter".equals(discriminatorValue)) {
+                    return AscCheckRequirements.fromJson(readerToUse.reset());
+                } else if ("AmazonWebServicesCloudTrail".equals(discriminatorValue)) {
+                    return AwsCloudTrailCheckRequirements.fromJson(readerToUse.reset());
+                } else if ("AmazonWebServicesS3".equals(discriminatorValue)) {
+                    return AwsS3CheckRequirements.fromJson(readerToUse.reset());
+                } else if ("Dynamics365".equals(discriminatorValue)) {
+                    return Dynamics365CheckRequirements.fromJson(readerToUse.reset());
+                } else if ("MicrosoftCloudAppSecurity".equals(discriminatorValue)) {
+                    return McasCheckRequirements.fromJson(readerToUse.reset());
+                } else if ("MicrosoftDefenderAdvancedThreatProtection".equals(discriminatorValue)) {
+                    return MdatpCheckRequirements.fromJson(readerToUse.reset());
+                } else if ("MicrosoftThreatIntelligence".equals(discriminatorValue)) {
+                    return MstiCheckRequirements.fromJson(readerToUse.reset());
+                } else if ("MicrosoftThreatProtection".equals(discriminatorValue)) {
+                    return MtpCheckRequirements.fromJson(readerToUse.reset());
+                } else if ("OfficeATP".equals(discriminatorValue)) {
+                    return OfficeAtpCheckRequirements.fromJson(readerToUse.reset());
+                } else if ("OfficeIRM".equals(discriminatorValue)) {
+                    return OfficeIrmCheckRequirements.fromJson(readerToUse.reset());
+                } else if ("Office365Project".equals(discriminatorValue)) {
+                    return Office365ProjectCheckRequirements.fromJson(readerToUse.reset());
+                } else if ("OfficePowerBI".equals(discriminatorValue)) {
+                    return OfficePowerBICheckRequirements.fromJson(readerToUse.reset());
+                } else if ("ThreatIntelligence".equals(discriminatorValue)) {
+                    return TICheckRequirements.fromJson(readerToUse.reset());
+                } else if ("ThreatIntelligenceTaxii".equals(discriminatorValue)) {
+                    return TiTaxiiCheckRequirements.fromJson(readerToUse.reset());
+                } else if ("IOT".equals(discriminatorValue)) {
+                    return IoTCheckRequirements.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static DataConnectorsCheckRequirements fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataConnectorsCheckRequirements deserializedDataConnectorsCheckRequirements
+                = new DataConnectorsCheckRequirements();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kind".equals(fieldName)) {
+                    deserializedDataConnectorsCheckRequirements.kind = DataConnectorKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataConnectorsCheckRequirements;
+        });
     }
 }

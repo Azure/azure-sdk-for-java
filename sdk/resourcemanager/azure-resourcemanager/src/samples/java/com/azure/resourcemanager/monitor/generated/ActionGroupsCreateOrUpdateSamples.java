@@ -35,25 +35,37 @@ public final class ActionGroupsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateAnActionGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getActionGroups().createOrUpdateWithResponse(
-            "Default-NotificationRules", "SampleActionGroup",
-            new ActionGroupResourceInner().withLocation("Global").withTags(mapOf()).withGroupShortName("sample")
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getActionGroups()
+            .createOrUpdateWithResponse("Default-NotificationRules", "SampleActionGroup", new ActionGroupResourceInner()
+                .withLocation("Global")
+                .withTags(mapOf())
+                .withGroupShortName("sample")
                 .withEnabled(true)
                 .withEmailReceivers(Arrays.asList(
-                    new EmailReceiver().withName("John Doe's email").withEmailAddress("johndoe@email.com")
+                    new EmailReceiver().withName("John Doe's email")
+                        .withEmailAddress("johndoe@email.com")
                         .withUseCommonAlertSchema(false),
-                    new EmailReceiver().withName("Jane Smith's email").withEmailAddress("janesmith@email.com")
+                    new EmailReceiver().withName("Jane Smith's email")
+                        .withEmailAddress("janesmith@email.com")
                         .withUseCommonAlertSchema(true)))
                 .withSmsReceivers(Arrays.asList(
-                    new SmsReceiver().withName("John Doe's mobile").withCountryCode("fakeTokenPlaceholder")
+                    new SmsReceiver().withName("John Doe's mobile")
+                        .withCountryCode("fakeTokenPlaceholder")
                         .withPhoneNumber("1234567890"),
-                    new SmsReceiver().withName("Jane Smith's mobile").withCountryCode("fakeTokenPlaceholder")
+                    new SmsReceiver().withName("Jane Smith's mobile")
+                        .withCountryCode("fakeTokenPlaceholder")
                         .withPhoneNumber("0987654321")))
                 .withWebhookReceivers(Arrays.asList(
-                    new WebhookReceiver().withName("Sample webhook 1").withServiceUri("http://www.example.com/webhook1")
+                    new WebhookReceiver().withName("Sample webhook 1")
+                        .withServiceUri("http://www.example.com/webhook1")
                         .withUseCommonAlertSchema(true),
-                    new WebhookReceiver().withName("Sample webhook 2").withServiceUri("http://www.example.com/webhook2")
-                        .withUseCommonAlertSchema(true).withUseAadAuth(true)
+                    new WebhookReceiver().withName("Sample webhook 2")
+                        .withServiceUri("http://www.example.com/webhook2")
+                        .withUseCommonAlertSchema(true)
+                        .withUseAadAuth(true)
                         .withObjectId("d3bb868c-fe44-452c-aa26-769a6538c808")
                         .withIdentifierUri("http://someidentifier/d7811ba3-7996-4a93-99b6-6b2f3f355f8a")
                         .withTenantId("68a4459a-ccb8-493c-b9da-dd30457d1b84")))
@@ -70,27 +82,34 @@ public final class ActionGroupsCreateOrUpdateSamples {
                     .withRunbookName("Sample runbook")
                     .withWebhookResourceId(
                         "/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/runbookTest/providers/Microsoft.Automation/automationAccounts/runbooktest/webhooks/Alert1510184037084")
-                    .withIsGlobalRunbook(false).withName("testRunbook").withServiceUri("<serviceUri>")
+                    .withIsGlobalRunbook(false)
+                    .withName("testRunbook")
+                    .withServiceUri("<serviceUri>")
                     .withUseCommonAlertSchema(true)))
                 .withVoiceReceivers(Arrays.asList(new VoiceReceiver().withName("Sample voice")
-                    .withCountryCode("fakeTokenPlaceholder").withPhoneNumber("1234567890")))
-                .withLogicAppReceivers(Arrays.asList(new LogicAppReceiver().withName("Sample logicApp").withResourceId(
-                    "/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/LogicApp/providers/Microsoft.Logic/workflows/testLogicApp")
+                    .withCountryCode("fakeTokenPlaceholder")
+                    .withPhoneNumber("1234567890")))
+                .withLogicAppReceivers(Arrays.asList(new LogicAppReceiver().withName("Sample logicApp")
+                    .withResourceId(
+                        "/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/LogicApp/providers/Microsoft.Logic/workflows/testLogicApp")
                     .withCallbackUrl(
                         "https://prod-27.northcentralus.logic.azure.com/workflows/68e572e818e5457ba898763b7db90877/triggers/manual/paths/invoke/azns/test?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=Abpsb72UYJxPPvmDo937uzofupO5r_vIeWEx7KVHo7w")
                     .withUseCommonAlertSchema(false)))
                 .withAzureFunctionReceivers(Arrays.asList(new AzureFunctionReceiver().withName("Sample azureFunction")
                     .withFunctionAppResourceId(
                         "/subscriptions/5def922a-3ed4-49c1-b9fd-05ec533819a3/resourceGroups/aznsTest/providers/Microsoft.Web/sites/testFunctionApp")
-                    .withFunctionName("HttpTriggerCSharp1").withHttpTriggerUrl("http://test.me")
+                    .withFunctionName("HttpTriggerCSharp1")
+                    .withHttpTriggerUrl("http://test.me")
                     .withUseCommonAlertSchema(true)))
                 .withArmRoleReceivers(Arrays.asList(new ArmRoleReceiver().withName("Sample armRole")
-                    .withRoleId("8e3af657-a8ff-443c-a75c-2fe8c4bcb635").withUseCommonAlertSchema(true)))
-                .withEventHubReceivers(Arrays.asList(
-                    new EventHubReceiver().withName("Sample eventHub").withEventHubNameSpace("testEventHubNameSpace")
-                        .withEventHubName("testEventHub").withTenantId("68a4459a-ccb8-493c-b9da-dd30457d1b84")
-                        .withSubscriptionId("187f412d-1758-44d9-b052-169e2564721d"))),
-            com.azure.core.util.Context.NONE);
+                    .withRoleId("8e3af657-a8ff-443c-a75c-2fe8c4bcb635")
+                    .withUseCommonAlertSchema(true)))
+                .withEventHubReceivers(Arrays.asList(new EventHubReceiver().withName("Sample eventHub")
+                    .withEventHubNameSpace("testEventHubNameSpace")
+                    .withEventHubName("testEventHub")
+                    .withTenantId("68a4459a-ccb8-493c-b9da-dd30457d1b84")
+                    .withSubscriptionId("187f412d-1758-44d9-b052-169e2564721d"))),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

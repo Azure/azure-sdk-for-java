@@ -5,83 +5,84 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Represents Codeless API Polling data connector. */
+/**
+ * Represents Codeless API Polling data connector.
+ */
 @Fluent
-public final class DataConnectorConnectBody {
+public final class DataConnectorConnectBody implements JsonSerializable<DataConnectorConnectBody> {
     /*
      * The authentication kind used to poll the data
      */
-    @JsonProperty(value = "kind")
     private ConnectAuthKind kind;
 
     /*
      * The API key of the audit server.
      */
-    @JsonProperty(value = "apiKey")
     private String apiKey;
 
     /*
      * Used in v2 logs connector. Represents the data collection ingestion endpoint in log analytics.
      */
-    @JsonProperty(value = "dataCollectionEndpoint")
     private String dataCollectionEndpoint;
 
     /*
      * Used in v2 logs connector. The data collection rule immutable id, the rule defines the transformation and data
      * destination.
      */
-    @JsonProperty(value = "dataCollectionRuleImmutableId")
     private String dataCollectionRuleImmutableId;
 
     /*
      * Used in v2 logs connector. The stream we are sending the data to, this is the name of the streamDeclarations
      * defined in the DCR.
      */
-    @JsonProperty(value = "outputStream")
     private String outputStream;
 
     /*
      * The client secret of the OAuth 2.0 application.
      */
-    @JsonProperty(value = "clientSecret")
     private String clientSecret;
 
     /*
      * The client id of the OAuth 2.0 application.
      */
-    @JsonProperty(value = "clientId")
     private String clientId;
 
     /*
      * The authorization code used in OAuth 2.0 code flow to issue a token.
      */
-    @JsonProperty(value = "authorizationCode")
     private String authorizationCode;
 
     /*
      * The user name in the audit log server.
      */
-    @JsonProperty(value = "userName")
     private String username;
 
     /*
      * The user password in the audit log server.
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /*
      * The requestConfigUserInputValues property.
      */
-    @JsonProperty(value = "requestConfigUserInputValues")
     private List<Object> requestConfigUserInputValues;
 
     /**
+     * Creates an instance of DataConnectorConnectBody class.
+     */
+    public DataConnectorConnectBody() {
+    }
+
+    /**
      * Get the kind property: The authentication kind used to poll the data.
-     *
+     * 
      * @return the kind value.
      */
     public ConnectAuthKind kind() {
@@ -90,7 +91,7 @@ public final class DataConnectorConnectBody {
 
     /**
      * Set the kind property: The authentication kind used to poll the data.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the DataConnectorConnectBody object itself.
      */
@@ -101,7 +102,7 @@ public final class DataConnectorConnectBody {
 
     /**
      * Get the apiKey property: The API key of the audit server.
-     *
+     * 
      * @return the apiKey value.
      */
     public String apiKey() {
@@ -110,7 +111,7 @@ public final class DataConnectorConnectBody {
 
     /**
      * Set the apiKey property: The API key of the audit server.
-     *
+     * 
      * @param apiKey the apiKey value to set.
      * @return the DataConnectorConnectBody object itself.
      */
@@ -122,7 +123,7 @@ public final class DataConnectorConnectBody {
     /**
      * Get the dataCollectionEndpoint property: Used in v2 logs connector. Represents the data collection ingestion
      * endpoint in log analytics.
-     *
+     * 
      * @return the dataCollectionEndpoint value.
      */
     public String dataCollectionEndpoint() {
@@ -132,7 +133,7 @@ public final class DataConnectorConnectBody {
     /**
      * Set the dataCollectionEndpoint property: Used in v2 logs connector. Represents the data collection ingestion
      * endpoint in log analytics.
-     *
+     * 
      * @param dataCollectionEndpoint the dataCollectionEndpoint value to set.
      * @return the DataConnectorConnectBody object itself.
      */
@@ -144,7 +145,7 @@ public final class DataConnectorConnectBody {
     /**
      * Get the dataCollectionRuleImmutableId property: Used in v2 logs connector. The data collection rule immutable id,
      * the rule defines the transformation and data destination.
-     *
+     * 
      * @return the dataCollectionRuleImmutableId value.
      */
     public String dataCollectionRuleImmutableId() {
@@ -154,7 +155,7 @@ public final class DataConnectorConnectBody {
     /**
      * Set the dataCollectionRuleImmutableId property: Used in v2 logs connector. The data collection rule immutable id,
      * the rule defines the transformation and data destination.
-     *
+     * 
      * @param dataCollectionRuleImmutableId the dataCollectionRuleImmutableId value to set.
      * @return the DataConnectorConnectBody object itself.
      */
@@ -166,7 +167,7 @@ public final class DataConnectorConnectBody {
     /**
      * Get the outputStream property: Used in v2 logs connector. The stream we are sending the data to, this is the name
      * of the streamDeclarations defined in the DCR.
-     *
+     * 
      * @return the outputStream value.
      */
     public String outputStream() {
@@ -176,7 +177,7 @@ public final class DataConnectorConnectBody {
     /**
      * Set the outputStream property: Used in v2 logs connector. The stream we are sending the data to, this is the name
      * of the streamDeclarations defined in the DCR.
-     *
+     * 
      * @param outputStream the outputStream value to set.
      * @return the DataConnectorConnectBody object itself.
      */
@@ -187,7 +188,7 @@ public final class DataConnectorConnectBody {
 
     /**
      * Get the clientSecret property: The client secret of the OAuth 2.0 application.
-     *
+     * 
      * @return the clientSecret value.
      */
     public String clientSecret() {
@@ -196,7 +197,7 @@ public final class DataConnectorConnectBody {
 
     /**
      * Set the clientSecret property: The client secret of the OAuth 2.0 application.
-     *
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the DataConnectorConnectBody object itself.
      */
@@ -207,7 +208,7 @@ public final class DataConnectorConnectBody {
 
     /**
      * Get the clientId property: The client id of the OAuth 2.0 application.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -216,7 +217,7 @@ public final class DataConnectorConnectBody {
 
     /**
      * Set the clientId property: The client id of the OAuth 2.0 application.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the DataConnectorConnectBody object itself.
      */
@@ -227,7 +228,7 @@ public final class DataConnectorConnectBody {
 
     /**
      * Get the authorizationCode property: The authorization code used in OAuth 2.0 code flow to issue a token.
-     *
+     * 
      * @return the authorizationCode value.
      */
     public String authorizationCode() {
@@ -236,7 +237,7 @@ public final class DataConnectorConnectBody {
 
     /**
      * Set the authorizationCode property: The authorization code used in OAuth 2.0 code flow to issue a token.
-     *
+     * 
      * @param authorizationCode the authorizationCode value to set.
      * @return the DataConnectorConnectBody object itself.
      */
@@ -247,7 +248,7 @@ public final class DataConnectorConnectBody {
 
     /**
      * Get the username property: The user name in the audit log server.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -256,7 +257,7 @@ public final class DataConnectorConnectBody {
 
     /**
      * Set the username property: The user name in the audit log server.
-     *
+     * 
      * @param username the username value to set.
      * @return the DataConnectorConnectBody object itself.
      */
@@ -267,7 +268,7 @@ public final class DataConnectorConnectBody {
 
     /**
      * Get the password property: The user password in the audit log server.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -276,7 +277,7 @@ public final class DataConnectorConnectBody {
 
     /**
      * Set the password property: The user password in the audit log server.
-     *
+     * 
      * @param password the password value to set.
      * @return the DataConnectorConnectBody object itself.
      */
@@ -287,7 +288,7 @@ public final class DataConnectorConnectBody {
 
     /**
      * Get the requestConfigUserInputValues property: The requestConfigUserInputValues property.
-     *
+     * 
      * @return the requestConfigUserInputValues value.
      */
     public List<Object> requestConfigUserInputValues() {
@@ -296,7 +297,7 @@ public final class DataConnectorConnectBody {
 
     /**
      * Set the requestConfigUserInputValues property: The requestConfigUserInputValues property.
-     *
+     * 
      * @param requestConfigUserInputValues the requestConfigUserInputValues value to set.
      * @return the DataConnectorConnectBody object itself.
      */
@@ -307,9 +308,77 @@ public final class DataConnectorConnectBody {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeStringField("apiKey", this.apiKey);
+        jsonWriter.writeStringField("dataCollectionEndpoint", this.dataCollectionEndpoint);
+        jsonWriter.writeStringField("dataCollectionRuleImmutableId", this.dataCollectionRuleImmutableId);
+        jsonWriter.writeStringField("outputStream", this.outputStream);
+        jsonWriter.writeStringField("clientSecret", this.clientSecret);
+        jsonWriter.writeStringField("clientId", this.clientId);
+        jsonWriter.writeStringField("authorizationCode", this.authorizationCode);
+        jsonWriter.writeStringField("userName", this.username);
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeArrayField("requestConfigUserInputValues", this.requestConfigUserInputValues,
+            (writer, element) -> writer.writeUntyped(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataConnectorConnectBody from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataConnectorConnectBody if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataConnectorConnectBody.
+     */
+    public static DataConnectorConnectBody fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataConnectorConnectBody deserializedDataConnectorConnectBody = new DataConnectorConnectBody();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kind".equals(fieldName)) {
+                    deserializedDataConnectorConnectBody.kind = ConnectAuthKind.fromString(reader.getString());
+                } else if ("apiKey".equals(fieldName)) {
+                    deserializedDataConnectorConnectBody.apiKey = reader.getString();
+                } else if ("dataCollectionEndpoint".equals(fieldName)) {
+                    deserializedDataConnectorConnectBody.dataCollectionEndpoint = reader.getString();
+                } else if ("dataCollectionRuleImmutableId".equals(fieldName)) {
+                    deserializedDataConnectorConnectBody.dataCollectionRuleImmutableId = reader.getString();
+                } else if ("outputStream".equals(fieldName)) {
+                    deserializedDataConnectorConnectBody.outputStream = reader.getString();
+                } else if ("clientSecret".equals(fieldName)) {
+                    deserializedDataConnectorConnectBody.clientSecret = reader.getString();
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedDataConnectorConnectBody.clientId = reader.getString();
+                } else if ("authorizationCode".equals(fieldName)) {
+                    deserializedDataConnectorConnectBody.authorizationCode = reader.getString();
+                } else if ("userName".equals(fieldName)) {
+                    deserializedDataConnectorConnectBody.username = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedDataConnectorConnectBody.password = reader.getString();
+                } else if ("requestConfigUserInputValues".equals(fieldName)) {
+                    List<Object> requestConfigUserInputValues = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedDataConnectorConnectBody.requestConfigUserInputValues = requestConfigUserInputValues;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataConnectorConnectBody;
+        });
     }
 }

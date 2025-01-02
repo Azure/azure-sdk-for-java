@@ -5,30 +5,47 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SpatialAnalysisPersonDistanceEventTrigger. */
+/**
+ * The event trigger type.
+ */
 public final class SpatialAnalysisPersonDistanceEventTrigger
-        extends ExpandableStringEnum<SpatialAnalysisPersonDistanceEventTrigger> {
-    /** Static value event for SpatialAnalysisPersonDistanceEventTrigger. */
+    extends ExpandableStringEnum<SpatialAnalysisPersonDistanceEventTrigger> {
+    /**
+     * Event trigger.
+     */
     public static final SpatialAnalysisPersonDistanceEventTrigger EVENT = fromString("event");
 
-    /** Static value interval for SpatialAnalysisPersonDistanceEventTrigger. */
+    /**
+     * Interval trigger.
+     */
     public static final SpatialAnalysisPersonDistanceEventTrigger INTERVAL = fromString("interval");
 
     /**
+     * Creates a new instance of SpatialAnalysisPersonDistanceEventTrigger value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SpatialAnalysisPersonDistanceEventTrigger() {
+    }
+
+    /**
      * Creates or finds a SpatialAnalysisPersonDistanceEventTrigger from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SpatialAnalysisPersonDistanceEventTrigger.
      */
-    @JsonCreator
     public static SpatialAnalysisPersonDistanceEventTrigger fromString(String name) {
         return fromString(name, SpatialAnalysisPersonDistanceEventTrigger.class);
     }
 
-    /** @return known SpatialAnalysisPersonDistanceEventTrigger values. */
+    /**
+     * Gets known SpatialAnalysisPersonDistanceEventTrigger values.
+     * 
+     * @return known SpatialAnalysisPersonDistanceEventTrigger values.
+     */
     public static Collection<SpatialAnalysisPersonDistanceEventTrigger> values() {
         return values(SpatialAnalysisPersonDistanceEventTrigger.class);
     }

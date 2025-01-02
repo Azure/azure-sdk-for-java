@@ -10,8 +10,8 @@ import com.azure.resourcemanager.kusto.models.PrivateEndpointProperty;
 public final class PrivateEndpointPropertyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateEndpointProperty model =
-            BinaryData.fromString("{\"id\":\"xbnjbiksq\"}").toObject(PrivateEndpointProperty.class);
+        PrivateEndpointProperty model
+            = BinaryData.fromString("{\"id\":\"xbnjbiksq\"}").toObject(PrivateEndpointProperty.class);
     }
 
     @org.junit.jupiter.api.Test

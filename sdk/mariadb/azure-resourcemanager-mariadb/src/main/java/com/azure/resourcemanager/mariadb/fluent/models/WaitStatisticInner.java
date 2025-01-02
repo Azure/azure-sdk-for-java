@@ -6,25 +6,46 @@ package com.azure.resourcemanager.mariadb.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Represents a Wait Statistic. */
+/**
+ * Represents a Wait Statistic.
+ */
 @Fluent
 public final class WaitStatisticInner extends ProxyResource {
     /*
      * The properties of a wait statistic.
      */
-    @JsonProperty(value = "properties")
     private WaitStatisticProperties innerProperties;
 
-    /** Creates an instance of WaitStatisticInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of WaitStatisticInner class.
+     */
     public WaitStatisticInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of a wait statistic.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WaitStatisticProperties innerProperties() {
@@ -32,8 +53,38 @@ public final class WaitStatisticInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the startTime property: Observation start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -42,7 +93,7 @@ public final class WaitStatisticInner extends ProxyResource {
 
     /**
      * Set the startTime property: Observation start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the WaitStatisticInner object itself.
      */
@@ -56,7 +107,7 @@ public final class WaitStatisticInner extends ProxyResource {
 
     /**
      * Get the endTime property: Observation end time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -65,7 +116,7 @@ public final class WaitStatisticInner extends ProxyResource {
 
     /**
      * Set the endTime property: Observation end time.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the WaitStatisticInner object itself.
      */
@@ -79,7 +130,7 @@ public final class WaitStatisticInner extends ProxyResource {
 
     /**
      * Get the eventName property: Wait event name.
-     *
+     * 
      * @return the eventName value.
      */
     public String eventName() {
@@ -88,7 +139,7 @@ public final class WaitStatisticInner extends ProxyResource {
 
     /**
      * Set the eventName property: Wait event name.
-     *
+     * 
      * @param eventName the eventName value to set.
      * @return the WaitStatisticInner object itself.
      */
@@ -102,7 +153,7 @@ public final class WaitStatisticInner extends ProxyResource {
 
     /**
      * Get the eventTypeName property: Wait event type name.
-     *
+     * 
      * @return the eventTypeName value.
      */
     public String eventTypeName() {
@@ -111,7 +162,7 @@ public final class WaitStatisticInner extends ProxyResource {
 
     /**
      * Set the eventTypeName property: Wait event type name.
-     *
+     * 
      * @param eventTypeName the eventTypeName value to set.
      * @return the WaitStatisticInner object itself.
      */
@@ -125,7 +176,7 @@ public final class WaitStatisticInner extends ProxyResource {
 
     /**
      * Get the queryId property: Database query identifier.
-     *
+     * 
      * @return the queryId value.
      */
     public Long queryId() {
@@ -134,7 +185,7 @@ public final class WaitStatisticInner extends ProxyResource {
 
     /**
      * Set the queryId property: Database query identifier.
-     *
+     * 
      * @param queryId the queryId value to set.
      * @return the WaitStatisticInner object itself.
      */
@@ -148,7 +199,7 @@ public final class WaitStatisticInner extends ProxyResource {
 
     /**
      * Get the databaseName property: Database Name.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -157,7 +208,7 @@ public final class WaitStatisticInner extends ProxyResource {
 
     /**
      * Set the databaseName property: Database Name.
-     *
+     * 
      * @param databaseName the databaseName value to set.
      * @return the WaitStatisticInner object itself.
      */
@@ -171,7 +222,7 @@ public final class WaitStatisticInner extends ProxyResource {
 
     /**
      * Get the userId property: Database user identifier.
-     *
+     * 
      * @return the userId value.
      */
     public Long userId() {
@@ -180,7 +231,7 @@ public final class WaitStatisticInner extends ProxyResource {
 
     /**
      * Set the userId property: Database user identifier.
-     *
+     * 
      * @param userId the userId value to set.
      * @return the WaitStatisticInner object itself.
      */
@@ -194,7 +245,7 @@ public final class WaitStatisticInner extends ProxyResource {
 
     /**
      * Get the count property: Wait event count observed in this time interval.
-     *
+     * 
      * @return the count value.
      */
     public Long count() {
@@ -203,7 +254,7 @@ public final class WaitStatisticInner extends ProxyResource {
 
     /**
      * Set the count property: Wait event count observed in this time interval.
-     *
+     * 
      * @param count the count value to set.
      * @return the WaitStatisticInner object itself.
      */
@@ -217,7 +268,7 @@ public final class WaitStatisticInner extends ProxyResource {
 
     /**
      * Get the totalTimeInMs property: Total time of wait in milliseconds in this time interval.
-     *
+     * 
      * @return the totalTimeInMs value.
      */
     public Double totalTimeInMs() {
@@ -226,7 +277,7 @@ public final class WaitStatisticInner extends ProxyResource {
 
     /**
      * Set the totalTimeInMs property: Total time of wait in milliseconds in this time interval.
-     *
+     * 
      * @param totalTimeInMs the totalTimeInMs value to set.
      * @return the WaitStatisticInner object itself.
      */
@@ -240,12 +291,55 @@ public final class WaitStatisticInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WaitStatisticInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WaitStatisticInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WaitStatisticInner.
+     */
+    public static WaitStatisticInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WaitStatisticInner deserializedWaitStatisticInner = new WaitStatisticInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedWaitStatisticInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedWaitStatisticInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWaitStatisticInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWaitStatisticInner.innerProperties = WaitStatisticProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWaitStatisticInner;
+        });
     }
 }

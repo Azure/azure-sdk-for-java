@@ -97,10 +97,8 @@ public interface VirtualNetworkGatewayIpConfiguration
      * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this
      *     definition
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithAttach<ParentT>,
-            DefinitionStages.WithPublicIPAddress<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithAttach<ParentT>,
+        DefinitionStages.WithPublicIPAddress<ParentT> {
     }
 
     /** Grouping of application gateway IP configuration update stages. */

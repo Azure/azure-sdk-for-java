@@ -171,23 +171,18 @@ public final class IncidentImpl implements Incident, Incident.Definition, Incide
     }
 
     public Incident create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIncidents()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, incidentId, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIncidents()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, incidentId, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Incident create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIncidents()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, incidentId, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIncidents()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, incidentId, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -202,91 +197,79 @@ public final class IncidentImpl implements Incident, Incident.Definition, Incide
     }
 
     public Incident apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIncidents()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, incidentId, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIncidents()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, incidentId, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Incident apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIncidents()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, incidentId, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIncidents()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, incidentId, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    IncidentImpl(
-        IncidentInner innerObject, com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
+    IncidentImpl(IncidentInner innerObject,
+        com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.incidentId = Utils.getValueFromIdByName(innerObject.id(), "incidents");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.incidentId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "incidents");
     }
 
     public Incident refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIncidents()
-                .getWithResponse(resourceGroupName, workspaceName, incidentId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIncidents()
+            .getWithResponse(resourceGroupName, workspaceName, incidentId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Incident refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIncidents()
-                .getWithResponse(resourceGroupName, workspaceName, incidentId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIncidents()
+            .getWithResponse(resourceGroupName, workspaceName, incidentId, context)
+            .getValue();
         return this;
+    }
+
+    public Response<TeamInformation> createTeamWithResponse(TeamProperties teamProperties, Context context) {
+        return serviceManager.incidents()
+            .createTeamWithResponse(resourceGroupName, workspaceName, incidentId, teamProperties, context);
     }
 
     public TeamInformation createTeam(TeamProperties teamProperties) {
         return serviceManager.incidents().createTeam(resourceGroupName, workspaceName, incidentId, teamProperties);
     }
 
-    public Response<TeamInformation> createTeamWithResponse(TeamProperties teamProperties, Context context) {
-        return serviceManager
-            .incidents()
-            .createTeamWithResponse(resourceGroupName, workspaceName, incidentId, teamProperties, context);
+    public Response<IncidentAlertList> listAlertsWithResponse(Context context) {
+        return serviceManager.incidents().listAlertsWithResponse(resourceGroupName, workspaceName, incidentId, context);
     }
 
     public IncidentAlertList listAlerts() {
         return serviceManager.incidents().listAlerts(resourceGroupName, workspaceName, incidentId);
     }
 
-    public Response<IncidentAlertList> listAlertsWithResponse(Context context) {
-        return serviceManager.incidents().listAlertsWithResponse(resourceGroupName, workspaceName, incidentId, context);
+    public Response<IncidentBookmarkList> listBookmarksWithResponse(Context context) {
+        return serviceManager.incidents()
+            .listBookmarksWithResponse(resourceGroupName, workspaceName, incidentId, context);
     }
 
     public IncidentBookmarkList listBookmarks() {
         return serviceManager.incidents().listBookmarks(resourceGroupName, workspaceName, incidentId);
     }
 
-    public Response<IncidentBookmarkList> listBookmarksWithResponse(Context context) {
-        return serviceManager
-            .incidents()
-            .listBookmarksWithResponse(resourceGroupName, workspaceName, incidentId, context);
+    public Response<IncidentEntitiesResponse> listEntitiesWithResponse(Context context) {
+        return serviceManager.incidents()
+            .listEntitiesWithResponse(resourceGroupName, workspaceName, incidentId, context);
     }
 
     public IncidentEntitiesResponse listEntities() {
         return serviceManager.incidents().listEntities(resourceGroupName, workspaceName, incidentId);
-    }
-
-    public Response<IncidentEntitiesResponse> listEntitiesWithResponse(Context context) {
-        return serviceManager
-            .incidents()
-            .listEntitiesWithResponse(resourceGroupName, workspaceName, incidentId, context);
     }
 
     public IncidentImpl withEtag(String etag) {

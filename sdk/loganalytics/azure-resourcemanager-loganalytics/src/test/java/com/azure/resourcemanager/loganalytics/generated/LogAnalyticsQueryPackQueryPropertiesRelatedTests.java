@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LogAnalyticsQueryPackQueryPropertiesRelatedTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LogAnalyticsQueryPackQueryPropertiesRelated model =
-            BinaryData
-                .fromString(
-                    "{\"categories\":[\"tthzrvqd\"],\"resourceTypes\":[\"hjybigehoqfbo\"],\"solutions\":[\"anyktzlcuiywg\",\"ywgndrv\",\"nhzgpphrcgyn\",\"ocpecfvmmco\"]}")
-                .toObject(LogAnalyticsQueryPackQueryPropertiesRelated.class);
+        LogAnalyticsQueryPackQueryPropertiesRelated model = BinaryData.fromString(
+            "{\"categories\":[\"tthzrvqd\"],\"resourceTypes\":[\"hjybigehoqfbo\"],\"solutions\":[\"anyktzlcuiywg\",\"ywgndrv\",\"nhzgpphrcgyn\",\"ocpecfvmmco\"]}")
+            .toObject(LogAnalyticsQueryPackQueryPropertiesRelated.class);
         Assertions.assertEquals("tthzrvqd", model.categories().get(0));
         Assertions.assertEquals("hjybigehoqfbo", model.resourceTypes().get(0));
         Assertions.assertEquals("anyktzlcuiywg", model.solutions().get(0));
@@ -24,9 +22,8 @@ public final class LogAnalyticsQueryPackQueryPropertiesRelatedTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogAnalyticsQueryPackQueryPropertiesRelated model =
-            new LogAnalyticsQueryPackQueryPropertiesRelated()
-                .withCategories(Arrays.asList("tthzrvqd"))
+        LogAnalyticsQueryPackQueryPropertiesRelated model
+            = new LogAnalyticsQueryPackQueryPropertiesRelated().withCategories(Arrays.asList("tthzrvqd"))
                 .withResourceTypes(Arrays.asList("hjybigehoqfbo"))
                 .withSolutions(Arrays.asList("anyktzlcuiywg", "ywgndrv", "nhzgpphrcgyn", "ocpecfvmmco"));
         model = BinaryData.fromObject(model).toObject(LogAnalyticsQueryPackQueryPropertiesRelated.class);

@@ -16,8 +16,8 @@ public final class PrivateLinkResourceImpl implements PrivateLinkResource {
 
     private final com.azure.resourcemanager.webpubsub.WebPubSubManager serviceManager;
 
-    PrivateLinkResourceImpl(
-        PrivateLinkResourceInner innerObject, com.azure.resourcemanager.webpubsub.WebPubSubManager serviceManager) {
+    PrivateLinkResourceImpl(PrivateLinkResourceInner innerObject,
+        com.azure.resourcemanager.webpubsub.WebPubSubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

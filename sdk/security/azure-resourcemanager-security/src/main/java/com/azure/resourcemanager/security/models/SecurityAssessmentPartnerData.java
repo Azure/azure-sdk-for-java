@@ -6,23 +6,25 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Data regarding 3rd party partner integration.
  */
 @Fluent
-public final class SecurityAssessmentPartnerData {
+public final class SecurityAssessmentPartnerData implements JsonSerializable<SecurityAssessmentPartnerData> {
     /*
      * Name of the company of the partner
      */
-    @JsonProperty(value = "partnerName", required = true)
     private String partnerName;
 
     /*
      * secret to authenticate the partner - write only
      */
-    @JsonProperty(value = "secret")
     private String secret;
 
     /**
@@ -90,4 +92,45 @@ public final class SecurityAssessmentPartnerData {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SecurityAssessmentPartnerData.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("partnerName", this.partnerName);
+        jsonWriter.writeStringField("secret", this.secret);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityAssessmentPartnerData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityAssessmentPartnerData if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SecurityAssessmentPartnerData.
+     */
+    public static SecurityAssessmentPartnerData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityAssessmentPartnerData deserializedSecurityAssessmentPartnerData
+                = new SecurityAssessmentPartnerData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("partnerName".equals(fieldName)) {
+                    deserializedSecurityAssessmentPartnerData.partnerName = reader.getString();
+                } else if ("secret".equals(fieldName)) {
+                    deserializedSecurityAssessmentPartnerData.secret = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityAssessmentPartnerData;
+        });
+    }
 }

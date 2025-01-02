@@ -27,22 +27,28 @@ import com.azure.resourcemanager.securityinsights.fluent.models.BookmarkExpandRe
 import com.azure.resourcemanager.securityinsights.models.BookmarkExpandParameters;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in BookmarkOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BookmarkOperationsClient.
+ */
 public final class BookmarkOperationsClientImpl implements BookmarkOperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final BookmarkOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SecurityInsightsImpl client;
 
     /**
      * Initializes an instance of BookmarkOperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     BookmarkOperationsClientImpl(SecurityInsightsImpl client) {
-        this.service =
-            RestProxy.create(BookmarkOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(BookmarkOperationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -52,28 +58,22 @@ public final class BookmarkOperationsClientImpl implements BookmarkOperationsCli
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityInsightsBook")
-    private interface BookmarkOperationsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/bookmarks/{bookmarkId}/expand")
-        @ExpectedResponses({200})
+    public interface BookmarkOperationsService {
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/bookmarks/{bookmarkId}/expand")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BookmarkExpandResponseInner>> expand(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<BookmarkExpandResponseInner>> expand(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("bookmarkId") String bookmarkId,
-            @BodyParam("application/json") BookmarkExpandParameters parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BookmarkExpandParameters parameters, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Expand an bookmark.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param bookmarkId Bookmark ID.
@@ -82,22 +82,18 @@ public final class BookmarkOperationsClientImpl implements BookmarkOperationsCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity expansion result operation response along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BookmarkExpandResponseInner>> expandWithResponseAsync(
-        String resourceGroupName, String workspaceName, String bookmarkId, BookmarkExpandParameters parameters) {
+    private Mono<Response<BookmarkExpandResponseInner>> expandWithResponseAsync(String resourceGroupName,
+        String workspaceName, String bookmarkId, BookmarkExpandParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -115,26 +111,14 @@ public final class BookmarkOperationsClientImpl implements BookmarkOperationsCli
             parameters.validate();
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .expand(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            bookmarkId,
-                            parameters,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.expand(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, workspaceName, bookmarkId, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Expand an bookmark.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param bookmarkId Bookmark ID.
@@ -144,26 +128,18 @@ public final class BookmarkOperationsClientImpl implements BookmarkOperationsCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity expansion result operation response along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BookmarkExpandResponseInner>> expandWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String bookmarkId,
-        BookmarkExpandParameters parameters,
-        Context context) {
+    private Mono<Response<BookmarkExpandResponseInner>> expandWithResponseAsync(String resourceGroupName,
+        String workspaceName, String bookmarkId, BookmarkExpandParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -182,22 +158,13 @@ public final class BookmarkOperationsClientImpl implements BookmarkOperationsCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .expand(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                bookmarkId,
-                parameters,
-                accept,
-                context);
+        return service.expand(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, bookmarkId, parameters, accept, context);
     }
 
     /**
      * Expand an bookmark.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param bookmarkId Bookmark ID.
@@ -208,33 +175,15 @@ public final class BookmarkOperationsClientImpl implements BookmarkOperationsCli
      * @return the entity expansion result operation response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BookmarkExpandResponseInner> expandAsync(
-        String resourceGroupName, String workspaceName, String bookmarkId, BookmarkExpandParameters parameters) {
+    private Mono<BookmarkExpandResponseInner> expandAsync(String resourceGroupName, String workspaceName,
+        String bookmarkId, BookmarkExpandParameters parameters) {
         return expandWithResponseAsync(resourceGroupName, workspaceName, bookmarkId, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Expand an bookmark.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param bookmarkId Bookmark ID.
-     * @param parameters The parameters required to execute an expand operation on the given bookmark.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity expansion result operation response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BookmarkExpandResponseInner expand(
-        String resourceGroupName, String workspaceName, String bookmarkId, BookmarkExpandParameters parameters) {
-        return expandAsync(resourceGroupName, workspaceName, bookmarkId, parameters).block();
-    }
-
-    /**
-     * Expand an bookmark.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param bookmarkId Bookmark ID.
@@ -246,12 +195,26 @@ public final class BookmarkOperationsClientImpl implements BookmarkOperationsCli
      * @return the entity expansion result operation response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BookmarkExpandResponseInner> expandWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String bookmarkId,
-        BookmarkExpandParameters parameters,
-        Context context) {
+    public Response<BookmarkExpandResponseInner> expandWithResponse(String resourceGroupName, String workspaceName,
+        String bookmarkId, BookmarkExpandParameters parameters, Context context) {
         return expandWithResponseAsync(resourceGroupName, workspaceName, bookmarkId, parameters, context).block();
+    }
+
+    /**
+     * Expand an bookmark.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param bookmarkId Bookmark ID.
+     * @param parameters The parameters required to execute an expand operation on the given bookmark.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the entity expansion result operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BookmarkExpandResponseInner expand(String resourceGroupName, String workspaceName, String bookmarkId,
+        BookmarkExpandParameters parameters) {
+        return expandWithResponse(resourceGroupName, workspaceName, bookmarkId, parameters, Context.NONE).getValue();
     }
 }

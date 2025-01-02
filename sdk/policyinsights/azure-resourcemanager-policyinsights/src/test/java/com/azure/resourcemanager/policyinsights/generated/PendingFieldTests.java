@@ -8,28 +8,21 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.policyinsights.models.PendingField;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PendingFieldTests {
-    @Test
-    public void testDeserialize() {
-        PendingField model =
-            BinaryData
-                .fromString(
-                    "{\"field\":\"wczelpci\",\"values\":[\"sfeaenwabfat\",\"lddxbjhwua\",\"nozj\",\"sphyoulpjrvxa\"]}")
-                .toObject(PendingField.class);
-        Assertions.assertEquals("wczelpci", model.field());
-        Assertions.assertEquals("sfeaenwabfat", model.values().get(0));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PendingField model = BinaryData.fromString("{\"field\":\"acqpbtuodxesza\",\"values\":[\"l\",\"wumuaslzk\"]}")
+            .toObject(PendingField.class);
+        Assertions.assertEquals("acqpbtuodxesza", model.field());
+        Assertions.assertEquals("l", model.values().get(0));
     }
 
-    @Test
-    public void testSerialize() {
-        PendingField model =
-            new PendingField()
-                .withField("wczelpci")
-                .withValues(Arrays.asList("sfeaenwabfat", "lddxbjhwua", "nozj", "sphyoulpjrvxa"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PendingField model = new PendingField().withField("acqpbtuodxesza").withValues(Arrays.asList("l", "wumuaslzk"));
         model = BinaryData.fromObject(model).toObject(PendingField.class);
-        Assertions.assertEquals("wczelpci", model.field());
-        Assertions.assertEquals("sfeaenwabfat", model.values().get(0));
+        Assertions.assertEquals("acqpbtuodxesza", model.field());
+        Assertions.assertEquals("l", model.values().get(0));
     }
 }

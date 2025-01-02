@@ -11,14 +11,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 
 /** An immutable client-side representation of an inbound NAT rule. */
 @Fluent()
-public interface LoadBalancerInboundNatRule
-    extends HasFrontend,
-        HasBackendPort,
-        HasProtocol<TransportProtocol>,
-        HasFloatingIP,
-        HasFrontendPort,
-        HasInnerModel<InboundNatRuleInner>,
-        ChildResource<LoadBalancer> {
+public interface LoadBalancerInboundNatRule extends HasFrontend, HasBackendPort, HasProtocol<TransportProtocol>,
+    HasFloatingIP, HasFrontendPort, HasInnerModel<InboundNatRuleInner>, ChildResource<LoadBalancer> {
 
     /** @return the name of the IP configuration within the network interface associated with this NAT rule */
     String backendNicIpConfigurationName();
@@ -48,10 +42,8 @@ public interface LoadBalancerInboundNatRule
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAttach<ParentT>
-            extends Attachable.InDefinition<ParentT>,
-                DefinitionStages.WithBackendPort<ParentT>,
-                DefinitionStages.WithFloatingIP<ParentT>,
-                DefinitionStages.WithIdleTimeout<ParentT> {
+            extends Attachable.InDefinition<ParentT>, DefinitionStages.WithBackendPort<ParentT>,
+            DefinitionStages.WithFloatingIP<ParentT>, DefinitionStages.WithIdleTimeout<ParentT> {
         }
 
         /**
@@ -119,12 +111,9 @@ public interface LoadBalancerInboundNatRule
      *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithProtocol<ParentT>,
-            DefinitionStages.WithFrontend<ParentT>,
-            DefinitionStages.WithFrontendPort<ParentT>,
-            DefinitionStages.WithAttach<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithProtocol<ParentT>,
+        DefinitionStages.WithFrontend<ParentT>, DefinitionStages.WithFrontendPort<ParentT>,
+        DefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of inbound NAT rule update stages. */
@@ -167,14 +156,9 @@ public interface LoadBalancerInboundNatRule
     }
 
     /** The entirety of an inbound NAT rule update as part of a load balancer update. */
-    interface Update
-        extends Settable<LoadBalancer.Update>,
-            UpdateStages.WithBackendPort,
-            UpdateStages.WithFloatingIP,
-            UpdateStages.WithFrontend,
-            UpdateStages.WithFrontendPort,
-            UpdateStages.WithIdleTimeout,
-            UpdateStages.WithProtocol {
+    interface Update extends Settable<LoadBalancer.Update>, UpdateStages.WithBackendPort, UpdateStages.WithFloatingIP,
+        UpdateStages.WithFrontend, UpdateStages.WithFrontendPort, UpdateStages.WithIdleTimeout,
+        UpdateStages.WithProtocol {
     }
 
     /** Grouping of inbound NAT rule definition stages as part of a load balancer update. */
@@ -196,10 +180,8 @@ public interface LoadBalancerInboundNatRule
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAttach<ParentT>
-            extends Attachable.InUpdate<ParentT>,
-                UpdateDefinitionStages.WithBackendPort<ParentT>,
-                UpdateDefinitionStages.WithFloatingIP<ParentT>,
-                UpdateDefinitionStages.WithIdleTimeout<ParentT> {
+            extends Attachable.InUpdate<ParentT>, UpdateDefinitionStages.WithBackendPort<ParentT>,
+            UpdateDefinitionStages.WithFloatingIP<ParentT>, UpdateDefinitionStages.WithIdleTimeout<ParentT> {
         }
 
         /**
@@ -269,11 +251,8 @@ public interface LoadBalancerInboundNatRule
      *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface UpdateDefinition<ParentT>
-        extends UpdateDefinitionStages.Blank<ParentT>,
-            UpdateDefinitionStages.WithProtocol<ParentT>,
-            UpdateDefinitionStages.WithFrontend<ParentT>,
-            UpdateDefinitionStages.WithFrontendPort<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT> {
+    interface UpdateDefinition<ParentT> extends UpdateDefinitionStages.Blank<ParentT>,
+        UpdateDefinitionStages.WithProtocol<ParentT>, UpdateDefinitionStages.WithFrontend<ParentT>,
+        UpdateDefinitionStages.WithFrontendPort<ParentT>, UpdateDefinitionStages.WithAttach<ParentT> {
     }
 }

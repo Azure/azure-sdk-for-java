@@ -5,26 +5,41 @@
 package com.azure.resourcemanager.postgresql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ServerKeyType. */
+/**
+ * The key type like 'AzureKeyVault'.
+ */
 public final class ServerKeyType extends ExpandableStringEnum<ServerKeyType> {
-    /** Static value AzureKeyVault for ServerKeyType. */
+    /**
+     * Static value AzureKeyVault for ServerKeyType.
+     */
     public static final ServerKeyType AZURE_KEY_VAULT = fromString("AzureKeyVault");
 
     /**
+     * Creates a new instance of ServerKeyType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServerKeyType() {
+    }
+
+    /**
      * Creates or finds a ServerKeyType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ServerKeyType.
      */
-    @JsonCreator
     public static ServerKeyType fromString(String name) {
         return fromString(name, ServerKeyType.class);
     }
 
-    /** @return known ServerKeyType values. */
+    /**
+     * Gets known ServerKeyType values.
+     * 
+     * @return known ServerKeyType values.
+     */
     public static Collection<ServerKeyType> values() {
         return values(ServerKeyType.class);
     }

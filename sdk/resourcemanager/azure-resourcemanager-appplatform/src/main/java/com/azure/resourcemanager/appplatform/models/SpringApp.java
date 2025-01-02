@@ -14,79 +14,136 @@ import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure Spring App. */
 @Fluent
-public interface SpringApp
-    extends ExternalChildResource<SpringApp, SpringService>,
-        HasInnerModel<AppResourceInner>,
-        Updatable<SpringApp.Update> {
-    /** @return whether the app exposes public endpoint */
+public interface SpringApp extends ExternalChildResource<SpringApp, SpringService>, HasInnerModel<AppResourceInner>,
+    Updatable<SpringApp.Update> {
+    /**
+     * Check whether the app exposes public endpoint.
+     *
+     * @return whether the app exposes public endpoint
+     */
     boolean isPublic();
 
-    /** @return whether only https is allowed for the app */
+    /**
+     * Check whether only HTTPS is allowed for the app.
+     *
+     * @return whether only HTTPS is allowed for the app
+     */
     boolean isHttpsOnly();
 
-    /** @return the url of the app */
+    /**
+     * Gets the URL of the app.
+     *
+     * @return the URL of the app
+     */
     String url();
 
-    /** @return the fully qualified domain name (FQDN) of the app */
+    /**
+     * Gets the fully qualified domain name (FQDN) of the app.
+     *
+     * @return the fully qualified domain name (FQDN) of the app
+     */
     String fqdn();
 
-    /** @return the temporary disk of the app */
+    /**
+     * Gets the temporary disk of the app.
+     *
+     * @return the temporary disk of the app
+     */
     TemporaryDisk temporaryDisk();
 
-    /** @return the persistent disk of the app */
+    /**
+     * Gets the persistent disk of the app.
+     *
+     * @return the persistent disk of the app
+     */
     PersistentDisk persistentDisk();
 
-    /** @return the identity property of the app */
+    /**
+     * Gets the identity property of the app.
+     *
+     * @return the identity property of the app
+     */
     ManagedIdentityProperties identity();
 
-    /** @return the active deployment name */
+    /**
+     * Gets the active deployment name.
+     *
+     * @return the active deployment name
+     */
     String activeDeploymentName();
 
-    /** @return the active deployment */
+    /**
+     * Gets the active deployment.
+     *
+     * @return the active deployment
+     */
     SpringAppDeployment getActiveDeployment();
 
-    /** @return the active deployment */
+    /**
+     * Gets the active deployment.
+     *
+     * @return the active deployment
+     */
     Mono<SpringAppDeployment> getActiveDeploymentAsync();
 
     /**
+     * Gets the entry point of the spring app deployment.
      * @param <T> derived type of {@link SpringAppDeployment.DefinitionStages.WithCreate}
      * @return the entry point of the spring app deployment
      */
     <T extends SpringAppDeployment.DefinitionStages.WithCreate<T>> SpringAppDeployments<T> deployments();
 
-    /** @return the entry point of the spring app service binding */
+    /**
+     * Gets the entry point of the spring app service binding.
+     *
+     * @return the entry point of the spring app service binding
+     */
     SpringAppServiceBindings serviceBindings();
 
-    /** @return the entry point of the spring app custom domain */
+    /**
+     * Gets the entry point of the spring app custom domain.
+     *
+     * @return the entry point of the spring app custom domain
+     */
     SpringAppDomains customDomains();
 
-    /** @return the blob url to upload deployment */
+    /**
+     * Gets the blob url to upload deployment
+     *
+     * @return the blob url to upload deployment
+     */
     Mono<ResourceUploadDefinition> getResourceUploadUrlAsync();
 
-    /** @return the blob url to upload deployment */
+    /**
+     * Gets the blob url to upload deployment
+     *
+     * @return the blob url to upload deployment.
+     */
     ResourceUploadDefinition getResourceUploadUrl();
 
     /**
+     * Check whether this app has binding to the default Configuration Service.
      * (Enterprise Tier Only)
      * @return whether this app has binding to the default Configuration Service
      */
     boolean hasConfigurationServiceBinding();
 
     /**
+     * Check whether this app has binding to the default Service Registry.
      * (Enterprise Tier Only)
      * @return whether this app has binding to the default Service Registry
      */
     boolean hasServiceRegistryBinding();
 
     /** Container interface for all the definitions that need to be implemented. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithCreate { }
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithCreate {
+    }
 
     /** Grouping of all the spring app definition stages. */
     interface DefinitionStages {
         /** The first stage of the spring app definition. */
-        interface Blank extends WithDeployment { }
+        interface Blank extends WithDeployment {
+        }
 
         /**
          * The stage of a spring app definition allowing to specify an active deployment.
@@ -104,8 +161,7 @@ public interface SpringApp
              * @param <T> derived type of {@link SpringAppDeployment.DefinitionStages.WithAttach}
              * @return the first stage of spring app deployment definition
              */
-            <T extends SpringAppDeployment.DefinitionStages.WithAttach
-                <? extends SpringApp.DefinitionStages.WithCreate, T>>
+            <T extends SpringAppDeployment.DefinitionStages.WithAttach<? extends SpringApp.DefinitionStages.WithCreate, T>>
                 SpringAppDeployment.DefinitionStages.Blank<T> defineActiveDeployment(String name);
         }
 
@@ -221,25 +277,17 @@ public interface SpringApp
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Creatable<SpringApp>,
-                DefinitionStages.WithEndpoint,
-                DefinitionStages.WithDisk,
-                DefinitionStages.WithDeployment,
-                DefinitionStages.WithServiceBinding,
-                DefinitionStages.WithConfigurationServiceBinding,
-                DefinitionStages.WithServiceRegistryBinding { }
+        interface WithCreate extends Creatable<SpringApp>, DefinitionStages.WithEndpoint, DefinitionStages.WithDisk,
+            DefinitionStages.WithDeployment, DefinitionStages.WithServiceBinding,
+            DefinitionStages.WithConfigurationServiceBinding, DefinitionStages.WithServiceRegistryBinding {
+        }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<SpringApp>,
-        UpdateStages.WithEndpoint,
-        UpdateStages.WithDisk,
-        UpdateStages.WithDeployment,
-        UpdateStages.WithServiceBinding,
-        UpdateStages.WithConfigurationServiceBinding,
-        UpdateStages.WithServiceRegistryBinding { }
+    interface Update extends Appliable<SpringApp>, UpdateStages.WithEndpoint, UpdateStages.WithDisk,
+        UpdateStages.WithDeployment, UpdateStages.WithServiceBinding, UpdateStages.WithConfigurationServiceBinding,
+        UpdateStages.WithServiceRegistryBinding {
+    }
 
     /** Grouping of spring app update stages. */
     interface UpdateStages {

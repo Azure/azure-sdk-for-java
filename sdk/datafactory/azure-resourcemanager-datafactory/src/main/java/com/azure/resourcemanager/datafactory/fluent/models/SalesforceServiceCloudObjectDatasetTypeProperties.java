@@ -5,17 +5,21 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Salesforce Service Cloud object dataset properties.
  */
 @Fluent
-public final class SalesforceServiceCloudObjectDatasetTypeProperties {
+public final class SalesforceServiceCloudObjectDatasetTypeProperties
+    implements JsonSerializable<SalesforceServiceCloudObjectDatasetTypeProperties> {
     /*
      * The Salesforce Service Cloud object API name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "objectApiName")
     private Object objectApiName;
 
     /**
@@ -52,5 +56,42 @@ public final class SalesforceServiceCloudObjectDatasetTypeProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("objectApiName", this.objectApiName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SalesforceServiceCloudObjectDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SalesforceServiceCloudObjectDatasetTypeProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SalesforceServiceCloudObjectDatasetTypeProperties.
+     */
+    public static SalesforceServiceCloudObjectDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SalesforceServiceCloudObjectDatasetTypeProperties deserializedSalesforceServiceCloudObjectDatasetTypeProperties
+                = new SalesforceServiceCloudObjectDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectApiName".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudObjectDatasetTypeProperties.objectApiName = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSalesforceServiceCloudObjectDatasetTypeProperties;
+        });
     }
 }

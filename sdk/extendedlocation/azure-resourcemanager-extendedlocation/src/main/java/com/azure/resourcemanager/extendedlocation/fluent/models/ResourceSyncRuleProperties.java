@@ -5,8 +5,12 @@
 package com.azure.resourcemanager.extendedlocation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.extendedlocation.models.ResourceSyncRulePropertiesSelector;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Properties for a resource sync rule. For an unmapped custom resource, its labels will be used to find out matching
@@ -15,50 +19,46 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * associated with this resource sync rule.
  */
 @Fluent
-public final class ResourceSyncRuleProperties {
+public final class ResourceSyncRuleProperties implements JsonSerializable<ResourceSyncRuleProperties> {
     /*
      * Priority represents a priority of the Resource Sync Rule
      */
-    @JsonProperty(value = "priority")
     private Integer priority;
 
     /*
      * Provisioning State for the Resource Sync Rule.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
-     * A label selector is composed of two parts, matchLabels and
-     * matchExpressions. The first part, matchLabels is a map of {key,value}
-     * pairs. A single {key,value} in the matchLabels map is equivalent to an
-     * element of matchExpressions, whose key field is 'key', the operator is
-     * 'In', and the values array contains only 'value'. The second part,
-     * matchExpressions is a list of resource selector requirements. Valid
-     * operators include In, NotIn, Exists, and DoesNotExist. The values set
-     * must be non-empty in the case of In and NotIn. The values set must be
-     * empty in the case of Exists and DoesNotExist. All of the requirements,
-     * from both matchLabels and matchExpressions must all be satisfied in
-     * order to match.
+     * A label selector is composed of two parts, matchLabels and matchExpressions. The first part, matchLabels is a map
+     * of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of
+     * matchExpressions, whose key field is 'key', the operator is 'In', and the values array contains only 'value'. The
+     * second part, matchExpressions is a list of resource selector requirements. Valid operators include In, NotIn,
+     * Exists, and DoesNotExist. The values set must be non-empty in the case of In and NotIn. The values set must be
+     * empty in the case of Exists and DoesNotExist. All of the requirements, from both matchLabels and matchExpressions
+     * must all be satisfied in order to match.
      */
-    @JsonProperty(value = "selector")
     private ResourceSyncRulePropertiesSelector selector;
 
     /*
-     * For an unmapped custom resource, its labels will be used to find
-     * matching resource sync rules. If this resource sync rule is one of the
-     * matching rules with highest priority, then the unmapped custom resource
-     * will be projected to the target resource group associated with this
-     * resource sync rule. The user creating this resource sync rule should
-     * have write permissions on the target resource group and this write
-     * permission will be validated when creating the resource sync rule.
+     * For an unmapped custom resource, its labels will be used to find matching resource sync rules. If this resource
+     * sync rule is one of the matching rules with highest priority, then the unmapped custom resource will be projected
+     * to the target resource group associated with this resource sync rule. The user creating this resource sync rule
+     * should have write permissions on the target resource group and this write permission will be validated when
+     * creating the resource sync rule.
      */
-    @JsonProperty(value = "targetResourceGroup")
     private String targetResourceGroup;
 
     /**
+     * Creates an instance of ResourceSyncRuleProperties class.
+     */
+    public ResourceSyncRuleProperties() {
+    }
+
+    /**
      * Get the priority property: Priority represents a priority of the Resource Sync Rule.
-     *
+     * 
      * @return the priority value.
      */
     public Integer priority() {
@@ -67,7 +67,7 @@ public final class ResourceSyncRuleProperties {
 
     /**
      * Set the priority property: Priority represents a priority of the Resource Sync Rule.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the ResourceSyncRuleProperties object itself.
      */
@@ -78,7 +78,7 @@ public final class ResourceSyncRuleProperties {
 
     /**
      * Get the provisioningState property: Provisioning State for the Resource Sync Rule.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -93,7 +93,7 @@ public final class ResourceSyncRuleProperties {
      * In, NotIn, Exists, and DoesNotExist. The values set must be non-empty in the case of In and NotIn. The values set
      * must be empty in the case of Exists and DoesNotExist. All of the requirements, from both matchLabels and
      * matchExpressions must all be satisfied in order to match.
-     *
+     * 
      * @return the selector value.
      */
     public ResourceSyncRulePropertiesSelector selector() {
@@ -108,7 +108,7 @@ public final class ResourceSyncRuleProperties {
      * In, NotIn, Exists, and DoesNotExist. The values set must be non-empty in the case of In and NotIn. The values set
      * must be empty in the case of Exists and DoesNotExist. All of the requirements, from both matchLabels and
      * matchExpressions must all be satisfied in order to match.
-     *
+     * 
      * @param selector the selector value to set.
      * @return the ResourceSyncRuleProperties object itself.
      */
@@ -123,7 +123,7 @@ public final class ResourceSyncRuleProperties {
      * unmapped custom resource will be projected to the target resource group associated with this resource sync rule.
      * The user creating this resource sync rule should have write permissions on the target resource group and this
      * write permission will be validated when creating the resource sync rule.
-     *
+     * 
      * @return the targetResourceGroup value.
      */
     public String targetResourceGroup() {
@@ -136,7 +136,7 @@ public final class ResourceSyncRuleProperties {
      * unmapped custom resource will be projected to the target resource group associated with this resource sync rule.
      * The user creating this resource sync rule should have write permissions on the target resource group and this
      * write permission will be validated when creating the resource sync rule.
-     *
+     * 
      * @param targetResourceGroup the targetResourceGroup value to set.
      * @return the ResourceSyncRuleProperties object itself.
      */
@@ -147,12 +147,57 @@ public final class ResourceSyncRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (selector() != null) {
             selector().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("priority", this.priority);
+        jsonWriter.writeJsonField("selector", this.selector);
+        jsonWriter.writeStringField("targetResourceGroup", this.targetResourceGroup);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceSyncRuleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceSyncRuleProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceSyncRuleProperties.
+     */
+    public static ResourceSyncRuleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceSyncRuleProperties deserializedResourceSyncRuleProperties = new ResourceSyncRuleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("priority".equals(fieldName)) {
+                    deserializedResourceSyncRuleProperties.priority = reader.getNullable(JsonReader::getInt);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedResourceSyncRuleProperties.provisioningState = reader.getString();
+                } else if ("selector".equals(fieldName)) {
+                    deserializedResourceSyncRuleProperties.selector
+                        = ResourceSyncRulePropertiesSelector.fromJson(reader);
+                } else if ("targetResourceGroup".equals(fieldName)) {
+                    deserializedResourceSyncRuleProperties.targetResourceGroup = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceSyncRuleProperties;
+        });
     }
 }

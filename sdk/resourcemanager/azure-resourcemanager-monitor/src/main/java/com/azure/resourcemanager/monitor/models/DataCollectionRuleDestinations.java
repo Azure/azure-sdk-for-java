@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -45,5 +49,48 @@ public final class DataCollectionRuleDestinations extends DestinationsSpec {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("logAnalytics", logAnalytics(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("azureMonitorMetrics", azureMonitorMetrics());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataCollectionRuleDestinations from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataCollectionRuleDestinations if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataCollectionRuleDestinations.
+     */
+    public static DataCollectionRuleDestinations fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataCollectionRuleDestinations deserializedDataCollectionRuleDestinations
+                = new DataCollectionRuleDestinations();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("logAnalytics".equals(fieldName)) {
+                    List<LogAnalyticsDestination> logAnalytics
+                        = reader.readArray(reader1 -> LogAnalyticsDestination.fromJson(reader1));
+                    deserializedDataCollectionRuleDestinations.withLogAnalytics(logAnalytics);
+                } else if ("azureMonitorMetrics".equals(fieldName)) {
+                    deserializedDataCollectionRuleDestinations
+                        .withAzureMonitorMetrics(DestinationsSpecAzureMonitorMetrics.fromJson(reader));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataCollectionRuleDestinations;
+        });
     }
 }

@@ -5,57 +5,62 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Definition of the DSC Meta Configuration. */
+/**
+ * Definition of the DSC Meta Configuration.
+ */
 @Fluent
-public final class DscMetaConfiguration {
+public final class DscMetaConfiguration implements JsonSerializable<DscMetaConfiguration> {
     /*
      * Gets or sets the ConfigurationModeFrequencyMins value of the meta configuration.
      */
-    @JsonProperty(value = "configurationModeFrequencyMins")
     private Integer configurationModeFrequencyMins;
 
     /*
      * Gets or sets the RebootNodeIfNeeded value of the meta configuration.
      */
-    @JsonProperty(value = "rebootNodeIfNeeded")
     private Boolean rebootNodeIfNeeded;
 
     /*
      * Gets or sets the ConfigurationMode value of the meta configuration.
      */
-    @JsonProperty(value = "configurationMode")
     private String configurationMode;
 
     /*
      * Gets or sets the ActionAfterReboot value of the meta configuration.
      */
-    @JsonProperty(value = "actionAfterReboot")
     private String actionAfterReboot;
 
     /*
      * Gets or sets the CertificateId value of the meta configuration.
      */
-    @JsonProperty(value = "certificateId")
     private String certificateId;
 
     /*
      * Gets or sets the RefreshFrequencyMins value of the meta configuration.
      */
-    @JsonProperty(value = "refreshFrequencyMins")
     private Integer refreshFrequencyMins;
 
     /*
      * Gets or sets the AllowModuleOverwrite value of the meta configuration.
      */
-    @JsonProperty(value = "allowModuleOverwrite")
     private Boolean allowModuleOverwrite;
+
+    /**
+     * Creates an instance of DscMetaConfiguration class.
+     */
+    public DscMetaConfiguration() {
+    }
 
     /**
      * Get the configurationModeFrequencyMins property: Gets or sets the ConfigurationModeFrequencyMins value of the
      * meta configuration.
-     *
+     * 
      * @return the configurationModeFrequencyMins value.
      */
     public Integer configurationModeFrequencyMins() {
@@ -65,7 +70,7 @@ public final class DscMetaConfiguration {
     /**
      * Set the configurationModeFrequencyMins property: Gets or sets the ConfigurationModeFrequencyMins value of the
      * meta configuration.
-     *
+     * 
      * @param configurationModeFrequencyMins the configurationModeFrequencyMins value to set.
      * @return the DscMetaConfiguration object itself.
      */
@@ -76,7 +81,7 @@ public final class DscMetaConfiguration {
 
     /**
      * Get the rebootNodeIfNeeded property: Gets or sets the RebootNodeIfNeeded value of the meta configuration.
-     *
+     * 
      * @return the rebootNodeIfNeeded value.
      */
     public Boolean rebootNodeIfNeeded() {
@@ -85,7 +90,7 @@ public final class DscMetaConfiguration {
 
     /**
      * Set the rebootNodeIfNeeded property: Gets or sets the RebootNodeIfNeeded value of the meta configuration.
-     *
+     * 
      * @param rebootNodeIfNeeded the rebootNodeIfNeeded value to set.
      * @return the DscMetaConfiguration object itself.
      */
@@ -96,7 +101,7 @@ public final class DscMetaConfiguration {
 
     /**
      * Get the configurationMode property: Gets or sets the ConfigurationMode value of the meta configuration.
-     *
+     * 
      * @return the configurationMode value.
      */
     public String configurationMode() {
@@ -105,7 +110,7 @@ public final class DscMetaConfiguration {
 
     /**
      * Set the configurationMode property: Gets or sets the ConfigurationMode value of the meta configuration.
-     *
+     * 
      * @param configurationMode the configurationMode value to set.
      * @return the DscMetaConfiguration object itself.
      */
@@ -116,7 +121,7 @@ public final class DscMetaConfiguration {
 
     /**
      * Get the actionAfterReboot property: Gets or sets the ActionAfterReboot value of the meta configuration.
-     *
+     * 
      * @return the actionAfterReboot value.
      */
     public String actionAfterReboot() {
@@ -125,7 +130,7 @@ public final class DscMetaConfiguration {
 
     /**
      * Set the actionAfterReboot property: Gets or sets the ActionAfterReboot value of the meta configuration.
-     *
+     * 
      * @param actionAfterReboot the actionAfterReboot value to set.
      * @return the DscMetaConfiguration object itself.
      */
@@ -136,7 +141,7 @@ public final class DscMetaConfiguration {
 
     /**
      * Get the certificateId property: Gets or sets the CertificateId value of the meta configuration.
-     *
+     * 
      * @return the certificateId value.
      */
     public String certificateId() {
@@ -145,7 +150,7 @@ public final class DscMetaConfiguration {
 
     /**
      * Set the certificateId property: Gets or sets the CertificateId value of the meta configuration.
-     *
+     * 
      * @param certificateId the certificateId value to set.
      * @return the DscMetaConfiguration object itself.
      */
@@ -156,7 +161,7 @@ public final class DscMetaConfiguration {
 
     /**
      * Get the refreshFrequencyMins property: Gets or sets the RefreshFrequencyMins value of the meta configuration.
-     *
+     * 
      * @return the refreshFrequencyMins value.
      */
     public Integer refreshFrequencyMins() {
@@ -165,7 +170,7 @@ public final class DscMetaConfiguration {
 
     /**
      * Set the refreshFrequencyMins property: Gets or sets the RefreshFrequencyMins value of the meta configuration.
-     *
+     * 
      * @param refreshFrequencyMins the refreshFrequencyMins value to set.
      * @return the DscMetaConfiguration object itself.
      */
@@ -176,7 +181,7 @@ public final class DscMetaConfiguration {
 
     /**
      * Get the allowModuleOverwrite property: Gets or sets the AllowModuleOverwrite value of the meta configuration.
-     *
+     * 
      * @return the allowModuleOverwrite value.
      */
     public Boolean allowModuleOverwrite() {
@@ -185,7 +190,7 @@ public final class DscMetaConfiguration {
 
     /**
      * Set the allowModuleOverwrite property: Gets or sets the AllowModuleOverwrite value of the meta configuration.
-     *
+     * 
      * @param allowModuleOverwrite the allowModuleOverwrite value to set.
      * @return the DscMetaConfiguration object itself.
      */
@@ -196,9 +201,64 @@ public final class DscMetaConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("configurationModeFrequencyMins", this.configurationModeFrequencyMins);
+        jsonWriter.writeBooleanField("rebootNodeIfNeeded", this.rebootNodeIfNeeded);
+        jsonWriter.writeStringField("configurationMode", this.configurationMode);
+        jsonWriter.writeStringField("actionAfterReboot", this.actionAfterReboot);
+        jsonWriter.writeStringField("certificateId", this.certificateId);
+        jsonWriter.writeNumberField("refreshFrequencyMins", this.refreshFrequencyMins);
+        jsonWriter.writeBooleanField("allowModuleOverwrite", this.allowModuleOverwrite);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DscMetaConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DscMetaConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DscMetaConfiguration.
+     */
+    public static DscMetaConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DscMetaConfiguration deserializedDscMetaConfiguration = new DscMetaConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("configurationModeFrequencyMins".equals(fieldName)) {
+                    deserializedDscMetaConfiguration.configurationModeFrequencyMins
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("rebootNodeIfNeeded".equals(fieldName)) {
+                    deserializedDscMetaConfiguration.rebootNodeIfNeeded = reader.getNullable(JsonReader::getBoolean);
+                } else if ("configurationMode".equals(fieldName)) {
+                    deserializedDscMetaConfiguration.configurationMode = reader.getString();
+                } else if ("actionAfterReboot".equals(fieldName)) {
+                    deserializedDscMetaConfiguration.actionAfterReboot = reader.getString();
+                } else if ("certificateId".equals(fieldName)) {
+                    deserializedDscMetaConfiguration.certificateId = reader.getString();
+                } else if ("refreshFrequencyMins".equals(fieldName)) {
+                    deserializedDscMetaConfiguration.refreshFrequencyMins = reader.getNullable(JsonReader::getInt);
+                } else if ("allowModuleOverwrite".equals(fieldName)) {
+                    deserializedDscMetaConfiguration.allowModuleOverwrite = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDscMetaConfiguration;
+        });
     }
 }

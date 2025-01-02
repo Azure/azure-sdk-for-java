@@ -27,8 +27,10 @@ public final class FailoverProcessServerRequestTests {
     public void testSerialize() throws Exception {
         FailoverProcessServerRequest model = new FailoverProcessServerRequest()
             .withProperties(new FailoverProcessServerRequestProperties().withContainerName("xsqwpgrjbznorc")
-                .withSourceProcessServerId("vsnb").withTargetProcessServerId("qabnmoc")
-                .withVmsToMigrate(Arrays.asList("shurzafbljjgpbto")).withUpdateType("jmkljavbqidtqajz"));
+                .withSourceProcessServerId("vsnb")
+                .withTargetProcessServerId("qabnmoc")
+                .withVmsToMigrate(Arrays.asList("shurzafbljjgpbto"))
+                .withUpdateType("jmkljavbqidtqajz"));
         model = BinaryData.fromObject(model).toObject(FailoverProcessServerRequest.class);
         Assertions.assertEquals("xsqwpgrjbznorc", model.properties().containerName());
         Assertions.assertEquals("vsnb", model.properties().sourceProcessServerId());

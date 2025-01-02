@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ImpactedRegionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImpactedRegion model =
-            BinaryData.fromString("{\"id\":\"rvqahqkghtpwi\",\"name\":\"hyjsvfycx\"}").toObject(ImpactedRegion.class);
+        ImpactedRegion model
+            = BinaryData.fromString("{\"id\":\"rvqahqkghtpwi\",\"name\":\"hyjsvfycx\"}").toObject(ImpactedRegion.class);
         Assertions.assertEquals("rvqahqkghtpwi", model.id());
         Assertions.assertEquals("hyjsvfycx", model.name());
     }

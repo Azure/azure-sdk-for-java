@@ -5,48 +5,47 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.Diagnostics;
 import com.azure.resourcemanager.streamanalytics.models.LastOutputEventTimestamp;
 import com.azure.resourcemanager.streamanalytics.models.OutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.OutputWatermarkProperties;
 import com.azure.resourcemanager.streamanalytics.models.Serialization;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The properties that are associated with an output.
  */
 @Fluent
-public final class OutputProperties {
+public final class OutputProperties implements JsonSerializable<OutputProperties> {
     /*
      * Describes the data source that output will be written to. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "datasource")
     private OutputDataSource datasource;
 
     /*
      * The time frame for filtering Stream Analytics job outputs.
      */
-    @JsonProperty(value = "timeWindow")
     private String timeWindow;
 
     /*
      * The size window to constrain a Stream Analytics output to.
      */
-    @JsonProperty(value = "sizeWindow")
     private Integer sizeWindow;
 
     /*
      * Describes how data from an input is serialized or how data is serialized when written to an output. Required on
      * PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "serialization")
     private Serialization serialization;
 
     /*
      * Describes conditions applicable to the Input, Output, or the job overall, that warrant customer attention.
      */
-    @JsonProperty(value = "diagnostics", access = JsonProperty.Access.WRITE_ONLY)
     private Diagnostics diagnostics;
 
     /*
@@ -54,20 +53,17 @@ public final class OutputProperties {
      * has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations
      * for optimistic concurrency.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * A list of the last output event times for each output partition. The index of the array corresponds to the
      * partition number.
      */
-    @JsonProperty(value = "lastOutputEventTimestamps", access = JsonProperty.Access.WRITE_ONLY)
     private List<LastOutputEventTimestamp> lastOutputEventTimestamps;
 
     /*
      * Settings which determine whether to send watermarks to downstream.
      */
-    @JsonProperty(value = "watermarkSettings")
     private OutputWatermarkProperties watermarkSettings;
 
     /**
@@ -232,5 +228,61 @@ public final class OutputProperties {
         if (watermarkSettings() != null) {
             watermarkSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("datasource", this.datasource);
+        jsonWriter.writeStringField("timeWindow", this.timeWindow);
+        jsonWriter.writeNumberField("sizeWindow", this.sizeWindow);
+        jsonWriter.writeJsonField("serialization", this.serialization);
+        jsonWriter.writeJsonField("watermarkSettings", this.watermarkSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OutputProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OutputProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OutputProperties.
+     */
+    public static OutputProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OutputProperties deserializedOutputProperties = new OutputProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("datasource".equals(fieldName)) {
+                    deserializedOutputProperties.datasource = OutputDataSource.fromJson(reader);
+                } else if ("timeWindow".equals(fieldName)) {
+                    deserializedOutputProperties.timeWindow = reader.getString();
+                } else if ("sizeWindow".equals(fieldName)) {
+                    deserializedOutputProperties.sizeWindow = reader.getNullable(JsonReader::getInt);
+                } else if ("serialization".equals(fieldName)) {
+                    deserializedOutputProperties.serialization = Serialization.fromJson(reader);
+                } else if ("diagnostics".equals(fieldName)) {
+                    deserializedOutputProperties.diagnostics = Diagnostics.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedOutputProperties.etag = reader.getString();
+                } else if ("lastOutputEventTimestamps".equals(fieldName)) {
+                    List<LastOutputEventTimestamp> lastOutputEventTimestamps
+                        = reader.readArray(reader1 -> LastOutputEventTimestamp.fromJson(reader1));
+                    deserializedOutputProperties.lastOutputEventTimestamps = lastOutputEventTimestamps;
+                } else if ("watermarkSettings".equals(fieldName)) {
+                    deserializedOutputProperties.watermarkSettings = OutputWatermarkProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOutputProperties;
+        });
     }
 }

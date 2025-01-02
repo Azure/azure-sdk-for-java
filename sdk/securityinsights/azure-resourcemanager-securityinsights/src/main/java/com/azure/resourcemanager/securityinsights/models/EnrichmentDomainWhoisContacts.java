@@ -5,38 +5,46 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The set of contacts associated with this domain. */
+/**
+ * The set of contacts associated with this domain.
+ */
 @Fluent
-public final class EnrichmentDomainWhoisContacts {
+public final class EnrichmentDomainWhoisContacts implements JsonSerializable<EnrichmentDomainWhoisContacts> {
     /*
      * The admin contact for this whois record
      */
-    @JsonProperty(value = "admin")
     private EnrichmentDomainWhoisContact admin;
 
     /*
      * The billing contact for this whois record
      */
-    @JsonProperty(value = "billing")
     private EnrichmentDomainWhoisContact billing;
 
     /*
      * The registrant contact for this whois record
      */
-    @JsonProperty(value = "registrant")
     private EnrichmentDomainWhoisContact registrant;
 
     /*
      * The technical contact for this whois record
      */
-    @JsonProperty(value = "tech")
     private EnrichmentDomainWhoisContact tech;
 
     /**
+     * Creates an instance of EnrichmentDomainWhoisContacts class.
+     */
+    public EnrichmentDomainWhoisContacts() {
+    }
+
+    /**
      * Get the admin property: The admin contact for this whois record.
-     *
+     * 
      * @return the admin value.
      */
     public EnrichmentDomainWhoisContact admin() {
@@ -45,7 +53,7 @@ public final class EnrichmentDomainWhoisContacts {
 
     /**
      * Set the admin property: The admin contact for this whois record.
-     *
+     * 
      * @param admin the admin value to set.
      * @return the EnrichmentDomainWhoisContacts object itself.
      */
@@ -56,7 +64,7 @@ public final class EnrichmentDomainWhoisContacts {
 
     /**
      * Get the billing property: The billing contact for this whois record.
-     *
+     * 
      * @return the billing value.
      */
     public EnrichmentDomainWhoisContact billing() {
@@ -65,7 +73,7 @@ public final class EnrichmentDomainWhoisContacts {
 
     /**
      * Set the billing property: The billing contact for this whois record.
-     *
+     * 
      * @param billing the billing value to set.
      * @return the EnrichmentDomainWhoisContacts object itself.
      */
@@ -76,7 +84,7 @@ public final class EnrichmentDomainWhoisContacts {
 
     /**
      * Get the registrant property: The registrant contact for this whois record.
-     *
+     * 
      * @return the registrant value.
      */
     public EnrichmentDomainWhoisContact registrant() {
@@ -85,7 +93,7 @@ public final class EnrichmentDomainWhoisContacts {
 
     /**
      * Set the registrant property: The registrant contact for this whois record.
-     *
+     * 
      * @param registrant the registrant value to set.
      * @return the EnrichmentDomainWhoisContacts object itself.
      */
@@ -96,7 +104,7 @@ public final class EnrichmentDomainWhoisContacts {
 
     /**
      * Get the tech property: The technical contact for this whois record.
-     *
+     * 
      * @return the tech value.
      */
     public EnrichmentDomainWhoisContact tech() {
@@ -105,7 +113,7 @@ public final class EnrichmentDomainWhoisContacts {
 
     /**
      * Set the tech property: The technical contact for this whois record.
-     *
+     * 
      * @param tech the tech value to set.
      * @return the EnrichmentDomainWhoisContacts object itself.
      */
@@ -116,7 +124,7 @@ public final class EnrichmentDomainWhoisContacts {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -132,5 +140,52 @@ public final class EnrichmentDomainWhoisContacts {
         if (tech() != null) {
             tech().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("admin", this.admin);
+        jsonWriter.writeJsonField("billing", this.billing);
+        jsonWriter.writeJsonField("registrant", this.registrant);
+        jsonWriter.writeJsonField("tech", this.tech);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnrichmentDomainWhoisContacts from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnrichmentDomainWhoisContacts if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EnrichmentDomainWhoisContacts.
+     */
+    public static EnrichmentDomainWhoisContacts fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnrichmentDomainWhoisContacts deserializedEnrichmentDomainWhoisContacts
+                = new EnrichmentDomainWhoisContacts();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("admin".equals(fieldName)) {
+                    deserializedEnrichmentDomainWhoisContacts.admin = EnrichmentDomainWhoisContact.fromJson(reader);
+                } else if ("billing".equals(fieldName)) {
+                    deserializedEnrichmentDomainWhoisContacts.billing = EnrichmentDomainWhoisContact.fromJson(reader);
+                } else if ("registrant".equals(fieldName)) {
+                    deserializedEnrichmentDomainWhoisContacts.registrant
+                        = EnrichmentDomainWhoisContact.fromJson(reader);
+                } else if ("tech".equals(fieldName)) {
+                    deserializedEnrichmentDomainWhoisContacts.tech = EnrichmentDomainWhoisContact.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnrichmentDomainWhoisContacts;
+        });
     }
 }

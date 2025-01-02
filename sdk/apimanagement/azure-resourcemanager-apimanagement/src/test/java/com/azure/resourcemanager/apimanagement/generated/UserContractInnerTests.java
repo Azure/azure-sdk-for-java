@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class UserContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserContractInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"firstName\":\"hhihra\",\"lastName\":\"uddrwjc\",\"email\":\"brhlhpvzadb\",\"registrationDate\":\"2021-04-27T00:19:12Z\",\"groups\":[{\"displayName\":\"nafhxrzfr\",\"description\":\"ztiucwviql\",\"builtIn\":false,\"type\":\"external\",\"externalId\":\"cqx\"},{\"displayName\":\"cbvzarmqcb\",\"description\":\"kst\",\"builtIn\":false,\"type\":\"external\",\"externalId\":\"ovjyhd\"},{\"displayName\":\"xbrdvcehqwh\",\"description\":\"xnmxgnmguzb\",\"builtIn\":true,\"type\":\"system\",\"externalId\":\"alkj\"}],\"state\":\"active\",\"note\":\"dhlltqstqkqsyg\",\"identities\":[{\"provider\":\"ecovagzkheubanlx\",\"id\":\"pqcckqiawzlz\"},{\"provider\":\"aslgacizuxlrarwp\",\"id\":\"saudoejtighsx\"}]},\"id\":\"pytn\",\"name\":\"qbalahovuuwxhme\",\"type\":\"jnhj\"}")
-                .toObject(UserContractInner.class);
+        UserContractInner model = BinaryData.fromString(
+            "{\"properties\":{\"firstName\":\"hhihra\",\"lastName\":\"uddrwjc\",\"email\":\"brhlhpvzadb\",\"registrationDate\":\"2021-04-27T00:19:12Z\",\"groups\":[{\"displayName\":\"nafhxrzfr\",\"description\":\"ztiucwviql\",\"builtIn\":false,\"type\":\"external\",\"externalId\":\"cqx\"},{\"displayName\":\"cbvzarmqcb\",\"description\":\"kst\",\"builtIn\":false,\"type\":\"external\",\"externalId\":\"ovjyhd\"},{\"displayName\":\"xbrdvcehqwh\",\"description\":\"xnmxgnmguzb\",\"builtIn\":true,\"type\":\"system\",\"externalId\":\"alkj\"}],\"state\":\"active\",\"note\":\"dhlltqstqkqsyg\",\"identities\":[{\"provider\":\"ecovagzkheubanlx\",\"id\":\"pqcckqiawzlz\"},{\"provider\":\"aslgacizuxlrarwp\",\"id\":\"saudoejtighsx\"}]},\"id\":\"pytn\",\"name\":\"qbalahovuuwxhme\",\"type\":\"jnhj\"}")
+            .toObject(UserContractInner.class);
         Assertions.assertEquals("hhihra", model.firstName());
         Assertions.assertEquals("uddrwjc", model.lastName());
         Assertions.assertEquals("brhlhpvzadb", model.email());
@@ -32,19 +30,16 @@ public final class UserContractInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserContractInner model =
-            new UserContractInner()
-                .withFirstName("hhihra")
+        UserContractInner model
+            = new UserContractInner().withFirstName("hhihra")
                 .withLastName("uddrwjc")
                 .withEmail("brhlhpvzadb")
                 .withRegistrationDate(OffsetDateTime.parse("2021-04-27T00:19:12Z"))
                 .withState(UserState.ACTIVE)
                 .withNote("dhlltqstqkqsyg")
-                .withIdentities(
-                    Arrays
-                        .asList(
-                            new UserIdentityContractInner().withProvider("ecovagzkheubanlx").withId("pqcckqiawzlz"),
-                            new UserIdentityContractInner().withProvider("aslgacizuxlrarwp").withId("saudoejtighsx")));
+                .withIdentities(Arrays.asList(
+                    new UserIdentityContractInner().withProvider("ecovagzkheubanlx").withId("pqcckqiawzlz"),
+                    new UserIdentityContractInner().withProvider("aslgacizuxlrarwp").withId("saudoejtighsx")));
         model = BinaryData.fromObject(model).toObject(UserContractInner.class);
         Assertions.assertEquals("hhihra", model.firstName());
         Assertions.assertEquals("uddrwjc", model.lastName());

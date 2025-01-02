@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** CNTK (aka Microsoft Cognitive Toolkit) job settings. */
 @Fluent
 public final class CntKsettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CntKsettings.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(CntKsettings.class);
 
     /*
      * The language to use for launching CNTK (aka Microsoft Cognitive Toolkit)

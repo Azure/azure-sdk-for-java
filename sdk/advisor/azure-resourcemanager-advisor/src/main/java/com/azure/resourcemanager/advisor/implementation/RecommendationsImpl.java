@@ -23,8 +23,8 @@ public final class RecommendationsImpl implements Recommendations {
 
     private final com.azure.resourcemanager.advisor.AdvisorManager serviceManager;
 
-    public RecommendationsImpl(
-        RecommendationsClient innerClient, com.azure.resourcemanager.advisor.AdvisorManager serviceManager) {
+    public RecommendationsImpl(RecommendationsClient innerClient,
+        com.azure.resourcemanager.advisor.AdvisorManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -47,25 +47,24 @@ public final class RecommendationsImpl implements Recommendations {
 
     public PagedIterable<ResourceRecommendationBase> list() {
         PagedIterable<ResourceRecommendationBaseInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ResourceRecommendationBaseImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ResourceRecommendationBaseImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ResourceRecommendationBase> list(
-        String filter, Integer top, String skipToken, Context context) {
-        PagedIterable<ResourceRecommendationBaseInner> inner =
-            this.serviceClient().list(filter, top, skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new ResourceRecommendationBaseImpl(inner1, this.manager()));
+    public PagedIterable<ResourceRecommendationBase> list(String filter, Integer top, String skipToken,
+        Context context) {
+        PagedIterable<ResourceRecommendationBaseInner> inner
+            = this.serviceClient().list(filter, top, skipToken, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ResourceRecommendationBaseImpl(inner1, this.manager()));
     }
 
-    public Response<ResourceRecommendationBase> getWithResponse(
-        String resourceUri, String recommendationId, Context context) {
-        Response<ResourceRecommendationBaseInner> inner =
-            this.serviceClient().getWithResponse(resourceUri, recommendationId, context);
+    public Response<ResourceRecommendationBase> getWithResponse(String resourceUri, String recommendationId,
+        Context context) {
+        Response<ResourceRecommendationBaseInner> inner
+            = this.serviceClient().getWithResponse(resourceUri, recommendationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ResourceRecommendationBaseImpl(inner.getValue(), this.manager()));
         } else {
             return null;

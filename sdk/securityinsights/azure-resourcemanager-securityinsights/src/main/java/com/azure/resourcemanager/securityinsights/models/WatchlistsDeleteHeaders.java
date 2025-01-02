@@ -5,31 +5,32 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The WatchlistsDeleteHeaders model. */
+/**
+ * The WatchlistsDeleteHeaders model.
+ */
 @Fluent
 public final class WatchlistsDeleteHeaders {
     /*
      * The Azure-AsyncOperation property.
      */
-    @JsonProperty(value = "Azure-AsyncOperation")
     private String azureAsyncOperation;
 
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of WatchlistsDeleteHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public WatchlistsDeleteHeaders(HttpHeaders rawHeaders) {
-        this.azureAsyncOperation = rawHeaders.getValue("Azure-AsyncOperation");
+        this.azureAsyncOperation = rawHeaders.getValue(HttpHeaderName.AZURE_ASYNCOPERATION);
     }
 
     /**
      * Get the azureAsyncOperation property: The Azure-AsyncOperation property.
-     *
+     * 
      * @return the azureAsyncOperation value.
      */
     public String azureAsyncOperation() {
@@ -38,7 +39,7 @@ public final class WatchlistsDeleteHeaders {
 
     /**
      * Set the azureAsyncOperation property: The Azure-AsyncOperation property.
-     *
+     * 
      * @param azureAsyncOperation the azureAsyncOperation value to set.
      * @return the WatchlistsDeleteHeaders object itself.
      */
@@ -49,7 +50,7 @@ public final class WatchlistsDeleteHeaders {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

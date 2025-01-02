@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Settings to encrypt a service.
  */
 @Fluent
-public final class Encryption {
+public final class Encryption implements JsonSerializable<Encryption> {
     /*
      * The encryption settings for the customer-managed key
      */
-    @JsonProperty(value = "customerManagedKeyEncryption")
     private EncryptionCustomerManagedKeyEncryption customerManagedKeyEncryption;
 
     /**
@@ -54,5 +57,42 @@ public final class Encryption {
         if (customerManagedKeyEncryption() != null) {
             customerManagedKeyEncryption().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("customerManagedKeyEncryption", this.customerManagedKeyEncryption);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Encryption from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Encryption if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Encryption.
+     */
+    public static Encryption fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Encryption deserializedEncryption = new Encryption();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("customerManagedKeyEncryption".equals(fieldName)) {
+                    deserializedEncryption.customerManagedKeyEncryption
+                        = EncryptionCustomerManagedKeyEncryption.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEncryption;
+        });
     }
 }

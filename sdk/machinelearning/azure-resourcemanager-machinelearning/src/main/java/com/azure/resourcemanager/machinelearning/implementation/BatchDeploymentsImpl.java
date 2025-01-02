@@ -21,62 +21,50 @@ public final class BatchDeploymentsImpl implements BatchDeployments {
 
     private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
-    public BatchDeploymentsImpl(
-        BatchDeploymentsClient innerClient,
+    public BatchDeploymentsImpl(BatchDeploymentsClient innerClient,
         com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<BatchDeployment> list(String resourceGroupName, String workspaceName, String endpointName) {
-        PagedIterable<BatchDeploymentInner> inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, endpointName);
-        return Utils.mapPage(inner, inner1 -> new BatchDeploymentImpl(inner1, this.manager()));
+        PagedIterable<BatchDeploymentInner> inner
+            = this.serviceClient().list(resourceGroupName, workspaceName, endpointName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BatchDeploymentImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<BatchDeployment> list(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String orderBy,
-        Integer top,
-        String skip,
-        Context context) {
-        PagedIterable<BatchDeploymentInner> inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, endpointName, orderBy, top, skip, context);
-        return Utils.mapPage(inner, inner1 -> new BatchDeploymentImpl(inner1, this.manager()));
+    public PagedIterable<BatchDeployment> list(String resourceGroupName, String workspaceName, String endpointName,
+        String orderBy, Integer top, String skip, Context context) {
+        PagedIterable<BatchDeploymentInner> inner
+            = this.serviceClient().list(resourceGroupName, workspaceName, endpointName, orderBy, top, skip, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BatchDeploymentImpl(inner1, this.manager()));
     }
 
     public void delete(String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
         this.serviceClient().delete(resourceGroupName, workspaceName, endpointName, deploymentName);
     }
 
-    public void delete(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context) {
+    public void delete(String resourceGroupName, String workspaceName, String endpointName, String deploymentName,
+        Context context) {
         this.serviceClient().delete(resourceGroupName, workspaceName, endpointName, deploymentName, context);
     }
 
-    public Response<BatchDeployment> getWithResponse(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context) {
-        Response<BatchDeploymentInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, workspaceName, endpointName, deploymentName, context);
+    public Response<BatchDeployment> getWithResponse(String resourceGroupName, String workspaceName,
+        String endpointName, String deploymentName, Context context) {
+        Response<BatchDeploymentInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, workspaceName, endpointName, deploymentName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new BatchDeploymentImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public BatchDeployment get(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
-        BatchDeploymentInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, endpointName, deploymentName);
+    public BatchDeployment get(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName) {
+        BatchDeploymentInner inner
+            = this.serviceClient().get(resourceGroupName, workspaceName, endpointName, deploymentName);
         if (inner != null) {
             return new BatchDeploymentImpl(inner, this.manager());
         } else {
@@ -85,139 +73,98 @@ public final class BatchDeploymentsImpl implements BatchDeployments {
     }
 
     public BatchDeployment getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String endpointName = Utils.getValueFromIdByName(id, "batchEndpoints");
+        String endpointName = ResourceManagerUtils.getValueFromIdByName(id, "batchEndpoints");
         if (endpointName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'batchEndpoints'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'batchEndpoints'.", id)));
         }
-        String deploymentName = Utils.getValueFromIdByName(id, "deployments");
+        String deploymentName = ResourceManagerUtils.getValueFromIdByName(id, "deployments");
         if (deploymentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'deployments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'deployments'.", id)));
         }
-        return this
-            .getWithResponse(resourceGroupName, workspaceName, endpointName, deploymentName, Context.NONE)
+        return this.getWithResponse(resourceGroupName, workspaceName, endpointName, deploymentName, Context.NONE)
             .getValue();
     }
 
     public Response<BatchDeployment> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String endpointName = Utils.getValueFromIdByName(id, "batchEndpoints");
+        String endpointName = ResourceManagerUtils.getValueFromIdByName(id, "batchEndpoints");
         if (endpointName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'batchEndpoints'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'batchEndpoints'.", id)));
         }
-        String deploymentName = Utils.getValueFromIdByName(id, "deployments");
+        String deploymentName = ResourceManagerUtils.getValueFromIdByName(id, "deployments");
         if (deploymentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'deployments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'deployments'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, endpointName, deploymentName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String endpointName = Utils.getValueFromIdByName(id, "batchEndpoints");
+        String endpointName = ResourceManagerUtils.getValueFromIdByName(id, "batchEndpoints");
         if (endpointName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'batchEndpoints'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'batchEndpoints'.", id)));
         }
-        String deploymentName = Utils.getValueFromIdByName(id, "deployments");
+        String deploymentName = ResourceManagerUtils.getValueFromIdByName(id, "deployments");
         if (deploymentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'deployments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'deployments'.", id)));
         }
         this.delete(resourceGroupName, workspaceName, endpointName, deploymentName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String endpointName = Utils.getValueFromIdByName(id, "batchEndpoints");
+        String endpointName = ResourceManagerUtils.getValueFromIdByName(id, "batchEndpoints");
         if (endpointName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'batchEndpoints'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'batchEndpoints'.", id)));
         }
-        String deploymentName = Utils.getValueFromIdByName(id, "deployments");
+        String deploymentName = ResourceManagerUtils.getValueFromIdByName(id, "deployments");
         if (deploymentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'deployments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'deployments'.", id)));
         }
         this.delete(resourceGroupName, workspaceName, endpointName, deploymentName, context);
     }

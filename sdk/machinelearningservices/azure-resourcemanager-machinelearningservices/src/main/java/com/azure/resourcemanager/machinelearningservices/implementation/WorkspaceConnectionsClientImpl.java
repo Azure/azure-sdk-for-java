@@ -51,9 +51,8 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
      * @param client the instance of the service client containing this operation class.
      */
     WorkspaceConnectionsClientImpl(AzureMachineLearningWorkspacesImpl client) {
-        this.service =
-            RestProxy
-                .create(WorkspaceConnectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(WorkspaceConnectionsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -64,71 +63,50 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
     @Host("{$host}")
     @ServiceInterface(name = "AzureMachineLearning")
     private interface WorkspaceConnectionsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+            + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PaginatedWorkspaceConnectionsList>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PaginatedWorkspaceConnectionsList>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("target") String target,
-            @QueryParam("category") String category,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion, @QueryParam("target") String target,
+            @QueryParam("category") String category, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+            + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<WorkspaceConnectionInner>> create(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("connectionName") String connectionName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") WorkspaceConnectionDto parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+            + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkspaceConnectionInner>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<WorkspaceConnectionInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("connectionName") String connectionName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") WorkspaceConnectionDto parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("connectionName") String connectionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+            + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkspaceConnectionInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("connectionName") String connectionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("connectionName") String connectionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("connectionName") String connectionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -144,19 +122,15 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
      * @return paginated list of Workspace connection objects.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WorkspaceConnectionInner>> listSinglePageAsync(
-        String resourceGroupName, String workspaceName, String target, String category) {
+    private Mono<PagedResponse<WorkspaceConnectionInner>> listSinglePageAsync(String resourceGroupName,
+        String workspaceName, String target, String category) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -167,23 +141,10 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            this.client.getApiVersion(),
-                            target,
-                            category,
-                            accept,
-                            context))
-            .<PagedResponse<WorkspaceConnectionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, this.client.getApiVersion(), target, category, accept, context))
+            .<PagedResponse<WorkspaceConnectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -201,19 +162,15 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
      * @return paginated list of Workspace connection objects.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WorkspaceConnectionInner>> listSinglePageAsync(
-        String resourceGroupName, String workspaceName, String target, String category, Context context) {
+    private Mono<PagedResponse<WorkspaceConnectionInner>> listSinglePageAsync(String resourceGroupName,
+        String workspaceName, String target, String category, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -225,20 +182,10 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                this.client.getApiVersion(),
-                target,
-                category,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, workspaceName,
+                this.client.getApiVersion(), target, category, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
@@ -254,8 +201,8 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
      * @return paginated list of Workspace connection objects.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<WorkspaceConnectionInner> listAsync(
-        String resourceGroupName, String workspaceName, String target, String category) {
+    private PagedFlux<WorkspaceConnectionInner> listAsync(String resourceGroupName, String workspaceName, String target,
+        String category) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, workspaceName, target, category));
     }
 
@@ -290,8 +237,8 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
      * @return paginated list of Workspace connection objects.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<WorkspaceConnectionInner> listAsync(
-        String resourceGroupName, String workspaceName, String target, String category, Context context) {
+    private PagedFlux<WorkspaceConnectionInner> listAsync(String resourceGroupName, String workspaceName, String target,
+        String category, Context context) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, workspaceName, target, category, context));
     }
 
@@ -326,8 +273,8 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
      * @return paginated list of Workspace connection objects.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<WorkspaceConnectionInner> list(
-        String resourceGroupName, String workspaceName, String target, String category, Context context) {
+    public PagedIterable<WorkspaceConnectionInner> list(String resourceGroupName, String workspaceName, String target,
+        String category, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, target, category, context));
     }
 
@@ -344,19 +291,15 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
      * @return workspace connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WorkspaceConnectionInner>> createWithResponseAsync(
-        String resourceGroupName, String workspaceName, String connectionName, WorkspaceConnectionDto parameters) {
+    private Mono<Response<WorkspaceConnectionInner>> createWithResponseAsync(String resourceGroupName,
+        String workspaceName, String connectionName, WorkspaceConnectionDto parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -376,18 +319,8 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            connectionName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    workspaceName, connectionName, this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -405,23 +338,15 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
      * @return workspace connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WorkspaceConnectionInner>> createWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String connectionName,
-        WorkspaceConnectionDto parameters,
-        Context context) {
+    private Mono<Response<WorkspaceConnectionInner>> createWithResponseAsync(String resourceGroupName,
+        String workspaceName, String connectionName, WorkspaceConnectionDto parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -440,17 +365,8 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                connectionName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, connectionName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
@@ -466,17 +382,16 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
      * @return workspace connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkspaceConnectionInner> createAsync(
-        String resourceGroupName, String workspaceName, String connectionName, WorkspaceConnectionDto parameters) {
+    private Mono<WorkspaceConnectionInner> createAsync(String resourceGroupName, String workspaceName,
+        String connectionName, WorkspaceConnectionDto parameters) {
         return createWithResponseAsync(resourceGroupName, workspaceName, connectionName, parameters)
-            .flatMap(
-                (Response<WorkspaceConnectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<WorkspaceConnectionInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -492,8 +407,8 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
      * @return workspace connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkspaceConnectionInner create(
-        String resourceGroupName, String workspaceName, String connectionName, WorkspaceConnectionDto parameters) {
+    public WorkspaceConnectionInner create(String resourceGroupName, String workspaceName, String connectionName,
+        WorkspaceConnectionDto parameters) {
         return createAsync(resourceGroupName, workspaceName, connectionName, parameters).block();
     }
 
@@ -511,12 +426,8 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
      * @return workspace connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WorkspaceConnectionInner> createWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String connectionName,
-        WorkspaceConnectionDto parameters,
-        Context context) {
+    public Response<WorkspaceConnectionInner> createWithResponse(String resourceGroupName, String workspaceName,
+        String connectionName, WorkspaceConnectionDto parameters, Context context) {
         return createWithResponseAsync(resourceGroupName, workspaceName, connectionName, parameters, context).block();
     }
 
@@ -532,19 +443,15 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
      * @return the detail of a workspace connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WorkspaceConnectionInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String connectionName) {
+    private Mono<Response<WorkspaceConnectionInner>> getWithResponseAsync(String resourceGroupName,
+        String workspaceName, String connectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -558,18 +465,8 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            connectionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, connectionName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -586,19 +483,15 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
      * @return the detail of a workspace connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WorkspaceConnectionInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String connectionName, Context context) {
+    private Mono<Response<WorkspaceConnectionInner>> getWithResponseAsync(String resourceGroupName,
+        String workspaceName, String connectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -612,16 +505,8 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                connectionName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, workspaceName,
+            connectionName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -636,17 +521,16 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
      * @return the detail of a workspace connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkspaceConnectionInner> getAsync(
-        String resourceGroupName, String workspaceName, String connectionName) {
+    private Mono<WorkspaceConnectionInner> getAsync(String resourceGroupName, String workspaceName,
+        String connectionName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, connectionName)
-            .flatMap(
-                (Response<WorkspaceConnectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<WorkspaceConnectionInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -678,8 +562,8 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
      * @return the detail of a workspace connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WorkspaceConnectionInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String connectionName, Context context) {
+    public Response<WorkspaceConnectionInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String connectionName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, connectionName, context).block();
     }
 
@@ -695,19 +579,15 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String connectionName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String connectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -721,18 +601,8 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            connectionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, connectionName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -749,19 +619,15 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String connectionName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String connectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -775,16 +641,8 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                connectionName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, connectionName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -832,8 +690,8 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String connectionName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String connectionName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, connectionName, context).block();
     }
 }

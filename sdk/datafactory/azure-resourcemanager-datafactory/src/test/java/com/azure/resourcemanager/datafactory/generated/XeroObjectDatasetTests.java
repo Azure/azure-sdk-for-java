@@ -19,35 +19,32 @@ public final class XeroObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         XeroObjectDataset model = BinaryData.fromString(
-            "{\"type\":\"XeroObject\",\"typeProperties\":{\"tableName\":\"datalrtbofzghfuifwx\"},\"description\":\"ynohocqxug\",\"structure\":\"dataugdcr\",\"schema\":\"databplvhmhur\",\"linkedServiceName\":{\"referenceName\":\"sdjlzbdmdd\",\"parameters\":{\"pvesorsbegclmexa\":\"dataeuyaorser\"}},\"parameters\":{\"unssky\":{\"type\":\"SecureString\",\"defaultValue\":\"datahzydyvtuqvir\"},\"jx\":{\"type\":\"Bool\",\"defaultValue\":\"datat\"},\"uzscyfyi\":{\"type\":\"Bool\",\"defaultValue\":\"datasvjekejchxzjdc\"},\"jeeyv\":{\"type\":\"String\",\"defaultValue\":\"datamasjnfgngxa\"}},\"annotations\":[\"datafckmo\",\"dataljaxv\"],\"folder\":{\"name\":\"xuzhvo\"},\"\":{\"z\":\"datafwflbkjc\",\"cyzcjefpubaldj\":\"dataiyg\",\"lrlkbh\":\"datagldry\"}}")
+            "{\"type\":\"XeroObject\",\"typeProperties\":{\"tableName\":\"datamjcoyvfwgkzuhksh\"},\"description\":\"kckwbqwjyfmmkwa\",\"structure\":\"dataooyzhob\",\"schema\":\"datayuepaco\",\"linkedServiceName\":{\"referenceName\":\"rohextigukf\",\"parameters\":{\"ymbnpeenlqtqyv\":\"dataycb\",\"avqdvfjdsqephtos\":\"datafb\",\"jwgujrc\":\"dataqtua\"}},\"parameters\":{\"wscjwyyeomifl\":{\"type\":\"Float\",\"defaultValue\":\"datapyqoizfyasyddq\"}},\"annotations\":[\"dataeowctshwfrhhas\",\"databvau\",\"datanwwumkbpg\",\"datailbwtpwbjlpfwuq\"],\"folder\":{\"name\":\"dgi\"},\"\":{\"plan\":\"datayukslizmpnxgham\"}}")
             .toObject(XeroObjectDataset.class);
-        Assertions.assertEquals("ynohocqxug", model.description());
-        Assertions.assertEquals("sdjlzbdmdd", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("unssky").type());
-        Assertions.assertEquals("xuzhvo", model.folder().name());
+        Assertions.assertEquals("kckwbqwjyfmmkwa", model.description());
+        Assertions.assertEquals("rohextigukf", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("wscjwyyeomifl").type());
+        Assertions.assertEquals("dgi", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        XeroObjectDataset model = new XeroObjectDataset().withDescription("ynohocqxug")
-            .withStructure("dataugdcr")
-            .withSchema("databplvhmhur")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("sdjlzbdmdd")
-                .withParameters(mapOf("pvesorsbegclmexa", "dataeuyaorser")))
-            .withParameters(mapOf("unssky",
-                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datahzydyvtuqvir"),
-                "jx", new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datat"), "uzscyfyi",
-                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datasvjekejchxzjdc"),
-                "jeeyv",
-                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datamasjnfgngxa")))
-            .withAnnotations(Arrays.asList("datafckmo", "dataljaxv"))
-            .withFolder(new DatasetFolder().withName("xuzhvo"))
-            .withTableName("datalrtbofzghfuifwx");
+        XeroObjectDataset model = new XeroObjectDataset().withDescription("kckwbqwjyfmmkwa")
+            .withStructure("dataooyzhob")
+            .withSchema("datayuepaco")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("rohextigukf")
+                .withParameters(
+                    mapOf("ymbnpeenlqtqyv", "dataycb", "avqdvfjdsqephtos", "datafb", "jwgujrc", "dataqtua")))
+            .withParameters(mapOf("wscjwyyeomifl",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datapyqoizfyasyddq")))
+            .withAnnotations(Arrays.asList("dataeowctshwfrhhas", "databvau", "datanwwumkbpg", "datailbwtpwbjlpfwuq"))
+            .withFolder(new DatasetFolder().withName("dgi"))
+            .withTableName("datamjcoyvfwgkzuhksh");
         model = BinaryData.fromObject(model).toObject(XeroObjectDataset.class);
-        Assertions.assertEquals("ynohocqxug", model.description());
-        Assertions.assertEquals("sdjlzbdmdd", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("unssky").type());
-        Assertions.assertEquals("xuzhvo", model.folder().name());
+        Assertions.assertEquals("kckwbqwjyfmmkwa", model.description());
+        Assertions.assertEquals("rohextigukf", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("wscjwyyeomifl").type());
+        Assertions.assertEquals("dgi", model.folder().name());
     }
 
     // Use "Map.of" if available

@@ -19,33 +19,33 @@ public final class EloquaObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EloquaObjectDataset model = BinaryData.fromString(
-            "{\"type\":\"EloquaObject\",\"typeProperties\":{\"tableName\":\"dataltqmmij\"},\"description\":\"qfkwnaeikczscymq\",\"structure\":\"dataxgwpq\",\"schema\":\"dataumz\",\"linkedServiceName\":{\"referenceName\":\"pd\",\"parameters\":{\"zk\":\"datazvp\"}},\"parameters\":{\"wed\":{\"type\":\"Bool\",\"defaultValue\":\"datazbflbqmhbiyxx\"},\"lmsy\":{\"type\":\"SecureString\",\"defaultValue\":\"dataqbbseseayu\"},\"zk\":{\"type\":\"String\",\"defaultValue\":\"datacrolrzesbomp\"}},\"annotations\":[\"datanwjivtbusz\"],\"folder\":{\"name\":\"rdf\"},\"\":{\"sdeqngcaydzinlo\":\"dataywdal\",\"xrsi\":\"dataulpozmdahyc\"}}")
+            "{\"type\":\"EloquaObject\",\"typeProperties\":{\"tableName\":\"datao\"},\"description\":\"guhbnhogsezreneg\",\"structure\":\"datadtyzpx\",\"schema\":\"datatwkejmgem\",\"linkedServiceName\":{\"referenceName\":\"dupe\",\"parameters\":{\"mmpkapvnpeukg\":\"datavsdfvhrypez\"}},\"parameters\":{\"omlcsvkt\":{\"type\":\"String\",\"defaultValue\":\"dataeqnit\"},\"fxjtxla\":{\"type\":\"SecureString\",\"defaultValue\":\"datarowsh\"},\"fqdmll\":{\"type\":\"Float\",\"defaultValue\":\"datadyqabjrop\"}},\"annotations\":[\"datajyuwq\",\"datazwgdpvhwiril\",\"datamqtr\"],\"folder\":{\"name\":\"oxdegacdedpkwd\"},\"\":{\"aqermnddlir\":\"datapgdcidp\",\"lsaqifepdureeviv\":\"dataq\",\"xeswctl\":\"dataiglioklsuff\"}}")
             .toObject(EloquaObjectDataset.class);
-        Assertions.assertEquals("qfkwnaeikczscymq", model.description());
-        Assertions.assertEquals("pd", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("wed").type());
-        Assertions.assertEquals("rdf", model.folder().name());
+        Assertions.assertEquals("guhbnhogsezreneg", model.description());
+        Assertions.assertEquals("dupe", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("omlcsvkt").type());
+        Assertions.assertEquals("oxdegacdedpkwd", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EloquaObjectDataset model = new EloquaObjectDataset().withDescription("qfkwnaeikczscymq")
-            .withStructure("dataxgwpq")
-            .withSchema("dataumz")
-            .withLinkedServiceName(
-                new LinkedServiceReference().withReferenceName("pd").withParameters(mapOf("zk", "datazvp")))
-            .withParameters(mapOf("wed",
-                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datazbflbqmhbiyxx"), "lmsy",
-                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("dataqbbseseayu"),
-                "zk", new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datacrolrzesbomp")))
-            .withAnnotations(Arrays.asList("datanwjivtbusz"))
-            .withFolder(new DatasetFolder().withName("rdf"))
-            .withTableName("dataltqmmij");
+        EloquaObjectDataset model = new EloquaObjectDataset().withDescription("guhbnhogsezreneg")
+            .withStructure("datadtyzpx")
+            .withSchema("datatwkejmgem")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("dupe")
+                .withParameters(mapOf("mmpkapvnpeukg", "datavsdfvhrypez")))
+            .withParameters(mapOf("omlcsvkt",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataeqnit"), "fxjtxla",
+                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datarowsh"),
+                "fqdmll", new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datadyqabjrop")))
+            .withAnnotations(Arrays.asList("datajyuwq", "datazwgdpvhwiril", "datamqtr"))
+            .withFolder(new DatasetFolder().withName("oxdegacdedpkwd"))
+            .withTableName("datao");
         model = BinaryData.fromObject(model).toObject(EloquaObjectDataset.class);
-        Assertions.assertEquals("qfkwnaeikczscymq", model.description());
-        Assertions.assertEquals("pd", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("wed").type());
-        Assertions.assertEquals("rdf", model.folder().name());
+        Assertions.assertEquals("guhbnhogsezreneg", model.description());
+        Assertions.assertEquals("dupe", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("omlcsvkt").type());
+        Assertions.assertEquals("oxdegacdedpkwd", model.folder().name());
     }
 
     // Use "Map.of" if available

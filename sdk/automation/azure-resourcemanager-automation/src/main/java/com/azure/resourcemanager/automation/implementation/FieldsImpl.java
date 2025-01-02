@@ -24,18 +24,18 @@ public final class FieldsImpl implements Fields {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<TypeField> listByType(
-        String resourceGroupName, String automationAccountName, String moduleName, String typeName) {
-        PagedIterable<TypeFieldInner> inner =
-            this.serviceClient().listByType(resourceGroupName, automationAccountName, moduleName, typeName);
-        return Utils.mapPage(inner, inner1 -> new TypeFieldImpl(inner1, this.manager()));
+    public PagedIterable<TypeField> listByType(String resourceGroupName, String automationAccountName,
+        String moduleName, String typeName) {
+        PagedIterable<TypeFieldInner> inner
+            = this.serviceClient().listByType(resourceGroupName, automationAccountName, moduleName, typeName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TypeFieldImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<TypeField> listByType(
-        String resourceGroupName, String automationAccountName, String moduleName, String typeName, Context context) {
-        PagedIterable<TypeFieldInner> inner =
-            this.serviceClient().listByType(resourceGroupName, automationAccountName, moduleName, typeName, context);
-        return Utils.mapPage(inner, inner1 -> new TypeFieldImpl(inner1, this.manager()));
+    public PagedIterable<TypeField> listByType(String resourceGroupName, String automationAccountName,
+        String moduleName, String typeName, Context context) {
+        PagedIterable<TypeFieldInner> inner
+            = this.serviceClient().listByType(resourceGroupName, automationAccountName, moduleName, typeName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TypeFieldImpl(inner1, this.manager()));
     }
 
     private FieldsClient serviceClient() {

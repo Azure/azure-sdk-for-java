@@ -6,20 +6,31 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The available data types for Office Microsoft Project data connector. */
+/**
+ * The available data types for Office Microsoft Project data connector.
+ */
 @Fluent
-public final class Office365ProjectConnectorDataTypes {
+public final class Office365ProjectConnectorDataTypes implements JsonSerializable<Office365ProjectConnectorDataTypes> {
     /*
      * Logs data type.
      */
-    @JsonProperty(value = "logs", required = true)
     private Office365ProjectConnectorDataTypesLogs logs;
 
     /**
+     * Creates an instance of Office365ProjectConnectorDataTypes class.
+     */
+    public Office365ProjectConnectorDataTypes() {
+    }
+
+    /**
      * Get the logs property: Logs data type.
-     *
+     * 
      * @return the logs value.
      */
     public Office365ProjectConnectorDataTypesLogs logs() {
@@ -28,7 +39,7 @@ public final class Office365ProjectConnectorDataTypes {
 
     /**
      * Set the logs property: Logs data type.
-     *
+     * 
      * @param logs the logs value to set.
      * @return the Office365ProjectConnectorDataTypes object itself.
      */
@@ -39,19 +50,57 @@ public final class Office365ProjectConnectorDataTypes {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (logs() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property logs in model Office365ProjectConnectorDataTypes"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property logs in model Office365ProjectConnectorDataTypes"));
         } else {
             logs().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Office365ProjectConnectorDataTypes.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("logs", this.logs);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Office365ProjectConnectorDataTypes from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Office365ProjectConnectorDataTypes if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Office365ProjectConnectorDataTypes.
+     */
+    public static Office365ProjectConnectorDataTypes fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Office365ProjectConnectorDataTypes deserializedOffice365ProjectConnectorDataTypes
+                = new Office365ProjectConnectorDataTypes();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("logs".equals(fieldName)) {
+                    deserializedOffice365ProjectConnectorDataTypes.logs
+                        = Office365ProjectConnectorDataTypesLogs.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOffice365ProjectConnectorDataTypes;
+        });
+    }
 }

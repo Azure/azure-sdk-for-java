@@ -13,11 +13,13 @@ import com.azure.resourcemanager.logz.fluent.models.VMExtensionPayloadInner;
 import com.azure.resourcemanager.logz.fluent.models.VMResourcesInner;
 import com.azure.resourcemanager.logz.models.VMHostUpdateRequest;
 
-/** An instance of this class provides access to all the operations defined in MonitorOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MonitorOperationsClient.
+ */
 public interface MonitorOperationsClient {
     /**
      * Returns the payload that needs to be passed in the request body for installing Logz.io agent on a VM.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -27,12 +29,12 @@ public interface MonitorOperationsClient {
      * @return response of payload to be passed while installing VM agent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VMExtensionPayloadInner> vMHostPayloadWithResponse(
-        String resourceGroupName, String monitorName, Context context);
+    Response<VMExtensionPayloadInner> vMHostPayloadWithResponse(String resourceGroupName, String monitorName,
+        Context context);
 
     /**
      * Returns the payload that needs to be passed in the request body for installing Logz.io agent on a VM.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,7 +47,7 @@ public interface MonitorOperationsClient {
 
     /**
      * Sending request to update the collection when Logz.io agent has been installed on a VM for a given monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -58,7 +60,7 @@ public interface MonitorOperationsClient {
 
     /**
      * Sending request to update the collection when Logz.io agent has been installed on a VM for a given monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param body Request body to update the collection for agent installed in the given monitor.
@@ -69,12 +71,12 @@ public interface MonitorOperationsClient {
      * @return response of a list VM Host Update Operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VMResourcesInner> listVmHostUpdate(
-        String resourceGroupName, String monitorName, VMHostUpdateRequest body, Context context);
+    PagedIterable<VMResourcesInner> listVmHostUpdate(String resourceGroupName, String monitorName,
+        VMHostUpdateRequest body, Context context);
 
     /**
      * List the compute resources currently being monitored by the Logz main account resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -87,7 +89,7 @@ public interface MonitorOperationsClient {
 
     /**
      * List the compute resources currently being monitored by the Logz main account resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.

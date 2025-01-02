@@ -6,15 +6,15 @@ package com.azure.resourcemanager.trafficmanager.models;
 /** Target Azure resource types supported for an Azure endpoint in a traffic manager profile. */
 public class TargetAzureResourceType {
     /** Static value Microsoft.Network/publicIPAddresses for TargetAzureResourceType. */
-    public static final TargetAzureResourceType PUBLICIP =
-        new TargetAzureResourceType("Microsoft.Network", "publicIPAddresses");
+    public static final TargetAzureResourceType PUBLICIP
+        = new TargetAzureResourceType("Microsoft.Network", "publicIPAddresses");
 
     /** Static value Microsoft.Web/sites for TargetAzureResourceType. */
     public static final TargetAzureResourceType WEBAPP = new TargetAzureResourceType("Microsoft.Web", "sites");
 
     /** Static value Microsoft.ClassicCompute/domainNames for TargetAzureResourceType. */
-    public static final TargetAzureResourceType CLOUDSERVICE =
-        new TargetAzureResourceType("Microsoft.ClassicCompute", "domainNames");
+    public static final TargetAzureResourceType CLOUDSERVICE
+        = new TargetAzureResourceType("Microsoft.ClassicCompute", "domainNames");
 
     private final String value;
 

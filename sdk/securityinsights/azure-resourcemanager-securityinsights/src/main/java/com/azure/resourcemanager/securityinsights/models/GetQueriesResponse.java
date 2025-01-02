@@ -7,18 +7,20 @@ package com.azure.resourcemanager.securityinsights.models;
 import com.azure.resourcemanager.securityinsights.fluent.models.GetQueriesResponseInner;
 import java.util.List;
 
-/** An immutable client-side representation of GetQueriesResponse. */
+/**
+ * An immutable client-side representation of GetQueriesResponse.
+ */
 public interface GetQueriesResponse {
     /**
      * Gets the value property: The query result values.
-     *
+     * 
      * @return the value value.
      */
     List<EntityQueryItem> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.securityinsights.fluent.models.GetQueriesResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     GetQueriesResponseInner innerModel();

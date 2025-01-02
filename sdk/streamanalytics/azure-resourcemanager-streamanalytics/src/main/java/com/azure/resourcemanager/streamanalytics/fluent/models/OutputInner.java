@@ -6,12 +6,15 @@ package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.Diagnostics;
 import com.azure.resourcemanager.streamanalytics.models.LastOutputEventTimestamp;
 import com.azure.resourcemanager.streamanalytics.models.OutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.OutputWatermarkProperties;
 import com.azure.resourcemanager.streamanalytics.models.Serialization;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -23,19 +26,16 @@ public final class OutputInner extends SubResource {
     /*
      * The properties that are associated with an output. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "properties")
     private OutputProperties innerProperties;
 
     /*
      * Resource name
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Resource type
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
@@ -251,5 +251,49 @@ public final class OutputInner extends SubResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OutputInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OutputInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OutputInner.
+     */
+    public static OutputInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OutputInner deserializedOutputInner = new OutputInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedOutputInner.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedOutputInner.innerProperties = OutputProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedOutputInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedOutputInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOutputInner;
+        });
     }
 }

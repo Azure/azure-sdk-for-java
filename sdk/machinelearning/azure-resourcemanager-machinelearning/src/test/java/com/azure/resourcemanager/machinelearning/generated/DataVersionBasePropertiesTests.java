@@ -13,38 +13,35 @@ import org.junit.jupiter.api.Assertions;
 public final class DataVersionBasePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataVersionBaseProperties model =
-            BinaryData
-                .fromString(
-                    "{\"dataType\":\"DataVersionBaseProperties\",\"dataUri\":\"vh\",\"isAnonymous\":false,\"isArchived\":true,\"description\":\"dqkdlwwqfbu\",\"properties\":{\"lmbtxhwgfwsrt\":\"xtrqjfs\",\"kh\":\"wcoezbrhub\"},\"tags\":{\"kkqfqjbvle\":\"goo\"}}")
-                .toObject(DataVersionBaseProperties.class);
-        Assertions.assertEquals("dqkdlwwqfbu", model.description());
-        Assertions.assertEquals("xtrqjfs", model.properties().get("lmbtxhwgfwsrt"));
-        Assertions.assertEquals("goo", model.tags().get("kkqfqjbvle"));
-        Assertions.assertEquals(false, model.isAnonymous());
+        DataVersionBaseProperties model = BinaryData.fromString(
+            "{\"dataType\":\"DataVersionBaseProperties\",\"dataUri\":\"kdmflvestmjlx\",\"isArchived\":true,\"isAnonymous\":false,\"description\":\"apeewchpxlkt\",\"tags\":{\"yhjtqedcgzu\":\"ziycslevufuztck\",\"zrrjvpgly\":\"wmmrq\"},\"properties\":{\"ev\":\"krvq\",\"t\":\"oepry\",\"fvaawzqa\":\"wytpzdmovz\"}}")
+            .toObject(DataVersionBaseProperties.class);
+        Assertions.assertEquals("apeewchpxlkt", model.description());
+        Assertions.assertEquals("ziycslevufuztck", model.tags().get("yhjtqedcgzu"));
+        Assertions.assertEquals("krvq", model.properties().get("ev"));
         Assertions.assertEquals(true, model.isArchived());
-        Assertions.assertEquals("vh", model.dataUri());
+        Assertions.assertEquals(false, model.isAnonymous());
+        Assertions.assertEquals("kdmflvestmjlx", model.dataUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataVersionBaseProperties model =
-            new DataVersionBaseProperties()
-                .withDescription("dqkdlwwqfbu")
-                .withProperties(mapOf("lmbtxhwgfwsrt", "xtrqjfs", "kh", "wcoezbrhub"))
-                .withTags(mapOf("kkqfqjbvle", "goo"))
-                .withIsAnonymous(false)
-                .withIsArchived(true)
-                .withDataUri("vh");
+        DataVersionBaseProperties model = new DataVersionBaseProperties().withDescription("apeewchpxlkt")
+            .withTags(mapOf("yhjtqedcgzu", "ziycslevufuztck", "zrrjvpgly", "wmmrq"))
+            .withProperties(mapOf("ev", "krvq", "t", "oepry", "fvaawzqa", "wytpzdmovz"))
+            .withIsArchived(true)
+            .withIsAnonymous(false)
+            .withDataUri("kdmflvestmjlx");
         model = BinaryData.fromObject(model).toObject(DataVersionBaseProperties.class);
-        Assertions.assertEquals("dqkdlwwqfbu", model.description());
-        Assertions.assertEquals("xtrqjfs", model.properties().get("lmbtxhwgfwsrt"));
-        Assertions.assertEquals("goo", model.tags().get("kkqfqjbvle"));
-        Assertions.assertEquals(false, model.isAnonymous());
+        Assertions.assertEquals("apeewchpxlkt", model.description());
+        Assertions.assertEquals("ziycslevufuztck", model.tags().get("yhjtqedcgzu"));
+        Assertions.assertEquals("krvq", model.properties().get("ev"));
         Assertions.assertEquals(true, model.isArchived());
-        Assertions.assertEquals("vh", model.dataUri());
+        Assertions.assertEquals(false, model.isAnonymous());
+        Assertions.assertEquals("kdmflvestmjlx", model.dataUri());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

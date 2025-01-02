@@ -28,8 +28,8 @@ public final class HealthcareEntityAssertion {
     private EntityAssociation association;
 
     static {
-        HealthcareEntityAssertionPropertiesHelper.setAccessor(
-            new HealthcareEntityAssertionPropertiesHelper.HealthcareEntityAssertionAccessor() {
+        HealthcareEntityAssertionPropertiesHelper
+            .setAccessor(new HealthcareEntityAssertionPropertiesHelper.HealthcareEntityAssertionAccessor() {
                 @Override
                 public void setAssociation(HealthcareEntityAssertion assertion, EntityAssociation entityAssociation) {
                     assertion.setAssociation(entityAssociation);
@@ -62,7 +62,6 @@ public final class HealthcareEntityAssertion {
     public EntityConditionality getConditionality() {
         return this.conditionality;
     }
-
 
     /**
      * Gets the certainty property: Describes the entities certainty and polarity.

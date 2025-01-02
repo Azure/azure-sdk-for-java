@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.subscription.generated;
 
-/** Samples for Subscriptions ListLocations. */
+/**
+ * Samples for Subscriptions ListLocations.
+ */
 public final class SubscriptionsListLocationsSamples {
     /*
-     * x-ms-original-file: specification/subscription/resource-manager/Microsoft.Subscription/stable/2016-06-01/examples/listLocations.json
+     * x-ms-original-file:
+     * specification/subscription/resource-manager/Microsoft.Subscription/stable/2016-06-01/examples/listLocations.json
      */
     /**
      * Sample code: listLocations.
-     *
+     * 
      * @param manager Entry point to SubscriptionManager.
      */
     public static void listLocations(com.azure.resourcemanager.subscription.SubscriptionManager manager) {

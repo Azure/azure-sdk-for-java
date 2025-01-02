@@ -16,21 +16,23 @@ import reactor.core.publisher.Mono;
  * Entry point to manage event hubs.
  */
 @Fluent
-public interface EventHubs extends
-    SupportsCreating<EventHub.DefinitionStages.Blank>,
-    SupportsDeletingById,
-    SupportsGettingById<EventHub>,
-    HasManager<EventHubsManager> {
+public interface EventHubs extends SupportsCreating<EventHub.DefinitionStages.Blank>, SupportsDeletingById,
+    SupportsGettingById<EventHub>, HasManager<EventHubsManager> {
     /**
+     * Gets entry point to manage authorization rules of event hubs..
+     *
      * @return entry point to manage authorization rules of event hubs.
      */
     EventHubAuthorizationRules authorizationRules();
 
     /**
+     * Gets entry point to manage consumer group of event hubs.
+     *
      * @return entry point to manage consumer group of event hubs.
      */
 
     EventHubConsumerGroups consumerGroups();
+
     /**
      * Lists the event hubs in a namespace under a resource group.
      *

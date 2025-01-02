@@ -5,87 +5,87 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.ActivityEntityQueriesPropertiesQueryDefinitions;
 import com.azure.resourcemanager.securityinsights.models.EntityType;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** Describes activity entity query properties. */
+/**
+ * Describes activity entity query properties.
+ */
 @Fluent
-public final class ActivityEntityQueriesProperties {
+public final class ActivityEntityQueriesProperties implements JsonSerializable<ActivityEntityQueriesProperties> {
     /*
      * The entity query title
      */
-    @JsonProperty(value = "title")
     private String title;
 
     /*
      * The entity query content to display in timeline
      */
-    @JsonProperty(value = "content")
     private String content;
 
     /*
      * The entity query description
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The Activity query definitions
      */
-    @JsonProperty(value = "queryDefinitions")
     private ActivityEntityQueriesPropertiesQueryDefinitions queryDefinitions;
 
     /*
      * The type of the query's source entity
      */
-    @JsonProperty(value = "inputEntityType")
     private EntityType inputEntityType;
 
     /*
      * List of the fields of the source entity that are required to run the query
      */
-    @JsonProperty(value = "requiredInputFieldsSets")
     private List<List<String>> requiredInputFieldsSets;
 
     /*
      * The query applied only to entities matching to all filters
      */
-    @JsonProperty(value = "entitiesFilter")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, List<String>> entitiesFilter;
 
     /*
      * The template id this activity was created from
      */
-    @JsonProperty(value = "templateName")
     private String templateName;
 
     /*
      * Determines whether this activity is enabled or disabled.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * The time the activity was created
      */
-    @JsonProperty(value = "createdTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdTimeUtc;
 
     /*
      * The last time the activity was updated
      */
-    @JsonProperty(value = "lastModifiedTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedTimeUtc;
 
     /**
+     * Creates an instance of ActivityEntityQueriesProperties class.
+     */
+    public ActivityEntityQueriesProperties() {
+    }
+
+    /**
      * Get the title property: The entity query title.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -94,7 +94,7 @@ public final class ActivityEntityQueriesProperties {
 
     /**
      * Set the title property: The entity query title.
-     *
+     * 
      * @param title the title value to set.
      * @return the ActivityEntityQueriesProperties object itself.
      */
@@ -105,7 +105,7 @@ public final class ActivityEntityQueriesProperties {
 
     /**
      * Get the content property: The entity query content to display in timeline.
-     *
+     * 
      * @return the content value.
      */
     public String content() {
@@ -114,7 +114,7 @@ public final class ActivityEntityQueriesProperties {
 
     /**
      * Set the content property: The entity query content to display in timeline.
-     *
+     * 
      * @param content the content value to set.
      * @return the ActivityEntityQueriesProperties object itself.
      */
@@ -125,7 +125,7 @@ public final class ActivityEntityQueriesProperties {
 
     /**
      * Get the description property: The entity query description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -134,7 +134,7 @@ public final class ActivityEntityQueriesProperties {
 
     /**
      * Set the description property: The entity query description.
-     *
+     * 
      * @param description the description value to set.
      * @return the ActivityEntityQueriesProperties object itself.
      */
@@ -145,7 +145,7 @@ public final class ActivityEntityQueriesProperties {
 
     /**
      * Get the queryDefinitions property: The Activity query definitions.
-     *
+     * 
      * @return the queryDefinitions value.
      */
     public ActivityEntityQueriesPropertiesQueryDefinitions queryDefinitions() {
@@ -154,19 +154,19 @@ public final class ActivityEntityQueriesProperties {
 
     /**
      * Set the queryDefinitions property: The Activity query definitions.
-     *
+     * 
      * @param queryDefinitions the queryDefinitions value to set.
      * @return the ActivityEntityQueriesProperties object itself.
      */
-    public ActivityEntityQueriesProperties withQueryDefinitions(
-        ActivityEntityQueriesPropertiesQueryDefinitions queryDefinitions) {
+    public ActivityEntityQueriesProperties
+        withQueryDefinitions(ActivityEntityQueriesPropertiesQueryDefinitions queryDefinitions) {
         this.queryDefinitions = queryDefinitions;
         return this;
     }
 
     /**
      * Get the inputEntityType property: The type of the query's source entity.
-     *
+     * 
      * @return the inputEntityType value.
      */
     public EntityType inputEntityType() {
@@ -175,7 +175,7 @@ public final class ActivityEntityQueriesProperties {
 
     /**
      * Set the inputEntityType property: The type of the query's source entity.
-     *
+     * 
      * @param inputEntityType the inputEntityType value to set.
      * @return the ActivityEntityQueriesProperties object itself.
      */
@@ -187,7 +187,7 @@ public final class ActivityEntityQueriesProperties {
     /**
      * Get the requiredInputFieldsSets property: List of the fields of the source entity that are required to run the
      * query.
-     *
+     * 
      * @return the requiredInputFieldsSets value.
      */
     public List<List<String>> requiredInputFieldsSets() {
@@ -197,7 +197,7 @@ public final class ActivityEntityQueriesProperties {
     /**
      * Set the requiredInputFieldsSets property: List of the fields of the source entity that are required to run the
      * query.
-     *
+     * 
      * @param requiredInputFieldsSets the requiredInputFieldsSets value to set.
      * @return the ActivityEntityQueriesProperties object itself.
      */
@@ -208,7 +208,7 @@ public final class ActivityEntityQueriesProperties {
 
     /**
      * Get the entitiesFilter property: The query applied only to entities matching to all filters.
-     *
+     * 
      * @return the entitiesFilter value.
      */
     public Map<String, List<String>> entitiesFilter() {
@@ -217,7 +217,7 @@ public final class ActivityEntityQueriesProperties {
 
     /**
      * Set the entitiesFilter property: The query applied only to entities matching to all filters.
-     *
+     * 
      * @param entitiesFilter the entitiesFilter value to set.
      * @return the ActivityEntityQueriesProperties object itself.
      */
@@ -228,7 +228,7 @@ public final class ActivityEntityQueriesProperties {
 
     /**
      * Get the templateName property: The template id this activity was created from.
-     *
+     * 
      * @return the templateName value.
      */
     public String templateName() {
@@ -237,7 +237,7 @@ public final class ActivityEntityQueriesProperties {
 
     /**
      * Set the templateName property: The template id this activity was created from.
-     *
+     * 
      * @param templateName the templateName value to set.
      * @return the ActivityEntityQueriesProperties object itself.
      */
@@ -248,7 +248,7 @@ public final class ActivityEntityQueriesProperties {
 
     /**
      * Get the enabled property: Determines whether this activity is enabled or disabled.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -257,7 +257,7 @@ public final class ActivityEntityQueriesProperties {
 
     /**
      * Set the enabled property: Determines whether this activity is enabled or disabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ActivityEntityQueriesProperties object itself.
      */
@@ -268,7 +268,7 @@ public final class ActivityEntityQueriesProperties {
 
     /**
      * Get the createdTimeUtc property: The time the activity was created.
-     *
+     * 
      * @return the createdTimeUtc value.
      */
     public OffsetDateTime createdTimeUtc() {
@@ -277,7 +277,7 @@ public final class ActivityEntityQueriesProperties {
 
     /**
      * Get the lastModifiedTimeUtc property: The last time the activity was updated.
-     *
+     * 
      * @return the lastModifiedTimeUtc value.
      */
     public OffsetDateTime lastModifiedTimeUtc() {
@@ -286,12 +286,88 @@ public final class ActivityEntityQueriesProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (queryDefinitions() != null) {
             queryDefinitions().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("content", this.content);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeJsonField("queryDefinitions", this.queryDefinitions);
+        jsonWriter.writeStringField("inputEntityType",
+            this.inputEntityType == null ? null : this.inputEntityType.toString());
+        jsonWriter.writeArrayField("requiredInputFieldsSets", this.requiredInputFieldsSets,
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
+        jsonWriter.writeMapField("entitiesFilter", this.entitiesFilter,
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
+        jsonWriter.writeStringField("templateName", this.templateName);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActivityEntityQueriesProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActivityEntityQueriesProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ActivityEntityQueriesProperties.
+     */
+    public static ActivityEntityQueriesProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActivityEntityQueriesProperties deserializedActivityEntityQueriesProperties
+                = new ActivityEntityQueriesProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("title".equals(fieldName)) {
+                    deserializedActivityEntityQueriesProperties.title = reader.getString();
+                } else if ("content".equals(fieldName)) {
+                    deserializedActivityEntityQueriesProperties.content = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedActivityEntityQueriesProperties.description = reader.getString();
+                } else if ("queryDefinitions".equals(fieldName)) {
+                    deserializedActivityEntityQueriesProperties.queryDefinitions
+                        = ActivityEntityQueriesPropertiesQueryDefinitions.fromJson(reader);
+                } else if ("inputEntityType".equals(fieldName)) {
+                    deserializedActivityEntityQueriesProperties.inputEntityType
+                        = EntityType.fromString(reader.getString());
+                } else if ("requiredInputFieldsSets".equals(fieldName)) {
+                    List<List<String>> requiredInputFieldsSets
+                        = reader.readArray(reader1 -> reader1.readArray(reader2 -> reader2.getString()));
+                    deserializedActivityEntityQueriesProperties.requiredInputFieldsSets = requiredInputFieldsSets;
+                } else if ("entitiesFilter".equals(fieldName)) {
+                    Map<String, List<String>> entitiesFilter
+                        = reader.readMap(reader1 -> reader1.readArray(reader2 -> reader2.getString()));
+                    deserializedActivityEntityQueriesProperties.entitiesFilter = entitiesFilter;
+                } else if ("templateName".equals(fieldName)) {
+                    deserializedActivityEntityQueriesProperties.templateName = reader.getString();
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedActivityEntityQueriesProperties.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("createdTimeUtc".equals(fieldName)) {
+                    deserializedActivityEntityQueriesProperties.createdTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedTimeUtc".equals(fieldName)) {
+                    deserializedActivityEntityQueriesProperties.lastModifiedTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActivityEntityQueriesProperties;
+        });
     }
 }

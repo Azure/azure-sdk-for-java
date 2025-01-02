@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class WaitStepAttributesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WaitStepAttributes model =
-            BinaryData.fromString("{\"duration\":\"bijhtxfvgxbf\"}").toObject(WaitStepAttributes.class);
+        WaitStepAttributes model
+            = BinaryData.fromString("{\"duration\":\"bijhtxfvgxbf\"}").toObject(WaitStepAttributes.class);
         Assertions.assertEquals("bijhtxfvgxbf", model.duration());
     }
 

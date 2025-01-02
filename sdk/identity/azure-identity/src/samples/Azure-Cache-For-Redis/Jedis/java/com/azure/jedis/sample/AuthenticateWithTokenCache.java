@@ -23,8 +23,16 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * Sample of authenticating with a token cache.
+ */
 public class AuthenticateWithTokenCache {
 
+    /**
+     * The runnable sample.
+     *
+     * @param args Ignored.
+     */
     public static void main(String[] args) {
         //Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
         DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
@@ -70,8 +78,7 @@ public class AuthenticateWithTokenCache {
                     jedis = createJedisClient(cacheHostname, 6380, username, accessToken, useSsl);
 
                     // Configure the jedis instance for proactive authentication before token expires.
-                    tokenRefreshCache
-                        .setJedisInstanceToAuthenticate(jedis);
+                    tokenRefreshCache.setJedisInstanceToAuthenticate(jedis);
                 }
             }
             i++;
@@ -94,13 +101,11 @@ public class AuthenticateWithTokenCache {
         String[] parts = token.split("\\.");
         String base64 = parts[1];
 
-        switch (base64.length() % 4) {
-            case 2:
-                base64 += "==";
-                break;
-            case 3:
-                base64 += "=";
-                break;
+        int modulo = base64.length() % 4;
+        if (modulo == 2) {
+            base64 += "==";
+        } else if (modulo == 3) {
+            base64 += "=";
         }
 
         byte[] jsonBytes = Base64.getDecoder().decode(base64);

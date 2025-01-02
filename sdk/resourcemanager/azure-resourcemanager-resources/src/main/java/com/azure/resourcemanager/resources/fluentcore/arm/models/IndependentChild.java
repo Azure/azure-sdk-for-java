@@ -13,12 +13,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
  * @param <ManagerT> the client manager type representing the service
  */
 @Fluent
-public interface IndependentChild<ManagerT> extends
-        HasName,
-        HasId,
-        Indexable,
-        HasResourceGroup,
-        HasManager<ManagerT> {
+public interface IndependentChild<ManagerT> extends HasName, HasId, Indexable, HasResourceGroup, HasManager<ManagerT> {
 
     /**
      * Grouping of all the definition stages.

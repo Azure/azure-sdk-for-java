@@ -5,152 +5,138 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
-/** Alert details. */
+/**
+ * Alert details.
+ */
 @Fluent
-public final class AlertPropertiesDetails {
+public final class AlertPropertiesDetails implements JsonSerializable<AlertPropertiesDetails> {
     /*
      * Type of timegrain cadence
      */
-    @JsonProperty(value = "timeGrainType")
     private AlertTimeGrainType timeGrainType;
 
     /*
      * datetime of periodStartDate
      */
-    @JsonProperty(value = "periodStartDate")
     private String periodStartDate;
 
     /*
      * notificationId that triggered this alert
      */
-    @JsonProperty(value = "triggeredBy")
     private String triggeredBy;
 
     /*
      * array of resourceGroups to filter by
      */
-    @JsonProperty(value = "resourceGroupFilter")
     private List<Object> resourceGroupFilter;
 
     /*
      * array of resources to filter by
      */
-    @JsonProperty(value = "resourceFilter")
     private List<Object> resourceFilter;
 
     /*
      * array of meters to filter by
      */
-    @JsonProperty(value = "meterFilter")
     private List<Object> meterFilter;
 
     /*
      * tags to filter by
      */
-    @JsonProperty(value = "tagFilter")
     private Object tagFilter;
 
     /*
      * notification threshold percentage as a decimal which activated this alert
      */
-    @JsonProperty(value = "threshold")
     private BigDecimal threshold;
 
     /*
      * operator used to compare currentSpend with amount
      */
-    @JsonProperty(value = "operator")
     private AlertOperator operator;
 
     /*
      * budget threshold amount
      */
-    @JsonProperty(value = "amount")
     private BigDecimal amount;
 
     /*
      * unit of currency being used
      */
-    @JsonProperty(value = "unit")
     private String unit;
 
     /*
      * current spend
      */
-    @JsonProperty(value = "currentSpend")
     private BigDecimal currentSpend;
 
     /*
      * list of emails to contact
      */
-    @JsonProperty(value = "contactEmails")
     private List<String> contactEmails;
 
     /*
      * list of action groups to broadcast to
      */
-    @JsonProperty(value = "contactGroups")
     private List<String> contactGroups;
 
     /*
      * list of contact roles
      */
-    @JsonProperty(value = "contactRoles")
     private List<String> contactRoles;
 
     /*
      * overriding alert
      */
-    @JsonProperty(value = "overridingAlert")
     private String overridingAlert;
 
     /*
      * department name
      */
-    @JsonProperty(value = "departmentName")
     private String departmentName;
 
     /*
      * company name
      */
-    @JsonProperty(value = "companyName")
     private String companyName;
 
     /*
      * enrollment number
      */
-    @JsonProperty(value = "enrollmentNumber")
     private String enrollmentNumber;
 
     /*
      * datetime of enrollmentStartDate
      */
-    @JsonProperty(value = "enrollmentStartDate")
     private String enrollmentStartDate;
 
     /*
      * datetime of enrollmentEndDate
      */
-    @JsonProperty(value = "enrollmentEndDate")
     private String enrollmentEndDate;
 
     /*
      * invoicing threshold
      */
-    @JsonProperty(value = "invoicingThreshold")
     private BigDecimal invoicingThreshold;
 
-    /** Creates an instance of AlertPropertiesDetails class. */
+    /**
+     * Creates an instance of AlertPropertiesDetails class.
+     */
     public AlertPropertiesDetails() {
     }
 
     /**
      * Get the timeGrainType property: Type of timegrain cadence.
-     *
+     * 
      * @return the timeGrainType value.
      */
     public AlertTimeGrainType timeGrainType() {
@@ -159,7 +145,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Set the timeGrainType property: Type of timegrain cadence.
-     *
+     * 
      * @param timeGrainType the timeGrainType value to set.
      * @return the AlertPropertiesDetails object itself.
      */
@@ -170,7 +156,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Get the periodStartDate property: datetime of periodStartDate.
-     *
+     * 
      * @return the periodStartDate value.
      */
     public String periodStartDate() {
@@ -179,7 +165,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Set the periodStartDate property: datetime of periodStartDate.
-     *
+     * 
      * @param periodStartDate the periodStartDate value to set.
      * @return the AlertPropertiesDetails object itself.
      */
@@ -190,7 +176,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Get the triggeredBy property: notificationId that triggered this alert.
-     *
+     * 
      * @return the triggeredBy value.
      */
     public String triggeredBy() {
@@ -199,7 +185,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Set the triggeredBy property: notificationId that triggered this alert.
-     *
+     * 
      * @param triggeredBy the triggeredBy value to set.
      * @return the AlertPropertiesDetails object itself.
      */
@@ -210,7 +196,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Get the resourceGroupFilter property: array of resourceGroups to filter by.
-     *
+     * 
      * @return the resourceGroupFilter value.
      */
     public List<Object> resourceGroupFilter() {
@@ -219,7 +205,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Set the resourceGroupFilter property: array of resourceGroups to filter by.
-     *
+     * 
      * @param resourceGroupFilter the resourceGroupFilter value to set.
      * @return the AlertPropertiesDetails object itself.
      */
@@ -230,7 +216,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Get the resourceFilter property: array of resources to filter by.
-     *
+     * 
      * @return the resourceFilter value.
      */
     public List<Object> resourceFilter() {
@@ -239,7 +225,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Set the resourceFilter property: array of resources to filter by.
-     *
+     * 
      * @param resourceFilter the resourceFilter value to set.
      * @return the AlertPropertiesDetails object itself.
      */
@@ -250,7 +236,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Get the meterFilter property: array of meters to filter by.
-     *
+     * 
      * @return the meterFilter value.
      */
     public List<Object> meterFilter() {
@@ -259,7 +245,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Set the meterFilter property: array of meters to filter by.
-     *
+     * 
      * @param meterFilter the meterFilter value to set.
      * @return the AlertPropertiesDetails object itself.
      */
@@ -270,7 +256,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Get the tagFilter property: tags to filter by.
-     *
+     * 
      * @return the tagFilter value.
      */
     public Object tagFilter() {
@@ -279,7 +265,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Set the tagFilter property: tags to filter by.
-     *
+     * 
      * @param tagFilter the tagFilter value to set.
      * @return the AlertPropertiesDetails object itself.
      */
@@ -290,7 +276,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Get the threshold property: notification threshold percentage as a decimal which activated this alert.
-     *
+     * 
      * @return the threshold value.
      */
     public BigDecimal threshold() {
@@ -299,7 +285,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Set the threshold property: notification threshold percentage as a decimal which activated this alert.
-     *
+     * 
      * @param threshold the threshold value to set.
      * @return the AlertPropertiesDetails object itself.
      */
@@ -310,7 +296,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Get the operator property: operator used to compare currentSpend with amount.
-     *
+     * 
      * @return the operator value.
      */
     public AlertOperator operator() {
@@ -319,7 +305,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Set the operator property: operator used to compare currentSpend with amount.
-     *
+     * 
      * @param operator the operator value to set.
      * @return the AlertPropertiesDetails object itself.
      */
@@ -330,7 +316,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Get the amount property: budget threshold amount.
-     *
+     * 
      * @return the amount value.
      */
     public BigDecimal amount() {
@@ -339,7 +325,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Set the amount property: budget threshold amount.
-     *
+     * 
      * @param amount the amount value to set.
      * @return the AlertPropertiesDetails object itself.
      */
@@ -350,7 +336,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Get the unit property: unit of currency being used.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -359,7 +345,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Set the unit property: unit of currency being used.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the AlertPropertiesDetails object itself.
      */
@@ -370,7 +356,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Get the currentSpend property: current spend.
-     *
+     * 
      * @return the currentSpend value.
      */
     public BigDecimal currentSpend() {
@@ -379,7 +365,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Set the currentSpend property: current spend.
-     *
+     * 
      * @param currentSpend the currentSpend value to set.
      * @return the AlertPropertiesDetails object itself.
      */
@@ -390,7 +376,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Get the contactEmails property: list of emails to contact.
-     *
+     * 
      * @return the contactEmails value.
      */
     public List<String> contactEmails() {
@@ -399,7 +385,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Set the contactEmails property: list of emails to contact.
-     *
+     * 
      * @param contactEmails the contactEmails value to set.
      * @return the AlertPropertiesDetails object itself.
      */
@@ -410,7 +396,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Get the contactGroups property: list of action groups to broadcast to.
-     *
+     * 
      * @return the contactGroups value.
      */
     public List<String> contactGroups() {
@@ -419,7 +405,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Set the contactGroups property: list of action groups to broadcast to.
-     *
+     * 
      * @param contactGroups the contactGroups value to set.
      * @return the AlertPropertiesDetails object itself.
      */
@@ -430,7 +416,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Get the contactRoles property: list of contact roles.
-     *
+     * 
      * @return the contactRoles value.
      */
     public List<String> contactRoles() {
@@ -439,7 +425,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Set the contactRoles property: list of contact roles.
-     *
+     * 
      * @param contactRoles the contactRoles value to set.
      * @return the AlertPropertiesDetails object itself.
      */
@@ -450,7 +436,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Get the overridingAlert property: overriding alert.
-     *
+     * 
      * @return the overridingAlert value.
      */
     public String overridingAlert() {
@@ -459,7 +445,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Set the overridingAlert property: overriding alert.
-     *
+     * 
      * @param overridingAlert the overridingAlert value to set.
      * @return the AlertPropertiesDetails object itself.
      */
@@ -470,7 +456,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Get the departmentName property: department name.
-     *
+     * 
      * @return the departmentName value.
      */
     public String departmentName() {
@@ -479,7 +465,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Set the departmentName property: department name.
-     *
+     * 
      * @param departmentName the departmentName value to set.
      * @return the AlertPropertiesDetails object itself.
      */
@@ -490,7 +476,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Get the companyName property: company name.
-     *
+     * 
      * @return the companyName value.
      */
     public String companyName() {
@@ -499,7 +485,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Set the companyName property: company name.
-     *
+     * 
      * @param companyName the companyName value to set.
      * @return the AlertPropertiesDetails object itself.
      */
@@ -510,7 +496,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Get the enrollmentNumber property: enrollment number.
-     *
+     * 
      * @return the enrollmentNumber value.
      */
     public String enrollmentNumber() {
@@ -519,7 +505,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Set the enrollmentNumber property: enrollment number.
-     *
+     * 
      * @param enrollmentNumber the enrollmentNumber value to set.
      * @return the AlertPropertiesDetails object itself.
      */
@@ -530,7 +516,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Get the enrollmentStartDate property: datetime of enrollmentStartDate.
-     *
+     * 
      * @return the enrollmentStartDate value.
      */
     public String enrollmentStartDate() {
@@ -539,7 +525,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Set the enrollmentStartDate property: datetime of enrollmentStartDate.
-     *
+     * 
      * @param enrollmentStartDate the enrollmentStartDate value to set.
      * @return the AlertPropertiesDetails object itself.
      */
@@ -550,7 +536,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Get the enrollmentEndDate property: datetime of enrollmentEndDate.
-     *
+     * 
      * @return the enrollmentEndDate value.
      */
     public String enrollmentEndDate() {
@@ -559,7 +545,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Set the enrollmentEndDate property: datetime of enrollmentEndDate.
-     *
+     * 
      * @param enrollmentEndDate the enrollmentEndDate value to set.
      * @return the AlertPropertiesDetails object itself.
      */
@@ -570,7 +556,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Get the invoicingThreshold property: invoicing threshold.
-     *
+     * 
      * @return the invoicingThreshold value.
      */
     public BigDecimal invoicingThreshold() {
@@ -579,7 +565,7 @@ public final class AlertPropertiesDetails {
 
     /**
      * Set the invoicingThreshold property: invoicing threshold.
-     *
+     * 
      * @param invoicingThreshold the invoicingThreshold value to set.
      * @return the AlertPropertiesDetails object itself.
      */
@@ -590,9 +576,123 @@ public final class AlertPropertiesDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("timeGrainType", this.timeGrainType == null ? null : this.timeGrainType.toString());
+        jsonWriter.writeStringField("periodStartDate", this.periodStartDate);
+        jsonWriter.writeStringField("triggeredBy", this.triggeredBy);
+        jsonWriter.writeArrayField("resourceGroupFilter", this.resourceGroupFilter,
+            (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeArrayField("resourceFilter", this.resourceFilter,
+            (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeArrayField("meterFilter", this.meterFilter, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeUntypedField("tagFilter", this.tagFilter);
+        jsonWriter.writeNumberField("threshold", this.threshold);
+        jsonWriter.writeStringField("operator", this.operator == null ? null : this.operator.toString());
+        jsonWriter.writeNumberField("amount", this.amount);
+        jsonWriter.writeStringField("unit", this.unit);
+        jsonWriter.writeNumberField("currentSpend", this.currentSpend);
+        jsonWriter.writeArrayField("contactEmails", this.contactEmails,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("contactGroups", this.contactGroups,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("contactRoles", this.contactRoles, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("overridingAlert", this.overridingAlert);
+        jsonWriter.writeStringField("departmentName", this.departmentName);
+        jsonWriter.writeStringField("companyName", this.companyName);
+        jsonWriter.writeStringField("enrollmentNumber", this.enrollmentNumber);
+        jsonWriter.writeStringField("enrollmentStartDate", this.enrollmentStartDate);
+        jsonWriter.writeStringField("enrollmentEndDate", this.enrollmentEndDate);
+        jsonWriter.writeNumberField("invoicingThreshold", this.invoicingThreshold);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AlertPropertiesDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AlertPropertiesDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AlertPropertiesDetails.
+     */
+    public static AlertPropertiesDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AlertPropertiesDetails deserializedAlertPropertiesDetails = new AlertPropertiesDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timeGrainType".equals(fieldName)) {
+                    deserializedAlertPropertiesDetails.timeGrainType
+                        = AlertTimeGrainType.fromString(reader.getString());
+                } else if ("periodStartDate".equals(fieldName)) {
+                    deserializedAlertPropertiesDetails.periodStartDate = reader.getString();
+                } else if ("triggeredBy".equals(fieldName)) {
+                    deserializedAlertPropertiesDetails.triggeredBy = reader.getString();
+                } else if ("resourceGroupFilter".equals(fieldName)) {
+                    List<Object> resourceGroupFilter = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedAlertPropertiesDetails.resourceGroupFilter = resourceGroupFilter;
+                } else if ("resourceFilter".equals(fieldName)) {
+                    List<Object> resourceFilter = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedAlertPropertiesDetails.resourceFilter = resourceFilter;
+                } else if ("meterFilter".equals(fieldName)) {
+                    List<Object> meterFilter = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedAlertPropertiesDetails.meterFilter = meterFilter;
+                } else if ("tagFilter".equals(fieldName)) {
+                    deserializedAlertPropertiesDetails.tagFilter = reader.readUntyped();
+                } else if ("threshold".equals(fieldName)) {
+                    deserializedAlertPropertiesDetails.threshold
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("operator".equals(fieldName)) {
+                    deserializedAlertPropertiesDetails.operator = AlertOperator.fromString(reader.getString());
+                } else if ("amount".equals(fieldName)) {
+                    deserializedAlertPropertiesDetails.amount
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("unit".equals(fieldName)) {
+                    deserializedAlertPropertiesDetails.unit = reader.getString();
+                } else if ("currentSpend".equals(fieldName)) {
+                    deserializedAlertPropertiesDetails.currentSpend
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("contactEmails".equals(fieldName)) {
+                    List<String> contactEmails = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAlertPropertiesDetails.contactEmails = contactEmails;
+                } else if ("contactGroups".equals(fieldName)) {
+                    List<String> contactGroups = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAlertPropertiesDetails.contactGroups = contactGroups;
+                } else if ("contactRoles".equals(fieldName)) {
+                    List<String> contactRoles = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAlertPropertiesDetails.contactRoles = contactRoles;
+                } else if ("overridingAlert".equals(fieldName)) {
+                    deserializedAlertPropertiesDetails.overridingAlert = reader.getString();
+                } else if ("departmentName".equals(fieldName)) {
+                    deserializedAlertPropertiesDetails.departmentName = reader.getString();
+                } else if ("companyName".equals(fieldName)) {
+                    deserializedAlertPropertiesDetails.companyName = reader.getString();
+                } else if ("enrollmentNumber".equals(fieldName)) {
+                    deserializedAlertPropertiesDetails.enrollmentNumber = reader.getString();
+                } else if ("enrollmentStartDate".equals(fieldName)) {
+                    deserializedAlertPropertiesDetails.enrollmentStartDate = reader.getString();
+                } else if ("enrollmentEndDate".equals(fieldName)) {
+                    deserializedAlertPropertiesDetails.enrollmentEndDate = reader.getString();
+                } else if ("invoicingThreshold".equals(fieldName)) {
+                    deserializedAlertPropertiesDetails.invoicingThreshold
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAlertPropertiesDetails;
+        });
     }
 }

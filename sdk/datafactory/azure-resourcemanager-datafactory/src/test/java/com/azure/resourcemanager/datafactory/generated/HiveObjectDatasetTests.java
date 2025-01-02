@@ -19,37 +19,33 @@ public final class HiveObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HiveObjectDataset model = BinaryData.fromString(
-            "{\"type\":\"HiveObject\",\"typeProperties\":{\"tableName\":\"datak\",\"table\":\"datarqkekcdaviiebeqr\",\"schema\":\"dataavqymcwt\"},\"description\":\"uceplbrzgkuorwp\",\"structure\":\"datastwe\",\"schema\":\"dataptscru\",\"linkedServiceName\":{\"referenceName\":\"kkiela\",\"parameters\":{\"yoifgdfzjqthyk\":\"dataoyjyflsmsbn\",\"kxxlwwo\":\"datavoevcwfzo\",\"ubdmg\":\"dataxgbsdzcgcvypj\"}},\"parameters\":{\"oibm\":{\"type\":\"String\",\"defaultValue\":\"dataujcqgzwvxwiu\"},\"qoqovqhgphgx\":{\"type\":\"Array\",\"defaultValue\":\"dataqrljdcukylaxrj\"},\"cy\":{\"type\":\"Bool\",\"defaultValue\":\"datad\"}},\"annotations\":[\"datavumryd\"],\"folder\":{\"name\":\"ivahfcqwnjzebpic\"},\"\":{\"qeigxuyxsxteuik\":\"dataoypoedkspwwibpy\",\"fqderkr\":\"dataznfffnhcgnaqsrm\",\"znbbyzposzfut\":\"datasdcobpmgqlwy\",\"tzpvqew\":\"datapbygbnbcmoiq\"}}")
+            "{\"type\":\"HiveObject\",\"typeProperties\":{\"tableName\":\"datagjndkvzmxl\",\"table\":\"dataqgdodn\",\"schema\":\"datayipgkmjt\"},\"description\":\"zmdzesimeft\",\"structure\":\"datarfzjlflzagvdavab\",\"schema\":\"dataefcor\",\"linkedServiceName\":{\"referenceName\":\"bidaeb\",\"parameters\":{\"fajw\":\"dataicew\",\"wwsr\":\"dataylciobb\"}},\"parameters\":{\"mnteevfg\":{\"type\":\"Object\",\"defaultValue\":\"dataecuuuex\"}},\"annotations\":[\"dataezraqsddkod\",\"datagxqfkyr\"],\"folder\":{\"name\":\"zzeglwdzfss\"},\"\":{\"ddkkraj\":\"datagaok\"}}")
             .toObject(HiveObjectDataset.class);
-        Assertions.assertEquals("uceplbrzgkuorwp", model.description());
-        Assertions.assertEquals("kkiela", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("oibm").type());
-        Assertions.assertEquals("ivahfcqwnjzebpic", model.folder().name());
+        Assertions.assertEquals("zmdzesimeft", model.description());
+        Assertions.assertEquals("bidaeb", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("mnteevfg").type());
+        Assertions.assertEquals("zzeglwdzfss", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HiveObjectDataset model = new HiveObjectDataset().withDescription("uceplbrzgkuorwp")
-            .withStructure("datastwe")
-            .withSchema("dataptscru")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("kkiela")
-                .withParameters(mapOf("yoifgdfzjqthyk", "dataoyjyflsmsbn", "kxxlwwo", "datavoevcwfzo", "ubdmg",
-                    "dataxgbsdzcgcvypj")))
-            .withParameters(mapOf("oibm",
-                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataujcqgzwvxwiu"),
-                "qoqovqhgphgx",
-                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("dataqrljdcukylaxrj"), "cy",
-                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datad")))
-            .withAnnotations(Arrays.asList("datavumryd"))
-            .withFolder(new DatasetFolder().withName("ivahfcqwnjzebpic"))
-            .withTableName("datak")
-            .withTable("datarqkekcdaviiebeqr")
-            .withSchemaTypePropertiesSchema("dataavqymcwt");
+        HiveObjectDataset model = new HiveObjectDataset().withDescription("zmdzesimeft")
+            .withStructure("datarfzjlflzagvdavab")
+            .withSchema("dataefcor")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("bidaeb")
+                .withParameters(mapOf("fajw", "dataicew", "wwsr", "dataylciobb")))
+            .withParameters(mapOf("mnteevfg",
+                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("dataecuuuex")))
+            .withAnnotations(Arrays.asList("dataezraqsddkod", "datagxqfkyr"))
+            .withFolder(new DatasetFolder().withName("zzeglwdzfss"))
+            .withTableName("datagjndkvzmxl")
+            .withTable("dataqgdodn")
+            .withSchemaTypePropertiesSchema("datayipgkmjt");
         model = BinaryData.fromObject(model).toObject(HiveObjectDataset.class);
-        Assertions.assertEquals("uceplbrzgkuorwp", model.description());
-        Assertions.assertEquals("kkiela", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("oibm").type());
-        Assertions.assertEquals("ivahfcqwnjzebpic", model.folder().name());
+        Assertions.assertEquals("zmdzesimeft", model.description());
+        Assertions.assertEquals("bidaeb", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("mnteevfg").type());
+        Assertions.assertEquals("zzeglwdzfss", model.folder().name());
     }
 
     // Use "Map.of" if available

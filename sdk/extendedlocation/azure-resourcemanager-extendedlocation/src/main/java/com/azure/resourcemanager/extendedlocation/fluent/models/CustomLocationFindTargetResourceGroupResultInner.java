@@ -5,34 +5,43 @@
 package com.azure.resourcemanager.extendedlocation.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Find Target Resource Group operation response. */
+/**
+ * The Find Target Resource Group operation response.
+ */
 @Immutable
-public final class CustomLocationFindTargetResourceGroupResultInner {
+public final class CustomLocationFindTargetResourceGroupResultInner
+    implements JsonSerializable<CustomLocationFindTargetResourceGroupResultInner> {
     /*
-     * The matching resource sync rule is the particular resource sync rule
-     * that matched the match expressions and labels and had lowest priority.
-     * This is the rule responsible for mapping the target resource to the
-     * target resource group.
+     * The matching resource sync rule is the particular resource sync rule that matched the match expressions and
+     * labels and had lowest priority. This is the rule responsible for mapping the target resource to the target
+     * resource group.
      */
-    @JsonProperty(value = "matchedResourceSyncRule", access = JsonProperty.Access.WRITE_ONLY)
     private String matchedResourceSyncRule;
 
     /*
-     * The target resource group of matching resource sync rule. The labels
-     * from the request will be used to find out matching resource sync rule
-     * against the selector property of the resource sync rule. The one with
-     * highest priority will be returned if there are multiple matching rules.
+     * The target resource group of matching resource sync rule. The labels from the request will be used to find out
+     * matching resource sync rule against the selector property of the resource sync rule. The one with highest
+     * priority will be returned if there are multiple matching rules.
      */
-    @JsonProperty(value = "targetResourceGroup", access = JsonProperty.Access.WRITE_ONLY)
     private String targetResourceGroup;
+
+    /**
+     * Creates an instance of CustomLocationFindTargetResourceGroupResultInner class.
+     */
+    public CustomLocationFindTargetResourceGroupResultInner() {
+    }
 
     /**
      * Get the matchedResourceSyncRule property: The matching resource sync rule is the particular resource sync rule
      * that matched the match expressions and labels and had lowest priority. This is the rule responsible for mapping
      * the target resource to the target resource group.
-     *
+     * 
      * @return the matchedResourceSyncRule value.
      */
     public String matchedResourceSyncRule() {
@@ -43,7 +52,7 @@ public final class CustomLocationFindTargetResourceGroupResultInner {
      * Get the targetResourceGroup property: The target resource group of matching resource sync rule. The labels from
      * the request will be used to find out matching resource sync rule against the selector property of the resource
      * sync rule. The one with highest priority will be returned if there are multiple matching rules.
-     *
+     * 
      * @return the targetResourceGroup value.
      */
     public String targetResourceGroup() {
@@ -52,9 +61,49 @@ public final class CustomLocationFindTargetResourceGroupResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomLocationFindTargetResourceGroupResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomLocationFindTargetResourceGroupResultInner if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomLocationFindTargetResourceGroupResultInner.
+     */
+    public static CustomLocationFindTargetResourceGroupResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomLocationFindTargetResourceGroupResultInner deserializedCustomLocationFindTargetResourceGroupResultInner
+                = new CustomLocationFindTargetResourceGroupResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("matchedResourceSyncRule".equals(fieldName)) {
+                    deserializedCustomLocationFindTargetResourceGroupResultInner.matchedResourceSyncRule
+                        = reader.getString();
+                } else if ("targetResourceGroup".equals(fieldName)) {
+                    deserializedCustomLocationFindTargetResourceGroupResultInner.targetResourceGroup
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomLocationFindTargetResourceGroupResultInner;
+        });
     }
 }

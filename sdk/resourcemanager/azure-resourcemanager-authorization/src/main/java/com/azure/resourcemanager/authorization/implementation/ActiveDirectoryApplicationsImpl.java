@@ -18,11 +18,8 @@ import java.util.UUID;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation of Applications and its parent interfaces. */
-public class ActiveDirectoryApplicationsImpl
-    extends CreatableResourcesImpl<
-        ActiveDirectoryApplication,
-        ActiveDirectoryApplicationImpl,
-        MicrosoftGraphApplicationInner>
+public class ActiveDirectoryApplicationsImpl extends
+    CreatableResourcesImpl<ActiveDirectoryApplication, ActiveDirectoryApplicationImpl, MicrosoftGraphApplicationInner>
     implements ActiveDirectoryApplications, HasManager<AuthorizationManager> {
     private AuthorizationManager manager;
 
@@ -55,9 +52,7 @@ public class ActiveDirectoryApplicationsImpl
 
     @Override
     public Mono<ActiveDirectoryApplication> getByIdAsync(String id) {
-        return inner()
-            .getApplicationAsync(id)
-            .map(this::wrapModel);
+        return inner().getApplicationAsync(id).map(this::wrapModel);
     }
 
     @Override
@@ -68,8 +63,7 @@ public class ActiveDirectoryApplicationsImpl
     @Override
     public Mono<ActiveDirectoryApplication> getByNameAsync(String name) {
         final String trimmed = name.replaceFirst("^'+", "").replaceAll("'+$", "");
-        return listByFilterAsync(String.format("displayName eq '%s'", trimmed))
-            .singleOrEmpty()
+        return listByFilterAsync(String.format("displayName eq '%s'", trimmed)).singleOrEmpty()
             .switchIfEmpty(Mono.defer(() -> {
                 try {
                     UUID.fromString(trimmed);
@@ -83,8 +77,8 @@ public class ActiveDirectoryApplicationsImpl
 
     @Override
     protected ActiveDirectoryApplicationImpl wrapModel(String name) {
-        return new ActiveDirectoryApplicationImpl(
-            new MicrosoftGraphApplicationInner().withDisplayName(name), manager());
+        return new ActiveDirectoryApplicationImpl(new MicrosoftGraphApplicationInner().withDisplayName(name),
+            manager());
     }
 
     @Override
@@ -113,7 +107,7 @@ public class ActiveDirectoryApplicationsImpl
 
     @Override
     public PagedFlux<ActiveDirectoryApplication> listByFilterAsync(String filter) {
-        return PagedConverter.mapPage(inner().listApplicationAsync(null, null, null, null, filter, null, null, null, null),
-            this::wrapModel);
+        return PagedConverter.mapPage(
+            inner().listApplicationAsync(null, null, null, null, filter, null, null, null, null), this::wrapModel);
     }
 }

@@ -5,37 +5,43 @@
 package com.azure.resourcemanager.advisor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The properties of the suppression. */
+/**
+ * The properties of the suppression.
+ */
 @Fluent
-public final class SuppressionProperties {
+public final class SuppressionProperties implements JsonSerializable<SuppressionProperties> {
     /*
      * The GUID of the suppression.
      */
-    @JsonProperty(value = "suppressionId")
     private String suppressionId;
 
     /*
      * The duration for which the suppression is valid.
      */
-    @JsonProperty(value = "ttl")
     private String ttl;
 
     /*
      * Gets or sets the expiration time stamp.
      */
-    @JsonProperty(value = "expirationTimeStamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime expirationTimestamp;
 
-    /** Creates an instance of SuppressionProperties class. */
+    /**
+     * Creates an instance of SuppressionProperties class.
+     */
     public SuppressionProperties() {
     }
 
     /**
      * Get the suppressionId property: The GUID of the suppression.
-     *
+     * 
      * @return the suppressionId value.
      */
     public String suppressionId() {
@@ -44,7 +50,7 @@ public final class SuppressionProperties {
 
     /**
      * Set the suppressionId property: The GUID of the suppression.
-     *
+     * 
      * @param suppressionId the suppressionId value to set.
      * @return the SuppressionProperties object itself.
      */
@@ -55,7 +61,7 @@ public final class SuppressionProperties {
 
     /**
      * Get the ttl property: The duration for which the suppression is valid.
-     *
+     * 
      * @return the ttl value.
      */
     public String ttl() {
@@ -64,7 +70,7 @@ public final class SuppressionProperties {
 
     /**
      * Set the ttl property: The duration for which the suppression is valid.
-     *
+     * 
      * @param ttl the ttl value to set.
      * @return the SuppressionProperties object itself.
      */
@@ -75,7 +81,7 @@ public final class SuppressionProperties {
 
     /**
      * Get the expirationTimestamp property: Gets or sets the expiration time stamp.
-     *
+     * 
      * @return the expirationTimestamp value.
      */
     public OffsetDateTime expirationTimestamp() {
@@ -84,9 +90,51 @@ public final class SuppressionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("suppressionId", this.suppressionId);
+        jsonWriter.writeStringField("ttl", this.ttl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SuppressionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SuppressionProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SuppressionProperties.
+     */
+    public static SuppressionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SuppressionProperties deserializedSuppressionProperties = new SuppressionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("suppressionId".equals(fieldName)) {
+                    deserializedSuppressionProperties.suppressionId = reader.getString();
+                } else if ("ttl".equals(fieldName)) {
+                    deserializedSuppressionProperties.ttl = reader.getString();
+                } else if ("expirationTimeStamp".equals(fieldName)) {
+                    deserializedSuppressionProperties.expirationTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSuppressionProperties;
+        });
     }
 }

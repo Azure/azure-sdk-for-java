@@ -228,14 +228,17 @@ public final class StreamingJobImpl implements StreamingJob, StreamingJob.Defini
     }
 
     public StreamingJob create() {
-        this.innerObject = serviceManager.serviceClient().getStreamingJobs().createOrReplace(resourceGroupName, jobName,
-            this.innerModel(), createIfMatch, createIfNoneMatch, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getStreamingJobs()
+            .createOrReplace(resourceGroupName, jobName, this.innerModel(), createIfMatch, createIfNoneMatch,
+                Context.NONE);
         return this;
     }
 
     public StreamingJob create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getStreamingJobs().createOrReplace(resourceGroupName, jobName,
-            this.innerModel(), createIfMatch, createIfNoneMatch, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getStreamingJobs()
+            .createOrReplace(resourceGroupName, jobName, this.innerModel(), createIfMatch, createIfNoneMatch, context);
         return this;
     }
 
@@ -253,14 +256,18 @@ public final class StreamingJobImpl implements StreamingJob, StreamingJob.Defini
     }
 
     public StreamingJob apply() {
-        this.innerObject = serviceManager.serviceClient().getStreamingJobs()
-            .updateWithResponse(resourceGroupName, jobName, this.innerModel(), updateIfMatch, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getStreamingJobs()
+            .updateWithResponse(resourceGroupName, jobName, this.innerModel(), updateIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public StreamingJob apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getStreamingJobs()
-            .updateWithResponse(resourceGroupName, jobName, this.innerModel(), updateIfMatch, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getStreamingJobs()
+            .updateWithResponse(resourceGroupName, jobName, this.innerModel(), updateIfMatch, context)
+            .getValue();
         return this;
     }
 
@@ -274,15 +281,19 @@ public final class StreamingJobImpl implements StreamingJob, StreamingJob.Defini
 
     public StreamingJob refresh() {
         String localExpand = null;
-        this.innerObject = serviceManager.serviceClient().getStreamingJobs()
-            .getByResourceGroupWithResponse(resourceGroupName, jobName, localExpand, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getStreamingJobs()
+            .getByResourceGroupWithResponse(resourceGroupName, jobName, localExpand, Context.NONE)
+            .getValue();
         return this;
     }
 
     public StreamingJob refresh(Context context) {
         String localExpand = null;
-        this.innerObject = serviceManager.serviceClient().getStreamingJobs()
-            .getByResourceGroupWithResponse(resourceGroupName, jobName, localExpand, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getStreamingJobs()
+            .getByResourceGroupWithResponse(resourceGroupName, jobName, localExpand, context)
+            .getValue();
         return this;
     }
 

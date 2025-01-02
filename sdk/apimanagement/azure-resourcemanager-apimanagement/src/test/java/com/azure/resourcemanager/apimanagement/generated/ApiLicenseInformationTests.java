@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ApiLicenseInformationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiLicenseInformation model =
-            BinaryData
-                .fromString("{\"name\":\"uvm\",\"url\":\"ozkrwfndiodjpslw\"}")
-                .toObject(ApiLicenseInformation.class);
+        ApiLicenseInformation model = BinaryData.fromString("{\"name\":\"uvm\",\"url\":\"ozkrwfndiodjpslw\"}")
+            .toObject(ApiLicenseInformation.class);
         Assertions.assertEquals("uvm", model.name());
         Assertions.assertEquals("ozkrwfndiodjpslw", model.url());
     }

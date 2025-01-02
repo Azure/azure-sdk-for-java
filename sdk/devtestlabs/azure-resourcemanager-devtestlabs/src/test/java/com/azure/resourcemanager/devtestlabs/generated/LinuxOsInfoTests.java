@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class LinuxOsInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LinuxOsInfo model =
-            BinaryData.fromString("{\"linuxOsState\":\"DeprovisionRequested\"}").toObject(LinuxOsInfo.class);
+        LinuxOsInfo model
+            = BinaryData.fromString("{\"linuxOsState\":\"DeprovisionRequested\"}").toObject(LinuxOsInfo.class);
         Assertions.assertEquals(LinuxOsState.DEPROVISION_REQUESTED, model.linuxOsState());
     }
 

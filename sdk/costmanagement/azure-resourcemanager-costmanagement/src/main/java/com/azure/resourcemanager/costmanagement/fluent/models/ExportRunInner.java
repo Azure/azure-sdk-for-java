@@ -6,35 +6,88 @@ package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.costmanagement.models.CostManagementProxyResource;
 import com.azure.resourcemanager.costmanagement.models.ExecutionStatus;
 import com.azure.resourcemanager.costmanagement.models.ExecutionType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** An export run. */
+/**
+ * An export run.
+ */
 @Fluent
 public final class ExportRunInner extends CostManagementProxyResource {
     /*
      * The properties of the export run.
      */
-    @JsonProperty(value = "properties")
     private ExportRunPropertiesInner innerProperties;
 
-    /** Creates an instance of ExportRunInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ExportRunInner class.
+     */
     public ExportRunInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the export run.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ExportRunPropertiesInner innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExportRunInner withEtag(String etag) {
         super.withEtag(etag);
@@ -43,7 +96,7 @@ public final class ExportRunInner extends CostManagementProxyResource {
 
     /**
      * Get the executionType property: The type of the export run.
-     *
+     * 
      * @return the executionType value.
      */
     public ExecutionType executionType() {
@@ -52,7 +105,7 @@ public final class ExportRunInner extends CostManagementProxyResource {
 
     /**
      * Set the executionType property: The type of the export run.
-     *
+     * 
      * @param executionType the executionType value to set.
      * @return the ExportRunInner object itself.
      */
@@ -66,7 +119,7 @@ public final class ExportRunInner extends CostManagementProxyResource {
 
     /**
      * Get the status property: The last known status of the export run.
-     *
+     * 
      * @return the status value.
      */
     public ExecutionStatus status() {
@@ -75,7 +128,7 @@ public final class ExportRunInner extends CostManagementProxyResource {
 
     /**
      * Set the status property: The last known status of the export run.
-     *
+     * 
      * @param status the status value to set.
      * @return the ExportRunInner object itself.
      */
@@ -90,7 +143,7 @@ public final class ExportRunInner extends CostManagementProxyResource {
     /**
      * Get the submittedBy property: The identifier for the entity that triggered the export. For on-demand runs it is
      * the user email. For scheduled runs it is 'System'.
-     *
+     * 
      * @return the submittedBy value.
      */
     public String submittedBy() {
@@ -100,7 +153,7 @@ public final class ExportRunInner extends CostManagementProxyResource {
     /**
      * Set the submittedBy property: The identifier for the entity that triggered the export. For on-demand runs it is
      * the user email. For scheduled runs it is 'System'.
-     *
+     * 
      * @param submittedBy the submittedBy value to set.
      * @return the ExportRunInner object itself.
      */
@@ -114,7 +167,7 @@ public final class ExportRunInner extends CostManagementProxyResource {
 
     /**
      * Get the submittedTime property: The time when export was queued to be run.
-     *
+     * 
      * @return the submittedTime value.
      */
     public OffsetDateTime submittedTime() {
@@ -123,7 +176,7 @@ public final class ExportRunInner extends CostManagementProxyResource {
 
     /**
      * Set the submittedTime property: The time when export was queued to be run.
-     *
+     * 
      * @param submittedTime the submittedTime value to set.
      * @return the ExportRunInner object itself.
      */
@@ -137,7 +190,7 @@ public final class ExportRunInner extends CostManagementProxyResource {
 
     /**
      * Get the processingStartTime property: The time when export was picked up to be run.
-     *
+     * 
      * @return the processingStartTime value.
      */
     public OffsetDateTime processingStartTime() {
@@ -146,7 +199,7 @@ public final class ExportRunInner extends CostManagementProxyResource {
 
     /**
      * Set the processingStartTime property: The time when export was picked up to be run.
-     *
+     * 
      * @param processingStartTime the processingStartTime value to set.
      * @return the ExportRunInner object itself.
      */
@@ -160,7 +213,7 @@ public final class ExportRunInner extends CostManagementProxyResource {
 
     /**
      * Get the processingEndTime property: The time when the export run finished.
-     *
+     * 
      * @return the processingEndTime value.
      */
     public OffsetDateTime processingEndTime() {
@@ -169,7 +222,7 @@ public final class ExportRunInner extends CostManagementProxyResource {
 
     /**
      * Set the processingEndTime property: The time when the export run finished.
-     *
+     * 
      * @param processingEndTime the processingEndTime value to set.
      * @return the ExportRunInner object itself.
      */
@@ -183,7 +236,7 @@ public final class ExportRunInner extends CostManagementProxyResource {
 
     /**
      * Get the fileName property: The name of the exported file.
-     *
+     * 
      * @return the fileName value.
      */
     public String fileName() {
@@ -192,7 +245,7 @@ public final class ExportRunInner extends CostManagementProxyResource {
 
     /**
      * Set the fileName property: The name of the exported file.
-     *
+     * 
      * @param fileName the fileName value to set.
      * @return the ExportRunInner object itself.
      */
@@ -206,7 +259,7 @@ public final class ExportRunInner extends CostManagementProxyResource {
 
     /**
      * Get the runSettings property: The export settings that were in effect for this run.
-     *
+     * 
      * @return the runSettings value.
      */
     public CommonExportPropertiesInner runSettings() {
@@ -215,7 +268,7 @@ public final class ExportRunInner extends CostManagementProxyResource {
 
     /**
      * Set the runSettings property: The export settings that were in effect for this run.
-     *
+     * 
      * @param runSettings the runSettings value to set.
      * @return the ExportRunInner object itself.
      */
@@ -229,7 +282,7 @@ public final class ExportRunInner extends CostManagementProxyResource {
 
     /**
      * Get the error property: The details of any error.
-     *
+     * 
      * @return the error value.
      */
     public ManagementError error() {
@@ -238,7 +291,7 @@ public final class ExportRunInner extends CostManagementProxyResource {
 
     /**
      * Set the error property: The details of any error.
-     *
+     * 
      * @param error the error value to set.
      * @return the ExportRunInner object itself.
      */
@@ -252,14 +305,59 @@ public final class ExportRunInner extends CostManagementProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("eTag", etag());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExportRunInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExportRunInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExportRunInner.
+     */
+    public static ExportRunInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExportRunInner deserializedExportRunInner = new ExportRunInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedExportRunInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedExportRunInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedExportRunInner.type = reader.getString();
+                } else if ("eTag".equals(fieldName)) {
+                    deserializedExportRunInner.withEtag(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedExportRunInner.innerProperties = ExportRunPropertiesInner.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExportRunInner;
+        });
     }
 }

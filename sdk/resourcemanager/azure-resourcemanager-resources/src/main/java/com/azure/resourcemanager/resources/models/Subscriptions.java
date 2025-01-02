@@ -11,7 +11,5 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
  * Entry point to subscription management API.
  */
 @Fluent
-public interface Subscriptions extends
-        SupportsListing<Subscription>,
-        SupportsGettingById<Subscription> {
+public interface Subscriptions extends SupportsListing<Subscription>, SupportsGettingById<Subscription> {
 }

@@ -6,46 +6,48 @@ package com.azure.resourcemanager.azurestack.models;
 
 import com.azure.resourcemanager.azurestack.fluent.models.CloudManifestFileResponseInner;
 
-/** An immutable client-side representation of CloudManifestFileResponse. */
+/**
+ * An immutable client-side representation of CloudManifestFileResponse.
+ */
 public interface CloudManifestFileResponse {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the properties property: Cloud specific manifest data.
-     *
+     * 
      * @return the properties value.
      */
     CloudManifestFileProperties properties();
 
     /**
      * Gets the etag property: The entity tag used for optimistic concurrency when modifying the resource.
-     *
+     * 
      * @return the etag value.
      */
     String etag();
 
     /**
      * Gets the inner com.azure.resourcemanager.azurestack.fluent.models.CloudManifestFileResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     CloudManifestFileResponseInner innerModel();

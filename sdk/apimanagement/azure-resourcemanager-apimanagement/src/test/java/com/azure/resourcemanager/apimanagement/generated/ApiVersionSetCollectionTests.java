@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ApiVersionSetCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiVersionSetCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"displayName\":\"dzyyfytpq\",\"versioningScheme\":\"Segment\",\"description\":\"ymmpujivy\",\"versionQueryName\":\"kjuvs\",\"versionHeaderName\":\"msl\"},\"id\":\"oyovwz\",\"name\":\"bpqvybefg\",\"type\":\"mx\"},{\"properties\":{\"displayName\":\"kcvtl\",\"versioningScheme\":\"Query\",\"description\":\"eskvcuartrhun\",\"versionQueryName\":\"iryky\",\"versionHeaderName\":\"dzfqivjreuy\"},\"id\":\"bbmnwagltb\",\"name\":\"oeeonqlnfwm\",\"type\":\"ymvqdbpbhfckdvez\"},{\"properties\":{\"displayName\":\"cssbzhddu\",\"versioningScheme\":\"Header\",\"description\":\"qfblhkalehpa\",\"versionQueryName\":\"wugiqjti\",\"versionHeaderName\":\"qgdm\"},\"id\":\"nictteajo\",\"name\":\"iygspnbonhpczyk\",\"type\":\"ktpv\"},{\"properties\":{\"displayName\":\"qcs\",\"versioningScheme\":\"Segment\",\"description\":\"hkhufm\",\"versionQueryName\":\"umqy\",\"versionHeaderName\":\"ydzulodsaeuzan\"},\"id\":\"sfnhsenwphp\",\"name\":\"fngq\",\"type\":\"clid\"}],\"count\":1042823858711156853,\"nextLink\":\"jj\"}")
-                .toObject(ApiVersionSetCollection.class);
+        ApiVersionSetCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"displayName\":\"dzyyfytpq\",\"versioningScheme\":\"Segment\",\"description\":\"ymmpujivy\",\"versionQueryName\":\"kjuvs\",\"versionHeaderName\":\"msl\"},\"id\":\"oyovwz\",\"name\":\"bpqvybefg\",\"type\":\"mx\"},{\"properties\":{\"displayName\":\"kcvtl\",\"versioningScheme\":\"Query\",\"description\":\"eskvcuartrhun\",\"versionQueryName\":\"iryky\",\"versionHeaderName\":\"dzfqivjreuy\"},\"id\":\"bbmnwagltb\",\"name\":\"oeeonqlnfwm\",\"type\":\"ymvqdbpbhfckdvez\"},{\"properties\":{\"displayName\":\"cssbzhddu\",\"versioningScheme\":\"Header\",\"description\":\"qfblhkalehpa\",\"versionQueryName\":\"wugiqjti\",\"versionHeaderName\":\"qgdm\"},\"id\":\"nictteajo\",\"name\":\"iygspnbonhpczyk\",\"type\":\"ktpv\"},{\"properties\":{\"displayName\":\"qcs\",\"versioningScheme\":\"Segment\",\"description\":\"hkhufm\",\"versionQueryName\":\"umqy\",\"versionHeaderName\":\"ydzulodsaeuzan\"},\"id\":\"sfnhsenwphp\",\"name\":\"fngq\",\"type\":\"clid\"}],\"count\":1042823858711156853,\"nextLink\":\"jj\"}")
+            .toObject(ApiVersionSetCollection.class);
         Assertions.assertEquals("dzyyfytpq", model.value().get(0).displayName());
         Assertions.assertEquals(VersioningScheme.SEGMENT, model.value().get(0).versioningScheme());
         Assertions.assertEquals("ymmpujivy", model.value().get(0).description());
@@ -30,37 +28,29 @@ public final class ApiVersionSetCollectionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiVersionSetCollection model =
-            new ApiVersionSetCollection()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ApiVersionSetContractInner()
-                                .withDisplayName("dzyyfytpq")
-                                .withVersioningScheme(VersioningScheme.SEGMENT)
-                                .withDescription("ymmpujivy")
-                                .withVersionQueryName("kjuvs")
-                                .withVersionHeaderName("msl"),
-                            new ApiVersionSetContractInner()
-                                .withDisplayName("kcvtl")
-                                .withVersioningScheme(VersioningScheme.QUERY)
-                                .withDescription("eskvcuartrhun")
-                                .withVersionQueryName("iryky")
-                                .withVersionHeaderName("dzfqivjreuy"),
-                            new ApiVersionSetContractInner()
-                                .withDisplayName("cssbzhddu")
-                                .withVersioningScheme(VersioningScheme.HEADER)
-                                .withDescription("qfblhkalehpa")
-                                .withVersionQueryName("wugiqjti")
-                                .withVersionHeaderName("qgdm"),
-                            new ApiVersionSetContractInner()
-                                .withDisplayName("qcs")
-                                .withVersioningScheme(VersioningScheme.SEGMENT)
-                                .withDescription("hkhufm")
-                                .withVersionQueryName("umqy")
-                                .withVersionHeaderName("ydzulodsaeuzan")))
-                .withCount(1042823858711156853L)
-                .withNextLink("jj");
+        ApiVersionSetCollection model = new ApiVersionSetCollection().withValue(Arrays.asList(
+            new ApiVersionSetContractInner().withDisplayName("dzyyfytpq")
+                .withVersioningScheme(VersioningScheme.SEGMENT)
+                .withDescription("ymmpujivy")
+                .withVersionQueryName("kjuvs")
+                .withVersionHeaderName("msl"),
+            new ApiVersionSetContractInner().withDisplayName("kcvtl")
+                .withVersioningScheme(VersioningScheme.QUERY)
+                .withDescription("eskvcuartrhun")
+                .withVersionQueryName("iryky")
+                .withVersionHeaderName("dzfqivjreuy"),
+            new ApiVersionSetContractInner().withDisplayName("cssbzhddu")
+                .withVersioningScheme(VersioningScheme.HEADER)
+                .withDescription("qfblhkalehpa")
+                .withVersionQueryName("wugiqjti")
+                .withVersionHeaderName("qgdm"),
+            new ApiVersionSetContractInner().withDisplayName("qcs")
+                .withVersioningScheme(VersioningScheme.SEGMENT)
+                .withDescription("hkhufm")
+                .withVersionQueryName("umqy")
+                .withVersionHeaderName("ydzulodsaeuzan")))
+            .withCount(1042823858711156853L)
+            .withNextLink("jj");
         model = BinaryData.fromObject(model).toObject(ApiVersionSetCollection.class);
         Assertions.assertEquals("dzyyfytpq", model.value().get(0).displayName());
         Assertions.assertEquals(VersioningScheme.SEGMENT, model.value().get(0).versioningScheme());

@@ -5,34 +5,54 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.EntityCommonProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
-/** Nic entity property bag. */
+/**
+ * Nic entity property bag.
+ */
 @Immutable
 public final class NicEntityProperties extends EntityCommonProperties {
     /*
      * The MAC address of this network interface
      */
-    @JsonProperty(value = "macAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String macAddress;
 
     /*
      * The IP entity id of this network interface
      */
-    @JsonProperty(value = "ipAddressEntityId", access = JsonProperty.Access.WRITE_ONLY)
     private String ipAddressEntityId;
 
     /*
      * A list of VLANs of the network interface entity.
      */
-    @JsonProperty(value = "vlans", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> vlans;
+
+    /*
+     * The graph item display name which is a short humanly readable description of the graph item instance. This
+     * property is optional and might be system generated.
+     */
+    private String friendlyName;
+
+    /*
+     * A bag of custom fields that should be part of the entity and will be presented to the user.
+     */
+    private Map<String, Object> additionalData;
+
+    /**
+     * Creates an instance of NicEntityProperties class.
+     */
+    public NicEntityProperties() {
+    }
 
     /**
      * Get the macAddress property: The MAC address of this network interface.
-     *
+     * 
      * @return the macAddress value.
      */
     public String macAddress() {
@@ -41,7 +61,7 @@ public final class NicEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the ipAddressEntityId property: The IP entity id of this network interface.
-     *
+     * 
      * @return the ipAddressEntityId value.
      */
     public String ipAddressEntityId() {
@@ -50,7 +70,7 @@ public final class NicEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the vlans property: A list of VLANs of the network interface entity.
-     *
+     * 
      * @return the vlans value.
      */
     public List<String> vlans() {
@@ -58,12 +78,78 @@ public final class NicEntityProperties extends EntityCommonProperties {
     }
 
     /**
+     * Get the friendlyName property: The graph item display name which is a short humanly readable description of the
+     * graph item instance. This property is optional and might be system generated.
+     * 
+     * @return the friendlyName value.
+     */
+    @Override
+    public String friendlyName() {
+        return this.friendlyName;
+    }
+
+    /**
+     * Get the additionalData property: A bag of custom fields that should be part of the entity and will be presented
+     * to the user.
+     * 
+     * @return the additionalData value.
+     */
+    @Override
+    public Map<String, Object> additionalData() {
+        return this.additionalData;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NicEntityProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NicEntityProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NicEntityProperties.
+     */
+    public static NicEntityProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NicEntityProperties deserializedNicEntityProperties = new NicEntityProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("additionalData".equals(fieldName)) {
+                    Map<String, Object> additionalData = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedNicEntityProperties.additionalData = additionalData;
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedNicEntityProperties.friendlyName = reader.getString();
+                } else if ("macAddress".equals(fieldName)) {
+                    deserializedNicEntityProperties.macAddress = reader.getString();
+                } else if ("ipAddressEntityId".equals(fieldName)) {
+                    deserializedNicEntityProperties.ipAddressEntityId = reader.getString();
+                } else if ("vlans".equals(fieldName)) {
+                    List<String> vlans = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNicEntityProperties.vlans = vlans;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNicEntityProperties;
+        });
     }
 }

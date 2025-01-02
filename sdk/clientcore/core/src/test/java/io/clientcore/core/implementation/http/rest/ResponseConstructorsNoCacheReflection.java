@@ -43,7 +43,7 @@ class ResponseConstructorsNoCacheReflection {
     }
 
     Response<?> invoke(final Constructor<? extends Response<?>> constructor, final Response<?> response,
-                       final Object bodyAsObject) {
+        final Object bodyAsObject) {
         final HttpRequest httpRequest = response.getRequest();
         final int responseStatusCode = response.getStatusCode();
         final HttpHeaders responseHeaders = response.getHeaders();
@@ -53,9 +53,11 @@ class ResponseConstructorsNoCacheReflection {
             switch (paramCount) {
                 case 3:
                     return constructResponse(constructor, httpRequest, responseStatusCode, responseHeaders);
+
                 case 4:
                     return constructResponse(constructor, httpRequest, responseStatusCode, responseHeaders,
                         bodyAsObject);
+
                 default:
                     throw logger.logThrowableAsError(
                         new IllegalStateException("Response constructor with expected parameters not found."));

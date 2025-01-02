@@ -5,74 +5,70 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.AuthenticationMode;
 import com.azure.resourcemanager.streamanalytics.models.RefreshType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The properties that are associated with SQL DB input containing reference data. Required on PUT (CreateOrReplace)
  * requests.
  */
 @Fluent
-public final class AzureSqlReferenceInputDataSourceProperties {
+public final class AzureSqlReferenceInputDataSourceProperties
+    implements JsonSerializable<AzureSqlReferenceInputDataSourceProperties> {
     /*
-     * This element is associated with the datasource element. This is the name of the server that contains the
-     * database that will be written to.
+     * This element is associated with the datasource element. This is the name of the server that contains the database
+     * that will be written to.
      */
-    @JsonProperty(value = "server")
     private String server;
 
     /*
      * This element is associated with the datasource element. This is the name of the database that output will be
      * written to.
      */
-    @JsonProperty(value = "database")
     private String database;
 
     /*
-     * This element is associated with the datasource element. This is the user name that will be used to connect to
-     * the SQL Database instance.
+     * This element is associated with the datasource element. This is the user name that will be used to connect to the
+     * SQL Database instance.
      */
-    @JsonProperty(value = "user")
     private String user;
 
     /*
      * This element is associated with the datasource element. This is the password that will be used to connect to the
      * SQL Database instance.
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /*
      * Indicates the type of data refresh option.
      */
-    @JsonProperty(value = "refreshType")
     private RefreshType refreshType;
 
     /*
      * This element is associated with the datasource element. This indicates how frequently the data will be fetched
      * from the database. It is of DateTime format.
      */
-    @JsonProperty(value = "refreshRate")
     private String refreshRate;
 
     /*
      * This element is associated with the datasource element. This query is used to fetch data from the sql database.
      */
-    @JsonProperty(value = "fullSnapshotQuery")
     private String fullSnapshotQuery;
 
     /*
      * This element is associated with the datasource element. This query is used to fetch incremental changes from the
      * SQL database. To use this option, we recommend using temporal tables in Azure SQL Database.
      */
-    @JsonProperty(value = "deltaSnapshotQuery")
     private String deltaSnapshotQuery;
 
     /*
      * Authentication Mode.
      */
-    @JsonProperty(value = "authenticationMode")
     private AuthenticationMode authenticationMode;
 
     /**
@@ -126,8 +122,8 @@ public final class AzureSqlReferenceInputDataSourceProperties {
     }
 
     /**
-     * Get the user property: This element is associated with the datasource element. This is the user name that will
-     * be used to connect to the SQL Database instance.
+     * Get the user property: This element is associated with the datasource element. This is the user name that will be
+     * used to connect to the SQL Database instance.
      * 
      * @return the user value.
      */
@@ -136,8 +132,8 @@ public final class AzureSqlReferenceInputDataSourceProperties {
     }
 
     /**
-     * Set the user property: This element is associated with the datasource element. This is the user name that will
-     * be used to connect to the SQL Database instance.
+     * Set the user property: This element is associated with the datasource element. This is the user name that will be
+     * used to connect to the SQL Database instance.
      * 
      * @param user the user value to set.
      * @return the AzureSqlReferenceInputDataSourceProperties object itself.
@@ -148,8 +144,8 @@ public final class AzureSqlReferenceInputDataSourceProperties {
     }
 
     /**
-     * Get the password property: This element is associated with the datasource element. This is the password that
-     * will be used to connect to the SQL Database instance.
+     * Get the password property: This element is associated with the datasource element. This is the password that will
+     * be used to connect to the SQL Database instance.
      * 
      * @return the password value.
      */
@@ -158,8 +154,8 @@ public final class AzureSqlReferenceInputDataSourceProperties {
     }
 
     /**
-     * Set the password property: This element is associated with the datasource element. This is the password that
-     * will be used to connect to the SQL Database instance.
+     * Set the password property: This element is associated with the datasource element. This is the password that will
+     * be used to connect to the SQL Database instance.
      * 
      * @param password the password value to set.
      * @return the AzureSqlReferenceInputDataSourceProperties object itself.
@@ -212,8 +208,8 @@ public final class AzureSqlReferenceInputDataSourceProperties {
     }
 
     /**
-     * Get the fullSnapshotQuery property: This element is associated with the datasource element. This query is used
-     * to fetch data from the sql database.
+     * Get the fullSnapshotQuery property: This element is associated with the datasource element. This query is used to
+     * fetch data from the sql database.
      * 
      * @return the fullSnapshotQuery value.
      */
@@ -222,8 +218,8 @@ public final class AzureSqlReferenceInputDataSourceProperties {
     }
 
     /**
-     * Set the fullSnapshotQuery property: This element is associated with the datasource element. This query is used
-     * to fetch data from the sql database.
+     * Set the fullSnapshotQuery property: This element is associated with the datasource element. This query is used to
+     * fetch data from the sql database.
      * 
      * @param fullSnapshotQuery the fullSnapshotQuery value to set.
      * @return the AzureSqlReferenceInputDataSourceProperties object itself.
@@ -283,5 +279,69 @@ public final class AzureSqlReferenceInputDataSourceProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("server", this.server);
+        jsonWriter.writeStringField("database", this.database);
+        jsonWriter.writeStringField("user", this.user);
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeStringField("refreshType", this.refreshType == null ? null : this.refreshType.toString());
+        jsonWriter.writeStringField("refreshRate", this.refreshRate);
+        jsonWriter.writeStringField("fullSnapshotQuery", this.fullSnapshotQuery);
+        jsonWriter.writeStringField("deltaSnapshotQuery", this.deltaSnapshotQuery);
+        jsonWriter.writeStringField("authenticationMode",
+            this.authenticationMode == null ? null : this.authenticationMode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureSqlReferenceInputDataSourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureSqlReferenceInputDataSourceProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureSqlReferenceInputDataSourceProperties.
+     */
+    public static AzureSqlReferenceInputDataSourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureSqlReferenceInputDataSourceProperties deserializedAzureSqlReferenceInputDataSourceProperties
+                = new AzureSqlReferenceInputDataSourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("server".equals(fieldName)) {
+                    deserializedAzureSqlReferenceInputDataSourceProperties.server = reader.getString();
+                } else if ("database".equals(fieldName)) {
+                    deserializedAzureSqlReferenceInputDataSourceProperties.database = reader.getString();
+                } else if ("user".equals(fieldName)) {
+                    deserializedAzureSqlReferenceInputDataSourceProperties.user = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedAzureSqlReferenceInputDataSourceProperties.password = reader.getString();
+                } else if ("refreshType".equals(fieldName)) {
+                    deserializedAzureSqlReferenceInputDataSourceProperties.refreshType
+                        = RefreshType.fromString(reader.getString());
+                } else if ("refreshRate".equals(fieldName)) {
+                    deserializedAzureSqlReferenceInputDataSourceProperties.refreshRate = reader.getString();
+                } else if ("fullSnapshotQuery".equals(fieldName)) {
+                    deserializedAzureSqlReferenceInputDataSourceProperties.fullSnapshotQuery = reader.getString();
+                } else if ("deltaSnapshotQuery".equals(fieldName)) {
+                    deserializedAzureSqlReferenceInputDataSourceProperties.deltaSnapshotQuery = reader.getString();
+                } else if ("authenticationMode".equals(fieldName)) {
+                    deserializedAzureSqlReferenceInputDataSourceProperties.authenticationMode
+                        = AuthenticationMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureSqlReferenceInputDataSourceProperties;
+        });
     }
 }

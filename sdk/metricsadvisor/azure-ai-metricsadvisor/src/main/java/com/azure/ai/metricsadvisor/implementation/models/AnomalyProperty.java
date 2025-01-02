@@ -94,6 +94,9 @@ public final class AnomalyProperty implements JsonSerializable<AnomalyProperty> 
         return this.expectedValue;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

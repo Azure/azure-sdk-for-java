@@ -46,11 +46,14 @@ public final class StatelessServiceUpdatePropertiesTests {
                     new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.INVALID)
                         .withServiceName("sccyajguqf")))
                 .withServiceLoadMetrics(Arrays.asList(new ServiceLoadMetricDescription().withName("gzlvdnkfxu")
-                    .withWeight(ServiceLoadMetricWeight.HIGH).withPrimaryDefaultLoad(1547666647)
-                    .withSecondaryDefaultLoad(252265287).withDefaultLoad(372421736)))
+                    .withWeight(ServiceLoadMetricWeight.HIGH)
+                    .withPrimaryDefaultLoad(1547666647)
+                    .withSecondaryDefaultLoad(252265287)
+                    .withDefaultLoad(372421736)))
                 .withServicePlacementPolicies(Arrays.asList(new ServicePlacementPolicyDescription(),
                     new ServicePlacementPolicyDescription(), new ServicePlacementPolicyDescription()))
-                .withDefaultMoveCost(MoveCost.LOW).withInstanceCount(313573135)
+                .withDefaultMoveCost(MoveCost.LOW)
+                .withInstanceCount(313573135)
                 .withInstanceCloseDelayDuration("szqzudphqamv");
         model = BinaryData.fromObject(model).toObject(StatelessServiceUpdateProperties.class);
         Assertions.assertEquals("fwynwcvtbvkay", model.placementConstraints());

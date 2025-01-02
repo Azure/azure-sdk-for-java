@@ -5,25 +5,43 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The CodelessUiConnectorConfigPropertiesGraphQueriesItem model. */
+/**
+ * The CodelessUiConnectorConfigPropertiesGraphQueriesItem model.
+ */
 @Fluent
 public final class CodelessUiConnectorConfigPropertiesGraphQueriesItem extends GraphQueries {
-    /** {@inheritDoc} */
+    /**
+     * Creates an instance of CodelessUiConnectorConfigPropertiesGraphQueriesItem class.
+     */
+    public CodelessUiConnectorConfigPropertiesGraphQueriesItem() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CodelessUiConnectorConfigPropertiesGraphQueriesItem withMetricName(String metricName) {
         super.withMetricName(metricName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CodelessUiConnectorConfigPropertiesGraphQueriesItem withLegend(String legend) {
         super.withLegend(legend);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CodelessUiConnectorConfigPropertiesGraphQueriesItem withBaseQuery(String baseQuery) {
         super.withBaseQuery(baseQuery);
@@ -32,11 +50,54 @@ public final class CodelessUiConnectorConfigPropertiesGraphQueriesItem extends G
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("metricName", metricName());
+        jsonWriter.writeStringField("legend", legend());
+        jsonWriter.writeStringField("baseQuery", baseQuery());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CodelessUiConnectorConfigPropertiesGraphQueriesItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CodelessUiConnectorConfigPropertiesGraphQueriesItem if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CodelessUiConnectorConfigPropertiesGraphQueriesItem.
+     */
+    public static CodelessUiConnectorConfigPropertiesGraphQueriesItem fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            CodelessUiConnectorConfigPropertiesGraphQueriesItem deserializedCodelessUiConnectorConfigPropertiesGraphQueriesItem
+                = new CodelessUiConnectorConfigPropertiesGraphQueriesItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metricName".equals(fieldName)) {
+                    deserializedCodelessUiConnectorConfigPropertiesGraphQueriesItem.withMetricName(reader.getString());
+                } else if ("legend".equals(fieldName)) {
+                    deserializedCodelessUiConnectorConfigPropertiesGraphQueriesItem.withLegend(reader.getString());
+                } else if ("baseQuery".equals(fieldName)) {
+                    deserializedCodelessUiConnectorConfigPropertiesGraphQueriesItem.withBaseQuery(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCodelessUiConnectorConfigPropertiesGraphQueriesItem;
+        });
     }
 }

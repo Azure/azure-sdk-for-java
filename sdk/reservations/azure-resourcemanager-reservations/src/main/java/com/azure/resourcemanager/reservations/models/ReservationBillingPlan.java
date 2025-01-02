@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Represent the billing plans. */
+/**
+ * Represent the billing plans.
+ */
 public final class ReservationBillingPlan extends ExpandableStringEnum<ReservationBillingPlan> {
-    /** Static value Upfront for ReservationBillingPlan. */
+    /**
+     * Static value Upfront for ReservationBillingPlan.
+     */
     public static final ReservationBillingPlan UPFRONT = fromString("Upfront");
 
-    /** Static value Monthly for ReservationBillingPlan. */
+    /**
+     * Static value Monthly for ReservationBillingPlan.
+     */
     public static final ReservationBillingPlan MONTHLY = fromString("Monthly");
 
     /**
      * Creates a new instance of ReservationBillingPlan value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class ReservationBillingPlan extends ExpandableStringEnum<Reservati
 
     /**
      * Creates or finds a ReservationBillingPlan from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ReservationBillingPlan.
      */
-    @JsonCreator
     public static ReservationBillingPlan fromString(String name) {
         return fromString(name, ReservationBillingPlan.class);
     }
 
     /**
      * Gets known ReservationBillingPlan values.
-     *
+     * 
      * @return known ReservationBillingPlan values.
      */
     public static Collection<ReservationBillingPlan> values() {

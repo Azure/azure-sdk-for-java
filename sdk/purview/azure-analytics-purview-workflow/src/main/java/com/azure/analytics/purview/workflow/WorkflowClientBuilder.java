@@ -13,7 +13,6 @@ import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -41,26 +40,32 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/** A builder for creating a new instance of the WorkflowClient type. */
-@ServiceClientBuilder(serviceClients = {WorkflowClient.class, WorkflowAsyncClient.class})
+/**
+ * A builder for creating a new instance of the WorkflowClient type.
+ */
+@ServiceClientBuilder(serviceClients = { WorkflowClient.class, WorkflowAsyncClient.class })
 public final class WorkflowClientBuilder
-        implements HttpTrait<WorkflowClientBuilder>,
-                ConfigurationTrait<WorkflowClientBuilder>,
-                TokenCredentialTrait<WorkflowClientBuilder>,
-                EndpointTrait<WorkflowClientBuilder> {
-    @Generated private static final String SDK_NAME = "name";
-
-    @Generated private static final String SDK_VERSION = "version";
-
-    @Generated private static final String[] DEFAULT_SCOPES = new String[] {"https://purview.azure.net/.default"};
+    implements HttpTrait<WorkflowClientBuilder>, ConfigurationTrait<WorkflowClientBuilder>,
+    TokenCredentialTrait<WorkflowClientBuilder>, EndpointTrait<WorkflowClientBuilder> {
+    @Generated
+    private static final String SDK_NAME = "name";
 
     @Generated
-    private static final Map<String, String> PROPERTIES =
-            CoreUtils.getProperties("azure-analytics-purview-workflow.properties");
+    private static final String SDK_VERSION = "version";
 
-    @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
+    @Generated
+    private static final String[] DEFAULT_SCOPES = new String[] { "https://purview.azure.net/.default" };
 
-    /** Create an instance of the WorkflowClientBuilder. */
+    @Generated
+    private static final Map<String, String> PROPERTIES
+        = CoreUtils.getProperties("azure-analytics-purview-workflow.properties");
+
+    @Generated
+    private final List<HttpPipelinePolicy> pipelinePolicies;
+
+    /**
+     * Create an instance of the WorkflowClientBuilder.
+     */
     @Generated
     public WorkflowClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
@@ -69,14 +74,17 @@ public final class WorkflowClientBuilder
     /*
      * The HTTP pipeline to send requests through.
      */
-    @Generated private HttpPipeline pipeline;
+    @Generated
+    private HttpPipeline pipeline;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public WorkflowClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
-            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
+            LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
         }
         this.pipeline = pipeline;
         return this;
@@ -85,9 +93,12 @@ public final class WorkflowClientBuilder
     /*
      * The HTTP client used to send the request.
      */
-    @Generated private HttpClient httpClient;
+    @Generated
+    private HttpClient httpClient;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public WorkflowClientBuilder httpClient(HttpClient httpClient) {
@@ -98,9 +109,12 @@ public final class WorkflowClientBuilder
     /*
      * The logging configuration for HTTP requests and responses.
      */
-    @Generated private HttpLogOptions httpLogOptions;
+    @Generated
+    private HttpLogOptions httpLogOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public WorkflowClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
@@ -111,9 +125,12 @@ public final class WorkflowClientBuilder
     /*
      * The client options such as application ID and custom headers to set on a request.
      */
-    @Generated private ClientOptions clientOptions;
+    @Generated
+    private ClientOptions clientOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public WorkflowClientBuilder clientOptions(ClientOptions clientOptions) {
@@ -124,9 +141,12 @@ public final class WorkflowClientBuilder
     /*
      * The retry options to configure retry policy for failed requests.
      */
-    @Generated private RetryOptions retryOptions;
+    @Generated
+    private RetryOptions retryOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public WorkflowClientBuilder retryOptions(RetryOptions retryOptions) {
@@ -134,7 +154,9 @@ public final class WorkflowClientBuilder
         return this;
     }
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public WorkflowClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
@@ -146,9 +168,12 @@ public final class WorkflowClientBuilder
     /*
      * The configuration store that is used during construction of the service client.
      */
-    @Generated private Configuration configuration;
+    @Generated
+    private Configuration configuration;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public WorkflowClientBuilder configuration(Configuration configuration) {
@@ -159,9 +184,12 @@ public final class WorkflowClientBuilder
     /*
      * The TokenCredential used for authentication.
      */
-    @Generated private TokenCredential tokenCredential;
+    @Generated
+    private TokenCredential tokenCredential;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public WorkflowClientBuilder credential(TokenCredential tokenCredential) {
@@ -172,9 +200,12 @@ public final class WorkflowClientBuilder
     /*
      * The service endpoint
      */
-    @Generated private String endpoint;
+    @Generated
+    private String endpoint;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public WorkflowClientBuilder endpoint(String endpoint) {
@@ -185,11 +216,12 @@ public final class WorkflowClientBuilder
     /*
      * Service version
      */
-    @Generated private PurviewWorkflowServiceVersion serviceVersion;
+    @Generated
+    private PurviewWorkflowServiceVersion serviceVersion;
 
     /**
      * Sets Service version.
-     *
+     * 
      * @param serviceVersion the serviceVersion value.
      * @return the WorkflowClientBuilder.
      */
@@ -202,11 +234,12 @@ public final class WorkflowClientBuilder
     /*
      * The retry policy that will attempt to retry failed requests, if applicable.
      */
-    @Generated private RetryPolicy retryPolicy;
+    @Generated
+    private RetryPolicy retryPolicy;
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     *
+     * 
      * @param retryPolicy the retryPolicy value.
      * @return the WorkflowClientBuilder.
      */
@@ -218,27 +251,31 @@ public final class WorkflowClientBuilder
 
     /**
      * Builds an instance of PurviewWorkflowClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of PurviewWorkflowClientImpl.
      */
     @Generated
     private PurviewWorkflowClientImpl buildInnerClient() {
+        this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        PurviewWorkflowServiceVersion localServiceVersion =
-                (serviceVersion != null) ? serviceVersion : PurviewWorkflowServiceVersion.getLatest();
-        PurviewWorkflowClientImpl client =
-                new PurviewWorkflowClientImpl(
-                        localPipeline,
-                        JacksonAdapter.createDefaultSerializerAdapter(),
-                        this.endpoint,
-                        localServiceVersion);
+        PurviewWorkflowServiceVersion localServiceVersion
+            = (serviceVersion != null) ? serviceVersion : PurviewWorkflowServiceVersion.getLatest();
+        PurviewWorkflowClientImpl client = new PurviewWorkflowClientImpl(localPipeline,
+            JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, localServiceVersion);
         return client;
     }
 
     @Generated
+    private void validateClient() {
+        // This method is invoked from 'buildInnerClient'/'buildClient' method.
+        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+    }
+
+    @Generated
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration =
-                (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
         ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
         List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -248,16 +285,13 @@ public final class WorkflowClientBuilder
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
-        HttpHeaders headers = new HttpHeaders();
-        localClientOptions
-                .getHeaders()
-                .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
-        if (headers.getSize() > 0) {
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(localClientOptions);
+        if (headers != null) {
             policies.add(new AddHeadersPolicy(headers));
         }
         this.pipelinePolicies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                .forEach(p -> policies.add(p));
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            .forEach(p -> policies.add(p));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
@@ -265,22 +299,20 @@ public final class WorkflowClientBuilder
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
         this.pipelinePolicies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                .forEach(p -> policies.add(p));
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+            .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(httpLogOptions));
-        HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                        .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                        .httpClient(httpClient)
-                        .clientOptions(localClientOptions)
-                        .build();
+        policies.add(new HttpLoggingPolicy(localHttpLogOptions));
+        HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .clientOptions(localClientOptions)
+            .build();
         return httpPipeline;
     }
 
     /**
      * Builds an instance of WorkflowAsyncClient class.
-     *
+     * 
      * @return an instance of WorkflowAsyncClient.
      */
     @Generated
@@ -290,7 +322,7 @@ public final class WorkflowClientBuilder
 
     /**
      * Builds an instance of WorkflowClient class.
-     *
+     * 
      * @return an instance of WorkflowClient.
      */
     @Generated

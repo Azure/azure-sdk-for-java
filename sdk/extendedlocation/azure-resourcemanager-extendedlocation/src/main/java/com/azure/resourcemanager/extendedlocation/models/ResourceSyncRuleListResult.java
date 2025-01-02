@@ -5,28 +5,38 @@
 package com.azure.resourcemanager.extendedlocation.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.extendedlocation.fluent.models.ResourceSyncRuleInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The List Resource Sync Rules operation response. */
+/**
+ * The List Resource Sync Rules operation response.
+ */
 @Immutable
-public final class ResourceSyncRuleListResult {
+public final class ResourceSyncRuleListResult implements JsonSerializable<ResourceSyncRuleListResult> {
     /*
      * The URL to use for getting the next set of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /*
      * The list of Resource Sync Rules.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceSyncRuleInner> value;
 
     /**
+     * Creates an instance of ResourceSyncRuleListResult class.
+     */
+    public ResourceSyncRuleListResult() {
+    }
+
+    /**
      * Get the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -35,7 +45,7 @@ public final class ResourceSyncRuleListResult {
 
     /**
      * Get the value property: The list of Resource Sync Rules.
-     *
+     * 
      * @return the value value.
      */
     public List<ResourceSyncRuleInner> value() {
@@ -44,12 +54,51 @@ public final class ResourceSyncRuleListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceSyncRuleListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceSyncRuleListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceSyncRuleListResult.
+     */
+    public static ResourceSyncRuleListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceSyncRuleListResult deserializedResourceSyncRuleListResult = new ResourceSyncRuleListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedResourceSyncRuleListResult.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<ResourceSyncRuleInner> value
+                        = reader.readArray(reader1 -> ResourceSyncRuleInner.fromJson(reader1));
+                    deserializedResourceSyncRuleListResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceSyncRuleListResult;
+        });
     }
 }

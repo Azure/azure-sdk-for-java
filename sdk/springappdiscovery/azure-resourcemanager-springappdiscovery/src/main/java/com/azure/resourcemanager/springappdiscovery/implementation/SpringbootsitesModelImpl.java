@@ -90,15 +90,18 @@ public final class SpringbootsitesModelImpl
     }
 
     public SpringbootsitesModel create() {
-        this.innerObject = serviceManager.serviceClient().getSpringbootsites()
+        this.innerObject = serviceManager.serviceClient()
+            .getSpringbootsites()
             .createOrUpdateWithResponse(resourceGroupName, springbootsitesName, this.innerModel(), Context.NONE)
             .getValue();
         return this;
     }
 
     public SpringbootsitesModel create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSpringbootsites()
-            .createOrUpdateWithResponse(resourceGroupName, springbootsitesName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSpringbootsites()
+            .createOrUpdateWithResponse(resourceGroupName, springbootsitesName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -115,14 +118,16 @@ public final class SpringbootsitesModelImpl
     }
 
     public SpringbootsitesModel apply() {
-        this.innerObject = serviceManager.serviceClient().getSpringbootsites().update(resourceGroupName,
-            springbootsitesName, updateSpringbootsites, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSpringbootsites()
+            .update(resourceGroupName, springbootsitesName, updateSpringbootsites, Context.NONE);
         return this;
     }
 
     public SpringbootsitesModel apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSpringbootsites().update(resourceGroupName,
-            springbootsitesName, updateSpringbootsites, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSpringbootsites()
+            .update(resourceGroupName, springbootsitesName, updateSpringbootsites, context);
         return this;
     }
 
@@ -135,14 +140,18 @@ public final class SpringbootsitesModelImpl
     }
 
     public SpringbootsitesModel refresh() {
-        this.innerObject = serviceManager.serviceClient().getSpringbootsites()
-            .getByResourceGroupWithResponse(resourceGroupName, springbootsitesName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSpringbootsites()
+            .getByResourceGroupWithResponse(resourceGroupName, springbootsitesName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SpringbootsitesModel refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSpringbootsites()
-            .getByResourceGroupWithResponse(resourceGroupName, springbootsitesName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSpringbootsites()
+            .getByResourceGroupWithResponse(resourceGroupName, springbootsitesName, context)
+            .getValue();
         return this;
     }
 

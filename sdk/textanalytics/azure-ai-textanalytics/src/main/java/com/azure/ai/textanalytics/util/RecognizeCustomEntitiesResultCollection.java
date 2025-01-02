@@ -21,8 +21,7 @@ public final class RecognizeCustomEntitiesResultCollection extends IterableStrea
 
     static {
         RecognizeCustomEntitiesResultCollectionPropertiesHelper.setAccessor(
-            new RecognizeCustomEntitiesResultCollectionPropertiesHelper
-                    .RecognizeCustomEntitiesResultCollectionAccessor() {
+            new RecognizeCustomEntitiesResultCollectionPropertiesHelper.RecognizeCustomEntitiesResultCollectionAccessor() {
                 @Override
                 public void setProjectName(RecognizeCustomEntitiesResultCollection resultCollection,
                     String projectName) {

@@ -110,22 +110,18 @@ public final class RemoteRenderingAccountImpl
     }
 
     public RemoteRenderingAccount create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRemoteRenderingAccounts()
-                .createWithResponse(resourceGroupName, accountName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRemoteRenderingAccounts()
+            .createWithResponse(resourceGroupName, accountName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public RemoteRenderingAccount create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRemoteRenderingAccounts()
-                .createWithResponse(resourceGroupName, accountName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRemoteRenderingAccounts()
+            .createWithResponse(resourceGroupName, accountName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -140,51 +136,42 @@ public final class RemoteRenderingAccountImpl
     }
 
     public RemoteRenderingAccount apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRemoteRenderingAccounts()
-                .updateWithResponse(resourceGroupName, accountName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRemoteRenderingAccounts()
+            .updateWithResponse(resourceGroupName, accountName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public RemoteRenderingAccount apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRemoteRenderingAccounts()
-                .updateWithResponse(resourceGroupName, accountName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRemoteRenderingAccounts()
+            .updateWithResponse(resourceGroupName, accountName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    RemoteRenderingAccountImpl(
-        RemoteRenderingAccountInner innerObject,
+    RemoteRenderingAccountImpl(RemoteRenderingAccountInner innerObject,
         com.azure.resourcemanager.mixedreality.MixedRealityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "remoteRenderingAccounts");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "remoteRenderingAccounts");
     }
 
     public RemoteRenderingAccount refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRemoteRenderingAccounts()
-                .getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRemoteRenderingAccounts()
+            .getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public RemoteRenderingAccount refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRemoteRenderingAccounts()
-                .getByResourceGroupWithResponse(resourceGroupName, accountName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRemoteRenderingAccounts()
+            .getByResourceGroupWithResponse(resourceGroupName, accountName, context)
+            .getValue();
         return this;
     }
 
@@ -197,8 +184,7 @@ public final class RemoteRenderingAccountImpl
     }
 
     public Response<AccountKeys> regenerateKeysWithResponse(AccountKeyRegenerateRequest regenerate, Context context) {
-        return serviceManager
-            .remoteRenderingAccounts()
+        return serviceManager.remoteRenderingAccounts()
             .regenerateKeysWithResponse(resourceGroupName, accountName, regenerate, context);
     }
 

@@ -5,27 +5,37 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Permissions required for the connector. */
+/**
+ * Permissions required for the connector.
+ */
 @Fluent
-public final class Permissions {
+public final class Permissions implements JsonSerializable<Permissions> {
     /*
      * Resource provider permissions required for the connector
      */
-    @JsonProperty(value = "resourceProvider")
     private List<PermissionsResourceProviderItem> resourceProvider;
 
     /*
      * Customs permissions required for the connector
      */
-    @JsonProperty(value = "customs")
     private List<PermissionsCustomsItem> customs;
 
     /**
+     * Creates an instance of Permissions class.
+     */
+    public Permissions() {
+    }
+
+    /**
      * Get the resourceProvider property: Resource provider permissions required for the connector.
-     *
+     * 
      * @return the resourceProvider value.
      */
     public List<PermissionsResourceProviderItem> resourceProvider() {
@@ -34,7 +44,7 @@ public final class Permissions {
 
     /**
      * Set the resourceProvider property: Resource provider permissions required for the connector.
-     *
+     * 
      * @param resourceProvider the resourceProvider value to set.
      * @return the Permissions object itself.
      */
@@ -45,7 +55,7 @@ public final class Permissions {
 
     /**
      * Get the customs property: Customs permissions required for the connector.
-     *
+     * 
      * @return the customs value.
      */
     public List<PermissionsCustomsItem> customs() {
@@ -54,7 +64,7 @@ public final class Permissions {
 
     /**
      * Set the customs property: Customs permissions required for the connector.
-     *
+     * 
      * @param customs the customs value to set.
      * @return the Permissions object itself.
      */
@@ -65,7 +75,7 @@ public final class Permissions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -75,5 +85,49 @@ public final class Permissions {
         if (customs() != null) {
             customs().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("resourceProvider", this.resourceProvider,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("customs", this.customs, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Permissions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Permissions if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the Permissions.
+     */
+    public static Permissions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Permissions deserializedPermissions = new Permissions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceProvider".equals(fieldName)) {
+                    List<PermissionsResourceProviderItem> resourceProvider
+                        = reader.readArray(reader1 -> PermissionsResourceProviderItem.fromJson(reader1));
+                    deserializedPermissions.resourceProvider = resourceProvider;
+                } else if ("customs".equals(fieldName)) {
+                    List<PermissionsCustomsItem> customs
+                        = reader.readArray(reader1 -> PermissionsCustomsItem.fromJson(reader1));
+                    deserializedPermissions.customs = customs;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPermissions;
+        });
     }
 }

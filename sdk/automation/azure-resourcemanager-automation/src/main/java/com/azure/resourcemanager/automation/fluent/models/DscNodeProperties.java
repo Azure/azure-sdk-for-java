@@ -5,77 +5,81 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.DscNodeExtensionHandlerAssociationProperty;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** The properties of a DscNode. */
+/**
+ * The properties of a DscNode.
+ */
 @Fluent
-public final class DscNodeProperties {
+public final class DscNodeProperties implements JsonSerializable<DscNodeProperties> {
     /*
      * Gets or sets the last seen time of the node.
      */
-    @JsonProperty(value = "lastSeen")
     private OffsetDateTime lastSeen;
 
     /*
      * Gets or sets the registration time of the node.
      */
-    @JsonProperty(value = "registrationTime")
     private OffsetDateTime registrationTime;
 
     /*
      * Gets or sets the ip of the node.
      */
-    @JsonProperty(value = "ip")
     private String ip;
 
     /*
      * Gets or sets the account id of the node.
      */
-    @JsonProperty(value = "accountId")
     private String accountId;
 
     /*
      * Gets or sets the configuration of the node.
      */
-    @JsonProperty(value = "nodeConfiguration")
     private DscNodeConfigurationAssociationProperty innerNodeConfiguration;
 
     /*
      * Gets or sets the status of the node.
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /*
      * Gets or sets the node id.
      */
-    @JsonProperty(value = "nodeId")
     private String nodeId;
 
     /*
      * Gets or sets the etag of the resource.
      */
-    @JsonProperty(value = "etag")
     private String etag;
 
     /*
      * Gets the total number of records matching filter criteria.
      */
-    @JsonProperty(value = "totalCount")
     private Integer totalCount;
 
     /*
      * Gets or sets the list of extensionHandler properties for a Node.
      */
-    @JsonProperty(value = "extensionHandler")
     private List<DscNodeExtensionHandlerAssociationProperty> extensionHandler;
 
     /**
+     * Creates an instance of DscNodeProperties class.
+     */
+    public DscNodeProperties() {
+    }
+
+    /**
      * Get the lastSeen property: Gets or sets the last seen time of the node.
-     *
+     * 
      * @return the lastSeen value.
      */
     public OffsetDateTime lastSeen() {
@@ -84,7 +88,7 @@ public final class DscNodeProperties {
 
     /**
      * Set the lastSeen property: Gets or sets the last seen time of the node.
-     *
+     * 
      * @param lastSeen the lastSeen value to set.
      * @return the DscNodeProperties object itself.
      */
@@ -95,7 +99,7 @@ public final class DscNodeProperties {
 
     /**
      * Get the registrationTime property: Gets or sets the registration time of the node.
-     *
+     * 
      * @return the registrationTime value.
      */
     public OffsetDateTime registrationTime() {
@@ -104,7 +108,7 @@ public final class DscNodeProperties {
 
     /**
      * Set the registrationTime property: Gets or sets the registration time of the node.
-     *
+     * 
      * @param registrationTime the registrationTime value to set.
      * @return the DscNodeProperties object itself.
      */
@@ -115,7 +119,7 @@ public final class DscNodeProperties {
 
     /**
      * Get the ip property: Gets or sets the ip of the node.
-     *
+     * 
      * @return the ip value.
      */
     public String ip() {
@@ -124,7 +128,7 @@ public final class DscNodeProperties {
 
     /**
      * Set the ip property: Gets or sets the ip of the node.
-     *
+     * 
      * @param ip the ip value to set.
      * @return the DscNodeProperties object itself.
      */
@@ -135,7 +139,7 @@ public final class DscNodeProperties {
 
     /**
      * Get the accountId property: Gets or sets the account id of the node.
-     *
+     * 
      * @return the accountId value.
      */
     public String accountId() {
@@ -144,7 +148,7 @@ public final class DscNodeProperties {
 
     /**
      * Set the accountId property: Gets or sets the account id of the node.
-     *
+     * 
      * @param accountId the accountId value to set.
      * @return the DscNodeProperties object itself.
      */
@@ -155,7 +159,7 @@ public final class DscNodeProperties {
 
     /**
      * Get the innerNodeConfiguration property: Gets or sets the configuration of the node.
-     *
+     * 
      * @return the innerNodeConfiguration value.
      */
     private DscNodeConfigurationAssociationProperty innerNodeConfiguration() {
@@ -164,7 +168,7 @@ public final class DscNodeProperties {
 
     /**
      * Get the status property: Gets or sets the status of the node.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -173,7 +177,7 @@ public final class DscNodeProperties {
 
     /**
      * Set the status property: Gets or sets the status of the node.
-     *
+     * 
      * @param status the status value to set.
      * @return the DscNodeProperties object itself.
      */
@@ -184,7 +188,7 @@ public final class DscNodeProperties {
 
     /**
      * Get the nodeId property: Gets or sets the node id.
-     *
+     * 
      * @return the nodeId value.
      */
     public String nodeId() {
@@ -193,7 +197,7 @@ public final class DscNodeProperties {
 
     /**
      * Set the nodeId property: Gets or sets the node id.
-     *
+     * 
      * @param nodeId the nodeId value to set.
      * @return the DscNodeProperties object itself.
      */
@@ -204,7 +208,7 @@ public final class DscNodeProperties {
 
     /**
      * Get the etag property: Gets or sets the etag of the resource.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -213,7 +217,7 @@ public final class DscNodeProperties {
 
     /**
      * Set the etag property: Gets or sets the etag of the resource.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the DscNodeProperties object itself.
      */
@@ -224,7 +228,7 @@ public final class DscNodeProperties {
 
     /**
      * Get the totalCount property: Gets the total number of records matching filter criteria.
-     *
+     * 
      * @return the totalCount value.
      */
     public Integer totalCount() {
@@ -233,7 +237,7 @@ public final class DscNodeProperties {
 
     /**
      * Set the totalCount property: Gets the total number of records matching filter criteria.
-     *
+     * 
      * @param totalCount the totalCount value to set.
      * @return the DscNodeProperties object itself.
      */
@@ -244,7 +248,7 @@ public final class DscNodeProperties {
 
     /**
      * Get the extensionHandler property: Gets or sets the list of extensionHandler properties for a Node.
-     *
+     * 
      * @return the extensionHandler value.
      */
     public List<DscNodeExtensionHandlerAssociationProperty> extensionHandler() {
@@ -253,7 +257,7 @@ public final class DscNodeProperties {
 
     /**
      * Set the extensionHandler property: Gets or sets the list of extensionHandler properties for a Node.
-     *
+     * 
      * @param extensionHandler the extensionHandler value to set.
      * @return the DscNodeProperties object itself.
      */
@@ -264,7 +268,7 @@ public final class DscNodeProperties {
 
     /**
      * Get the name property: Gets or sets the name of the dsc node configuration.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -273,7 +277,7 @@ public final class DscNodeProperties {
 
     /**
      * Set the name property: Gets or sets the name of the dsc node configuration.
-     *
+     * 
      * @param name the name value to set.
      * @return the DscNodeProperties object itself.
      */
@@ -287,7 +291,7 @@ public final class DscNodeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -297,5 +301,78 @@ public final class DscNodeProperties {
         if (extensionHandler() != null) {
             extensionHandler().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("lastSeen",
+            this.lastSeen == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastSeen));
+        jsonWriter.writeStringField("registrationTime",
+            this.registrationTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.registrationTime));
+        jsonWriter.writeStringField("ip", this.ip);
+        jsonWriter.writeStringField("accountId", this.accountId);
+        jsonWriter.writeJsonField("nodeConfiguration", this.innerNodeConfiguration);
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeStringField("nodeId", this.nodeId);
+        jsonWriter.writeStringField("etag", this.etag);
+        jsonWriter.writeNumberField("totalCount", this.totalCount);
+        jsonWriter.writeArrayField("extensionHandler", this.extensionHandler,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DscNodeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DscNodeProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DscNodeProperties.
+     */
+    public static DscNodeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DscNodeProperties deserializedDscNodeProperties = new DscNodeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("lastSeen".equals(fieldName)) {
+                    deserializedDscNodeProperties.lastSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("registrationTime".equals(fieldName)) {
+                    deserializedDscNodeProperties.registrationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("ip".equals(fieldName)) {
+                    deserializedDscNodeProperties.ip = reader.getString();
+                } else if ("accountId".equals(fieldName)) {
+                    deserializedDscNodeProperties.accountId = reader.getString();
+                } else if ("nodeConfiguration".equals(fieldName)) {
+                    deserializedDscNodeProperties.innerNodeConfiguration
+                        = DscNodeConfigurationAssociationProperty.fromJson(reader);
+                } else if ("status".equals(fieldName)) {
+                    deserializedDscNodeProperties.status = reader.getString();
+                } else if ("nodeId".equals(fieldName)) {
+                    deserializedDscNodeProperties.nodeId = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedDscNodeProperties.etag = reader.getString();
+                } else if ("totalCount".equals(fieldName)) {
+                    deserializedDscNodeProperties.totalCount = reader.getNullable(JsonReader::getInt);
+                } else if ("extensionHandler".equals(fieldName)) {
+                    List<DscNodeExtensionHandlerAssociationProperty> extensionHandler
+                        = reader.readArray(reader1 -> DscNodeExtensionHandlerAssociationProperty.fromJson(reader1));
+                    deserializedDscNodeProperties.extensionHandler = extensionHandler;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDscNodeProperties;
+        });
     }
 }

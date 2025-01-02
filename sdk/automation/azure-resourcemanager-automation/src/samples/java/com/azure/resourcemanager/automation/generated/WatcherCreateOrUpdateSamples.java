@@ -7,19 +7,22 @@ package com.azure.resourcemanager.automation.generated;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Watcher CreateOrUpdate. */
+/**
+ * Samples for Watcher CreateOrUpdate.
+ */
 public final class WatcherCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/createOrUpdateWatcher.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * createOrUpdateWatcher.json
      */
     /**
      * Sample code: Create or update watcher.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void createOrUpdateWatcher(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .watchers()
+        manager.watchers()
             .define("MyTestWatcher")
             .withExistingAutomationAccount("rg", "MyTestAutomationAccount")
             .withTags(mapOf())
@@ -30,6 +33,7 @@ public final class WatcherCreateOrUpdateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

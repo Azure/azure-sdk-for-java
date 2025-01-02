@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.purview.generated;
 
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/Operations_List.json
+     * x-ms-original-file:
+     * specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
-     *
+     * 
      * @param manager Entry point to PurviewManager.
      */
     public static void operationsList(com.azure.resourcemanager.purview.PurviewManager manager) {

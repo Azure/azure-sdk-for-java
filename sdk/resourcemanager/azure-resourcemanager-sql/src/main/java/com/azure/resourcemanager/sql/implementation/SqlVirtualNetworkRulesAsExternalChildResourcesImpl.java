@@ -9,9 +9,8 @@ import com.azure.resourcemanager.sql.models.SqlVirtualNetworkRule;
 import com.azure.resourcemanager.sql.fluent.models.VirtualNetworkRuleInner;
 
 /** Represents a SQL Virtual Network Rules collection associated with an Azure SQL server. */
-public class SqlVirtualNetworkRulesAsExternalChildResourcesImpl
-    extends ExternalChildResourcesNonCachedImpl<
-        SqlVirtualNetworkRuleImpl, SqlVirtualNetworkRule, VirtualNetworkRuleInner, SqlServerImpl, SqlServer> {
+public class SqlVirtualNetworkRulesAsExternalChildResourcesImpl extends
+    ExternalChildResourcesNonCachedImpl<SqlVirtualNetworkRuleImpl, SqlVirtualNetworkRule, VirtualNetworkRuleInner, SqlServerImpl, SqlServer> {
 
     SqlServerManager sqlServerManager;
 
@@ -32,8 +31,8 @@ public class SqlVirtualNetworkRulesAsExternalChildResourcesImpl
      * @param sqlServerManager the manager
      * @param childResourceName the child resource name (for logging)
      */
-    protected SqlVirtualNetworkRulesAsExternalChildResourcesImpl(
-        SqlServerManager sqlServerManager, String childResourceName) {
+    protected SqlVirtualNetworkRulesAsExternalChildResourcesImpl(SqlServerManager sqlServerManager,
+        String childResourceName) {
         super(null, null, childResourceName);
         this.sqlServerManager = sqlServerManager;
     }
@@ -50,9 +49,8 @@ public class SqlVirtualNetworkRulesAsExternalChildResourcesImpl
             return prepareInlineDefine(
                 new SqlVirtualNetworkRuleImpl(name, new VirtualNetworkRuleInner(), this.sqlServerManager));
         } else {
-            return prepareInlineDefine(
-                new SqlVirtualNetworkRuleImpl(
-                    name, this.getParent(), new VirtualNetworkRuleInner(), this.getParent().manager()));
+            return prepareInlineDefine(new SqlVirtualNetworkRuleImpl(name, this.getParent(),
+                new VirtualNetworkRuleInner(), this.getParent().manager()));
         }
     }
 
@@ -62,9 +60,8 @@ public class SqlVirtualNetworkRulesAsExternalChildResourcesImpl
             return prepareInlineUpdate(
                 new SqlVirtualNetworkRuleImpl(name, new VirtualNetworkRuleInner(), this.sqlServerManager));
         } else {
-            return prepareInlineUpdate(
-                new SqlVirtualNetworkRuleImpl(
-                    name, this.getParent(), new VirtualNetworkRuleInner(), this.getParent().manager()));
+            return prepareInlineUpdate(new SqlVirtualNetworkRuleImpl(name, this.getParent(),
+                new VirtualNetworkRuleInner(), this.getParent().manager()));
         }
     }
 
@@ -74,9 +71,8 @@ public class SqlVirtualNetworkRulesAsExternalChildResourcesImpl
             prepareInlineRemove(
                 new SqlVirtualNetworkRuleImpl(name, new VirtualNetworkRuleInner(), this.sqlServerManager));
         } else {
-            prepareInlineRemove(
-                new SqlVirtualNetworkRuleImpl(
-                    name, this.getParent(), new VirtualNetworkRuleInner(), this.getParent().manager()));
+            prepareInlineRemove(new SqlVirtualNetworkRuleImpl(name, this.getParent(), new VirtualNetworkRuleInner(),
+                this.getParent().manager()));
         }
     }
 }

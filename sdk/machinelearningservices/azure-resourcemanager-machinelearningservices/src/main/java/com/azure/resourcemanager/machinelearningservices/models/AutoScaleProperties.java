@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Auto scale properties. */
 @Fluent
 public final class AutoScaleProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoScaleProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AutoScaleProperties.class);
 
     /*
      * The minNodeCount property.

@@ -173,7 +173,7 @@ public class SecretProperties implements JsonSerializable<SecretProperties> {
 
     /**
      * Get the recovery level of the secret.
-
+     *
      * @return the recoveryLevel of the secret.
      */
     public String getRecoveryLevel() {
@@ -414,8 +414,7 @@ public class SecretProperties implements JsonSerializable<SecretProperties> {
                 secretProperties.recoveryLevel = reader.getString();
             } else if ("contentType".equals(fieldName)) {
                 String contentType = reader.getString();
-                secretProperties.contentType = contentType == null
-                    ? secretProperties.contentType : contentType;
+                secretProperties.contentType = contentType == null ? secretProperties.contentType : contentType;
             } else if ("keyId".equals(fieldName)) {
                 String keyId = reader.getString();
                 secretProperties.keyId = keyId == null ? secretProperties.keyId : keyId;

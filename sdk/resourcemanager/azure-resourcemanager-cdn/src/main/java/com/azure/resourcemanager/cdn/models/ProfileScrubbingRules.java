@@ -6,37 +6,37 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Defines the contents of the log scrubbing rules.
  */
 @Fluent
-public final class ProfileScrubbingRules {
+public final class ProfileScrubbingRules implements JsonSerializable<ProfileScrubbingRules> {
     /*
      * The variable to be scrubbed from the logs.
      */
-    @JsonProperty(value = "matchVariable", required = true)
     private ScrubbingRuleEntryMatchVariable matchVariable;
 
     /*
-     * When matchVariable is a collection, operate on the selector to specify which elements in the collection this
-     * rule applies to.
+     * When matchVariable is a collection, operate on the selector to specify which elements in the collection this rule
+     * applies to.
      */
-    @JsonProperty(value = "selectorMatchOperator", required = true)
     private ScrubbingRuleEntryMatchOperator selectorMatchOperator;
 
     /*
      * When matchVariable is a collection, operator used to specify which elements in the collection this rule applies
      * to.
      */
-    @JsonProperty(value = "selector")
     private String selector;
 
     /*
      * Defines the state of a log scrubbing rule. Default value is enabled.
      */
-    @JsonProperty(value = "state")
     private ScrubbingRuleEntryState state;
 
     /**
@@ -136,14 +136,65 @@ public final class ProfileScrubbingRules {
      */
     public void validate() {
         if (matchVariable() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property matchVariable in model ProfileScrubbingRules"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property matchVariable in model ProfileScrubbingRules"));
         }
         if (selectorMatchOperator() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property selectorMatchOperator in model ProfileScrubbingRules"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property selectorMatchOperator in model ProfileScrubbingRules"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ProfileScrubbingRules.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("matchVariable", this.matchVariable == null ? null : this.matchVariable.toString());
+        jsonWriter.writeStringField("selectorMatchOperator",
+            this.selectorMatchOperator == null ? null : this.selectorMatchOperator.toString());
+        jsonWriter.writeStringField("selector", this.selector);
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProfileScrubbingRules from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProfileScrubbingRules if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ProfileScrubbingRules.
+     */
+    public static ProfileScrubbingRules fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProfileScrubbingRules deserializedProfileScrubbingRules = new ProfileScrubbingRules();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("matchVariable".equals(fieldName)) {
+                    deserializedProfileScrubbingRules.matchVariable
+                        = ScrubbingRuleEntryMatchVariable.fromString(reader.getString());
+                } else if ("selectorMatchOperator".equals(fieldName)) {
+                    deserializedProfileScrubbingRules.selectorMatchOperator
+                        = ScrubbingRuleEntryMatchOperator.fromString(reader.getString());
+                } else if ("selector".equals(fieldName)) {
+                    deserializedProfileScrubbingRules.selector = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedProfileScrubbingRules.state = ScrubbingRuleEntryState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProfileScrubbingRules;
+        });
+    }
 }

@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkflowTriggerInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkflowTriggerInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Succeeded\",\"createdTime\":\"2020-12-26T16:44:41Z\",\"changedTime\":\"2020-12-23T18:20:15Z\",\"state\":\"Enabled\",\"status\":\"Skipped\",\"lastExecutionTime\":\"2021-03-02T08:14:37Z\",\"nextExecutionTime\":\"2021-05-26T03:55:02Z\",\"recurrence\":{\"frequency\":\"Year\",\"interval\":950290701,\"startTime\":\"iqylihkaetck\",\"endTime\":\"fcivfsnkym\",\"timeZone\":\"tqhjfbebrjcx\"},\"workflow\":{\"id\":\"wutttxfvjrbi\",\"name\":\"hxepcyvahfnlj\",\"type\":\"qxj\"}},\"name\":\"ujqgidok\",\"type\":\"ljyoxgvcltb\",\"id\":\"ncghkje\"}")
-                .toObject(WorkflowTriggerInner.class);
-        Assertions.assertEquals("ncghkje", model.id());
+        WorkflowTriggerInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Creating\",\"createdTime\":\"2020-12-24T01:34:19Z\",\"changedTime\":\"2020-12-31T11:29:35Z\",\"state\":\"Completed\",\"status\":\"Running\",\"lastExecutionTime\":\"2021-04-06T20:11:30Z\",\"nextExecutionTime\":\"2021-05-30T03:24:33Z\",\"recurrence\":{\"frequency\":\"Month\",\"interval\":891607282,\"startTime\":\"aabjyvayffimrz\",\"endTime\":\"uzqogsexnevf\",\"timeZone\":\"wnwmewzs\",\"schedule\":{\"minutes\":[1091496648,1576556557],\"hours\":[207967373,1342883301,2025880638,414197490],\"weekDays\":[\"Friday\",\"Tuesday\",\"Friday\"],\"monthDays\":[1839855586,552907355,747190122,729293630],\"monthlyOccurrences\":[{\"day\":\"Wednesday\",\"occurrence\":603378925}]}},\"workflow\":{\"id\":\"rqubpaxhexiil\",\"name\":\"pdtii\",\"type\":\"tdqoaxoruzfgsq\"}},\"name\":\"fxrxxle\",\"type\":\"ramxjezwlwnw\",\"id\":\"qlcvydy\"}")
+            .toObject(WorkflowTriggerInner.class);
+        Assertions.assertEquals("qlcvydy", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkflowTriggerInner model = new WorkflowTriggerInner().withId("ncghkje");
+        WorkflowTriggerInner model = new WorkflowTriggerInner().withId("qlcvydy");
         model = BinaryData.fromObject(model).toObject(WorkflowTriggerInner.class);
-        Assertions.assertEquals("ncghkje", model.id());
+        Assertions.assertEquals("qlcvydy", model.id());
     }
 }

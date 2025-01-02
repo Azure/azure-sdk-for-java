@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.securityinsights.fluent.models.IncidentCommentInner;
 
-/** An instance of this class provides access to all the operations defined in IncidentCommentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in IncidentCommentsClient.
+ */
 public interface IncidentCommentsClient {
     /**
      * Gets all incident comments.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param incidentId Incident ID.
@@ -29,7 +31,7 @@ public interface IncidentCommentsClient {
 
     /**
      * Gets all incident comments.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param incidentId Incident ID.
@@ -37,8 +39,8 @@ public interface IncidentCommentsClient {
      * @param orderby Sorts the results. Optional.
      * @param top Returns only the first n results. Optional.
      * @param skipToken Skiptoken is only used if a previous operation returned a partial result. If a previous response
-     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
-     *     specifies a starting point to use for subsequent calls. Optional.
+     * contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies
+     * a starting point to use for subsequent calls. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -46,35 +48,12 @@ public interface IncidentCommentsClient {
      * @return all incident comments as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<IncidentCommentInner> list(
-        String resourceGroupName,
-        String workspaceName,
-        String incidentId,
-        String filter,
-        String orderby,
-        Integer top,
-        String skipToken,
-        Context context);
+    PagedIterable<IncidentCommentInner> list(String resourceGroupName, String workspaceName, String incidentId,
+        String filter, String orderby, Integer top, String skipToken, Context context);
 
     /**
      * Gets an incident comment.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param incidentId Incident ID.
-     * @param incidentCommentId Incident comment ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an incident comment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    IncidentCommentInner get(
-        String resourceGroupName, String workspaceName, String incidentId, String incidentCommentId);
-
-    /**
-     * Gets an incident comment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param incidentId Incident ID.
@@ -86,33 +65,28 @@ public interface IncidentCommentsClient {
      * @return an incident comment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IncidentCommentInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String incidentId, String incidentCommentId, Context context);
+    Response<IncidentCommentInner> getWithResponse(String resourceGroupName, String workspaceName, String incidentId,
+        String incidentCommentId, Context context);
 
     /**
-     * Creates or updates the incident comment.
-     *
+     * Gets an incident comment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param incidentId Incident ID.
      * @param incidentCommentId Incident comment ID.
-     * @param incidentComment The incident comment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an incident comment.
+     * @return an incident comment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IncidentCommentInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String incidentId,
-        String incidentCommentId,
-        IncidentCommentInner incidentComment);
+    IncidentCommentInner get(String resourceGroupName, String workspaceName, String incidentId,
+        String incidentCommentId);
 
     /**
      * Creates or updates the incident comment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param incidentId Incident ID.
@@ -125,31 +99,29 @@ public interface IncidentCommentsClient {
      * @return represents an incident comment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IncidentCommentInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String incidentId,
-        String incidentCommentId,
-        IncidentCommentInner incidentComment,
-        Context context);
+    Response<IncidentCommentInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
+        String incidentId, String incidentCommentId, IncidentCommentInner incidentComment, Context context);
 
     /**
-     * Delete the incident comment.
-     *
+     * Creates or updates the incident comment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param incidentId Incident ID.
      * @param incidentCommentId Incident comment ID.
+     * @param incidentComment The incident comment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an incident comment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String workspaceName, String incidentId, String incidentCommentId);
+    IncidentCommentInner createOrUpdate(String resourceGroupName, String workspaceName, String incidentId,
+        String incidentCommentId, IncidentCommentInner incidentComment);
 
     /**
      * Delete the incident comment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param incidentId Incident ID.
@@ -161,6 +133,20 @@ public interface IncidentCommentsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String incidentId, String incidentCommentId, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String incidentId,
+        String incidentCommentId, Context context);
+
+    /**
+     * Delete the incident comment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param incidentId Incident ID.
+     * @param incidentCommentId Incident comment ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String workspaceName, String incidentId, String incidentCommentId);
 }

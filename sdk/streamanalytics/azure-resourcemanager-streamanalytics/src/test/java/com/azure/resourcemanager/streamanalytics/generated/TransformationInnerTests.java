@@ -24,9 +24,11 @@ public final class TransformationInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TransformationInner model
-            = new TransformationInner().withId("lkhbz").withName("mkljavb").withStreamingUnits(1007195801)
-                .withValidStreamingUnits(Arrays.asList(1299140464, 769076909)).withQuery("cyshurzafbljjgp");
+        TransformationInner model = new TransformationInner().withId("lkhbz")
+            .withName("mkljavb")
+            .withStreamingUnits(1007195801)
+            .withValidStreamingUnits(Arrays.asList(1299140464, 769076909))
+            .withQuery("cyshurzafbljjgp");
         model = BinaryData.fromObject(model).toObject(TransformationInner.class);
         Assertions.assertEquals("lkhbz", model.id());
         Assertions.assertEquals("mkljavb", model.name());

@@ -9,34 +9,24 @@ import com.azure.core.credential.TokenCredential;
 import java.util.List;
 
 /**
- * <p>The DefaultAzureCredential is appropriate for most scenarios where the application is intended to ultimately be
- * run in Azure. DefaultAzureCredential combines credentials that are commonly used to authenticate when deployed,
- * with credentials that are used to authenticate in a development environment. The DefaultAzureCredential will
- * attempt to authenticate via the following mechanisms in order.</p>
+ * <p>DefaultAzureCredential simplifies authentication while developing apps that deploy to Azure by combining credentials
+ * used in Azure hosting environments with credentials used in local development. In production, it's better to use something
+ * else. For more information, see <a href="https://aka.ms/azsdk/java/identity/credential-chains#usage-guidance-for-defaultazurecredential">Usage guidance for DefaultAzureCredential</a>.
  *
- * <img src="doc-files/DefaultAzureCredentialAuthFlow.png" alt="">
+ * <p>Attempts to authenticate with each of these credentials, in the following order, stopping when one provides a token:</p>
  *
  * <ol>
- * <li>{@link EnvironmentCredential} - The DefaultAzureCredential will read account information specified via
- * environment variables and use it to authenticate.</li>
- * <li>{@link WorkloadIdentityCredential} - If the app is deployed on Kubernetes with environment variables
- * set by the workload identity webhook, DefaultAzureCredential will authenticate the configured identity.</li>
- * <li>{@link ManagedIdentityCredential} - If the application deploys to an Azure host with Managed Identity enabled,
- * the DefaultAzureCredential will authenticate with that account.</li>
- * <li>{@link IntelliJCredential} - If you've authenticated via
- * <a href="https://learn.microsoft.com/azure/developer/java/toolkit-for-intellij/">Azure Toolkit for
- * IntelliJ</a>, the DefaultAzureCredential will authenticate with that account.</li>
- * <li>{@link AzureCliCredential} - If you've authenticated an account via the Azure CLI {@code az login} command, the
- * DefaultAzureCredential will authenticate with that account.</li>
- * <li>{@link AzurePowerShellCredential} - If you've authenticated an account via the
- * <a href="https://learn.microsoft.com/powershell/azure/?view=azps-9.4.0">Azure Power Shell</a> {@code Az Login}
- * command, the DefaultAzureCredential will authenticate with that account.</li>
- * <li>Fails if none of the credentials above could be created.</li>
+ * <li>{@link EnvironmentCredential}</li>
+ * <li>{@link WorkloadIdentityCredential}</li>
+ * <li>{@link ManagedIdentityCredential}</li>
+ * <li>{@link SharedTokenCacheCredential}</li>
+ * <li>{@link IntelliJCredential}</li>
+ * <li>{@link AzureCliCredential}</li>
+ * <li>{@link AzurePowerShellCredential}</li>
+ * <li>{@link AzureDeveloperCliCredential}</li>
  * </ol>
  *
- * <p>For more information refer to the
- * <a href="https://aka.ms/azsdk/java/identity/defaultazurecredential/docs">default azure credential authentication
- * docs</a>.</p>
+ * <p>Consult the documentation of these credentials for more information on how they attempt authentication.</p>
  *
  * <h2>Configure DefaultAzureCredential</h2>
  *
@@ -64,8 +54,7 @@ import java.util.List;
  *
  * <!-- src_embed com.azure.identity.credential.defaultazurecredential.construct -->
  * <pre>
- * TokenCredential defaultAzureCredential = new DefaultAzureCredentialBuilder&#40;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential defaultAzureCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.defaultazurecredential.construct -->
  *
@@ -81,9 +70,8 @@ import java.util.List;
  *
  * <!-- src_embed com.azure.identity.credential.defaultazurecredential.constructwithuserassignedmanagedidentity -->
  * <pre>
- * TokenCredential dacWithUserAssignedManagedIdentity = new DefaultAzureCredentialBuilder&#40;&#41;
- *     .managedIdentityClientId&#40;&quot;&lt;Managed-Identity-Client-Id&quot;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential dacWithUserAssignedManagedIdentity
+ *     = new DefaultAzureCredentialBuilder&#40;&#41;.managedIdentityClientId&#40;&quot;&lt;Managed-Identity-Client-Id&quot;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.defaultazurecredential.constructwithuserassignedmanagedidentity -->
  *

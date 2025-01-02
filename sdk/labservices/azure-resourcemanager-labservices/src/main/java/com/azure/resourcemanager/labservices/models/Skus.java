@@ -7,13 +7,15 @@ package com.azure.resourcemanager.labservices.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Skus. */
+/**
+ * Resource collection API of Skus.
+ */
 public interface Skus {
     /**
      * Gets the Azure Lab Services resource SKUs.
-     *
-     * <p>Returns a list of Azure Lab Services resource SKUs.
-     *
+     * 
+     * Returns a list of Azure Lab Services resource SKUs.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged list of lab services skus as paginated response with {@link PagedIterable}.
@@ -22,9 +24,9 @@ public interface Skus {
 
     /**
      * Gets the Azure Lab Services resource SKUs.
-     *
-     * <p>Returns a list of Azure Lab Services resource SKUs.
-     *
+     * 
+     * Returns a list of Azure Lab Services resource SKUs.
+     * 
      * @param filter The filter to apply to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

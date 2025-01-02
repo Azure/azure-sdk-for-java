@@ -14,8 +14,7 @@ public final class IntegrationRuntimeConnectionInfoImpl implements IntegrationRu
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    IntegrationRuntimeConnectionInfoImpl(
-        IntegrationRuntimeConnectionInfoInner innerObject,
+    IntegrationRuntimeConnectionInfoImpl(IntegrationRuntimeConnectionInfoInner innerObject,
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

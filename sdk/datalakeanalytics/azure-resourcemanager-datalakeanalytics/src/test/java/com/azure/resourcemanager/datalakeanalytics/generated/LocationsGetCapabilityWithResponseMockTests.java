@@ -6,62 +6,31 @@ package com.azure.resourcemanager.datalakeanalytics.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager;
 import com.azure.resourcemanager.datalakeanalytics.models.CapabilityInformation;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class LocationsGetCapabilityWithResponseMockTests {
     @Test
     public void testGetCapabilityWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"subscriptionId\":\"adf7d0a9-16ab-4add-8dbd-7ffebcae3459\",\"state\":\"Registered\",\"maxAccountCount\":1873384596,\"accountCount\":904154901,\"migrationState\":true}";
 
-        String responseStr =
-            "{\"subscriptionId\":\"0113f875-192d-4998-b094-e0cb97dc79a4\",\"state\":\"Deleted\",\"maxAccountCount\":1432013773,\"accountCount\":323713899,\"migrationState\":true}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DataLakeAnalyticsManager manager = DataLakeAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        CapabilityInformation response
+            = manager.locations().getCapabilityWithResponse("kaivwit", com.azure.core.util.Context.NONE).getValue();
 
-        DataLakeAnalyticsManager manager =
-            DataLakeAnalyticsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        CapabilityInformation response =
-            manager
-                .locations()
-                .getCapabilityWithResponse("pfhpagmhrskdsnfd", com.azure.core.util.Context.NONE)
-                .getValue();
     }
 }

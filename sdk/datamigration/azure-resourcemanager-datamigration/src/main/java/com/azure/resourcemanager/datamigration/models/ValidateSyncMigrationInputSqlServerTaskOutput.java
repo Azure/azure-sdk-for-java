@@ -5,37 +5,43 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Output for task that validates migration input for SQL sync migrations. */
+/**
+ * Output for task that validates migration input for SQL sync migrations.
+ */
 @Immutable
-public final class ValidateSyncMigrationInputSqlServerTaskOutput {
+public final class ValidateSyncMigrationInputSqlServerTaskOutput
+    implements JsonSerializable<ValidateSyncMigrationInputSqlServerTaskOutput> {
     /*
      * Database identifier
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Name of database
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Errors associated with a selected database object
      */
-    @JsonProperty(value = "validationErrors", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReportableException> validationErrors;
 
-    /** Creates an instance of ValidateSyncMigrationInputSqlServerTaskOutput class. */
+    /**
+     * Creates an instance of ValidateSyncMigrationInputSqlServerTaskOutput class.
+     */
     public ValidateSyncMigrationInputSqlServerTaskOutput() {
     }
 
     /**
      * Get the id property: Database identifier.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -44,7 +50,7 @@ public final class ValidateSyncMigrationInputSqlServerTaskOutput {
 
     /**
      * Get the name property: Name of database.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -53,7 +59,7 @@ public final class ValidateSyncMigrationInputSqlServerTaskOutput {
 
     /**
      * Get the validationErrors property: Errors associated with a selected database object.
-     *
+     * 
      * @return the validationErrors value.
      */
     public List<ReportableException> validationErrors() {
@@ -62,12 +68,54 @@ public final class ValidateSyncMigrationInputSqlServerTaskOutput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (validationErrors() != null) {
             validationErrors().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ValidateSyncMigrationInputSqlServerTaskOutput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ValidateSyncMigrationInputSqlServerTaskOutput if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ValidateSyncMigrationInputSqlServerTaskOutput.
+     */
+    public static ValidateSyncMigrationInputSqlServerTaskOutput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ValidateSyncMigrationInputSqlServerTaskOutput deserializedValidateSyncMigrationInputSqlServerTaskOutput
+                = new ValidateSyncMigrationInputSqlServerTaskOutput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedValidateSyncMigrationInputSqlServerTaskOutput.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedValidateSyncMigrationInputSqlServerTaskOutput.name = reader.getString();
+                } else if ("validationErrors".equals(fieldName)) {
+                    List<ReportableException> validationErrors
+                        = reader.readArray(reader1 -> ReportableException.fromJson(reader1));
+                    deserializedValidateSyncMigrationInputSqlServerTaskOutput.validationErrors = validationErrors;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedValidateSyncMigrationInputSqlServerTaskOutput;
+        });
     }
 }

@@ -15,7 +15,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
 /** A builder for creating a new instance of the IotDpsClientImpl type. */
-@ServiceClientBuilder(serviceClients = {IotDpsClientImpl.class})
+@ServiceClientBuilder(serviceClients = { IotDpsClientImpl.class })
 public final class IotDpsClientBuilder {
     /*
      * The subscription identifier.
@@ -134,9 +134,8 @@ public final class IotDpsClientBuilder {
         if (serializerAdapter == null) {
             this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
         }
-        IotDpsClientImpl client =
-            new IotDpsClientImpl(
-                pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
+        IotDpsClientImpl client = new IotDpsClientImpl(pipeline, serializerAdapter, defaultPollInterval, environment,
+            subscriptionId, endpoint);
         return client;
     }
 }

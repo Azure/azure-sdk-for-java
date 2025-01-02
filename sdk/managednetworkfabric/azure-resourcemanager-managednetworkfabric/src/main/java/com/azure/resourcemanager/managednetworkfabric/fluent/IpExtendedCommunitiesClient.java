@@ -14,13 +14,15 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.IpExtendedCommunityInner;
 import com.azure.resourcemanager.managednetworkfabric.models.IpExtendedCommunityPatch;
 
-/** An instance of this class provides access to all the operations defined in IpExtendedCommunitiesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in IpExtendedCommunitiesClient.
+ */
 public interface IpExtendedCommunitiesClient {
     /**
      * Create an IP Extended Community.
-     *
-     * <p>Implements IP Extended Community PUT method.
-     *
+     * 
+     * Implements IP Extended Community PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param body Request payload.
@@ -30,14 +32,14 @@ public interface IpExtendedCommunitiesClient {
      * @return the {@link SyncPoller} for polling of the IP Extended Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<IpExtendedCommunityInner>, IpExtendedCommunityInner> beginCreate(
-        String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityInner body);
+    SyncPoller<PollResult<IpExtendedCommunityInner>, IpExtendedCommunityInner> beginCreate(String resourceGroupName,
+        String ipExtendedCommunityName, IpExtendedCommunityInner body);
 
     /**
      * Create an IP Extended Community.
-     *
-     * <p>Implements IP Extended Community PUT method.
-     *
+     * 
+     * Implements IP Extended Community PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param body Request payload.
@@ -48,14 +50,14 @@ public interface IpExtendedCommunitiesClient {
      * @return the {@link SyncPoller} for polling of the IP Extended Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<IpExtendedCommunityInner>, IpExtendedCommunityInner> beginCreate(
-        String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityInner body, Context context);
+    SyncPoller<PollResult<IpExtendedCommunityInner>, IpExtendedCommunityInner> beginCreate(String resourceGroupName,
+        String ipExtendedCommunityName, IpExtendedCommunityInner body, Context context);
 
     /**
      * Create an IP Extended Community.
-     *
-     * <p>Implements IP Extended Community PUT method.
-     *
+     * 
+     * Implements IP Extended Community PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param body Request payload.
@@ -65,14 +67,14 @@ public interface IpExtendedCommunitiesClient {
      * @return the IP Extended Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IpExtendedCommunityInner create(
-        String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityInner body);
+    IpExtendedCommunityInner create(String resourceGroupName, String ipExtendedCommunityName,
+        IpExtendedCommunityInner body);
 
     /**
      * Create an IP Extended Community.
-     *
-     * <p>Implements IP Extended Community PUT method.
-     *
+     * 
+     * Implements IP Extended Community PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param body Request payload.
@@ -83,14 +85,14 @@ public interface IpExtendedCommunitiesClient {
      * @return the IP Extended Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IpExtendedCommunityInner create(
-        String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityInner body, Context context);
+    IpExtendedCommunityInner create(String resourceGroupName, String ipExtendedCommunityName,
+        IpExtendedCommunityInner body, Context context);
 
     /**
      * Gets an IP Extended Community.
-     *
-     * <p>Implements IP Extended Community GET method.
-     *
+     * 
+     * Implements IP Extended Community GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param context The context to associate with this operation.
@@ -100,14 +102,14 @@ public interface IpExtendedCommunitiesClient {
      * @return the IP Extended Community resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IpExtendedCommunityInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String ipExtendedCommunityName, Context context);
+    Response<IpExtendedCommunityInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String ipExtendedCommunityName, Context context);
 
     /**
      * Gets an IP Extended Community.
-     *
-     * <p>Implements IP Extended Community GET method.
-     *
+     * 
+     * Implements IP Extended Community GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -120,9 +122,9 @@ public interface IpExtendedCommunitiesClient {
 
     /**
      * Updates the IP Extended Community.
-     *
-     * <p>API to update certain properties of the IP Extended Community resource.
-     *
+     * 
+     * API to update certain properties of the IP Extended Community resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param body IP Extended Community properties to update.
@@ -132,14 +134,14 @@ public interface IpExtendedCommunitiesClient {
      * @return the {@link SyncPoller} for polling of the IP Extended Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<IpExtendedCommunityInner>, IpExtendedCommunityInner> beginUpdate(
-        String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityPatch body);
+    SyncPoller<PollResult<IpExtendedCommunityInner>, IpExtendedCommunityInner> beginUpdate(String resourceGroupName,
+        String ipExtendedCommunityName, IpExtendedCommunityPatch body);
 
     /**
      * Updates the IP Extended Community.
-     *
-     * <p>API to update certain properties of the IP Extended Community resource.
-     *
+     * 
+     * API to update certain properties of the IP Extended Community resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param body IP Extended Community properties to update.
@@ -150,14 +152,14 @@ public interface IpExtendedCommunitiesClient {
      * @return the {@link SyncPoller} for polling of the IP Extended Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<IpExtendedCommunityInner>, IpExtendedCommunityInner> beginUpdate(
-        String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityPatch body, Context context);
+    SyncPoller<PollResult<IpExtendedCommunityInner>, IpExtendedCommunityInner> beginUpdate(String resourceGroupName,
+        String ipExtendedCommunityName, IpExtendedCommunityPatch body, Context context);
 
     /**
      * Updates the IP Extended Community.
-     *
-     * <p>API to update certain properties of the IP Extended Community resource.
-     *
+     * 
+     * API to update certain properties of the IP Extended Community resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param body IP Extended Community properties to update.
@@ -167,14 +169,14 @@ public interface IpExtendedCommunitiesClient {
      * @return the IP Extended Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IpExtendedCommunityInner update(
-        String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityPatch body);
+    IpExtendedCommunityInner update(String resourceGroupName, String ipExtendedCommunityName,
+        IpExtendedCommunityPatch body);
 
     /**
      * Updates the IP Extended Community.
-     *
-     * <p>API to update certain properties of the IP Extended Community resource.
-     *
+     * 
+     * API to update certain properties of the IP Extended Community resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param body IP Extended Community properties to update.
@@ -185,14 +187,14 @@ public interface IpExtendedCommunitiesClient {
      * @return the IP Extended Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IpExtendedCommunityInner update(
-        String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityPatch body, Context context);
+    IpExtendedCommunityInner update(String resourceGroupName, String ipExtendedCommunityName,
+        IpExtendedCommunityPatch body, Context context);
 
     /**
      * Deletes the IP Extended Community.
-     *
-     * <p>Implements IP Extended Community DELETE method.
-     *
+     * 
+     * Implements IP Extended Community DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -205,9 +207,9 @@ public interface IpExtendedCommunitiesClient {
 
     /**
      * Deletes the IP Extended Community.
-     *
-     * <p>Implements IP Extended Community DELETE method.
-     *
+     * 
+     * Implements IP Extended Community DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param context The context to associate with this operation.
@@ -217,14 +219,14 @@ public interface IpExtendedCommunitiesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String ipExtendedCommunityName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String ipExtendedCommunityName,
+        Context context);
 
     /**
      * Deletes the IP Extended Community.
-     *
-     * <p>Implements IP Extended Community DELETE method.
-     *
+     * 
+     * Implements IP Extended Community DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -236,9 +238,9 @@ public interface IpExtendedCommunitiesClient {
 
     /**
      * Deletes the IP Extended Community.
-     *
-     * <p>Implements IP Extended Community DELETE method.
-     *
+     * 
+     * Implements IP Extended Community DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipExtendedCommunityName Name of the IP Extended Community.
      * @param context The context to associate with this operation.
@@ -251,9 +253,9 @@ public interface IpExtendedCommunitiesClient {
 
     /**
      * List IpExtendedCommunities by resource group.
-     *
-     * <p>Implements IpExtendedCommunities list by resource group GET method.
-     *
+     * 
+     * Implements IpExtendedCommunities list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -265,9 +267,9 @@ public interface IpExtendedCommunitiesClient {
 
     /**
      * List IpExtendedCommunities by resource group.
-     *
-     * <p>Implements IpExtendedCommunities list by resource group GET method.
-     *
+     * 
+     * Implements IpExtendedCommunities list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -280,9 +282,9 @@ public interface IpExtendedCommunitiesClient {
 
     /**
      * List IpExtendedCommunities by subscription.
-     *
-     * <p>Implements IpExtendedCommunities list by subscription GET method.
-     *
+     * 
+     * Implements IpExtendedCommunities list by subscription GET method.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of IP Extended Communities as paginated response with {@link PagedIterable}.
@@ -292,9 +294,9 @@ public interface IpExtendedCommunitiesClient {
 
     /**
      * List IpExtendedCommunities by subscription.
-     *
-     * <p>Implements IpExtendedCommunities list by subscription GET method.
-     *
+     * 
+     * Implements IpExtendedCommunities list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

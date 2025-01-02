@@ -6,28 +6,38 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.fluent.models.EntityQueryInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of all the entity queries. */
+/**
+ * List of all the entity queries.
+ */
 @Fluent
-public final class EntityQueryList {
+public final class EntityQueryList implements JsonSerializable<EntityQueryList> {
     /*
      * URL to fetch the next set of entity queries.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /*
      * Array of entity queries.
      */
-    @JsonProperty(value = "value", required = true)
     private List<EntityQueryInner> value;
 
     /**
+     * Creates an instance of EntityQueryList class.
+     */
+    public EntityQueryList() {
+    }
+
+    /**
      * Get the nextLink property: URL to fetch the next set of entity queries.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -36,7 +46,7 @@ public final class EntityQueryList {
 
     /**
      * Get the value property: Array of entity queries.
-     *
+     * 
      * @return the value value.
      */
     public List<EntityQueryInner> value() {
@@ -45,7 +55,7 @@ public final class EntityQueryList {
 
     /**
      * Set the value property: Array of entity queries.
-     *
+     * 
      * @param value the value value to set.
      * @return the EntityQueryList object itself.
      */
@@ -56,18 +66,57 @@ public final class EntityQueryList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model EntityQueryList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model EntityQueryList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EntityQueryList.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EntityQueryList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EntityQueryList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EntityQueryList.
+     */
+    public static EntityQueryList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EntityQueryList deserializedEntityQueryList = new EntityQueryList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<EntityQueryInner> value = reader.readArray(reader1 -> EntityQueryInner.fromJson(reader1));
+                    deserializedEntityQueryList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedEntityQueryList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEntityQueryList;
+        });
+    }
 }

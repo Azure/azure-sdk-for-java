@@ -6,56 +6,53 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.PhoenixAuthenticationType;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Phoenix server linked service properties.
  */
 @Fluent
-public final class PhoenixLinkedServiceTypeProperties {
+public final class PhoenixLinkedServiceTypeProperties implements JsonSerializable<PhoenixLinkedServiceTypeProperties> {
     /*
      * The IP address or host name of the Phoenix server. (i.e. 192.168.222.160)
      */
-    @JsonProperty(value = "host", required = true)
     private Object host;
 
     /*
      * The TCP port that the Phoenix server uses to listen for client connections. The default value is 8765.
      */
-    @JsonProperty(value = "port")
     private Object port;
 
     /*
      * The partial URL corresponding to the Phoenix server. (i.e. /gateway/sandbox/phoenix/version). The default value
      * is hbasephoenix if using WindowsAzureHDInsightService.
      */
-    @JsonProperty(value = "httpPath")
     private Object httpPath;
 
     /*
      * The authentication mechanism used to connect to the Phoenix server.
      */
-    @JsonProperty(value = "authenticationType", required = true)
     private PhoenixAuthenticationType authenticationType;
 
     /*
      * The user name used to connect to the Phoenix server.
      */
-    @JsonProperty(value = "username")
     private Object username;
 
     /*
      * The password corresponding to the user name.
      */
-    @JsonProperty(value = "password")
     private SecretBase password;
 
     /*
      * Specifies whether the connections to the server are encrypted using SSL. The default value is false.
      */
-    @JsonProperty(value = "enableSsl")
     private Object enableSsl;
 
     /*
@@ -63,34 +60,29 @@ public final class PhoenixLinkedServiceTypeProperties {
      * SSL. This property can only be set when using SSL on self-hosted IR. The default value is the cacerts.pem file
      * installed with the IR.
      */
-    @JsonProperty(value = "trustedCertPath")
     private Object trustedCertPath;
 
     /*
      * Specifies whether to use a CA certificate from the system trust store or from a specified PEM file. The default
      * value is false.
      */
-    @JsonProperty(value = "useSystemTrustStore")
     private Object useSystemTrustStore;
 
     /*
      * Specifies whether to require a CA-issued SSL certificate name to match the host name of the server when
      * connecting over SSL. The default value is false.
      */
-    @JsonProperty(value = "allowHostNameCNMismatch")
     private Object allowHostnameCNMismatch;
 
     /*
      * Specifies whether to allow self-signed certificates from the server. The default value is false.
      */
-    @JsonProperty(value = "allowSelfSignedServerCert")
     private Object allowSelfSignedServerCert;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /**
@@ -379,4 +371,77 @@ public final class PhoenixLinkedServiceTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PhoenixLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("host", this.host);
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        jsonWriter.writeUntypedField("port", this.port);
+        jsonWriter.writeUntypedField("httpPath", this.httpPath);
+        jsonWriter.writeUntypedField("username", this.username);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeUntypedField("enableSsl", this.enableSsl);
+        jsonWriter.writeUntypedField("trustedCertPath", this.trustedCertPath);
+        jsonWriter.writeUntypedField("useSystemTrustStore", this.useSystemTrustStore);
+        jsonWriter.writeUntypedField("allowHostNameCNMismatch", this.allowHostnameCNMismatch);
+        jsonWriter.writeUntypedField("allowSelfSignedServerCert", this.allowSelfSignedServerCert);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PhoenixLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PhoenixLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PhoenixLinkedServiceTypeProperties.
+     */
+    public static PhoenixLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PhoenixLinkedServiceTypeProperties deserializedPhoenixLinkedServiceTypeProperties
+                = new PhoenixLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("host".equals(fieldName)) {
+                    deserializedPhoenixLinkedServiceTypeProperties.host = reader.readUntyped();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedPhoenixLinkedServiceTypeProperties.authenticationType
+                        = PhoenixAuthenticationType.fromString(reader.getString());
+                } else if ("port".equals(fieldName)) {
+                    deserializedPhoenixLinkedServiceTypeProperties.port = reader.readUntyped();
+                } else if ("httpPath".equals(fieldName)) {
+                    deserializedPhoenixLinkedServiceTypeProperties.httpPath = reader.readUntyped();
+                } else if ("username".equals(fieldName)) {
+                    deserializedPhoenixLinkedServiceTypeProperties.username = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedPhoenixLinkedServiceTypeProperties.password = SecretBase.fromJson(reader);
+                } else if ("enableSsl".equals(fieldName)) {
+                    deserializedPhoenixLinkedServiceTypeProperties.enableSsl = reader.readUntyped();
+                } else if ("trustedCertPath".equals(fieldName)) {
+                    deserializedPhoenixLinkedServiceTypeProperties.trustedCertPath = reader.readUntyped();
+                } else if ("useSystemTrustStore".equals(fieldName)) {
+                    deserializedPhoenixLinkedServiceTypeProperties.useSystemTrustStore = reader.readUntyped();
+                } else if ("allowHostNameCNMismatch".equals(fieldName)) {
+                    deserializedPhoenixLinkedServiceTypeProperties.allowHostnameCNMismatch = reader.readUntyped();
+                } else if ("allowSelfSignedServerCert".equals(fieldName)) {
+                    deserializedPhoenixLinkedServiceTypeProperties.allowSelfSignedServerCert = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedPhoenixLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPhoenixLinkedServiceTypeProperties;
+        });
+    }
 }

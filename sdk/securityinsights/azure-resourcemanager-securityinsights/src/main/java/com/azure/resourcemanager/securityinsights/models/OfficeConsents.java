@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of OfficeConsents. */
+/**
+ * Resource collection API of OfficeConsents.
+ */
 public interface OfficeConsents {
     /**
      * Gets all office365 consents.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface OfficeConsents {
 
     /**
      * Gets all office365 consents.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -37,7 +39,22 @@ public interface OfficeConsents {
 
     /**
      * Gets an office365 consent.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param consentId consent ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an office365 consent along with {@link Response}.
+     */
+    Response<OfficeConsent> getWithResponse(String resourceGroupName, String workspaceName, String consentId,
+        Context context);
+
+    /**
+     * Gets an office365 consent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param consentId consent ID.
@@ -49,35 +66,8 @@ public interface OfficeConsents {
     OfficeConsent get(String resourceGroupName, String workspaceName, String consentId);
 
     /**
-     * Gets an office365 consent.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param consentId consent ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an office365 consent along with {@link Response}.
-     */
-    Response<OfficeConsent> getWithResponse(
-        String resourceGroupName, String workspaceName, String consentId, Context context);
-
-    /**
      * Delete the office365 consent.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param consentId consent ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String workspaceName, String consentId);
-
-    /**
-     * Delete the office365 consent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param consentId consent ID.
@@ -87,6 +77,18 @@ public interface OfficeConsents {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String consentId, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String consentId,
+        Context context);
+
+    /**
+     * Delete the office365 consent.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param consentId consent ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String workspaceName, String consentId);
 }

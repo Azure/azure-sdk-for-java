@@ -5,74 +5,89 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Represents security alert timeline item. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("SecurityAlert")
+/**
+ * Represents security alert timeline item.
+ */
 @Fluent
 public final class SecurityAlertTimelineItem extends EntityTimelineItem {
     /*
+     * The entity query kind type.
+     */
+    private EntityTimelineKind kind = EntityTimelineKind.SECURITY_ALERT;
+
+    /*
      * The alert azure resource id.
      */
-    @JsonProperty(value = "azureResourceId", required = true)
     private String azureResourceId;
 
     /*
      * The alert product name.
      */
-    @JsonProperty(value = "productName")
     private String productName;
 
     /*
      * The alert description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The alert name.
      */
-    @JsonProperty(value = "displayName", required = true)
     private String displayName;
 
     /*
      * The alert severity.
      */
-    @JsonProperty(value = "severity", required = true)
     private AlertSeverity severity;
 
     /*
      * The alert end time.
      */
-    @JsonProperty(value = "endTimeUtc", required = true)
     private OffsetDateTime endTimeUtc;
 
     /*
      * The alert start time.
      */
-    @JsonProperty(value = "startTimeUtc", required = true)
     private OffsetDateTime startTimeUtc;
 
     /*
      * The alert generated time.
      */
-    @JsonProperty(value = "timeGenerated", required = true)
     private OffsetDateTime timeGenerated;
 
     /*
      * The name of the alert type.
      */
-    @JsonProperty(value = "alertType", required = true)
     private String alertType;
 
     /**
+     * Creates an instance of SecurityAlertTimelineItem class.
+     */
+    public SecurityAlertTimelineItem() {
+    }
+
+    /**
+     * Get the kind property: The entity query kind type.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public EntityTimelineKind kind() {
+        return this.kind;
+    }
+
+    /**
      * Get the azureResourceId property: The alert azure resource id.
-     *
+     * 
      * @return the azureResourceId value.
      */
     public String azureResourceId() {
@@ -81,7 +96,7 @@ public final class SecurityAlertTimelineItem extends EntityTimelineItem {
 
     /**
      * Set the azureResourceId property: The alert azure resource id.
-     *
+     * 
      * @param azureResourceId the azureResourceId value to set.
      * @return the SecurityAlertTimelineItem object itself.
      */
@@ -92,7 +107,7 @@ public final class SecurityAlertTimelineItem extends EntityTimelineItem {
 
     /**
      * Get the productName property: The alert product name.
-     *
+     * 
      * @return the productName value.
      */
     public String productName() {
@@ -101,7 +116,7 @@ public final class SecurityAlertTimelineItem extends EntityTimelineItem {
 
     /**
      * Set the productName property: The alert product name.
-     *
+     * 
      * @param productName the productName value to set.
      * @return the SecurityAlertTimelineItem object itself.
      */
@@ -112,7 +127,7 @@ public final class SecurityAlertTimelineItem extends EntityTimelineItem {
 
     /**
      * Get the description property: The alert description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -121,7 +136,7 @@ public final class SecurityAlertTimelineItem extends EntityTimelineItem {
 
     /**
      * Set the description property: The alert description.
-     *
+     * 
      * @param description the description value to set.
      * @return the SecurityAlertTimelineItem object itself.
      */
@@ -132,7 +147,7 @@ public final class SecurityAlertTimelineItem extends EntityTimelineItem {
 
     /**
      * Get the displayName property: The alert name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -141,7 +156,7 @@ public final class SecurityAlertTimelineItem extends EntityTimelineItem {
 
     /**
      * Set the displayName property: The alert name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the SecurityAlertTimelineItem object itself.
      */
@@ -152,7 +167,7 @@ public final class SecurityAlertTimelineItem extends EntityTimelineItem {
 
     /**
      * Get the severity property: The alert severity.
-     *
+     * 
      * @return the severity value.
      */
     public AlertSeverity severity() {
@@ -161,7 +176,7 @@ public final class SecurityAlertTimelineItem extends EntityTimelineItem {
 
     /**
      * Set the severity property: The alert severity.
-     *
+     * 
      * @param severity the severity value to set.
      * @return the SecurityAlertTimelineItem object itself.
      */
@@ -172,7 +187,7 @@ public final class SecurityAlertTimelineItem extends EntityTimelineItem {
 
     /**
      * Get the endTimeUtc property: The alert end time.
-     *
+     * 
      * @return the endTimeUtc value.
      */
     public OffsetDateTime endTimeUtc() {
@@ -181,7 +196,7 @@ public final class SecurityAlertTimelineItem extends EntityTimelineItem {
 
     /**
      * Set the endTimeUtc property: The alert end time.
-     *
+     * 
      * @param endTimeUtc the endTimeUtc value to set.
      * @return the SecurityAlertTimelineItem object itself.
      */
@@ -192,7 +207,7 @@ public final class SecurityAlertTimelineItem extends EntityTimelineItem {
 
     /**
      * Get the startTimeUtc property: The alert start time.
-     *
+     * 
      * @return the startTimeUtc value.
      */
     public OffsetDateTime startTimeUtc() {
@@ -201,7 +216,7 @@ public final class SecurityAlertTimelineItem extends EntityTimelineItem {
 
     /**
      * Set the startTimeUtc property: The alert start time.
-     *
+     * 
      * @param startTimeUtc the startTimeUtc value to set.
      * @return the SecurityAlertTimelineItem object itself.
      */
@@ -212,7 +227,7 @@ public final class SecurityAlertTimelineItem extends EntityTimelineItem {
 
     /**
      * Get the timeGenerated property: The alert generated time.
-     *
+     * 
      * @return the timeGenerated value.
      */
     public OffsetDateTime timeGenerated() {
@@ -221,7 +236,7 @@ public final class SecurityAlertTimelineItem extends EntityTimelineItem {
 
     /**
      * Set the timeGenerated property: The alert generated time.
-     *
+     * 
      * @param timeGenerated the timeGenerated value to set.
      * @return the SecurityAlertTimelineItem object itself.
      */
@@ -232,7 +247,7 @@ public final class SecurityAlertTimelineItem extends EntityTimelineItem {
 
     /**
      * Get the alertType property: The name of the alert type.
-     *
+     * 
      * @return the alertType value.
      */
     public String alertType() {
@@ -241,7 +256,7 @@ public final class SecurityAlertTimelineItem extends EntityTimelineItem {
 
     /**
      * Set the alertType property: The name of the alert type.
-     *
+     * 
      * @param alertType the alertType value to set.
      * @return the SecurityAlertTimelineItem object itself.
      */
@@ -252,55 +267,117 @@ public final class SecurityAlertTimelineItem extends EntityTimelineItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (azureResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property azureResourceId in model SecurityAlertTimelineItem"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property azureResourceId in model SecurityAlertTimelineItem"));
         }
         if (displayName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property displayName in model SecurityAlertTimelineItem"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property displayName in model SecurityAlertTimelineItem"));
         }
         if (severity() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property severity in model SecurityAlertTimelineItem"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property severity in model SecurityAlertTimelineItem"));
         }
         if (endTimeUtc() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property endTimeUtc in model SecurityAlertTimelineItem"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property endTimeUtc in model SecurityAlertTimelineItem"));
         }
         if (startTimeUtc() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property startTimeUtc in model SecurityAlertTimelineItem"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property startTimeUtc in model SecurityAlertTimelineItem"));
         }
         if (timeGenerated() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property timeGenerated in model SecurityAlertTimelineItem"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property timeGenerated in model SecurityAlertTimelineItem"));
         }
         if (alertType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property alertType in model SecurityAlertTimelineItem"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property alertType in model SecurityAlertTimelineItem"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SecurityAlertTimelineItem.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("azureResourceId", this.azureResourceId);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("severity", this.severity == null ? null : this.severity.toString());
+        jsonWriter.writeStringField("endTimeUtc",
+            this.endTimeUtc == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTimeUtc));
+        jsonWriter.writeStringField("startTimeUtc",
+            this.startTimeUtc == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTimeUtc));
+        jsonWriter.writeStringField("timeGenerated",
+            this.timeGenerated == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timeGenerated));
+        jsonWriter.writeStringField("alertType", this.alertType);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeStringField("productName", this.productName);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityAlertTimelineItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityAlertTimelineItem if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SecurityAlertTimelineItem.
+     */
+    public static SecurityAlertTimelineItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityAlertTimelineItem deserializedSecurityAlertTimelineItem = new SecurityAlertTimelineItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("azureResourceId".equals(fieldName)) {
+                    deserializedSecurityAlertTimelineItem.azureResourceId = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedSecurityAlertTimelineItem.displayName = reader.getString();
+                } else if ("severity".equals(fieldName)) {
+                    deserializedSecurityAlertTimelineItem.severity = AlertSeverity.fromString(reader.getString());
+                } else if ("endTimeUtc".equals(fieldName)) {
+                    deserializedSecurityAlertTimelineItem.endTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("startTimeUtc".equals(fieldName)) {
+                    deserializedSecurityAlertTimelineItem.startTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("timeGenerated".equals(fieldName)) {
+                    deserializedSecurityAlertTimelineItem.timeGenerated = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("alertType".equals(fieldName)) {
+                    deserializedSecurityAlertTimelineItem.alertType = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedSecurityAlertTimelineItem.kind = EntityTimelineKind.fromString(reader.getString());
+                } else if ("productName".equals(fieldName)) {
+                    deserializedSecurityAlertTimelineItem.productName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedSecurityAlertTimelineItem.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityAlertTimelineItem;
+        });
+    }
 }

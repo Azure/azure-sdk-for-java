@@ -6,40 +6,49 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
-/** Describes team properties. */
+/**
+ * Describes team properties.
+ */
 @Fluent
-public final class TeamProperties {
+public final class TeamProperties implements JsonSerializable<TeamProperties> {
     /*
      * The name of the team
      */
-    @JsonProperty(value = "teamName", required = true)
     private String teamName;
 
     /*
      * The description of the team
      */
-    @JsonProperty(value = "teamDescription")
     private String teamDescription;
 
     /*
      * List of member IDs to add to the team
      */
-    @JsonProperty(value = "memberIds")
     private List<UUID> memberIds;
 
     /*
      * List of group IDs to add their members to the team
      */
-    @JsonProperty(value = "groupIds")
     private List<UUID> groupIds;
 
     /**
+     * Creates an instance of TeamProperties class.
+     */
+    public TeamProperties() {
+    }
+
+    /**
      * Get the teamName property: The name of the team.
-     *
+     * 
      * @return the teamName value.
      */
     public String teamName() {
@@ -48,7 +57,7 @@ public final class TeamProperties {
 
     /**
      * Set the teamName property: The name of the team.
-     *
+     * 
      * @param teamName the teamName value to set.
      * @return the TeamProperties object itself.
      */
@@ -59,7 +68,7 @@ public final class TeamProperties {
 
     /**
      * Get the teamDescription property: The description of the team.
-     *
+     * 
      * @return the teamDescription value.
      */
     public String teamDescription() {
@@ -68,7 +77,7 @@ public final class TeamProperties {
 
     /**
      * Set the teamDescription property: The description of the team.
-     *
+     * 
      * @param teamDescription the teamDescription value to set.
      * @return the TeamProperties object itself.
      */
@@ -79,7 +88,7 @@ public final class TeamProperties {
 
     /**
      * Get the memberIds property: List of member IDs to add to the team.
-     *
+     * 
      * @return the memberIds value.
      */
     public List<UUID> memberIds() {
@@ -88,7 +97,7 @@ public final class TeamProperties {
 
     /**
      * Set the memberIds property: List of member IDs to add to the team.
-     *
+     * 
      * @param memberIds the memberIds value to set.
      * @return the TeamProperties object itself.
      */
@@ -99,7 +108,7 @@ public final class TeamProperties {
 
     /**
      * Get the groupIds property: List of group IDs to add their members to the team.
-     *
+     * 
      * @return the groupIds value.
      */
     public List<UUID> groupIds() {
@@ -108,7 +117,7 @@ public final class TeamProperties {
 
     /**
      * Set the groupIds property: List of group IDs to add their members to the team.
-     *
+     * 
      * @param groupIds the groupIds value to set.
      * @return the TeamProperties object itself.
      */
@@ -119,16 +128,67 @@ public final class TeamProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (teamName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property teamName in model TeamProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property teamName in model TeamProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TeamProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("teamName", this.teamName);
+        jsonWriter.writeStringField("teamDescription", this.teamDescription);
+        jsonWriter.writeArrayField("memberIds", this.memberIds,
+            (writer, element) -> writer.writeString(Objects.toString(element, null)));
+        jsonWriter.writeArrayField("groupIds", this.groupIds,
+            (writer, element) -> writer.writeString(Objects.toString(element, null)));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TeamProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TeamProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TeamProperties.
+     */
+    public static TeamProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TeamProperties deserializedTeamProperties = new TeamProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("teamName".equals(fieldName)) {
+                    deserializedTeamProperties.teamName = reader.getString();
+                } else if ("teamDescription".equals(fieldName)) {
+                    deserializedTeamProperties.teamDescription = reader.getString();
+                } else if ("memberIds".equals(fieldName)) {
+                    List<UUID> memberIds = reader.readArray(
+                        reader1 -> reader1.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
+                    deserializedTeamProperties.memberIds = memberIds;
+                } else if ("groupIds".equals(fieldName)) {
+                    List<UUID> groupIds = reader.readArray(
+                        reader1 -> reader1.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
+                    deserializedTeamProperties.groupIds = groupIds;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTeamProperties;
+        });
+    }
 }

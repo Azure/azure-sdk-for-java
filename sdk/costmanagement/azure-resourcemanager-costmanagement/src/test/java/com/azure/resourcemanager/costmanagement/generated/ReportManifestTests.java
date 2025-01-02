@@ -9,6 +9,7 @@ import com.azure.resourcemanager.costmanagement.fluent.models.ReportManifest;
 import com.azure.resourcemanager.costmanagement.models.BlobInfo;
 import com.azure.resourcemanager.costmanagement.models.CostDetailsDataFormat;
 import com.azure.resourcemanager.costmanagement.models.CostDetailsMetricType;
+import com.azure.resourcemanager.costmanagement.models.CostDetailsTimePeriod;
 import com.azure.resourcemanager.costmanagement.models.GenerateCostDetailsReportRequestDefinition;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -16,51 +17,52 @@ import org.junit.jupiter.api.Assertions;
 public final class ReportManifestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReportManifest model =
-            BinaryData
-                .fromString(
-                    "{\"manifestVersion\":\"gq\",\"dataFormat\":\"Csv\",\"byteCount\":8734080438498794448,\"blobCount\":600272259,\"compressData\":false,\"requestContext\":{\"requestScope\":\"fpel\",\"requestBody\":{\"metric\":\"ActualCost\",\"billingPeriod\":\"srp\",\"invoiceId\":\"ujzra\"}},\"blobs\":[{\"blobLink\":\"dw\",\"byteCount\":6706633430332800015}]}")
-                .toObject(ReportManifest.class);
-        Assertions.assertEquals("gq", model.manifestVersion());
+        ReportManifest model = BinaryData.fromString(
+            "{\"manifestVersion\":\"iqwoyxqvapcoh\",\"dataFormat\":\"Csv\",\"byteCount\":3950862248978606581,\"blobCount\":321027752,\"compressData\":true,\"requestContext\":{\"requestScope\":\"zrzdcgd\",\"requestBody\":{\"metric\":\"ActualCost\",\"timePeriod\":{\"start\":\"ibcawetzqddtjw\",\"end\":\"ljhznamtuatmzwcj\"},\"billingPeriod\":\"cqtjzmi\",\"invoiceId\":\"gbgatzuuvbxn\"}},\"blobs\":[{\"blobLink\":\"wggahttzlswvaj\",\"byteCount\":8715350497640016717},{\"blobLink\":\"x\",\"byteCount\":8142650207393641540}]}")
+            .toObject(ReportManifest.class);
+        Assertions.assertEquals("iqwoyxqvapcoh", model.manifestVersion());
         Assertions.assertEquals(CostDetailsDataFormat.CSV, model.dataFormat());
-        Assertions.assertEquals(8734080438498794448L, model.byteCount());
-        Assertions.assertEquals(600272259, model.blobCount());
-        Assertions.assertEquals(false, model.compressData());
-        Assertions.assertEquals("dw", model.blobs().get(0).blobLink());
-        Assertions.assertEquals(6706633430332800015L, model.blobs().get(0).byteCount());
-        Assertions.assertEquals("fpel", model.requestScope());
+        Assertions.assertEquals(3950862248978606581L, model.byteCount());
+        Assertions.assertEquals(321027752, model.blobCount());
+        Assertions.assertEquals(true, model.compressData());
+        Assertions.assertEquals("wggahttzlswvaj", model.blobs().get(0).blobLink());
+        Assertions.assertEquals(8715350497640016717L, model.blobs().get(0).byteCount());
+        Assertions.assertEquals("zrzdcgd", model.requestScope());
         Assertions.assertEquals(CostDetailsMetricType.ACTUAL_COST, model.requestBody().metric());
-        Assertions.assertEquals("srp", model.requestBody().billingPeriod());
-        Assertions.assertEquals("ujzra", model.requestBody().invoiceId());
+        Assertions.assertEquals("ibcawetzqddtjw", model.requestBody().timePeriod().start());
+        Assertions.assertEquals("ljhznamtuatmzwcj", model.requestBody().timePeriod().end());
+        Assertions.assertEquals("cqtjzmi", model.requestBody().billingPeriod());
+        Assertions.assertEquals("gbgatzuuvbxn", model.requestBody().invoiceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReportManifest model =
-            new ReportManifest()
-                .withManifestVersion("gq")
-                .withDataFormat(CostDetailsDataFormat.CSV)
-                .withByteCount(8734080438498794448L)
-                .withBlobCount(600272259)
-                .withCompressData(false)
-                .withBlobs(Arrays.asList(new BlobInfo().withBlobLink("dw").withByteCount(6706633430332800015L)))
-                .withRequestScope("fpel")
-                .withRequestBody(
-                    new GenerateCostDetailsReportRequestDefinition()
-                        .withMetric(CostDetailsMetricType.ACTUAL_COST)
-                        .withBillingPeriod("srp")
-                        .withInvoiceId("ujzra"));
+        ReportManifest model = new ReportManifest().withManifestVersion("iqwoyxqvapcoh")
+            .withDataFormat(CostDetailsDataFormat.CSV)
+            .withByteCount(3950862248978606581L)
+            .withBlobCount(321027752)
+            .withCompressData(true)
+            .withBlobs(Arrays.asList(new BlobInfo().withBlobLink("wggahttzlswvaj").withByteCount(8715350497640016717L),
+                new BlobInfo().withBlobLink("x").withByteCount(8142650207393641540L)))
+            .withRequestScope("zrzdcgd")
+            .withRequestBody(
+                new GenerateCostDetailsReportRequestDefinition().withMetric(CostDetailsMetricType.ACTUAL_COST)
+                    .withTimePeriod(new CostDetailsTimePeriod().withStart("ibcawetzqddtjw").withEnd("ljhznamtuatmzwcj"))
+                    .withBillingPeriod("cqtjzmi")
+                    .withInvoiceId("gbgatzuuvbxn"));
         model = BinaryData.fromObject(model).toObject(ReportManifest.class);
-        Assertions.assertEquals("gq", model.manifestVersion());
+        Assertions.assertEquals("iqwoyxqvapcoh", model.manifestVersion());
         Assertions.assertEquals(CostDetailsDataFormat.CSV, model.dataFormat());
-        Assertions.assertEquals(8734080438498794448L, model.byteCount());
-        Assertions.assertEquals(600272259, model.blobCount());
-        Assertions.assertEquals(false, model.compressData());
-        Assertions.assertEquals("dw", model.blobs().get(0).blobLink());
-        Assertions.assertEquals(6706633430332800015L, model.blobs().get(0).byteCount());
-        Assertions.assertEquals("fpel", model.requestScope());
+        Assertions.assertEquals(3950862248978606581L, model.byteCount());
+        Assertions.assertEquals(321027752, model.blobCount());
+        Assertions.assertEquals(true, model.compressData());
+        Assertions.assertEquals("wggahttzlswvaj", model.blobs().get(0).blobLink());
+        Assertions.assertEquals(8715350497640016717L, model.blobs().get(0).byteCount());
+        Assertions.assertEquals("zrzdcgd", model.requestScope());
         Assertions.assertEquals(CostDetailsMetricType.ACTUAL_COST, model.requestBody().metric());
-        Assertions.assertEquals("srp", model.requestBody().billingPeriod());
-        Assertions.assertEquals("ujzra", model.requestBody().invoiceId());
+        Assertions.assertEquals("ibcawetzqddtjw", model.requestBody().timePeriod().start());
+        Assertions.assertEquals("ljhznamtuatmzwcj", model.requestBody().timePeriod().end());
+        Assertions.assertEquals("cqtjzmi", model.requestBody().billingPeriod());
+        Assertions.assertEquals("gbgatzuuvbxn", model.requestBody().invoiceId());
     }
 }

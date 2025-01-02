@@ -5,45 +5,52 @@
 package com.azure.resourcemanager.healthbot.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.healthbot.models.OperationDisplay;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Operation detail payload. */
+/**
+ * Operation detail payload.
+ */
 @Fluent
-public final class OperationDetailInner {
+public final class OperationDetailInner implements JsonSerializable<OperationDetailInner> {
     /*
      * Name of the operation
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Indicates whether the operation is a data action
      */
-    @JsonProperty(value = "isDataAction")
     private Boolean isDataAction;
 
     /*
      * Display of the operation
      */
-    @JsonProperty(value = "display")
     private OperationDisplay display;
 
     /*
      * Origin of the operation
      */
-    @JsonProperty(value = "origin")
     private String origin;
 
     /*
      * Additional properties.
      */
-    @JsonProperty(value = "properties")
     private Object properties;
 
     /**
+     * Creates an instance of OperationDetailInner class.
+     */
+    public OperationDetailInner() {
+    }
+
+    /**
      * Get the name property: Name of the operation.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -52,7 +59,7 @@ public final class OperationDetailInner {
 
     /**
      * Set the name property: Name of the operation.
-     *
+     * 
      * @param name the name value to set.
      * @return the OperationDetailInner object itself.
      */
@@ -63,7 +70,7 @@ public final class OperationDetailInner {
 
     /**
      * Get the isDataAction property: Indicates whether the operation is a data action.
-     *
+     * 
      * @return the isDataAction value.
      */
     public Boolean isDataAction() {
@@ -72,7 +79,7 @@ public final class OperationDetailInner {
 
     /**
      * Set the isDataAction property: Indicates whether the operation is a data action.
-     *
+     * 
      * @param isDataAction the isDataAction value to set.
      * @return the OperationDetailInner object itself.
      */
@@ -83,7 +90,7 @@ public final class OperationDetailInner {
 
     /**
      * Get the display property: Display of the operation.
-     *
+     * 
      * @return the display value.
      */
     public OperationDisplay display() {
@@ -92,7 +99,7 @@ public final class OperationDetailInner {
 
     /**
      * Set the display property: Display of the operation.
-     *
+     * 
      * @param display the display value to set.
      * @return the OperationDetailInner object itself.
      */
@@ -103,7 +110,7 @@ public final class OperationDetailInner {
 
     /**
      * Get the origin property: Origin of the operation.
-     *
+     * 
      * @return the origin value.
      */
     public String origin() {
@@ -112,7 +119,7 @@ public final class OperationDetailInner {
 
     /**
      * Set the origin property: Origin of the operation.
-     *
+     * 
      * @param origin the origin value to set.
      * @return the OperationDetailInner object itself.
      */
@@ -123,7 +130,7 @@ public final class OperationDetailInner {
 
     /**
      * Get the properties property: Additional properties.
-     *
+     * 
      * @return the properties value.
      */
     public Object properties() {
@@ -132,7 +139,7 @@ public final class OperationDetailInner {
 
     /**
      * Set the properties property: Additional properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the OperationDetailInner object itself.
      */
@@ -143,12 +150,60 @@ public final class OperationDetailInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (display() != null) {
             display().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeBooleanField("isDataAction", this.isDataAction);
+        jsonWriter.writeJsonField("display", this.display);
+        jsonWriter.writeStringField("origin", this.origin);
+        jsonWriter.writeUntypedField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationDetailInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationDetailInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationDetailInner.
+     */
+    public static OperationDetailInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationDetailInner deserializedOperationDetailInner = new OperationDetailInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedOperationDetailInner.name = reader.getString();
+                } else if ("isDataAction".equals(fieldName)) {
+                    deserializedOperationDetailInner.isDataAction = reader.getNullable(JsonReader::getBoolean);
+                } else if ("display".equals(fieldName)) {
+                    deserializedOperationDetailInner.display = OperationDisplay.fromJson(reader);
+                } else if ("origin".equals(fieldName)) {
+                    deserializedOperationDetailInner.origin = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedOperationDetailInner.properties = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationDetailInner;
+        });
     }
 }

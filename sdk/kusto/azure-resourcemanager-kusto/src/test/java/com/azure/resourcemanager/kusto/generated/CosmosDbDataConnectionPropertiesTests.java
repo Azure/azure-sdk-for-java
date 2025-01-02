@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CosmosDbDataConnectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CosmosDbDataConnectionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"tableName\":\"nhdwdigumbnra\",\"mappingRuleName\":\"zzp\",\"managedIdentityResourceId\":\"jazysdzhezwwvaiq\",\"managedIdentityObjectId\":\"vv\",\"cosmosDbAccountResourceId\":\"onkp\",\"cosmosDbDatabase\":\"hqyikvy\",\"cosmosDbContainer\":\"auy\",\"retrievalStartDate\":\"2021-04-05T06:39:57Z\",\"provisioningState\":\"Succeeded\"}")
-                .toObject(CosmosDbDataConnectionProperties.class);
+        CosmosDbDataConnectionProperties model = BinaryData.fromString(
+            "{\"tableName\":\"nhdwdigumbnra\",\"mappingRuleName\":\"zzp\",\"managedIdentityResourceId\":\"jazysdzhezwwvaiq\",\"managedIdentityObjectId\":\"vv\",\"cosmosDbAccountResourceId\":\"onkp\",\"cosmosDbDatabase\":\"hqyikvy\",\"cosmosDbContainer\":\"auy\",\"retrievalStartDate\":\"2021-04-05T06:39:57Z\",\"provisioningState\":\"Succeeded\"}")
+            .toObject(CosmosDbDataConnectionProperties.class);
         Assertions.assertEquals("nhdwdigumbnra", model.tableName());
         Assertions.assertEquals("zzp", model.mappingRuleName());
         Assertions.assertEquals("jazysdzhezwwvaiq", model.managedIdentityResourceId());
@@ -28,15 +26,13 @@ public final class CosmosDbDataConnectionPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CosmosDbDataConnectionProperties model =
-            new CosmosDbDataConnectionProperties()
-                .withTableName("nhdwdigumbnra")
-                .withMappingRuleName("zzp")
-                .withManagedIdentityResourceId("jazysdzhezwwvaiq")
-                .withCosmosDbAccountResourceId("onkp")
-                .withCosmosDbDatabase("hqyikvy")
-                .withCosmosDbContainer("auy")
-                .withRetrievalStartDate(OffsetDateTime.parse("2021-04-05T06:39:57Z"));
+        CosmosDbDataConnectionProperties model = new CosmosDbDataConnectionProperties().withTableName("nhdwdigumbnra")
+            .withMappingRuleName("zzp")
+            .withManagedIdentityResourceId("jazysdzhezwwvaiq")
+            .withCosmosDbAccountResourceId("onkp")
+            .withCosmosDbDatabase("hqyikvy")
+            .withCosmosDbContainer("auy")
+            .withRetrievalStartDate(OffsetDateTime.parse("2021-04-05T06:39:57Z"));
         model = BinaryData.fromObject(model).toObject(CosmosDbDataConnectionProperties.class);
         Assertions.assertEquals("nhdwdigumbnra", model.tableName());
         Assertions.assertEquals("zzp", model.mappingRuleName());

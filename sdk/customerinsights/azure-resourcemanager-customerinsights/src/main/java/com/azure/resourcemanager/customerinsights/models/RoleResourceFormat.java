@@ -6,46 +6,48 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.resourcemanager.customerinsights.fluent.models.RoleResourceFormatInner;
 
-/** An immutable client-side representation of RoleResourceFormat. */
+/**
+ * An immutable client-side representation of RoleResourceFormat.
+ */
 public interface RoleResourceFormat {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the roleName property: The role name.
-     *
+     * 
      * @return the roleName value.
      */
     String roleName();
 
     /**
      * Gets the description property: The description of the role.
-     *
+     * 
      * @return the description value.
      */
     String description();
 
     /**
      * Gets the inner com.azure.resourcemanager.customerinsights.fluent.models.RoleResourceFormatInner object.
-     *
+     * 
      * @return the inner object.
      */
     RoleResourceFormatInner innerModel();

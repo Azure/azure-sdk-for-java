@@ -20,7 +20,8 @@ import com.azure.resourcemanager.batchai.models.RemoteLoginInformation;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class JobsImpl implements Jobs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobsImpl.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(JobsImpl.class);
 
     private final JobsClient innerClient;
 
@@ -32,17 +33,15 @@ public final class JobsImpl implements Jobs {
     }
 
     public PagedIterable<Job> listByExperiment(String resourceGroupName, String workspaceName, String experimentName) {
-        PagedIterable<JobInner> inner =
-            this.serviceClient().listByExperiment(resourceGroupName, workspaceName, experimentName);
+        PagedIterable<JobInner> inner
+            = this.serviceClient().listByExperiment(resourceGroupName, workspaceName, experimentName);
         return Utils.mapPage(inner, inner1 -> new JobImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Job> listByExperiment(
-        String resourceGroupName, String workspaceName, String experimentName, Integer maxResults, Context context) {
-        PagedIterable<JobInner> inner =
-            this
-                .serviceClient()
-                .listByExperiment(resourceGroupName, workspaceName, experimentName, maxResults, context);
+    public PagedIterable<Job> listByExperiment(String resourceGroupName, String workspaceName, String experimentName,
+        Integer maxResults, Context context) {
+        PagedIterable<JobInner> inner = this.serviceClient()
+            .listByExperiment(resourceGroupName, workspaceName, experimentName, maxResults, context);
         return Utils.mapPage(inner, inner1 -> new JobImpl(inner1, this.manager()));
     }
 
@@ -50,8 +49,8 @@ public final class JobsImpl implements Jobs {
         this.serviceClient().delete(resourceGroupName, workspaceName, experimentName, jobName);
     }
 
-    public void delete(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName, Context context) {
+    public void delete(String resourceGroupName, String workspaceName, String experimentName, String jobName,
+        Context context) {
         this.serviceClient().delete(resourceGroupName, workspaceName, experimentName, jobName, context);
     }
 
@@ -64,73 +63,45 @@ public final class JobsImpl implements Jobs {
         }
     }
 
-    public Response<Job> getWithResponse(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName, Context context) {
-        Response<JobInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, experimentName, jobName, context);
+    public Response<Job> getWithResponse(String resourceGroupName, String workspaceName, String experimentName,
+        String jobName, Context context) {
+        Response<JobInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, experimentName, jobName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new JobImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public PagedIterable<File> listOutputFiles(
-        String resourceGroupName,
-        String workspaceName,
-        String experimentName,
-        String jobName,
-        String outputdirectoryid) {
-        PagedIterable<FileInner> inner =
-            this
-                .serviceClient()
-                .listOutputFiles(resourceGroupName, workspaceName, experimentName, jobName, outputdirectoryid);
+    public PagedIterable<File> listOutputFiles(String resourceGroupName, String workspaceName, String experimentName,
+        String jobName, String outputdirectoryid) {
+        PagedIterable<FileInner> inner = this.serviceClient()
+            .listOutputFiles(resourceGroupName, workspaceName, experimentName, jobName, outputdirectoryid);
         return Utils.mapPage(inner, inner1 -> new FileImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<File> listOutputFiles(
-        String resourceGroupName,
-        String workspaceName,
-        String experimentName,
-        String jobName,
-        String outputdirectoryid,
-        String directory,
-        Integer linkexpiryinminutes,
-        Integer maxResults,
+    public PagedIterable<File> listOutputFiles(String resourceGroupName, String workspaceName, String experimentName,
+        String jobName, String outputdirectoryid, String directory, Integer linkexpiryinminutes, Integer maxResults,
         Context context) {
-        PagedIterable<FileInner> inner =
-            this
-                .serviceClient()
-                .listOutputFiles(
-                    resourceGroupName,
-                    workspaceName,
-                    experimentName,
-                    jobName,
-                    outputdirectoryid,
-                    directory,
-                    linkexpiryinminutes,
-                    maxResults,
-                    context);
+        PagedIterable<FileInner> inner = this.serviceClient()
+            .listOutputFiles(resourceGroupName, workspaceName, experimentName, jobName, outputdirectoryid, directory,
+                linkexpiryinminutes, maxResults, context);
         return Utils.mapPage(inner, inner1 -> new FileImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<RemoteLoginInformation> listRemoteLoginInformation(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName) {
-        PagedIterable<RemoteLoginInformationInner> inner =
-            this.serviceClient().listRemoteLoginInformation(resourceGroupName, workspaceName, experimentName, jobName);
+    public PagedIterable<RemoteLoginInformation> listRemoteLoginInformation(String resourceGroupName,
+        String workspaceName, String experimentName, String jobName) {
+        PagedIterable<RemoteLoginInformationInner> inner = this.serviceClient()
+            .listRemoteLoginInformation(resourceGroupName, workspaceName, experimentName, jobName);
         return Utils.mapPage(inner, inner1 -> new RemoteLoginInformationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<RemoteLoginInformation> listRemoteLoginInformation(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName, Context context) {
-        PagedIterable<RemoteLoginInformationInner> inner =
-            this
-                .serviceClient()
-                .listRemoteLoginInformation(resourceGroupName, workspaceName, experimentName, jobName, context);
+    public PagedIterable<RemoteLoginInformation> listRemoteLoginInformation(String resourceGroupName,
+        String workspaceName, String experimentName, String jobName, Context context) {
+        PagedIterable<RemoteLoginInformationInner> inner = this.serviceClient()
+            .listRemoteLoginInformation(resourceGroupName, workspaceName, experimentName, jobName, context);
         return Utils.mapPage(inner, inner1 -> new RemoteLoginInformationImpl(inner1, this.manager()));
     }
 
@@ -138,40 +109,31 @@ public final class JobsImpl implements Jobs {
         this.serviceClient().terminate(resourceGroupName, workspaceName, experimentName, jobName);
     }
 
-    public void terminate(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName, Context context) {
+    public void terminate(String resourceGroupName, String workspaceName, String experimentName, String jobName,
+        Context context) {
         this.serviceClient().terminate(resourceGroupName, workspaceName, experimentName, jobName, context);
     }
 
     public Job getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String experimentName = Utils.getValueFromIdByName(id, "experiments");
         if (experimentName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'experiments'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'experiments'.", id)));
         }
         String jobName = Utils.getValueFromIdByName(id, "jobs");
         if (jobName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, experimentName, jobName, Context.NONE).getValue();
     }
@@ -179,32 +141,23 @@ public final class JobsImpl implements Jobs {
     public Response<Job> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String experimentName = Utils.getValueFromIdByName(id, "experiments");
         if (experimentName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'experiments'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'experiments'.", id)));
         }
         String jobName = Utils.getValueFromIdByName(id, "jobs");
         if (jobName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, experimentName, jobName, context);
     }
@@ -212,32 +165,23 @@ public final class JobsImpl implements Jobs {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String experimentName = Utils.getValueFromIdByName(id, "experiments");
         if (experimentName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'experiments'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'experiments'.", id)));
         }
         String jobName = Utils.getValueFromIdByName(id, "jobs");
         if (jobName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));
         }
         this.delete(resourceGroupName, workspaceName, experimentName, jobName, Context.NONE);
     }
@@ -245,32 +189,23 @@ public final class JobsImpl implements Jobs {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String experimentName = Utils.getValueFromIdByName(id, "experiments");
         if (experimentName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'experiments'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'experiments'.", id)));
         }
         String jobName = Utils.getValueFromIdByName(id, "jobs");
         if (jobName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));
         }
         this.delete(resourceGroupName, workspaceName, experimentName, jobName, context);
     }

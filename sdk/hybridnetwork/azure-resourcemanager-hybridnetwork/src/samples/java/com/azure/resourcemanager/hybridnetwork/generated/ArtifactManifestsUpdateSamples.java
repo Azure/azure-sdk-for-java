@@ -24,8 +24,10 @@ public final class ArtifactManifestsUpdateSamples {
      */
     public static void
         updateAArtifactManifestResourceTags(com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        ArtifactManifest resource = manager.artifactManifests().getWithResponse("rg", "TestPublisher",
-            "TestArtifactStore", "TestManifest", com.azure.core.util.Context.NONE).getValue();
+        ArtifactManifest resource = manager.artifactManifests()
+            .getWithResponse("rg", "TestPublisher", "TestArtifactStore", "TestManifest",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 

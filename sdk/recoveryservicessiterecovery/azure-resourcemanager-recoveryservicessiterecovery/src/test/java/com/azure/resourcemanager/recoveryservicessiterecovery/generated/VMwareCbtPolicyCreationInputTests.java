@@ -23,7 +23,8 @@ public final class VMwareCbtPolicyCreationInputTests {
     public void testSerialize() throws Exception {
         VMwareCbtPolicyCreationInput model
             = new VMwareCbtPolicyCreationInput().withRecoveryPointHistoryInMinutes(743891586)
-                .withCrashConsistentFrequencyInMinutes(1861127701).withAppConsistentFrequencyInMinutes(746704454);
+                .withCrashConsistentFrequencyInMinutes(1861127701)
+                .withAppConsistentFrequencyInMinutes(746704454);
         model = BinaryData.fromObject(model).toObject(VMwareCbtPolicyCreationInput.class);
         Assertions.assertEquals(743891586, model.recoveryPointHistoryInMinutes());
         Assertions.assertEquals(1861127701, model.crashConsistentFrequencyInMinutes());

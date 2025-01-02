@@ -9,7 +9,9 @@ package com.azure.resourcemanager.eventgrid.generated;
  */
 public final class PartnerNamespacesListSharedAccessKeysSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/PartnerNamespaces_ListSharedAccessKeys.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * PartnerNamespaces_ListSharedAccessKeys.json
      */
     /**
      * Sample code: PartnerNamespaces_ListSharedAccessKeys.

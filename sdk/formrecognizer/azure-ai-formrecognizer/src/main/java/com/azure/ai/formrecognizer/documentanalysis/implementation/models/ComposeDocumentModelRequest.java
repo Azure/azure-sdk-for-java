@@ -108,6 +108,9 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

@@ -20,31 +20,27 @@ public final class IpGeodatasImpl implements IpGeodatas {
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    public IpGeodatasImpl(
-        IpGeodatasClient innerClient,
+    public IpGeodatasImpl(IpGeodatasClient innerClient,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<EnrichmentIpGeodata> getWithResponse(String resourceGroupName, String ipAddress, Context context) {
+        Response<EnrichmentIpGeodataInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, ipAddress, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new EnrichmentIpGeodataImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public EnrichmentIpGeodata get(String resourceGroupName, String ipAddress) {
         EnrichmentIpGeodataInner inner = this.serviceClient().get(resourceGroupName, ipAddress);
         if (inner != null) {
             return new EnrichmentIpGeodataImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<EnrichmentIpGeodata> getWithResponse(String resourceGroupName, String ipAddress, Context context) {
-        Response<EnrichmentIpGeodataInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, ipAddress, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new EnrichmentIpGeodataImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

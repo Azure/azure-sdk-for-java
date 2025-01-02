@@ -5,27 +5,37 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The AutomationRuleBooleanCondition model. */
+/**
+ * The AutomationRuleBooleanCondition model.
+ */
 @Fluent
-public final class AutomationRuleBooleanCondition {
+public final class AutomationRuleBooleanCondition implements JsonSerializable<AutomationRuleBooleanCondition> {
     /*
      * The operator property.
      */
-    @JsonProperty(value = "operator")
     private AutomationRuleBooleanConditionSupportedOperator operator;
 
     /*
      * The innerConditions property.
      */
-    @JsonProperty(value = "innerConditions")
     private List<AutomationRuleCondition> innerConditions;
 
     /**
+     * Creates an instance of AutomationRuleBooleanCondition class.
+     */
+    public AutomationRuleBooleanCondition() {
+    }
+
+    /**
      * Get the operator property: The operator property.
-     *
+     * 
      * @return the operator value.
      */
     public AutomationRuleBooleanConditionSupportedOperator operator() {
@@ -34,7 +44,7 @@ public final class AutomationRuleBooleanCondition {
 
     /**
      * Set the operator property: The operator property.
-     *
+     * 
      * @param operator the operator value to set.
      * @return the AutomationRuleBooleanCondition object itself.
      */
@@ -45,7 +55,7 @@ public final class AutomationRuleBooleanCondition {
 
     /**
      * Get the innerConditions property: The innerConditions property.
-     *
+     * 
      * @return the innerConditions value.
      */
     public List<AutomationRuleCondition> innerConditions() {
@@ -54,7 +64,7 @@ public final class AutomationRuleBooleanCondition {
 
     /**
      * Set the innerConditions property: The innerConditions property.
-     *
+     * 
      * @param innerConditions the innerConditions value to set.
      * @return the AutomationRuleBooleanCondition object itself.
      */
@@ -65,12 +75,56 @@ public final class AutomationRuleBooleanCondition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerConditions() != null) {
             innerConditions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("operator", this.operator == null ? null : this.operator.toString());
+        jsonWriter.writeArrayField("innerConditions", this.innerConditions,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutomationRuleBooleanCondition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutomationRuleBooleanCondition if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutomationRuleBooleanCondition.
+     */
+    public static AutomationRuleBooleanCondition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutomationRuleBooleanCondition deserializedAutomationRuleBooleanCondition
+                = new AutomationRuleBooleanCondition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("operator".equals(fieldName)) {
+                    deserializedAutomationRuleBooleanCondition.operator
+                        = AutomationRuleBooleanConditionSupportedOperator.fromString(reader.getString());
+                } else if ("innerConditions".equals(fieldName)) {
+                    List<AutomationRuleCondition> innerConditions
+                        = reader.readArray(reader1 -> AutomationRuleCondition.fromJson(reader1));
+                    deserializedAutomationRuleBooleanCondition.innerConditions = innerConditions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutomationRuleBooleanCondition;
+        });
     }
 }

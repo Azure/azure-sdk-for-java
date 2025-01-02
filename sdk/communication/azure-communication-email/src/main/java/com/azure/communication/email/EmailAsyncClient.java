@@ -23,7 +23,6 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 
@@ -63,28 +62,25 @@ public final class EmailAsyncClient {
         Objects.requireNonNull(message.getSubject(), "'subject' cannot be null.");
 
         if (message.getBodyHtml() == null && message.getBodyPlainText() == null) {
-            throw LOGGER.logExceptionAsError(
-                new NullPointerException("'bodyHtml' and 'bodyPlainText' cannot both be null."));
+            throw LOGGER
+                .logExceptionAsError(new NullPointerException("'bodyHtml' and 'bodyPlainText' cannot both be null."));
         }
 
-        if (message.getToRecipients() == null && message.getCcRecipients() == null
-                && message.getBccRecipients() == null) {
+        if (message.getToRecipients() == null
+            && message.getCcRecipients() == null
+            && message.getBccRecipients() == null) {
             throw LOGGER.logExceptionAsError(
-                new NullPointerException(
-                    "'toRecipients', 'ccRecipients', and 'bccRecipients' cannot all be null.")
-            );
+                new NullPointerException("'toRecipients', 'ccRecipients', and 'bccRecipients' cannot all be null."));
         }
 
         verifyRecipientEmailAddressesNotNull(message.getToRecipients());
         verifyRecipientEmailAddressesNotNull(message.getCcRecipients());
         verifyRecipientEmailAddressesNotNull(message.getBccRecipients());
 
-        EmailContent content = new EmailContent(message.getSubject())
-            .setHtml(message.getBodyHtml())
+        EmailContent content = new EmailContent(message.getSubject()).setHtml(message.getBodyHtml())
             .setPlainText(message.getBodyPlainText());
 
-        EmailRecipients recipients = new EmailRecipients()
-            .setTo(message.getToRecipients())
+        EmailRecipients recipients = new EmailRecipients().setTo(message.getToRecipients())
             .setCc(message.getCcRecipients())
             .setBCC(message.getBccRecipients());
 
@@ -92,35 +88,36 @@ public final class EmailAsyncClient {
 
         if (message.getAttachments() != null) {
             attachmentsImpl = new ArrayList<>();
-            for (EmailAttachment attachment: message.getAttachments()) {
-                attachmentsImpl.add(new com.azure.communication.email.implementation.models.EmailAttachment(
-                    attachment.getName(),
-                    attachment.getContentType(),
-                    Base64.getEncoder().encodeToString(attachment.getContent().toBytes())
-                ));
+            for (EmailAttachment attachment : message.getAttachments()) {
+                com.azure.communication.email.implementation.models.EmailAttachment attachmentImpl = null;
+
+                attachmentImpl = new com.azure.communication.email.implementation.models.EmailAttachment(
+                    attachment.getName(), attachment.getContentType(), attachment.getContentInBase64());
+
+                String contentId = attachment.getContentId();
+
+                if (contentId != null) {
+                    attachmentImpl.setContentId(contentId);
+                }
+
+                attachmentsImpl.add(attachmentImpl);
             }
         }
 
         com.azure.communication.email.implementation.models.EmailMessage messageImpl
-            = new com.azure.communication.email.implementation.models.EmailMessage(
-                message.getSenderAddress(), content, recipients);
+            = new com.azure.communication.email.implementation.models.EmailMessage(message.getSenderAddress(), content,
+                recipients);
 
-        messageImpl
-            .setHeaders(message.getHeaders())
+        messageImpl.setHeaders(message.getHeaders())
             .setAttachments(attachmentsImpl)
             .setReplyTo(message.getReplyTo())
             .setUserEngagementTrackingDisabled(message.isUserEngagementTrackingDisabled());
 
-        return PollerFlux.create(
-            Duration.ofSeconds(1),
+        return PollerFlux.create(Duration.ofSeconds(1),
             () -> emailServiceClient.sendWithResponseAsync(messageImpl, null, null, context),
-            new DefaultPollingStrategy<>(
-                this.serviceClient.getHttpPipeline(),
-                "{endpoint}".replace("{endpoint}", this.serviceClient.getEndpoint()),
-                null,
-                context),
-            TypeReference.createInstance(EmailSendResult.class),
-            TypeReference.createInstance(EmailSendResult.class));
+            new DefaultPollingStrategy<>(this.serviceClient.getHttpPipeline(),
+                "{endpoint}".replace("{endpoint}", this.serviceClient.getEndpoint()), null, context),
+            TypeReference.createInstance(EmailSendResult.class), TypeReference.createInstance(EmailSendResult.class));
     }
 
     void verifyRecipientEmailAddressesNotNull(List<EmailAddress> recipients) {

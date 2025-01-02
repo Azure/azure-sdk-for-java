@@ -12,8 +12,7 @@ public final class CheckNameAvailabilityResponseBodyImpl implements CheckNameAva
 
     private final com.azure.resourcemanager.botservice.BotServiceManager serviceManager;
 
-    CheckNameAvailabilityResponseBodyImpl(
-        CheckNameAvailabilityResponseBodyInner innerObject,
+    CheckNameAvailabilityResponseBodyImpl(CheckNameAvailabilityResponseBodyInner innerObject,
         com.azure.resourcemanager.botservice.BotServiceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -25,6 +24,10 @@ public final class CheckNameAvailabilityResponseBodyImpl implements CheckNameAva
 
     public String message() {
         return this.innerModel().message();
+    }
+
+    public String absCode() {
+        return this.innerModel().absCode();
     }
 
     public CheckNameAvailabilityResponseBodyInner innerModel() {

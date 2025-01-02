@@ -6,32 +6,39 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.OutboundEnvironmentEndpoint;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Collection of Outbound Environment Endpoints. */
+/**
+ * Collection of Outbound Environment Endpoints.
+ */
 @Fluent
-public final class OutboundEnvironmentEndpointListInner {
+public final class OutboundEnvironmentEndpointListInner
+    implements JsonSerializable<OutboundEnvironmentEndpointListInner> {
     /*
      * Collection of resources.
      */
-    @JsonProperty(value = "value", required = true)
     private List<OutboundEnvironmentEndpoint> value;
 
     /*
      * Link to next page of resources.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of OutboundEnvironmentEndpointListInner class. */
+    /**
+     * Creates an instance of OutboundEnvironmentEndpointListInner class.
+     */
     public OutboundEnvironmentEndpointListInner() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<OutboundEnvironmentEndpoint> value() {
@@ -40,7 +47,7 @@ public final class OutboundEnvironmentEndpointListInner {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the OutboundEnvironmentEndpointListInner object itself.
      */
@@ -51,7 +58,7 @@ public final class OutboundEnvironmentEndpointListInner {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,19 +67,60 @@ public final class OutboundEnvironmentEndpointListInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model OutboundEnvironmentEndpointListInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model OutboundEnvironmentEndpointListInner"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OutboundEnvironmentEndpointListInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OutboundEnvironmentEndpointListInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OutboundEnvironmentEndpointListInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OutboundEnvironmentEndpointListInner.
+     */
+    public static OutboundEnvironmentEndpointListInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OutboundEnvironmentEndpointListInner deserializedOutboundEnvironmentEndpointListInner
+                = new OutboundEnvironmentEndpointListInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<OutboundEnvironmentEndpoint> value
+                        = reader.readArray(reader1 -> OutboundEnvironmentEndpoint.fromJson(reader1));
+                    deserializedOutboundEnvironmentEndpointListInner.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedOutboundEnvironmentEndpointListInner.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOutboundEnvironmentEndpointListInner;
+        });
+    }
 }

@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details related to the IPv6 address configuration. */
+/**
+ * Details related to the IPv6 address configuration.
+ */
 @Immutable
-public final class Ipv6Config {
+public final class Ipv6Config implements JsonSerializable<Ipv6Config> {
     /*
      * The IPv6 address of the network adapter.
      */
-    @JsonProperty(value = "ipAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String ipAddress;
 
     /*
      * The IPv6 prefix of the network adapter.
      */
-    @JsonProperty(value = "prefixLength", access = JsonProperty.Access.WRITE_ONLY)
     private Integer prefixLength;
 
     /*
      * The IPv6 gateway of the network adapter.
      */
-    @JsonProperty(value = "gateway", access = JsonProperty.Access.WRITE_ONLY)
     private String gateway;
 
-    /** Creates an instance of Ipv6Config class. */
+    /**
+     * Creates an instance of Ipv6Config class.
+     */
     public Ipv6Config() {
     }
 
     /**
      * Get the ipAddress property: The IPv6 address of the network adapter.
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -43,7 +48,7 @@ public final class Ipv6Config {
 
     /**
      * Get the prefixLength property: The IPv6 prefix of the network adapter.
-     *
+     * 
      * @return the prefixLength value.
      */
     public Integer prefixLength() {
@@ -52,7 +57,7 @@ public final class Ipv6Config {
 
     /**
      * Get the gateway property: The IPv6 gateway of the network adapter.
-     *
+     * 
      * @return the gateway value.
      */
     public String gateway() {
@@ -61,9 +66,48 @@ public final class Ipv6Config {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Ipv6Config from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Ipv6Config if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Ipv6Config.
+     */
+    public static Ipv6Config fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Ipv6Config deserializedIpv6Config = new Ipv6Config();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ipAddress".equals(fieldName)) {
+                    deserializedIpv6Config.ipAddress = reader.getString();
+                } else if ("prefixLength".equals(fieldName)) {
+                    deserializedIpv6Config.prefixLength = reader.getNullable(JsonReader::getInt);
+                } else if ("gateway".equals(fieldName)) {
+                    deserializedIpv6Config.gateway = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIpv6Config;
+        });
     }
 }

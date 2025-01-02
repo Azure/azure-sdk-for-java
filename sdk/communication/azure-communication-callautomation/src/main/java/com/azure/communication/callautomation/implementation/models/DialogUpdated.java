@@ -17,16 +17,6 @@ import java.io.IOException;
 @Fluent
 public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
     /*
-     * Used by customers when calling answerCall action to correlate the request to the response event.
-     */
-    private String operationContext;
-
-    /*
-     * Contains the resulting SIP code/sub-code and message from NGC services.
-     */
-    private ResultInformation resultInformation;
-
-    /*
      * Determines the type of the dialog.
      */
     private DialogInputType dialogInputType;
@@ -37,7 +27,7 @@ public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
     private String dialogId;
 
     /*
-     * Ivr Context
+     * IVR context
      */
     private Object ivrContext;
 
@@ -56,29 +46,20 @@ public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
      */
     private String correlationId;
 
+    /*
+     * Used by customers when calling mid-call actions to correlate the request to the response event.
+     */
+    private String operationContext;
+
+    /*
+     * Contains the resulting SIP code, sub-code and message.
+     */
+    private ResultInformation resultInformation;
+
     /**
      * Creates an instance of DialogUpdated class.
      */
     public DialogUpdated() {
-    }
-
-    /**
-     * Get the operationContext property: Used by customers when calling answerCall action to correlate the request to
-     * the response event.
-     * 
-     * @return the operationContext value.
-     */
-    public String getOperationContext() {
-        return this.operationContext;
-    }
-
-    /**
-     * Get the resultInformation property: Contains the resulting SIP code/sub-code and message from NGC services.
-     * 
-     * @return the resultInformation value.
-     */
-    public ResultInformation getResultInformation() {
-        return this.resultInformation;
     }
 
     /**
@@ -111,7 +92,7 @@ public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
     }
 
     /**
-     * Get the ivrContext property: Ivr Context.
+     * Get the ivrContext property: IVR context.
      * 
      * @return the ivrContext value.
      */
@@ -129,12 +110,34 @@ public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
     }
 
     /**
+     * Set the callConnectionId property: Call connection ID.
+     * 
+     * @param callConnectionId the callConnectionId value to set.
+     * @return the DialogUpdated object itself.
+     */
+    public DialogUpdated setCallConnectionId(String callConnectionId) {
+        this.callConnectionId = callConnectionId;
+        return this;
+    }
+
+    /**
      * Get the serverCallId property: Server call ID.
      * 
      * @return the serverCallId value.
      */
     public String getServerCallId() {
         return this.serverCallId;
+    }
+
+    /**
+     * Set the serverCallId property: Server call ID.
+     * 
+     * @param serverCallId the serverCallId value to set.
+     * @return the DialogUpdated object itself.
+     */
+    public DialogUpdated setServerCallId(String serverCallId) {
+        this.serverCallId = serverCallId;
+        return this;
     }
 
     /**
@@ -148,6 +151,60 @@ public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
     }
 
     /**
+     * Set the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
+     * ID.
+     * 
+     * @param correlationId the correlationId value to set.
+     * @return the DialogUpdated object itself.
+     */
+    public DialogUpdated setCorrelationId(String correlationId) {
+        this.correlationId = correlationId;
+        return this;
+    }
+
+    /**
+     * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
+     * the response event.
+     * 
+     * @return the operationContext value.
+     */
+    public String getOperationContext() {
+        return this.operationContext;
+    }
+
+    /**
+     * Set the operationContext property: Used by customers when calling mid-call actions to correlate the request to
+     * the response event.
+     * 
+     * @param operationContext the operationContext value to set.
+     * @return the DialogUpdated object itself.
+     */
+    public DialogUpdated setOperationContext(String operationContext) {
+        this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
+     * 
+     * @return the resultInformation value.
+     */
+    public ResultInformation getResultInformation() {
+        return this.resultInformation;
+    }
+
+    /**
+     * Set the resultInformation property: Contains the resulting SIP code, sub-code and message.
+     * 
+     * @param resultInformation the resultInformation value to set.
+     * @return the DialogUpdated object itself.
+     */
+    public DialogUpdated setResultInformation(ResultInformation resultInformation) {
+        this.resultInformation = resultInformation;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -155,6 +212,11 @@ public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("dialogInputType",
             this.dialogInputType == null ? null : this.dialogInputType.toString());
+        jsonWriter.writeStringField("callConnectionId", this.callConnectionId);
+        jsonWriter.writeStringField("serverCallId", this.serverCallId);
+        jsonWriter.writeStringField("correlationId", this.correlationId);
+        jsonWriter.writeStringField("operationContext", this.operationContext);
+        jsonWriter.writeJsonField("resultInformation", this.resultInformation);
         return jsonWriter.writeEndObject();
     }
 
@@ -173,11 +235,7 @@ public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("operationContext".equals(fieldName)) {
-                    deserializedDialogUpdated.operationContext = reader.getString();
-                } else if ("resultInformation".equals(fieldName)) {
-                    deserializedDialogUpdated.resultInformation = ResultInformation.fromJson(reader);
-                } else if ("dialogInputType".equals(fieldName)) {
+                if ("dialogInputType".equals(fieldName)) {
                     deserializedDialogUpdated.dialogInputType = DialogInputType.fromString(reader.getString());
                 } else if ("dialogId".equals(fieldName)) {
                     deserializedDialogUpdated.dialogId = reader.getString();
@@ -189,6 +247,10 @@ public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
                     deserializedDialogUpdated.serverCallId = reader.getString();
                 } else if ("correlationId".equals(fieldName)) {
                     deserializedDialogUpdated.correlationId = reader.getString();
+                } else if ("operationContext".equals(fieldName)) {
+                    deserializedDialogUpdated.operationContext = reader.getString();
+                } else if ("resultInformation".equals(fieldName)) {
+                    deserializedDialogUpdated.resultInformation = ResultInformation.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

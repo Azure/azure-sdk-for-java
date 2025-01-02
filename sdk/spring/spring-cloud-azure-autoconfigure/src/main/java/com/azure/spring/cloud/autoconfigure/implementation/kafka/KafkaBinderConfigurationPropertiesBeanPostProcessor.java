@@ -7,6 +7,7 @@ import com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesU
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.cloud.stream.binder.kafka.properties.KafkaBinderConfigurationProperties;
 
 import java.util.HashMap;
@@ -72,10 +73,10 @@ class KafkaBinderConfigurationPropertiesBeanPostProcessor extends AbstractKafkaP
         return merged;
     }
 
-    @SuppressWarnings("removal")
     private Map<String, Object> mergeAdminProperties(KafkaBinderConfigurationProperties properties) {
-        Map<String, Object> adminProperties = properties.getKafkaProperties().buildAdminProperties();
-        normalalizeBootPropsWithBinder(adminProperties, properties.getKafkaProperties(), properties);
+        KafkaProperties kafkaProperties = properties.getKafkaProperties();
+        final Map<String, Object> adminProperties = invokeBuildKafkaProperties(kafkaProperties, "buildAdminProperties");
+        normalalizeBootPropsWithBinder(adminProperties, kafkaProperties, properties);
         AzureKafkaPropertiesUtils.AzureKafkaPasswordlessPropertiesMapping.getPropertyKeys()
             .forEach(k -> PROPERTY_MAPPER.from(properties.getConfiguration().get(k)).to(v -> adminProperties.put(k, v)));
         return adminProperties;

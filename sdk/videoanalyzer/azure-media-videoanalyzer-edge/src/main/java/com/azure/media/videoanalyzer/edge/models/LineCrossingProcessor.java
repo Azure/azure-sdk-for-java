@@ -4,11 +4,12 @@
 
 package com.azure.media.videoanalyzer.edge.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,38 +18,119 @@ import java.util.List;
  * which are tracked across different frames of the video. Inference events are generated every time objects crosses
  * from one side of the line to another.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
-@JsonTypeName("#Microsoft.VideoAnalyzer.LineCrossingProcessor")
-@Fluent
+@Immutable
 public final class LineCrossingProcessor extends ProcessorNodeBase {
+    /*
+     * Type discriminator for the derived types.
+     */
+    private String type = "#Microsoft.VideoAnalyzer.LineCrossingProcessor";
+
     /*
      * An array of lines used to compute line crossing events.
      */
-    @JsonProperty(value = "lines", required = true)
-    private List<NamedLineBase> lines;
+    private final List<NamedLineBase> lines;
 
     /**
      * Creates an instance of LineCrossingProcessor class.
-     *
+     * 
      * @param name the name value to set.
      * @param inputs the inputs value to set.
      * @param lines the lines value to set.
      */
-    @JsonCreator
-    public LineCrossingProcessor(
-            @JsonProperty(value = "name", required = true) String name,
-            @JsonProperty(value = "inputs", required = true) List<NodeInput> inputs,
-            @JsonProperty(value = "lines", required = true) List<NamedLineBase> lines) {
+    public LineCrossingProcessor(String name, List<NodeInput> inputs, List<NamedLineBase> lines) {
         super(name, inputs);
         this.lines = lines;
     }
 
     /**
+     * Get the type property: Type discriminator for the derived types.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
      * Get the lines property: An array of lines used to compute line crossing events.
-     *
+     * 
      * @return the lines value.
      */
     public List<NamedLineBase> getLines() {
         return this.lines;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("lines", this.lines, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("@type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LineCrossingProcessor from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LineCrossingProcessor if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LineCrossingProcessor.
+     */
+    public static LineCrossingProcessor fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean nameFound = false;
+            String name = null;
+            boolean inputsFound = false;
+            List<NodeInput> inputs = null;
+            boolean linesFound = false;
+            List<NamedLineBase> lines = null;
+            String type = "#Microsoft.VideoAnalyzer.LineCrossingProcessor";
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                    nameFound = true;
+                } else if ("inputs".equals(fieldName)) {
+                    inputs = reader.readArray(reader1 -> NodeInput.fromJson(reader1));
+                    inputsFound = true;
+                } else if ("lines".equals(fieldName)) {
+                    lines = reader.readArray(reader1 -> NamedLineBase.fromJson(reader1));
+                    linesFound = true;
+                } else if ("@type".equals(fieldName)) {
+                    type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (nameFound && inputsFound && linesFound) {
+                LineCrossingProcessor deserializedLineCrossingProcessor
+                    = new LineCrossingProcessor(name, inputs, lines);
+                deserializedLineCrossingProcessor.type = type;
+
+                return deserializedLineCrossingProcessor;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!nameFound) {
+                missingProperties.add("name");
+            }
+            if (!inputsFound) {
+                missingProperties.add("inputs");
+            }
+            if (!linesFound) {
+                missingProperties.add("lines");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

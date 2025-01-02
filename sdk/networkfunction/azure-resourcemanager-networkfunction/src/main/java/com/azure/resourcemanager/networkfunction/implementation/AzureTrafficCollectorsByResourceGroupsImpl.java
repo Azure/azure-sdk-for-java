@@ -19,8 +19,7 @@ public final class AzureTrafficCollectorsByResourceGroupsImpl implements AzureTr
 
     private final com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager serviceManager;
 
-    public AzureTrafficCollectorsByResourceGroupsImpl(
-        AzureTrafficCollectorsByResourceGroupsClient innerClient,
+    public AzureTrafficCollectorsByResourceGroupsImpl(AzureTrafficCollectorsByResourceGroupsClient innerClient,
         com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -28,13 +27,13 @@ public final class AzureTrafficCollectorsByResourceGroupsImpl implements AzureTr
 
     public PagedIterable<AzureTrafficCollector> listByResourceGroup(String resourceGroupName) {
         PagedIterable<AzureTrafficCollectorInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new AzureTrafficCollectorImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AzureTrafficCollectorImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AzureTrafficCollector> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<AzureTrafficCollectorInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new AzureTrafficCollectorImpl(inner1, this.manager()));
+        PagedIterable<AzureTrafficCollectorInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AzureTrafficCollectorImpl(inner1, this.manager()));
     }
 
     private AzureTrafficCollectorsByResourceGroupsClient serviceClient() {

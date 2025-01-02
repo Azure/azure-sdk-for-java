@@ -14,8 +14,7 @@ public final class BookmarkExpandResponseImpl implements BookmarkExpandResponse 
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    BookmarkExpandResponseImpl(
-        BookmarkExpandResponseInner innerObject,
+    BookmarkExpandResponseImpl(BookmarkExpandResponseInner innerObject,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

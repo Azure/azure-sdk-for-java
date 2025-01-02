@@ -10,14 +10,14 @@ import com.azure.resourcemanager.datafactory.fluent.models.DynamicsAXResourceDat
 public final class DynamicsAXResourceDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DynamicsAXResourceDatasetTypeProperties model = BinaryData.fromString("{\"path\":\"dataeivjqutxr\"}")
+        DynamicsAXResourceDatasetTypeProperties model = BinaryData.fromString("{\"path\":\"dataztdacrqcwkk\"}")
             .toObject(DynamicsAXResourceDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DynamicsAXResourceDatasetTypeProperties model
-            = new DynamicsAXResourceDatasetTypeProperties().withPath("dataeivjqutxr");
+            = new DynamicsAXResourceDatasetTypeProperties().withPath("dataztdacrqcwkk");
         model = BinaryData.fromObject(model).toObject(DynamicsAXResourceDatasetTypeProperties.class);
     }
 }

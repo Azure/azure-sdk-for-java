@@ -21,16 +21,27 @@ public final class ConfigurationProfilesImpl implements ConfigurationProfiles {
 
     private final com.azure.resourcemanager.automanage.AutomanageManager serviceManager;
 
-    public ConfigurationProfilesImpl(
-        ConfigurationProfilesClient innerClient,
+    public ConfigurationProfilesImpl(ConfigurationProfilesClient innerClient,
         com.azure.resourcemanager.automanage.AutomanageManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
+    public Response<ConfigurationProfile> getByResourceGroupWithResponse(String resourceGroupName,
+        String configurationProfileName, Context context) {
+        Response<ConfigurationProfileInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, configurationProfileName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ConfigurationProfileImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
     public ConfigurationProfile getByResourceGroup(String resourceGroupName, String configurationProfileName) {
-        ConfigurationProfileInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, configurationProfileName);
+        ConfigurationProfileInner inner
+            = this.serviceClient().getByResourceGroup(resourceGroupName, configurationProfileName);
         if (inner != null) {
             return new ConfigurationProfileImpl(inner, this.manager());
         } else {
@@ -38,139 +49,91 @@ public final class ConfigurationProfilesImpl implements ConfigurationProfiles {
         }
     }
 
-    public Response<ConfigurationProfile> getByResourceGroupWithResponse(
-        String resourceGroupName, String configurationProfileName, Context context) {
-        Response<ConfigurationProfileInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, configurationProfileName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ConfigurationProfileImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String configurationProfileName,
+        Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, configurationProfileName, context);
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String configurationProfileName) {
         this.serviceClient().delete(resourceGroupName, configurationProfileName);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String configurationProfileName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, configurationProfileName, context);
-    }
-
     public PagedIterable<ConfigurationProfile> listByResourceGroup(String resourceGroupName) {
         PagedIterable<ConfigurationProfileInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new ConfigurationProfileImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigurationProfileImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ConfigurationProfile> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<ConfigurationProfileInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new ConfigurationProfileImpl(inner1, this.manager()));
+        PagedIterable<ConfigurationProfileInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigurationProfileImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ConfigurationProfile> list() {
         PagedIterable<ConfigurationProfileInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ConfigurationProfileImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigurationProfileImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ConfigurationProfile> list(Context context) {
         PagedIterable<ConfigurationProfileInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ConfigurationProfileImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigurationProfileImpl(inner1, this.manager()));
     }
 
     public ConfigurationProfile getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String configurationProfileName = Utils.getValueFromIdByName(id, "configurationProfiles");
+        String configurationProfileName = ResourceManagerUtils.getValueFromIdByName(id, "configurationProfiles");
         if (configurationProfileName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'configurationProfiles'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'configurationProfiles'.", id)));
         }
-        return this
-            .getByResourceGroupWithResponse(resourceGroupName, configurationProfileName, Context.NONE)
+        return this.getByResourceGroupWithResponse(resourceGroupName, configurationProfileName, Context.NONE)
             .getValue();
     }
 
     public Response<ConfigurationProfile> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String configurationProfileName = Utils.getValueFromIdByName(id, "configurationProfiles");
+        String configurationProfileName = ResourceManagerUtils.getValueFromIdByName(id, "configurationProfiles");
         if (configurationProfileName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'configurationProfiles'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'configurationProfiles'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, configurationProfileName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String configurationProfileName = Utils.getValueFromIdByName(id, "configurationProfiles");
+        String configurationProfileName = ResourceManagerUtils.getValueFromIdByName(id, "configurationProfiles");
         if (configurationProfileName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'configurationProfiles'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'configurationProfiles'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, configurationProfileName, Context.NONE);
+        this.deleteByResourceGroupWithResponse(resourceGroupName, configurationProfileName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String configurationProfileName = Utils.getValueFromIdByName(id, "configurationProfiles");
+        String configurationProfileName = ResourceManagerUtils.getValueFromIdByName(id, "configurationProfiles");
         if (configurationProfileName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'configurationProfiles'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'configurationProfiles'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, configurationProfileName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, configurationProfileName, context);
     }
 
     private ConfigurationProfilesClient serviceClient() {

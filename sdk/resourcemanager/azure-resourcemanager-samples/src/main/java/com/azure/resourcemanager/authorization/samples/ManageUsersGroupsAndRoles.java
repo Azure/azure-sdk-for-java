@@ -56,11 +56,12 @@ public final class ManageUsersGroupsAndRoles {
 
             System.out.println("Creating an AD user " + userName + "...");
 
-            ActiveDirectoryUser user = azureResourceManager.accessManagement().activeDirectoryUsers()
-                    .define(userName)
-                    .withEmailAlias(userEmail)
-                    .withPassword(Utils.password())
-                    .create();
+            ActiveDirectoryUser user = azureResourceManager.accessManagement()
+                .activeDirectoryUsers()
+                .define(userName)
+                .withEmailAlias(userEmail)
+                .withPassword(Utils.password())
+                .create();
 
             System.out.println("Created AD user " + userName);
             Utils.print(user);
@@ -68,12 +69,13 @@ public final class ManageUsersGroupsAndRoles {
             // ============================================================
             // Assign role to AD user
 
-            RoleAssignment roleAssignment1 = azureResourceManager.accessManagement().roleAssignments()
-                    .define(raName1)
-                    .forUser(user)
-                    .withBuiltInRole(BuiltInRole.READER)
-                    .withSubscriptionScope(profile.getSubscriptionId())
-                    .create();
+            RoleAssignment roleAssignment1 = azureResourceManager.accessManagement()
+                .roleAssignments()
+                .define(raName1)
+                .forUser(user)
+                .withBuiltInRole(BuiltInRole.READER)
+                .withSubscriptionScope(profile.getSubscriptionId())
+                .create();
             System.out.println("Created Role Assignment:");
             Utils.print(roleAssignment1);
 
@@ -86,16 +88,19 @@ public final class ManageUsersGroupsAndRoles {
             // ============================================================
             // Get role by scope and role name
 
-            RoleDefinition roleDefinition = azureResourceManager.accessManagement().roleDefinitions()
-                    .getByScopeAndRoleName("subscriptions/" + profile.getSubscriptionId(), "Contributor");
+            RoleDefinition roleDefinition = azureResourceManager.accessManagement()
+                .roleDefinitions()
+                .getByScopeAndRoleName("subscriptions/" + profile.getSubscriptionId(), "Contributor");
             Utils.print(roleDefinition);
 
             // ============================================================
             // Create Service Principal
 
-            ServicePrincipal sp = azureResourceManager.accessManagement().servicePrincipals().define(spName)
-                    .withNewApplication()
-                    .create();
+            ServicePrincipal sp = azureResourceManager.accessManagement()
+                .servicePrincipals()
+                .define(spName)
+                .withNewApplication()
+                .create();
             // wait till service principal created and propagated
             ResourceManagerUtils.sleep(Duration.ofSeconds(15));
             System.out.println("Created Service Principal:");
@@ -105,12 +110,13 @@ public final class ManageUsersGroupsAndRoles {
             // ============================================================
             // Assign role to Service Principal
 
-            RoleAssignment roleAssignment2 = azureResourceManager.accessManagement().roleAssignments()
-                    .define(raName2)
-                    .forServicePrincipal(sp)
-                    .withBuiltInRole(BuiltInRole.CONTRIBUTOR)
-                    .withSubscriptionScope(profile.getSubscriptionId())
-                    .create();
+            RoleAssignment roleAssignment2 = azureResourceManager.accessManagement()
+                .roleAssignments()
+                .define(raName2)
+                .forServicePrincipal(sp)
+                .withBuiltInRole(BuiltInRole.CONTRIBUTOR)
+                .withSubscriptionScope(profile.getSubscriptionId())
+                .create();
             System.out.println("Created Role Assignment:");
             Utils.print(roleAssignment2);
 
@@ -118,29 +124,27 @@ public final class ManageUsersGroupsAndRoles {
             // Create Active Directory groups
 
             System.out.println("Creating Active Directory group " + groupName1 + "...");
-            ActiveDirectoryGroup group1 = azureResourceManager.accessManagement().activeDirectoryGroups()
-                    .define(groupName1)
-                    .withEmailAlias(groupEmail1)
-                    .create();
+            ActiveDirectoryGroup group1 = azureResourceManager.accessManagement()
+                .activeDirectoryGroups()
+                .define(groupName1)
+                .withEmailAlias(groupEmail1)
+                .create();
 
             System.out.println("Created Active Directory group " + groupName1);
             Utils.print(group1);
 
             System.out.println("Creating Active Directory group " + groupName2 + "...");
-            ActiveDirectoryGroup group2 = azureResourceManager.accessManagement().activeDirectoryGroups()
-                    .define(groupName2)
-                    .withEmailAlias(groupEmail2)
-                    .create();
+            ActiveDirectoryGroup group2 = azureResourceManager.accessManagement()
+                .activeDirectoryGroups()
+                .define(groupName2)
+                .withEmailAlias(groupEmail2)
+                .create();
 
             System.out.println("Created Active Directory group " + groupName2);
             Utils.print(group2);
 
             System.out.println("Adding group members to group " + groupName2 + "...");
-            group2.update()
-                    .withMember(user)
-                    .withMember(sp)
-                    .withMember(group1)
-                    .apply();
+            group2.update().withMember(user).withMember(sp).withMember(group1).apply();
             System.out.println("Group members added to group " + groupName2);
             Utils.print(group2);
 
@@ -168,8 +172,7 @@ public final class ManageUsersGroupsAndRoles {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

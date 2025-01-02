@@ -24,7 +24,7 @@ class QuickPulseDataFetcherTests {
     @Test
     void testGetCurrentSdkVersion() {
         ConnectionString connectionString = ConnectionString.parse("InstrumentationKey=testing-123");
-        QuickPulseDataFetcher dataFetcher = new QuickPulseDataFetcher(new QuickPulseDataCollector(true), null,
+        QuickPulseDataFetcher dataFetcher = new QuickPulseDataFetcher(new QuickPulseDataCollector(), null,
             connectionString::getLiveEndpoint, connectionString::getInstrumentationKey, null, null, null, null);
         String sdkVersion = dataFetcher.getCurrentSdkVersion();
         assertThat(sdkVersion).isNotNull();
@@ -34,7 +34,7 @@ class QuickPulseDataFetcherTests {
     @Test
     void endpointIsFormattedCorrectlyWhenUsingConfig() throws URISyntaxException {
         ConnectionString connectionString = ConnectionString.parse("InstrumentationKey=testing-123");
-        QuickPulseDataFetcher quickPulseDataFetcher = new QuickPulseDataFetcher(new QuickPulseDataCollector(true), null,
+        QuickPulseDataFetcher quickPulseDataFetcher = new QuickPulseDataFetcher(new QuickPulseDataCollector(), null,
             connectionString::getLiveEndpoint, connectionString::getInstrumentationKey, null, null, null, null);
         String quickPulseEndpoint = quickPulseDataFetcher.getQuickPulseEndpoint();
         String endpointUrl = quickPulseDataFetcher.getEndpointUrl(quickPulseEndpoint);
@@ -47,7 +47,7 @@ class QuickPulseDataFetcherTests {
     @Test
     void endpointIsFormattedCorrectlyWhenConfigIsNull() throws URISyntaxException {
         ConnectionString connectionString = ConnectionString.parse("InstrumentationKey=testing-123");
-        QuickPulseDataFetcher quickPulseDataFetcher = new QuickPulseDataFetcher(new QuickPulseDataCollector(true), null,
+        QuickPulseDataFetcher quickPulseDataFetcher = new QuickPulseDataFetcher(new QuickPulseDataCollector(), null,
             connectionString::getLiveEndpoint, connectionString::getInstrumentationKey, null, null, null, null);
         String quickPulseEndpoint = quickPulseDataFetcher.getQuickPulseEndpoint();
         String endpointUrl = quickPulseDataFetcher.getEndpointUrl(quickPulseEndpoint);

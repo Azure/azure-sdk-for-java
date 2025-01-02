@@ -6,32 +6,40 @@ package com.azure.resourcemanager.dnsresolver.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Describes a DNS forwarding ruleset PATCH operation. */
+/**
+ * Describes a DNS forwarding ruleset PATCH operation.
+ */
 @Fluent
-public final class DnsForwardingRulesetPatch {
+public final class DnsForwardingRulesetPatch implements JsonSerializable<DnsForwardingRulesetPatch> {
     /*
      * The reference to the DNS resolver outbound endpoints that are used to route DNS queries matching the forwarding
      * rules in the ruleset to the target DNS servers.
      */
-    @JsonProperty(value = "dnsResolverOutboundEndpoints")
     private List<SubResource> dnsResolverOutboundEndpoints;
 
     /*
      * Tags for DNS Resolver.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /**
+     * Creates an instance of DnsForwardingRulesetPatch class.
+     */
+    public DnsForwardingRulesetPatch() {
+    }
 
     /**
      * Get the dnsResolverOutboundEndpoints property: The reference to the DNS resolver outbound endpoints that are used
      * to route DNS queries matching the forwarding rules in the ruleset to the target DNS servers.
-     *
+     * 
      * @return the dnsResolverOutboundEndpoints value.
      */
     public List<SubResource> dnsResolverOutboundEndpoints() {
@@ -41,7 +49,7 @@ public final class DnsForwardingRulesetPatch {
     /**
      * Set the dnsResolverOutboundEndpoints property: The reference to the DNS resolver outbound endpoints that are used
      * to route DNS queries matching the forwarding rules in the ruleset to the target DNS servers.
-     *
+     * 
      * @param dnsResolverOutboundEndpoints the dnsResolverOutboundEndpoints value to set.
      * @return the DnsForwardingRulesetPatch object itself.
      */
@@ -52,7 +60,7 @@ public final class DnsForwardingRulesetPatch {
 
     /**
      * Get the tags property: Tags for DNS Resolver.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -61,7 +69,7 @@ public final class DnsForwardingRulesetPatch {
 
     /**
      * Set the tags property: Tags for DNS Resolver.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the DnsForwardingRulesetPatch object itself.
      */
@@ -72,9 +80,52 @@ public final class DnsForwardingRulesetPatch {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("dnsResolverOutboundEndpoints", this.dnsResolverOutboundEndpoints,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DnsForwardingRulesetPatch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DnsForwardingRulesetPatch if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DnsForwardingRulesetPatch.
+     */
+    public static DnsForwardingRulesetPatch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DnsForwardingRulesetPatch deserializedDnsForwardingRulesetPatch = new DnsForwardingRulesetPatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dnsResolverOutboundEndpoints".equals(fieldName)) {
+                    List<SubResource> dnsResolverOutboundEndpoints
+                        = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedDnsForwardingRulesetPatch.dnsResolverOutboundEndpoints = dnsResolverOutboundEndpoints;
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDnsForwardingRulesetPatch.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDnsForwardingRulesetPatch;
+        });
     }
 }

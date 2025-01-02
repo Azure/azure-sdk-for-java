@@ -99,8 +99,8 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      */
     @SuppressWarnings("unchecked")
     public T additionallyAllowedTenants(String... additionallyAllowedTenants) {
-        identityClientOptions
-            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
+        identityClientOptions.setAdditionallyAllowedTenants(
+            IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
         return (T) this;
     }
 
@@ -113,7 +113,8 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      */
     @SuppressWarnings("unchecked")
     public T additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
-        identityClientOptions.setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
+        identityClientOptions
+            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
         return (T) this;
     }
 

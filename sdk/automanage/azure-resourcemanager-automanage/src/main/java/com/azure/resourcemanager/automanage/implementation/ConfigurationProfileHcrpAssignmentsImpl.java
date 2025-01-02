@@ -20,55 +20,30 @@ public final class ConfigurationProfileHcrpAssignmentsImpl implements Configurat
 
     private final com.azure.resourcemanager.automanage.AutomanageManager serviceManager;
 
-    public ConfigurationProfileHcrpAssignmentsImpl(
-        ConfigurationProfileHcrpAssignmentsClient innerClient,
+    public ConfigurationProfileHcrpAssignmentsImpl(ConfigurationProfileHcrpAssignmentsClient innerClient,
         com.azure.resourcemanager.automanage.AutomanageManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public ConfigurationProfileAssignment createOrUpdate(
-        String resourceGroupName,
-        String machineName,
-        String configurationProfileAssignmentName,
-        ConfigurationProfileAssignmentInner parameters) {
-        ConfigurationProfileAssignmentInner inner =
-            this
-                .serviceClient()
-                .createOrUpdate(resourceGroupName, machineName, configurationProfileAssignmentName, parameters);
-        if (inner != null) {
-            return new ConfigurationProfileAssignmentImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<ConfigurationProfileAssignment> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String machineName,
-        String configurationProfileAssignmentName,
-        ConfigurationProfileAssignmentInner parameters,
+    public Response<ConfigurationProfileAssignment> createOrUpdateWithResponse(String resourceGroupName,
+        String machineName, String configurationProfileAssignmentName, ConfigurationProfileAssignmentInner parameters,
         Context context) {
-        Response<ConfigurationProfileAssignmentInner> inner =
-            this
-                .serviceClient()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, machineName, configurationProfileAssignmentName, parameters, context);
+        Response<ConfigurationProfileAssignmentInner> inner = this.serviceClient()
+            .createOrUpdateWithResponse(resourceGroupName, machineName, configurationProfileAssignmentName, parameters,
+                context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ConfigurationProfileAssignmentImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ConfigurationProfileAssignment get(
-        String resourceGroupName, String machineName, String configurationProfileAssignmentName) {
-        ConfigurationProfileAssignmentInner inner =
-            this.serviceClient().get(resourceGroupName, machineName, configurationProfileAssignmentName);
+    public ConfigurationProfileAssignment createOrUpdate(String resourceGroupName, String machineName,
+        String configurationProfileAssignmentName, ConfigurationProfileAssignmentInner parameters) {
+        ConfigurationProfileAssignmentInner inner = this.serviceClient()
+            .createOrUpdate(resourceGroupName, machineName, configurationProfileAssignmentName, parameters);
         if (inner != null) {
             return new ConfigurationProfileAssignmentImpl(inner, this.manager());
         } else {
@@ -76,32 +51,37 @@ public final class ConfigurationProfileHcrpAssignmentsImpl implements Configurat
         }
     }
 
-    public Response<ConfigurationProfileAssignment> getWithResponse(
-        String resourceGroupName, String machineName, String configurationProfileAssignmentName, Context context) {
-        Response<ConfigurationProfileAssignmentInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, machineName, configurationProfileAssignmentName, context);
+    public Response<ConfigurationProfileAssignment> getWithResponse(String resourceGroupName, String machineName,
+        String configurationProfileAssignmentName, Context context) {
+        Response<ConfigurationProfileAssignmentInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, machineName, configurationProfileAssignmentName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ConfigurationProfileAssignmentImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
+    }
+
+    public ConfigurationProfileAssignment get(String resourceGroupName, String machineName,
+        String configurationProfileAssignmentName) {
+        ConfigurationProfileAssignmentInner inner
+            = this.serviceClient().get(resourceGroupName, machineName, configurationProfileAssignmentName);
+        if (inner != null) {
+            return new ConfigurationProfileAssignmentImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<Void> deleteWithResponse(String resourceGroupName, String machineName,
+        String configurationProfileAssignmentName, Context context) {
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, machineName, configurationProfileAssignmentName, context);
     }
 
     public void delete(String resourceGroupName, String machineName, String configurationProfileAssignmentName) {
         this.serviceClient().delete(resourceGroupName, machineName, configurationProfileAssignmentName);
-    }
-
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String machineName, String configurationProfileAssignmentName, Context context) {
-        return this
-            .serviceClient()
-            .deleteWithResponse(resourceGroupName, machineName, configurationProfileAssignmentName, context);
     }
 
     private ConfigurationProfileHcrpAssignmentsClient serviceClient() {

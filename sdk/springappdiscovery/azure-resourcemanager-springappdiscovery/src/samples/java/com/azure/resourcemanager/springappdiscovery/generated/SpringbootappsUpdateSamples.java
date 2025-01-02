@@ -22,9 +22,10 @@ public final class SpringbootappsUpdateSamples {
      */
     public static void springbootappsUpdateMinimumSetGen(
         com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
-        manager.springbootapps().update("rgspringbootapps", "pdfosfhtemfsaglvwjdyqlyeipucrd",
-            "ofjeesoahqtnovlbuvflyknpbhcpeqqhekntvqxyemuwbcqnuxjgfhsf", new SpringbootappsPatch(),
-            com.azure.core.util.Context.NONE);
+        manager.springbootapps()
+            .update("rgspringbootapps", "pdfosfhtemfsaglvwjdyqlyeipucrd",
+                "ofjeesoahqtnovlbuvflyknpbhcpeqqhekntvqxyemuwbcqnuxjgfhsf", new SpringbootappsPatch(),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -39,8 +40,9 @@ public final class SpringbootappsUpdateSamples {
      */
     public static void springbootappsUpdateMaximumSetGen(
         com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
-        manager.springbootapps().update("rgspringbootapps", "pdfosfhtemfsaglvwjdyqlyeipucrd",
-            "ofjeesoahqtnovlbuvflyknpbhcpeqqhekntvqxyemuwbcqnuxjgfhsf", new SpringbootappsPatch(),
-            com.azure.core.util.Context.NONE);
+        manager.springbootapps()
+            .update("rgspringbootapps", "pdfosfhtemfsaglvwjdyqlyeipucrd",
+                "ofjeesoahqtnovlbuvflyknpbhcpeqqhekntvqxyemuwbcqnuxjgfhsf", new SpringbootappsPatch(),
+                com.azure.core.util.Context.NONE);
     }
 }

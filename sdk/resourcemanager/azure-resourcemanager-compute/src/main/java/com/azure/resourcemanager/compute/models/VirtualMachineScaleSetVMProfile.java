@@ -115,9 +115,9 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
     private SecurityPostureReference securityPostureReference;
 
     /*
-     * Specifies the time in which this VM profile for the Virtual Machine Scale Set was created. Minimum API version
-     * for this property is 2024-03-01. This value will be added to VMSS Flex VM tags when creating/updating the VMSS VM
-     * Profile with minimum api-version 2024-03-01.
+     * Specifies the time in which this VM profile for the Virtual Machine Scale Set was created. This value will be
+     * added to VMSS Flex VM tags when creating/updating the VMSS VM Profile. Minimum API version for this property is
+     * 2023-09-01.
      */
     private OffsetDateTime timeCreated;
 
@@ -520,8 +520,8 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
 
     /**
      * Get the timeCreated property: Specifies the time in which this VM profile for the Virtual Machine Scale Set was
-     * created. Minimum API version for this property is 2024-03-01. This value will be added to VMSS Flex VM tags when
-     * creating/updating the VMSS VM Profile with minimum api-version 2024-03-01.
+     * created. This value will be added to VMSS Flex VM tags when creating/updating the VMSS VM Profile. Minimum API
+     * version for this property is 2023-09-01.
      * 
      * @return the timeCreated value.
      */

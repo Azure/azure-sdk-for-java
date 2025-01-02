@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ComponentsResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComponentsResource model =
-            BinaryData
-                .fromString(
-                    "{\"location\":\"usarhmofc\",\"tags\":{\"rkdtmlxh\":\"my\"},\"id\":\"kuksjtxukcdm\",\"name\":\"arcryuanzwuxzdxt\",\"type\":\"yrlhmwhfpmrqobm\"}")
-                .toObject(ComponentsResource.class);
+        ComponentsResource model = BinaryData.fromString(
+            "{\"location\":\"usarhmofc\",\"tags\":{\"rkdtmlxh\":\"my\"},\"id\":\"kuksjtxukcdm\",\"name\":\"arcryuanzwuxzdxt\",\"type\":\"yrlhmwhfpmrqobm\"}")
+            .toObject(ComponentsResource.class);
         Assertions.assertEquals("usarhmofc", model.location());
         Assertions.assertEquals("my", model.tags().get("rkdtmlxh"));
     }

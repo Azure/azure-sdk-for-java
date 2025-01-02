@@ -5,6 +5,7 @@ package com.azure.core.metrics.opentelemetry;
 
 import com.azure.core.test.utils.metrics.TestMeter;
 import com.azure.core.util.MetricsOptions;
+import com.azure.core.util.LibraryTelemetryOptions;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.metrics.MeterProvider;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class OpenTelemetryMeterProviderTests {
     @Test
-    public void noopMEter() {
+    public void noopMeter() {
         Meter meter = MeterProvider.getDefaultProvider().createMeter("foo", null, null);
         assertNotNull(meter);
         assertFalse(meter.isEnabled());
@@ -26,6 +27,11 @@ public class OpenTelemetryMeterProviderTests {
     public void invalidParams() {
         assertThrows(NullPointerException.class,
             () -> MeterProvider.getDefaultProvider().createMeter(null, null, null));
+
+        assertThrows(NullPointerException.class, () -> MeterProvider.getDefaultProvider().createMeter(null, null));
+
+        assertThrows(NullPointerException.class,
+            () -> MeterProvider.getDefaultProvider().createMeter(new LibraryTelemetryOptions(null), null));
     }
 
     @Test

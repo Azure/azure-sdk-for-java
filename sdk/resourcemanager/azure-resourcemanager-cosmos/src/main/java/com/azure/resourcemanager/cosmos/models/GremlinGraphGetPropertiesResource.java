@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -153,8 +154,29 @@ public final class GremlinGraphGetPropertiesResource extends GremlinGraphResourc
      */
     @Override
     public void validate() {
-        super.validate();
+        if (id() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property id in model GremlinGraphGetPropertiesResource"));
+        }
+        if (indexingPolicy() != null) {
+            indexingPolicy().validate();
+        }
+        if (partitionKey() != null) {
+            partitionKey().validate();
+        }
+        if (uniqueKeyPolicy() != null) {
+            uniqueKeyPolicy().validate();
+        }
+        if (conflictResolutionPolicy() != null) {
+            conflictResolutionPolicy().validate();
+        }
+        if (restoreParameters() != null) {
+            restoreParameters().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GremlinGraphGetPropertiesResource.class);
 
     /**
      * {@inheritDoc}

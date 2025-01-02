@@ -12,19 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceManagedResourcesSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceManagedResourcesSettings model =
-            BinaryData
-                .fromString("{\"cosmosDb\":{\"collectionsThroughput\":775754231}}")
+        ServiceManagedResourcesSettings model
+            = BinaryData.fromString("{\"cosmosDb\":{\"collectionsThroughput\":531743918}}")
                 .toObject(ServiceManagedResourcesSettings.class);
-        Assertions.assertEquals(775754231, model.cosmosDb().collectionsThroughput());
+        Assertions.assertEquals(531743918, model.cosmosDb().collectionsThroughput());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceManagedResourcesSettings model =
-            new ServiceManagedResourcesSettings()
-                .withCosmosDb(new CosmosDbSettings().withCollectionsThroughput(775754231));
+        ServiceManagedResourcesSettings model = new ServiceManagedResourcesSettings()
+            .withCosmosDb(new CosmosDbSettings().withCollectionsThroughput(531743918));
         model = BinaryData.fromObject(model).toObject(ServiceManagedResourcesSettings.class);
-        Assertions.assertEquals(775754231, model.cosmosDb().collectionsThroughput());
+        Assertions.assertEquals(531743918, model.cosmosDb().collectionsThroughput());
     }
 }

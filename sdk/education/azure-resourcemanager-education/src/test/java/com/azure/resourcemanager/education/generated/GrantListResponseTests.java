@@ -6,20 +6,17 @@ package com.azure.resourcemanager.education.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.education.models.GrantListResponse;
-import org.junit.jupiter.api.Test;
 
 public final class GrantListResponseTests {
-    @Test
-    public void testDeserialize() {
-        GrantListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"effectiveDate\":\"2021-08-11T05:57:13Z\",\"offerType\":\"Academic\",\"expirationDate\":\"2021-06-23T16:37:05Z\",\"status\":\"Inactive\"},\"id\":\"ikxwc\",\"name\":\"byscnp\",\"type\":\"x\"}],\"nextLink\":\"ivyqniwbybrkxvd\"}")
-                .toObject(GrantListResponse.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        GrantListResponse model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"offerCap\":{\"currency\":\"hxqh\",\"value\":67.727325},\"effectiveDate\":\"2021-11-03T02:41:53Z\",\"offerType\":\"Academic\",\"expirationDate\":\"2021-04-12T08:15:27Z\",\"status\":\"Active\",\"allocatedBudget\":{\"currency\":\"scnpqxuhivy\",\"value\":86.66091}},\"id\":\"b\",\"name\":\"br\",\"type\":\"xvd\"}],\"nextLink\":\"jgrtfwvukxga\"}")
+            .toObject(GrantListResponse.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         GrantListResponse model = new GrantListResponse();
         model = BinaryData.fromObject(model).toObject(GrantListResponse.class);
     }

@@ -5,91 +5,144 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of the entity. */
+/**
+ * The type of the entity.
+ */
 public final class EntityType extends ExpandableStringEnum<EntityType> {
-    /** Static value Account for EntityType. */
+    /**
+     * Static value Account for EntityType.
+     */
     public static final EntityType ACCOUNT = fromString("Account");
 
-    /** Static value Host for EntityType. */
+    /**
+     * Static value Host for EntityType.
+     */
     public static final EntityType HOST = fromString("Host");
 
-    /** Static value File for EntityType. */
+    /**
+     * Static value File for EntityType.
+     */
     public static final EntityType FILE = fromString("File");
 
-    /** Static value AzureResource for EntityType. */
+    /**
+     * Static value AzureResource for EntityType.
+     */
     public static final EntityType AZURE_RESOURCE = fromString("AzureResource");
 
-    /** Static value CloudApplication for EntityType. */
+    /**
+     * Static value CloudApplication for EntityType.
+     */
     public static final EntityType CLOUD_APPLICATION = fromString("CloudApplication");
 
-    /** Static value DNS for EntityType. */
+    /**
+     * Static value DNS for EntityType.
+     */
     public static final EntityType DNS = fromString("DNS");
 
-    /** Static value FileHash for EntityType. */
+    /**
+     * Static value FileHash for EntityType.
+     */
     public static final EntityType FILE_HASH = fromString("FileHash");
 
-    /** Static value IP for EntityType. */
+    /**
+     * Static value IP for EntityType.
+     */
     public static final EntityType IP = fromString("IP");
 
-    /** Static value Malware for EntityType. */
+    /**
+     * Static value Malware for EntityType.
+     */
     public static final EntityType MALWARE = fromString("Malware");
 
-    /** Static value Process for EntityType. */
+    /**
+     * Static value Process for EntityType.
+     */
     public static final EntityType PROCESS = fromString("Process");
 
-    /** Static value RegistryKey for EntityType. */
+    /**
+     * Static value RegistryKey for EntityType.
+     */
     public static final EntityType REGISTRY_KEY = fromString("RegistryKey");
 
-    /** Static value RegistryValue for EntityType. */
+    /**
+     * Static value RegistryValue for EntityType.
+     */
     public static final EntityType REGISTRY_VALUE = fromString("RegistryValue");
 
-    /** Static value SecurityGroup for EntityType. */
+    /**
+     * Static value SecurityGroup for EntityType.
+     */
     public static final EntityType SECURITY_GROUP = fromString("SecurityGroup");
 
-    /** Static value URL for EntityType. */
+    /**
+     * Static value URL for EntityType.
+     */
     public static final EntityType URL = fromString("URL");
 
-    /** Static value IoTDevice for EntityType. */
+    /**
+     * Static value IoTDevice for EntityType.
+     */
     public static final EntityType IO_TDEVICE = fromString("IoTDevice");
 
-    /** Static value SecurityAlert for EntityType. */
+    /**
+     * Static value SecurityAlert for EntityType.
+     */
     public static final EntityType SECURITY_ALERT = fromString("SecurityAlert");
 
-    /** Static value HuntingBookmark for EntityType. */
+    /**
+     * Static value HuntingBookmark for EntityType.
+     */
     public static final EntityType HUNTING_BOOKMARK = fromString("HuntingBookmark");
 
-    /** Static value MailCluster for EntityType. */
+    /**
+     * Static value MailCluster for EntityType.
+     */
     public static final EntityType MAIL_CLUSTER = fromString("MailCluster");
 
-    /** Static value MailMessage for EntityType. */
+    /**
+     * Static value MailMessage for EntityType.
+     */
     public static final EntityType MAIL_MESSAGE = fromString("MailMessage");
 
-    /** Static value Mailbox for EntityType. */
+    /**
+     * Static value Mailbox for EntityType.
+     */
     public static final EntityType MAILBOX = fromString("Mailbox");
 
-    /** Static value SubmissionMail for EntityType. */
+    /**
+     * Static value SubmissionMail for EntityType.
+     */
     public static final EntityType SUBMISSION_MAIL = fromString("SubmissionMail");
 
-    /** Static value Nic for EntityType. */
+    /**
+     * Static value Nic for EntityType.
+     */
     public static final EntityType NIC = fromString("Nic");
 
     /**
+     * Creates a new instance of EntityType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EntityType() {
+    }
+
+    /**
      * Creates or finds a EntityType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EntityType.
      */
-    @JsonCreator
     public static EntityType fromString(String name) {
         return fromString(name, EntityType.class);
     }
 
     /**
      * Gets known EntityType values.
-     *
+     * 
      * @return known EntityType values.
      */
     public static Collection<EntityType> values() {

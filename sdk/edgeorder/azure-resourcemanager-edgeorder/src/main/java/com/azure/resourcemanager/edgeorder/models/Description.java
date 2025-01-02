@@ -5,55 +5,57 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Description related properties of a product system. */
+/**
+ * Description related properties of a product system.
+ */
 @Immutable
-public final class Description {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Description.class);
-
+public final class Description implements JsonSerializable<Description> {
     /*
      * Type of description.
      */
-    @JsonProperty(value = "descriptionType", access = JsonProperty.Access.WRITE_ONLY)
     private DescriptionType descriptionType;
 
     /*
      * Short description of the product system.
      */
-    @JsonProperty(value = "shortDescription", access = JsonProperty.Access.WRITE_ONLY)
     private String shortDescription;
 
     /*
      * Long description of the product system.
      */
-    @JsonProperty(value = "longDescription", access = JsonProperty.Access.WRITE_ONLY)
     private String longDescription;
 
     /*
      * Keywords for the product system.
      */
-    @JsonProperty(value = "keywords", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> keywords;
 
     /*
      * Attributes for the product system.
      */
-    @JsonProperty(value = "attributes", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> attributes;
 
     /*
      * Links for the product system.
      */
-    @JsonProperty(value = "links", access = JsonProperty.Access.WRITE_ONLY)
     private List<Link> links;
 
     /**
+     * Creates an instance of Description class.
+     */
+    public Description() {
+    }
+
+    /**
      * Get the descriptionType property: Type of description.
-     *
+     * 
      * @return the descriptionType value.
      */
     public DescriptionType descriptionType() {
@@ -62,7 +64,7 @@ public final class Description {
 
     /**
      * Get the shortDescription property: Short description of the product system.
-     *
+     * 
      * @return the shortDescription value.
      */
     public String shortDescription() {
@@ -71,7 +73,7 @@ public final class Description {
 
     /**
      * Get the longDescription property: Long description of the product system.
-     *
+     * 
      * @return the longDescription value.
      */
     public String longDescription() {
@@ -80,7 +82,7 @@ public final class Description {
 
     /**
      * Get the keywords property: Keywords for the product system.
-     *
+     * 
      * @return the keywords value.
      */
     public List<String> keywords() {
@@ -89,7 +91,7 @@ public final class Description {
 
     /**
      * Get the attributes property: Attributes for the product system.
-     *
+     * 
      * @return the attributes value.
      */
     public List<String> attributes() {
@@ -98,7 +100,7 @@ public final class Description {
 
     /**
      * Get the links property: Links for the product system.
-     *
+     * 
      * @return the links value.
      */
     public List<Link> links() {
@@ -107,12 +109,60 @@ public final class Description {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (links() != null) {
             links().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Description from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Description if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the Description.
+     */
+    public static Description fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Description deserializedDescription = new Description();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("descriptionType".equals(fieldName)) {
+                    deserializedDescription.descriptionType = DescriptionType.fromString(reader.getString());
+                } else if ("shortDescription".equals(fieldName)) {
+                    deserializedDescription.shortDescription = reader.getString();
+                } else if ("longDescription".equals(fieldName)) {
+                    deserializedDescription.longDescription = reader.getString();
+                } else if ("keywords".equals(fieldName)) {
+                    List<String> keywords = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDescription.keywords = keywords;
+                } else if ("attributes".equals(fieldName)) {
+                    List<String> attributes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDescription.attributes = attributes;
+                } else if ("links".equals(fieldName)) {
+                    List<Link> links = reader.readArray(reader1 -> Link.fromJson(reader1));
+                    deserializedDescription.links = links;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDescription;
+        });
     }
 }

@@ -5,39 +5,47 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The whois record for a given domain. */
+/**
+ * The whois record for a given domain.
+ */
 @Fluent
-public final class EnrichmentDomainWhoisDetails {
+public final class EnrichmentDomainWhoisDetails implements JsonSerializable<EnrichmentDomainWhoisDetails> {
     /*
      * The registrar associated with this domain
      */
-    @JsonProperty(value = "registrar")
     private EnrichmentDomainWhoisRegistrarDetails registrar;
 
     /*
      * The set of contacts associated with this domain
      */
-    @JsonProperty(value = "contacts")
     private EnrichmentDomainWhoisContacts contacts;
 
     /*
      * A list of name servers associated with this domain
      */
-    @JsonProperty(value = "nameServers")
     private List<String> nameServers;
 
     /*
      * The set of status flags for this whois record
      */
-    @JsonProperty(value = "statuses")
     private List<String> statuses;
 
     /**
+     * Creates an instance of EnrichmentDomainWhoisDetails class.
+     */
+    public EnrichmentDomainWhoisDetails() {
+    }
+
+    /**
      * Get the registrar property: The registrar associated with this domain.
-     *
+     * 
      * @return the registrar value.
      */
     public EnrichmentDomainWhoisRegistrarDetails registrar() {
@@ -46,7 +54,7 @@ public final class EnrichmentDomainWhoisDetails {
 
     /**
      * Set the registrar property: The registrar associated with this domain.
-     *
+     * 
      * @param registrar the registrar value to set.
      * @return the EnrichmentDomainWhoisDetails object itself.
      */
@@ -57,7 +65,7 @@ public final class EnrichmentDomainWhoisDetails {
 
     /**
      * Get the contacts property: The set of contacts associated with this domain.
-     *
+     * 
      * @return the contacts value.
      */
     public EnrichmentDomainWhoisContacts contacts() {
@@ -66,7 +74,7 @@ public final class EnrichmentDomainWhoisDetails {
 
     /**
      * Set the contacts property: The set of contacts associated with this domain.
-     *
+     * 
      * @param contacts the contacts value to set.
      * @return the EnrichmentDomainWhoisDetails object itself.
      */
@@ -77,7 +85,7 @@ public final class EnrichmentDomainWhoisDetails {
 
     /**
      * Get the nameServers property: A list of name servers associated with this domain.
-     *
+     * 
      * @return the nameServers value.
      */
     public List<String> nameServers() {
@@ -86,7 +94,7 @@ public final class EnrichmentDomainWhoisDetails {
 
     /**
      * Set the nameServers property: A list of name servers associated with this domain.
-     *
+     * 
      * @param nameServers the nameServers value to set.
      * @return the EnrichmentDomainWhoisDetails object itself.
      */
@@ -97,7 +105,7 @@ public final class EnrichmentDomainWhoisDetails {
 
     /**
      * Get the statuses property: The set of status flags for this whois record.
-     *
+     * 
      * @return the statuses value.
      */
     public List<String> statuses() {
@@ -106,7 +114,7 @@ public final class EnrichmentDomainWhoisDetails {
 
     /**
      * Set the statuses property: The set of status flags for this whois record.
-     *
+     * 
      * @param statuses the statuses value to set.
      * @return the EnrichmentDomainWhoisDetails object itself.
      */
@@ -117,7 +125,7 @@ public final class EnrichmentDomainWhoisDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -127,5 +135,53 @@ public final class EnrichmentDomainWhoisDetails {
         if (contacts() != null) {
             contacts().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("registrar", this.registrar);
+        jsonWriter.writeJsonField("contacts", this.contacts);
+        jsonWriter.writeArrayField("nameServers", this.nameServers, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("statuses", this.statuses, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnrichmentDomainWhoisDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnrichmentDomainWhoisDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EnrichmentDomainWhoisDetails.
+     */
+    public static EnrichmentDomainWhoisDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnrichmentDomainWhoisDetails deserializedEnrichmentDomainWhoisDetails = new EnrichmentDomainWhoisDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("registrar".equals(fieldName)) {
+                    deserializedEnrichmentDomainWhoisDetails.registrar
+                        = EnrichmentDomainWhoisRegistrarDetails.fromJson(reader);
+                } else if ("contacts".equals(fieldName)) {
+                    deserializedEnrichmentDomainWhoisDetails.contacts = EnrichmentDomainWhoisContacts.fromJson(reader);
+                } else if ("nameServers".equals(fieldName)) {
+                    List<String> nameServers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedEnrichmentDomainWhoisDetails.nameServers = nameServers;
+                } else if ("statuses".equals(fieldName)) {
+                    List<String> statuses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedEnrichmentDomainWhoisDetails.statuses = statuses;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnrichmentDomainWhoisDetails;
+        });
     }
 }

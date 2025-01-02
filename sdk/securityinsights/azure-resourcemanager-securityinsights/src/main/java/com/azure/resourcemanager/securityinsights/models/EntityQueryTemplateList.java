@@ -6,28 +6,38 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.fluent.models.EntityQueryTemplateInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of all the entity query templates. */
+/**
+ * List of all the entity query templates.
+ */
 @Fluent
-public final class EntityQueryTemplateList {
+public final class EntityQueryTemplateList implements JsonSerializable<EntityQueryTemplateList> {
     /*
      * URL to fetch the next set of entity query templates.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /*
      * Array of entity query templates.
      */
-    @JsonProperty(value = "value", required = true)
     private List<EntityQueryTemplateInner> value;
 
     /**
+     * Creates an instance of EntityQueryTemplateList class.
+     */
+    public EntityQueryTemplateList() {
+    }
+
+    /**
      * Get the nextLink property: URL to fetch the next set of entity query templates.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -36,7 +46,7 @@ public final class EntityQueryTemplateList {
 
     /**
      * Get the value property: Array of entity query templates.
-     *
+     * 
      * @return the value value.
      */
     public List<EntityQueryTemplateInner> value() {
@@ -45,7 +55,7 @@ public final class EntityQueryTemplateList {
 
     /**
      * Set the value property: Array of entity query templates.
-     *
+     * 
      * @param value the value value to set.
      * @return the EntityQueryTemplateList object itself.
      */
@@ -56,18 +66,58 @@ public final class EntityQueryTemplateList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model EntityQueryTemplateList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model EntityQueryTemplateList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EntityQueryTemplateList.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EntityQueryTemplateList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EntityQueryTemplateList if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EntityQueryTemplateList.
+     */
+    public static EntityQueryTemplateList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EntityQueryTemplateList deserializedEntityQueryTemplateList = new EntityQueryTemplateList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<EntityQueryTemplateInner> value
+                        = reader.readArray(reader1 -> EntityQueryTemplateInner.fromJson(reader1));
+                    deserializedEntityQueryTemplateList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedEntityQueryTemplateList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEntityQueryTemplateList;
+        });
+    }
 }

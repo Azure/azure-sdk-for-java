@@ -20,31 +20,27 @@ public final class DomainWhoisImpl implements DomainWhois {
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    public DomainWhoisImpl(
-        DomainWhoisClient innerClient,
+    public DomainWhoisImpl(DomainWhoisClient innerClient,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<EnrichmentDomainWhois> getWithResponse(String resourceGroupName, String domain, Context context) {
+        Response<EnrichmentDomainWhoisInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, domain, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new EnrichmentDomainWhoisImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public EnrichmentDomainWhois get(String resourceGroupName, String domain) {
         EnrichmentDomainWhoisInner inner = this.serviceClient().get(resourceGroupName, domain);
         if (inner != null) {
             return new EnrichmentDomainWhoisImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<EnrichmentDomainWhois> getWithResponse(String resourceGroupName, String domain, Context context) {
-        Response<EnrichmentDomainWhoisInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, domain, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new EnrichmentDomainWhoisImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

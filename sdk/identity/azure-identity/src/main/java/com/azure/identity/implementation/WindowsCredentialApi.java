@@ -38,14 +38,12 @@ public interface WindowsCredentialApi extends StdCallLibrary {
      */
     class CREDENTIAL_ATTRIBUTE extends Structure {
 
-        public static class ByReference extends CREDENTIAL_ATTRIBUTE implements Structure.ByReference { }
+        public static class ByReference extends CREDENTIAL_ATTRIBUTE implements Structure.ByReference {
+        }
 
         @Override
         protected List<String> getFieldOrder() {
-            return Arrays.asList("Keyword",
-                    "Flags",
-                    "ValueSize",
-                    "Value");
+            return Arrays.asList("Keyword", "Flags", "ValueSize", "Value");
         }
 
         /**
@@ -76,7 +74,6 @@ public interface WindowsCredentialApi extends StdCallLibrary {
         public Pointer Value;
     }
 
-
     /**
      * The CREDENTIAL structure contains an individual credential
      *
@@ -99,18 +96,8 @@ public interface WindowsCredentialApi extends StdCallLibrary {
 
         @Override
         protected List<String> getFieldOrder() {
-            return Arrays.asList("Flags",
-                    "Type",
-                    "TargetName",
-                    "Comment",
-                    "LastWritten",
-                    "CredentialBlobSize",
-                    "CredentialBlob",
-                    "Persist",
-                    "AttributeCount",
-                    "Attributes",
-                    "TargetAlias",
-                    "UserName");
+            return Arrays.asList("Flags", "Type", "TargetName", "Comment", "LastWritten", "CredentialBlobSize",
+                "CredentialBlob", "Persist", "AttributeCount", "Attributes", "TargetAlias", "UserName");
         }
 
         public CREDENTIAL() {

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.elasticsan.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -52,7 +51,6 @@ public final class VolumeCreateOption extends ExpandableStringEnum<VolumeCreateO
      * @param name a name to look for.
      * @return the corresponding VolumeCreateOption.
      */
-    @JsonCreator
     public static VolumeCreateOption fromString(String name) {
         return fromString(name, VolumeCreateOption.class);
     }

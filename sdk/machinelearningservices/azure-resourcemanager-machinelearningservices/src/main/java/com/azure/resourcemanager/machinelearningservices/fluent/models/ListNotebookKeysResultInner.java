@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The ListNotebookKeysResult model. */
 @Immutable
 public final class ListNotebookKeysResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListNotebookKeysResultInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ListNotebookKeysResultInner.class);
 
     /*
      * The primaryAccessKey property.

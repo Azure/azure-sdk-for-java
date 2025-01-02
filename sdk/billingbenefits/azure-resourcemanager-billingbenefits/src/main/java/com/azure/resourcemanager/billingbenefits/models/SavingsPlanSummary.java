@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.billingbenefits.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Savings plans list summary. */
+/**
+ * Savings plans list summary.
+ */
 @Fluent
-public final class SavingsPlanSummary {
+public final class SavingsPlanSummary implements JsonSerializable<SavingsPlanSummary> {
     /*
      * This property has value 'summary'
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The roll up count summary of savings plans in each state
      */
-    @JsonProperty(value = "value")
     private SavingsPlanSummaryCount value;
 
-    /** Creates an instance of SavingsPlanSummary class. */
+    /**
+     * Creates an instance of SavingsPlanSummary class.
+     */
     public SavingsPlanSummary() {
     }
 
     /**
      * Get the name property: This property has value 'summary'.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +43,7 @@ public final class SavingsPlanSummary {
 
     /**
      * Get the value property: The roll up count summary of savings plans in each state.
-     *
+     * 
      * @return the value value.
      */
     public SavingsPlanSummaryCount value() {
@@ -46,7 +52,7 @@ public final class SavingsPlanSummary {
 
     /**
      * Set the value property: The roll up count summary of savings plans in each state.
-     *
+     * 
      * @param value the value value to set.
      * @return the SavingsPlanSummary object itself.
      */
@@ -57,12 +63,50 @@ public final class SavingsPlanSummary {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SavingsPlanSummary from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SavingsPlanSummary if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SavingsPlanSummary.
+     */
+    public static SavingsPlanSummary fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SavingsPlanSummary deserializedSavingsPlanSummary = new SavingsPlanSummary();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSavingsPlanSummary.name = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedSavingsPlanSummary.value = SavingsPlanSummaryCount.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSavingsPlanSummary;
+        });
     }
 }

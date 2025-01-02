@@ -9,28 +9,25 @@ import com.azure.resourcemanager.dnsresolver.models.InboundEndpointPatch;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class InboundEndpointPatchTests {
-    @Test
-    public void testDeserialize() {
-        InboundEndpointPatch model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"o\":\"gejspodmailzyde\",\"wixjsprozvcp\":\"wyahuxinpmqnja\",\"atscmd\":\"tegjvwmf\"}}")
-                .toObject(InboundEndpointPatch.class);
-        Assertions.assertEquals("gejspodmailzyde", model.tags().get("o"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        InboundEndpointPatch model = BinaryData.fromString(
+            "{\"tags\":{\"npmqnjaqwixjspro\":\"yahux\",\"wmfdatscmdvpjhul\":\"vcputegj\",\"odjpslwejd\":\"uuvmkjozkrwfnd\",\"cctazakljlahbc\":\"vwryoqpso\"}}")
+            .toObject(InboundEndpointPatch.class);
+        Assertions.assertEquals("yahux", model.tags().get("npmqnjaqwixjspro"));
     }
 
-    @Test
-    public void testSerialize() {
-        InboundEndpointPatch model =
-            new InboundEndpointPatch()
-                .withTags(mapOf("o", "gejspodmailzyde", "wixjsprozvcp", "wyahuxinpmqnja", "atscmd", "tegjvwmf"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        InboundEndpointPatch model = new InboundEndpointPatch().withTags(mapOf("npmqnjaqwixjspro", "yahux",
+            "wmfdatscmdvpjhul", "vcputegj", "odjpslwejd", "uuvmkjozkrwfnd", "cctazakljlahbc", "vwryoqpso"));
         model = BinaryData.fromObject(model).toObject(InboundEndpointPatch.class);
-        Assertions.assertEquals("gejspodmailzyde", model.tags().get("o"));
+        Assertions.assertEquals("yahux", model.tags().get("npmqnjaqwixjspro"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

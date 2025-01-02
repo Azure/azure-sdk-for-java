@@ -36,22 +36,28 @@ import com.azure.resourcemanager.datalakestore.models.UpdateVirtualNetworkRulePa
 import com.azure.resourcemanager.datalakestore.models.VirtualNetworkRuleListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VirtualNetworkRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VirtualNetworkRulesClient.
+ */
 public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final VirtualNetworkRulesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataLakeStoreAccountManagementClientImpl client;
 
     /**
      * Initializes an instance of VirtualNetworkRulesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     VirtualNetworkRulesClientImpl(DataLakeStoreAccountManagementClientImpl client) {
-        this.service =
-            RestProxy.create(VirtualNetworkRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(VirtualNetworkRulesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -62,122 +68,89 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
     @Host("{$host}")
     @ServiceInterface(name = "DataLakeStoreAccount")
     public interface VirtualNetworkRulesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore"
-                + "/accounts/{accountName}/virtualNetworkRules")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/virtualNetworkRules")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualNetworkRuleListResult>> listByAccount(
-            @HostParam("$host") String endpoint,
+        Mono<Response<VirtualNetworkRuleListResult>> listByAccount(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore"
-                + "/accounts/{accountName}/virtualNetworkRules/{virtualNetworkRuleName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/virtualNetworkRules/{virtualNetworkRuleName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualNetworkRuleInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<VirtualNetworkRuleInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("virtualNetworkRuleName") String virtualNetworkRuleName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CreateOrUpdateVirtualNetworkRuleParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore"
-                + "/accounts/{accountName}/virtualNetworkRules/{virtualNetworkRuleName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/virtualNetworkRules/{virtualNetworkRuleName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualNetworkRuleInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<VirtualNetworkRuleInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("virtualNetworkRuleName") String virtualNetworkRuleName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore"
-                + "/accounts/{accountName}/virtualNetworkRules/{virtualNetworkRuleName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/virtualNetworkRules/{virtualNetworkRuleName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualNetworkRuleInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<VirtualNetworkRuleInner>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("virtualNetworkRuleName") String virtualNetworkRuleName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") UpdateVirtualNetworkRuleParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore"
-                + "/accounts/{accountName}/virtualNetworkRules/{virtualNetworkRuleName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/virtualNetworkRules/{virtualNetworkRuleName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("virtualNetworkRuleName") String virtualNetworkRuleName,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
+            @QueryParam("api-version") String apiVersion, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VirtualNetworkRuleListResult>> listByAccountNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists the Data Lake Store virtual network rules within the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data Lake Store virtual network rule list information along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualNetworkRuleInner>> listByAccountSinglePageAsync(
-        String resourceGroupName, String accountName) {
+    private Mono<PagedResponse<VirtualNetworkRuleInner>> listByAccountSinglePageAsync(String resourceGroupName,
+        String accountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -188,32 +161,16 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByAccount(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<VirtualNetworkRuleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByAccount(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<VirtualNetworkRuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists the Data Lake Store virtual network rules within the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param context The context to associate with this operation.
@@ -221,22 +178,18 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data Lake Store virtual network rule list information along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualNetworkRuleInner>> listByAccountSinglePageAsync(
-        String resourceGroupName, String accountName, Context context) {
+    private Mono<PagedResponse<VirtualNetworkRuleInner>> listByAccountSinglePageAsync(String resourceGroupName,
+        String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -248,28 +201,15 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByAccount(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByAccount(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists the Data Lake Store virtual network rules within the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -279,14 +219,13 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VirtualNetworkRuleInner> listByAccountAsync(String resourceGroupName, String accountName) {
-        return new PagedFlux<>(
-            () -> listByAccountSinglePageAsync(resourceGroupName, accountName),
+        return new PagedFlux<>(() -> listByAccountSinglePageAsync(resourceGroupName, accountName),
             nextLink -> listByAccountNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the Data Lake Store virtual network rules within the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param context The context to associate with this operation.
@@ -296,16 +235,15 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
      * @return data Lake Store virtual network rule list information as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VirtualNetworkRuleInner> listByAccountAsync(
-        String resourceGroupName, String accountName, Context context) {
-        return new PagedFlux<>(
-            () -> listByAccountSinglePageAsync(resourceGroupName, accountName, context),
+    private PagedFlux<VirtualNetworkRuleInner> listByAccountAsync(String resourceGroupName, String accountName,
+        Context context) {
+        return new PagedFlux<>(() -> listByAccountSinglePageAsync(resourceGroupName, accountName, context),
             nextLink -> listByAccountNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists the Data Lake Store virtual network rules within the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -320,7 +258,7 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
 
     /**
      * Lists the Data Lake Store virtual network rules within the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param context The context to associate with this operation.
@@ -330,15 +268,15 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
      * @return data Lake Store virtual network rule list information as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VirtualNetworkRuleInner> listByAccount(
-        String resourceGroupName, String accountName, Context context) {
+    public PagedIterable<VirtualNetworkRuleInner> listByAccount(String resourceGroupName, String accountName,
+        Context context) {
         return new PagedIterable<>(listByAccountAsync(resourceGroupName, accountName, context));
     }
 
     /**
      * Creates or updates the specified virtual network rule. During update, the virtual network rule with the specified
      * name will be replaced with this new virtual network rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param virtualNetworkRuleName The name of the virtual network rule to create or update.
@@ -347,25 +285,18 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data Lake Store virtual network rule information along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VirtualNetworkRuleInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String virtualNetworkRuleName,
-        CreateOrUpdateVirtualNetworkRuleParameters parameters) {
+    private Mono<Response<VirtualNetworkRuleInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String accountName, String virtualNetworkRuleName, CreateOrUpdateVirtualNetworkRuleParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -375,9 +306,8 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (virtualNetworkRuleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter virtualNetworkRuleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualNetworkRuleName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -386,26 +316,16 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            virtualNetworkRuleName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, virtualNetworkRuleName, this.client.getApiVersion(), parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates the specified virtual network rule. During update, the virtual network rule with the specified
      * name will be replaced with this new virtual network rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param virtualNetworkRuleName The name of the virtual network rule to create or update.
@@ -415,26 +335,19 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data Lake Store virtual network rule information along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VirtualNetworkRuleInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String virtualNetworkRuleName,
-        CreateOrUpdateVirtualNetworkRuleParameters parameters,
+    private Mono<Response<VirtualNetworkRuleInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String accountName, String virtualNetworkRuleName, CreateOrUpdateVirtualNetworkRuleParameters parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -444,9 +357,8 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (virtualNetworkRuleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter virtualNetworkRuleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualNetworkRuleName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -455,23 +367,14 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                virtualNetworkRuleName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, virtualNetworkRuleName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Creates or updates the specified virtual network rule. During update, the virtual network rule with the specified
      * name will be replaced with this new virtual network rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param virtualNetworkRuleName The name of the virtual network rule to create or update.
@@ -482,11 +385,8 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
      * @return data Lake Store virtual network rule information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VirtualNetworkRuleInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String accountName,
-        String virtualNetworkRuleName,
-        CreateOrUpdateVirtualNetworkRuleParameters parameters) {
+    private Mono<VirtualNetworkRuleInner> createOrUpdateAsync(String resourceGroupName, String accountName,
+        String virtualNetworkRuleName, CreateOrUpdateVirtualNetworkRuleParameters parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, virtualNetworkRuleName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -494,7 +394,7 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
     /**
      * Creates or updates the specified virtual network rule. During update, the virtual network rule with the specified
      * name will be replaced with this new virtual network rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param virtualNetworkRuleName The name of the virtual network rule to create or update.
@@ -506,21 +406,16 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
      * @return data Lake Store virtual network rule information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VirtualNetworkRuleInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String virtualNetworkRuleName,
-        CreateOrUpdateVirtualNetworkRuleParameters parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, accountName, virtualNetworkRuleName, parameters, context)
-            .block();
+    public Response<VirtualNetworkRuleInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
+        String virtualNetworkRuleName, CreateOrUpdateVirtualNetworkRuleParameters parameters, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, virtualNetworkRuleName, parameters,
+            context).block();
     }
 
     /**
      * Creates or updates the specified virtual network rule. During update, the virtual network rule with the specified
      * name will be replaced with this new virtual network rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param virtualNetworkRuleName The name of the virtual network rule to create or update.
@@ -531,19 +426,15 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
      * @return data Lake Store virtual network rule information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualNetworkRuleInner createOrUpdate(
-        String resourceGroupName,
-        String accountName,
-        String virtualNetworkRuleName,
-        CreateOrUpdateVirtualNetworkRuleParameters parameters) {
-        return createOrUpdateWithResponse(
-                resourceGroupName, accountName, virtualNetworkRuleName, parameters, Context.NONE)
-            .getValue();
+    public VirtualNetworkRuleInner createOrUpdate(String resourceGroupName, String accountName,
+        String virtualNetworkRuleName, CreateOrUpdateVirtualNetworkRuleParameters parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, accountName, virtualNetworkRuleName, parameters,
+            Context.NONE).getValue();
     }
 
     /**
      * Gets the specified Data Lake Store virtual network rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param virtualNetworkRuleName The name of the virtual network rule to retrieve.
@@ -551,22 +442,18 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Data Lake Store virtual network rule along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VirtualNetworkRuleInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String virtualNetworkRuleName) {
+    private Mono<Response<VirtualNetworkRuleInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String virtualNetworkRuleName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -576,30 +463,19 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (virtualNetworkRuleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter virtualNetworkRuleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualNetworkRuleName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            virtualNetworkRuleName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, virtualNetworkRuleName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the specified Data Lake Store virtual network rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param virtualNetworkRuleName The name of the virtual network rule to retrieve.
@@ -608,22 +484,18 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Data Lake Store virtual network rule along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VirtualNetworkRuleInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String virtualNetworkRuleName, Context context) {
+    private Mono<Response<VirtualNetworkRuleInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String virtualNetworkRuleName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -633,27 +505,18 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (virtualNetworkRuleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter virtualNetworkRuleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualNetworkRuleName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                virtualNetworkRuleName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+            virtualNetworkRuleName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets the specified Data Lake Store virtual network rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param virtualNetworkRuleName The name of the virtual network rule to retrieve.
@@ -663,15 +526,15 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
      * @return the specified Data Lake Store virtual network rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VirtualNetworkRuleInner> getAsync(
-        String resourceGroupName, String accountName, String virtualNetworkRuleName) {
+    private Mono<VirtualNetworkRuleInner> getAsync(String resourceGroupName, String accountName,
+        String virtualNetworkRuleName) {
         return getWithResponseAsync(resourceGroupName, accountName, virtualNetworkRuleName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the specified Data Lake Store virtual network rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param virtualNetworkRuleName The name of the virtual network rule to retrieve.
@@ -682,14 +545,14 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
      * @return the specified Data Lake Store virtual network rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VirtualNetworkRuleInner> getWithResponse(
-        String resourceGroupName, String accountName, String virtualNetworkRuleName, Context context) {
+    public Response<VirtualNetworkRuleInner> getWithResponse(String resourceGroupName, String accountName,
+        String virtualNetworkRuleName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, virtualNetworkRuleName, context).block();
     }
 
     /**
      * Gets the specified Data Lake Store virtual network rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param virtualNetworkRuleName The name of the virtual network rule to retrieve.
@@ -705,7 +568,7 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
 
     /**
      * Updates the specified virtual network rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param virtualNetworkRuleName The name of the virtual network rule to update.
@@ -714,25 +577,18 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data Lake Store virtual network rule information along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VirtualNetworkRuleInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String virtualNetworkRuleName,
-        UpdateVirtualNetworkRuleParameters parameters) {
+    private Mono<Response<VirtualNetworkRuleInner>> updateWithResponseAsync(String resourceGroupName,
+        String accountName, String virtualNetworkRuleName, UpdateVirtualNetworkRuleParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -742,9 +598,8 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (virtualNetworkRuleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter virtualNetworkRuleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualNetworkRuleName is required and cannot be null."));
         }
         if (parameters != null) {
             parameters.validate();
@@ -752,24 +607,14 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            virtualNetworkRuleName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    accountName, virtualNetworkRuleName, this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates the specified virtual network rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param virtualNetworkRuleName The name of the virtual network rule to update.
@@ -779,26 +624,19 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data Lake Store virtual network rule information along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VirtualNetworkRuleInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String virtualNetworkRuleName,
-        UpdateVirtualNetworkRuleParameters parameters,
+    private Mono<Response<VirtualNetworkRuleInner>> updateWithResponseAsync(String resourceGroupName,
+        String accountName, String virtualNetworkRuleName, UpdateVirtualNetworkRuleParameters parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -808,31 +646,21 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (virtualNetworkRuleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter virtualNetworkRuleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualNetworkRuleName is required and cannot be null."));
         }
         if (parameters != null) {
             parameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                virtualNetworkRuleName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, virtualNetworkRuleName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Updates the specified virtual network rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param virtualNetworkRuleName The name of the virtual network rule to update.
@@ -842,8 +670,8 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
      * @return data Lake Store virtual network rule information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VirtualNetworkRuleInner> updateAsync(
-        String resourceGroupName, String accountName, String virtualNetworkRuleName) {
+    private Mono<VirtualNetworkRuleInner> updateAsync(String resourceGroupName, String accountName,
+        String virtualNetworkRuleName) {
         final UpdateVirtualNetworkRuleParameters parameters = null;
         return updateWithResponseAsync(resourceGroupName, accountName, virtualNetworkRuleName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -851,7 +679,7 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
 
     /**
      * Updates the specified virtual network rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param virtualNetworkRuleName The name of the virtual network rule to update.
@@ -863,19 +691,15 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
      * @return data Lake Store virtual network rule information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VirtualNetworkRuleInner> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String virtualNetworkRuleName,
-        UpdateVirtualNetworkRuleParameters parameters,
-        Context context) {
+    public Response<VirtualNetworkRuleInner> updateWithResponse(String resourceGroupName, String accountName,
+        String virtualNetworkRuleName, UpdateVirtualNetworkRuleParameters parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, accountName, virtualNetworkRuleName, parameters, context)
             .block();
     }
 
     /**
      * Updates the specified virtual network rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param virtualNetworkRuleName The name of the virtual network rule to update.
@@ -893,7 +717,7 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
 
     /**
      * Deletes the specified virtual network rule from the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param virtualNetworkRuleName The name of the virtual network rule to delete.
@@ -903,19 +727,15 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String virtualNetworkRuleName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String virtualNetworkRuleName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -925,28 +745,18 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (virtualNetworkRuleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter virtualNetworkRuleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualNetworkRuleName is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            virtualNetworkRuleName,
-                            this.client.getApiVersion(),
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, virtualNetworkRuleName, this.client.getApiVersion(), context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the specified virtual network rule from the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param virtualNetworkRuleName The name of the virtual network rule to delete.
@@ -957,19 +767,15 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String virtualNetworkRuleName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String virtualNetworkRuleName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -979,25 +785,17 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (virtualNetworkRuleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter virtualNetworkRuleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualNetworkRuleName is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                virtualNetworkRuleName,
-                this.client.getApiVersion(),
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, virtualNetworkRuleName, this.client.getApiVersion(), context);
     }
 
     /**
      * Deletes the specified virtual network rule from the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param virtualNetworkRuleName The name of the virtual network rule to delete.
@@ -1014,7 +812,7 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
 
     /**
      * Deletes the specified virtual network rule from the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param virtualNetworkRuleName The name of the virtual network rule to delete.
@@ -1025,14 +823,14 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String virtualNetworkRuleName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String accountName,
+        String virtualNetworkRuleName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, accountName, virtualNetworkRuleName, context).block();
     }
 
     /**
      * Deletes the specified virtual network rule from the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param virtualNetworkRuleName The name of the virtual network rule to delete.
@@ -1047,14 +845,13 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data Lake Store virtual network rule list information along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkRuleInner>> listByAccountNextSinglePageAsync(String nextLink) {
@@ -1062,62 +859,42 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByAccountNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<VirtualNetworkRuleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<VirtualNetworkRuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data Lake Store virtual network rule list information along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualNetworkRuleInner>> listByAccountNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<VirtualNetworkRuleInner>> listByAccountNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByAccountNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByAccountNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

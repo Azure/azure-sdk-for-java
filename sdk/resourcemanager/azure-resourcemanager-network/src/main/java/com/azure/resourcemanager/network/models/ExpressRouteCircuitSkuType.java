@@ -12,18 +12,17 @@ public class ExpressRouteCircuitSkuType {
     private static final Map<String, ExpressRouteCircuitSkuType> VALUES_BY_NAME = new HashMap<>();
 
     /** Static value for Standard sku tier and MeteredData sku family. */
-    public static final ExpressRouteCircuitSkuType STANDARD_METEREDDATA =
-        new ExpressRouteCircuitSkuType(ExpressRouteCircuitSkuTier.STANDARD, ExpressRouteCircuitSkuFamily.METERED_DATA);
+    public static final ExpressRouteCircuitSkuType STANDARD_METEREDDATA = new ExpressRouteCircuitSkuType(
+        ExpressRouteCircuitSkuTier.STANDARD, ExpressRouteCircuitSkuFamily.METERED_DATA);
     /** Static value for Standard sku tier and UnlimitedData sku family. */
-    public static final ExpressRouteCircuitSkuType STANDARD_UNLIMITEDDATA =
-        new ExpressRouteCircuitSkuType(
-            ExpressRouteCircuitSkuTier.STANDARD, ExpressRouteCircuitSkuFamily.UNLIMITED_DATA);
+    public static final ExpressRouteCircuitSkuType STANDARD_UNLIMITEDDATA = new ExpressRouteCircuitSkuType(
+        ExpressRouteCircuitSkuTier.STANDARD, ExpressRouteCircuitSkuFamily.UNLIMITED_DATA);
     /** Static value for Premium sku tier and MeteredData sku family. */
-    public static final ExpressRouteCircuitSkuType PREMIUM_METEREDDATA =
-        new ExpressRouteCircuitSkuType(ExpressRouteCircuitSkuTier.PREMIUM, ExpressRouteCircuitSkuFamily.METERED_DATA);
+    public static final ExpressRouteCircuitSkuType PREMIUM_METEREDDATA
+        = new ExpressRouteCircuitSkuType(ExpressRouteCircuitSkuTier.PREMIUM, ExpressRouteCircuitSkuFamily.METERED_DATA);
     /** Static value for Premium sku tier and UnlimitedData sku family. */
-    public static final ExpressRouteCircuitSkuType PREMIUM_UNLIMITEDDATA =
-        new ExpressRouteCircuitSkuType(ExpressRouteCircuitSkuTier.PREMIUM, ExpressRouteCircuitSkuFamily.UNLIMITED_DATA);
+    public static final ExpressRouteCircuitSkuType PREMIUM_UNLIMITEDDATA = new ExpressRouteCircuitSkuType(
+        ExpressRouteCircuitSkuTier.PREMIUM, ExpressRouteCircuitSkuFamily.UNLIMITED_DATA);
 
     /** the SKU corresponding to this type. */
     private final ExpressRouteCircuitSku sku;
@@ -44,12 +43,11 @@ public class ExpressRouteCircuitSkuType {
      * @param skuFamily an SKU family
      */
     public ExpressRouteCircuitSkuType(ExpressRouteCircuitSkuTier skuTier, ExpressRouteCircuitSkuFamily skuFamily) {
-        this(
-            new ExpressRouteCircuitSku()
-                .withName(
-                    (skuTier == null ? "" : skuTier.toString()) + "_" + (skuFamily == null ? "" : skuFamily.toString()))
-                .withTier(skuTier)
-                .withFamily(skuFamily));
+        this(new ExpressRouteCircuitSku()
+            .withName(
+                (skuTier == null ? "" : skuTier.toString()) + "_" + (skuFamily == null ? "" : skuFamily.toString()))
+            .withTier(skuTier)
+            .withFamily(skuFamily));
     }
 
     /**

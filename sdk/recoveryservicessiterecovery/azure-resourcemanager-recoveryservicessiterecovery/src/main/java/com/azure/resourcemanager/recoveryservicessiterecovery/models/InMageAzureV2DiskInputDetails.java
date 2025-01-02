@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Disk input details.
  */
 @Fluent
-public final class InMageAzureV2DiskInputDetails {
+public final class InMageAzureV2DiskInputDetails implements JsonSerializable<InMageAzureV2DiskInputDetails> {
     /*
      * The DiskId.
      */
-    @JsonProperty(value = "diskId")
     private String diskId;
 
     /*
      * The LogStorageAccountId.
      */
-    @JsonProperty(value = "logStorageAccountId")
     private String logStorageAccountId;
 
     /*
      * The DiskType.
      */
-    @JsonProperty(value = "diskType")
     private DiskAccountType diskType;
 
     /*
      * The DiskEncryptionSet ARM ID.
      */
-    @JsonProperty(value = "diskEncryptionSetId")
     private String diskEncryptionSetId;
 
     /**
@@ -128,5 +128,51 @@ public final class InMageAzureV2DiskInputDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("diskId", this.diskId);
+        jsonWriter.writeStringField("logStorageAccountId", this.logStorageAccountId);
+        jsonWriter.writeStringField("diskType", this.diskType == null ? null : this.diskType.toString());
+        jsonWriter.writeStringField("diskEncryptionSetId", this.diskEncryptionSetId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageAzureV2DiskInputDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageAzureV2DiskInputDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InMageAzureV2DiskInputDetails.
+     */
+    public static InMageAzureV2DiskInputDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageAzureV2DiskInputDetails deserializedInMageAzureV2DiskInputDetails
+                = new InMageAzureV2DiskInputDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("diskId".equals(fieldName)) {
+                    deserializedInMageAzureV2DiskInputDetails.diskId = reader.getString();
+                } else if ("logStorageAccountId".equals(fieldName)) {
+                    deserializedInMageAzureV2DiskInputDetails.logStorageAccountId = reader.getString();
+                } else if ("diskType".equals(fieldName)) {
+                    deserializedInMageAzureV2DiskInputDetails.diskType = DiskAccountType.fromString(reader.getString());
+                } else if ("diskEncryptionSetId".equals(fieldName)) {
+                    deserializedInMageAzureV2DiskInputDetails.diskEncryptionSetId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageAzureV2DiskInputDetails;
+        });
     }
 }

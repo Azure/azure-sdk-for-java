@@ -101,12 +101,6 @@ public final class WindowedSubscriber<T> extends BaseSubscriber<T> {
     /**
      * Enqueue a request for a window with up to {@code windowSize} number of items.
      *
-     * <p>
-     *  TODO (anu) – move to azure-core-amqp.
-     *  The WindowedSubscriber can be later moved to azure-core-amqp for both Event Hubs and Service Bus use.
-     *  For now keeping it in Service Bus to unblock immediate needs.
-     * </p>
-     *
      * @param windowSize the upper bound for the number of items to include in the window before closing it.
      * @param windowTimeout the maximum {@link Duration} since the window was opened before closing it. The window is
      *     opened when the request gets dequeued to process.
@@ -118,7 +112,35 @@ public final class WindowedSubscriber<T> extends BaseSubscriber<T> {
         return r.getWindowIterable();
     }
 
-    // Opened in Package-private scope for testing purposes, any library need will use 'enqueueRequest' API.
+    /**
+     * Enqueue a request for a window with up to {@code windowSize} number of items.
+     *
+     * @param windowSize the upper bound for the number of items to include in the window before closing it.
+     * @param windowTimeout the maximum {@link Duration} since the window was opened before closing it. The window is
+     *     opened when the request gets dequeued to process.
+     *
+     * @return the {@link Flux} that streams window events (items and termination signal).
+     */
+    public Flux<T> enqueueRequestFlux(int windowSize, Duration windowTimeout) {
+        final EnqueueResult<T> r = enqueueRequestImpl(windowSize, windowTimeout);
+        return r.getWindowFlux();
+    }
+
+    /**
+     * Enqueue a request for a window with up to {@code windowSize} number of items.
+     * <p>
+     * This API is opened Package-private scope for testing purposes. Any library need will use either
+     * {@link #enqueueRequest(int, Duration)} API or {@link #enqueueRequestFlux(int, Duration)} API.
+     * </p>
+     *
+     * @param windowSize the upper bound for the number of items to include in the window before closing it.
+     * @param windowTimeout the maximum {@link Duration} since the window was opened before closing it. The window is
+     *     opened when the request gets dequeued to process.
+     *
+     * @return the {@link EnqueueResult} that exposes APIs to access the {@link IterableStream} or {@link Flux} that
+     * streams window events (items and termination signal).
+     *
+     */
     EnqueueResult<T> enqueueRequestImpl(int windowSize, Duration windowTimeout) {
         if (windowSize < 1) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'windowSize' must be strictly positive."));
@@ -1125,7 +1147,8 @@ public final class WindowedSubscriber<T> extends BaseSubscriber<T> {
     /**
      * Holds result of a window request enqueued to {@link WindowedSubscriber#enqueueRequestImpl(int, Duration)}.
      * <p>
-     * Package-private type to give access to window streams and internal {@link WindowWork} for testing purposes.
+     * Package-private type to give access to window streams (as a Flux stream or IterableStream) and internal
+     * {@link WindowWork} for testing purposes.
      * </p>
      * @param <T> the type of items in the window.
      */
@@ -1140,14 +1163,32 @@ public final class WindowedSubscriber<T> extends BaseSubscriber<T> {
             this.windowIterable = new IterableStream<>(windowFlux);
         }
 
+        /**
+         * Gets the internal work item representing enqueued request for obtaining a window (batch) of elements.
+         *
+         * @return the window work item.
+         */
         WindowWork<T> getInnerWork() {
             return work;
         }
 
+        /**
+         * Gets the {@link Flux} streaming the window of requested items.
+         *
+         * @return the window flux stream.
+         */
         Flux<T> getWindowFlux() {
             return windowFlux;
         }
 
+        /**
+         * Gets the {@link IterableStream} streaming the window of requested items.
+         * <p>
+         * The window iterable stream is backed by the window flux stream.
+         * </p>
+         *
+         * @return the window iterable stream.
+         */
         IterableStream<T> getWindowIterable() {
             return windowIterable;
         }

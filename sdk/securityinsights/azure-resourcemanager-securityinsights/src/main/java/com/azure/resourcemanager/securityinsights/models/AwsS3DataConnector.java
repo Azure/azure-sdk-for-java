@@ -5,34 +5,118 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.fluent.models.AwsS3DataConnectorProperties;
 import com.azure.resourcemanager.securityinsights.fluent.models.DataConnectorInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.util.List;
 
-/** Represents Amazon Web Services S3 data connector. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("AmazonWebServicesS3")
+/**
+ * Represents Amazon Web Services S3 data connector.
+ */
 @Fluent
 public final class AwsS3DataConnector extends DataConnectorInner {
     /*
+     * The data connector kind
+     */
+    private DataConnectorKind kind = DataConnectorKind.AMAZON_WEB_SERVICES_S3;
+
+    /*
      * Amazon Web Services S3 data connector properties.
      */
-    @JsonProperty(value = "properties")
     private AwsS3DataConnectorProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of AwsS3DataConnector class.
+     */
+    public AwsS3DataConnector() {
+    }
+
+    /**
+     * Get the kind property: The data connector kind.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public DataConnectorKind kind() {
+        return this.kind;
+    }
 
     /**
      * Get the innerProperties property: Amazon Web Services S3 data connector properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AwsS3DataConnectorProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AwsS3DataConnector withEtag(String etag) {
         super.withEtag(etag);
@@ -41,7 +125,7 @@ public final class AwsS3DataConnector extends DataConnectorInner {
 
     /**
      * Get the destinationTable property: The logs destination table name in LogAnalytics.
-     *
+     * 
      * @return the destinationTable value.
      */
     public String destinationTable() {
@@ -50,7 +134,7 @@ public final class AwsS3DataConnector extends DataConnectorInner {
 
     /**
      * Set the destinationTable property: The logs destination table name in LogAnalytics.
-     *
+     * 
      * @param destinationTable the destinationTable value to set.
      * @return the AwsS3DataConnector object itself.
      */
@@ -64,7 +148,7 @@ public final class AwsS3DataConnector extends DataConnectorInner {
 
     /**
      * Get the sqsUrls property: The AWS sqs urls for the connector.
-     *
+     * 
      * @return the sqsUrls value.
      */
     public List<String> sqsUrls() {
@@ -73,7 +157,7 @@ public final class AwsS3DataConnector extends DataConnectorInner {
 
     /**
      * Set the sqsUrls property: The AWS sqs urls for the connector.
-     *
+     * 
      * @param sqsUrls the sqsUrls value to set.
      * @return the AwsS3DataConnector object itself.
      */
@@ -87,7 +171,7 @@ public final class AwsS3DataConnector extends DataConnectorInner {
 
     /**
      * Get the roleArn property: The Aws Role Arn that is used to access the Aws account.
-     *
+     * 
      * @return the roleArn value.
      */
     public String roleArn() {
@@ -96,7 +180,7 @@ public final class AwsS3DataConnector extends DataConnectorInner {
 
     /**
      * Set the roleArn property: The Aws Role Arn that is used to access the Aws account.
-     *
+     * 
      * @param roleArn the roleArn value to set.
      * @return the AwsS3DataConnector object itself.
      */
@@ -110,7 +194,7 @@ public final class AwsS3DataConnector extends DataConnectorInner {
 
     /**
      * Get the dataTypes property: The available data types for the connector.
-     *
+     * 
      * @return the dataTypes value.
      */
     public AwsS3DataConnectorDataTypes dataTypes() {
@@ -119,7 +203,7 @@ public final class AwsS3DataConnector extends DataConnectorInner {
 
     /**
      * Set the dataTypes property: The available data types for the connector.
-     *
+     * 
      * @param dataTypes the dataTypes value to set.
      * @return the AwsS3DataConnector object itself.
      */
@@ -133,14 +217,64 @@ public final class AwsS3DataConnector extends DataConnectorInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("etag", etag());
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AwsS3DataConnector from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AwsS3DataConnector if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AwsS3DataConnector.
+     */
+    public static AwsS3DataConnector fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AwsS3DataConnector deserializedAwsS3DataConnector = new AwsS3DataConnector();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAwsS3DataConnector.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAwsS3DataConnector.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAwsS3DataConnector.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedAwsS3DataConnector.withEtag(reader.getString());
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedAwsS3DataConnector.systemData = SystemData.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedAwsS3DataConnector.kind = DataConnectorKind.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAwsS3DataConnector.innerProperties = AwsS3DataConnectorProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAwsS3DataConnector;
+        });
     }
 }

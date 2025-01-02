@@ -150,23 +150,18 @@ public final class BookmarkImpl implements Bookmark, Bookmark.Definition, Bookma
     }
 
     public Bookmark create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBookmarks()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, bookmarkId, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBookmarks()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, bookmarkId, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Bookmark create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBookmarks()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, bookmarkId, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBookmarks()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, bookmarkId, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -181,52 +176,43 @@ public final class BookmarkImpl implements Bookmark, Bookmark.Definition, Bookma
     }
 
     public Bookmark apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBookmarks()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, bookmarkId, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBookmarks()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, bookmarkId, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Bookmark apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBookmarks()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, bookmarkId, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBookmarks()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, bookmarkId, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    BookmarkImpl(
-        BookmarkInner innerObject, com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
+    BookmarkImpl(BookmarkInner innerObject,
+        com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.bookmarkId = Utils.getValueFromIdByName(innerObject.id(), "bookmarks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.bookmarkId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "bookmarks");
     }
 
     public Bookmark refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBookmarks()
-                .getWithResponse(resourceGroupName, workspaceName, bookmarkId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBookmarks()
+            .getWithResponse(resourceGroupName, workspaceName, bookmarkId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Bookmark refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBookmarks()
-                .getWithResponse(resourceGroupName, workspaceName, bookmarkId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBookmarks()
+            .getWithResponse(resourceGroupName, workspaceName, bookmarkId, context)
+            .getValue();
         return this;
     }
 

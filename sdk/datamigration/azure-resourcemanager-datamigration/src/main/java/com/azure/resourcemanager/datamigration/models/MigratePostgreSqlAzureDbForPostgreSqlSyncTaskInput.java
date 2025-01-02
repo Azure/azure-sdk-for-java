@@ -6,37 +6,43 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Input for the task that migrates PostgreSQL databases to Azure Database for PostgreSQL for online migrations. */
+/**
+ * Input for the task that migrates PostgreSQL databases to Azure Database for PostgreSQL for online migrations.
+ */
 @Fluent
-public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput {
+public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput
+    implements JsonSerializable<MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput> {
     /*
      * Databases to migrate
      */
-    @JsonProperty(value = "selectedDatabases", required = true)
     private List<MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput> selectedDatabases;
 
     /*
      * Connection information for target Azure Database for PostgreSQL
      */
-    @JsonProperty(value = "targetConnectionInfo", required = true)
     private PostgreSqlConnectionInfo targetConnectionInfo;
 
     /*
      * Connection information for source PostgreSQL
      */
-    @JsonProperty(value = "sourceConnectionInfo", required = true)
     private PostgreSqlConnectionInfo sourceConnectionInfo;
 
-    /** Creates an instance of MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput class. */
+    /**
+     * Creates an instance of MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput class.
+     */
     public MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput() {
     }
 
     /**
      * Get the selectedDatabases property: Databases to migrate.
-     *
+     * 
      * @return the selectedDatabases value.
      */
     public List<MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput> selectedDatabases() {
@@ -45,19 +51,19 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput {
 
     /**
      * Set the selectedDatabases property: Databases to migrate.
-     *
+     * 
      * @param selectedDatabases the selectedDatabases value to set.
      * @return the MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput object itself.
      */
-    public MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput withSelectedDatabases(
-        List<MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput> selectedDatabases) {
+    public MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput
+        withSelectedDatabases(List<MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput> selectedDatabases) {
         this.selectedDatabases = selectedDatabases;
         return this;
     }
 
     /**
      * Get the targetConnectionInfo property: Connection information for target Azure Database for PostgreSQL.
-     *
+     * 
      * @return the targetConnectionInfo value.
      */
     public PostgreSqlConnectionInfo targetConnectionInfo() {
@@ -66,19 +72,19 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput {
 
     /**
      * Set the targetConnectionInfo property: Connection information for target Azure Database for PostgreSQL.
-     *
+     * 
      * @param targetConnectionInfo the targetConnectionInfo value to set.
      * @return the MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput object itself.
      */
-    public MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput withTargetConnectionInfo(
-        PostgreSqlConnectionInfo targetConnectionInfo) {
+    public MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput
+        withTargetConnectionInfo(PostgreSqlConnectionInfo targetConnectionInfo) {
         this.targetConnectionInfo = targetConnectionInfo;
         return this;
     }
 
     /**
      * Get the sourceConnectionInfo property: Connection information for source PostgreSQL.
-     *
+     * 
      * @return the sourceConnectionInfo value.
      */
     public PostgreSqlConnectionInfo sourceConnectionInfo() {
@@ -87,51 +93,96 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput {
 
     /**
      * Set the sourceConnectionInfo property: Connection information for source PostgreSQL.
-     *
+     * 
      * @param sourceConnectionInfo the sourceConnectionInfo value to set.
      * @return the MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput object itself.
      */
-    public MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput withSourceConnectionInfo(
-        PostgreSqlConnectionInfo sourceConnectionInfo) {
+    public MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput
+        withSourceConnectionInfo(PostgreSqlConnectionInfo sourceConnectionInfo) {
         this.sourceConnectionInfo = sourceConnectionInfo;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (selectedDatabases() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property selectedDatabases in model"
-                            + " MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property selectedDatabases in model MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput"));
         } else {
             selectedDatabases().forEach(e -> e.validate());
         }
         if (targetConnectionInfo() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetConnectionInfo in model"
-                            + " MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetConnectionInfo in model MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput"));
         } else {
             targetConnectionInfo().validate();
         }
         if (sourceConnectionInfo() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceConnectionInfo in model"
-                            + " MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceConnectionInfo in model MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput"));
         } else {
             sourceConnectionInfo().validate();
         }
     }
 
-    private static final ClientLogger LOGGER =
-        new ClientLogger(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput.class);
+    private static final ClientLogger LOGGER
+        = new ClientLogger(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("selectedDatabases", this.selectedDatabases,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("targetConnectionInfo", this.targetConnectionInfo);
+        jsonWriter.writeJsonField("sourceConnectionInfo", this.sourceConnectionInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput.
+     */
+    public static MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput
+                = new MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("selectedDatabases".equals(fieldName)) {
+                    List<MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput> selectedDatabases = reader
+                        .readArray(reader1 -> MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput.fromJson(reader1));
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput.selectedDatabases
+                        = selectedDatabases;
+                } else if ("targetConnectionInfo".equals(fieldName)) {
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput.targetConnectionInfo
+                        = PostgreSqlConnectionInfo.fromJson(reader);
+                } else if ("sourceConnectionInfo".equals(fieldName)) {
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput.sourceConnectionInfo
+                        = PostgreSqlConnectionInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput;
+        });
+    }
 }

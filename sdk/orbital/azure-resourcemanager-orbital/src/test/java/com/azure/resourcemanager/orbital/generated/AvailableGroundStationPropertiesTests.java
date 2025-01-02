@@ -12,35 +12,31 @@ import org.junit.jupiter.api.Assertions;
 public final class AvailableGroundStationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailableGroundStationProperties model =
-            BinaryData
-                .fromString(
-                    "{\"city\":\"yxczfclh\",\"providerName\":\"xdbabphlwr\",\"longitudeDegrees\":19.05045,\"latitudeDegrees\":56.638123,\"altitudeMeters\":23.375446,\"releaseMode\":\"GA\"}")
-                .toObject(AvailableGroundStationProperties.class);
-        Assertions.assertEquals("yxczfclh", model.city());
-        Assertions.assertEquals("xdbabphlwr", model.providerName());
-        Assertions.assertEquals(19.05045F, model.longitudeDegrees());
-        Assertions.assertEquals(56.638123F, model.latitudeDegrees());
-        Assertions.assertEquals(23.375446F, model.altitudeMeters());
-        Assertions.assertEquals(ReleaseMode.GA, model.releaseMode());
+        AvailableGroundStationProperties model = BinaryData.fromString(
+            "{\"city\":\"aldsy\",\"providerName\":\"ximerqfobwyznk\",\"longitudeDegrees\":32.21692,\"latitudeDegrees\":4.411727,\"altitudeMeters\":98.1842,\"releaseMode\":\"Preview\"}")
+            .toObject(AvailableGroundStationProperties.class);
+        Assertions.assertEquals("aldsy", model.city());
+        Assertions.assertEquals("ximerqfobwyznk", model.providerName());
+        Assertions.assertEquals(32.21692F, model.longitudeDegrees());
+        Assertions.assertEquals(4.411727F, model.latitudeDegrees());
+        Assertions.assertEquals(98.1842F, model.altitudeMeters());
+        Assertions.assertEquals(ReleaseMode.PREVIEW, model.releaseMode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvailableGroundStationProperties model =
-            new AvailableGroundStationProperties()
-                .withCity("yxczfclh")
-                .withProviderName("xdbabphlwr")
-                .withLongitudeDegrees(19.05045F)
-                .withLatitudeDegrees(56.638123F)
-                .withAltitudeMeters(23.375446F)
-                .withReleaseMode(ReleaseMode.GA);
+        AvailableGroundStationProperties model = new AvailableGroundStationProperties().withCity("aldsy")
+            .withProviderName("ximerqfobwyznk")
+            .withLongitudeDegrees(32.21692F)
+            .withLatitudeDegrees(4.411727F)
+            .withAltitudeMeters(98.1842F)
+            .withReleaseMode(ReleaseMode.PREVIEW);
         model = BinaryData.fromObject(model).toObject(AvailableGroundStationProperties.class);
-        Assertions.assertEquals("yxczfclh", model.city());
-        Assertions.assertEquals("xdbabphlwr", model.providerName());
-        Assertions.assertEquals(19.05045F, model.longitudeDegrees());
-        Assertions.assertEquals(56.638123F, model.latitudeDegrees());
-        Assertions.assertEquals(23.375446F, model.altitudeMeters());
-        Assertions.assertEquals(ReleaseMode.GA, model.releaseMode());
+        Assertions.assertEquals("aldsy", model.city());
+        Assertions.assertEquals("ximerqfobwyznk", model.providerName());
+        Assertions.assertEquals(32.21692F, model.longitudeDegrees());
+        Assertions.assertEquals(4.411727F, model.latitudeDegrees());
+        Assertions.assertEquals(98.1842F, model.altitudeMeters());
+        Assertions.assertEquals(ReleaseMode.PREVIEW, model.releaseMode());
     }
 }

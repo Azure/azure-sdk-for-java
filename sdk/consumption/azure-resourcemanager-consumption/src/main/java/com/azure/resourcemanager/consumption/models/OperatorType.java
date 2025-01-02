@@ -5,32 +5,51 @@
 package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OperatorType. */
+/**
+ * The comparison operator.
+ */
 public final class OperatorType extends ExpandableStringEnum<OperatorType> {
-    /** Static value EqualTo for OperatorType. */
+    /**
+     * Static value EqualTo for OperatorType.
+     */
     public static final OperatorType EQUAL_TO = fromString("EqualTo");
 
-    /** Static value GreaterThan for OperatorType. */
+    /**
+     * Static value GreaterThan for OperatorType.
+     */
     public static final OperatorType GREATER_THAN = fromString("GreaterThan");
 
-    /** Static value GreaterThanOrEqualTo for OperatorType. */
+    /**
+     * Static value GreaterThanOrEqualTo for OperatorType.
+     */
     public static final OperatorType GREATER_THAN_OR_EQUAL_TO = fromString("GreaterThanOrEqualTo");
 
     /**
+     * Creates a new instance of OperatorType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OperatorType() {
+    }
+
+    /**
      * Creates or finds a OperatorType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OperatorType.
      */
-    @JsonCreator
     public static OperatorType fromString(String name) {
         return fromString(name, OperatorType.class);
     }
 
-    /** @return known OperatorType values. */
+    /**
+     * Gets known OperatorType values.
+     * 
+     * @return known OperatorType values.
+     */
     public static Collection<OperatorType> values() {
         return values(OperatorType.class);
     }

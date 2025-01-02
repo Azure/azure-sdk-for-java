@@ -11,14 +11,16 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.datamigration.fluent.models.ProjectInner;
 
-/** An instance of this class provides access to all the operations defined in ProjectsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ProjectsClient.
+ */
 public interface ProjectsClient {
     /**
      * Get projects in a service
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. This method returns a list
-     * of projects owned by a service resource.
-     *
+     * 
+     * The project resource is a nested resource representing a stored migration project. This method returns a list of
+     * projects owned by a service resource.
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,10 +33,10 @@ public interface ProjectsClient {
 
     /**
      * Get projects in a service
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. This method returns a list
-     * of projects owned by a service resource.
-     *
+     * 
+     * The project resource is a nested resource representing a stored migration project. This method returns a list of
+     * projects owned by a service resource.
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param context The context to associate with this operation.
@@ -48,10 +50,10 @@ public interface ProjectsClient {
 
     /**
      * Create or update project
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. The PUT method creates a
-     * new project or updates an existing one.
-     *
+     * 
+     * The project resource is a nested resource representing a stored migration project. The PUT method creates a new
+     * project or updates an existing one.
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
@@ -63,15 +65,15 @@ public interface ProjectsClient {
      * @return a project resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProjectInner> createOrUpdateWithResponse(
-        String groupName, String serviceName, String projectName, ProjectInner parameters, Context context);
+    Response<ProjectInner> createOrUpdateWithResponse(String groupName, String serviceName, String projectName,
+        ProjectInner parameters, Context context);
 
     /**
      * Create or update project
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. The PUT method creates a
-     * new project or updates an existing one.
-     *
+     * 
+     * The project resource is a nested resource representing a stored migration project. The PUT method creates a new
+     * project or updates an existing one.
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
@@ -86,10 +88,10 @@ public interface ProjectsClient {
 
     /**
      * Get project information
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. The GET method retrieves
+     * 
+     * The project resource is a nested resource representing a stored migration project. The GET method retrieves
      * information about a project.
-     *
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
@@ -104,10 +106,10 @@ public interface ProjectsClient {
 
     /**
      * Get project information
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. The GET method retrieves
+     * 
+     * The project resource is a nested resource representing a stored migration project. The GET method retrieves
      * information about a project.
-     *
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
@@ -121,10 +123,10 @@ public interface ProjectsClient {
 
     /**
      * Delete project
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. The DELETE method deletes a
+     * 
+     * The project resource is a nested resource representing a stored migration project. The DELETE method deletes a
      * project.
-     *
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
@@ -136,15 +138,15 @@ public interface ProjectsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String groupName, String serviceName, String projectName, Boolean deleteRunningTasks, Context context);
+    Response<Void> deleteWithResponse(String groupName, String serviceName, String projectName,
+        Boolean deleteRunningTasks, Context context);
 
     /**
      * Delete project
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. The DELETE method deletes a
+     * 
+     * The project resource is a nested resource representing a stored migration project. The DELETE method deletes a
      * project.
-     *
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
@@ -157,10 +159,10 @@ public interface ProjectsClient {
 
     /**
      * Update project
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. The PATCH method updates an
+     * 
+     * The project resource is a nested resource representing a stored migration project. The PATCH method updates an
      * existing project.
-     *
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
@@ -172,15 +174,15 @@ public interface ProjectsClient {
      * @return a project resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProjectInner> updateWithResponse(
-        String groupName, String serviceName, String projectName, ProjectInner parameters, Context context);
+    Response<ProjectInner> updateWithResponse(String groupName, String serviceName, String projectName,
+        ProjectInner parameters, Context context);
 
     /**
      * Update project
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. The PATCH method updates an
+     * 
+     * The project resource is a nested resource representing a stored migration project. The PATCH method updates an
      * existing project.
-     *
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param projectName Name of the project.

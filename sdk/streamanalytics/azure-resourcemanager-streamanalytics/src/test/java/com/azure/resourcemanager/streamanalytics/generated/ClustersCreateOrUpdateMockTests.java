@@ -6,59 +6,46 @@ package com.azure.resourcemanager.streamanalytics.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager;
 import com.azure.resourcemanager.streamanalytics.models.Cluster;
 import com.azure.resourcemanager.streamanalytics.models.ClusterProperties;
 import com.azure.resourcemanager.streamanalytics.models.ClusterSku;
 import com.azure.resourcemanager.streamanalytics.models.ClusterSkuName;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ClustersCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
             = "{\"sku\":{\"name\":\"Default\",\"capacity\":2105592893},\"etag\":\"nygq\",\"properties\":{\"createdDate\":\"2021-05-14T00:08:21Z\",\"clusterId\":\"zdzgtilaxhnfhqly\",\"provisioningState\":\"Succeeded\",\"capacityAllocated\":2065118929,\"capacityAssigned\":316735321},\"location\":\"vk\",\"tags\":{\"ti\":\"zunbixx\",\"vtsoxf\":\"vcpwpgclrc\",\"m\":\"kenx\",\"ao\":\"yefrpmpdnqqska\"},\"id\":\"vmm\",\"name\":\"npqfrtqlkzmeg\",\"type\":\"itgvkx\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        StreamAnalyticsManager manager = StreamAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        StreamAnalyticsManager manager = StreamAnalyticsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Cluster response = manager.clusters().define("bcporxvxcjzhqizx").withRegion("vmmghfcfiwrxgk")
+        Cluster response = manager.clusters()
+            .define("bcporxvxcjzhqizx")
+            .withRegion("vmmghfcfiwrxgk")
             .withExistingResourceGroup("bcxf")
             .withTags(mapOf("zqodfvpgshox", "vyi", "zflbqvg", "sgbpfgzdjtx", "sdtutnwlduyc", "qvlgafcqusrdvetn",
                 "kuqgsjjxundxgket", "uzhyrmewipmvekdx"))
             .withSku(new ClusterSku().withName(ClusterSkuName.DEFAULT).withCapacity(761396625))
-            .withProperties(new ClusterProperties()).withIfMatch("ms").withIfNoneMatch("ynsqyrpfoobr").create();
+            .withProperties(new ClusterProperties())
+            .withIfMatch("ms")
+            .withIfNoneMatch("ynsqyrpfoobr")
+            .create();
 
         Assertions.assertEquals("vk", response.location());
         Assertions.assertEquals("zunbixx", response.tags().get("ti"));

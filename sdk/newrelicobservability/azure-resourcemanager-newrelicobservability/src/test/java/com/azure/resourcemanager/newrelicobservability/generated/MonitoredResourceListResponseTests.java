@@ -29,11 +29,15 @@ public final class MonitoredResourceListResponseTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MonitoredResourceListResponse model = new MonitoredResourceListResponse().withValue(Arrays.asList(
-            new MonitoredResourceInner().withId("gyncocpecfvmmc").withSendingMetrics(SendingMetricsStatus.DISABLED)
-                .withReasonForMetricsStatus("xlzevgbmqjqabcy").withSendingLogs(SendingLogsStatus.DISABLED)
+            new MonitoredResourceInner().withId("gyncocpecfvmmc")
+                .withSendingMetrics(SendingMetricsStatus.DISABLED)
+                .withReasonForMetricsStatus("xlzevgbmqjqabcy")
+                .withSendingLogs(SendingLogsStatus.DISABLED)
                 .withReasonForLogsStatus("kwlzuvccfwnfn"),
-            new MonitoredResourceInner().withId("cfionl").withSendingMetrics(SendingMetricsStatus.ENABLED)
-                .withReasonForMetricsStatus("tqgtzxdpnqbqq").withSendingLogs(SendingLogsStatus.DISABLED)
+            new MonitoredResourceInner().withId("cfionl")
+                .withSendingMetrics(SendingMetricsStatus.ENABLED)
+                .withReasonForMetricsStatus("tqgtzxdpnqbqq")
+                .withSendingLogs(SendingLogsStatus.DISABLED)
                 .withReasonForLogsStatus("feallnwsu")))
             .withNextLink("snjampmng");
         model = BinaryData.fromObject(model).toObject(MonitoredResourceListResponse.class);

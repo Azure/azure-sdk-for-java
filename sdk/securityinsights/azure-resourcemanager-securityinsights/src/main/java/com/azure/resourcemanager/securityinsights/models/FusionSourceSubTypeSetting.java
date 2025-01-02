@@ -6,40 +6,48 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Represents a supported source subtype configuration under a source signal in Fusion detection. */
+/**
+ * Represents a supported source subtype configuration under a source signal in Fusion detection.
+ */
 @Fluent
-public final class FusionSourceSubTypeSetting {
+public final class FusionSourceSubTypeSetting implements JsonSerializable<FusionSourceSubTypeSetting> {
     /*
      * Determines whether this source subtype under source signal is enabled or disabled in Fusion detection.
      */
-    @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
 
     /*
      * The Name of the source subtype under a given source signal in Fusion detection. Refer to Fusion alert rule
      * template for supported values.
      */
-    @JsonProperty(value = "sourceSubTypeName", required = true)
     private String sourceSubTypeName;
 
     /*
      * The display name of source subtype under a source signal consumed in Fusion detection.
      */
-    @JsonProperty(value = "sourceSubTypeDisplayName", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceSubTypeDisplayName;
 
     /*
      * Severity configuration for a source subtype consumed in fusion detection.
      */
-    @JsonProperty(value = "severityFilters", required = true)
     private FusionSubTypeSeverityFilter severityFilters;
+
+    /**
+     * Creates an instance of FusionSourceSubTypeSetting class.
+     */
+    public FusionSourceSubTypeSetting() {
+    }
 
     /**
      * Get the enabled property: Determines whether this source subtype under source signal is enabled or disabled in
      * Fusion detection.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -49,7 +57,7 @@ public final class FusionSourceSubTypeSetting {
     /**
      * Set the enabled property: Determines whether this source subtype under source signal is enabled or disabled in
      * Fusion detection.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the FusionSourceSubTypeSetting object itself.
      */
@@ -61,7 +69,7 @@ public final class FusionSourceSubTypeSetting {
     /**
      * Get the sourceSubTypeName property: The Name of the source subtype under a given source signal in Fusion
      * detection. Refer to Fusion alert rule template for supported values.
-     *
+     * 
      * @return the sourceSubTypeName value.
      */
     public String sourceSubTypeName() {
@@ -71,7 +79,7 @@ public final class FusionSourceSubTypeSetting {
     /**
      * Set the sourceSubTypeName property: The Name of the source subtype under a given source signal in Fusion
      * detection. Refer to Fusion alert rule template for supported values.
-     *
+     * 
      * @param sourceSubTypeName the sourceSubTypeName value to set.
      * @return the FusionSourceSubTypeSetting object itself.
      */
@@ -83,7 +91,7 @@ public final class FusionSourceSubTypeSetting {
     /**
      * Get the sourceSubTypeDisplayName property: The display name of source subtype under a source signal consumed in
      * Fusion detection.
-     *
+     * 
      * @return the sourceSubTypeDisplayName value.
      */
     public String sourceSubTypeDisplayName() {
@@ -92,7 +100,7 @@ public final class FusionSourceSubTypeSetting {
 
     /**
      * Get the severityFilters property: Severity configuration for a source subtype consumed in fusion detection.
-     *
+     * 
      * @return the severityFilters value.
      */
     public FusionSubTypeSeverityFilter severityFilters() {
@@ -101,7 +109,7 @@ public final class FusionSourceSubTypeSetting {
 
     /**
      * Set the severityFilters property: Severity configuration for a source subtype consumed in fusion detection.
-     *
+     * 
      * @param severityFilters the severityFilters value to set.
      * @return the FusionSourceSubTypeSetting object itself.
      */
@@ -112,25 +120,69 @@ public final class FusionSourceSubTypeSetting {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sourceSubTypeName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceSubTypeName in model FusionSourceSubTypeSetting"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceSubTypeName in model FusionSourceSubTypeSetting"));
         }
         if (severityFilters() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property severityFilters in model FusionSourceSubTypeSetting"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property severityFilters in model FusionSourceSubTypeSetting"));
         } else {
             severityFilters().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FusionSourceSubTypeSetting.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("sourceSubTypeName", this.sourceSubTypeName);
+        jsonWriter.writeJsonField("severityFilters", this.severityFilters);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FusionSourceSubTypeSetting from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FusionSourceSubTypeSetting if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FusionSourceSubTypeSetting.
+     */
+    public static FusionSourceSubTypeSetting fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FusionSourceSubTypeSetting deserializedFusionSourceSubTypeSetting = new FusionSourceSubTypeSetting();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedFusionSourceSubTypeSetting.enabled = reader.getBoolean();
+                } else if ("sourceSubTypeName".equals(fieldName)) {
+                    deserializedFusionSourceSubTypeSetting.sourceSubTypeName = reader.getString();
+                } else if ("severityFilters".equals(fieldName)) {
+                    deserializedFusionSourceSubTypeSetting.severityFilters
+                        = FusionSubTypeSeverityFilter.fromJson(reader);
+                } else if ("sourceSubTypeDisplayName".equals(fieldName)) {
+                    deserializedFusionSourceSubTypeSetting.sourceSubTypeDisplayName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFusionSourceSubTypeSetting;
+        });
+    }
 }

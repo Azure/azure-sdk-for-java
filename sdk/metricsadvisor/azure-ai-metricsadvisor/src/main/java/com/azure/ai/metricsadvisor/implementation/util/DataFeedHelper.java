@@ -16,18 +16,25 @@ import java.util.Map;
 public final class DataFeedHelper {
     private static DataFeedAccessor accessor;
 
-    private DataFeedHelper() { }
+    private DataFeedHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link DataFeed} instance.
      */
     public interface DataFeedAccessor {
         void setId(DataFeed feed, String id);
+
         void setMetricIds(DataFeed feed, Map<String, String> metricIds);
+
         void setCreatedTime(DataFeed feed, OffsetDateTime createdTime);
+
         void setStatus(DataFeed feed, DataFeedStatus dataFeedStatus);
+
         void setSourceType(DataFeed feed, DataFeedSourceType dataFeedSourceType);
+
         void setIsAdmin(DataFeed feed, boolean isAdmin);
+
         void setCreator(DataFeed feed, String creator);
     }
 

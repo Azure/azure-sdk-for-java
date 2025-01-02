@@ -5,65 +5,60 @@
 package com.azure.resourcemanager.sphere.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The properties of image.
  */
 @Fluent
-public final class ImageProperties {
+public final class ImageProperties implements JsonSerializable<ImageProperties> {
     /*
      * Image as a UTF-8 encoded base 64 string on image create. This field contains the image URI on image reads.
      */
-    @JsonProperty(value = "image")
     private String image;
 
     /*
      * Image ID
      */
-    @JsonProperty(value = "imageId")
     private String imageId;
 
     /*
      * Image name
      */
-    @JsonProperty(value = "imageName", access = JsonProperty.Access.WRITE_ONLY)
     private String imageName;
 
     /*
      * Regional data boundary for an image
      */
-    @JsonProperty(value = "regionalDataBoundary")
     private RegionalDataBoundary regionalDataBoundary;
 
     /*
      * Location the image
      */
-    @JsonProperty(value = "uri", access = JsonProperty.Access.WRITE_ONLY)
     private String uri;
 
     /*
      * The image description.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * The image component id.
      */
-    @JsonProperty(value = "componentId", access = JsonProperty.Access.WRITE_ONLY)
     private String componentId;
 
     /*
      * The image type.
      */
-    @JsonProperty(value = "imageType", access = JsonProperty.Access.WRITE_ONLY)
     private ImageType imageType;
 
     /*
      * The status of the last operation.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -194,5 +189,61 @@ public final class ImageProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("image", this.image);
+        jsonWriter.writeStringField("imageId", this.imageId);
+        jsonWriter.writeStringField("regionalDataBoundary",
+            this.regionalDataBoundary == null ? null : this.regionalDataBoundary.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageProperties.
+     */
+    public static ImageProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageProperties deserializedImageProperties = new ImageProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("image".equals(fieldName)) {
+                    deserializedImageProperties.image = reader.getString();
+                } else if ("imageId".equals(fieldName)) {
+                    deserializedImageProperties.imageId = reader.getString();
+                } else if ("imageName".equals(fieldName)) {
+                    deserializedImageProperties.imageName = reader.getString();
+                } else if ("regionalDataBoundary".equals(fieldName)) {
+                    deserializedImageProperties.regionalDataBoundary
+                        = RegionalDataBoundary.fromString(reader.getString());
+                } else if ("uri".equals(fieldName)) {
+                    deserializedImageProperties.uri = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedImageProperties.description = reader.getString();
+                } else if ("componentId".equals(fieldName)) {
+                    deserializedImageProperties.componentId = reader.getString();
+                } else if ("imageType".equals(fieldName)) {
+                    deserializedImageProperties.imageType = ImageType.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedImageProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageProperties;
+        });
     }
 }

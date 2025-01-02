@@ -6,38 +6,46 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Information of a specific aggregation in the expansion result. */
+/**
+ * Information of a specific aggregation in the expansion result.
+ */
 @Fluent
-public final class ExpansionResultAggregation {
+public final class ExpansionResultAggregation implements JsonSerializable<ExpansionResultAggregation> {
     /*
      * The common type of the aggregation. (for e.g. entity field name)
      */
-    @JsonProperty(value = "aggregationType")
     private String aggregationType;
 
     /*
      * Total number of aggregations of the given kind (and aggregationType if given) in the expansion result.
      */
-    @JsonProperty(value = "count", required = true)
     private int count;
 
     /*
      * The display name of the aggregation by type.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The kind of the aggregated entity.
      */
-    @JsonProperty(value = "entityKind", required = true)
     private EntityKind entityKind;
 
     /**
+     * Creates an instance of ExpansionResultAggregation class.
+     */
+    public ExpansionResultAggregation() {
+    }
+
+    /**
      * Get the aggregationType property: The common type of the aggregation. (for e.g. entity field name).
-     *
+     * 
      * @return the aggregationType value.
      */
     public String aggregationType() {
@@ -46,7 +54,7 @@ public final class ExpansionResultAggregation {
 
     /**
      * Set the aggregationType property: The common type of the aggregation. (for e.g. entity field name).
-     *
+     * 
      * @param aggregationType the aggregationType value to set.
      * @return the ExpansionResultAggregation object itself.
      */
@@ -58,7 +66,7 @@ public final class ExpansionResultAggregation {
     /**
      * Get the count property: Total number of aggregations of the given kind (and aggregationType if given) in the
      * expansion result.
-     *
+     * 
      * @return the count value.
      */
     public int count() {
@@ -68,7 +76,7 @@ public final class ExpansionResultAggregation {
     /**
      * Set the count property: Total number of aggregations of the given kind (and aggregationType if given) in the
      * expansion result.
-     *
+     * 
      * @param count the count value to set.
      * @return the ExpansionResultAggregation object itself.
      */
@@ -79,7 +87,7 @@ public final class ExpansionResultAggregation {
 
     /**
      * Get the displayName property: The display name of the aggregation by type.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -88,7 +96,7 @@ public final class ExpansionResultAggregation {
 
     /**
      * Set the displayName property: The display name of the aggregation by type.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ExpansionResultAggregation object itself.
      */
@@ -99,7 +107,7 @@ public final class ExpansionResultAggregation {
 
     /**
      * Get the entityKind property: The kind of the aggregated entity.
-     *
+     * 
      * @return the entityKind value.
      */
     public EntityKind entityKind() {
@@ -108,7 +116,7 @@ public final class ExpansionResultAggregation {
 
     /**
      * Set the entityKind property: The kind of the aggregated entity.
-     *
+     * 
      * @param entityKind the entityKind value to set.
      * @return the ExpansionResultAggregation object itself.
      */
@@ -119,17 +127,62 @@ public final class ExpansionResultAggregation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (entityKind() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property entityKind in model ExpansionResultAggregation"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property entityKind in model ExpansionResultAggregation"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ExpansionResultAggregation.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("count", this.count);
+        jsonWriter.writeStringField("entityKind", this.entityKind == null ? null : this.entityKind.toString());
+        jsonWriter.writeStringField("aggregationType", this.aggregationType);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpansionResultAggregation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpansionResultAggregation if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExpansionResultAggregation.
+     */
+    public static ExpansionResultAggregation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpansionResultAggregation deserializedExpansionResultAggregation = new ExpansionResultAggregation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("count".equals(fieldName)) {
+                    deserializedExpansionResultAggregation.count = reader.getInt();
+                } else if ("entityKind".equals(fieldName)) {
+                    deserializedExpansionResultAggregation.entityKind = EntityKind.fromString(reader.getString());
+                } else if ("aggregationType".equals(fieldName)) {
+                    deserializedExpansionResultAggregation.aggregationType = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedExpansionResultAggregation.displayName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpansionResultAggregation;
+        });
+    }
 }

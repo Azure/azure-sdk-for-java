@@ -12,8 +12,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearning.fluent.QuotasClient;
 import com.azure.resourcemanager.machinelearning.fluent.models.ResourceQuotaInner;
 import com.azure.resourcemanager.machinelearning.fluent.models.UpdateWorkspaceQuotasResultInner;
-import com.azure.resourcemanager.machinelearning.models.QuotaUpdateParameters;
 import com.azure.resourcemanager.machinelearning.models.Quotas;
+import com.azure.resourcemanager.machinelearning.models.QuotaUpdateParameters;
 import com.azure.resourcemanager.machinelearning.models.ResourceQuota;
 import com.azure.resourcemanager.machinelearning.models.UpdateWorkspaceQuotasResult;
 
@@ -24,21 +24,18 @@ public final class QuotasImpl implements Quotas {
 
     private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
-    public QuotasImpl(
-        QuotasClient innerClient, com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
+    public QuotasImpl(QuotasClient innerClient,
+        com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<UpdateWorkspaceQuotasResult> updateWithResponse(
-        String location, QuotaUpdateParameters parameters, Context context) {
-        Response<UpdateWorkspaceQuotasResultInner> inner =
-            this.serviceClient().updateWithResponse(location, parameters, context);
+    public Response<UpdateWorkspaceQuotasResult> updateWithResponse(String location, QuotaUpdateParameters parameters,
+        Context context) {
+        Response<UpdateWorkspaceQuotasResultInner> inner
+            = this.serviceClient().updateWithResponse(location, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new UpdateWorkspaceQuotasResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -56,12 +53,12 @@ public final class QuotasImpl implements Quotas {
 
     public PagedIterable<ResourceQuota> list(String location) {
         PagedIterable<ResourceQuotaInner> inner = this.serviceClient().list(location);
-        return Utils.mapPage(inner, inner1 -> new ResourceQuotaImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourceQuotaImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ResourceQuota> list(String location, Context context) {
         PagedIterable<ResourceQuotaInner> inner = this.serviceClient().list(location, context);
-        return Utils.mapPage(inner, inner1 -> new ResourceQuotaImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourceQuotaImpl(inner1, this.manager()));
     }
 
     private QuotasClient serviceClient() {

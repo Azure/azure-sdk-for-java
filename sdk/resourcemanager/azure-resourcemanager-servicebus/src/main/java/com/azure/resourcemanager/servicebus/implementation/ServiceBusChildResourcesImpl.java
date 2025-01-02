@@ -31,23 +31,16 @@ import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
  * @param <ManagerT> the manager
  * @param <ParentT> the parent model interface type
  */
-abstract class ServiceBusChildResourcesImpl<
-        T extends IndependentChildResource<ManagerT, InnerT>,
-        ImplT extends T,
-        InnerT,
-        InnerCollectionT,
-        ManagerT extends Manager<?>,
-        ParentT extends Resource & HasResourceGroup>
-        extends IndependentChildResourcesImpl<T, ImplT, InnerT, InnerCollectionT, ManagerT, ParentT>
-        implements SupportsGettingByName<T>, SupportsListing<T>, SupportsDeletingByName {
+abstract class ServiceBusChildResourcesImpl<T extends IndependentChildResource<ManagerT, InnerT>, ImplT extends T, InnerT, InnerCollectionT, ManagerT extends Manager<?>, ParentT extends Resource & HasResourceGroup>
+    extends IndependentChildResourcesImpl<T, ImplT, InnerT, InnerCollectionT, ManagerT, ParentT>
+    implements SupportsGettingByName<T>, SupportsListing<T>, SupportsDeletingByName {
     protected ServiceBusChildResourcesImpl(InnerCollectionT innerCollection, ManagerT manager) {
         super(innerCollection, manager);
     }
 
     @Override
     public Mono<T> getByNameAsync(String name) {
-        return getInnerByNameAsync(name)
-            .map(this::wrapModel);
+        return getInnerByNameAsync(name).map(this::wrapModel);
     }
 
     @Override
@@ -57,8 +50,7 @@ abstract class ServiceBusChildResourcesImpl<
 
     @Override
     public PagedFlux<T> listAsync() {
-        return PagedConverter.mapPage(this.listInnerAsync(),
-                this::wrapModel);
+        return PagedConverter.mapPage(this.listInnerAsync(), this::wrapModel);
     }
 
     @Override
@@ -75,11 +67,12 @@ abstract class ServiceBusChildResourcesImpl<
         if (names == null) {
             return Flux.empty();
         }
-        return Flux.fromIterable(names)
-            .flatMapDelayError(name -> deleteByNameAsync(name), 32, 32);
+        return Flux.fromIterable(names).flatMapDelayError(name -> deleteByNameAsync(name), 32, 32);
     }
 
     protected abstract Mono<InnerT> getInnerByNameAsync(String name);
+
     protected abstract PagedFlux<InnerT> listInnerAsync();
+
     protected abstract PagedIterable<InnerT> listInner();
 }

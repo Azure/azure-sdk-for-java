@@ -34,7 +34,9 @@ public class Workspace extends TrackedResource {
     private String sqlAdministratorLoginPassword;
 
     /*
-     * Workspace managed resource group. The resource group name uniquely identifies the resource group within the user subscriptionId. The resource group name must be no longer than 90 characters long, and must be alphanumeric characters (Char.IsLetterOrDigit()) and '-', '_', '(', ')' and'.'. Note that the name cannot end with '.'
+     * Workspace managed resource group. The resource group name uniquely identifies the resource group within the user
+     * subscriptionId. The resource group name must be no longer than 90 characters long, and must be alphanumeric
+     * characters (Char.IsLetterOrDigit()) and '-', '_', '(', ')' and'.'. Note that the name cannot end with '.'
      */
     private String managedResourceGroupName;
 
@@ -59,7 +61,8 @@ public class Workspace extends TrackedResource {
     private Map<String, String> connectivityEndpoints;
 
     /*
-     * Setting this to 'default' will ensure that all compute for this workspace is in a virtual network managed on behalf of the user.
+     * Setting this to 'default' will ensure that all compute for this workspace is in a virtual network managed on
+     * behalf of the user.
      */
     private String managedVirtualNetwork;
 
@@ -102,6 +105,23 @@ public class Workspace extends TrackedResource {
      * The ADLA resource ID.
      */
     private String adlaResourceId;
+
+    /*
+     * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+     */
+    private String type;
+
+    /*
+     * The name of the resource
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
+     * resourceType}/{resourceName}
+     */
+    private String id;
 
     /**
      * Creates an instance of Workspace class.
@@ -415,6 +435,38 @@ public class Workspace extends TrackedResource {
     }
 
     /**
+     * Get the type property: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     * "Microsoft.Storage/storageAccounts".
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String getId() {
+        return this.id;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -496,11 +548,11 @@ public class Workspace extends TrackedResource {
                 if ("location".equals(fieldName)) {
                     deserializedWorkspace.setLocation(reader.getString());
                 } else if ("id".equals(fieldName)) {
-                    deserializedWorkspace.setId(reader.getString());
+                    deserializedWorkspace.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedWorkspace.setName(reader.getString());
+                    deserializedWorkspace.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedWorkspace.setType(reader.getString());
+                    deserializedWorkspace.type = reader.getString();
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedWorkspace.setTags(tags);

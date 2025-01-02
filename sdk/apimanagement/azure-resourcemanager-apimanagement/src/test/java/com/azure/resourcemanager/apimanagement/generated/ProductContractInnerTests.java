@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ProductContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProductContractInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"displayName\":\"iqwoyxqvapcoh\",\"description\":\"ucqpqojxcxzrz\",\"terms\":\"gdzbenr\",\"subscriptionRequired\":true,\"approvalRequired\":true,\"subscriptionsLimit\":1142415725,\"state\":\"notPublished\"},\"id\":\"ddtjwfljhznam\",\"name\":\"uatmzwcjjncqtj\",\"type\":\"mizvgbgatzuuvbx\"}")
-                .toObject(ProductContractInner.class);
+        ProductContractInner model = BinaryData.fromString(
+            "{\"properties\":{\"displayName\":\"iqwoyxqvapcoh\",\"description\":\"ucqpqojxcxzrz\",\"terms\":\"gdzbenr\",\"subscriptionRequired\":true,\"approvalRequired\":true,\"subscriptionsLimit\":1142415725,\"state\":\"notPublished\"},\"id\":\"ddtjwfljhznam\",\"name\":\"uatmzwcjjncqtj\",\"type\":\"mizvgbgatzuuvbx\"}")
+            .toObject(ProductContractInner.class);
         Assertions.assertEquals("iqwoyxqvapcoh", model.displayName());
         Assertions.assertEquals("ucqpqojxcxzrz", model.description());
         Assertions.assertEquals("gdzbenr", model.terms());
@@ -28,15 +26,13 @@ public final class ProductContractInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProductContractInner model =
-            new ProductContractInner()
-                .withDisplayName("iqwoyxqvapcoh")
-                .withDescription("ucqpqojxcxzrz")
-                .withTerms("gdzbenr")
-                .withSubscriptionRequired(true)
-                .withApprovalRequired(true)
-                .withSubscriptionsLimit(1142415725)
-                .withState(ProductState.NOT_PUBLISHED);
+        ProductContractInner model = new ProductContractInner().withDisplayName("iqwoyxqvapcoh")
+            .withDescription("ucqpqojxcxzrz")
+            .withTerms("gdzbenr")
+            .withSubscriptionRequired(true)
+            .withApprovalRequired(true)
+            .withSubscriptionsLimit(1142415725)
+            .withState(ProductState.NOT_PUBLISHED);
         model = BinaryData.fromObject(model).toObject(ProductContractInner.class);
         Assertions.assertEquals("iqwoyxqvapcoh", model.displayName());
         Assertions.assertEquals("ucqpqojxcxzrz", model.description());

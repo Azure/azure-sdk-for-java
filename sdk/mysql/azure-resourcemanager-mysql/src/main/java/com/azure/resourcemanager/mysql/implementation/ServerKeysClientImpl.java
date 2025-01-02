@@ -55,8 +55,8 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @param client the instance of the service client containing this operation class.
      */
     ServerKeysClientImpl(MySqlManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ServerKeysService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ServerKeysService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -67,79 +67,55 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
     @Host("{$host}")
     @ServiceInterface(name = "MySqlManagementClien")
     private interface ServerKeysService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers"
-                + "/{serverName}/keys")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers"
+            + "/{serverName}/keys")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServerKeyListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<ServerKeyListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers"
+            + "/{serverName}/keys/{keyName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ServerKeyInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("keyName") String keyName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers"
+            + "/{serverName}/keys/{keyName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("serverName") String serverName, @PathParam("keyName") String keyName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ServerKeyInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers"
-                + "/{serverName}/keys/{keyName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers"
+            + "/{serverName}/keys/{keyName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServerKeyInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("keyName") String keyName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("serverName") String serverName, @PathParam("keyName") String keyName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers"
-                + "/{serverName}/keys/{keyName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("serverName") String serverName,
-            @PathParam("keyName") String keyName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @BodyParam("application/json") ServerKeyInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers"
-                + "/{serverName}/keys/{keyName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("serverName") String serverName,
-            @PathParam("keyName") String keyName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServerKeyListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ServerKeyListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -155,16 +131,12 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerKeyInner>> listSinglePageAsync(String resourceGroupName, String serverName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -176,26 +148,10 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
         final String apiVersion = "2020-01-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serverName,
-                            accept,
-                            context))
-            .<PagedResponse<ServerKeyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, serverName, accept, context))
+            .<PagedResponse<ServerKeyInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -211,19 +167,15 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @return a list of Server keys along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServerKeyInner>> listSinglePageAsync(
-        String resourceGroupName, String serverName, Context context) {
+    private Mono<PagedResponse<ServerKeyInner>> listSinglePageAsync(String resourceGroupName, String serverName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -236,23 +188,10 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serverName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, serverName,
+                accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -267,8 +206,8 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ServerKeyInner> listAsync(String resourceGroupName, String serverName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, serverName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, serverName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -284,8 +223,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ServerKeyInner> listAsync(String resourceGroupName, String serverName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, serverName, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, serverName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -332,13 +270,11 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @return a MySQL Server key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ServerKeyInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String keyName) {
+    private Mono<Response<ServerKeyInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String keyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -351,26 +287,14 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
             return Mono.error(new IllegalArgumentException("Parameter keyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            keyName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serverName, keyName,
+                apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -387,13 +311,11 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @return a MySQL Server key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ServerKeyInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String keyName, Context context) {
+    private Mono<Response<ServerKeyInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String keyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -406,24 +328,14 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
             return Mono.error(new IllegalArgumentException("Parameter keyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                keyName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, serverName, keyName, apiVersion,
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -439,15 +351,13 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ServerKeyInner> getAsync(String resourceGroupName, String serverName, String keyName) {
-        return getWithResponseAsync(resourceGroupName, serverName, keyName)
-            .flatMap(
-                (Response<ServerKeyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(resourceGroupName, serverName, keyName).flatMap((Response<ServerKeyInner> res) -> {
+            if (res.getValue() != null) {
+                return Mono.just(res.getValue());
+            } else {
+                return Mono.empty();
+            }
+        });
     }
 
     /**
@@ -479,8 +389,8 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @return a MySQL Server key along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ServerKeyInner> getWithResponse(
-        String resourceGroupName, String serverName, String keyName, Context context) {
+    public Response<ServerKeyInner> getWithResponse(String resourceGroupName, String serverName, String keyName,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, keyName, context).block();
     }
 
@@ -497,13 +407,11 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @return a MySQL Server key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String serverName, String keyName, String resourceGroupName, ServerKeyInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String serverName, String keyName,
+        String resourceGroupName, ServerKeyInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (serverName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
@@ -512,10 +420,8 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
             return Mono.error(new IllegalArgumentException("Parameter keyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -529,19 +435,8 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
         final String apiVersion = "2020-01-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            serverName,
-                            keyName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), serverName, keyName, apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -559,13 +454,11 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @return a MySQL Server key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String serverName, String keyName, String resourceGroupName, ServerKeyInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String serverName, String keyName,
+        String resourceGroupName, ServerKeyInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (serverName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
@@ -574,10 +467,8 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
             return Mono.error(new IllegalArgumentException("Parameter keyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -591,17 +482,8 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
         final String apiVersion = "2020-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                serverName,
-                keyName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), serverName, keyName, apiVersion,
+            this.client.getSubscriptionId(), resourceGroupName, parameters, accept, context);
     }
 
     /**
@@ -617,18 +499,12 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @return a MySQL Server key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ServerKeyInner>, ServerKeyInner> beginCreateOrUpdateAsync(
-        String serverName, String keyName, String resourceGroupName, ServerKeyInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(serverName, keyName, resourceGroupName, parameters);
-        return this
-            .client
-            .<ServerKeyInner, ServerKeyInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ServerKeyInner.class,
-                ServerKeyInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<ServerKeyInner>, ServerKeyInner> beginCreateOrUpdateAsync(String serverName,
+        String keyName, String resourceGroupName, ServerKeyInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(serverName, keyName, resourceGroupName, parameters);
+        return this.client.<ServerKeyInner, ServerKeyInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ServerKeyInner.class, ServerKeyInner.class, this.client.getContext());
     }
 
     /**
@@ -645,15 +521,13 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @return a MySQL Server key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ServerKeyInner>, ServerKeyInner> beginCreateOrUpdateAsync(
-        String serverName, String keyName, String resourceGroupName, ServerKeyInner parameters, Context context) {
+    private PollerFlux<PollResult<ServerKeyInner>, ServerKeyInner> beginCreateOrUpdateAsync(String serverName,
+        String keyName, String resourceGroupName, ServerKeyInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(serverName, keyName, resourceGroupName, parameters, context);
-        return this
-            .client
-            .<ServerKeyInner, ServerKeyInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ServerKeyInner.class, ServerKeyInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(serverName, keyName, resourceGroupName, parameters, context);
+        return this.client.<ServerKeyInner, ServerKeyInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ServerKeyInner.class, ServerKeyInner.class, context);
     }
 
     /**
@@ -669,8 +543,8 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @return a MySQL Server key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ServerKeyInner>, ServerKeyInner> beginCreateOrUpdate(
-        String serverName, String keyName, String resourceGroupName, ServerKeyInner parameters) {
+    public SyncPoller<PollResult<ServerKeyInner>, ServerKeyInner> beginCreateOrUpdate(String serverName, String keyName,
+        String resourceGroupName, ServerKeyInner parameters) {
         return beginCreateOrUpdateAsync(serverName, keyName, resourceGroupName, parameters).getSyncPoller();
     }
 
@@ -688,8 +562,8 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @return a MySQL Server key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ServerKeyInner>, ServerKeyInner> beginCreateOrUpdate(
-        String serverName, String keyName, String resourceGroupName, ServerKeyInner parameters, Context context) {
+    public SyncPoller<PollResult<ServerKeyInner>, ServerKeyInner> beginCreateOrUpdate(String serverName, String keyName,
+        String resourceGroupName, ServerKeyInner parameters, Context context) {
         return beginCreateOrUpdateAsync(serverName, keyName, resourceGroupName, parameters, context).getSyncPoller();
     }
 
@@ -706,10 +580,9 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @return a MySQL Server key on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ServerKeyInner> createOrUpdateAsync(
-        String serverName, String keyName, String resourceGroupName, ServerKeyInner parameters) {
-        return beginCreateOrUpdateAsync(serverName, keyName, resourceGroupName, parameters)
-            .last()
+    private Mono<ServerKeyInner> createOrUpdateAsync(String serverName, String keyName, String resourceGroupName,
+        ServerKeyInner parameters) {
+        return beginCreateOrUpdateAsync(serverName, keyName, resourceGroupName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -727,10 +600,9 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @return a MySQL Server key on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ServerKeyInner> createOrUpdateAsync(
-        String serverName, String keyName, String resourceGroupName, ServerKeyInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(serverName, keyName, resourceGroupName, parameters, context)
-            .last()
+    private Mono<ServerKeyInner> createOrUpdateAsync(String serverName, String keyName, String resourceGroupName,
+        ServerKeyInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(serverName, keyName, resourceGroupName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -747,8 +619,8 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @return a MySQL Server key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerKeyInner createOrUpdate(
-        String serverName, String keyName, String resourceGroupName, ServerKeyInner parameters) {
+    public ServerKeyInner createOrUpdate(String serverName, String keyName, String resourceGroupName,
+        ServerKeyInner parameters) {
         return createOrUpdateAsync(serverName, keyName, resourceGroupName, parameters).block();
     }
 
@@ -766,8 +638,8 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @return a MySQL Server key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerKeyInner createOrUpdate(
-        String serverName, String keyName, String resourceGroupName, ServerKeyInner parameters, Context context) {
+    public ServerKeyInner createOrUpdate(String serverName, String keyName, String resourceGroupName,
+        ServerKeyInner parameters, Context context) {
         return createOrUpdateAsync(serverName, keyName, resourceGroupName, parameters, context).block();
     }
 
@@ -783,13 +655,11 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String serverName, String keyName, String resourceGroupName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String serverName, String keyName,
+        String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (serverName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
@@ -798,10 +668,8 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
             return Mono.error(new IllegalArgumentException("Parameter keyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -810,18 +678,8 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
         final String apiVersion = "2020-01-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            serverName,
-                            keyName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), serverName, keyName, apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -838,13 +696,11 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String serverName, String keyName, String resourceGroupName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String serverName, String keyName,
+        String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (serverName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
@@ -853,10 +709,8 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
             return Mono.error(new IllegalArgumentException("Parameter keyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -865,16 +719,8 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
         final String apiVersion = "2020-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                serverName,
-                keyName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), serverName, keyName, apiVersion,
+            this.client.getSubscriptionId(), resourceGroupName, accept, context);
     }
 
     /**
@@ -889,13 +735,11 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String serverName, String keyName, String resourceGroupName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String serverName, String keyName,
+        String resourceGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(serverName, keyName, resourceGroupName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -911,14 +755,13 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String serverName, String keyName, String resourceGroupName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String serverName, String keyName,
+        String resourceGroupName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(serverName, keyName, resourceGroupName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(serverName, keyName, resourceGroupName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -950,8 +793,8 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String serverName, String keyName, String resourceGroupName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String serverName, String keyName, String resourceGroupName,
+        Context context) {
         return beginDeleteAsync(serverName, keyName, resourceGroupName, context).getSyncPoller();
     }
 
@@ -968,8 +811,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String serverName, String keyName, String resourceGroupName) {
-        return beginDeleteAsync(serverName, keyName, resourceGroupName)
-            .last()
+        return beginDeleteAsync(serverName, keyName, resourceGroupName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -987,8 +829,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String serverName, String keyName, String resourceGroupName, Context context) {
-        return beginDeleteAsync(serverName, keyName, resourceGroupName, context)
-            .last()
+        return beginDeleteAsync(serverName, keyName, resourceGroupName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1038,23 +879,13 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ServerKeyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ServerKeyInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1074,23 +905,13 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

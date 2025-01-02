@@ -19,37 +19,36 @@ public final class SapOdpResourceDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapOdpResourceDataset model = BinaryData.fromString(
-            "{\"type\":\"SapOdpResource\",\"typeProperties\":{\"context\":\"datapuz\",\"objectName\":\"datadegefxlieggoto\"},\"description\":\"hssfnwh\",\"structure\":\"dataah\",\"schema\":\"datackn\",\"linkedServiceName\":{\"referenceName\":\"mkcu\",\"parameters\":{\"dvhzfkdn\":\"datadgwuzron\",\"k\":\"dataysodcikgx\",\"w\":\"datazfzdjekeb\"}},\"parameters\":{\"gcjf\":{\"type\":\"Bool\",\"defaultValue\":\"datawyfixi\"},\"kakrxifqnffo\":{\"type\":\"SecureString\",\"defaultValue\":\"dataulp\"},\"xcmmhipbvskcitly\":{\"type\":\"Object\",\"defaultValue\":\"dataqtzngxbsalewg\"},\"d\":{\"type\":\"String\",\"defaultValue\":\"datafsaangfgbmcvmh\"}},\"annotations\":[\"datauaj\",\"datalnac\",\"datadnxqeonm\"],\"folder\":{\"name\":\"jaojpzngdrzige\"},\"\":{\"ohheuy\":\"dataadsqyuddkhwqd\",\"gdeipnfizejwl\":\"dataunxmyevy\",\"jodapqok\":\"dataiacndjzwh\",\"pfapmqnmelyk\":\"datadyncradxsewbe\"}}")
+            "{\"type\":\"SapOdpResource\",\"typeProperties\":{\"context\":\"datauzimbwttmhlvr\",\"objectName\":\"datacyxrn\"},\"description\":\"kfajnpdwzjggkw\",\"structure\":\"datap\",\"schema\":\"dataziayfiqiidxcor\",\"linkedServiceName\":{\"referenceName\":\"vudyhgtrttcuayi\",\"parameters\":{\"zifb\":\"datankmm\",\"rtgqrqkk\":\"datagqexowq\",\"kuobpw\":\"datafy\",\"pnyjtu\":\"datainpgobothxiew\"}},\"parameters\":{\"uwh\":{\"type\":\"Object\",\"defaultValue\":\"dataextchslroldo\"},\"gkudsozodwjc\":{\"type\":\"Bool\",\"defaultValue\":\"dataifiozttcbiic\"},\"mz\":{\"type\":\"Float\",\"defaultValue\":\"datayxryqyc\"}},\"annotations\":[\"datafgdwzauz\",\"datadheadnyciwz\",\"datailykqadfgesv\"],\"folder\":{\"name\":\"a\"},\"\":{\"ovqmxqsxofx\":\"dataizmadjrsbgailj\",\"kgltsxooiobhieb\":\"datankiu\",\"tlsrvqzgaqsosrn\":\"datau\",\"npesw\":\"datalvgrghnhuoxrqhjn\"}}")
             .toObject(SapOdpResourceDataset.class);
-        Assertions.assertEquals("hssfnwh", model.description());
-        Assertions.assertEquals("mkcu", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("gcjf").type());
-        Assertions.assertEquals("jaojpzngdrzige", model.folder().name());
+        Assertions.assertEquals("kfajnpdwzjggkw", model.description());
+        Assertions.assertEquals("vudyhgtrttcuayi", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("uwh").type());
+        Assertions.assertEquals("a", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapOdpResourceDataset model = new SapOdpResourceDataset().withDescription("hssfnwh")
-            .withStructure("dataah")
-            .withSchema("datackn")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("mkcu")
-                .withParameters(mapOf("dvhzfkdn", "datadgwuzron", "k", "dataysodcikgx", "w", "datazfzdjekeb")))
-            .withParameters(mapOf("gcjf",
-                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datawyfixi"),
-                "kakrxifqnffo",
-                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("dataulp"),
-                "xcmmhipbvskcitly",
-                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("dataqtzngxbsalewg"), "d",
-                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datafsaangfgbmcvmh")))
-            .withAnnotations(Arrays.asList("datauaj", "datalnac", "datadnxqeonm"))
-            .withFolder(new DatasetFolder().withName("jaojpzngdrzige"))
-            .withContext("datapuz")
-            .withObjectName("datadegefxlieggoto");
+        SapOdpResourceDataset model = new SapOdpResourceDataset().withDescription("kfajnpdwzjggkw")
+            .withStructure("datap")
+            .withSchema("dataziayfiqiidxcor")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("vudyhgtrttcuayi")
+                .withParameters(mapOf("zifb", "datankmm", "rtgqrqkk", "datagqexowq", "kuobpw", "datafy", "pnyjtu",
+                    "datainpgobothxiew")))
+            .withParameters(mapOf("uwh",
+                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("dataextchslroldo"),
+                "gkudsozodwjc",
+                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("dataifiozttcbiic"), "mz",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datayxryqyc")))
+            .withAnnotations(Arrays.asList("datafgdwzauz", "datadheadnyciwz", "datailykqadfgesv"))
+            .withFolder(new DatasetFolder().withName("a"))
+            .withContext("datauzimbwttmhlvr")
+            .withObjectName("datacyxrn");
         model = BinaryData.fromObject(model).toObject(SapOdpResourceDataset.class);
-        Assertions.assertEquals("hssfnwh", model.description());
-        Assertions.assertEquals("mkcu", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("gcjf").type());
-        Assertions.assertEquals("jaojpzngdrzige", model.folder().name());
+        Assertions.assertEquals("kfajnpdwzjggkw", model.description());
+        Assertions.assertEquals("vudyhgtrttcuayi", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("uwh").type());
+        Assertions.assertEquals("a", model.folder().name());
     }
 
     // Use "Map.of" if available

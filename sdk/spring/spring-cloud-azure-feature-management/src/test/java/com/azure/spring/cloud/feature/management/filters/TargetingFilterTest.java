@@ -18,16 +18,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.azure.spring.cloud.feature.management.implementation.TestConfiguration;
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.management.models.TargetingException;
-import com.azure.spring.cloud.feature.management.targeting.TargetingContext;
-import com.azure.spring.cloud.feature.management.targeting.TargetingContextAccessor;
 import com.azure.spring.cloud.feature.management.targeting.TargetingEvaluationOptions;
 
 @SpringBootTest(classes = { TestConfiguration.class, SpringBootTest.class })
 public class TargetingFilterTest {
 
-    private static final String USERS = "users";
+    private static final String USERS = "Users";
 
-    private static final String GROUPS = "groups";
+    private static final String GROUPS = "Groups";
 
     private static final String AUDIENCE = "Audience";
 
@@ -48,10 +46,37 @@ public class TargetingFilterTest {
         parameters.put(GROUPS, new LinkedHashMap<String, Object>());
         parameters.put(DEFAULT_ROLLOUT_PERCENTAGE, 0);
         parameters.put("Exclusion", emptyExclusion());
-        
+
         Map<String, Object> excludes = new LinkedHashMap<>();
         Map<String, String> excludedGroups = new LinkedHashMap<>();
-        
+
+        excludes.put(GROUPS, excludedGroups);
+
+        context.setParameters(parameters);
+        context.setFeatureName("testFeature");
+
+        TargetingFilter filter = new TargetingFilter(new TargetingFilterTestContextAccessor("Doe", null));
+
+        assertTrue(filter.evaluate(context));
+    }
+    
+    @Test
+    public void targetedUserLower() {
+        FeatureFilterEvaluationContext context = new FeatureFilterEvaluationContext();
+
+        Map<String, Object> parameters = new LinkedHashMap<String, Object>();
+
+        Map<String, String> users = new LinkedHashMap<String, String>();
+        users.put("0", "Doe");
+
+        parameters.put(USERS.toLowerCase(), users);
+        parameters.put(GROUPS.toLowerCase(), new LinkedHashMap<String, Object>());
+        parameters.put(DEFAULT_ROLLOUT_PERCENTAGE, 0);
+        parameters.put("Exclusion", emptyExclusion());
+
+        Map<String, Object> excludes = new LinkedHashMap<>();
+        Map<String, String> excludedGroups = new LinkedHashMap<>();
+
         excludes.put(GROUPS, excludedGroups);
 
         context.setParameters(parameters);
@@ -98,6 +123,34 @@ public class TargetingFilterTest {
 
         parameters.put(USERS, new LinkedHashMap<String, Object>());
         parameters.put(GROUPS, groups);
+        parameters.put(DEFAULT_ROLLOUT_PERCENTAGE, 0);
+        parameters.put("Exclusion", emptyExclusion());
+
+        context.setParameters(parameters);
+        context.setFeatureName("testFeature");
+
+        ArrayList<String> targetedGroups = new ArrayList<String>();
+        targetedGroups.add("g1");
+
+        TargetingFilter filter = new TargetingFilter(new TargetingFilterTestContextAccessor(null, targetedGroups));
+
+        assertTrue(filter.evaluate(context));
+    }
+    
+    @Test
+    public void targetedGroupLower() {
+        FeatureFilterEvaluationContext context = new FeatureFilterEvaluationContext();
+
+        Map<String, Object> parameters = new LinkedHashMap<String, Object>();
+
+        Map<String, Object> groups = new LinkedHashMap<String, Object>();
+        Map<String, String> g1 = new LinkedHashMap<String, String>();
+        g1.put("name", "g1");
+        g1.put("rolloutPercentage", "100");
+        groups.put("0", g1);
+
+        parameters.put(USERS.toLowerCase(), new LinkedHashMap<String, Object>());
+        parameters.put(GROUPS.toLowerCase(), groups);
         parameters.put(DEFAULT_ROLLOUT_PERCENTAGE, 0);
         parameters.put("Exclusion", emptyExclusion());
 
@@ -341,20 +394,20 @@ public class TargetingFilterTest {
         TargetingFilter filter = new TargetingFilter(new TargetingFilterTestContextAccessor("Doe", null));
 
         assertTrue(filter.evaluate(context));
-        
+
         // Now the users is excluded
         Map<String, Object> excludes = new LinkedHashMap<>();
         Map<String, String> excludedUsers = new LinkedHashMap<>();
         excludedUsers.put("0", "Doe");
-        
+
         excludes.put(USERS, excludedUsers);
         parameters.put("Exclusion", excludes);
-        
+
         context.setParameters(parameters);
-        
+
         assertFalse(filter.evaluate(context));
     }
-    
+
     @Test
     public void excludeGroup() {
         FeatureFilterEvaluationContext context = new FeatureFilterEvaluationContext();
@@ -380,20 +433,20 @@ public class TargetingFilterTest {
         TargetingFilter filter = new TargetingFilter(new TargetingFilterTestContextAccessor(null, targetedGroups));
 
         assertTrue(filter.evaluate(context));
-        
+
         // Now the users is excluded
         Map<String, Object> excludes = new LinkedHashMap<>();
         Map<String, String> excludedGroups = new LinkedHashMap<>();
         excludedGroups.put("0", "g1");
-        
+
         excludes.put(GROUPS, excludedGroups);
         parameters.put("Exclusion", excludes);
-        
+
         context.setParameters(parameters);
-        
+
         assertFalse(filter.evaluate(context));
     }
-    
+
     private Map<String, Object> emptyExclusion() {
         Map<String, Object> excludes = new LinkedHashMap<>();
         List<String> excludedUsers = new ArrayList<>();
@@ -401,24 +454,5 @@ public class TargetingFilterTest {
         excludes.put(USERS, excludedUsers);
         excludes.put(GROUPS, excludedGroups);
         return excludes;
-    }
-
-    class TargetingFilterTestContextAccessor implements TargetingContextAccessor {
-
-        private String user;
-
-        private ArrayList<String> groups;
-
-        TargetingFilterTestContextAccessor(String user, ArrayList<String> groups) {
-            this.user = user;
-            this.groups = groups;
-        }
-
-        @Override
-        public void configureTargetingContext(TargetingContext context) {
-            context.setUserId(user);
-            context.setGroups(groups);
-        }
-
     }
 }

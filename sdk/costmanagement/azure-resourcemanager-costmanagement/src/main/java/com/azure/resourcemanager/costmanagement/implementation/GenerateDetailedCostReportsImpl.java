@@ -19,15 +19,14 @@ public final class GenerateDetailedCostReportsImpl implements GenerateDetailedCo
 
     private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    public GenerateDetailedCostReportsImpl(
-        GenerateDetailedCostReportsClient innerClient,
+    public GenerateDetailedCostReportsImpl(GenerateDetailedCostReportsClient innerClient,
         com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public GenerateDetailedCostReportOperationResult createOperation(
-        String scope, GenerateDetailedCostReportDefinition parameters) {
+    public GenerateDetailedCostReportOperationResult createOperation(String scope,
+        GenerateDetailedCostReportDefinition parameters) {
         GenerateDetailedCostReportOperationResultInner inner = this.serviceClient().createOperation(scope, parameters);
         if (inner != null) {
             return new GenerateDetailedCostReportOperationResultImpl(inner, this.manager());
@@ -36,10 +35,10 @@ public final class GenerateDetailedCostReportsImpl implements GenerateDetailedCo
         }
     }
 
-    public GenerateDetailedCostReportOperationResult createOperation(
-        String scope, GenerateDetailedCostReportDefinition parameters, Context context) {
-        GenerateDetailedCostReportOperationResultInner inner =
-            this.serviceClient().createOperation(scope, parameters, context);
+    public GenerateDetailedCostReportOperationResult createOperation(String scope,
+        GenerateDetailedCostReportDefinition parameters, Context context) {
+        GenerateDetailedCostReportOperationResultInner inner
+            = this.serviceClient().createOperation(scope, parameters, context);
         if (inner != null) {
             return new GenerateDetailedCostReportOperationResultImpl(inner, this.manager());
         } else {

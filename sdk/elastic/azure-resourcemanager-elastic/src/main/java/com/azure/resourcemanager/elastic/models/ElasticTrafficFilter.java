@@ -5,61 +5,62 @@
 package com.azure.resourcemanager.elastic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Elastic traffic filter object. */
+/**
+ * Elastic traffic filter object.
+ */
 @Fluent
-public final class ElasticTrafficFilter {
+public final class ElasticTrafficFilter implements JsonSerializable<ElasticTrafficFilter> {
     /*
      * Id of the elastic filter
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Name of the elastic filter
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Description of the elastic filter
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Region of the elastic filter
      */
-    @JsonProperty(value = "region")
     private String region;
 
     /*
      * Type of the elastic filter
      */
-    @JsonProperty(value = "type")
     private Type type;
 
     /*
      * IncludeByDefault for the elastic filter
      */
-    @JsonProperty(value = "includeByDefault")
     private Boolean includeByDefault;
 
     /*
      * Rules in the elastic filter
      */
-    @JsonProperty(value = "rules")
     private List<ElasticTrafficFilterRule> rules;
 
-    /** Creates an instance of ElasticTrafficFilter class. */
+    /**
+     * Creates an instance of ElasticTrafficFilter class.
+     */
     public ElasticTrafficFilter() {
     }
 
     /**
      * Get the id property: Id of the elastic filter.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -68,7 +69,7 @@ public final class ElasticTrafficFilter {
 
     /**
      * Set the id property: Id of the elastic filter.
-     *
+     * 
      * @param id the id value to set.
      * @return the ElasticTrafficFilter object itself.
      */
@@ -79,7 +80,7 @@ public final class ElasticTrafficFilter {
 
     /**
      * Get the name property: Name of the elastic filter.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -88,7 +89,7 @@ public final class ElasticTrafficFilter {
 
     /**
      * Set the name property: Name of the elastic filter.
-     *
+     * 
      * @param name the name value to set.
      * @return the ElasticTrafficFilter object itself.
      */
@@ -99,7 +100,7 @@ public final class ElasticTrafficFilter {
 
     /**
      * Get the description property: Description of the elastic filter.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -108,7 +109,7 @@ public final class ElasticTrafficFilter {
 
     /**
      * Set the description property: Description of the elastic filter.
-     *
+     * 
      * @param description the description value to set.
      * @return the ElasticTrafficFilter object itself.
      */
@@ -119,7 +120,7 @@ public final class ElasticTrafficFilter {
 
     /**
      * Get the region property: Region of the elastic filter.
-     *
+     * 
      * @return the region value.
      */
     public String region() {
@@ -128,7 +129,7 @@ public final class ElasticTrafficFilter {
 
     /**
      * Set the region property: Region of the elastic filter.
-     *
+     * 
      * @param region the region value to set.
      * @return the ElasticTrafficFilter object itself.
      */
@@ -139,7 +140,7 @@ public final class ElasticTrafficFilter {
 
     /**
      * Get the type property: Type of the elastic filter.
-     *
+     * 
      * @return the type value.
      */
     public Type type() {
@@ -148,7 +149,7 @@ public final class ElasticTrafficFilter {
 
     /**
      * Set the type property: Type of the elastic filter.
-     *
+     * 
      * @param type the type value to set.
      * @return the ElasticTrafficFilter object itself.
      */
@@ -159,7 +160,7 @@ public final class ElasticTrafficFilter {
 
     /**
      * Get the includeByDefault property: IncludeByDefault for the elastic filter.
-     *
+     * 
      * @return the includeByDefault value.
      */
     public Boolean includeByDefault() {
@@ -168,7 +169,7 @@ public final class ElasticTrafficFilter {
 
     /**
      * Set the includeByDefault property: IncludeByDefault for the elastic filter.
-     *
+     * 
      * @param includeByDefault the includeByDefault value to set.
      * @return the ElasticTrafficFilter object itself.
      */
@@ -179,7 +180,7 @@ public final class ElasticTrafficFilter {
 
     /**
      * Get the rules property: Rules in the elastic filter.
-     *
+     * 
      * @return the rules value.
      */
     public List<ElasticTrafficFilterRule> rules() {
@@ -188,7 +189,7 @@ public final class ElasticTrafficFilter {
 
     /**
      * Set the rules property: Rules in the elastic filter.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the ElasticTrafficFilter object itself.
      */
@@ -199,12 +200,68 @@ public final class ElasticTrafficFilter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (rules() != null) {
             rules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("region", this.region);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeBooleanField("includeByDefault", this.includeByDefault);
+        jsonWriter.writeArrayField("rules", this.rules, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ElasticTrafficFilter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ElasticTrafficFilter if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ElasticTrafficFilter.
+     */
+    public static ElasticTrafficFilter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ElasticTrafficFilter deserializedElasticTrafficFilter = new ElasticTrafficFilter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedElasticTrafficFilter.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedElasticTrafficFilter.name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedElasticTrafficFilter.description = reader.getString();
+                } else if ("region".equals(fieldName)) {
+                    deserializedElasticTrafficFilter.region = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedElasticTrafficFilter.type = Type.fromString(reader.getString());
+                } else if ("includeByDefault".equals(fieldName)) {
+                    deserializedElasticTrafficFilter.includeByDefault = reader.getNullable(JsonReader::getBoolean);
+                } else if ("rules".equals(fieldName)) {
+                    List<ElasticTrafficFilterRule> rules
+                        = reader.readArray(reader1 -> ElasticTrafficFilterRule.fromJson(reader1));
+                    deserializedElasticTrafficFilter.rules = rules;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedElasticTrafficFilter;
+        });
     }
 }

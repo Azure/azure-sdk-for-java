@@ -107,34 +107,18 @@ public final class OutboundEndpointImpl
     }
 
     public OutboundEndpoint create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOutboundEndpoints()
-                .createOrUpdate(
-                    resourceGroupName,
-                    dnsResolverName,
-                    outboundEndpointName,
-                    this.innerModel(),
-                    createIfMatch,
-                    createIfNoneMatch,
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getOutboundEndpoints()
+            .createOrUpdate(resourceGroupName, dnsResolverName, outboundEndpointName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, Context.NONE);
         return this;
     }
 
     public OutboundEndpoint create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOutboundEndpoints()
-                .createOrUpdate(
-                    resourceGroupName,
-                    dnsResolverName,
-                    outboundEndpointName,
-                    this.innerModel(),
-                    createIfMatch,
-                    createIfNoneMatch,
-                    context);
+        this.innerObject = serviceManager.serviceClient()
+            .getOutboundEndpoints()
+            .createOrUpdate(resourceGroupName, dnsResolverName, outboundEndpointName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, context);
         return this;
     }
 
@@ -153,56 +137,42 @@ public final class OutboundEndpointImpl
     }
 
     public OutboundEndpoint apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOutboundEndpoints()
-                .update(
-                    resourceGroupName,
-                    dnsResolverName,
-                    outboundEndpointName,
-                    updateParameters,
-                    updateIfMatch,
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getOutboundEndpoints()
+            .update(resourceGroupName, dnsResolverName, outboundEndpointName, updateParameters, updateIfMatch,
+                Context.NONE);
         return this;
     }
 
     public OutboundEndpoint apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOutboundEndpoints()
-                .update(
-                    resourceGroupName, dnsResolverName, outboundEndpointName, updateParameters, updateIfMatch, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getOutboundEndpoints()
+            .update(resourceGroupName, dnsResolverName, outboundEndpointName, updateParameters, updateIfMatch, context);
         return this;
     }
 
-    OutboundEndpointImpl(
-        OutboundEndpointInner innerObject, com.azure.resourcemanager.dnsresolver.DnsResolverManager serviceManager) {
+    OutboundEndpointImpl(OutboundEndpointInner innerObject,
+        com.azure.resourcemanager.dnsresolver.DnsResolverManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.dnsResolverName = Utils.getValueFromIdByName(innerObject.id(), "dnsResolvers");
-        this.outboundEndpointName = Utils.getValueFromIdByName(innerObject.id(), "outboundEndpoints");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.dnsResolverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dnsResolvers");
+        this.outboundEndpointName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "outboundEndpoints");
     }
 
     public OutboundEndpoint refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOutboundEndpoints()
-                .getWithResponse(resourceGroupName, dnsResolverName, outboundEndpointName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getOutboundEndpoints()
+            .getWithResponse(resourceGroupName, dnsResolverName, outboundEndpointName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public OutboundEndpoint refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOutboundEndpoints()
-                .getWithResponse(resourceGroupName, dnsResolverName, outboundEndpointName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getOutboundEndpoints()
+            .getWithResponse(resourceGroupName, dnsResolverName, outboundEndpointName, context)
+            .getValue();
         return this;
     }
 

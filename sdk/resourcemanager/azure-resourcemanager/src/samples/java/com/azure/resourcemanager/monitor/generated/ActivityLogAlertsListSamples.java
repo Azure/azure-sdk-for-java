@@ -19,7 +19,10 @@ public final class ActivityLogAlertsListSamples {
      */
     public static void
         getListOfAllActivityLogAlertRulesUnderASubscription(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getActivityLogAlerts()
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getActivityLogAlerts()
             .list(com.azure.core.util.Context.NONE);
     }
 }

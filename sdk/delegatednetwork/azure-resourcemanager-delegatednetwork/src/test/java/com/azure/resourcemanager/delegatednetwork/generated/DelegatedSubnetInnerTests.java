@@ -15,41 +15,29 @@ import org.junit.jupiter.api.Assertions;
 public final class DelegatedSubnetInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DelegatedSubnetInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"resourceGuid\":\"x\",\"provisioningState\":\"Deleting\",\"subnetDetails\":{\"id\":\"ddtocjjxhvp\"},\"controllerDetails\":{\"id\":\"exhd\"}},\"location\":\"xibqeojnx\",\"tags\":{\"eic\":\"vddntwn\",\"cyddglmjthjqk\":\"twnpzaoqvuhrhcf\",\"ciwqvhk\":\"pyeicxm\",\"ghmewuam\":\"ixuigdtopbobj\"},\"id\":\"uhrzayvvt\",\"name\":\"gvdfgiotkftutq\",\"type\":\"ln\"}")
-                .toObject(DelegatedSubnetInner.class);
-        Assertions.assertEquals("xibqeojnx", model.location());
-        Assertions.assertEquals("vddntwn", model.tags().get("eic"));
-        Assertions.assertEquals("ddtocjjxhvp", model.subnetDetails().id());
-        Assertions.assertEquals("exhd", model.controllerDetails().id());
+        DelegatedSubnetInner model = BinaryData.fromString(
+            "{\"properties\":{\"resourceGuid\":\"ijcoejctb\",\"provisioningState\":\"Succeeded\",\"subnetDetails\":{\"id\":\"sycbkbfk\"},\"controllerDetails\":{\"id\":\"dkexxppofm\"}},\"location\":\"axcfjpgddtocjjx\",\"tags\":{\"bqe\":\"mouexhdzx\",\"eic\":\"jnxqbzvddntwn\",\"cyddglmjthjqk\":\"twnpzaoqvuhrhcf\"},\"id\":\"pyeicxm\",\"name\":\"ciwqvhk\",\"type\":\"ixuigdtopbobj\"}")
+            .toObject(DelegatedSubnetInner.class);
+        Assertions.assertEquals("axcfjpgddtocjjx", model.location());
+        Assertions.assertEquals("mouexhdzx", model.tags().get("bqe"));
+        Assertions.assertEquals("sycbkbfk", model.subnetDetails().id());
+        Assertions.assertEquals("dkexxppofm", model.controllerDetails().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DelegatedSubnetInner model =
-            new DelegatedSubnetInner()
-                .withLocation("xibqeojnx")
-                .withTags(
-                    mapOf(
-                        "eic",
-                        "vddntwn",
-                        "cyddglmjthjqk",
-                        "twnpzaoqvuhrhcf",
-                        "ciwqvhk",
-                        "pyeicxm",
-                        "ghmewuam",
-                        "ixuigdtopbobj"))
-                .withSubnetDetails(new SubnetDetails().withId("ddtocjjxhvp"))
-                .withControllerDetails(new ControllerDetails().withId("exhd"));
+        DelegatedSubnetInner model = new DelegatedSubnetInner().withLocation("axcfjpgddtocjjx")
+            .withTags(mapOf("bqe", "mouexhdzx", "eic", "jnxqbzvddntwn", "cyddglmjthjqk", "twnpzaoqvuhrhcf"))
+            .withSubnetDetails(new SubnetDetails().withId("sycbkbfk"))
+            .withControllerDetails(new ControllerDetails().withId("dkexxppofm"));
         model = BinaryData.fromObject(model).toObject(DelegatedSubnetInner.class);
-        Assertions.assertEquals("xibqeojnx", model.location());
-        Assertions.assertEquals("vddntwn", model.tags().get("eic"));
-        Assertions.assertEquals("ddtocjjxhvp", model.subnetDetails().id());
-        Assertions.assertEquals("exhd", model.controllerDetails().id());
+        Assertions.assertEquals("axcfjpgddtocjjx", model.location());
+        Assertions.assertEquals("mouexhdzx", model.tags().get("bqe"));
+        Assertions.assertEquals("sycbkbfk", model.subnetDetails().id());
+        Assertions.assertEquals("dkexxppofm", model.controllerDetails().id());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -21,38 +21,30 @@ public final class EntitiesGetTimelinesImpl implements EntitiesGetTimelines {
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    public EntitiesGetTimelinesImpl(
-        EntitiesGetTimelinesClient innerClient,
+    public EntitiesGetTimelinesImpl(EntitiesGetTimelinesClient innerClient,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public EntityTimelineResponse list(
-        String resourceGroupName, String workspaceName, String entityId, EntityTimelineParameters parameters) {
-        EntityTimelineResponseInner inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, entityId, parameters);
+    public Response<EntityTimelineResponse> listWithResponse(String resourceGroupName, String workspaceName,
+        String entityId, EntityTimelineParameters parameters, Context context) {
+        Response<EntityTimelineResponseInner> inner
+            = this.serviceClient().listWithResponse(resourceGroupName, workspaceName, entityId, parameters, context);
         if (inner != null) {
-            return new EntityTimelineResponseImpl(inner, this.manager());
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new EntityTimelineResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<EntityTimelineResponse> listWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String entityId,
-        EntityTimelineParameters parameters,
-        Context context) {
-        Response<EntityTimelineResponseInner> inner =
-            this.serviceClient().listWithResponse(resourceGroupName, workspaceName, entityId, parameters, context);
+    public EntityTimelineResponse list(String resourceGroupName, String workspaceName, String entityId,
+        EntityTimelineParameters parameters) {
+        EntityTimelineResponseInner inner
+            = this.serviceClient().list(resourceGroupName, workspaceName, entityId, parameters);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new EntityTimelineResponseImpl(inner.getValue(), this.manager()));
+            return new EntityTimelineResponseImpl(inner, this.manager());
         } else {
             return null;
         }

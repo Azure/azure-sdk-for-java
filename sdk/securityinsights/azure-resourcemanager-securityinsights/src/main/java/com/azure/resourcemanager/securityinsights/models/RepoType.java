@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of repository. */
+/**
+ * The type of repository.
+ */
 public final class RepoType extends ExpandableStringEnum<RepoType> {
-    /** Static value Github for RepoType. */
+    /**
+     * Static value Github for RepoType.
+     */
     public static final RepoType GITHUB = fromString("Github");
 
-    /** Static value DevOps for RepoType. */
+    /**
+     * Static value DevOps for RepoType.
+     */
     public static final RepoType DEV_OPS = fromString("DevOps");
 
     /**
+     * Creates a new instance of RepoType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RepoType() {
+    }
+
+    /**
      * Creates or finds a RepoType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RepoType.
      */
-    @JsonCreator
     public static RepoType fromString(String name) {
         return fromString(name, RepoType.class);
     }
 
     /**
      * Gets known RepoType values.
-     *
+     * 
      * @return known RepoType values.
      */
     public static Collection<RepoType> values() {

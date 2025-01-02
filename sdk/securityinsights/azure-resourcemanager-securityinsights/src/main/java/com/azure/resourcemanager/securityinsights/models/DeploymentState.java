@@ -5,37 +5,54 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The current state of the deployment. */
+/**
+ * The current state of the deployment.
+ */
 public final class DeploymentState extends ExpandableStringEnum<DeploymentState> {
-    /** Static value In_Progress for DeploymentState. */
+    /**
+     * Static value In_Progress for DeploymentState.
+     */
     public static final DeploymentState IN_PROGRESS = fromString("In_Progress");
 
-    /** Static value Completed for DeploymentState. */
+    /**
+     * Static value Completed for DeploymentState.
+     */
     public static final DeploymentState COMPLETED = fromString("Completed");
 
-    /** Static value Queued for DeploymentState. */
+    /**
+     * Static value Queued for DeploymentState.
+     */
     public static final DeploymentState QUEUED = fromString("Queued");
 
-    /** Static value Canceling for DeploymentState. */
+    /**
+     * Static value Canceling for DeploymentState.
+     */
     public static final DeploymentState CANCELING = fromString("Canceling");
 
     /**
+     * Creates a new instance of DeploymentState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DeploymentState() {
+    }
+
+    /**
      * Creates or finds a DeploymentState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DeploymentState.
      */
-    @JsonCreator
     public static DeploymentState fromString(String name) {
         return fromString(name, DeploymentState.class);
     }
 
     /**
      * Gets known DeploymentState values.
-     *
+     * 
      * @return known DeploymentState values.
      */
     public static Collection<DeploymentState> values() {

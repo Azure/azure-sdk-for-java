@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.implementation;
 
+import java.util.List;
+
 /**
  * Used internally. Constants in the Azure Cosmos DB database service Java SDK.
  */
@@ -120,6 +122,27 @@ public final class Constants {
         public static final String SPATIAL_INDEXES = "spatialIndexes";
         public static final String TYPES = "types";
 
+        // Full text search
+        public static final String FULL_TEXT_INDEXES = "fullTextIndexes";
+        public static final String DEFAULT_LANGUAGE = "defaultLanguage";
+        public static final String LANGUAGE = "language";
+        public static final String FULL_TEXT_POLICY = "fullTextPolicy";
+        public static final String FULL_TEXT_PATHS = "fullTextPaths";
+
+        // Hybrid Search Query
+        public static final String GLOBAL_STATISTICS_QUERY = "globalStatisticsQuery";
+        public static final String COMPONENT_QUERY_INFOS = "componentQueryInfos";
+        public static final String PROJECTION_QUERY_INFO = "projectionQueryInfo";
+        public static final String SKIP = "skip";
+        public static final String TAKE = "take";
+        public static final String REQUIRES_GLOBAL_STATISTICS = "requiresGlobalStatistics";
+        public static final String TOTAL_WORD_COUNT = "totalWordCount";
+        public static final String HIT_COUNTS = "hitCounts";
+        public static final String DOCUMENT_COUNT = "documentCount";
+        public static final String FULL_TEXT_QUERY_STATISTICS = "fullTextStatistics";
+        public static final String PAYLOAD = "payload";
+        public static final String COMPONENT_SCORES = "componentScores";
+
         // Vector Embedding Policy
         public static final String VECTOR_EMBEDDING_POLICY = "vectorEmbeddingPolicy";
         public static final String VECTOR_INDEXES = "vectorIndexes";
@@ -128,6 +151,8 @@ public final class Constants {
         public static final String VECTOR_DATA_TYPE = "dataType";
         public static final String VECTOR_DIMENSIONS = "dimensions";
         public static final String DISTANCE_FUNCTION = "distanceFunction";
+        public static final String VECTOR_QUANTIZATION_SIZE_IN_BYTES = "quantizationByteSize";
+        public static final String VECTOR_INDEXING_SEARCH_LIST_SIZE =  "indexingSearchListSize";
 
         // Unique index.
         public static final String UNIQUE_KEY_POLICY = "uniqueKeyPolicy";

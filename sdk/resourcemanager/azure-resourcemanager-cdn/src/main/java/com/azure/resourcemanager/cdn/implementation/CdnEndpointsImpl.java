@@ -20,11 +20,7 @@ import java.util.Map;
  * Represents an endpoint collection associated with a CDN manager profile.
  */
 class CdnEndpointsImpl extends
-    ExternalChildResourcesNonCachedImpl<CdnEndpointImpl,
-        CdnEndpoint,
-        EndpointInner,
-        CdnProfileImpl,
-        CdnProfile> {
+    ExternalChildResourcesNonCachedImpl<CdnEndpointImpl, CdnEndpoint, EndpointInner, CdnProfileImpl, CdnProfile> {
 
     CdnEndpointsImpl(CdnProfileImpl parent) {
         super(parent, parent.taskGroup(), "Endpoint");
@@ -35,10 +31,16 @@ class CdnEndpointsImpl extends
      */
     Map<String, CdnEndpoint> endpointsAsMap() {
         Map<String, CdnEndpoint> result = new HashMap<>();
-        for (EndpointInner endpointInner : this.getParent().manager().serviceClient().getEndpoints()
+        for (EndpointInner endpointInner : this.getParent()
+            .manager()
+            .serviceClient()
+            .getEndpoints()
             .listByProfile(this.getParent().resourceGroupName(), this.getParent().name())) {
             CdnEndpointImpl endpoint = new CdnEndpointImpl(endpointInner.name(), this.getParent(), endpointInner);
-            for (CustomDomainInner customDomainInner : this.getParent().manager().serviceClient().getCustomDomains()
+            for (CustomDomainInner customDomainInner : this.getParent()
+                .manager()
+                .serviceClient()
+                .getCustomDomains()
                 .listByEndpoint(this.getParent().resourceGroupName(), this.getParent().name(), endpoint.name())) {
                 endpoint.withCustomDomain(customDomainInner.hostname());
             }
@@ -67,10 +69,9 @@ class CdnEndpointsImpl extends
 
     public CdnEndpointImpl defineNewEndpoint(String endpointName, String originName, String endpointOriginHostname) {
         CdnEndpointImpl endpoint = this.defineNewEndpoint(endpointName);
-        endpoint.innerModel().origins().add(
-                new DeepCreatedOrigin()
-                        .withName(originName)
-                        .withHostname(endpointOriginHostname));
+        endpoint.innerModel()
+            .origins()
+            .add(new DeepCreatedOrigin().withName(originName).withHostname(endpointOriginHostname));
         return endpoint;
     }
 
@@ -79,8 +80,8 @@ class CdnEndpointsImpl extends
     }
 
     public CdnEndpointImpl defineNewEndpoint(String name) {
-        CdnEndpointImpl endpoint = this.prepareInlineDefine(
-            new CdnEndpointImpl(name, this.getParent(), new EndpointInner()));
+        CdnEndpointImpl endpoint
+            = this.prepareInlineDefine(new CdnEndpointImpl(name, this.getParent(), new EndpointInner()));
         endpoint.innerModel().withLocation(endpoint.parent().region().toString());
         endpoint.innerModel().withOrigins(new ArrayList<>());
         return endpoint;
@@ -98,10 +99,12 @@ class CdnEndpointsImpl extends
     }
 
     public CdnEndpointImpl updateEndpoint(String name) {
-        EndpointInner endpointInner = this.getParent().manager().serviceClient().getEndpoints()
+        EndpointInner endpointInner = this.getParent()
+            .manager()
+            .serviceClient()
+            .getEndpoints()
             .get(this.getParent().resourceGroupName(), this.getParent().name(), name);
-        CdnEndpointImpl endpoint = this.prepareInlineUpdate(
-            new CdnEndpointImpl(name, this.getParent(), endpointInner));
+        CdnEndpointImpl endpoint = this.prepareInlineUpdate(new CdnEndpointImpl(name, this.getParent(), endpointInner));
         return endpoint;
     }
 
@@ -110,7 +113,10 @@ class CdnEndpointsImpl extends
         CheckNameAvailabilityResult result;
 
         do {
-            endpointName = this.getParent().manager().resourceManager().internalContext()
+            endpointName = this.getParent()
+                .manager()
+                .resourceManager()
+                .internalContext()
                 .randomResourceName(endpointNamePrefix, 50);
             result = this.getParent().checkEndpointNameAvailability(endpointName);
         } while (!result.nameAvailable());

@@ -23,7 +23,9 @@ public final class ClusterEnvironmentEntityTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterEnvironmentEntity model = new ClusterEnvironmentEntity().withId("yhtozfikdowwqu")
-            .withEnvironment("xzxcl").withRelated("thhqzonosggbh").withResourceName("hfwdsjnkaljutiis");
+            .withEnvironment("xzxcl")
+            .withRelated("thhqzonosggbh")
+            .withResourceName("hfwdsjnkaljutiis");
         model = BinaryData.fromObject(model).toObject(ClusterEnvironmentEntity.class);
         Assertions.assertEquals("yhtozfikdowwqu", model.id());
         Assertions.assertEquals("xzxcl", model.environment());

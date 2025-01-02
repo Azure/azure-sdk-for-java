@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ComputePolicyInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComputePolicyInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"objectId\":\"448d003b-5efd-44ea-a13c-8532937815d5\",\"objectType\":\"Group\",\"maxDegreeOfParallelismPerJob\":440516085,\"minPriorityPerJob\":152662254},\"name\":\"attpngjcrcczsq\",\"type\":\"hvmdajvnysounq\",\"id\":\"a\"}")
-                .toObject(ComputePolicyInner.class);
-        Assertions.assertEquals("a", model.id());
+        ComputePolicyInner model = BinaryData.fromString(
+            "{\"properties\":{\"objectId\":\"f1d7b3d4-3f1b-49db-ad4a-0e340d8f7309\",\"objectType\":\"Group\",\"maxDegreeOfParallelismPerJob\":792570944,\"minPriorityPerJob\":1370032032},\"name\":\"h\",\"type\":\"fbowskanyk\",\"id\":\"lcuiywgqywgndr\"}")
+            .toObject(ComputePolicyInner.class);
+        Assertions.assertEquals("lcuiywgqywgndr", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ComputePolicyInner model = new ComputePolicyInner().withId("a");
+        ComputePolicyInner model = new ComputePolicyInner().withId("lcuiywgqywgndr");
         model = BinaryData.fromObject(model).toObject(ComputePolicyInner.class);
-        Assertions.assertEquals("a", model.id());
+        Assertions.assertEquals("lcuiywgqywgndr", model.id());
     }
 }

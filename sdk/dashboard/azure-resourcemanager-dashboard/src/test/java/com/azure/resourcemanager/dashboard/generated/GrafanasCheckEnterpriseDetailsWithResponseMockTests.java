@@ -6,48 +6,30 @@ package com.azure.resourcemanager.dashboard.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dashboard.DashboardManager;
 import com.azure.resourcemanager.dashboard.models.AvailablePromotion;
 import com.azure.resourcemanager.dashboard.models.EnterpriseDetails;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class GrafanasCheckEnterpriseDetailsWithResponseMockTests {
     @Test
     public void testCheckEnterpriseDetailsWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
             = "{\"saasSubscriptionDetails\":{\"planId\":\"ldngkpoci\",\"offerId\":\"z\",\"publisherId\":\"o\",\"term\":{\"termUnit\":\"kgjn\",\"startDate\":\"2021-10-28T00:07:14Z\",\"endDate\":\"2021-07-11T10:35:30Z\"}},\"marketplaceTrialQuota\":{\"availablePromotion\":\"FreeTrial\",\"grafanaResourceId\":\"qzntypm\",\"trialStartAt\":\"2021-10-14T05:08:35Z\",\"trialEndAt\":\"2021-11-28T09:01:44Z\"}}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        DashboardManager manager = DashboardManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DashboardManager manager = DashboardManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         EnterpriseDetails response = manager.grafanas()
             .checkEnterpriseDetailsWithResponse("wburvjxxjnspydpt", "oenkouknvudwti", com.azure.core.util.Context.NONE)

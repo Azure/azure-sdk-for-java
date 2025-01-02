@@ -20,7 +20,8 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous FarmBeatsClient type. */
 @ServiceClient(builder = SeasonsClientBuilder.class)
 public final class SeasonsClient {
-    @Generated private final SeasonsAsyncClient client;
+    @Generated
+    private final SeasonsAsyncClient client;
 
     /**
      * Initializes an instance of SeasonsClient class.
@@ -202,8 +203,8 @@ public final class SeasonsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
-            String seasonId, BinaryData season, RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateWithResponse(String seasonId, BinaryData season,
+        RequestOptions requestOptions) {
         return this.client.createOrUpdateWithResponse(seasonId, season, requestOptions).block();
     }
 

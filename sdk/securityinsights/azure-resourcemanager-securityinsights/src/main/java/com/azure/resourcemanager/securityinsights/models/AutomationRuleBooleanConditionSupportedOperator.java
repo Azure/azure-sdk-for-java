@@ -5,32 +5,45 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AutomationRuleBooleanConditionSupportedOperator. */
+/**
+ * Defines values for AutomationRuleBooleanConditionSupportedOperator.
+ */
 public final class AutomationRuleBooleanConditionSupportedOperator
     extends ExpandableStringEnum<AutomationRuleBooleanConditionSupportedOperator> {
-    /** Static value And for AutomationRuleBooleanConditionSupportedOperator. */
+    /**
+     * Static value And for AutomationRuleBooleanConditionSupportedOperator.
+     */
     public static final AutomationRuleBooleanConditionSupportedOperator AND = fromString("And");
 
-    /** Static value Or for AutomationRuleBooleanConditionSupportedOperator. */
+    /**
+     * Static value Or for AutomationRuleBooleanConditionSupportedOperator.
+     */
     public static final AutomationRuleBooleanConditionSupportedOperator OR = fromString("Or");
 
     /**
+     * Creates a new instance of AutomationRuleBooleanConditionSupportedOperator value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AutomationRuleBooleanConditionSupportedOperator() {
+    }
+
+    /**
      * Creates or finds a AutomationRuleBooleanConditionSupportedOperator from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AutomationRuleBooleanConditionSupportedOperator.
      */
-    @JsonCreator
     public static AutomationRuleBooleanConditionSupportedOperator fromString(String name) {
         return fromString(name, AutomationRuleBooleanConditionSupportedOperator.class);
     }
 
     /**
      * Gets known AutomationRuleBooleanConditionSupportedOperator values.
-     *
+     * 
      * @return known AutomationRuleBooleanConditionSupportedOperator values.
      */
     public static Collection<AutomationRuleBooleanConditionSupportedOperator> values() {

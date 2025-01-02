@@ -6,114 +6,112 @@ package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.JobNavigation;
 import com.azure.resourcemanager.automation.models.UpdateConfigurationNavigation;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-/** Software update configuration machine run properties. */
+/**
+ * Software update configuration machine run properties.
+ */
 @Fluent
-public final class UpdateConfigurationMachineRunProperties {
+public final class UpdateConfigurationMachineRunProperties
+    implements JsonSerializable<UpdateConfigurationMachineRunProperties> {
     /*
      * name of the updated computer
      */
-    @JsonProperty(value = "targetComputer", access = JsonProperty.Access.WRITE_ONLY)
     private String targetComputer;
 
     /*
      * type of the updated computer.
      */
-    @JsonProperty(value = "targetComputerType", access = JsonProperty.Access.WRITE_ONLY)
     private String targetComputerType;
 
     /*
      * software update configuration triggered this run
      */
-    @JsonProperty(value = "softwareUpdateConfiguration")
     private UpdateConfigurationNavigation softwareUpdateConfiguration;
 
     /*
      * Status of the software update configuration machine run.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /*
      * Operating system target of the software update configuration triggered this run
      */
-    @JsonProperty(value = "osType", access = JsonProperty.Access.WRITE_ONLY)
     private String osType;
 
     /*
      * correlation id of the software update configuration machine run
      */
-    @JsonProperty(value = "correlationId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID correlationId;
 
     /*
      * source computer id of the software update configuration machine run
      */
-    @JsonProperty(value = "sourceComputerId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID sourceComputerId;
 
     /*
      * Start time of the software update configuration machine run.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * End time of the software update configuration machine run.
      */
-    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTime;
 
     /*
      * configured duration for the software update configuration run.
      */
-    @JsonProperty(value = "configuredDuration", access = JsonProperty.Access.WRITE_ONLY)
     private String configuredDuration;
 
     /*
      * Job associated with the software update configuration machine run
      */
-    @JsonProperty(value = "job")
     private JobNavigation job;
 
     /*
      * Creation time of the resource, which only appears in the response.
      */
-    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /*
      * createdBy property, which only appears in the response.
      */
-    @JsonProperty(value = "createdBy", access = JsonProperty.Access.WRITE_ONLY)
     private String createdBy;
 
     /*
      * Last time resource was modified, which only appears in the response.
      */
-    @JsonProperty(value = "lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedTime;
 
     /*
      * lastModifiedBy property, which only appears in the response.
      */
-    @JsonProperty(value = "lastModifiedBy", access = JsonProperty.Access.WRITE_ONLY)
     private String lastModifiedBy;
 
     /*
      * Details of provisioning error
      */
-    @JsonProperty(value = "error")
     private ManagementError error;
 
     /**
+     * Creates an instance of UpdateConfigurationMachineRunProperties class.
+     */
+    public UpdateConfigurationMachineRunProperties() {
+    }
+
+    /**
      * Get the targetComputer property: name of the updated computer.
-     *
+     * 
      * @return the targetComputer value.
      */
     public String targetComputer() {
@@ -122,7 +120,7 @@ public final class UpdateConfigurationMachineRunProperties {
 
     /**
      * Get the targetComputerType property: type of the updated computer.
-     *
+     * 
      * @return the targetComputerType value.
      */
     public String targetComputerType() {
@@ -131,7 +129,7 @@ public final class UpdateConfigurationMachineRunProperties {
 
     /**
      * Get the softwareUpdateConfiguration property: software update configuration triggered this run.
-     *
+     * 
      * @return the softwareUpdateConfiguration value.
      */
     public UpdateConfigurationNavigation softwareUpdateConfiguration() {
@@ -140,19 +138,19 @@ public final class UpdateConfigurationMachineRunProperties {
 
     /**
      * Set the softwareUpdateConfiguration property: software update configuration triggered this run.
-     *
+     * 
      * @param softwareUpdateConfiguration the softwareUpdateConfiguration value to set.
      * @return the UpdateConfigurationMachineRunProperties object itself.
      */
-    public UpdateConfigurationMachineRunProperties withSoftwareUpdateConfiguration(
-        UpdateConfigurationNavigation softwareUpdateConfiguration) {
+    public UpdateConfigurationMachineRunProperties
+        withSoftwareUpdateConfiguration(UpdateConfigurationNavigation softwareUpdateConfiguration) {
         this.softwareUpdateConfiguration = softwareUpdateConfiguration;
         return this;
     }
 
     /**
      * Get the status property: Status of the software update configuration machine run.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -161,7 +159,7 @@ public final class UpdateConfigurationMachineRunProperties {
 
     /**
      * Get the osType property: Operating system target of the software update configuration triggered this run.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -170,7 +168,7 @@ public final class UpdateConfigurationMachineRunProperties {
 
     /**
      * Get the correlationId property: correlation id of the software update configuration machine run.
-     *
+     * 
      * @return the correlationId value.
      */
     public UUID correlationId() {
@@ -179,7 +177,7 @@ public final class UpdateConfigurationMachineRunProperties {
 
     /**
      * Get the sourceComputerId property: source computer id of the software update configuration machine run.
-     *
+     * 
      * @return the sourceComputerId value.
      */
     public UUID sourceComputerId() {
@@ -188,7 +186,7 @@ public final class UpdateConfigurationMachineRunProperties {
 
     /**
      * Get the startTime property: Start time of the software update configuration machine run.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -197,7 +195,7 @@ public final class UpdateConfigurationMachineRunProperties {
 
     /**
      * Get the endTime property: End time of the software update configuration machine run.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -206,7 +204,7 @@ public final class UpdateConfigurationMachineRunProperties {
 
     /**
      * Get the configuredDuration property: configured duration for the software update configuration run.
-     *
+     * 
      * @return the configuredDuration value.
      */
     public String configuredDuration() {
@@ -215,7 +213,7 @@ public final class UpdateConfigurationMachineRunProperties {
 
     /**
      * Get the job property: Job associated with the software update configuration machine run.
-     *
+     * 
      * @return the job value.
      */
     public JobNavigation job() {
@@ -224,7 +222,7 @@ public final class UpdateConfigurationMachineRunProperties {
 
     /**
      * Set the job property: Job associated with the software update configuration machine run.
-     *
+     * 
      * @param job the job value to set.
      * @return the UpdateConfigurationMachineRunProperties object itself.
      */
@@ -235,7 +233,7 @@ public final class UpdateConfigurationMachineRunProperties {
 
     /**
      * Get the creationTime property: Creation time of the resource, which only appears in the response.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -244,7 +242,7 @@ public final class UpdateConfigurationMachineRunProperties {
 
     /**
      * Get the createdBy property: createdBy property, which only appears in the response.
-     *
+     * 
      * @return the createdBy value.
      */
     public String createdBy() {
@@ -253,7 +251,7 @@ public final class UpdateConfigurationMachineRunProperties {
 
     /**
      * Get the lastModifiedTime property: Last time resource was modified, which only appears in the response.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -262,7 +260,7 @@ public final class UpdateConfigurationMachineRunProperties {
 
     /**
      * Get the lastModifiedBy property: lastModifiedBy property, which only appears in the response.
-     *
+     * 
      * @return the lastModifiedBy value.
      */
     public String lastModifiedBy() {
@@ -271,7 +269,7 @@ public final class UpdateConfigurationMachineRunProperties {
 
     /**
      * Get the error property: Details of provisioning error.
-     *
+     * 
      * @return the error value.
      */
     public ManagementError error() {
@@ -280,7 +278,7 @@ public final class UpdateConfigurationMachineRunProperties {
 
     /**
      * Set the error property: Details of provisioning error.
-     *
+     * 
      * @param error the error value to set.
      * @return the UpdateConfigurationMachineRunProperties object itself.
      */
@@ -291,7 +289,7 @@ public final class UpdateConfigurationMachineRunProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -301,5 +299,81 @@ public final class UpdateConfigurationMachineRunProperties {
         if (job() != null) {
             job().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("softwareUpdateConfiguration", this.softwareUpdateConfiguration);
+        jsonWriter.writeJsonField("job", this.job);
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateConfigurationMachineRunProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateConfigurationMachineRunProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateConfigurationMachineRunProperties.
+     */
+    public static UpdateConfigurationMachineRunProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateConfigurationMachineRunProperties deserializedUpdateConfigurationMachineRunProperties
+                = new UpdateConfigurationMachineRunProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetComputer".equals(fieldName)) {
+                    deserializedUpdateConfigurationMachineRunProperties.targetComputer = reader.getString();
+                } else if ("targetComputerType".equals(fieldName)) {
+                    deserializedUpdateConfigurationMachineRunProperties.targetComputerType = reader.getString();
+                } else if ("softwareUpdateConfiguration".equals(fieldName)) {
+                    deserializedUpdateConfigurationMachineRunProperties.softwareUpdateConfiguration
+                        = UpdateConfigurationNavigation.fromJson(reader);
+                } else if ("status".equals(fieldName)) {
+                    deserializedUpdateConfigurationMachineRunProperties.status = reader.getString();
+                } else if ("osType".equals(fieldName)) {
+                    deserializedUpdateConfigurationMachineRunProperties.osType = reader.getString();
+                } else if ("correlationId".equals(fieldName)) {
+                    deserializedUpdateConfigurationMachineRunProperties.correlationId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("sourceComputerId".equals(fieldName)) {
+                    deserializedUpdateConfigurationMachineRunProperties.sourceComputerId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedUpdateConfigurationMachineRunProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedUpdateConfigurationMachineRunProperties.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("configuredDuration".equals(fieldName)) {
+                    deserializedUpdateConfigurationMachineRunProperties.configuredDuration = reader.getString();
+                } else if ("job".equals(fieldName)) {
+                    deserializedUpdateConfigurationMachineRunProperties.job = JobNavigation.fromJson(reader);
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedUpdateConfigurationMachineRunProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("createdBy".equals(fieldName)) {
+                    deserializedUpdateConfigurationMachineRunProperties.createdBy = reader.getString();
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedUpdateConfigurationMachineRunProperties.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedUpdateConfigurationMachineRunProperties.lastModifiedBy = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedUpdateConfigurationMachineRunProperties.error = ManagementError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateConfigurationMachineRunProperties;
+        });
     }
 }

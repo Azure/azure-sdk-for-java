@@ -20,24 +20,23 @@ public final class SourceControlsImpl implements SourceControls {
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    public SourceControlsImpl(
-        SourceControlsClient innerClient,
+    public SourceControlsImpl(SourceControlsClient innerClient,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Repo> listRepositories(String resourceGroupName, String workspaceName, RepoType repoType) {
-        PagedIterable<RepoInner> inner =
-            this.serviceClient().listRepositories(resourceGroupName, workspaceName, repoType);
-        return Utils.mapPage(inner, inner1 -> new RepoImpl(inner1, this.manager()));
+        PagedIterable<RepoInner> inner
+            = this.serviceClient().listRepositories(resourceGroupName, workspaceName, repoType);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RepoImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Repo> listRepositories(
-        String resourceGroupName, String workspaceName, RepoType repoType, Context context) {
-        PagedIterable<RepoInner> inner =
-            this.serviceClient().listRepositories(resourceGroupName, workspaceName, repoType, context);
-        return Utils.mapPage(inner, inner1 -> new RepoImpl(inner1, this.manager()));
+    public PagedIterable<Repo> listRepositories(String resourceGroupName, String workspaceName, RepoType repoType,
+        Context context) {
+        PagedIterable<RepoInner> inner
+            = this.serviceClient().listRepositories(resourceGroupName, workspaceName, repoType, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RepoImpl(inner1, this.manager()));
     }
 
     private SourceControlsClient serviceClient() {

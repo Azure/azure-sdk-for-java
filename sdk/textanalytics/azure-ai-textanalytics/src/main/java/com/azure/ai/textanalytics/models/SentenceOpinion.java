@@ -16,18 +16,18 @@ public final class SentenceOpinion {
     private IterableStream<AssessmentSentiment> assessments;
 
     static {
-        SentenceOpinionPropertiesHelper.setAccessor(
-            new SentenceOpinionPropertiesHelper.SentenceOpinionAccessor() {
-                @Override
-                public void setTarget(SentenceOpinion sentenceOpinion, TargetSentiment target) {
-                    sentenceOpinion.setTarget(target);
-                }
+        SentenceOpinionPropertiesHelper.setAccessor(new SentenceOpinionPropertiesHelper.SentenceOpinionAccessor() {
+            @Override
+            public void setTarget(SentenceOpinion sentenceOpinion, TargetSentiment target) {
+                sentenceOpinion.setTarget(target);
+            }
 
-                @Override
-                public void setAssessments(SentenceOpinion sentenceOpinion, IterableStream<AssessmentSentiment> assessments) {
-                    sentenceOpinion.setAssessments(assessments);
-                }
-            });
+            @Override
+            public void setAssessments(SentenceOpinion sentenceOpinion,
+                IterableStream<AssessmentSentiment> assessments) {
+                sentenceOpinion.setAssessments(assessments);
+            }
+        });
     }
 
     /**

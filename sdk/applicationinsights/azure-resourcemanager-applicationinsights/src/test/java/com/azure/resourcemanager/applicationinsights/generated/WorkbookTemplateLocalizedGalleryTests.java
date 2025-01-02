@@ -13,43 +13,45 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkbookTemplateLocalizedGalleryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkbookTemplateLocalizedGallery model =
-            BinaryData
-                .fromString(
-                    "{\"templateData\":\"datakvugfhzovawjvzun\",\"galleries\":[{\"name\":\"nnprn\",\"category\":\"peilpjzuaejxdu\",\"type\":\"skzbb\",\"order\":538368150,\"resourceType\":\"mv\"},{\"name\":\"kgpwoz\",\"category\":\"kfpbs\",\"type\":\"ofd\",\"order\":519560547,\"resourceType\":\"sd\"}]}")
-                .toObject(WorkbookTemplateLocalizedGallery.class);
-        Assertions.assertEquals("nnprn", model.galleries().get(0).name());
-        Assertions.assertEquals("peilpjzuaejxdu", model.galleries().get(0).category());
-        Assertions.assertEquals("skzbb", model.galleries().get(0).type());
-        Assertions.assertEquals(538368150, model.galleries().get(0).order());
-        Assertions.assertEquals("mv", model.galleries().get(0).resourceType());
+        WorkbookTemplateLocalizedGallery model = BinaryData.fromString(
+            "{\"templateData\":\"datazapvhelx\",\"galleries\":[{\"name\":\"yat\",\"category\":\"ckcb\",\"type\":\"ejrjxgciqibrho\",\"order\":1487162894,\"resourceType\":\"qrhzoymibmrqyib\"},{\"name\":\"wfluszdt\",\"category\":\"rkwofyyvoqa\",\"type\":\"iexpbtgiwbwo\",\"order\":1119495390,\"resourceType\":\"shrtdtkcnqxwb\"},{\"name\":\"kulpiujwaasi\",\"category\":\"i\",\"type\":\"byuqerpqlp\",\"order\":1285990077,\"resourceType\":\"iuqgbdbutauv\"},{\"name\":\"tkuwhhmhykojo\",\"category\":\"fnndl\",\"type\":\"chkoymkcdyh\",\"order\":1262943142,\"resourceType\":\"pwdreqnovvqf\"}]}")
+            .toObject(WorkbookTemplateLocalizedGallery.class);
+        Assertions.assertEquals("yat", model.galleries().get(0).name());
+        Assertions.assertEquals("ckcb", model.galleries().get(0).category());
+        Assertions.assertEquals("ejrjxgciqibrho", model.galleries().get(0).type());
+        Assertions.assertEquals(1487162894, model.galleries().get(0).order());
+        Assertions.assertEquals("qrhzoymibmrqyib", model.galleries().get(0).resourceType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkbookTemplateLocalizedGallery model =
-            new WorkbookTemplateLocalizedGallery()
-                .withTemplateData("datakvugfhzovawjvzun")
-                .withGalleries(
-                    Arrays
-                        .asList(
-                            new WorkbookTemplateGallery()
-                                .withName("nnprn")
-                                .withCategory("peilpjzuaejxdu")
-                                .withType("skzbb")
-                                .withOrder(538368150)
-                                .withResourceType("mv"),
-                            new WorkbookTemplateGallery()
-                                .withName("kgpwoz")
-                                .withCategory("kfpbs")
-                                .withType("ofd")
-                                .withOrder(519560547)
-                                .withResourceType("sd")));
+        WorkbookTemplateLocalizedGallery model = new WorkbookTemplateLocalizedGallery().withTemplateData("datazapvhelx")
+            .withGalleries(Arrays.asList(
+                new WorkbookTemplateGallery().withName("yat")
+                    .withCategory("ckcb")
+                    .withType("ejrjxgciqibrho")
+                    .withOrder(1487162894)
+                    .withResourceType("qrhzoymibmrqyib"),
+                new WorkbookTemplateGallery().withName("wfluszdt")
+                    .withCategory("rkwofyyvoqa")
+                    .withType("iexpbtgiwbwo")
+                    .withOrder(1119495390)
+                    .withResourceType("shrtdtkcnqxwb"),
+                new WorkbookTemplateGallery().withName("kulpiujwaasi")
+                    .withCategory("i")
+                    .withType("byuqerpqlp")
+                    .withOrder(1285990077)
+                    .withResourceType("iuqgbdbutauv"),
+                new WorkbookTemplateGallery().withName("tkuwhhmhykojo")
+                    .withCategory("fnndl")
+                    .withType("chkoymkcdyh")
+                    .withOrder(1262943142)
+                    .withResourceType("pwdreqnovvqf")));
         model = BinaryData.fromObject(model).toObject(WorkbookTemplateLocalizedGallery.class);
-        Assertions.assertEquals("nnprn", model.galleries().get(0).name());
-        Assertions.assertEquals("peilpjzuaejxdu", model.galleries().get(0).category());
-        Assertions.assertEquals("skzbb", model.galleries().get(0).type());
-        Assertions.assertEquals(538368150, model.galleries().get(0).order());
-        Assertions.assertEquals("mv", model.galleries().get(0).resourceType());
+        Assertions.assertEquals("yat", model.galleries().get(0).name());
+        Assertions.assertEquals("ckcb", model.galleries().get(0).category());
+        Assertions.assertEquals("ejrjxgciqibrho", model.galleries().get(0).type());
+        Assertions.assertEquals(1487162894, model.galleries().get(0).order());
+        Assertions.assertEquals("qrhzoymibmrqyib", model.galleries().get(0).resourceType());
     }
 }

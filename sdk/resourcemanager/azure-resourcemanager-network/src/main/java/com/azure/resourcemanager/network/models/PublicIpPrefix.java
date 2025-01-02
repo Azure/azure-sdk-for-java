@@ -17,11 +17,8 @@ import java.util.List;
 import java.util.Set;
 
 /** Type representing PublicIpPrefix. */
-public interface PublicIpPrefix
-    extends GroupableResource<NetworkManager, PublicIpPrefixInner>,
-        Refreshable<PublicIpPrefix>,
-        Updatable<PublicIpPrefix.Update>,
-        UpdatableWithTags<PublicIpPrefix> {
+public interface PublicIpPrefix extends GroupableResource<NetworkManager, PublicIpPrefixInner>,
+    Refreshable<PublicIpPrefix>, Updatable<PublicIpPrefix.Update>, UpdatableWithTags<PublicIpPrefix> {
     /** @return the ipPrefix value. */
     String ipPrefix();
 
@@ -125,14 +122,9 @@ public interface PublicIpPrefix
          * The stage of the definition which contains all the minimum required inputs for the resource to be created
          * (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Creatable<PublicIpPrefix>,
-                Resource.DefinitionWithTags<WithCreate>,
-                DefinitionStages.WithIpTags,
-                DefinitionStages.WithPrefixLength,
-                DefinitionStages.WithPublicIpAddressVersion,
-                DefinitionStages.WithSku,
-                DefinitionStages.WithAvailabilityZone {
+        interface WithCreate extends Creatable<PublicIpPrefix>, Resource.DefinitionWithTags<WithCreate>,
+            DefinitionStages.WithIpTags, DefinitionStages.WithPrefixLength, DefinitionStages.WithPublicIpAddressVersion,
+            DefinitionStages.WithSku, DefinitionStages.WithAvailabilityZone {
         }
     }
 

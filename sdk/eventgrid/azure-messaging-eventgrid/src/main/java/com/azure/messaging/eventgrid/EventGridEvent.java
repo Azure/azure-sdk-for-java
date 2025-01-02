@@ -199,8 +199,8 @@ public final class EventGridEvent implements JsonSerializable<EventGridEvent> {
             List<com.azure.messaging.eventgrid.implementation.models.EventGridEvent> internalEvents;
             JsonToken token = jsonReader.nextToken();
             if (token == JsonToken.START_ARRAY) {
-                internalEvents = jsonReader.readArray(
-                    com.azure.messaging.eventgrid.implementation.models.EventGridEvent::fromJson);
+                internalEvents = jsonReader
+                    .readArray(com.azure.messaging.eventgrid.implementation.models.EventGridEvent::fromJson);
             } else {
                 internalEvents = Collections.singletonList(
                     com.azure.messaging.eventgrid.implementation.models.EventGridEvent.fromJson(jsonReader));
@@ -208,10 +208,12 @@ public final class EventGridEvent implements JsonSerializable<EventGridEvent> {
 
             List<EventGridEvent> events = new ArrayList<>();
             for (int i = 0; i < internalEvents.size(); i++) {
-                com.azure.messaging.eventgrid.implementation.models.EventGridEvent internalEvent =
-                    internalEvents.get(i);
-                if (internalEvent.getSubject() == null || internalEvent.getEventType() == null
-                    || internalEvent.getData() == null || internalEvent.getDataVersion() == null) {
+                com.azure.messaging.eventgrid.implementation.models.EventGridEvent internalEvent
+                    = internalEvents.get(i);
+                if (internalEvent.getSubject() == null
+                    || internalEvent.getEventType() == null
+                    || internalEvent.getData() == null
+                    || internalEvent.getDataVersion() == null) {
                     List<String> nullAttributes = new ArrayList<>();
                     if (internalEvent.getSubject() == null) {
                         nullAttributes.add("'subject'");
@@ -228,19 +230,17 @@ public final class EventGridEvent implements JsonSerializable<EventGridEvent> {
                     throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                         "'subject', 'eventType', 'data' and 'dataVersion' are mandatory attributes for an "
                             + "EventGridEvent. This Json string doesn't have "
-                            + CoreUtils.stringJoin(",", nullAttributes)
-                            + " for the object at index " + i
+                            + CoreUtils.stringJoin(",", nullAttributes) + " for the object at index " + i
                             + ". Please make sure the input Json string has the required attributes"));
                 }
                 events.add(new EventGridEvent(internalEvent));
             }
             return events;
         } catch (IOException ex) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("The input parameter isn't a JSON string.",
-                ex.getCause()));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("The input parameter isn't a JSON string.", ex.getCause()));
         }
     }
-
 
     /**
      * Get the unique id associated with this event.

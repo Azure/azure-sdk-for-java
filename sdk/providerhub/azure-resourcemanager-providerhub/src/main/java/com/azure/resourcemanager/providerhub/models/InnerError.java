@@ -5,40 +5,43 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** Inner error containing list of errors. */
+/**
+ * Inner error containing list of errors.
+ */
 @Fluent
-public class InnerError {
+public class InnerError implements JsonSerializable<InnerError> {
     /*
      * Specific error code than was provided by the containing error.
      */
-    @JsonProperty(value = "code", access = JsonProperty.Access.WRITE_ONLY)
     private String code;
 
     /*
      * Object containing more specific information than the current object about the error.
      */
-    @JsonProperty(value = "innerError", access = JsonProperty.Access.WRITE_ONLY)
     private Object innerError;
 
     /*
      * Inner error containing list of errors.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of InnerError class. */
+    /**
+     * Creates an instance of InnerError class.
+     */
     public InnerError() {
     }
 
     /**
      * Get the code property: Specific error code than was provided by the containing error.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -46,8 +49,19 @@ public class InnerError {
     }
 
     /**
+     * Set the code property: Specific error code than was provided by the containing error.
+     * 
+     * @param code the code value to set.
+     * @return the InnerError object itself.
+     */
+    InnerError withCode(String code) {
+        this.code = code;
+        return this;
+    }
+
+    /**
      * Get the innerError property: Object containing more specific information than the current object about the error.
-     *
+     * 
      * @return the innerError value.
      */
     public Object innerError() {
@@ -55,18 +69,28 @@ public class InnerError {
     }
 
     /**
+     * Set the innerError property: Object containing more specific information than the current object about the error.
+     * 
+     * @param innerError the innerError value to set.
+     * @return the InnerError object itself.
+     */
+    InnerError withInnerError(Object innerError) {
+        this.innerError = innerError;
+        return this;
+    }
+
+    /**
      * Get the additionalProperties property: Inner error containing list of errors.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: Inner error containing list of errors.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the InnerError object itself.
      */
@@ -75,19 +99,59 @@ public class InnerError {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InnerError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InnerError if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the InnerError.
+     */
+    public static InnerError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InnerError deserializedInnerError = new InnerError();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedInnerError.code = reader.getString();
+                } else if ("innerError".equals(fieldName)) {
+                    deserializedInnerError.innerError = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedInnerError.additionalProperties = additionalProperties;
+
+            return deserializedInnerError;
+        });
     }
 }

@@ -24,9 +24,9 @@ public class TestUtil {
      * @return the TokenCredential
      */
     public static TokenCredential getIdentityTestCredential(InterceptorManager interceptorManager,
-                                                            HttpClient httpClient) {
+        HttpClient httpClient) {
         if (interceptorManager.isPlaybackMode()) {
-            return  new MockTokenCredential();
+            return new MockTokenCredential();
         }
 
         Configuration config = Configuration.getGlobalConfiguration();
@@ -35,7 +35,6 @@ public class TestUtil {
             .addLast(new EnvironmentCredentialBuilder().httpClient(httpClient).build())
             .addLast(new AzureCliCredentialBuilder().httpClient(httpClient).build())
             .addLast(new AzureDeveloperCliCredentialBuilder().httpClient(httpClient).build());
-
 
         String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
         String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
@@ -47,8 +46,7 @@ public class TestUtil {
             && !CoreUtils.isNullOrEmpty(tenantId)
             && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
 
-            builder.addLast(new AzurePipelinesCredentialBuilder()
-                .systemAccessToken(systemAccessToken)
+            builder.addLast(new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
                 .clientId(clientId)
                 .tenantId(tenantId)
                 .httpClient(httpClient)

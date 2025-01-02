@@ -8,6 +8,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.fluent.models.CertificateInner;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /**
  * An immutable client-side representation of Certificate.
@@ -40,6 +41,13 @@ public interface Certificate {
      * @return the etag value.
      */
     String etag();
+
+    /**
+     * Gets the tags property: The tags of the resource.
+     * 
+     * @return the tags value.
+     */
+    Map<String, String> tags();
 
     /**
      * Gets the provisioningState property: The provisioningState property.
@@ -86,18 +94,15 @@ public interface Certificate {
     DeleteCertificateError deleteCertificateError();
 
     /**
-     * Gets the thumbprintAlgorithm property: The algorithm of the certificate thumbprint.
-     * 
-     * This must match the first portion of the certificate name. Currently required to be 'SHA1'.
+     * Gets the thumbprintAlgorithm property: This must match the first portion of the certificate name. Currently
+     * required to be 'SHA1'.
      * 
      * @return the thumbprintAlgorithm value.
      */
     String thumbprintAlgorithm();
 
     /**
-     * Gets the thumbprint property: The thumbprint of the certificate.
-     * 
-     * This must match the thumbprint from the name.
+     * Gets the thumbprint property: This must match the thumbprint from the name.
      * 
      * @return the thumbprint value.
      */
@@ -159,9 +164,9 @@ public interface Certificate {
          * The stage of the Certificate definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithPassword, DefinitionStages.WithThumbprintAlgorithm,
-            DefinitionStages.WithThumbprint, DefinitionStages.WithFormat, DefinitionStages.WithIfMatch,
-            DefinitionStages.WithIfNoneMatch {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithPassword,
+            DefinitionStages.WithThumbprintAlgorithm, DefinitionStages.WithThumbprint, DefinitionStages.WithFormat,
+            DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
             /**
              * Executes the create request.
              * 
@@ -179,17 +184,26 @@ public interface Certificate {
         }
 
         /**
+         * The stage of the Certificate definition allowing to specify tags.
+         */
+        interface WithTags {
+            /**
+             * Specifies the tags property: The tags of the resource..
+             * 
+             * @param tags The tags of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withTags(Map<String, String> tags);
+        }
+
+        /**
          * The stage of the Certificate definition allowing to specify password.
          */
         interface WithPassword {
             /**
-             * Specifies the password property: The password to access the certificate's private key.
+             * Specifies the password property: This must not be specified if the certificate format is Cer..
              * 
-             * This must not be specified if the certificate format is Cer..
-             * 
-             * @param password The password to access the certificate's private key.
-             * 
-             * This must not be specified if the certificate format is Cer.
+             * @param password This must not be specified if the certificate format is Cer.
              * @return the next definition stage.
              */
             WithCreate withPassword(String password);
@@ -200,13 +214,11 @@ public interface Certificate {
          */
         interface WithThumbprintAlgorithm {
             /**
-             * Specifies the thumbprintAlgorithm property: The algorithm of the certificate thumbprint.
+             * Specifies the thumbprintAlgorithm property: This must match the first portion of the certificate name.
+             * Currently required to be 'SHA1'..
              * 
-             * This must match the first portion of the certificate name. Currently required to be 'SHA1'..
-             * 
-             * @param thumbprintAlgorithm The algorithm of the certificate thumbprint.
-             * 
-             * This must match the first portion of the certificate name. Currently required to be 'SHA1'.
+             * @param thumbprintAlgorithm This must match the first portion of the certificate name. Currently required
+             * to be 'SHA1'.
              * @return the next definition stage.
              */
             WithCreate withThumbprintAlgorithm(String thumbprintAlgorithm);
@@ -217,13 +229,9 @@ public interface Certificate {
          */
         interface WithThumbprint {
             /**
-             * Specifies the thumbprint property: The thumbprint of the certificate.
+             * Specifies the thumbprint property: This must match the thumbprint from the name..
              * 
-             * This must match the thumbprint from the name..
-             * 
-             * @param thumbprint The thumbprint of the certificate.
-             * 
-             * This must match the thumbprint from the name.
+             * @param thumbprint This must match the thumbprint from the name.
              * @return the next definition stage.
              */
             WithCreate withThumbprint(String thumbprint);
@@ -286,8 +294,9 @@ public interface Certificate {
     /**
      * The template for Certificate update.
      */
-    interface Update extends UpdateStages.WithData, UpdateStages.WithPassword, UpdateStages.WithThumbprintAlgorithm,
-        UpdateStages.WithThumbprint, UpdateStages.WithFormat, UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithData, UpdateStages.WithPassword,
+        UpdateStages.WithThumbprintAlgorithm, UpdateStages.WithThumbprint, UpdateStages.WithFormat,
+        UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          * 
@@ -309,17 +318,26 @@ public interface Certificate {
      */
     interface UpdateStages {
         /**
+         * The stage of the Certificate update allowing to specify tags.
+         */
+        interface WithTags {
+            /**
+             * Specifies the tags property: The tags of the resource..
+             * 
+             * @param tags The tags of the resource.
+             * @return the next definition stage.
+             */
+            Update withTags(Map<String, String> tags);
+        }
+
+        /**
          * The stage of the Certificate update allowing to specify data.
          */
         interface WithData {
             /**
-             * Specifies the data property: The base64-encoded contents of the certificate.
+             * Specifies the data property: The maximum size is 10KB..
              * 
-             * The maximum size is 10KB..
-             * 
-             * @param data The base64-encoded contents of the certificate.
-             * 
-             * The maximum size is 10KB.
+             * @param data The maximum size is 10KB.
              * @return the next definition stage.
              */
             Update withData(String data);
@@ -330,13 +348,9 @@ public interface Certificate {
          */
         interface WithPassword {
             /**
-             * Specifies the password property: The password to access the certificate's private key.
+             * Specifies the password property: This must not be specified if the certificate format is Cer..
              * 
-             * This must not be specified if the certificate format is Cer..
-             * 
-             * @param password The password to access the certificate's private key.
-             * 
-             * This must not be specified if the certificate format is Cer.
+             * @param password This must not be specified if the certificate format is Cer.
              * @return the next definition stage.
              */
             Update withPassword(String password);
@@ -347,13 +361,11 @@ public interface Certificate {
          */
         interface WithThumbprintAlgorithm {
             /**
-             * Specifies the thumbprintAlgorithm property: The algorithm of the certificate thumbprint.
+             * Specifies the thumbprintAlgorithm property: This must match the first portion of the certificate name.
+             * Currently required to be 'SHA1'..
              * 
-             * This must match the first portion of the certificate name. Currently required to be 'SHA1'..
-             * 
-             * @param thumbprintAlgorithm The algorithm of the certificate thumbprint.
-             * 
-             * This must match the first portion of the certificate name. Currently required to be 'SHA1'.
+             * @param thumbprintAlgorithm This must match the first portion of the certificate name. Currently required
+             * to be 'SHA1'.
              * @return the next definition stage.
              */
             Update withThumbprintAlgorithm(String thumbprintAlgorithm);
@@ -364,13 +376,9 @@ public interface Certificate {
          */
         interface WithThumbprint {
             /**
-             * Specifies the thumbprint property: The thumbprint of the certificate.
+             * Specifies the thumbprint property: This must match the thumbprint from the name..
              * 
-             * This must match the thumbprint from the name..
-             * 
-             * @param thumbprint The thumbprint of the certificate.
-             * 
-             * This must match the thumbprint from the name.
+             * @param thumbprint This must match the thumbprint from the name.
              * @return the next definition stage.
              */
             Update withThumbprint(String thumbprint);

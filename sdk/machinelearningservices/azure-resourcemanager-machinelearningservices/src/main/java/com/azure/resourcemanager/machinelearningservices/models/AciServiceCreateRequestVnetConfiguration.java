@@ -11,7 +11,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /** The virtual network configuration. */
 @Immutable
 public final class AciServiceCreateRequestVnetConfiguration extends VnetConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AciServiceCreateRequestVnetConfiguration.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AciServiceCreateRequestVnetConfiguration.class);
 
     /** {@inheritDoc} */
     @Override

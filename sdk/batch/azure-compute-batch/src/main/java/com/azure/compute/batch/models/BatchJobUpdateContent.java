@@ -287,6 +287,7 @@ public final class BatchJobUpdateContent implements JsonSerializable<BatchJobUpd
         jsonWriter.writeStringField("onAllTasksComplete",
             this.onAllTasksComplete == null ? null : this.onAllTasksComplete.toString());
         jsonWriter.writeArrayField("metadata", this.metadata, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("networkConfiguration", this.networkConfiguration);
         return jsonWriter.writeEndObject();
     }
 
@@ -321,11 +322,42 @@ public final class BatchJobUpdateContent implements JsonSerializable<BatchJobUpd
                 } else if ("metadata".equals(fieldName)) {
                     List<MetadataItem> metadata = reader.readArray(reader1 -> MetadataItem.fromJson(reader1));
                     deserializedBatchJobUpdateContent.metadata = metadata;
+                } else if ("networkConfiguration".equals(fieldName)) {
+                    deserializedBatchJobUpdateContent.networkConfiguration
+                        = BatchJobNetworkConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedBatchJobUpdateContent;
         });
+    }
+
+    /*
+     * The network configuration for the Job.
+     */
+    @Generated
+    private BatchJobNetworkConfiguration networkConfiguration;
+
+    /**
+     * Get the networkConfiguration property: The network configuration for the Job.
+     *
+     * @return the networkConfiguration value.
+     */
+    @Generated
+    public BatchJobNetworkConfiguration getNetworkConfiguration() {
+        return this.networkConfiguration;
+    }
+
+    /**
+     * Set the networkConfiguration property: The network configuration for the Job.
+     *
+     * @param networkConfiguration the networkConfiguration value to set.
+     * @return the BatchJobUpdateContent object itself.
+     */
+    @Generated
+    public BatchJobUpdateContent setNetworkConfiguration(BatchJobNetworkConfiguration networkConfiguration) {
+        this.networkConfiguration = networkConfiguration;
+        return this;
     }
 }

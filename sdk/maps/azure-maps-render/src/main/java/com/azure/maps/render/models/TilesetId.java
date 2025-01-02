@@ -83,25 +83,27 @@ public final class TilesetId extends ExpandableStringEnum<TilesetId> {
     public static final TilesetId MICROSOFT_BASE_HYBRID_DARKGREY = fromString("microsoft.base.hybrid.darkgrey");
 
     /**
-     * A combination of satellite and aerial imagery. Only available in S1 pricing SKU.&lt;br&gt;
+     * A combination of satellite or aerial imagery. Only available in S1 and G2 pricing SKU.&lt;br&gt;
      * 
-     * Supports zoom levels 1 through 19. Format: raster (jpeg).
+     * Supports zoom levels 1 through 19. Format: raster (png).
      */
     public static final TilesetId MICROSOFT_IMAGERY = fromString("microsoft.imagery");
 
     /**
-     * Weather radar tiles. Latest weather radar images including areas of rain, snow, ice and mixed conditions. Please
-     * see [coverage information](https://aka.ms/AzureMapsWeatherCoverage) for Azure Maps Weather service. To learn more
-     * about the Radar data, please see [Weather concepts](https://aka.ms/AzureMapsWeatherConcepts).&lt;br&gt;
+     * Weather radar tiles. Latest weather radar images including areas of rain, snow, ice and mixed conditions. For
+     * more information on the Azure Maps Weather service coverage, see [Azure Maps weather services
+     * coverage](/azure/azure-maps/weather-coverage). For more information on Radar data, see [Weather services in Azure
+     * Maps](/azure/azure-maps/weather-services-concepts#radar-images).
      * 
      * Supports zoom levels 0 through 15. Format: raster (png).
      */
     public static final TilesetId MICROSOFT_WEATHER_RADAR_MAIN = fromString("microsoft.weather.radar.main");
 
     /**
-     * Weather infrared tiles. Latest Infrared Satellite images shows clouds by their temperature. Please see [coverage
-     * information](https://aka.ms/AzureMapsWeatherCoverage) for Azure Maps Weather service. To learn more about the
-     * returned Satellite data, please see [Weather concepts](https://aka.ms/AzureMapsWeatherConcepts).&lt;br&gt;
+     * Weather infrared tiles. Latest Infrared Satellite images shows clouds by their temperature. For more information,
+     * see [Azure Maps weather services coverage](/azure/azure-maps/weather-coverage). For more information about the
+     * satellite data returned, see [Weather services in Azure
+     * Maps](https://learn.microsoft.com/azure/azure-maps/weather-services-concepts#satellite-images).
      * 
      * Supports zoom levels 0 through 15. Format: raster (png).
      */

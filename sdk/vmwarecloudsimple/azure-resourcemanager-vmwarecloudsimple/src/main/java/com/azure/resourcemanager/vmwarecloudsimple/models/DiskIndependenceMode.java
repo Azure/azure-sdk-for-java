@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Disk's independence mode type. */
+/**
+ * Disk's independence mode type.
+ */
 public enum DiskIndependenceMode {
-    /** Enum value persistent. */
+    /**
+     * Enum value persistent.
+     */
     PERSISTENT("persistent"),
 
-    /** Enum value independent_persistent. */
+    /**
+     * Enum value independent_persistent.
+     */
     INDEPENDENT_PERSISTENT("independent_persistent"),
 
-    /** Enum value independent_nonpersistent. */
+    /**
+     * Enum value independent_nonpersistent.
+     */
     INDEPENDENT_NONPERSISTENT("independent_nonpersistent");
 
-    /** The actual serialized value for a DiskIndependenceMode instance. */
+    /**
+     * The actual serialized value for a DiskIndependenceMode instance.
+     */
     private final String value;
 
     DiskIndependenceMode(String value) {
@@ -27,11 +34,10 @@ public enum DiskIndependenceMode {
 
     /**
      * Parses a serialized value to a DiskIndependenceMode instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed DiskIndependenceMode object, or null if unable to parse.
      */
-    @JsonCreator
     public static DiskIndependenceMode fromString(String value) {
         if (value == null) {
             return null;
@@ -45,8 +51,9 @@ public enum DiskIndependenceMode {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

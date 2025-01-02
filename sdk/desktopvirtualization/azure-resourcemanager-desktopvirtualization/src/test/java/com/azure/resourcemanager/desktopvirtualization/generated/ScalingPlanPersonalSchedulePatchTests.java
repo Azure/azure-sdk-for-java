@@ -17,103 +17,100 @@ import org.junit.jupiter.api.Assertions;
 public final class ScalingPlanPersonalSchedulePatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScalingPlanPersonalSchedulePatch model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"daysOfWeek\":[\"Wednesday\",\"Tuesday\"],\"rampUpStartTime\":{\"hour\":256415791,\"minute\":1905459835},\"rampUpAutoStartHosts\":\"All\",\"rampUpStartVMOnConnect\":\"Enable\",\"rampUpActionOnDisconnect\":\"Hibernate\",\"rampUpMinutesToWaitOnDisconnect\":258725864,\"rampUpActionOnLogoff\":\"Hibernate\",\"rampUpMinutesToWaitOnLogoff\":1042702068,\"peakStartTime\":{\"hour\":1688847935,\"minute\":1314959549},\"peakStartVMOnConnect\":\"Disable\",\"peakActionOnDisconnect\":\"Hibernate\",\"peakMinutesToWaitOnDisconnect\":928593835,\"peakActionOnLogoff\":\"Hibernate\",\"peakMinutesToWaitOnLogoff\":2022160914,\"rampDownStartTime\":{\"hour\":1631327314,\"minute\":1757404890},\"rampDownStartVMOnConnect\":\"Enable\",\"rampDownActionOnDisconnect\":\"None\",\"rampDownMinutesToWaitOnDisconnect\":43385515,\"rampDownActionOnLogoff\":\"Hibernate\",\"rampDownMinutesToWaitOnLogoff\":928990245,\"offPeakStartTime\":{\"hour\":1261594790,\"minute\":1493412527},\"offPeakStartVMOnConnect\":\"Disable\",\"offPeakActionOnDisconnect\":\"Deallocate\",\"offPeakMinutesToWaitOnDisconnect\":1076611714,\"offPeakActionOnLogoff\":\"Deallocate\",\"offPeakMinutesToWaitOnLogoff\":76309450}}")
-                .toObject(ScalingPlanPersonalSchedulePatch.class);
-        Assertions.assertEquals(DayOfWeek.WEDNESDAY, model.daysOfWeek().get(0));
-        Assertions.assertEquals(256415791, model.rampUpStartTime().hour());
-        Assertions.assertEquals(1905459835, model.rampUpStartTime().minute());
-        Assertions.assertEquals(StartupBehavior.ALL, model.rampUpAutoStartHosts());
+        ScalingPlanPersonalSchedulePatch model = BinaryData.fromString(
+            "{\"properties\":{\"daysOfWeek\":[\"Saturday\"],\"rampUpStartTime\":{\"hour\":1584904008,\"minute\":1427716289},\"rampUpAutoStartHosts\":\"None\",\"rampUpStartVMOnConnect\":\"Enable\",\"rampUpActionOnDisconnect\":\"Hibernate\",\"rampUpMinutesToWaitOnDisconnect\":1238517729,\"rampUpActionOnLogoff\":\"Hibernate\",\"rampUpMinutesToWaitOnLogoff\":918393543,\"peakStartTime\":{\"hour\":1615397265,\"minute\":1712324120},\"peakStartVMOnConnect\":\"Enable\",\"peakActionOnDisconnect\":\"Deallocate\",\"peakMinutesToWaitOnDisconnect\":889157097,\"peakActionOnLogoff\":\"None\",\"peakMinutesToWaitOnLogoff\":270052165,\"rampDownStartTime\":{\"hour\":1108910411,\"minute\":1300588551},\"rampDownStartVMOnConnect\":\"Enable\",\"rampDownActionOnDisconnect\":\"Hibernate\",\"rampDownMinutesToWaitOnDisconnect\":1297199271,\"rampDownActionOnLogoff\":\"Deallocate\",\"rampDownMinutesToWaitOnLogoff\":585310107,\"offPeakStartTime\":{\"hour\":1282949861,\"minute\":245335843},\"offPeakStartVMOnConnect\":\"Enable\",\"offPeakActionOnDisconnect\":\"None\",\"offPeakMinutesToWaitOnDisconnect\":57076299,\"offPeakActionOnLogoff\":\"Hibernate\",\"offPeakMinutesToWaitOnLogoff\":220721528}}")
+            .toObject(ScalingPlanPersonalSchedulePatch.class);
+        Assertions.assertEquals(DayOfWeek.SATURDAY, model.daysOfWeek().get(0));
+        Assertions.assertEquals(1584904008, model.rampUpStartTime().hour());
+        Assertions.assertEquals(1427716289, model.rampUpStartTime().minute());
+        Assertions.assertEquals(StartupBehavior.NONE, model.rampUpAutoStartHosts());
         Assertions.assertEquals(SetStartVMOnConnect.ENABLE, model.rampUpStartVMOnConnect());
         Assertions.assertEquals(SessionHandlingOperation.HIBERNATE, model.rampUpActionOnDisconnect());
-        Assertions.assertEquals(258725864, model.rampUpMinutesToWaitOnDisconnect());
+        Assertions.assertEquals(1238517729, model.rampUpMinutesToWaitOnDisconnect());
         Assertions.assertEquals(SessionHandlingOperation.HIBERNATE, model.rampUpActionOnLogoff());
-        Assertions.assertEquals(1042702068, model.rampUpMinutesToWaitOnLogoff());
-        Assertions.assertEquals(1688847935, model.peakStartTime().hour());
-        Assertions.assertEquals(1314959549, model.peakStartTime().minute());
-        Assertions.assertEquals(SetStartVMOnConnect.DISABLE, model.peakStartVMOnConnect());
-        Assertions.assertEquals(SessionHandlingOperation.HIBERNATE, model.peakActionOnDisconnect());
-        Assertions.assertEquals(928593835, model.peakMinutesToWaitOnDisconnect());
-        Assertions.assertEquals(SessionHandlingOperation.HIBERNATE, model.peakActionOnLogoff());
-        Assertions.assertEquals(2022160914, model.peakMinutesToWaitOnLogoff());
-        Assertions.assertEquals(1631327314, model.rampDownStartTime().hour());
-        Assertions.assertEquals(1757404890, model.rampDownStartTime().minute());
+        Assertions.assertEquals(918393543, model.rampUpMinutesToWaitOnLogoff());
+        Assertions.assertEquals(1615397265, model.peakStartTime().hour());
+        Assertions.assertEquals(1712324120, model.peakStartTime().minute());
+        Assertions.assertEquals(SetStartVMOnConnect.ENABLE, model.peakStartVMOnConnect());
+        Assertions.assertEquals(SessionHandlingOperation.DEALLOCATE, model.peakActionOnDisconnect());
+        Assertions.assertEquals(889157097, model.peakMinutesToWaitOnDisconnect());
+        Assertions.assertEquals(SessionHandlingOperation.NONE, model.peakActionOnLogoff());
+        Assertions.assertEquals(270052165, model.peakMinutesToWaitOnLogoff());
+        Assertions.assertEquals(1108910411, model.rampDownStartTime().hour());
+        Assertions.assertEquals(1300588551, model.rampDownStartTime().minute());
         Assertions.assertEquals(SetStartVMOnConnect.ENABLE, model.rampDownStartVMOnConnect());
-        Assertions.assertEquals(SessionHandlingOperation.NONE, model.rampDownActionOnDisconnect());
-        Assertions.assertEquals(43385515, model.rampDownMinutesToWaitOnDisconnect());
-        Assertions.assertEquals(SessionHandlingOperation.HIBERNATE, model.rampDownActionOnLogoff());
-        Assertions.assertEquals(928990245, model.rampDownMinutesToWaitOnLogoff());
-        Assertions.assertEquals(1261594790, model.offPeakStartTime().hour());
-        Assertions.assertEquals(1493412527, model.offPeakStartTime().minute());
-        Assertions.assertEquals(SetStartVMOnConnect.DISABLE, model.offPeakStartVMOnConnect());
-        Assertions.assertEquals(SessionHandlingOperation.DEALLOCATE, model.offPeakActionOnDisconnect());
-        Assertions.assertEquals(1076611714, model.offPeakMinutesToWaitOnDisconnect());
-        Assertions.assertEquals(SessionHandlingOperation.DEALLOCATE, model.offPeakActionOnLogoff());
-        Assertions.assertEquals(76309450, model.offPeakMinutesToWaitOnLogoff());
+        Assertions.assertEquals(SessionHandlingOperation.HIBERNATE, model.rampDownActionOnDisconnect());
+        Assertions.assertEquals(1297199271, model.rampDownMinutesToWaitOnDisconnect());
+        Assertions.assertEquals(SessionHandlingOperation.DEALLOCATE, model.rampDownActionOnLogoff());
+        Assertions.assertEquals(585310107, model.rampDownMinutesToWaitOnLogoff());
+        Assertions.assertEquals(1282949861, model.offPeakStartTime().hour());
+        Assertions.assertEquals(245335843, model.offPeakStartTime().minute());
+        Assertions.assertEquals(SetStartVMOnConnect.ENABLE, model.offPeakStartVMOnConnect());
+        Assertions.assertEquals(SessionHandlingOperation.NONE, model.offPeakActionOnDisconnect());
+        Assertions.assertEquals(57076299, model.offPeakMinutesToWaitOnDisconnect());
+        Assertions.assertEquals(SessionHandlingOperation.HIBERNATE, model.offPeakActionOnLogoff());
+        Assertions.assertEquals(220721528, model.offPeakMinutesToWaitOnLogoff());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScalingPlanPersonalSchedulePatch model =
-            new ScalingPlanPersonalSchedulePatch()
-                .withDaysOfWeek(Arrays.asList(DayOfWeek.WEDNESDAY, DayOfWeek.TUESDAY))
-                .withRampUpStartTime(new Time().withHour(256415791).withMinute(1905459835))
-                .withRampUpAutoStartHosts(StartupBehavior.ALL)
+        ScalingPlanPersonalSchedulePatch model
+            = new ScalingPlanPersonalSchedulePatch().withDaysOfWeek(Arrays.asList(DayOfWeek.SATURDAY))
+                .withRampUpStartTime(new Time().withHour(1584904008).withMinute(1427716289))
+                .withRampUpAutoStartHosts(StartupBehavior.NONE)
                 .withRampUpStartVMOnConnect(SetStartVMOnConnect.ENABLE)
                 .withRampUpActionOnDisconnect(SessionHandlingOperation.HIBERNATE)
-                .withRampUpMinutesToWaitOnDisconnect(258725864)
+                .withRampUpMinutesToWaitOnDisconnect(1238517729)
                 .withRampUpActionOnLogoff(SessionHandlingOperation.HIBERNATE)
-                .withRampUpMinutesToWaitOnLogoff(1042702068)
-                .withPeakStartTime(new Time().withHour(1688847935).withMinute(1314959549))
-                .withPeakStartVMOnConnect(SetStartVMOnConnect.DISABLE)
-                .withPeakActionOnDisconnect(SessionHandlingOperation.HIBERNATE)
-                .withPeakMinutesToWaitOnDisconnect(928593835)
-                .withPeakActionOnLogoff(SessionHandlingOperation.HIBERNATE)
-                .withPeakMinutesToWaitOnLogoff(2022160914)
-                .withRampDownStartTime(new Time().withHour(1631327314).withMinute(1757404890))
+                .withRampUpMinutesToWaitOnLogoff(918393543)
+                .withPeakStartTime(new Time().withHour(1615397265).withMinute(1712324120))
+                .withPeakStartVMOnConnect(SetStartVMOnConnect.ENABLE)
+                .withPeakActionOnDisconnect(SessionHandlingOperation.DEALLOCATE)
+                .withPeakMinutesToWaitOnDisconnect(889157097)
+                .withPeakActionOnLogoff(SessionHandlingOperation.NONE)
+                .withPeakMinutesToWaitOnLogoff(270052165)
+                .withRampDownStartTime(new Time().withHour(1108910411).withMinute(1300588551))
                 .withRampDownStartVMOnConnect(SetStartVMOnConnect.ENABLE)
-                .withRampDownActionOnDisconnect(SessionHandlingOperation.NONE)
-                .withRampDownMinutesToWaitOnDisconnect(43385515)
-                .withRampDownActionOnLogoff(SessionHandlingOperation.HIBERNATE)
-                .withRampDownMinutesToWaitOnLogoff(928990245)
-                .withOffPeakStartTime(new Time().withHour(1261594790).withMinute(1493412527))
-                .withOffPeakStartVMOnConnect(SetStartVMOnConnect.DISABLE)
-                .withOffPeakActionOnDisconnect(SessionHandlingOperation.DEALLOCATE)
-                .withOffPeakMinutesToWaitOnDisconnect(1076611714)
-                .withOffPeakActionOnLogoff(SessionHandlingOperation.DEALLOCATE)
-                .withOffPeakMinutesToWaitOnLogoff(76309450);
+                .withRampDownActionOnDisconnect(SessionHandlingOperation.HIBERNATE)
+                .withRampDownMinutesToWaitOnDisconnect(1297199271)
+                .withRampDownActionOnLogoff(SessionHandlingOperation.DEALLOCATE)
+                .withRampDownMinutesToWaitOnLogoff(585310107)
+                .withOffPeakStartTime(new Time().withHour(1282949861).withMinute(245335843))
+                .withOffPeakStartVMOnConnect(SetStartVMOnConnect.ENABLE)
+                .withOffPeakActionOnDisconnect(SessionHandlingOperation.NONE)
+                .withOffPeakMinutesToWaitOnDisconnect(57076299)
+                .withOffPeakActionOnLogoff(SessionHandlingOperation.HIBERNATE)
+                .withOffPeakMinutesToWaitOnLogoff(220721528);
         model = BinaryData.fromObject(model).toObject(ScalingPlanPersonalSchedulePatch.class);
-        Assertions.assertEquals(DayOfWeek.WEDNESDAY, model.daysOfWeek().get(0));
-        Assertions.assertEquals(256415791, model.rampUpStartTime().hour());
-        Assertions.assertEquals(1905459835, model.rampUpStartTime().minute());
-        Assertions.assertEquals(StartupBehavior.ALL, model.rampUpAutoStartHosts());
+        Assertions.assertEquals(DayOfWeek.SATURDAY, model.daysOfWeek().get(0));
+        Assertions.assertEquals(1584904008, model.rampUpStartTime().hour());
+        Assertions.assertEquals(1427716289, model.rampUpStartTime().minute());
+        Assertions.assertEquals(StartupBehavior.NONE, model.rampUpAutoStartHosts());
         Assertions.assertEquals(SetStartVMOnConnect.ENABLE, model.rampUpStartVMOnConnect());
         Assertions.assertEquals(SessionHandlingOperation.HIBERNATE, model.rampUpActionOnDisconnect());
-        Assertions.assertEquals(258725864, model.rampUpMinutesToWaitOnDisconnect());
+        Assertions.assertEquals(1238517729, model.rampUpMinutesToWaitOnDisconnect());
         Assertions.assertEquals(SessionHandlingOperation.HIBERNATE, model.rampUpActionOnLogoff());
-        Assertions.assertEquals(1042702068, model.rampUpMinutesToWaitOnLogoff());
-        Assertions.assertEquals(1688847935, model.peakStartTime().hour());
-        Assertions.assertEquals(1314959549, model.peakStartTime().minute());
-        Assertions.assertEquals(SetStartVMOnConnect.DISABLE, model.peakStartVMOnConnect());
-        Assertions.assertEquals(SessionHandlingOperation.HIBERNATE, model.peakActionOnDisconnect());
-        Assertions.assertEquals(928593835, model.peakMinutesToWaitOnDisconnect());
-        Assertions.assertEquals(SessionHandlingOperation.HIBERNATE, model.peakActionOnLogoff());
-        Assertions.assertEquals(2022160914, model.peakMinutesToWaitOnLogoff());
-        Assertions.assertEquals(1631327314, model.rampDownStartTime().hour());
-        Assertions.assertEquals(1757404890, model.rampDownStartTime().minute());
+        Assertions.assertEquals(918393543, model.rampUpMinutesToWaitOnLogoff());
+        Assertions.assertEquals(1615397265, model.peakStartTime().hour());
+        Assertions.assertEquals(1712324120, model.peakStartTime().minute());
+        Assertions.assertEquals(SetStartVMOnConnect.ENABLE, model.peakStartVMOnConnect());
+        Assertions.assertEquals(SessionHandlingOperation.DEALLOCATE, model.peakActionOnDisconnect());
+        Assertions.assertEquals(889157097, model.peakMinutesToWaitOnDisconnect());
+        Assertions.assertEquals(SessionHandlingOperation.NONE, model.peakActionOnLogoff());
+        Assertions.assertEquals(270052165, model.peakMinutesToWaitOnLogoff());
+        Assertions.assertEquals(1108910411, model.rampDownStartTime().hour());
+        Assertions.assertEquals(1300588551, model.rampDownStartTime().minute());
         Assertions.assertEquals(SetStartVMOnConnect.ENABLE, model.rampDownStartVMOnConnect());
-        Assertions.assertEquals(SessionHandlingOperation.NONE, model.rampDownActionOnDisconnect());
-        Assertions.assertEquals(43385515, model.rampDownMinutesToWaitOnDisconnect());
-        Assertions.assertEquals(SessionHandlingOperation.HIBERNATE, model.rampDownActionOnLogoff());
-        Assertions.assertEquals(928990245, model.rampDownMinutesToWaitOnLogoff());
-        Assertions.assertEquals(1261594790, model.offPeakStartTime().hour());
-        Assertions.assertEquals(1493412527, model.offPeakStartTime().minute());
-        Assertions.assertEquals(SetStartVMOnConnect.DISABLE, model.offPeakStartVMOnConnect());
-        Assertions.assertEquals(SessionHandlingOperation.DEALLOCATE, model.offPeakActionOnDisconnect());
-        Assertions.assertEquals(1076611714, model.offPeakMinutesToWaitOnDisconnect());
-        Assertions.assertEquals(SessionHandlingOperation.DEALLOCATE, model.offPeakActionOnLogoff());
-        Assertions.assertEquals(76309450, model.offPeakMinutesToWaitOnLogoff());
+        Assertions.assertEquals(SessionHandlingOperation.HIBERNATE, model.rampDownActionOnDisconnect());
+        Assertions.assertEquals(1297199271, model.rampDownMinutesToWaitOnDisconnect());
+        Assertions.assertEquals(SessionHandlingOperation.DEALLOCATE, model.rampDownActionOnLogoff());
+        Assertions.assertEquals(585310107, model.rampDownMinutesToWaitOnLogoff());
+        Assertions.assertEquals(1282949861, model.offPeakStartTime().hour());
+        Assertions.assertEquals(245335843, model.offPeakStartTime().minute());
+        Assertions.assertEquals(SetStartVMOnConnect.ENABLE, model.offPeakStartVMOnConnect());
+        Assertions.assertEquals(SessionHandlingOperation.NONE, model.offPeakActionOnDisconnect());
+        Assertions.assertEquals(57076299, model.offPeakMinutesToWaitOnDisconnect());
+        Assertions.assertEquals(SessionHandlingOperation.HIBERNATE, model.offPeakActionOnLogoff());
+        Assertions.assertEquals(220721528, model.offPeakMinutesToWaitOnLogoff());
     }
 }

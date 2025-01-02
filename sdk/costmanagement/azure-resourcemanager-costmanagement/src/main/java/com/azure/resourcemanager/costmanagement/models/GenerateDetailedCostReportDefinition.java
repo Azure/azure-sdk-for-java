@@ -5,52 +5,56 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The definition of a cost detailed report. */
+/**
+ * The definition of a cost detailed report.
+ */
 @Fluent
-public final class GenerateDetailedCostReportDefinition {
+public final class GenerateDetailedCostReportDefinition
+    implements JsonSerializable<GenerateDetailedCostReportDefinition> {
     /*
      * The type of the detailed report. By default ActualCost is provided
      */
-    @JsonProperty(value = "metric")
     private GenerateDetailedCostReportMetricType metric;
 
     /*
      * Has time period for pulling data for the cost detailed report. Can only have one of either timePeriod or
      * invoiceId or billingPeriod parameters. If none provided current month cost is provided.
      */
-    @JsonProperty(value = "timePeriod")
     private GenerateDetailedCostReportTimePeriod timePeriod;
 
     /*
-     * Billing period in YearMonth(e.g. 202008) format. Only for legacy enterprise customers can use this. Can only
-     * have one of either timePeriod or invoiceId or billingPeriod parameters. If none provided current month cost is
+     * Billing period in YearMonth(e.g. 202008) format. Only for legacy enterprise customers can use this. Can only have
+     * one of either timePeriod or invoiceId or billingPeriod parameters. If none provided current month cost is
      * provided.
      */
-    @JsonProperty(value = "billingPeriod")
     private String billingPeriod;
 
     /*
      * Invoice ID for Pay-as-you-go and Microsoft Customer Agreement scopes. Can only have one of either timePeriod or
      * invoiceId or billingPeriod parameters. If none provided current month cost is provided.
      */
-    @JsonProperty(value = "invoiceId")
     private String invoiceId;
 
     /*
      * Customer ID for Microsoft Customer Agreement scopes (Invoice Id is also required for this).
      */
-    @JsonProperty(value = "customerId")
     private String customerId;
 
-    /** Creates an instance of GenerateDetailedCostReportDefinition class. */
+    /**
+     * Creates an instance of GenerateDetailedCostReportDefinition class.
+     */
     public GenerateDetailedCostReportDefinition() {
     }
 
     /**
      * Get the metric property: The type of the detailed report. By default ActualCost is provided.
-     *
+     * 
      * @return the metric value.
      */
     public GenerateDetailedCostReportMetricType metric() {
@@ -59,7 +63,7 @@ public final class GenerateDetailedCostReportDefinition {
 
     /**
      * Set the metric property: The type of the detailed report. By default ActualCost is provided.
-     *
+     * 
      * @param metric the metric value to set.
      * @return the GenerateDetailedCostReportDefinition object itself.
      */
@@ -71,7 +75,7 @@ public final class GenerateDetailedCostReportDefinition {
     /**
      * Get the timePeriod property: Has time period for pulling data for the cost detailed report. Can only have one of
      * either timePeriod or invoiceId or billingPeriod parameters. If none provided current month cost is provided.
-     *
+     * 
      * @return the timePeriod value.
      */
     public GenerateDetailedCostReportTimePeriod timePeriod() {
@@ -81,7 +85,7 @@ public final class GenerateDetailedCostReportDefinition {
     /**
      * Set the timePeriod property: Has time period for pulling data for the cost detailed report. Can only have one of
      * either timePeriod or invoiceId or billingPeriod parameters. If none provided current month cost is provided.
-     *
+     * 
      * @param timePeriod the timePeriod value to set.
      * @return the GenerateDetailedCostReportDefinition object itself.
      */
@@ -94,7 +98,7 @@ public final class GenerateDetailedCostReportDefinition {
      * Get the billingPeriod property: Billing period in YearMonth(e.g. 202008) format. Only for legacy enterprise
      * customers can use this. Can only have one of either timePeriod or invoiceId or billingPeriod parameters. If none
      * provided current month cost is provided.
-     *
+     * 
      * @return the billingPeriod value.
      */
     public String billingPeriod() {
@@ -105,7 +109,7 @@ public final class GenerateDetailedCostReportDefinition {
      * Set the billingPeriod property: Billing period in YearMonth(e.g. 202008) format. Only for legacy enterprise
      * customers can use this. Can only have one of either timePeriod or invoiceId or billingPeriod parameters. If none
      * provided current month cost is provided.
-     *
+     * 
      * @param billingPeriod the billingPeriod value to set.
      * @return the GenerateDetailedCostReportDefinition object itself.
      */
@@ -118,7 +122,7 @@ public final class GenerateDetailedCostReportDefinition {
      * Get the invoiceId property: Invoice ID for Pay-as-you-go and Microsoft Customer Agreement scopes. Can only have
      * one of either timePeriod or invoiceId or billingPeriod parameters. If none provided current month cost is
      * provided.
-     *
+     * 
      * @return the invoiceId value.
      */
     public String invoiceId() {
@@ -129,7 +133,7 @@ public final class GenerateDetailedCostReportDefinition {
      * Set the invoiceId property: Invoice ID for Pay-as-you-go and Microsoft Customer Agreement scopes. Can only have
      * one of either timePeriod or invoiceId or billingPeriod parameters. If none provided current month cost is
      * provided.
-     *
+     * 
      * @param invoiceId the invoiceId value to set.
      * @return the GenerateDetailedCostReportDefinition object itself.
      */
@@ -141,7 +145,7 @@ public final class GenerateDetailedCostReportDefinition {
     /**
      * Get the customerId property: Customer ID for Microsoft Customer Agreement scopes (Invoice Id is also required for
      * this).
-     *
+     * 
      * @return the customerId value.
      */
     public String customerId() {
@@ -151,7 +155,7 @@ public final class GenerateDetailedCostReportDefinition {
     /**
      * Set the customerId property: Customer ID for Microsoft Customer Agreement scopes (Invoice Id is also required for
      * this).
-     *
+     * 
      * @param customerId the customerId value to set.
      * @return the GenerateDetailedCostReportDefinition object itself.
      */
@@ -162,12 +166,63 @@ public final class GenerateDetailedCostReportDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (timePeriod() != null) {
             timePeriod().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("metric", this.metric == null ? null : this.metric.toString());
+        jsonWriter.writeJsonField("timePeriod", this.timePeriod);
+        jsonWriter.writeStringField("billingPeriod", this.billingPeriod);
+        jsonWriter.writeStringField("invoiceId", this.invoiceId);
+        jsonWriter.writeStringField("customerId", this.customerId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GenerateDetailedCostReportDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GenerateDetailedCostReportDefinition if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GenerateDetailedCostReportDefinition.
+     */
+    public static GenerateDetailedCostReportDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GenerateDetailedCostReportDefinition deserializedGenerateDetailedCostReportDefinition
+                = new GenerateDetailedCostReportDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metric".equals(fieldName)) {
+                    deserializedGenerateDetailedCostReportDefinition.metric
+                        = GenerateDetailedCostReportMetricType.fromString(reader.getString());
+                } else if ("timePeriod".equals(fieldName)) {
+                    deserializedGenerateDetailedCostReportDefinition.timePeriod
+                        = GenerateDetailedCostReportTimePeriod.fromJson(reader);
+                } else if ("billingPeriod".equals(fieldName)) {
+                    deserializedGenerateDetailedCostReportDefinition.billingPeriod = reader.getString();
+                } else if ("invoiceId".equals(fieldName)) {
+                    deserializedGenerateDetailedCostReportDefinition.invoiceId = reader.getString();
+                } else if ("customerId".equals(fieldName)) {
+                    deserializedGenerateDetailedCostReportDefinition.customerId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGenerateDetailedCostReportDefinition;
+        });
     }
 }

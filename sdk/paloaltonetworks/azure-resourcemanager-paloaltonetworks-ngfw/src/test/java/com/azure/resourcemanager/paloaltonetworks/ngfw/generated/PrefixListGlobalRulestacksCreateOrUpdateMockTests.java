@@ -46,15 +46,18 @@ public final class PrefixListGlobalRulestacksCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PrefixListGlobalRulestackResource response = manager.prefixListGlobalRulestacks().createOrUpdate("dmxzjijpv",
-            "aurkihcirlde",
-            new PrefixListGlobalRulestackResourceInner().withDescription("rdcoxnbkkj")
-                .withPrefixList(Arrays.asList("urnnqbnqbpiz", "qltgrd")).withEtag("ypxrx").withAuditComment("fihwu"),
-            com.azure.core.util.Context.NONE);
+        PrefixListGlobalRulestackResource response = manager.prefixListGlobalRulestacks()
+            .createOrUpdate("dmxzjijpv", "aurkihcirlde",
+                new PrefixListGlobalRulestackResourceInner().withDescription("rdcoxnbkkj")
+                    .withPrefixList(Arrays.asList("urnnqbnqbpiz", "qltgrd"))
+                    .withEtag("ypxrx")
+                    .withAuditComment("fihwu"),
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("qagnepzwakl", response.description());
         Assertions.assertEquals("sbq", response.prefixList().get(0));

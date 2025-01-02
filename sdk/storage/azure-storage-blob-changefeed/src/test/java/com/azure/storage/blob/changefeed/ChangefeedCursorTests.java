@@ -60,8 +60,7 @@ public class ChangefeedCursorTests {
 
     @Test
     public void toShardCursor() {
-        ChangefeedCursor cursor = new ChangefeedCursor(URL_HOST, END_TIME)
-            .toSegmentCursor(SEGMENT_PATH, null)
+        ChangefeedCursor cursor = new ChangefeedCursor(URL_HOST, END_TIME).toSegmentCursor(SEGMENT_PATH, null)
             .toShardCursor(CURRENT_SHARD_PATH0);
 
         assertEquals(1, cursor.getCursorVersion());
@@ -76,8 +75,7 @@ public class ChangefeedCursorTests {
 
     @Test
     public void toEventCursor() {
-        ChangefeedCursor cursor = new ChangefeedCursor(URL_HOST, END_TIME)
-            .toSegmentCursor(SEGMENT_PATH, null)
+        ChangefeedCursor cursor = new ChangefeedCursor(URL_HOST, END_TIME).toSegmentCursor(SEGMENT_PATH, null)
             .toShardCursor(CURRENT_SHARD_PATH0)
             .toEventCursor(CHUNK0, OFFSET0, INDEX0);
 
@@ -105,7 +103,8 @@ public class ChangefeedCursorTests {
 
         ChangefeedCursor eventCursor0 = shardCursor0.toEventCursor(CHUNK0, OFFSET0, 0);
         ChangefeedCursor eventCursor1 = shardCursor0.toEventCursor(CHUNK0, OFFSET0, 1);
-        ChangefeedCursor eventCursor2 = shardCursor0.toEventCursor(CHUNK1, OFFSET1, 0); /* Make sure it still works across chunks. */
+        ChangefeedCursor eventCursor2
+            = shardCursor0.toEventCursor(CHUNK1, OFFSET1, 0); /* Make sure it still works across chunks. */
 
         ChangefeedCursor shardCursor1 = segmentCursor.toShardCursor(CURRENT_SHARD_PATH1);
 
@@ -257,30 +256,31 @@ public class ChangefeedCursorTests {
 
     @Test
     public void serialize() {
-        List<ShardCursor> shardCursors = Arrays.asList(new ShardCursor(CHUNK0, OFFSET0, INDEX0),
-            new ShardCursor(CHUNK2, OFFSET1, INDEX1));
+        List<ShardCursor> shardCursors
+            = Arrays.asList(new ShardCursor(CHUNK0, OFFSET0, INDEX0), new ShardCursor(CHUNK2, OFFSET1, INDEX1));
         SegmentCursor segmentCursor = new SegmentCursor(SEGMENT_PATH, shardCursors, CURRENT_SHARD_PATH1);
 
         ChangefeedCursor cursor = new ChangefeedCursor(1, URL_HOST, END_TIME, segmentCursor);
 
         assertEquals("{\"CursorVersion\":1,\"UrlHost\":\"testaccount.blob.core.windows.net\","
-                     + "\"EndTime\":\"+999999999-12-31T23:59:59.999999999-18:00\",\"CurrentSegmentCursor\":{"
-                     + "\"ShardCursors\":[{\"CurrentChunkPath\":\"log/00/2020/08/02/2300/00000.avro\",\"BlockOffset\":2434,"
-                     + "\"EventIndex\":2},{\"CurrentChunkPath\":\"log/01/2020/08/02/2300/00000.avro\",\"BlockOffset\":18954,"
-                     + "\"EventIndex\":15}],\"CurrentShardPath\":\"log/01/2020/08/02/2300/\",\"SegmentPath\":\"idx/segments/2020/08/02/2300/meta.json\"}}",
+            + "\"EndTime\":\"+999999999-12-31T23:59:59.999999999-18:00\",\"CurrentSegmentCursor\":{"
+            + "\"ShardCursors\":[{\"CurrentChunkPath\":\"log/00/2020/08/02/2300/00000.avro\",\"BlockOffset\":2434,"
+            + "\"EventIndex\":2},{\"CurrentChunkPath\":\"log/01/2020/08/02/2300/00000.avro\",\"BlockOffset\":18954,"
+            + "\"EventIndex\":15}],\"CurrentShardPath\":\"log/01/2020/08/02/2300/\",\"SegmentPath\":\"idx/segments/2020/08/02/2300/meta.json\"}}",
             cursor.serialize());
     }
 
     @Test
     public void deserialize() {
         String cursor = "{\"CursorVersion\":1,\"UrlHost\":\"testaccount.blob.core.windows.net\","
-                        + "\"EndTime\":\"+999999999-12-31T23:59:59.999999999-18:00\",\"CurrentSegmentCursor\":"
-                        + "{\"ShardCursors\":[{\"CurrentChunkPath\":\"log/00/2020/08/02/2300/00000.avro\","
-                        + "\"BlockOffset\":2434,\"EventIndex\":2},{\"CurrentChunkPath\":\"log/01/2020/08/02/2300/00000.avro\","
-                        + "\"BlockOffset\":18954,\"EventIndex\":15}],\"CurrentShardPath\":\"log/01/2020/08/02/2300/\","
-                        + "\"SegmentPath\":\"idx/segments/2020/08/02/2300/meta.json\"}}";
+            + "\"EndTime\":\"+999999999-12-31T23:59:59.999999999-18:00\",\"CurrentSegmentCursor\":"
+            + "{\"ShardCursors\":[{\"CurrentChunkPath\":\"log/00/2020/08/02/2300/00000.avro\","
+            + "\"BlockOffset\":2434,\"EventIndex\":2},{\"CurrentChunkPath\":\"log/01/2020/08/02/2300/00000.avro\","
+            + "\"BlockOffset\":18954,\"EventIndex\":15}],\"CurrentShardPath\":\"log/01/2020/08/02/2300/\","
+            + "\"SegmentPath\":\"idx/segments/2020/08/02/2300/meta.json\"}}";
 
-        ChangefeedCursor deserialized = ChangefeedCursor.deserialize(cursor, new ClientLogger(ChangefeedCursorTests.class));
+        ChangefeedCursor deserialized
+            = ChangefeedCursor.deserialize(cursor, new ClientLogger(ChangefeedCursorTests.class));
 
         assertEquals(1, deserialized.getCursorVersion());
         assertEquals(URL_HOST, deserialized.getUrlHost());

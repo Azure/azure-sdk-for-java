@@ -7,20 +7,13 @@ package com.azure.resourcemanager.oep.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Operations. */
+/**
+ * Resource collection API of Operations.
+ */
 public interface Operations {
     /**
      * Lists the available operations of Microsoft.OpenEnergyPlatform resource provider.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider.
-     */
-    OperationListResult list();
-
-    /**
-     * Lists the available operations of Microsoft.OpenEnergyPlatform resource provider.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -28,4 +21,13 @@ public interface Operations {
      * @return a list of REST API operations supported by an Azure Resource Provider along with {@link Response}.
      */
     Response<OperationListResult> listWithResponse(Context context);
+
+    /**
+     * Lists the available operations of Microsoft.OpenEnergyPlatform resource provider.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of REST API operations supported by an Azure Resource Provider.
+     */
+    OperationListResult list();
 }

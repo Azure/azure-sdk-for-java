@@ -11,16 +11,19 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.networkcloud.fluent.models.RackInner;
 import com.azure.resourcemanager.networkcloud.models.RackPatchParameters;
 
-/** An instance of this class provides access to all the operations defined in RacksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RacksClient.
+ */
 public interface RacksClient {
     /**
      * List racks in the subscription.
-     *
-     * <p>Get a list of racks in the provided subscription.
-     *
+     * 
+     * Get a list of racks in the provided subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of racks in the provided subscription as paginated response with {@link PagedIterable}.
@@ -30,9 +33,9 @@ public interface RacksClient {
 
     /**
      * List racks in the subscription.
-     *
-     * <p>Get a list of racks in the provided subscription.
-     *
+     * 
+     * Get a list of racks in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -44,9 +47,9 @@ public interface RacksClient {
 
     /**
      * List racks in the resource group.
-     *
-     * <p>Get a list of racks in the provided resource group.
-     *
+     * 
+     * Get a list of racks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -58,9 +61,9 @@ public interface RacksClient {
 
     /**
      * List racks in the resource group.
-     *
-     * <p>Get a list of racks in the provided resource group.
-     *
+     * 
+     * Get a list of racks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -73,9 +76,9 @@ public interface RacksClient {
 
     /**
      * Retrieve the rack.
-     *
-     * <p>Get properties of the provided rack.
-     *
+     * 
+     * Get properties of the provided rack.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param context The context to associate with this operation.
@@ -89,9 +92,9 @@ public interface RacksClient {
 
     /**
      * Retrieve the rack.
-     *
-     * <p>Get properties of the provided rack.
-     *
+     * 
+     * Get properties of the provided rack.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -104,10 +107,10 @@ public interface RacksClient {
 
     /**
      * Create or update the rack.
-     *
-     * <p>Create a new rack or update properties of the existing one. All customer initiated requests will be rejected
-     * as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new rack or update properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param rackParameters The request body.
@@ -115,18 +118,18 @@ public interface RacksClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of rack represents the hardware of the rack and is dependent upon the
-     *     cluster for lifecycle.
+     * cluster for lifecycle.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RackInner>, RackInner> beginCreateOrUpdate(
-        String resourceGroupName, String rackName, RackInner rackParameters);
+    SyncPoller<PollResult<RackInner>, RackInner> beginCreateOrUpdate(String resourceGroupName, String rackName,
+        RackInner rackParameters);
 
     /**
      * Create or update the rack.
-     *
-     * <p>Create a new rack or update properties of the existing one. All customer initiated requests will be rejected
-     * as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new rack or update properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param rackParameters The request body.
@@ -135,18 +138,18 @@ public interface RacksClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of rack represents the hardware of the rack and is dependent upon the
-     *     cluster for lifecycle.
+     * cluster for lifecycle.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RackInner>, RackInner> beginCreateOrUpdate(
-        String resourceGroupName, String rackName, RackInner rackParameters, Context context);
+    SyncPoller<PollResult<RackInner>, RackInner> beginCreateOrUpdate(String resourceGroupName, String rackName,
+        RackInner rackParameters, Context context);
 
     /**
      * Create or update the rack.
-     *
-     * <p>Create a new rack or update properties of the existing one. All customer initiated requests will be rejected
-     * as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new rack or update properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param rackParameters The request body.
@@ -160,10 +163,10 @@ public interface RacksClient {
 
     /**
      * Create or update the rack.
-     *
-     * <p>Create a new rack or update properties of the existing one. All customer initiated requests will be rejected
-     * as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new rack or update properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param rackParameters The request body.
@@ -178,91 +181,95 @@ public interface RacksClient {
 
     /**
      * Delete the rack.
-     *
-     * <p>Delete the provided rack. All customer initiated requests will be rejected as the life cycle of this resource
-     * is managed by the system.
-     *
+     * 
+     * Delete the provided rack.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String rackName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
+        String rackName);
 
     /**
      * Delete the rack.
-     *
-     * <p>Delete the provided rack. All customer initiated requests will be rejected as the life cycle of this resource
-     * is managed by the system.
-     *
+     * 
+     * Delete the provided rack.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String rackName, Context context);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
+        String rackName, Context context);
 
     /**
      * Delete the rack.
-     *
-     * <p>Delete the provided rack. All customer initiated requests will be rejected as the life cycle of this resource
-     * is managed by the system.
-     *
+     * 
+     * Delete the provided rack.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String rackName);
+    OperationStatusResultInner delete(String resourceGroupName, String rackName);
 
     /**
      * Delete the rack.
-     *
-     * <p>Delete the provided rack. All customer initiated requests will be rejected as the life cycle of this resource
-     * is managed by the system.
-     *
+     * 
+     * Delete the provided rack.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String rackName, Context context);
+    OperationStatusResultInner delete(String resourceGroupName, String rackName, Context context);
 
     /**
      * Patch the rack.
-     *
-     * <p>Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
+     * 
+     * Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
      * can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of rack represents the hardware of the rack and is dependent upon the
-     *     cluster for lifecycle.
+     * cluster for lifecycle.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RackInner>, RackInner> beginUpdate(String resourceGroupName, String rackName);
 
     /**
      * Patch the rack.
-     *
-     * <p>Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
+     * 
+     * Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
      * can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param rackUpdateParameters The request body.
@@ -271,18 +278,18 @@ public interface RacksClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of rack represents the hardware of the rack and is dependent upon the
-     *     cluster for lifecycle.
+     * cluster for lifecycle.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RackInner>, RackInner> beginUpdate(
-        String resourceGroupName, String rackName, RackPatchParameters rackUpdateParameters, Context context);
+    SyncPoller<PollResult<RackInner>, RackInner> beginUpdate(String resourceGroupName, String rackName,
+        RackPatchParameters rackUpdateParameters, Context context);
 
     /**
      * Patch the rack.
-     *
-     * <p>Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
+     * 
+     * Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
      * can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -295,10 +302,10 @@ public interface RacksClient {
 
     /**
      * Patch the rack.
-     *
-     * <p>Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
+     * 
+     * Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
      * can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param rackUpdateParameters The request body.
@@ -309,6 +316,6 @@ public interface RacksClient {
      * @return rack represents the hardware of the rack and is dependent upon the cluster for lifecycle.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RackInner update(
-        String resourceGroupName, String rackName, RackPatchParameters rackUpdateParameters, Context context);
+    RackInner update(String resourceGroupName, String rackName, RackPatchParameters rackUpdateParameters,
+        Context context);
 }

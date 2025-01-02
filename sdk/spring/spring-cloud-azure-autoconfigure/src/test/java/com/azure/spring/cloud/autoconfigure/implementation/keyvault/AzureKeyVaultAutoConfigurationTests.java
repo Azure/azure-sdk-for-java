@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.keyvault;
 
+import com.azure.identity.extensions.implementation.template.AzureAuthenticationTemplate;
 import com.azure.security.keyvault.certificates.CertificateAsyncClient;
 import com.azure.security.keyvault.certificates.CertificateClient;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
@@ -18,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,6 +32,7 @@ class AzureKeyVaultAutoConfigurationTests {
     private static final String ENDPOINT = "https:/%s.vault.azure.net/";
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+        .withClassLoader(new FilteredClassLoader(AzureAuthenticationTemplate.class))
         .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
         .withConfiguration(AutoConfigurations.of(AzureKeyVaultCertificateAutoConfiguration.class))
         .withConfiguration(AutoConfigurations.of(AzureKeyVaultSecretAutoConfiguration.class));

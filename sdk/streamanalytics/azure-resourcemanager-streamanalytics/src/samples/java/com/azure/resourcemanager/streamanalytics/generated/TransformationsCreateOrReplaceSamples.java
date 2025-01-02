@@ -19,7 +19,11 @@ public final class TransformationsCreateOrReplaceSamples {
      * @param manager Entry point to StreamAnalyticsManager.
      */
     public static void createATransformation(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.transformations().define("transformation952").withExistingStreamingjob("sjrg4423", "sj8374")
-            .withStreamingUnits(6).withQuery("Select Id, Name from inputtest").create();
+        manager.transformations()
+            .define("transformation952")
+            .withExistingStreamingjob("sjrg4423", "sj8374")
+            .withStreamingUnits(6)
+            .withQuery("Select Id, Name from inputtest")
+            .create();
     }
 }

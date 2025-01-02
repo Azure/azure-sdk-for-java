@@ -6,82 +6,51 @@ package com.azure.resourcemanager.webpubsub.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.webpubsub.WebPubSubManager;
 import com.azure.resourcemanager.webpubsub.models.Replica;
 import com.azure.resourcemanager.webpubsub.models.ResourceSku;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubSkuTier;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class WebPubSubReplicasCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"sku\":{\"name\":\"lwgniiprglvawu\",\"tier\":\"Free\",\"size\":\"fypiv\",\"family\":\"bbjpmcubkmif\",\"capacity\":2127053211},\"properties\":{\"provisioningState\":\"Succeeded\",\"regionEndpointEnabled\":\"phavpmhbrb\",\"resourceStopped\":\"vgovpbbttefjokn\"},\"location\":\"qyzqedikdfrdb\",\"tags\":{\"qlggwfi\":\"rjgeih\",\"mgtvlj\":\"zcxmjpbyep\",\"yfqi\":\"rc\",\"ui\":\"gxhnpomyqwcabv\"},\"id\":\"eeyaswl\",\"name\":\"augmrmfjlr\",\"type\":\"wtoaukhfk\"}";
 
-        String responseStr =
-            "{\"sku\":{\"name\":\"ltxdwhmozu\",\"tier\":\"Standard\",\"size\":\"ln\",\"family\":\"nj\",\"capacity\":1586632226},\"properties\":{\"provisioningState\":\"Succeeded\",\"regionEndpointEnabled\":\"pymwamxqzragp\",\"resourceStopped\":\"phtvdu\"},\"location\":\"jvlej\",\"tags\":{\"updwv\":\"srlzknmzlan\",\"mqrhvthl\":\"phcnzqtpj\",\"xetlgydlhqv\":\"iwdcxsmlzzhzd\"},\"id\":\"n\",\"name\":\"pxy\",\"type\":\"afiqgeaarbgjekg\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        WebPubSubManager manager = WebPubSubManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Replica response = manager.webPubSubReplicas()
+            .define("wkufykhvuhxepm")
+            .withRegion("lrmymyincqlhri")
+            .withExistingWebPubSub("ewbidyvteowxv", "piudeugfsxzecpa")
+            .withTags(mapOf("cgxuugqkctotiowl", "lmiiiovg"))
+            .withSku(new ResourceSku().withName("tznabao").withTier(WebPubSubSkuTier.STANDARD).withCapacity(423835249))
+            .withRegionEndpointEnabled("ds")
+            .withResourceStopped("pemmucfxhik")
+            .create();
 
-        WebPubSubManager manager =
-            WebPubSubManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Replica response =
-            manager
-                .webPubSubReplicas()
-                .define("psfxsf")
-                .withRegion("lfojuidjp")
-                .withExistingWebPubSub("y", "izrzb")
-                .withTags(mapOf("je", "jucejikzoeovvtz", "zkdbqzolx", "jklntikyj", "pcrrk", "zvhqjwtrhtgvg"))
-                .withSku(new ResourceSku().withName("tl").withTier(WebPubSubSkuTier.PREMIUM).withCapacity(764099622))
-                .withRegionEndpointEnabled("mjm")
-                .withResourceStopped("wyzgiblkuj")
-                .create();
-
-        Assertions.assertEquals("jvlej", response.location());
-        Assertions.assertEquals("srlzknmzlan", response.tags().get("updwv"));
-        Assertions.assertEquals("ltxdwhmozu", response.sku().name());
-        Assertions.assertEquals(WebPubSubSkuTier.STANDARD, response.sku().tier());
-        Assertions.assertEquals(1586632226, response.sku().capacity());
-        Assertions.assertEquals("pymwamxqzragp", response.regionEndpointEnabled());
-        Assertions.assertEquals("phtvdu", response.resourceStopped());
+        Assertions.assertEquals("qyzqedikdfrdb", response.location());
+        Assertions.assertEquals("rjgeih", response.tags().get("qlggwfi"));
+        Assertions.assertEquals("lwgniiprglvawu", response.sku().name());
+        Assertions.assertEquals(WebPubSubSkuTier.FREE, response.sku().tier());
+        Assertions.assertEquals(2127053211, response.sku().capacity());
+        Assertions.assertEquals("phavpmhbrb", response.regionEndpointEnabled());
+        Assertions.assertEquals("vgovpbbttefjokn", response.resourceStopped());
     }
 
     // Use "Map.of" if available

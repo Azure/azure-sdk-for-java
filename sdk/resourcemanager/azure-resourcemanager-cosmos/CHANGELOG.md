@@ -1,6 +1,6 @@
 # Release History
 
-## 2.42.0-beta.1 (Unreleased)
+## 2.47.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,66 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.46.0 (2024-12-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-11-15`.
+
+## 2.46.0-beta.1 (2024-12-09)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-12-01-preview`.
+
+## 2.45.0 (2024-11-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.44.1 (2024-11-07)
+
+### Bugs Fixed
+
+- Removed wrong validation on non-required `location` property for some classes.
+
+## 2.44.0 (2024-10-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.43.0 (2024-09-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.43.0-beta.1 (2024-09-13)
+
+### Other Changes
+
+### Dependency Updates
+
+- Updated `api-version` to `2024-09-01-preview`.
+
+## 2.42.0 (2024-08-23)
+
+### Other Changes
+
+- Replaced `Jackson` with `azure-json` for serialization/deserialization.
 
 ## 2.41.0 (2024-07-25)
 

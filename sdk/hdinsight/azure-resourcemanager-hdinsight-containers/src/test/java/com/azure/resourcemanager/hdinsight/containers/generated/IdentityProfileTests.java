@@ -12,20 +12,22 @@ public final class IdentityProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IdentityProfile model = BinaryData
-            .fromString("{\"msiResourceId\":\"dphlxaolt\",\"msiClientId\":\"qtrgqjbpfzfsinzg\",\"msiObjectId\":\"f\"}")
+            .fromString(
+                "{\"msiResourceId\":\"yqduujit\",\"msiClientId\":\"jczdzevndh\",\"msiObjectId\":\"rwpdappdsbdkvwrw\"}")
             .toObject(IdentityProfile.class);
-        Assertions.assertEquals("dphlxaolt", model.msiResourceId());
-        Assertions.assertEquals("qtrgqjbpfzfsinzg", model.msiClientId());
-        Assertions.assertEquals("f", model.msiObjectId());
+        Assertions.assertEquals("yqduujit", model.msiResourceId());
+        Assertions.assertEquals("jczdzevndh", model.msiClientId());
+        Assertions.assertEquals("rwpdappdsbdkvwrw", model.msiObjectId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IdentityProfile model = new IdentityProfile().withMsiResourceId("dphlxaolt").withMsiClientId("qtrgqjbpfzfsinzg")
-            .withMsiObjectId("f");
+        IdentityProfile model = new IdentityProfile().withMsiResourceId("yqduujit")
+            .withMsiClientId("jczdzevndh")
+            .withMsiObjectId("rwpdappdsbdkvwrw");
         model = BinaryData.fromObject(model).toObject(IdentityProfile.class);
-        Assertions.assertEquals("dphlxaolt", model.msiResourceId());
-        Assertions.assertEquals("qtrgqjbpfzfsinzg", model.msiClientId());
-        Assertions.assertEquals("f", model.msiObjectId());
+        Assertions.assertEquals("yqduujit", model.msiResourceId());
+        Assertions.assertEquals("jczdzevndh", model.msiClientId());
+        Assertions.assertEquals("rwpdappdsbdkvwrw", model.msiObjectId());
     }
 }

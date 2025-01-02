@@ -10,11 +10,9 @@ import com.azure.resourcemanager.databoxedge.models.UpdateDownloadProgress;
 public final class UpdateDownloadProgressTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateDownloadProgress model =
-            BinaryData
-                .fromString(
-                    "{\"downloadPhase\":\"Unknown\",\"percentComplete\":511745945,\"totalBytesToDownload\":1.6931489022846913,\"totalBytesDownloaded\":62.02590646369739,\"numberOfUpdatesToDownload\":1190455395,\"numberOfUpdatesDownloaded\":63743502}")
-                .toObject(UpdateDownloadProgress.class);
+        UpdateDownloadProgress model = BinaryData.fromString(
+            "{\"downloadPhase\":\"Downloading\",\"percentComplete\":333094369,\"totalBytesToDownload\":51.71375541406348,\"totalBytesDownloaded\":82.08569552569966,\"numberOfUpdatesToDownload\":1340454664,\"numberOfUpdatesDownloaded\":45967354}")
+            .toObject(UpdateDownloadProgress.class);
     }
 
     @org.junit.jupiter.api.Test

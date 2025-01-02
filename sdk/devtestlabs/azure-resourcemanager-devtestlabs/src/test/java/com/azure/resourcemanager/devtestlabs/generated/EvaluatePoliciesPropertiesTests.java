@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class EvaluatePoliciesPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EvaluatePoliciesProperties model =
-            BinaryData
-                .fromString(
-                    "{\"factName\":\"gsj\",\"factData\":\"nwqjnoba\",\"valueOffset\":\"hdd\",\"userObjectId\":\"acegfnmntf\"}")
-                .toObject(EvaluatePoliciesProperties.class);
+        EvaluatePoliciesProperties model = BinaryData.fromString(
+            "{\"factName\":\"gsj\",\"factData\":\"nwqjnoba\",\"valueOffset\":\"hdd\",\"userObjectId\":\"acegfnmntf\"}")
+            .toObject(EvaluatePoliciesProperties.class);
         Assertions.assertEquals("gsj", model.factName());
         Assertions.assertEquals("nwqjnoba", model.factData());
         Assertions.assertEquals("hdd", model.valueOffset());
@@ -24,12 +22,10 @@ public final class EvaluatePoliciesPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EvaluatePoliciesProperties model =
-            new EvaluatePoliciesProperties()
-                .withFactName("gsj")
-                .withFactData("nwqjnoba")
-                .withValueOffset("hdd")
-                .withUserObjectId("acegfnmntf");
+        EvaluatePoliciesProperties model = new EvaluatePoliciesProperties().withFactName("gsj")
+            .withFactData("nwqjnoba")
+            .withValueOffset("hdd")
+            .withUserObjectId("acegfnmntf");
         model = BinaryData.fromObject(model).toObject(EvaluatePoliciesProperties.class);
         Assertions.assertEquals("gsj", model.factName());
         Assertions.assertEquals("nwqjnoba", model.factData());

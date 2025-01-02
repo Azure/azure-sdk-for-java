@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.dynatrace.generated;
 
-/** Samples for TagRules Delete. */
+/**
+ * Samples for TagRules Delete.
+ */
 public final class TagRulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/TagRules_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/
+     * TagRules_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: TagRules_Delete_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to DynatraceManager.
      */
     public static void tagRulesDeleteMinimumSetGen(com.azure.resourcemanager.dynatrace.DynatraceManager manager) {
@@ -19,11 +22,12 @@ public final class TagRulesDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/TagRules_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/
+     * TagRules_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: TagRules_Delete_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to DynatraceManager.
      */
     public static void tagRulesDeleteMaximumSetGen(com.azure.resourcemanager.dynatrace.DynatraceManager manager) {

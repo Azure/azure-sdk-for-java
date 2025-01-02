@@ -5,17 +5,21 @@
 package com.azure.resourcemanager.support.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Additional information for technical support ticket.
  */
 @Fluent
-public final class TechnicalTicketDetails {
+public final class TechnicalTicketDetails implements JsonSerializable<TechnicalTicketDetails> {
     /*
-     * This is the resource Id of the Azure service resource (For example: A virtual machine resource or an HDInsight resource) for which the support ticket is created.
+     * This is the resource Id of the Azure service resource (For example: A virtual machine resource or an HDInsight
+     * resource) for which the support ticket is created.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /**
@@ -52,5 +56,41 @@ public final class TechnicalTicketDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TechnicalTicketDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TechnicalTicketDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TechnicalTicketDetails.
+     */
+    public static TechnicalTicketDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TechnicalTicketDetails deserializedTechnicalTicketDetails = new TechnicalTicketDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedTechnicalTicketDetails.resourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTechnicalTicketDetails;
+        });
     }
 }

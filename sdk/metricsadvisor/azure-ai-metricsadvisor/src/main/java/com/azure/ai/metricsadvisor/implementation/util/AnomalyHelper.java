@@ -16,22 +16,33 @@ import java.time.OffsetDateTime;
 public final class AnomalyHelper {
     private static AnomalyAccessor accessor;
 
-    private AnomalyHelper() { }
+    private AnomalyHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link DataPointAnomaly} instance.
      */
     public interface AnomalyAccessor {
         void setDataFeedId(DataPointAnomaly anomaly, String dataFeedId);
+
         void setMetricId(DataPointAnomaly anomaly, String metricId);
+
         void setSeriesKey(DataPointAnomaly anomaly, DimensionKey seriesKey);
+
         void setDetectionConfigurationId(DataPointAnomaly anomaly, String detectionConfigurationId);
+
         void setSeverity(DataPointAnomaly anomaly, AnomalySeverity severity);
+
         void setStatus(DataPointAnomaly anomaly, AnomalyStatus status);
+
         void setTimeStamp(DataPointAnomaly anomaly, OffsetDateTime timeStamp);
+
         void setCreatedTime(DataPointAnomaly anomaly, OffsetDateTime createdTime);
+
         void setModifiedTime(DataPointAnomaly anomaly, OffsetDateTime modifiedTime);
+
         void setValue(DataPointAnomaly anomaly, Double value);
+
         void setExpectedValue(DataPointAnomaly anomaly, Double value);
     }
 

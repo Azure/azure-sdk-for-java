@@ -6,16 +6,14 @@ package com.azure.resourcemanager.storagepool.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.storagepool.StoragePoolManager;
 import com.azure.resourcemanager.storagepool.fluent.models.Sku;
+import com.azure.resourcemanager.storagepool.models.Disk;
 import com.azure.resourcemanager.storagepool.models.DiskPool;
 import com.azure.resourcemanager.storagepool.models.OperationalStatus;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -23,73 +21,48 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DiskPoolsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"sku\":{\"name\":\"wqkdwytisibi\",\"tier\":\"gpikpzimejza\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"availabilityZones\":[\"zxiavrm\",\"zonokixrjqci\",\"gzpfrla\"],\"status\":\"Healthy\",\"disks\":[{\"id\":\"nwoiind\"},{\"id\":\"pwp\"},{\"id\":\"ylwbtlhflsjcdhsz\"}],\"subnetId\":\"jvfbgofelja\",\"additionalCapabilities\":[\"mqhldvrii\",\"ojnal\",\"hfkvtvsexsowuel\"]},\"managedBy\":\"hhahhxvrhmzkwpjg\",\"managedByExtended\":[\"pughftqsxh\",\"xujxuknd\",\"digrjguufzdmsyqt\"],\"systemData\":{\"createdBy\":\"whbotzingamv\",\"createdByType\":\"User\",\"createdAt\":\"2021-06-13T23:33:12Z\",\"lastModifiedBy\":\"qzudphq\",\"lastModifiedByType\":\"Key\",\"lastModifiedAt\":\"2021-09-10T05:23:41Z\"},\"location\":\"fwynwcvtbvkay\",\"tags\":{\"atkzwpcnpw\":\"nvyq\",\"cyajguqf\":\"cjaesgvvs\",\"wzrmuh\":\"wygzlvdnkfxusem\"},\"id\":\"pfcqdp\",\"name\":\"qxqvpsvuoymgc\",\"type\":\"elvezrypq\"}";
 
-        String responseStr =
-            "{\"sku\":{\"name\":\"wznm\",\"tier\":\"iknsorgjh\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"availabilityZones\":[\"dtlwwrlkd\",\"tncvokot\"],\"status\":\"Unknown\",\"disks\":[],\"subnetId\":\"yhgsy\",\"additionalCapabilities\":[\"gjltdtbnnhado\",\"crkvcikhnv\",\"amqgxqquezikyw\",\"gxk\"]},\"managedBy\":\"la\",\"managedByExtended\":[\"lwuip\",\"ccjzkzivgvv\"],\"systemData\":{\"createdBy\":\"y\",\"createdByType\":\"ManagedIdentity\",\"createdAt\":\"2021-11-02T04:27:35Z\",\"lastModifiedBy\":\"xmueed\",\"lastModifiedByType\":\"ManagedIdentity\",\"lastModifiedAt\":\"2021-09-15T00:41:47Z\"},\"location\":\"stkwqqtch\",\"tags\":{\"gpiohgwxrtfudxe\":\"mfmtdaaygdvw\",\"qagvrvm\":\"xg\",\"dblx\":\"pkukghi\"},\"id\":\"wi\",\"name\":\"fnjhfjxwmszkkfo\",\"type\":\"rey\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        StoragePoolManager manager = StoragePoolManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        DiskPool response = manager.diskPools()
+            .define("odacizs")
+            .withRegion("bizikayuhq")
+            .withExistingResourceGroup("djrkvfgbvfvpd")
+            .withSku(new Sku().withName("q").withTier("krribdeibqi"))
+            .withSubnetId("ystawfsdjpvkvp")
+            .withTags(mapOf("bbqwrvtldg", "bs", "vm", "fp"))
+            .withManagedBy("hjjklff")
+            .withManagedByExtended(Arrays.asList("uwqlgzrfzeey"))
+            .withAvailabilityZones(Arrays.asList("ghvxndzwmkrefa"))
+            .withDisks(Arrays.asList(new Disk().withId("orwkqnyh"), new Disk().withId("b"), new Disk().withId("j"),
+                new Disk().withId("jivfxzsjabib")))
+            .withAdditionalCapabilities(Arrays.asList("bkzbzkd", "ncj", "budurgkakmo"))
+            .create();
 
-        StoragePoolManager manager =
-            StoragePoolManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        DiskPool response =
-            manager
-                .diskPools()
-                .define("jxywsuws")
-                .withRegion("yzrpzbchckqqzq")
-                .withExistingResourceGroup("reqnovvqfov")
-                .withSku(new Sku().withName("rsndsytgadgvra").withTier("en"))
-                .withSubnetId("q")
-                .withTags(mapOf("zynkedya", "iysui"))
-                .withManagedBy("qkvpuvksgplsakn")
-                .withManagedByExtended(Arrays.asList("synljphuopxodl", "iyntorzihle", "sjswsrms"))
-                .withAvailabilityZones(Arrays.asList("zar"))
-                .withDisks(Arrays.asList())
-                .withAdditionalCapabilities(Arrays.asList("jfqka", "e", "iipfpubj", "bwwift"))
-                .create();
-
-        Assertions.assertEquals("stkwqqtch", response.location());
-        Assertions.assertEquals("mfmtdaaygdvw", response.tags().get("gpiohgwxrtfudxe"));
-        Assertions.assertEquals("wznm", response.nameSkuName());
-        Assertions.assertEquals("iknsorgjh", response.tier());
-        Assertions.assertEquals("dtlwwrlkd", response.availabilityZones().get(0));
-        Assertions.assertEquals(OperationalStatus.UNKNOWN, response.status());
-        Assertions.assertEquals("yhgsy", response.subnetId());
-        Assertions.assertEquals("gjltdtbnnhado", response.additionalCapabilities().get(0));
+        Assertions.assertEquals("fwynwcvtbvkay", response.location());
+        Assertions.assertEquals("nvyq", response.tags().get("atkzwpcnpw"));
+        Assertions.assertEquals("wqkdwytisibi", response.nameSkuName());
+        Assertions.assertEquals("gpikpzimejza", response.tier());
+        Assertions.assertEquals("zxiavrm", response.availabilityZones().get(0));
+        Assertions.assertEquals(OperationalStatus.HEALTHY, response.status());
+        Assertions.assertEquals("nwoiind", response.disks().get(0).id());
+        Assertions.assertEquals("jvfbgofelja", response.subnetId());
+        Assertions.assertEquals("mqhldvrii", response.additionalCapabilities().get(0));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

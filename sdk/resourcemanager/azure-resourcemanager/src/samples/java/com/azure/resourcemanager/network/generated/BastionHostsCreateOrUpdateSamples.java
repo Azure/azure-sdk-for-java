@@ -17,7 +17,30 @@ import java.util.Arrays;
 public final class BastionHostsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/BastionHostDeveloperPut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/BastionHostPutWithPrivateOnly
+     * .json
+     */
+    /**
+     * Sample code: Create Bastion Host With Private Only.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createBastionHostWithPrivateOnly(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getBastionHosts()
+            .createOrUpdate("rg1", "bastionhosttenant", new BastionHostInner()
+                .withIpConfigurations(Arrays.asList(new BastionHostIpConfiguration()
+                    .withName("bastionHostIpConfiguration")
+                    .withSubnet(new SubResource().withId(
+                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/BastionHostSubnet"))))
+                .withEnablePrivateOnlyBastion(true), com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/BastionHostDeveloperPut.json
      */
     /**
      * Sample code: Create Developer Bastion Host.
@@ -40,7 +63,7 @@ public final class BastionHostsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/BastionHostPut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/BastionHostPut.json
      */
     /**
      * Sample code: Create Bastion Host.
@@ -64,7 +87,7 @@ public final class BastionHostsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/BastionHostPutWithZones.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/BastionHostPutWithZones.json
      */
     /**
      * Sample code: Create Bastion Host With Zones.

@@ -19,8 +19,8 @@ public class EntityPaged<T extends TableEntity> implements PagedResponse<T> {
     private final IterableStream<T> entityStream;
     private final String continuationToken;
 
-    public EntityPaged(Response<TableEntityQueryResponse> httpResponse, List<T> entityList,
-                String nextPartitionKey, String nextRowKey) {
+    public EntityPaged(Response<TableEntityQueryResponse> httpResponse, List<T> entityList, String nextPartitionKey,
+        String nextRowKey) {
         if (nextPartitionKey == null) {
             this.continuationToken = null;
         } else if (nextRowKey == null) {

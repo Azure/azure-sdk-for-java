@@ -6,72 +6,71 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The AS2 agreement mdn settings. */
+/**
+ * The AS2 agreement mdn settings.
+ */
 @Fluent
-public final class AS2MdnSettings {
+public final class AS2MdnSettings implements JsonSerializable<AS2MdnSettings> {
     /*
      * The value indicating whether to send or request a MDN.
      */
-    @JsonProperty(value = "needMDN", required = true)
     private boolean needMdn;
 
     /*
      * The value indicating whether the MDN needs to be signed or not.
      */
-    @JsonProperty(value = "signMDN", required = true)
     private boolean signMdn;
 
     /*
      * The value indicating whether to send the asynchronous MDN.
      */
-    @JsonProperty(value = "sendMDNAsynchronously", required = true)
     private boolean sendMdnAsynchronously;
 
     /*
      * The receipt delivery URL.
      */
-    @JsonProperty(value = "receiptDeliveryUrl")
     private String receiptDeliveryUrl;
 
     /*
      * The disposition notification to header value.
      */
-    @JsonProperty(value = "dispositionNotificationTo")
     private String dispositionNotificationTo;
 
     /*
      * The value indicating whether to sign the outbound MDN if optional.
      */
-    @JsonProperty(value = "signOutboundMDNIfOptional", required = true)
     private boolean signOutboundMdnIfOptional;
 
     /*
      * The MDN text.
      */
-    @JsonProperty(value = "mdnText")
     private String mdnText;
 
     /*
      * The value indicating whether to send inbound MDN to message box.
      */
-    @JsonProperty(value = "sendInboundMDNToMessageBox", required = true)
     private boolean sendInboundMdnToMessageBox;
 
     /*
      * The signing or hashing algorithm.
      */
-    @JsonProperty(value = "micHashingAlgorithm", required = true)
     private HashingAlgorithm micHashingAlgorithm;
 
-    /** Creates an instance of AS2MdnSettings class. */
+    /**
+     * Creates an instance of AS2MdnSettings class.
+     */
     public AS2MdnSettings() {
     }
 
     /**
      * Get the needMdn property: The value indicating whether to send or request a MDN.
-     *
+     * 
      * @return the needMdn value.
      */
     public boolean needMdn() {
@@ -80,7 +79,7 @@ public final class AS2MdnSettings {
 
     /**
      * Set the needMdn property: The value indicating whether to send or request a MDN.
-     *
+     * 
      * @param needMdn the needMdn value to set.
      * @return the AS2MdnSettings object itself.
      */
@@ -91,7 +90,7 @@ public final class AS2MdnSettings {
 
     /**
      * Get the signMdn property: The value indicating whether the MDN needs to be signed or not.
-     *
+     * 
      * @return the signMdn value.
      */
     public boolean signMdn() {
@@ -100,7 +99,7 @@ public final class AS2MdnSettings {
 
     /**
      * Set the signMdn property: The value indicating whether the MDN needs to be signed or not.
-     *
+     * 
      * @param signMdn the signMdn value to set.
      * @return the AS2MdnSettings object itself.
      */
@@ -111,7 +110,7 @@ public final class AS2MdnSettings {
 
     /**
      * Get the sendMdnAsynchronously property: The value indicating whether to send the asynchronous MDN.
-     *
+     * 
      * @return the sendMdnAsynchronously value.
      */
     public boolean sendMdnAsynchronously() {
@@ -120,7 +119,7 @@ public final class AS2MdnSettings {
 
     /**
      * Set the sendMdnAsynchronously property: The value indicating whether to send the asynchronous MDN.
-     *
+     * 
      * @param sendMdnAsynchronously the sendMdnAsynchronously value to set.
      * @return the AS2MdnSettings object itself.
      */
@@ -131,7 +130,7 @@ public final class AS2MdnSettings {
 
     /**
      * Get the receiptDeliveryUrl property: The receipt delivery URL.
-     *
+     * 
      * @return the receiptDeliveryUrl value.
      */
     public String receiptDeliveryUrl() {
@@ -140,7 +139,7 @@ public final class AS2MdnSettings {
 
     /**
      * Set the receiptDeliveryUrl property: The receipt delivery URL.
-     *
+     * 
      * @param receiptDeliveryUrl the receiptDeliveryUrl value to set.
      * @return the AS2MdnSettings object itself.
      */
@@ -151,7 +150,7 @@ public final class AS2MdnSettings {
 
     /**
      * Get the dispositionNotificationTo property: The disposition notification to header value.
-     *
+     * 
      * @return the dispositionNotificationTo value.
      */
     public String dispositionNotificationTo() {
@@ -160,7 +159,7 @@ public final class AS2MdnSettings {
 
     /**
      * Set the dispositionNotificationTo property: The disposition notification to header value.
-     *
+     * 
      * @param dispositionNotificationTo the dispositionNotificationTo value to set.
      * @return the AS2MdnSettings object itself.
      */
@@ -171,7 +170,7 @@ public final class AS2MdnSettings {
 
     /**
      * Get the signOutboundMdnIfOptional property: The value indicating whether to sign the outbound MDN if optional.
-     *
+     * 
      * @return the signOutboundMdnIfOptional value.
      */
     public boolean signOutboundMdnIfOptional() {
@@ -180,7 +179,7 @@ public final class AS2MdnSettings {
 
     /**
      * Set the signOutboundMdnIfOptional property: The value indicating whether to sign the outbound MDN if optional.
-     *
+     * 
      * @param signOutboundMdnIfOptional the signOutboundMdnIfOptional value to set.
      * @return the AS2MdnSettings object itself.
      */
@@ -191,7 +190,7 @@ public final class AS2MdnSettings {
 
     /**
      * Get the mdnText property: The MDN text.
-     *
+     * 
      * @return the mdnText value.
      */
     public String mdnText() {
@@ -200,7 +199,7 @@ public final class AS2MdnSettings {
 
     /**
      * Set the mdnText property: The MDN text.
-     *
+     * 
      * @param mdnText the mdnText value to set.
      * @return the AS2MdnSettings object itself.
      */
@@ -211,7 +210,7 @@ public final class AS2MdnSettings {
 
     /**
      * Get the sendInboundMdnToMessageBox property: The value indicating whether to send inbound MDN to message box.
-     *
+     * 
      * @return the sendInboundMdnToMessageBox value.
      */
     public boolean sendInboundMdnToMessageBox() {
@@ -220,7 +219,7 @@ public final class AS2MdnSettings {
 
     /**
      * Set the sendInboundMdnToMessageBox property: The value indicating whether to send inbound MDN to message box.
-     *
+     * 
      * @param sendInboundMdnToMessageBox the sendInboundMdnToMessageBox value to set.
      * @return the AS2MdnSettings object itself.
      */
@@ -231,7 +230,7 @@ public final class AS2MdnSettings {
 
     /**
      * Get the micHashingAlgorithm property: The signing or hashing algorithm.
-     *
+     * 
      * @return the micHashingAlgorithm value.
      */
     public HashingAlgorithm micHashingAlgorithm() {
@@ -240,7 +239,7 @@ public final class AS2MdnSettings {
 
     /**
      * Set the micHashingAlgorithm property: The signing or hashing algorithm.
-     *
+     * 
      * @param micHashingAlgorithm the micHashingAlgorithm value to set.
      * @return the AS2MdnSettings object itself.
      */
@@ -251,17 +250,78 @@ public final class AS2MdnSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (micHashingAlgorithm() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property micHashingAlgorithm in model AS2MdnSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property micHashingAlgorithm in model AS2MdnSettings"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AS2MdnSettings.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("needMDN", this.needMdn);
+        jsonWriter.writeBooleanField("signMDN", this.signMdn);
+        jsonWriter.writeBooleanField("sendMDNAsynchronously", this.sendMdnAsynchronously);
+        jsonWriter.writeBooleanField("signOutboundMDNIfOptional", this.signOutboundMdnIfOptional);
+        jsonWriter.writeBooleanField("sendInboundMDNToMessageBox", this.sendInboundMdnToMessageBox);
+        jsonWriter.writeStringField("micHashingAlgorithm",
+            this.micHashingAlgorithm == null ? null : this.micHashingAlgorithm.toString());
+        jsonWriter.writeStringField("receiptDeliveryUrl", this.receiptDeliveryUrl);
+        jsonWriter.writeStringField("dispositionNotificationTo", this.dispositionNotificationTo);
+        jsonWriter.writeStringField("mdnText", this.mdnText);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AS2MdnSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AS2MdnSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AS2MdnSettings.
+     */
+    public static AS2MdnSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AS2MdnSettings deserializedAS2MdnSettings = new AS2MdnSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("needMDN".equals(fieldName)) {
+                    deserializedAS2MdnSettings.needMdn = reader.getBoolean();
+                } else if ("signMDN".equals(fieldName)) {
+                    deserializedAS2MdnSettings.signMdn = reader.getBoolean();
+                } else if ("sendMDNAsynchronously".equals(fieldName)) {
+                    deserializedAS2MdnSettings.sendMdnAsynchronously = reader.getBoolean();
+                } else if ("signOutboundMDNIfOptional".equals(fieldName)) {
+                    deserializedAS2MdnSettings.signOutboundMdnIfOptional = reader.getBoolean();
+                } else if ("sendInboundMDNToMessageBox".equals(fieldName)) {
+                    deserializedAS2MdnSettings.sendInboundMdnToMessageBox = reader.getBoolean();
+                } else if ("micHashingAlgorithm".equals(fieldName)) {
+                    deserializedAS2MdnSettings.micHashingAlgorithm = HashingAlgorithm.fromString(reader.getString());
+                } else if ("receiptDeliveryUrl".equals(fieldName)) {
+                    deserializedAS2MdnSettings.receiptDeliveryUrl = reader.getString();
+                } else if ("dispositionNotificationTo".equals(fieldName)) {
+                    deserializedAS2MdnSettings.dispositionNotificationTo = reader.getString();
+                } else if ("mdnText".equals(fieldName)) {
+                    deserializedAS2MdnSettings.mdnText = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAS2MdnSettings;
+        });
+    }
 }

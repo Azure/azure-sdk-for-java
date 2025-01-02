@@ -12,7 +12,7 @@ import com.azure.resourcemanager.privatedns.models.RecordType;
 public final class RecordSetsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetPTRGet.json
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetPTRGet.json
      */
     /**
      * Sample code: GET Private DNS Zone PTR Record Set.
@@ -30,7 +30,7 @@ public final class RecordSetsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetMXGet.json
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetMXGet.json
      */
     /**
      * Sample code: GET Private DNS Zone MX Record Set.
@@ -48,7 +48,7 @@ public final class RecordSetsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetAAAAGet.json
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetAAAAGet.json
      */
     /**
      * Sample code: GET Private DNS Zone AAAA Record Set.
@@ -66,7 +66,7 @@ public final class RecordSetsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetSOAGet.json
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetSOAGet.json
      */
     /**
      * Sample code: GET Private DNS Zone SOA Record Set.
@@ -84,7 +84,7 @@ public final class RecordSetsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetSRVGet.json
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetSRVGet.json
      */
     /**
      * Sample code: GET Private DNS Zone SRV Record Set.
@@ -102,7 +102,7 @@ public final class RecordSetsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetAGet.json
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetAGet.json
      */
     /**
      * Sample code: GET Private DNS Zone A Record Set.
@@ -120,7 +120,7 @@ public final class RecordSetsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetCNAMEGet.json
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetCNAMEGet.json
      */
     /**
      * Sample code: GET Private DNS Zone CNAME Record Set.
@@ -138,7 +138,7 @@ public final class RecordSetsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetTXTGet.json
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetTXTGet.json
      */
     /**
      * Sample code: GET Private DNS Zone TXT Record Set.

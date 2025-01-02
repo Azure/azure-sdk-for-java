@@ -6,11 +6,13 @@ package com.azure.resourcemanager.synapse.models;
 
 import com.azure.resourcemanager.synapse.fluent.models.ReplaceAllFirewallRulesOperationResponseInner;
 
-/** An immutable client-side representation of ReplaceAllFirewallRulesOperationResponse. */
+/**
+ * An immutable client-side representation of ReplaceAllFirewallRulesOperationResponse.
+ */
 public interface ReplaceAllFirewallRulesOperationResponse {
     /**
      * Gets the operationId property: The operation ID.
-     *
+     * 
      * @return the operationId value.
      */
     String operationId();
@@ -18,7 +20,7 @@ public interface ReplaceAllFirewallRulesOperationResponse {
     /**
      * Gets the inner com.azure.resourcemanager.synapse.fluent.models.ReplaceAllFirewallRulesOperationResponseInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     ReplaceAllFirewallRulesOperationResponseInner innerModel();

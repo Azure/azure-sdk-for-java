@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The current deployment state of schedule. */
+/**
+ * The current deployment state of schedule.
+ */
 public final class ProvisioningStatus extends ExpandableStringEnum<ProvisioningStatus> {
-    /** Static value Completed for ProvisioningStatus. */
+    /**
+     * Static value Completed for ProvisioningStatus.
+     */
     public static final ProvisioningStatus COMPLETED = fromString("Completed");
 
-    /** Static value Provisioning for ProvisioningStatus. */
+    /**
+     * Static value Provisioning for ProvisioningStatus.
+     */
     public static final ProvisioningStatus PROVISIONING = fromString("Provisioning");
 
-    /** Static value Failed for ProvisioningStatus. */
+    /**
+     * Static value Failed for ProvisioningStatus.
+     */
     public static final ProvisioningStatus FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of ProvisioningStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class ProvisioningStatus extends ExpandableStringEnum<ProvisioningS
 
     /**
      * Creates or finds a ProvisioningStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ProvisioningStatus.
      */
-    @JsonCreator
     public static ProvisioningStatus fromString(String name) {
         return fromString(name, ProvisioningStatus.class);
     }
 
     /**
      * Gets known ProvisioningStatus values.
-     *
+     * 
      * @return known ProvisioningStatus values.
      */
     public static Collection<ProvisioningStatus> values() {

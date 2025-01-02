@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The Amazon RDS for SQL Server dataset properties.
  */
 @Fluent
-public final class AmazonRdsForSqlServerTableDatasetTypeProperties {
+public final class AmazonRdsForSqlServerTableDatasetTypeProperties
+    implements JsonSerializable<AmazonRdsForSqlServerTableDatasetTypeProperties> {
     /*
      * The schema name of the SQL Server dataset. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "schema")
     private Object schema;
 
     /*
      * The table name of the SQL Server dataset. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "table")
     private Object table;
 
     /**
@@ -80,5 +83,45 @@ public final class AmazonRdsForSqlServerTableDatasetTypeProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("schema", this.schema);
+        jsonWriter.writeUntypedField("table", this.table);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AmazonRdsForSqlServerTableDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AmazonRdsForSqlServerTableDatasetTypeProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AmazonRdsForSqlServerTableDatasetTypeProperties.
+     */
+    public static AmazonRdsForSqlServerTableDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AmazonRdsForSqlServerTableDatasetTypeProperties deserializedAmazonRdsForSqlServerTableDatasetTypeProperties
+                = new AmazonRdsForSqlServerTableDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("schema".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerTableDatasetTypeProperties.schema = reader.readUntyped();
+                } else if ("table".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerTableDatasetTypeProperties.table = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAmazonRdsForSqlServerTableDatasetTypeProperties;
+        });
     }
 }

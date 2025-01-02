@@ -13,33 +13,32 @@ import org.junit.jupiter.api.Assertions;
 public final class SharedPrivateLinkResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SharedPrivateLinkResourceList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"groupId\":\"msgeivsiykzk\",\"privateLinkResourceId\":\"ncj\",\"provisioningState\":\"Creating\",\"requestMessage\":\"bzo\",\"status\":\"Timeout\"},\"id\":\"lapzwyrp\",\"name\":\"ogtqxepnylbf\",\"type\":\"ajlyjtlvofqzhv\"}],\"nextLink\":\"ibyfmo\"}")
-                .toObject(SharedPrivateLinkResourceList.class);
-        Assertions.assertEquals("msgeivsiykzk", model.value().get(0).groupId());
-        Assertions.assertEquals("ncj", model.value().get(0).privateLinkResourceId());
-        Assertions.assertEquals("bzo", model.value().get(0).requestMessage());
-        Assertions.assertEquals("ibyfmo", model.nextLink());
+        SharedPrivateLinkResourceList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"groupId\":\"yohpfkyrkdbdgiog\",\"privateLinkResourceId\":\"jkmnwq\",\"provisioningState\":\"Deleting\",\"requestMessage\":\"aiy\",\"status\":\"Approved\"},\"id\":\"iacegfnmn\",\"name\":\"fpmvmemfnczd\",\"type\":\"vvbalx\"},{\"properties\":{\"groupId\":\"lchpodbzevwrdn\",\"privateLinkResourceId\":\"fukuvsjcswsmystu\",\"provisioningState\":\"Succeeded\",\"requestMessage\":\"pfcvlerchpqbmfp\",\"status\":\"Disconnected\"},\"id\":\"widf\",\"name\":\"xsspuunnoxyhk\",\"type\":\"g\"},{\"properties\":{\"groupId\":\"drihpfhoqcaaewda\",\"privateLinkResourceId\":\"mdjvlpj\",\"provisioningState\":\"Moving\",\"requestMessage\":\"brm\",\"status\":\"Approved\"},\"id\":\"vsiykzkdncjdxon\",\"name\":\"zoggculapz\",\"type\":\"y\"}],\"nextLink\":\"gogtqxepnylbf\"}")
+            .toObject(SharedPrivateLinkResourceList.class);
+        Assertions.assertEquals("yohpfkyrkdbdgiog", model.value().get(0).groupId());
+        Assertions.assertEquals("jkmnwq", model.value().get(0).privateLinkResourceId());
+        Assertions.assertEquals("aiy", model.value().get(0).requestMessage());
+        Assertions.assertEquals("gogtqxepnylbf", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SharedPrivateLinkResourceList model =
-            new SharedPrivateLinkResourceList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new SharedPrivateLinkResourceInner()
-                                .withGroupId("msgeivsiykzk")
-                                .withPrivateLinkResourceId("ncj")
-                                .withRequestMessage("bzo")))
-                .withNextLink("ibyfmo");
+        SharedPrivateLinkResourceList model = new SharedPrivateLinkResourceList().withValue(Arrays.asList(
+            new SharedPrivateLinkResourceInner().withGroupId("yohpfkyrkdbdgiog")
+                .withPrivateLinkResourceId("jkmnwq")
+                .withRequestMessage("aiy"),
+            new SharedPrivateLinkResourceInner().withGroupId("lchpodbzevwrdn")
+                .withPrivateLinkResourceId("fukuvsjcswsmystu")
+                .withRequestMessage("pfcvlerchpqbmfp"),
+            new SharedPrivateLinkResourceInner().withGroupId("drihpfhoqcaaewda")
+                .withPrivateLinkResourceId("mdjvlpj")
+                .withRequestMessage("brm")))
+            .withNextLink("gogtqxepnylbf");
         model = BinaryData.fromObject(model).toObject(SharedPrivateLinkResourceList.class);
-        Assertions.assertEquals("msgeivsiykzk", model.value().get(0).groupId());
-        Assertions.assertEquals("ncj", model.value().get(0).privateLinkResourceId());
-        Assertions.assertEquals("bzo", model.value().get(0).requestMessage());
-        Assertions.assertEquals("ibyfmo", model.nextLink());
+        Assertions.assertEquals("yohpfkyrkdbdgiog", model.value().get(0).groupId());
+        Assertions.assertEquals("jkmnwq", model.value().get(0).privateLinkResourceId());
+        Assertions.assertEquals("aiy", model.value().get(0).requestMessage());
+        Assertions.assertEquals("gogtqxepnylbf", model.nextLink());
     }
 }

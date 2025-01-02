@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.fluent.models.TagContractProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Parameters supplied to Create/Update Tag operations. */
+/**
+ * Parameters supplied to Create/Update Tag operations.
+ */
 @Fluent
-public final class TagCreateUpdateParameters {
+public final class TagCreateUpdateParameters implements JsonSerializable<TagCreateUpdateParameters> {
     /*
      * Properties supplied to Create Tag operation.
      */
-    @JsonProperty(value = "properties")
     private TagContractProperties innerProperties;
 
-    /** Creates an instance of TagCreateUpdateParameters class. */
+    /**
+     * Creates an instance of TagCreateUpdateParameters class.
+     */
     public TagCreateUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: Properties supplied to Create Tag operation.
-     *
+     * 
      * @return the innerProperties value.
      */
     private TagContractProperties innerProperties() {
@@ -32,7 +39,7 @@ public final class TagCreateUpdateParameters {
 
     /**
      * Get the displayName property: Tag name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -41,7 +48,7 @@ public final class TagCreateUpdateParameters {
 
     /**
      * Set the displayName property: Tag name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the TagCreateUpdateParameters object itself.
      */
@@ -55,12 +62,48 @@ public final class TagCreateUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TagCreateUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TagCreateUpdateParameters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TagCreateUpdateParameters.
+     */
+    public static TagCreateUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TagCreateUpdateParameters deserializedTagCreateUpdateParameters = new TagCreateUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedTagCreateUpdateParameters.innerProperties = TagContractProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTagCreateUpdateParameters;
+        });
     }
 }

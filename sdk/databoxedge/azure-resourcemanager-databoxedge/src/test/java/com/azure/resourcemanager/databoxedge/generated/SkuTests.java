@@ -13,16 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Sku model = BinaryData.fromString("{\"name\":\"TEA_4Node_Heater\",\"tier\":\"Standard\"}").toObject(Sku.class);
-        Assertions.assertEquals(SkuName.TEA_4NODE_HEATER, model.name());
+        Sku model
+            = BinaryData.fromString("{\"name\":\"TEA_4Node_UPS_Heater\",\"tier\":\"Standard\"}").toObject(Sku.class);
+        Assertions.assertEquals(SkuName.TEA_4NODE_UPS_HEATER, model.name());
         Assertions.assertEquals(SkuTier.STANDARD, model.tier());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Sku model = new Sku().withName(SkuName.TEA_4NODE_HEATER).withTier(SkuTier.STANDARD);
+        Sku model = new Sku().withName(SkuName.TEA_4NODE_UPS_HEATER).withTier(SkuTier.STANDARD);
         model = BinaryData.fromObject(model).toObject(Sku.class);
-        Assertions.assertEquals(SkuName.TEA_4NODE_HEATER, model.name());
+        Assertions.assertEquals(SkuName.TEA_4NODE_UPS_HEATER, model.name());
         Assertions.assertEquals(SkuTier.STANDARD, model.tier());
     }
 }

@@ -14,8 +14,10 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the AttestationManagementClientImpl type. */
-@ServiceClientBuilder(serviceClients = {AttestationManagementClientImpl.class})
+/**
+ * A builder for creating a new instance of the AttestationManagementClientImpl type.
+ */
+@ServiceClientBuilder(serviceClients = { AttestationManagementClientImpl.class })
 public final class AttestationManagementClientBuilder {
     /*
      * The ID of the target subscription.
@@ -24,7 +26,7 @@ public final class AttestationManagementClientBuilder {
 
     /**
      * Sets The ID of the target subscription.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the AttestationManagementClientBuilder.
      */
@@ -40,7 +42,7 @@ public final class AttestationManagementClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the AttestationManagementClientBuilder.
      */
@@ -56,7 +58,7 @@ public final class AttestationManagementClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the AttestationManagementClientBuilder.
      */
@@ -72,7 +74,7 @@ public final class AttestationManagementClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the AttestationManagementClientBuilder.
      */
@@ -88,7 +90,7 @@ public final class AttestationManagementClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the AttestationManagementClientBuilder.
      */
@@ -104,7 +106,7 @@ public final class AttestationManagementClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the AttestationManagementClientBuilder.
      */
@@ -115,30 +117,22 @@ public final class AttestationManagementClientBuilder {
 
     /**
      * Builds an instance of AttestationManagementClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of AttestationManagementClientImpl.
      */
     public AttestationManagementClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline =
-            (pipeline != null)
-                ? pipeline
-                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        Duration localDefaultPollInterval =
-            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter =
-            (serializerAdapter != null)
-                ? serializerAdapter
-                : SerializerFactory.createDefaultManagementSerializerAdapter();
-        AttestationManagementClientImpl client =
-            new AttestationManagementClientImpl(
-                localPipeline,
-                localSerializerAdapter,
-                localDefaultPollInterval,
-                localEnvironment,
-                subscriptionId,
-                localEndpoint);
+        HttpPipeline localPipeline = (pipeline != null)
+            ? pipeline
+            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval
+            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
+            ? serializerAdapter
+            : SerializerFactory.createDefaultManagementSerializerAdapter();
+        AttestationManagementClientImpl client = new AttestationManagementClientImpl(localPipeline,
+            localSerializerAdapter, localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }

@@ -146,15 +146,8 @@ public final class QuantumClientImpl {
      * @param host server parameter.
      */
     public QuantumClientImpl(String subscriptionId, String resourceGroupName, String workspaceName, String host) {
-        this(
-                new HttpPipelineBuilder()
-                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                        .build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                subscriptionId,
-                resourceGroupName,
-                workspaceName,
-                host);
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), subscriptionId, resourceGroupName, workspaceName, host);
     }
 
     /**
@@ -167,19 +160,10 @@ public final class QuantumClientImpl {
      * @param workspaceName Name of the workspace.
      * @param host server parameter.
      */
-    public QuantumClientImpl(
-            HttpPipeline httpPipeline,
-            String subscriptionId,
-            String resourceGroupName,
-            String workspaceName,
-            String host) {
-        this(
-                httpPipeline,
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                subscriptionId,
-                resourceGroupName,
-                workspaceName,
-                host);
+    public QuantumClientImpl(HttpPipeline httpPipeline, String subscriptionId, String resourceGroupName,
+        String workspaceName, String host) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), subscriptionId, resourceGroupName,
+            workspaceName, host);
     }
 
     /**
@@ -193,13 +177,8 @@ public final class QuantumClientImpl {
      * @param workspaceName Name of the workspace.
      * @param host server parameter.
      */
-    public QuantumClientImpl(
-            HttpPipeline httpPipeline,
-            SerializerAdapter serializerAdapter,
-            String subscriptionId,
-            String resourceGroupName,
-            String workspaceName,
-            String host) {
+    public QuantumClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String subscriptionId,
+        String resourceGroupName, String workspaceName, String host) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.subscriptionId = subscriptionId;

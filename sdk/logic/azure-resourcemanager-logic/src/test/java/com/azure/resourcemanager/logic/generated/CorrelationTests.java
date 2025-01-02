@@ -11,14 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class CorrelationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Correlation model = BinaryData.fromString("{\"clientTrackingId\":\"pwiyig\"}").toObject(Correlation.class);
-        Assertions.assertEquals("pwiyig", model.clientTrackingId());
+        Correlation model
+            = BinaryData.fromString("{\"clientTrackingId\":\"bxarzgszufoxci\"}").toObject(Correlation.class);
+        Assertions.assertEquals("bxarzgszufoxci", model.clientTrackingId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Correlation model = new Correlation().withClientTrackingId("pwiyig");
+        Correlation model = new Correlation().withClientTrackingId("bxarzgszufoxci");
         model = BinaryData.fromObject(model).toObject(Correlation.class);
-        Assertions.assertEquals("pwiyig", model.clientTrackingId());
+        Assertions.assertEquals("bxarzgszufoxci", model.clientTrackingId());
     }
 }

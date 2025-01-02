@@ -89,7 +89,8 @@ public final class ModelsRepositoryClient {
      * and the value is the raw model definition string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, String> getModels(Iterable<String> dtmis, ModelDependencyResolution dependencyResolution, Context context) {
+    public Map<String, String> getModels(Iterable<String> dtmis, ModelDependencyResolution dependencyResolution,
+        Context context) {
         return modelsRepositoryAsyncClient.getModels(dtmis, dependencyResolution, context).block();
     }
 }

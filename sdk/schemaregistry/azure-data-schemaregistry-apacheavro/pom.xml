@@ -16,7 +16,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-data-schemaregistry-apacheavro</artifactId>
-  <version>1.2.0-beta.2</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-apacheavro;current} -->
+  <version>1.2.0-beta.3</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-apacheavro;current} -->
 
   <name>Microsoft Azure client library for Schema Registry Apache Avro Serializer</name>
   <description>Apache Avro-specific serializer for Azure Schema Registry client library</description>
@@ -44,66 +44,46 @@
       --add-opens com.azure.data.schemaregistry.apacheavro/com.azure.data.schemaregistry.apacheavro=ALL-UNNAMED
       --add-opens com.azure.data.schemaregistry.apacheavro/com.azure.data.schemaregistry.apacheavro.generatedtestsources=org.apache.avro,ALL-UNNAMED
     </javaModulesSurefireArgLine>
+
+    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
+    <spotbugs.skip>false</spotbugs.skip>
+    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.51.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.54.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-schemaregistry</artifactId>
-      <version>1.5.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
+      <version>1.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
     </dependency>
     <dependency>
       <groupId>org.apache.avro</groupId>
       <artifactId>avro</artifactId>
-      <version>1.11.3</version> <!-- {x-version-update;org.apache.avro:avro;external_dependency} -->
+      <version>1.11.4</version> <!-- {x-version-update;org.apache.avro:avro;external_dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
     <dependency>
-      <groupId>io.projectreactor</groupId>
-      <artifactId>reactor-test</artifactId>
-      <version>3.4.38</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-params</artifactId>
-      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.26.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.27.0-beta.4</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.13.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.14.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.18.6</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+      <version>5.19.2</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -117,13 +97,13 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.14.12</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.15.5</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.14.12</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.15.5</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -133,12 +113,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.apache.avro:avro:[1.11.3]</include> <!-- {x-include-update;org.apache.avro:avro;external_dependency} -->
+                <include>org.apache.avro:avro:[1.11.4]</include> <!-- {x-include-update;org.apache.avro:avro;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -148,7 +128,7 @@
       <plugin>
         <groupId>org.apache.avro</groupId>
         <artifactId>avro-maven-plugin</artifactId>
-        <version>1.11.3</version> <!-- {x-version-update;org.apache.avro:avro-maven-plugin;external_dependency} -->
+        <version>1.11.4</version> <!-- {x-version-update;org.apache.avro:avro-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <phase>generate-test-sources</phase>

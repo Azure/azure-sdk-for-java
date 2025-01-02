@@ -23,22 +23,18 @@ public final class ArtifactSourcesImpl implements ArtifactSources {
 
     private final com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager;
 
-    public ArtifactSourcesImpl(
-        ArtifactSourcesClient innerClient,
+    public ArtifactSourcesImpl(ArtifactSourcesClient innerClient,
         com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<ArtifactSource> getByResourceGroupWithResponse(
-        String resourceGroupName, String artifactSourceName, Context context) {
-        Response<ArtifactSourceInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, artifactSourceName, context);
+    public Response<ArtifactSource> getByResourceGroupWithResponse(String resourceGroupName, String artifactSourceName,
+        Context context) {
+        Response<ArtifactSourceInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, artifactSourceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ArtifactSourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -54,8 +50,8 @@ public final class ArtifactSourcesImpl implements ArtifactSources {
         }
     }
 
-    public Response<Void> deleteByResourceGroupWithResponse(
-        String resourceGroupName, String artifactSourceName, Context context) {
+    public Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String artifactSourceName,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, artifactSourceName, context);
     }
 
@@ -66,12 +62,8 @@ public final class ArtifactSourcesImpl implements ArtifactSources {
     public Response<List<ArtifactSource>> listWithResponse(String resourceGroupName, Context context) {
         Response<List<ArtifactSourceInner>> inner = this.serviceClient().listWithResponse(resourceGroupName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                inner
-                    .getValue()
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                inner.getValue()
                     .stream()
                     .map(inner1 -> new ArtifactSourceImpl(inner1, this.manager()))
                     .collect(Collectors.toList()));
@@ -83,12 +75,9 @@ public final class ArtifactSourcesImpl implements ArtifactSources {
     public List<ArtifactSource> list(String resourceGroupName) {
         List<ArtifactSourceInner> inner = this.serviceClient().list(resourceGroupName);
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new ArtifactSourceImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new ArtifactSourceImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -97,19 +86,13 @@ public final class ArtifactSourcesImpl implements ArtifactSources {
     public ArtifactSource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String artifactSourceName = Utils.getValueFromIdByName(id, "artifactSources");
         if (artifactSourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'artifactSources'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'artifactSources'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, artifactSourceName, Context.NONE).getValue();
     }
@@ -117,19 +100,13 @@ public final class ArtifactSourcesImpl implements ArtifactSources {
     public Response<ArtifactSource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String artifactSourceName = Utils.getValueFromIdByName(id, "artifactSources");
         if (artifactSourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'artifactSources'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'artifactSources'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, artifactSourceName, context);
     }
@@ -137,19 +114,13 @@ public final class ArtifactSourcesImpl implements ArtifactSources {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String artifactSourceName = Utils.getValueFromIdByName(id, "artifactSources");
         if (artifactSourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'artifactSources'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'artifactSources'.", id)));
         }
         this.deleteByResourceGroupWithResponse(resourceGroupName, artifactSourceName, Context.NONE);
     }
@@ -157,19 +128,13 @@ public final class ArtifactSourcesImpl implements ArtifactSources {
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String artifactSourceName = Utils.getValueFromIdByName(id, "artifactSources");
         if (artifactSourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'artifactSources'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'artifactSources'.", id)));
         }
         return this.deleteByResourceGroupWithResponse(resourceGroupName, artifactSourceName, context);
     }

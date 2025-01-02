@@ -27,36 +27,31 @@ public class NetworkWatcherTests extends NetworkManagementTest {
             }
         }
         // create Network Watcher
-        NetworkWatcher nw =
-            networkManager.networkWatchers().define(nwName).withRegion(region).withNewResourceGroup(rgName).create();
+        NetworkWatcher nw
+            = networkManager.networkWatchers().define(nwName).withRegion(region).withNewResourceGroup(rgName).create();
         AvailableProviders providers = nw.availableProviders().execute();
         Assertions.assertTrue(providers.providersByCountry().size() > 1);
         Assertions.assertNotNull(providers.providersByCountry().get("United States"));
 
-        providers =
-            nw
-                .availableProviders()
-                .withAzureLocation("West US")
-                .withCountry("United States")
-                .withState("washington")
-                .execute();
+        providers = nw.availableProviders()
+            .withAzureLocation("West US")
+            .withCountry("United States")
+            .withState("washington")
+            .execute();
         Assertions.assertEquals(1, providers.providersByCountry().size());
-        Assertions
-            .assertEquals(
-                "washington", providers.providersByCountry().get("United States").states().get(0).stateName());
+        Assertions.assertEquals("washington",
+            providers.providersByCountry().get("United States").states().get(0).stateName());
         Assertions
             .assertTrue(providers.providersByCountry().get("United States").states().get(0).providers().size() > 0);
 
         String localProvider = providers.providersByCountry().get("United States").states().get(0).providers().get(0);
-        AzureReachabilityReport report =
-            nw
-                .azureReachabilityReport()
-                .withProviderLocation("United States", "washington")
-                .withStartTime(OffsetDateTime.parse("2018-04-10"))
-                .withEndTime(OffsetDateTime.parse("2018-04-12"))
-                .withProviders(localProvider)
-                .withAzureLocations("West US")
-                .execute();
+        AzureReachabilityReport report = nw.azureReachabilityReport()
+            .withProviderLocation("United States", "washington")
+            .withStartTime(OffsetDateTime.parse("2018-04-10"))
+            .withEndTime(OffsetDateTime.parse("2018-04-12"))
+            .withProviders(localProvider)
+            .withAzureLocations("West US")
+            .execute();
         Assertions.assertEquals("State", report.aggregationLevel());
         Assertions.assertTrue(report.reachabilityReport().size() > 0);
     }

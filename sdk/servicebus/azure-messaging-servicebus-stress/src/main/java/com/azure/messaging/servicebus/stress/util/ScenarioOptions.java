@@ -91,9 +91,11 @@ public class ScenarioOptions {
     public Duration getTryTimeout() {
         return Duration.ofSeconds(tryTimeoutSeconds);
     }
+
     public String getAnnotation() {
         return annotation;
     }
+
     public int getMessageSize() {
         return messageSize;
     }

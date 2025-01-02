@@ -5,29 +5,43 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.fluent.models.AzureDataLakeStoreOutputDataSourceProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
 /**
  * Describes an Azure Data Lake Store output data source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Microsoft.DataLake/Accounts")
 @Fluent
 public final class AzureDataLakeStoreOutputDataSource extends OutputDataSource {
+    /*
+     * Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests.
+     */
+    private String type = "Microsoft.DataLake/Accounts";
+
     /*
      * The properties that are associated with an Azure Data Lake Store output. Required on PUT (CreateOrReplace)
      * requests.
      */
-    @JsonProperty(value = "properties")
     private AzureDataLakeStoreOutputDataSourceProperties innerProperties;
 
     /**
      * Creates an instance of AzureDataLakeStoreOutputDataSource class.
      */
     public AzureDataLakeStoreOutputDataSource() {
+    }
+
+    /**
+     * Get the type property: Indicates the type of data source output will be written to. Required on PUT
+     * (CreateOrReplace) requests.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -192,8 +206,8 @@ public final class AzureDataLakeStoreOutputDataSource extends OutputDataSource {
      * Get the refreshToken property: A refresh token that can be used to obtain a valid access token that can then be
      * used to authenticate with the data source. A valid refresh token is currently only obtainable via the Azure
      * Portal. It is recommended to put a dummy string value here when creating the data source and then going to the
-     * Azure Portal to authenticate the data source which will update this property with a valid refresh token.
-     * Required on PUT (CreateOrReplace) requests.
+     * Azure Portal to authenticate the data source which will update this property with a valid refresh token. Required
+     * on PUT (CreateOrReplace) requests.
      * 
      * @return the refreshToken value.
      */
@@ -205,8 +219,8 @@ public final class AzureDataLakeStoreOutputDataSource extends OutputDataSource {
      * Set the refreshToken property: A refresh token that can be used to obtain a valid access token that can then be
      * used to authenticate with the data source. A valid refresh token is currently only obtainable via the Azure
      * Portal. It is recommended to put a dummy string value here when creating the data source and then going to the
-     * Azure Portal to authenticate the data source which will update this property with a valid refresh token.
-     * Required on PUT (CreateOrReplace) requests.
+     * Azure Portal to authenticate the data source which will update this property with a valid refresh token. Required
+     * on PUT (CreateOrReplace) requests.
      * 
      * @param refreshToken the refreshToken value to set.
      * @return the AzureDataLakeStoreOutputDataSource object itself.
@@ -276,9 +290,49 @@ public final class AzureDataLakeStoreOutputDataSource extends OutputDataSource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureDataLakeStoreOutputDataSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureDataLakeStoreOutputDataSource if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureDataLakeStoreOutputDataSource.
+     */
+    public static AzureDataLakeStoreOutputDataSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureDataLakeStoreOutputDataSource deserializedAzureDataLakeStoreOutputDataSource
+                = new AzureDataLakeStoreOutputDataSource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedAzureDataLakeStoreOutputDataSource.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAzureDataLakeStoreOutputDataSource.innerProperties
+                        = AzureDataLakeStoreOutputDataSourceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureDataLakeStoreOutputDataSource;
+        });
     }
 }

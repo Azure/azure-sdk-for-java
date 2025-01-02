@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.IdentityProviderBaseParameters;
 import com.azure.resourcemanager.apimanagement.models.IdentityProviderType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Parameters supplied to the Update Identity Provider operation. */
+/**
+ * Parameters supplied to the Update Identity Provider operation.
+ */
 @Fluent
 public final class IdentityProviderUpdateProperties extends IdentityProviderBaseParameters {
     /*
      * Client Id of the Application in the external Identity Provider. It is App ID for Facebook login, Client ID for
      * Google login, App ID for Microsoft.
      */
-    @JsonProperty(value = "clientId")
     private String clientId;
 
     /*
      * Client secret of the Application in external Identity Provider, used to authenticate login request. For example,
      * it is App Secret for Facebook login, API Key for Google login, Public Key for Microsoft.
      */
-    @JsonProperty(value = "clientSecret")
     private String clientSecret;
 
-    /** Creates an instance of IdentityProviderUpdateProperties class. */
+    /**
+     * Creates an instance of IdentityProviderUpdateProperties class.
+     */
     public IdentityProviderUpdateProperties() {
     }
 
     /**
      * Get the clientId property: Client Id of the Application in the external Identity Provider. It is App ID for
      * Facebook login, Client ID for Google login, App ID for Microsoft.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -44,7 +49,7 @@ public final class IdentityProviderUpdateProperties extends IdentityProviderBase
     /**
      * Set the clientId property: Client Id of the Application in the external Identity Provider. It is App ID for
      * Facebook login, Client ID for Google login, App ID for Microsoft.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the IdentityProviderUpdateProperties object itself.
      */
@@ -57,7 +62,7 @@ public final class IdentityProviderUpdateProperties extends IdentityProviderBase
      * Get the clientSecret property: Client secret of the Application in external Identity Provider, used to
      * authenticate login request. For example, it is App Secret for Facebook login, API Key for Google login, Public
      * Key for Microsoft.
-     *
+     * 
      * @return the clientSecret value.
      */
     public String clientSecret() {
@@ -68,7 +73,7 @@ public final class IdentityProviderUpdateProperties extends IdentityProviderBase
      * Set the clientSecret property: Client secret of the Application in external Identity Provider, used to
      * authenticate login request. For example, it is App Secret for Facebook login, API Key for Google login, Public
      * Key for Microsoft.
-     *
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the IdentityProviderUpdateProperties object itself.
      */
@@ -77,63 +82,81 @@ public final class IdentityProviderUpdateProperties extends IdentityProviderBase
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IdentityProviderUpdateProperties withType(IdentityProviderType type) {
         super.withType(type);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IdentityProviderUpdateProperties withSigninTenant(String signinTenant) {
         super.withSigninTenant(signinTenant);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IdentityProviderUpdateProperties withAllowedTenants(List<String> allowedTenants) {
         super.withAllowedTenants(allowedTenants);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IdentityProviderUpdateProperties withAuthority(String authority) {
         super.withAuthority(authority);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IdentityProviderUpdateProperties withSignupPolicyName(String signupPolicyName) {
         super.withSignupPolicyName(signupPolicyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IdentityProviderUpdateProperties withSigninPolicyName(String signinPolicyName) {
         super.withSigninPolicyName(signinPolicyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IdentityProviderUpdateProperties withProfileEditingPolicyName(String profileEditingPolicyName) {
         super.withProfileEditingPolicyName(profileEditingPolicyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IdentityProviderUpdateProperties withPasswordResetPolicyName(String passwordResetPolicyName) {
         super.withPasswordResetPolicyName(passwordResetPolicyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IdentityProviderUpdateProperties withClientLibrary(String clientLibrary) {
         super.withClientLibrary(clientLibrary);
@@ -142,11 +165,80 @@ public final class IdentityProviderUpdateProperties extends IdentityProviderBase
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", type() == null ? null : type().toString());
+        jsonWriter.writeStringField("signinTenant", signinTenant());
+        jsonWriter.writeArrayField("allowedTenants", allowedTenants(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("authority", authority());
+        jsonWriter.writeStringField("signupPolicyName", signupPolicyName());
+        jsonWriter.writeStringField("signinPolicyName", signinPolicyName());
+        jsonWriter.writeStringField("profileEditingPolicyName", profileEditingPolicyName());
+        jsonWriter.writeStringField("passwordResetPolicyName", passwordResetPolicyName());
+        jsonWriter.writeStringField("clientLibrary", clientLibrary());
+        jsonWriter.writeStringField("clientId", this.clientId);
+        jsonWriter.writeStringField("clientSecret", this.clientSecret);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IdentityProviderUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IdentityProviderUpdateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IdentityProviderUpdateProperties.
+     */
+    public static IdentityProviderUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IdentityProviderUpdateProperties deserializedIdentityProviderUpdateProperties
+                = new IdentityProviderUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedIdentityProviderUpdateProperties
+                        .withType(IdentityProviderType.fromString(reader.getString()));
+                } else if ("signinTenant".equals(fieldName)) {
+                    deserializedIdentityProviderUpdateProperties.withSigninTenant(reader.getString());
+                } else if ("allowedTenants".equals(fieldName)) {
+                    List<String> allowedTenants = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIdentityProviderUpdateProperties.withAllowedTenants(allowedTenants);
+                } else if ("authority".equals(fieldName)) {
+                    deserializedIdentityProviderUpdateProperties.withAuthority(reader.getString());
+                } else if ("signupPolicyName".equals(fieldName)) {
+                    deserializedIdentityProviderUpdateProperties.withSignupPolicyName(reader.getString());
+                } else if ("signinPolicyName".equals(fieldName)) {
+                    deserializedIdentityProviderUpdateProperties.withSigninPolicyName(reader.getString());
+                } else if ("profileEditingPolicyName".equals(fieldName)) {
+                    deserializedIdentityProviderUpdateProperties.withProfileEditingPolicyName(reader.getString());
+                } else if ("passwordResetPolicyName".equals(fieldName)) {
+                    deserializedIdentityProviderUpdateProperties.withPasswordResetPolicyName(reader.getString());
+                } else if ("clientLibrary".equals(fieldName)) {
+                    deserializedIdentityProviderUpdateProperties.withClientLibrary(reader.getString());
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedIdentityProviderUpdateProperties.clientId = reader.getString();
+                } else if ("clientSecret".equals(fieldName)) {
+                    deserializedIdentityProviderUpdateProperties.clientSecret = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIdentityProviderUpdateProperties;
+        });
     }
 }

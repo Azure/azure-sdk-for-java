@@ -45,14 +45,14 @@ public class ConfigurationJavaDocCodeSnippet {
      */
     public void configurationBuilderUsage() {
         Map<String, String> properties = new HashMap<>();
-        properties.put("azure.sdk.client-name.http.proxy.port", "8080");
-        properties.put("azure.sdk.http.proxy.hostname", "<host");
-        properties.put("azure.sdk.http.proxy.username", "user");
-        properties.put("azure.sdk.http.proxy.password", "pwd");
+        properties.put("my.sdk.client-name.http.proxy.port", "8080");
+        properties.put("my.sdk.http.proxy.hostname", "<host");
+        properties.put("my.sdk.http.proxy.username", "user");
+        properties.put("my.sdk.http.proxy.password", "pwd");
 
         // BEGIN: io.clientcore.core.util.Configuration
         Configuration configuration = new ConfigurationBuilder(new SampleSource(properties))
-            .root("azure.sdk")
+            .root("my.sdk")
             .buildSection("client-name");
 
         ConfigurationProperty<String> proxyHostnameProperty = ConfigurationPropertyBuilder.ofString("http.proxy.hostname")
@@ -63,8 +63,8 @@ public class ConfigurationJavaDocCodeSnippet {
 
         // BEGIN: io.clientcore.core.util.ConfigurationBuilder#putProperty
         configuration = new ConfigurationBuilder()
-            .putProperty("azure.sdk.client-name.connection-string", "...")
-            .root("azure.sdk")
+            .putProperty("my.sdk.client-name.connection-string", "...")
+            .root("my.sdk")
             .buildSection("client-name");
 
         ConfigurationProperty<String> connectionStringProperty = ConfigurationPropertyBuilder.ofString("connection-string")
@@ -76,14 +76,14 @@ public class ConfigurationJavaDocCodeSnippet {
         // BEGIN: io.clientcore.core.util.ConfigurationBuilder#buildSection
         // Builds Configuration for <client-name> with fallback to shared properties.
         configuration = new ConfigurationBuilder(new SampleSource(properties))
-            .root("azure.sdk")
+            .root("my.sdk")
             .buildSection("client-name");
         // END: io.clientcore.core.util.ConfigurationBuilder#buildSection
 
         // BEGIN: io.clientcore.core.util.ConfigurationBuilder#build
         // Builds shared Configuration only.
         Configuration sharedConfiguration = new ConfigurationBuilder(new SampleSource(properties))
-            .root("azure.sdk")
+            .root("my.sdk")
             .build();
         // END: io.clientcore.core.util.ConfigurationBuilder#build
     }
@@ -93,13 +93,13 @@ public class ConfigurationJavaDocCodeSnippet {
      */
     public void configurationUsage() {
         Map<String, String> properties = new HashMap<>();
-        properties.put("azure.sdk.<client-name>.http.proxy.port", "8080");
-        properties.put("azure.sdk.http.proxy.hostname", "<host");
-        properties.put("azure.sdk.http.proxy.username", "user");
-        properties.put("azure.sdk.http.proxy.password", "pwd");
+        properties.put("my.sdk.<client-name>.http.proxy.port", "8080");
+        properties.put("my.sdk.http.proxy.hostname", "<host");
+        properties.put("my.sdk.http.proxy.username", "user");
+        properties.put("my.sdk.http.proxy.password", "pwd");
 
         Configuration configuration = new ConfigurationBuilder(new SampleSource(properties))
-            .root("azure.sdk")
+            .root("my.sdk")
             .buildSection("<client-name>");
 
         // BEGIN: io.clientcore.core.util.Configuration.get#ConfigurationProperty
@@ -109,8 +109,8 @@ public class ConfigurationJavaDocCodeSnippet {
             .systemPropertyName("http.proxyHost")
             .build();
 
-        // attempts to get local `azure.sdk.<client-name>.http.proxy.host` property and falls back to
-        // shared azure.sdk.http.proxy.port
+        // attempts to get local `my.sdk.<client-name>.http.proxy.host` property and falls back to
+        // shared my.sdk.http.proxy.port
         System.out.println(configuration.get(property));
         // END: io.clientcore.core.util.Configuration.get#ConfigurationProperty
     }
@@ -120,13 +120,13 @@ public class ConfigurationJavaDocCodeSnippet {
      */
     public void configurationPropertyUsage() {
         Map<String, String> properties = new HashMap<>();
-        properties.put("azure.sdk.sample.timeout", "1000");
-        properties.put("azure.sdk.sample.retry-count", "3");
-        properties.put("azure.sdk.sample.is-enabled", "true");
-        properties.put("azure.sdk.sample.mode", "mode1");
+        properties.put("my.sdk.sample.timeout", "1000");
+        properties.put("my.sdk.sample.retry-count", "3");
+        properties.put("my.sdk.sample.is-enabled", "true");
+        properties.put("my.sdk.sample.mode", "mode1");
 
         Configuration configuration = new ConfigurationBuilder(new SampleSource(properties))
-            .root("azure.sdk")
+            .root("my.sdk")
             .buildSection("sample");
 
         // BEGIN: io.clientcore.core.util.ConfigurationPropertyBuilder.ofDuration

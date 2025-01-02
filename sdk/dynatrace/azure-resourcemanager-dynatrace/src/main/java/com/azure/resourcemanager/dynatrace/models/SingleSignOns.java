@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of SingleSignOns. */
+/**
+ * Resource collection API of SingleSignOns.
+ */
 public interface SingleSignOns {
     /**
      * Get a DynatraceSingleSignOnResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Single Sign On Configuration Name.
@@ -22,12 +24,12 @@ public interface SingleSignOns {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a DynatraceSingleSignOnResource along with {@link Response}.
      */
-    Response<DynatraceSingleSignOnResource> getWithResponse(
-        String resourceGroupName, String monitorName, String configurationName, Context context);
+    Response<DynatraceSingleSignOnResource> getWithResponse(String resourceGroupName, String monitorName,
+        String configurationName, Context context);
 
     /**
      * Get a DynatraceSingleSignOnResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Single Sign On Configuration Name.
@@ -40,34 +42,34 @@ public interface SingleSignOns {
 
     /**
      * List all DynatraceSingleSignOnResource by monitorName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DynatraceSingleSignOnResource list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a DynatraceSingleSignOnResource list operation as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<DynatraceSingleSignOnResource> list(String resourceGroupName, String monitorName);
 
     /**
      * List all DynatraceSingleSignOnResource by monitorName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DynatraceSingleSignOnResource list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a DynatraceSingleSignOnResource list operation as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<DynatraceSingleSignOnResource> list(String resourceGroupName, String monitorName, Context context);
 
     /**
      * Get a DynatraceSingleSignOnResource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -78,7 +80,7 @@ public interface SingleSignOns {
 
     /**
      * Get a DynatraceSingleSignOnResource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -90,7 +92,7 @@ public interface SingleSignOns {
 
     /**
      * Begins definition for a new DynatraceSingleSignOnResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new DynatraceSingleSignOnResource definition.
      */

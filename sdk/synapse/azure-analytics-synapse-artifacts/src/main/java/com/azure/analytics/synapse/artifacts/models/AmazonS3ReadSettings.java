@@ -23,7 +23,8 @@ public final class AmazonS3ReadSettings extends StoreReadSettings {
     private String type = "AmazonS3ReadSettings";
 
     /*
-     * If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with resultType boolean).
+     * If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with
+     * resultType boolean).
      */
     private Object recursive;
 
@@ -43,7 +44,8 @@ public final class AmazonS3ReadSettings extends StoreReadSettings {
     private Object prefix;
 
     /*
-     * Point to a text file that lists each file (relative path to the path configured in the dataset) that you want to copy. Type: string (or Expression with resultType string).
+     * Point to a text file that lists each file (relative path to the path configured in the dataset) that you want to
+     * copy. Type: string (or Expression with resultType string).
      */
     private Object fileListPath;
 
@@ -58,7 +60,8 @@ public final class AmazonS3ReadSettings extends StoreReadSettings {
     private Object partitionRootPath;
 
     /*
-     * Indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or Expression with resultType boolean).
+     * Indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or
+     * Expression with resultType boolean).
      */
     private Object deleteFilesAfterCompletion;
 

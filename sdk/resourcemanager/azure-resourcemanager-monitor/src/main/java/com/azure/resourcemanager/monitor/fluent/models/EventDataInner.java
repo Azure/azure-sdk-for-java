@@ -5,11 +5,15 @@
 package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.models.EventLevel;
 import com.azure.resourcemanager.monitor.models.HttpRequestInfo;
 import com.azure.resourcemanager.monitor.models.SenderAuthorization;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
@@ -17,143 +21,120 @@ import java.util.Map;
  * The Azure event log entries are of type EventData.
  */
 @Immutable
-public final class EventDataInner {
+public final class EventDataInner implements JsonSerializable<EventDataInner> {
     /*
      * The sender authorization information.
      */
-    @JsonProperty(value = "authorization", access = JsonProperty.Access.WRITE_ONLY)
     private SenderAuthorization authorization;
 
     /*
      * key value pairs to identify ARM permissions.
      */
-    @JsonProperty(value = "claims", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> claims;
 
     /*
      * the email address of the user who has performed the operation, the UPN claim or SPN claim based on availability.
      */
-    @JsonProperty(value = "caller", access = JsonProperty.Access.WRITE_ONLY)
     private String caller;
 
     /*
      * the description of the event.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * the Id of this event as required by ARM for RBAC. It contains the EventDataID and a timestamp information.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * the event data Id. This is a unique identifier for an event.
      */
-    @JsonProperty(value = "eventDataId", access = JsonProperty.Access.WRITE_ONLY)
     private String eventDataId;
 
     /*
      * the correlation Id, usually a GUID in the string format. The correlation Id is shared among the events that
      * belong to the same uber operation.
      */
-    @JsonProperty(value = "correlationId", access = JsonProperty.Access.WRITE_ONLY)
     private String correlationId;
 
     /*
-     * the event name. This value should not be confused with OperationName. For practical purposes, OperationName
-     * might be more appealing to end users.
+     * the event name. This value should not be confused with OperationName. For practical purposes, OperationName might
+     * be more appealing to end users.
      */
-    @JsonProperty(value = "eventName", access = JsonProperty.Access.WRITE_ONLY)
     private LocalizableStringInner eventName;
 
     /*
      * the event category.
      */
-    @JsonProperty(value = "category", access = JsonProperty.Access.WRITE_ONLY)
     private LocalizableStringInner category;
 
     /*
      * the HTTP request info. Usually includes the 'clientRequestId', 'clientIpAddress' (IP address of the user who
      * initiated the event) and 'method' (HTTP method e.g. PUT).
      */
-    @JsonProperty(value = "httpRequest", access = JsonProperty.Access.WRITE_ONLY)
     private HttpRequestInfo httpRequest;
 
     /*
      * the event level
      */
-    @JsonProperty(value = "level", access = JsonProperty.Access.WRITE_ONLY)
     private EventLevel level;
 
     /*
      * the resource group name of the impacted resource.
      */
-    @JsonProperty(value = "resourceGroupName", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGroupName;
 
     /*
      * the resource provider name of the impacted resource.
      */
-    @JsonProperty(value = "resourceProviderName", access = JsonProperty.Access.WRITE_ONLY)
     private LocalizableStringInner resourceProviderName;
 
     /*
      * the resource uri that uniquely identifies the resource that caused this event.
      */
-    @JsonProperty(value = "resourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceId;
 
     /*
      * the resource type
      */
-    @JsonProperty(value = "resourceType", access = JsonProperty.Access.WRITE_ONLY)
     private LocalizableStringInner resourceType;
 
     /*
-     * It is usually a GUID shared among the events corresponding to single operation. This value should not be
-     * confused with EventName.
+     * It is usually a GUID shared among the events corresponding to single operation. This value should not be confused
+     * with EventName.
      */
-    @JsonProperty(value = "operationId", access = JsonProperty.Access.WRITE_ONLY)
     private String operationId;
 
     /*
      * the operation name.
      */
-    @JsonProperty(value = "operationName", access = JsonProperty.Access.WRITE_ONLY)
     private LocalizableStringInner operationName;
 
     /*
      * the set of <Key, Value> pairs (usually a Dictionary<String, String>) that includes details about the event.
      */
-    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> properties;
 
     /*
      * a string describing the status of the operation. Some typical values are: Started, In progress, Succeeded,
      * Failed, Resolved.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private LocalizableStringInner status;
 
     /*
      * the event sub status. Most of the time, when included, this captures the HTTP status code of the REST call.
-     * Common values are: OK (HTTP Status Code: 200), Created (HTTP Status Code: 201), Accepted (HTTP Status Code:
-     * 202), No Content (HTTP Status Code: 204), Bad Request(HTTP Status Code: 400), Not Found (HTTP Status Code: 404),
-     * Conflict (HTTP Status Code: 409), Internal Server Error (HTTP Status Code: 500), Service Unavailable (HTTP
-     * Status Code:503), Gateway Timeout (HTTP Status Code: 504)
+     * Common values are: OK (HTTP Status Code: 200), Created (HTTP Status Code: 201), Accepted (HTTP Status Code: 202),
+     * No Content (HTTP Status Code: 204), Bad Request(HTTP Status Code: 400), Not Found (HTTP Status Code: 404),
+     * Conflict (HTTP Status Code: 409), Internal Server Error (HTTP Status Code: 500), Service Unavailable (HTTP Status
+     * Code:503), Gateway Timeout (HTTP Status Code: 504)
      */
-    @JsonProperty(value = "subStatus", access = JsonProperty.Access.WRITE_ONLY)
     private LocalizableStringInner subStatus;
 
     /*
      * the timestamp of when the event was generated by the Azure service processing the request corresponding the
      * event. It in ISO 8601 format.
      */
-    @JsonProperty(value = "eventTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime eventTimestamp;
 
     /*
@@ -161,19 +142,16 @@ public final class EventDataInner {
      * should not be confused eventTimestamp. As there might be a delay between the occurrence time of the event, and
      * the time that the event is submitted to the Azure logging infrastructure.
      */
-    @JsonProperty(value = "submissionTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime submissionTimestamp;
 
     /*
      * the Azure subscription Id usually a GUID.
      */
-    @JsonProperty(value = "subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
     private String subscriptionId;
 
     /*
      * the Azure tenant Id
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /**
@@ -385,10 +363,9 @@ public final class EventDataInner {
     }
 
     /**
-     * Get the submissionTimestamp property: the timestamp of when the event became available for querying via this
-     * API. It is in ISO 8601 format. This value should not be confused eventTimestamp. As there might be a delay
-     * between the occurrence time of the event, and the time that the event is submitted to the Azure logging
-     * infrastructure.
+     * Get the submissionTimestamp property: the timestamp of when the event became available for querying via this API.
+     * It is in ISO 8601 format. This value should not be confused eventTimestamp. As there might be a delay between the
+     * occurrence time of the event, and the time that the event is submitted to the Azure logging infrastructure.
      * 
      * @return the submissionTimestamp value.
      */
@@ -447,5 +424,90 @@ public final class EventDataInner {
         if (subStatus() != null) {
             subStatus().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventDataInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventDataInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EventDataInner.
+     */
+    public static EventDataInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventDataInner deserializedEventDataInner = new EventDataInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authorization".equals(fieldName)) {
+                    deserializedEventDataInner.authorization = SenderAuthorization.fromJson(reader);
+                } else if ("claims".equals(fieldName)) {
+                    Map<String, String> claims = reader.readMap(reader1 -> reader1.getString());
+                    deserializedEventDataInner.claims = claims;
+                } else if ("caller".equals(fieldName)) {
+                    deserializedEventDataInner.caller = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedEventDataInner.description = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedEventDataInner.id = reader.getString();
+                } else if ("eventDataId".equals(fieldName)) {
+                    deserializedEventDataInner.eventDataId = reader.getString();
+                } else if ("correlationId".equals(fieldName)) {
+                    deserializedEventDataInner.correlationId = reader.getString();
+                } else if ("eventName".equals(fieldName)) {
+                    deserializedEventDataInner.eventName = LocalizableStringInner.fromJson(reader);
+                } else if ("category".equals(fieldName)) {
+                    deserializedEventDataInner.category = LocalizableStringInner.fromJson(reader);
+                } else if ("httpRequest".equals(fieldName)) {
+                    deserializedEventDataInner.httpRequest = HttpRequestInfo.fromJson(reader);
+                } else if ("level".equals(fieldName)) {
+                    deserializedEventDataInner.level = EventLevel.fromString(reader.getString());
+                } else if ("resourceGroupName".equals(fieldName)) {
+                    deserializedEventDataInner.resourceGroupName = reader.getString();
+                } else if ("resourceProviderName".equals(fieldName)) {
+                    deserializedEventDataInner.resourceProviderName = LocalizableStringInner.fromJson(reader);
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedEventDataInner.resourceId = reader.getString();
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedEventDataInner.resourceType = LocalizableStringInner.fromJson(reader);
+                } else if ("operationId".equals(fieldName)) {
+                    deserializedEventDataInner.operationId = reader.getString();
+                } else if ("operationName".equals(fieldName)) {
+                    deserializedEventDataInner.operationName = LocalizableStringInner.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedEventDataInner.properties = properties;
+                } else if ("status".equals(fieldName)) {
+                    deserializedEventDataInner.status = LocalizableStringInner.fromJson(reader);
+                } else if ("subStatus".equals(fieldName)) {
+                    deserializedEventDataInner.subStatus = LocalizableStringInner.fromJson(reader);
+                } else if ("eventTimestamp".equals(fieldName)) {
+                    deserializedEventDataInner.eventTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("submissionTimestamp".equals(fieldName)) {
+                    deserializedEventDataInner.submissionTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedEventDataInner.subscriptionId = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedEventDataInner.tenantId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventDataInner;
+        });
     }
 }

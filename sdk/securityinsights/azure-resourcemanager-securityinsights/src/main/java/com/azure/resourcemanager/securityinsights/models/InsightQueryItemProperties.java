@@ -5,63 +5,66 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Represents Insight Query. */
+/**
+ * Represents Insight Query.
+ */
 @Fluent
 public final class InsightQueryItemProperties extends EntityQueryItemProperties {
     /*
      * The insight display name.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The insight description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The base query of the insight.
      */
-    @JsonProperty(value = "baseQuery")
     private String baseQuery;
 
     /*
      * The insight table query.
      */
-    @JsonProperty(value = "tableQuery")
     private InsightQueryItemPropertiesTableQuery tableQuery;
 
     /*
      * The insight chart query.
      */
-    @JsonProperty(value = "chartQuery")
     private Object chartQuery;
 
     /*
      * The activity query definitions.
      */
-    @JsonProperty(value = "additionalQuery")
     private InsightQueryItemPropertiesAdditionalQuery additionalQuery;
 
     /*
      * The insight chart query.
      */
-    @JsonProperty(value = "defaultTimeRange")
     private InsightQueryItemPropertiesDefaultTimeRange defaultTimeRange;
 
     /*
      * The insight chart query.
      */
-    @JsonProperty(value = "referenceTimeRange")
     private InsightQueryItemPropertiesReferenceTimeRange referenceTimeRange;
 
     /**
+     * Creates an instance of InsightQueryItemProperties class.
+     */
+    public InsightQueryItemProperties() {
+    }
+
+    /**
      * Get the displayName property: The insight display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -70,7 +73,7 @@ public final class InsightQueryItemProperties extends EntityQueryItemProperties 
 
     /**
      * Set the displayName property: The insight display name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the InsightQueryItemProperties object itself.
      */
@@ -81,7 +84,7 @@ public final class InsightQueryItemProperties extends EntityQueryItemProperties 
 
     /**
      * Get the description property: The insight description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -90,7 +93,7 @@ public final class InsightQueryItemProperties extends EntityQueryItemProperties 
 
     /**
      * Set the description property: The insight description.
-     *
+     * 
      * @param description the description value to set.
      * @return the InsightQueryItemProperties object itself.
      */
@@ -101,7 +104,7 @@ public final class InsightQueryItemProperties extends EntityQueryItemProperties 
 
     /**
      * Get the baseQuery property: The base query of the insight.
-     *
+     * 
      * @return the baseQuery value.
      */
     public String baseQuery() {
@@ -110,7 +113,7 @@ public final class InsightQueryItemProperties extends EntityQueryItemProperties 
 
     /**
      * Set the baseQuery property: The base query of the insight.
-     *
+     * 
      * @param baseQuery the baseQuery value to set.
      * @return the InsightQueryItemProperties object itself.
      */
@@ -121,7 +124,7 @@ public final class InsightQueryItemProperties extends EntityQueryItemProperties 
 
     /**
      * Get the tableQuery property: The insight table query.
-     *
+     * 
      * @return the tableQuery value.
      */
     public InsightQueryItemPropertiesTableQuery tableQuery() {
@@ -130,7 +133,7 @@ public final class InsightQueryItemProperties extends EntityQueryItemProperties 
 
     /**
      * Set the tableQuery property: The insight table query.
-     *
+     * 
      * @param tableQuery the tableQuery value to set.
      * @return the InsightQueryItemProperties object itself.
      */
@@ -141,7 +144,7 @@ public final class InsightQueryItemProperties extends EntityQueryItemProperties 
 
     /**
      * Get the chartQuery property: The insight chart query.
-     *
+     * 
      * @return the chartQuery value.
      */
     public Object chartQuery() {
@@ -150,7 +153,7 @@ public final class InsightQueryItemProperties extends EntityQueryItemProperties 
 
     /**
      * Set the chartQuery property: The insight chart query.
-     *
+     * 
      * @param chartQuery the chartQuery value to set.
      * @return the InsightQueryItemProperties object itself.
      */
@@ -161,7 +164,7 @@ public final class InsightQueryItemProperties extends EntityQueryItemProperties 
 
     /**
      * Get the additionalQuery property: The activity query definitions.
-     *
+     * 
      * @return the additionalQuery value.
      */
     public InsightQueryItemPropertiesAdditionalQuery additionalQuery() {
@@ -170,7 +173,7 @@ public final class InsightQueryItemProperties extends EntityQueryItemProperties 
 
     /**
      * Set the additionalQuery property: The activity query definitions.
-     *
+     * 
      * @param additionalQuery the additionalQuery value to set.
      * @return the InsightQueryItemProperties object itself.
      */
@@ -181,7 +184,7 @@ public final class InsightQueryItemProperties extends EntityQueryItemProperties 
 
     /**
      * Get the defaultTimeRange property: The insight chart query.
-     *
+     * 
      * @return the defaultTimeRange value.
      */
     public InsightQueryItemPropertiesDefaultTimeRange defaultTimeRange() {
@@ -190,19 +193,19 @@ public final class InsightQueryItemProperties extends EntityQueryItemProperties 
 
     /**
      * Set the defaultTimeRange property: The insight chart query.
-     *
+     * 
      * @param defaultTimeRange the defaultTimeRange value to set.
      * @return the InsightQueryItemProperties object itself.
      */
-    public InsightQueryItemProperties withDefaultTimeRange(
-        InsightQueryItemPropertiesDefaultTimeRange defaultTimeRange) {
+    public InsightQueryItemProperties
+        withDefaultTimeRange(InsightQueryItemPropertiesDefaultTimeRange defaultTimeRange) {
         this.defaultTimeRange = defaultTimeRange;
         return this;
     }
 
     /**
      * Get the referenceTimeRange property: The insight chart query.
-     *
+     * 
      * @return the referenceTimeRange value.
      */
     public InsightQueryItemPropertiesReferenceTimeRange referenceTimeRange() {
@@ -211,38 +214,46 @@ public final class InsightQueryItemProperties extends EntityQueryItemProperties 
 
     /**
      * Set the referenceTimeRange property: The insight chart query.
-     *
+     * 
      * @param referenceTimeRange the referenceTimeRange value to set.
      * @return the InsightQueryItemProperties object itself.
      */
-    public InsightQueryItemProperties withReferenceTimeRange(
-        InsightQueryItemPropertiesReferenceTimeRange referenceTimeRange) {
+    public InsightQueryItemProperties
+        withReferenceTimeRange(InsightQueryItemPropertiesReferenceTimeRange referenceTimeRange) {
         this.referenceTimeRange = referenceTimeRange;
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InsightQueryItemProperties withDataTypes(List<EntityQueryItemPropertiesDataTypesItem> dataTypes) {
         super.withDataTypes(dataTypes);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InsightQueryItemProperties withInputEntityType(EntityType inputEntityType) {
         super.withInputEntityType(inputEntityType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InsightQueryItemProperties withRequiredInputFieldsSets(List<List<String>> requiredInputFieldsSets) {
         super.withRequiredInputFieldsSets(requiredInputFieldsSets);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InsightQueryItemProperties withEntitiesFilter(Object entitiesFilter) {
         super.withEntitiesFilter(entitiesFilter);
@@ -251,12 +262,11 @@ public final class InsightQueryItemProperties extends EntityQueryItemProperties 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (tableQuery() != null) {
             tableQuery().validate();
         }
@@ -269,5 +279,87 @@ public final class InsightQueryItemProperties extends EntityQueryItemProperties 
         if (referenceTimeRange() != null) {
             referenceTimeRange().validate();
         }
+        if (dataTypes() != null) {
+            dataTypes().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("dataTypes", dataTypes(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("inputEntityType", inputEntityType() == null ? null : inputEntityType().toString());
+        jsonWriter.writeArrayField("requiredInputFieldsSets", requiredInputFieldsSets(),
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
+        jsonWriter.writeUntypedField("entitiesFilter", entitiesFilter());
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("baseQuery", this.baseQuery);
+        jsonWriter.writeJsonField("tableQuery", this.tableQuery);
+        jsonWriter.writeUntypedField("chartQuery", this.chartQuery);
+        jsonWriter.writeJsonField("additionalQuery", this.additionalQuery);
+        jsonWriter.writeJsonField("defaultTimeRange", this.defaultTimeRange);
+        jsonWriter.writeJsonField("referenceTimeRange", this.referenceTimeRange);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InsightQueryItemProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InsightQueryItemProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InsightQueryItemProperties.
+     */
+    public static InsightQueryItemProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InsightQueryItemProperties deserializedInsightQueryItemProperties = new InsightQueryItemProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataTypes".equals(fieldName)) {
+                    List<EntityQueryItemPropertiesDataTypesItem> dataTypes
+                        = reader.readArray(reader1 -> EntityQueryItemPropertiesDataTypesItem.fromJson(reader1));
+                    deserializedInsightQueryItemProperties.withDataTypes(dataTypes);
+                } else if ("inputEntityType".equals(fieldName)) {
+                    deserializedInsightQueryItemProperties
+                        .withInputEntityType(EntityType.fromString(reader.getString()));
+                } else if ("requiredInputFieldsSets".equals(fieldName)) {
+                    List<List<String>> requiredInputFieldsSets
+                        = reader.readArray(reader1 -> reader1.readArray(reader2 -> reader2.getString()));
+                    deserializedInsightQueryItemProperties.withRequiredInputFieldsSets(requiredInputFieldsSets);
+                } else if ("entitiesFilter".equals(fieldName)) {
+                    deserializedInsightQueryItemProperties.withEntitiesFilter(reader.readUntyped());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedInsightQueryItemProperties.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedInsightQueryItemProperties.description = reader.getString();
+                } else if ("baseQuery".equals(fieldName)) {
+                    deserializedInsightQueryItemProperties.baseQuery = reader.getString();
+                } else if ("tableQuery".equals(fieldName)) {
+                    deserializedInsightQueryItemProperties.tableQuery
+                        = InsightQueryItemPropertiesTableQuery.fromJson(reader);
+                } else if ("chartQuery".equals(fieldName)) {
+                    deserializedInsightQueryItemProperties.chartQuery = reader.readUntyped();
+                } else if ("additionalQuery".equals(fieldName)) {
+                    deserializedInsightQueryItemProperties.additionalQuery
+                        = InsightQueryItemPropertiesAdditionalQuery.fromJson(reader);
+                } else if ("defaultTimeRange".equals(fieldName)) {
+                    deserializedInsightQueryItemProperties.defaultTimeRange
+                        = InsightQueryItemPropertiesDefaultTimeRange.fromJson(reader);
+                } else if ("referenceTimeRange".equals(fieldName)) {
+                    deserializedInsightQueryItemProperties.referenceTimeRange
+                        = InsightQueryItemPropertiesReferenceTimeRange.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInsightQueryItemProperties;
+        });
     }
 }

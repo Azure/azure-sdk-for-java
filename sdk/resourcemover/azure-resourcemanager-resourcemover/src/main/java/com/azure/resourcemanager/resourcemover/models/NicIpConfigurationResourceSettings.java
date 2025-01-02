@@ -5,67 +5,67 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Defines NIC IP configuration properties. */
+/**
+ * Defines NIC IP configuration properties.
+ */
 @Fluent
-public final class NicIpConfigurationResourceSettings {
+public final class NicIpConfigurationResourceSettings implements JsonSerializable<NicIpConfigurationResourceSettings> {
     /*
      * Gets or sets the IP configuration name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Gets or sets the private IP address of the network interface IP Configuration.
      */
-    @JsonProperty(value = "privateIpAddress")
     private String privateIpAddress;
 
     /*
      * Gets or sets the private IP address allocation method.
      */
-    @JsonProperty(value = "privateIpAllocationMethod")
     private String privateIpAllocationMethod;
 
     /*
      * Defines reference to subnet.
      */
-    @JsonProperty(value = "subnet")
     private SubnetReference subnet;
 
     /*
      * Gets or sets a value indicating whether this IP configuration is the primary.
      */
-    @JsonProperty(value = "primary")
     private Boolean primary;
 
     /*
      * Gets or sets the references of the load balancer backend address pools.
      */
-    @JsonProperty(value = "loadBalancerBackendAddressPools")
     private List<LoadBalancerBackendAddressPoolReference> loadBalancerBackendAddressPools;
 
     /*
      * Gets or sets the references of the load balancer NAT rules.
      */
-    @JsonProperty(value = "loadBalancerNatRules")
     private List<LoadBalancerNatRuleReference> loadBalancerNatRules;
 
     /*
      * Defines reference to a public IP.
      */
-    @JsonProperty(value = "publicIp")
     private PublicIpReference publicIp;
 
-    /** Creates an instance of NicIpConfigurationResourceSettings class. */
+    /**
+     * Creates an instance of NicIpConfigurationResourceSettings class.
+     */
     public NicIpConfigurationResourceSettings() {
     }
 
     /**
      * Get the name property: Gets or sets the IP configuration name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -74,7 +74,7 @@ public final class NicIpConfigurationResourceSettings {
 
     /**
      * Set the name property: Gets or sets the IP configuration name.
-     *
+     * 
      * @param name the name value to set.
      * @return the NicIpConfigurationResourceSettings object itself.
      */
@@ -85,7 +85,7 @@ public final class NicIpConfigurationResourceSettings {
 
     /**
      * Get the privateIpAddress property: Gets or sets the private IP address of the network interface IP Configuration.
-     *
+     * 
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
@@ -94,7 +94,7 @@ public final class NicIpConfigurationResourceSettings {
 
     /**
      * Set the privateIpAddress property: Gets or sets the private IP address of the network interface IP Configuration.
-     *
+     * 
      * @param privateIpAddress the privateIpAddress value to set.
      * @return the NicIpConfigurationResourceSettings object itself.
      */
@@ -105,7 +105,7 @@ public final class NicIpConfigurationResourceSettings {
 
     /**
      * Get the privateIpAllocationMethod property: Gets or sets the private IP address allocation method.
-     *
+     * 
      * @return the privateIpAllocationMethod value.
      */
     public String privateIpAllocationMethod() {
@@ -114,7 +114,7 @@ public final class NicIpConfigurationResourceSettings {
 
     /**
      * Set the privateIpAllocationMethod property: Gets or sets the private IP address allocation method.
-     *
+     * 
      * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
      * @return the NicIpConfigurationResourceSettings object itself.
      */
@@ -125,7 +125,7 @@ public final class NicIpConfigurationResourceSettings {
 
     /**
      * Get the subnet property: Defines reference to subnet.
-     *
+     * 
      * @return the subnet value.
      */
     public SubnetReference subnet() {
@@ -134,7 +134,7 @@ public final class NicIpConfigurationResourceSettings {
 
     /**
      * Set the subnet property: Defines reference to subnet.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the NicIpConfigurationResourceSettings object itself.
      */
@@ -145,7 +145,7 @@ public final class NicIpConfigurationResourceSettings {
 
     /**
      * Get the primary property: Gets or sets a value indicating whether this IP configuration is the primary.
-     *
+     * 
      * @return the primary value.
      */
     public Boolean primary() {
@@ -154,7 +154,7 @@ public final class NicIpConfigurationResourceSettings {
 
     /**
      * Set the primary property: Gets or sets a value indicating whether this IP configuration is the primary.
-     *
+     * 
      * @param primary the primary value to set.
      * @return the NicIpConfigurationResourceSettings object itself.
      */
@@ -166,7 +166,7 @@ public final class NicIpConfigurationResourceSettings {
     /**
      * Get the loadBalancerBackendAddressPools property: Gets or sets the references of the load balancer backend
      * address pools.
-     *
+     * 
      * @return the loadBalancerBackendAddressPools value.
      */
     public List<LoadBalancerBackendAddressPoolReference> loadBalancerBackendAddressPools() {
@@ -176,7 +176,7 @@ public final class NicIpConfigurationResourceSettings {
     /**
      * Set the loadBalancerBackendAddressPools property: Gets or sets the references of the load balancer backend
      * address pools.
-     *
+     * 
      * @param loadBalancerBackendAddressPools the loadBalancerBackendAddressPools value to set.
      * @return the NicIpConfigurationResourceSettings object itself.
      */
@@ -188,7 +188,7 @@ public final class NicIpConfigurationResourceSettings {
 
     /**
      * Get the loadBalancerNatRules property: Gets or sets the references of the load balancer NAT rules.
-     *
+     * 
      * @return the loadBalancerNatRules value.
      */
     public List<LoadBalancerNatRuleReference> loadBalancerNatRules() {
@@ -197,19 +197,19 @@ public final class NicIpConfigurationResourceSettings {
 
     /**
      * Set the loadBalancerNatRules property: Gets or sets the references of the load balancer NAT rules.
-     *
+     * 
      * @param loadBalancerNatRules the loadBalancerNatRules value to set.
      * @return the NicIpConfigurationResourceSettings object itself.
      */
-    public NicIpConfigurationResourceSettings withLoadBalancerNatRules(
-        List<LoadBalancerNatRuleReference> loadBalancerNatRules) {
+    public NicIpConfigurationResourceSettings
+        withLoadBalancerNatRules(List<LoadBalancerNatRuleReference> loadBalancerNatRules) {
         this.loadBalancerNatRules = loadBalancerNatRules;
         return this;
     }
 
     /**
      * Get the publicIp property: Defines reference to a public IP.
-     *
+     * 
      * @return the publicIp value.
      */
     public PublicIpReference publicIp() {
@@ -218,7 +218,7 @@ public final class NicIpConfigurationResourceSettings {
 
     /**
      * Set the publicIp property: Defines reference to a public IP.
-     *
+     * 
      * @param publicIp the publicIp value to set.
      * @return the NicIpConfigurationResourceSettings object itself.
      */
@@ -229,7 +229,7 @@ public final class NicIpConfigurationResourceSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -245,5 +245,70 @@ public final class NicIpConfigurationResourceSettings {
         if (publicIp() != null) {
             publicIp().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("privateIpAddress", this.privateIpAddress);
+        jsonWriter.writeStringField("privateIpAllocationMethod", this.privateIpAllocationMethod);
+        jsonWriter.writeJsonField("subnet", this.subnet);
+        jsonWriter.writeBooleanField("primary", this.primary);
+        jsonWriter.writeArrayField("loadBalancerBackendAddressPools", this.loadBalancerBackendAddressPools,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("loadBalancerNatRules", this.loadBalancerNatRules,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("publicIp", this.publicIp);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NicIpConfigurationResourceSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NicIpConfigurationResourceSettings if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NicIpConfigurationResourceSettings.
+     */
+    public static NicIpConfigurationResourceSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NicIpConfigurationResourceSettings deserializedNicIpConfigurationResourceSettings
+                = new NicIpConfigurationResourceSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedNicIpConfigurationResourceSettings.name = reader.getString();
+                } else if ("privateIpAddress".equals(fieldName)) {
+                    deserializedNicIpConfigurationResourceSettings.privateIpAddress = reader.getString();
+                } else if ("privateIpAllocationMethod".equals(fieldName)) {
+                    deserializedNicIpConfigurationResourceSettings.privateIpAllocationMethod = reader.getString();
+                } else if ("subnet".equals(fieldName)) {
+                    deserializedNicIpConfigurationResourceSettings.subnet = SubnetReference.fromJson(reader);
+                } else if ("primary".equals(fieldName)) {
+                    deserializedNicIpConfigurationResourceSettings.primary = reader.getNullable(JsonReader::getBoolean);
+                } else if ("loadBalancerBackendAddressPools".equals(fieldName)) {
+                    List<LoadBalancerBackendAddressPoolReference> loadBalancerBackendAddressPools
+                        = reader.readArray(reader1 -> LoadBalancerBackendAddressPoolReference.fromJson(reader1));
+                    deserializedNicIpConfigurationResourceSettings.loadBalancerBackendAddressPools
+                        = loadBalancerBackendAddressPools;
+                } else if ("loadBalancerNatRules".equals(fieldName)) {
+                    List<LoadBalancerNatRuleReference> loadBalancerNatRules
+                        = reader.readArray(reader1 -> LoadBalancerNatRuleReference.fromJson(reader1));
+                    deserializedNicIpConfigurationResourceSettings.loadBalancerNatRules = loadBalancerNatRules;
+                } else if ("publicIp".equals(fieldName)) {
+                    deserializedNicIpConfigurationResourceSettings.publicIp = PublicIpReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNicIpConfigurationResourceSettings;
+        });
     }
 }

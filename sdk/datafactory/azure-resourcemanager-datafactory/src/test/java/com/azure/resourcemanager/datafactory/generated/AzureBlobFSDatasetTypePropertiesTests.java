@@ -15,19 +15,19 @@ public final class AzureBlobFSDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBlobFSDatasetTypeProperties model = BinaryData.fromString(
-            "{\"folderPath\":\"datagucbmt\",\"fileName\":\"datadscnns\",\"format\":{\"type\":\"DatasetStorageFormat\",\"serializer\":\"datayyuvtzrxzhclec\",\"deserializer\":\"datatzqzcloy\",\"\":{\"wbyorjplbchych\":\"datapgidhzgyresgzsdt\"}},\"compression\":{\"type\":\"datavyrfbqvum\",\"level\":\"dataqj\",\"\":{\"t\":\"dataepmaxfnzlpqmp\"}}}")
+            "{\"folderPath\":\"datafkk\",\"fileName\":\"dataeetxtpwcv\",\"format\":{\"type\":\"DatasetStorageFormat\",\"serializer\":\"datawsunjzijaciwmmpd\",\"deserializer\":\"datadonb\",\"\":{\"wsyuifkzqqhbtflo\":\"datanfzyviiwsuanz\",\"eoiipjpngvyvu\":\"datalmkf\",\"ryclo\":\"dataikdlpsxntugfwimq\",\"jeleifqhdxt\":\"datafmvswx\"}},\"compression\":{\"type\":\"dataulkrybpaev\",\"level\":\"databyjecrq\",\"\":{\"uibsd\":\"datakkchsfoulborc\",\"lp\":\"databdy\"}}}")
             .toObject(AzureBlobFSDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureBlobFSDatasetTypeProperties model = new AzureBlobFSDatasetTypeProperties().withFolderPath("datagucbmt")
-            .withFileName("datadscnns")
-            .withFormat(new DatasetStorageFormat().withSerializer("datayyuvtzrxzhclec")
-                .withDeserializer("datatzqzcloy")
+        AzureBlobFSDatasetTypeProperties model = new AzureBlobFSDatasetTypeProperties().withFolderPath("datafkk")
+            .withFileName("dataeetxtpwcv")
+            .withFormat(new DatasetStorageFormat().withSerializer("datawsunjzijaciwmmpd")
+                .withDeserializer("datadonb")
                 .withAdditionalProperties(mapOf("type", "DatasetStorageFormat")))
-            .withCompression(new DatasetCompression().withType("datavyrfbqvum")
-                .withLevel("dataqj")
+            .withCompression(new DatasetCompression().withType("dataulkrybpaev")
+                .withLevel("databyjecrq")
                 .withAdditionalProperties(mapOf()));
         model = BinaryData.fromObject(model).toObject(AzureBlobFSDatasetTypeProperties.class);
     }

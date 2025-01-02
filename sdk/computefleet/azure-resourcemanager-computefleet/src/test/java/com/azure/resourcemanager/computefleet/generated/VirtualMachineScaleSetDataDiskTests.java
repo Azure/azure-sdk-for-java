@@ -11,64 +11,65 @@ import com.azure.resourcemanager.computefleet.models.DiskDeleteOptionTypes;
 import com.azure.resourcemanager.computefleet.models.DiskEncryptionSetParameters;
 import com.azure.resourcemanager.computefleet.models.SecurityEncryptionTypes;
 import com.azure.resourcemanager.computefleet.models.StorageAccountTypes;
+import com.azure.resourcemanager.computefleet.models.VMDiskSecurityProfile;
 import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSetDataDisk;
 import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSetManagedDiskParameters;
-import com.azure.resourcemanager.computefleet.models.VMDiskSecurityProfile;
 import org.junit.jupiter.api.Assertions;
 
 public final class VirtualMachineScaleSetDataDiskTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachineScaleSetDataDisk model = BinaryData.fromString(
-            "{\"name\":\"scpai\",\"lun\":1450066184,\"caching\":\"ReadWrite\",\"writeAcceleratorEnabled\":false,\"createOption\":\"Attach\",\"diskSizeGB\":45768072,\"managedDisk\":{\"storageAccountType\":\"StandardSSD_LRS\",\"diskEncryptionSet\":{\"id\":\"tjaodxobnb\"},\"securityProfile\":{\"securityEncryptionType\":\"DiskWithVMGuestState\",\"diskEncryptionSet\":{\"id\":\"okaj\"}}},\"diskIOPSReadWrite\":4793683131243890643,\"diskMBpsReadWrite\":1589043930460259001,\"deleteOption\":\"Delete\"}")
+            "{\"name\":\"hcbonqvpkvlr\",\"lun\":1945684802,\"caching\":\"None\",\"writeAcceleratorEnabled\":false,\"createOption\":\"Attach\",\"diskSizeGB\":625674029,\"managedDisk\":{\"storageAccountType\":\"Premium_LRS\",\"diskEncryptionSet\":{\"id\":\"okeyyienj\"},\"securityProfile\":{\"securityEncryptionType\":\"NonPersistedTPM\",\"diskEncryptionSet\":{\"id\":\"rhpdjpjumas\"}}},\"diskIOPSReadWrite\":1164635978047948118,\"diskMBpsReadWrite\":4118233747929526801,\"deleteOption\":\"Delete\"}")
             .toObject(VirtualMachineScaleSetDataDisk.class);
-        Assertions.assertEquals("scpai", model.name());
-        Assertions.assertEquals(1450066184, model.lun());
-        Assertions.assertEquals(CachingTypes.READ_WRITE, model.caching());
+        Assertions.assertEquals("hcbonqvpkvlr", model.name());
+        Assertions.assertEquals(1945684802, model.lun());
+        Assertions.assertEquals(CachingTypes.NONE, model.caching());
         Assertions.assertEquals(false, model.writeAcceleratorEnabled());
         Assertions.assertEquals(DiskCreateOptionTypes.ATTACH, model.createOption());
-        Assertions.assertEquals(45768072, model.diskSizeGB());
-        Assertions.assertEquals(StorageAccountTypes.STANDARD_SSD_LRS, model.managedDisk().storageAccountType());
-        Assertions.assertEquals("tjaodxobnb", model.managedDisk().diskEncryptionSet().id());
-        Assertions.assertEquals(SecurityEncryptionTypes.DISK_WITH_VMGUEST_STATE,
+        Assertions.assertEquals(625674029, model.diskSizeGB());
+        Assertions.assertEquals(StorageAccountTypes.PREMIUM_LRS, model.managedDisk().storageAccountType());
+        Assertions.assertEquals("okeyyienj", model.managedDisk().diskEncryptionSet().id());
+        Assertions.assertEquals(SecurityEncryptionTypes.NON_PERSISTED_TPM,
             model.managedDisk().securityProfile().securityEncryptionType());
-        Assertions.assertEquals("okaj", model.managedDisk().securityProfile().diskEncryptionSet().id());
-        Assertions.assertEquals(4793683131243890643L, model.diskIOPSReadWrite());
-        Assertions.assertEquals(1589043930460259001L, model.diskMBpsReadWrite());
+        Assertions.assertEquals("rhpdjpjumas", model.managedDisk().securityProfile().diskEncryptionSet().id());
+        Assertions.assertEquals(1164635978047948118L, model.diskIOPSReadWrite());
+        Assertions.assertEquals(4118233747929526801L, model.diskMBpsReadWrite());
         Assertions.assertEquals(DiskDeleteOptionTypes.DELETE, model.deleteOption());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualMachineScaleSetDataDisk model = new VirtualMachineScaleSetDataDisk().withName("scpai")
-            .withLun(1450066184)
-            .withCaching(CachingTypes.READ_WRITE)
-            .withWriteAcceleratorEnabled(false)
-            .withCreateOption(DiskCreateOptionTypes.ATTACH)
-            .withDiskSizeGB(45768072)
-            .withManagedDisk(new VirtualMachineScaleSetManagedDiskParameters()
-                .withStorageAccountType(StorageAccountTypes.STANDARD_SSD_LRS)
-                .withDiskEncryptionSet(new DiskEncryptionSetParameters().withId("tjaodxobnb"))
-                .withSecurityProfile(new VMDiskSecurityProfile()
-                    .withSecurityEncryptionType(SecurityEncryptionTypes.DISK_WITH_VMGUEST_STATE)
-                    .withDiskEncryptionSet(new DiskEncryptionSetParameters().withId("okaj"))))
-            .withDiskIOPSReadWrite(4793683131243890643L)
-            .withDiskMBpsReadWrite(1589043930460259001L)
-            .withDeleteOption(DiskDeleteOptionTypes.DELETE);
+        VirtualMachineScaleSetDataDisk model
+            = new VirtualMachineScaleSetDataDisk().withName("hcbonqvpkvlr")
+                .withLun(1945684802)
+                .withCaching(CachingTypes.NONE)
+                .withWriteAcceleratorEnabled(false)
+                .withCreateOption(DiskCreateOptionTypes.ATTACH)
+                .withDiskSizeGB(625674029)
+                .withManagedDisk(new VirtualMachineScaleSetManagedDiskParameters()
+                    .withStorageAccountType(StorageAccountTypes.PREMIUM_LRS)
+                    .withDiskEncryptionSet(new DiskEncryptionSetParameters().withId("okeyyienj"))
+                    .withSecurityProfile(new VMDiskSecurityProfile()
+                        .withSecurityEncryptionType(SecurityEncryptionTypes.NON_PERSISTED_TPM)
+                        .withDiskEncryptionSet(new DiskEncryptionSetParameters().withId("rhpdjpjumas"))))
+                .withDiskIOPSReadWrite(1164635978047948118L)
+                .withDiskMBpsReadWrite(4118233747929526801L)
+                .withDeleteOption(DiskDeleteOptionTypes.DELETE);
         model = BinaryData.fromObject(model).toObject(VirtualMachineScaleSetDataDisk.class);
-        Assertions.assertEquals("scpai", model.name());
-        Assertions.assertEquals(1450066184, model.lun());
-        Assertions.assertEquals(CachingTypes.READ_WRITE, model.caching());
+        Assertions.assertEquals("hcbonqvpkvlr", model.name());
+        Assertions.assertEquals(1945684802, model.lun());
+        Assertions.assertEquals(CachingTypes.NONE, model.caching());
         Assertions.assertEquals(false, model.writeAcceleratorEnabled());
         Assertions.assertEquals(DiskCreateOptionTypes.ATTACH, model.createOption());
-        Assertions.assertEquals(45768072, model.diskSizeGB());
-        Assertions.assertEquals(StorageAccountTypes.STANDARD_SSD_LRS, model.managedDisk().storageAccountType());
-        Assertions.assertEquals("tjaodxobnb", model.managedDisk().diskEncryptionSet().id());
-        Assertions.assertEquals(SecurityEncryptionTypes.DISK_WITH_VMGUEST_STATE,
+        Assertions.assertEquals(625674029, model.diskSizeGB());
+        Assertions.assertEquals(StorageAccountTypes.PREMIUM_LRS, model.managedDisk().storageAccountType());
+        Assertions.assertEquals("okeyyienj", model.managedDisk().diskEncryptionSet().id());
+        Assertions.assertEquals(SecurityEncryptionTypes.NON_PERSISTED_TPM,
             model.managedDisk().securityProfile().securityEncryptionType());
-        Assertions.assertEquals("okaj", model.managedDisk().securityProfile().diskEncryptionSet().id());
-        Assertions.assertEquals(4793683131243890643L, model.diskIOPSReadWrite());
-        Assertions.assertEquals(1589043930460259001L, model.diskMBpsReadWrite());
+        Assertions.assertEquals("rhpdjpjumas", model.managedDisk().securityProfile().diskEncryptionSet().id());
+        Assertions.assertEquals(1164635978047948118L, model.diskIOPSReadWrite());
+        Assertions.assertEquals(4118233747929526801L, model.diskMBpsReadWrite());
         Assertions.assertEquals(DiskDeleteOptionTypes.DELETE, model.deleteOption());
     }
 }

@@ -12,15 +12,17 @@ import com.azure.ai.formrecognizer.training.models.CustomFormModelProperties;
 public final class CustomFormModelInfoHelper {
     private static CustomFormModelInfoAccessor accessor;
 
-    private CustomFormModelInfoHelper() { }
+    private CustomFormModelInfoHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link CustomFormModelInfo} instance.
      */
     public interface CustomFormModelInfoAccessor {
         void setModelName(CustomFormModelInfo formModelInfo, String modelName);
+
         void setCustomFormModelProperties(CustomFormModelInfo formModelInfo,
-                                          CustomFormModelProperties customFormModelProperties);
+            CustomFormModelProperties customFormModelProperties);
     }
 
     /**
@@ -37,7 +39,7 @@ public final class CustomFormModelInfoHelper {
     }
 
     public static void setCustomFormModelProperties(CustomFormModelInfo formModelInfo,
-                                                    CustomFormModelProperties customFormModelProperties) {
+        CustomFormModelProperties customFormModelProperties) {
         accessor.setCustomFormModelProperties(formModelInfo, customFormModelProperties);
     }
 }

@@ -5,130 +5,124 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.AlertDetailsOverride;
 import com.azure.resourcemanager.securityinsights.models.AlertSeverity;
 import com.azure.resourcemanager.securityinsights.models.AttackTactic;
 import com.azure.resourcemanager.securityinsights.models.EntityMapping;
 import com.azure.resourcemanager.securityinsights.models.EventGroupingSettings;
 import com.azure.resourcemanager.securityinsights.models.IncidentConfiguration;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** Nrt alert rule base property bag. */
+/**
+ * Nrt alert rule base property bag.
+ */
 @Fluent
-public final class NrtAlertRuleProperties {
+public final class NrtAlertRuleProperties implements JsonSerializable<NrtAlertRuleProperties> {
     /*
      * The Name of the alert rule template used to create this rule.
      */
-    @JsonProperty(value = "alertRuleTemplateName")
     private String alertRuleTemplateName;
 
     /*
      * The version of the alert rule template used to create this rule - in format <a.b.c>, where all are numbers, for
      * example 0 <1.0.2>
      */
-    @JsonProperty(value = "templateVersion")
     private String templateVersion;
 
     /*
      * The description of the alert rule.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The query that creates alerts for this rule.
      */
-    @JsonProperty(value = "query", required = true)
     private String query;
 
     /*
      * The tactics of the alert rule
      */
-    @JsonProperty(value = "tactics")
     private List<AttackTactic> tactics;
 
     /*
      * The techniques of the alert rule
      */
-    @JsonProperty(value = "techniques")
     private List<String> techniques;
 
     /*
      * The display name for alerts created by this alert rule.
      */
-    @JsonProperty(value = "displayName", required = true)
     private String displayName;
 
     /*
      * Determines whether this alert rule is enabled or disabled.
      */
-    @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
 
     /*
      * The last time that this alert rule has been modified.
      */
-    @JsonProperty(value = "lastModifiedUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedUtc;
 
     /*
      * The suppression (in ISO 8601 duration format) to wait since last time this alert rule been triggered.
      */
-    @JsonProperty(value = "suppressionDuration", required = true)
     private Duration suppressionDuration;
 
     /*
      * Determines whether the suppression for this alert rule is enabled or disabled.
      */
-    @JsonProperty(value = "suppressionEnabled", required = true)
     private boolean suppressionEnabled;
 
     /*
      * The severity for alerts created by this alert rule.
      */
-    @JsonProperty(value = "severity", required = true)
     private AlertSeverity severity;
 
     /*
      * The settings of the incidents that created from alerts triggered by this analytics rule
      */
-    @JsonProperty(value = "incidentConfiguration")
     private IncidentConfiguration incidentConfiguration;
 
     /*
      * Dictionary of string key-value pairs of columns to be attached to the alert
      */
-    @JsonProperty(value = "customDetails")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> customDetails;
 
     /*
      * Array of the entity mappings of the alert rule
      */
-    @JsonProperty(value = "entityMappings")
     private List<EntityMapping> entityMappings;
 
     /*
      * The alert details override settings
      */
-    @JsonProperty(value = "alertDetailsOverride")
     private AlertDetailsOverride alertDetailsOverride;
 
     /*
      * The event grouping settings.
      */
-    @JsonProperty(value = "eventGroupingSettings")
     private EventGroupingSettings eventGroupingSettings;
 
     /**
+     * Creates an instance of NrtAlertRuleProperties class.
+     */
+    public NrtAlertRuleProperties() {
+    }
+
+    /**
      * Get the alertRuleTemplateName property: The Name of the alert rule template used to create this rule.
-     *
+     * 
      * @return the alertRuleTemplateName value.
      */
     public String alertRuleTemplateName() {
@@ -137,7 +131,7 @@ public final class NrtAlertRuleProperties {
 
     /**
      * Set the alertRuleTemplateName property: The Name of the alert rule template used to create this rule.
-     *
+     * 
      * @param alertRuleTemplateName the alertRuleTemplateName value to set.
      * @return the NrtAlertRuleProperties object itself.
      */
@@ -149,7 +143,7 @@ public final class NrtAlertRuleProperties {
     /**
      * Get the templateVersion property: The version of the alert rule template used to create this rule - in format
      * &lt;a.b.c&gt;, where all are numbers, for example 0 &lt;1.0.2&gt;.
-     *
+     * 
      * @return the templateVersion value.
      */
     public String templateVersion() {
@@ -159,7 +153,7 @@ public final class NrtAlertRuleProperties {
     /**
      * Set the templateVersion property: The version of the alert rule template used to create this rule - in format
      * &lt;a.b.c&gt;, where all are numbers, for example 0 &lt;1.0.2&gt;.
-     *
+     * 
      * @param templateVersion the templateVersion value to set.
      * @return the NrtAlertRuleProperties object itself.
      */
@@ -170,7 +164,7 @@ public final class NrtAlertRuleProperties {
 
     /**
      * Get the description property: The description of the alert rule.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -179,7 +173,7 @@ public final class NrtAlertRuleProperties {
 
     /**
      * Set the description property: The description of the alert rule.
-     *
+     * 
      * @param description the description value to set.
      * @return the NrtAlertRuleProperties object itself.
      */
@@ -190,7 +184,7 @@ public final class NrtAlertRuleProperties {
 
     /**
      * Get the query property: The query that creates alerts for this rule.
-     *
+     * 
      * @return the query value.
      */
     public String query() {
@@ -199,7 +193,7 @@ public final class NrtAlertRuleProperties {
 
     /**
      * Set the query property: The query that creates alerts for this rule.
-     *
+     * 
      * @param query the query value to set.
      * @return the NrtAlertRuleProperties object itself.
      */
@@ -210,7 +204,7 @@ public final class NrtAlertRuleProperties {
 
     /**
      * Get the tactics property: The tactics of the alert rule.
-     *
+     * 
      * @return the tactics value.
      */
     public List<AttackTactic> tactics() {
@@ -219,7 +213,7 @@ public final class NrtAlertRuleProperties {
 
     /**
      * Set the tactics property: The tactics of the alert rule.
-     *
+     * 
      * @param tactics the tactics value to set.
      * @return the NrtAlertRuleProperties object itself.
      */
@@ -230,7 +224,7 @@ public final class NrtAlertRuleProperties {
 
     /**
      * Get the techniques property: The techniques of the alert rule.
-     *
+     * 
      * @return the techniques value.
      */
     public List<String> techniques() {
@@ -239,7 +233,7 @@ public final class NrtAlertRuleProperties {
 
     /**
      * Set the techniques property: The techniques of the alert rule.
-     *
+     * 
      * @param techniques the techniques value to set.
      * @return the NrtAlertRuleProperties object itself.
      */
@@ -250,7 +244,7 @@ public final class NrtAlertRuleProperties {
 
     /**
      * Get the displayName property: The display name for alerts created by this alert rule.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -259,7 +253,7 @@ public final class NrtAlertRuleProperties {
 
     /**
      * Set the displayName property: The display name for alerts created by this alert rule.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the NrtAlertRuleProperties object itself.
      */
@@ -270,7 +264,7 @@ public final class NrtAlertRuleProperties {
 
     /**
      * Get the enabled property: Determines whether this alert rule is enabled or disabled.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -279,7 +273,7 @@ public final class NrtAlertRuleProperties {
 
     /**
      * Set the enabled property: Determines whether this alert rule is enabled or disabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the NrtAlertRuleProperties object itself.
      */
@@ -290,7 +284,7 @@ public final class NrtAlertRuleProperties {
 
     /**
      * Get the lastModifiedUtc property: The last time that this alert rule has been modified.
-     *
+     * 
      * @return the lastModifiedUtc value.
      */
     public OffsetDateTime lastModifiedUtc() {
@@ -300,7 +294,7 @@ public final class NrtAlertRuleProperties {
     /**
      * Get the suppressionDuration property: The suppression (in ISO 8601 duration format) to wait since last time this
      * alert rule been triggered.
-     *
+     * 
      * @return the suppressionDuration value.
      */
     public Duration suppressionDuration() {
@@ -310,7 +304,7 @@ public final class NrtAlertRuleProperties {
     /**
      * Set the suppressionDuration property: The suppression (in ISO 8601 duration format) to wait since last time this
      * alert rule been triggered.
-     *
+     * 
      * @param suppressionDuration the suppressionDuration value to set.
      * @return the NrtAlertRuleProperties object itself.
      */
@@ -322,7 +316,7 @@ public final class NrtAlertRuleProperties {
     /**
      * Get the suppressionEnabled property: Determines whether the suppression for this alert rule is enabled or
      * disabled.
-     *
+     * 
      * @return the suppressionEnabled value.
      */
     public boolean suppressionEnabled() {
@@ -332,7 +326,7 @@ public final class NrtAlertRuleProperties {
     /**
      * Set the suppressionEnabled property: Determines whether the suppression for this alert rule is enabled or
      * disabled.
-     *
+     * 
      * @param suppressionEnabled the suppressionEnabled value to set.
      * @return the NrtAlertRuleProperties object itself.
      */
@@ -343,7 +337,7 @@ public final class NrtAlertRuleProperties {
 
     /**
      * Get the severity property: The severity for alerts created by this alert rule.
-     *
+     * 
      * @return the severity value.
      */
     public AlertSeverity severity() {
@@ -352,7 +346,7 @@ public final class NrtAlertRuleProperties {
 
     /**
      * Set the severity property: The severity for alerts created by this alert rule.
-     *
+     * 
      * @param severity the severity value to set.
      * @return the NrtAlertRuleProperties object itself.
      */
@@ -364,7 +358,7 @@ public final class NrtAlertRuleProperties {
     /**
      * Get the incidentConfiguration property: The settings of the incidents that created from alerts triggered by this
      * analytics rule.
-     *
+     * 
      * @return the incidentConfiguration value.
      */
     public IncidentConfiguration incidentConfiguration() {
@@ -374,7 +368,7 @@ public final class NrtAlertRuleProperties {
     /**
      * Set the incidentConfiguration property: The settings of the incidents that created from alerts triggered by this
      * analytics rule.
-     *
+     * 
      * @param incidentConfiguration the incidentConfiguration value to set.
      * @return the NrtAlertRuleProperties object itself.
      */
@@ -385,7 +379,7 @@ public final class NrtAlertRuleProperties {
 
     /**
      * Get the customDetails property: Dictionary of string key-value pairs of columns to be attached to the alert.
-     *
+     * 
      * @return the customDetails value.
      */
     public Map<String, String> customDetails() {
@@ -394,7 +388,7 @@ public final class NrtAlertRuleProperties {
 
     /**
      * Set the customDetails property: Dictionary of string key-value pairs of columns to be attached to the alert.
-     *
+     * 
      * @param customDetails the customDetails value to set.
      * @return the NrtAlertRuleProperties object itself.
      */
@@ -405,7 +399,7 @@ public final class NrtAlertRuleProperties {
 
     /**
      * Get the entityMappings property: Array of the entity mappings of the alert rule.
-     *
+     * 
      * @return the entityMappings value.
      */
     public List<EntityMapping> entityMappings() {
@@ -414,7 +408,7 @@ public final class NrtAlertRuleProperties {
 
     /**
      * Set the entityMappings property: Array of the entity mappings of the alert rule.
-     *
+     * 
      * @param entityMappings the entityMappings value to set.
      * @return the NrtAlertRuleProperties object itself.
      */
@@ -425,7 +419,7 @@ public final class NrtAlertRuleProperties {
 
     /**
      * Get the alertDetailsOverride property: The alert details override settings.
-     *
+     * 
      * @return the alertDetailsOverride value.
      */
     public AlertDetailsOverride alertDetailsOverride() {
@@ -434,7 +428,7 @@ public final class NrtAlertRuleProperties {
 
     /**
      * Set the alertDetailsOverride property: The alert details override settings.
-     *
+     * 
      * @param alertDetailsOverride the alertDetailsOverride value to set.
      * @return the NrtAlertRuleProperties object itself.
      */
@@ -445,7 +439,7 @@ public final class NrtAlertRuleProperties {
 
     /**
      * Get the eventGroupingSettings property: The event grouping settings.
-     *
+     * 
      * @return the eventGroupingSettings value.
      */
     public EventGroupingSettings eventGroupingSettings() {
@@ -454,7 +448,7 @@ public final class NrtAlertRuleProperties {
 
     /**
      * Set the eventGroupingSettings property: The event grouping settings.
-     *
+     * 
      * @param eventGroupingSettings the eventGroupingSettings value to set.
      * @return the NrtAlertRuleProperties object itself.
      */
@@ -465,30 +459,27 @@ public final class NrtAlertRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (query() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property query in model NrtAlertRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property query in model NrtAlertRuleProperties"));
         }
         if (displayName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property displayName in model NrtAlertRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property displayName in model NrtAlertRuleProperties"));
         }
         if (suppressionDuration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property suppressionDuration in model NrtAlertRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property suppressionDuration in model NrtAlertRuleProperties"));
         }
         if (severity() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property severity in model NrtAlertRuleProperties"));
         }
         if (incidentConfiguration() != null) {
@@ -506,4 +497,98 @@ public final class NrtAlertRuleProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(NrtAlertRuleProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("query", this.query);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("suppressionDuration",
+            CoreUtils.durationToStringWithDays(this.suppressionDuration));
+        jsonWriter.writeBooleanField("suppressionEnabled", this.suppressionEnabled);
+        jsonWriter.writeStringField("severity", this.severity == null ? null : this.severity.toString());
+        jsonWriter.writeStringField("alertRuleTemplateName", this.alertRuleTemplateName);
+        jsonWriter.writeStringField("templateVersion", this.templateVersion);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("tactics", this.tactics,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("techniques", this.techniques, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("incidentConfiguration", this.incidentConfiguration);
+        jsonWriter.writeMapField("customDetails", this.customDetails, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("entityMappings", this.entityMappings,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("alertDetailsOverride", this.alertDetailsOverride);
+        jsonWriter.writeJsonField("eventGroupingSettings", this.eventGroupingSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NrtAlertRuleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NrtAlertRuleProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NrtAlertRuleProperties.
+     */
+    public static NrtAlertRuleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NrtAlertRuleProperties deserializedNrtAlertRuleProperties = new NrtAlertRuleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("query".equals(fieldName)) {
+                    deserializedNrtAlertRuleProperties.query = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedNrtAlertRuleProperties.displayName = reader.getString();
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedNrtAlertRuleProperties.enabled = reader.getBoolean();
+                } else if ("suppressionDuration".equals(fieldName)) {
+                    deserializedNrtAlertRuleProperties.suppressionDuration
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("suppressionEnabled".equals(fieldName)) {
+                    deserializedNrtAlertRuleProperties.suppressionEnabled = reader.getBoolean();
+                } else if ("severity".equals(fieldName)) {
+                    deserializedNrtAlertRuleProperties.severity = AlertSeverity.fromString(reader.getString());
+                } else if ("alertRuleTemplateName".equals(fieldName)) {
+                    deserializedNrtAlertRuleProperties.alertRuleTemplateName = reader.getString();
+                } else if ("templateVersion".equals(fieldName)) {
+                    deserializedNrtAlertRuleProperties.templateVersion = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedNrtAlertRuleProperties.description = reader.getString();
+                } else if ("tactics".equals(fieldName)) {
+                    List<AttackTactic> tactics
+                        = reader.readArray(reader1 -> AttackTactic.fromString(reader1.getString()));
+                    deserializedNrtAlertRuleProperties.tactics = tactics;
+                } else if ("techniques".equals(fieldName)) {
+                    List<String> techniques = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNrtAlertRuleProperties.techniques = techniques;
+                } else if ("lastModifiedUtc".equals(fieldName)) {
+                    deserializedNrtAlertRuleProperties.lastModifiedUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("incidentConfiguration".equals(fieldName)) {
+                    deserializedNrtAlertRuleProperties.incidentConfiguration = IncidentConfiguration.fromJson(reader);
+                } else if ("customDetails".equals(fieldName)) {
+                    Map<String, String> customDetails = reader.readMap(reader1 -> reader1.getString());
+                    deserializedNrtAlertRuleProperties.customDetails = customDetails;
+                } else if ("entityMappings".equals(fieldName)) {
+                    List<EntityMapping> entityMappings = reader.readArray(reader1 -> EntityMapping.fromJson(reader1));
+                    deserializedNrtAlertRuleProperties.entityMappings = entityMappings;
+                } else if ("alertDetailsOverride".equals(fieldName)) {
+                    deserializedNrtAlertRuleProperties.alertDetailsOverride = AlertDetailsOverride.fromJson(reader);
+                } else if ("eventGroupingSettings".equals(fieldName)) {
+                    deserializedNrtAlertRuleProperties.eventGroupingSettings = EventGroupingSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNrtAlertRuleProperties;
+        });
+    }
 }

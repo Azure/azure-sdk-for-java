@@ -22,10 +22,14 @@ public final class AfdProfilesValidateSecretSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void validateSecret(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getAfdProfiles().validateSecretWithResponse("RG", "profile1",
-            new ValidateSecretInput().withSecretType(SecretType.CUSTOMER_CERTIFICATE)
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getAfdProfiles()
+            .validateSecretWithResponse("RG", "profile1", new ValidateSecretInput()
+                .withSecretType(SecretType.CUSTOMER_CERTIFICATE)
                 .withSecretSource(new ResourceReference().withId(
                     "/subscriptions/subid/resourcegroups/RG/providers/Microsoft.KeyVault/vault/kvName/certificate/certName")),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

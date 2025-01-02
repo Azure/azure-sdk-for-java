@@ -18,7 +18,8 @@ import java.util.Map;
 @JsonFlatten
 @Fluent
 public class PrivateLinkResource extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResource.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PrivateLinkResource.class);
 
     /*
      * The private link resource group id.

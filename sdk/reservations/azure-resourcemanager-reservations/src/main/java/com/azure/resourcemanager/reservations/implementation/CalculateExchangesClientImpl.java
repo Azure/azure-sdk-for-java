@@ -31,22 +31,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CalculateExchangesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CalculateExchangesClient.
+ */
 public final class CalculateExchangesClientImpl implements CalculateExchangesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CalculateExchangesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureReservationApiImpl client;
 
     /**
      * Initializes an instance of CalculateExchangesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CalculateExchangesClientImpl(AzureReservationApiImpl client) {
-        this.service =
-            RestProxy.create(CalculateExchangesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(CalculateExchangesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,23 +63,20 @@ public final class CalculateExchangesClientImpl implements CalculateExchangesCli
     @Host("{$host}")
     @ServiceInterface(name = "AzureReservationApiC")
     public interface CalculateExchangesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.Capacity/calculateExchange")
-        @ExpectedResponses({200, 202})
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> post(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") CalculateExchangeRequest body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> post(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") CalculateExchangeRequest body,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Calculates the refund amounts and price of the new purchases.
-     *
-     * <p>Calculates price for exchanging `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculates price for exchanging `Reservations` if there are no policy errors.
+     * 
      * @param body Request containing purchases and refunds that need to be executed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -83,10 +86,8 @@ public final class CalculateExchangesClientImpl implements CalculateExchangesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> postWithResponseAsync(CalculateExchangeRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -102,9 +103,9 @@ public final class CalculateExchangesClientImpl implements CalculateExchangesCli
 
     /**
      * Calculates the refund amounts and price of the new purchases.
-     *
-     * <p>Calculates price for exchanging `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculates price for exchanging `Reservations` if there are no policy errors.
+     * 
      * @param body Request containing purchases and refunds that need to be executed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -115,10 +116,8 @@ public final class CalculateExchangesClientImpl implements CalculateExchangesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> postWithResponseAsync(CalculateExchangeRequest body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -133,9 +132,9 @@ public final class CalculateExchangesClientImpl implements CalculateExchangesCli
 
     /**
      * Calculates the refund amounts and price of the new purchases.
-     *
-     * <p>Calculates price for exchanging `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculates price for exchanging `Reservations` if there are no policy errors.
+     * 
      * @param body Request containing purchases and refunds that need to be executed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -143,25 +142,21 @@ public final class CalculateExchangesClientImpl implements CalculateExchangesCli
      * @return the {@link PollerFlux} for polling of calculateExchange operation result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CalculateExchangeOperationResultResponseInner>, CalculateExchangeOperationResultResponseInner>
+    private
+        PollerFlux<PollResult<CalculateExchangeOperationResultResponseInner>, CalculateExchangeOperationResultResponseInner>
         beginPostAsync(CalculateExchangeRequest body) {
         Mono<Response<Flux<ByteBuffer>>> mono = postWithResponseAsync(body);
-        return this
-            .client
+        return this.client
             .<CalculateExchangeOperationResultResponseInner, CalculateExchangeOperationResultResponseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CalculateExchangeOperationResultResponseInner.class,
-                CalculateExchangeOperationResultResponseInner.class,
-                this.client.getContext());
+                mono, this.client.getHttpPipeline(), CalculateExchangeOperationResultResponseInner.class,
+                CalculateExchangeOperationResultResponseInner.class, this.client.getContext());
     }
 
     /**
      * Calculates the refund amounts and price of the new purchases.
-     *
-     * <p>Calculates price for exchanging `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculates price for exchanging `Reservations` if there are no policy errors.
+     * 
      * @param body Request containing purchases and refunds that need to be executed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -170,26 +165,22 @@ public final class CalculateExchangesClientImpl implements CalculateExchangesCli
      * @return the {@link PollerFlux} for polling of calculateExchange operation result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CalculateExchangeOperationResultResponseInner>, CalculateExchangeOperationResultResponseInner>
+    private
+        PollerFlux<PollResult<CalculateExchangeOperationResultResponseInner>, CalculateExchangeOperationResultResponseInner>
         beginPostAsync(CalculateExchangeRequest body, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = postWithResponseAsync(body, context);
-        return this
-            .client
+        return this.client
             .<CalculateExchangeOperationResultResponseInner, CalculateExchangeOperationResultResponseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CalculateExchangeOperationResultResponseInner.class,
-                CalculateExchangeOperationResultResponseInner.class,
-                context);
+                mono, this.client.getHttpPipeline(), CalculateExchangeOperationResultResponseInner.class,
+                CalculateExchangeOperationResultResponseInner.class, context);
     }
 
     /**
      * Calculates the refund amounts and price of the new purchases.
-     *
-     * <p>Calculates price for exchanging `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculates price for exchanging `Reservations` if there are no policy errors.
+     * 
      * @param body Request containing purchases and refunds that need to be executed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -197,17 +188,17 @@ public final class CalculateExchangesClientImpl implements CalculateExchangesCli
      * @return the {@link SyncPoller} for polling of calculateExchange operation result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CalculateExchangeOperationResultResponseInner>, CalculateExchangeOperationResultResponseInner>
+    public
+        SyncPoller<PollResult<CalculateExchangeOperationResultResponseInner>, CalculateExchangeOperationResultResponseInner>
         beginPost(CalculateExchangeRequest body) {
         return this.beginPostAsync(body).getSyncPoller();
     }
 
     /**
      * Calculates the refund amounts and price of the new purchases.
-     *
-     * <p>Calculates price for exchanging `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculates price for exchanging `Reservations` if there are no policy errors.
+     * 
      * @param body Request containing purchases and refunds that need to be executed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -216,17 +207,17 @@ public final class CalculateExchangesClientImpl implements CalculateExchangesCli
      * @return the {@link SyncPoller} for polling of calculateExchange operation result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CalculateExchangeOperationResultResponseInner>, CalculateExchangeOperationResultResponseInner>
+    public
+        SyncPoller<PollResult<CalculateExchangeOperationResultResponseInner>, CalculateExchangeOperationResultResponseInner>
         beginPost(CalculateExchangeRequest body, Context context) {
         return this.beginPostAsync(body, context).getSyncPoller();
     }
 
     /**
      * Calculates the refund amounts and price of the new purchases.
-     *
-     * <p>Calculates price for exchanging `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculates price for exchanging `Reservations` if there are no policy errors.
+     * 
      * @param body Request containing purchases and refunds that need to be executed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -240,9 +231,9 @@ public final class CalculateExchangesClientImpl implements CalculateExchangesCli
 
     /**
      * Calculates the refund amounts and price of the new purchases.
-     *
-     * <p>Calculates price for exchanging `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculates price for exchanging `Reservations` if there are no policy errors.
+     * 
      * @param body Request containing purchases and refunds that need to be executed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -251,16 +242,16 @@ public final class CalculateExchangesClientImpl implements CalculateExchangesCli
      * @return calculateExchange operation result on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CalculateExchangeOperationResultResponseInner> postAsync(
-        CalculateExchangeRequest body, Context context) {
+    private Mono<CalculateExchangeOperationResultResponseInner> postAsync(CalculateExchangeRequest body,
+        Context context) {
         return beginPostAsync(body, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Calculates the refund amounts and price of the new purchases.
-     *
-     * <p>Calculates price for exchanging `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculates price for exchanging `Reservations` if there are no policy errors.
+     * 
      * @param body Request containing purchases and refunds that need to be executed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -274,9 +265,9 @@ public final class CalculateExchangesClientImpl implements CalculateExchangesCli
 
     /**
      * Calculates the refund amounts and price of the new purchases.
-     *
-     * <p>Calculates price for exchanging `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculates price for exchanging `Reservations` if there are no policy errors.
+     * 
      * @param body Request containing purchases and refunds that need to be executed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

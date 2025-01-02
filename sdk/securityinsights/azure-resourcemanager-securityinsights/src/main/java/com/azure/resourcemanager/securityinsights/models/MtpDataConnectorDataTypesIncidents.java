@@ -5,11 +5,26 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Data type for Microsoft Threat Protection Platforms data connector. */
+/**
+ * Data type for Microsoft Threat Protection Platforms data connector.
+ */
 @Fluent
 public final class MtpDataConnectorDataTypesIncidents extends DataConnectorDataTypeCommon {
-    /** {@inheritDoc} */
+    /**
+     * Creates an instance of MtpDataConnectorDataTypesIncidents class.
+     */
+    public MtpDataConnectorDataTypesIncidents() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MtpDataConnectorDataTypesIncidents withState(DataTypeState state) {
         super.withState(state);
@@ -18,11 +33,56 @@ public final class MtpDataConnectorDataTypesIncidents extends DataConnectorDataT
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (state() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property state in model MtpDataConnectorDataTypesIncidents"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MtpDataConnectorDataTypesIncidents.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", state() == null ? null : state().toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MtpDataConnectorDataTypesIncidents from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MtpDataConnectorDataTypesIncidents if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MtpDataConnectorDataTypesIncidents.
+     */
+    public static MtpDataConnectorDataTypesIncidents fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MtpDataConnectorDataTypesIncidents deserializedMtpDataConnectorDataTypesIncidents
+                = new MtpDataConnectorDataTypesIncidents();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedMtpDataConnectorDataTypesIncidents
+                        .withState(DataTypeState.fromString(reader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMtpDataConnectorDataTypesIncidents;
+        });
     }
 }

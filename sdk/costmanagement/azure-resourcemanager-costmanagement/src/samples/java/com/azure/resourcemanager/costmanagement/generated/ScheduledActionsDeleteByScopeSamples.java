@@ -4,23 +4,24 @@
 
 package com.azure.resourcemanager.costmanagement.generated;
 
-/** Samples for ScheduledActions DeleteByScope. */
+/**
+ * Samples for ScheduledActions DeleteByScope.
+ */
 public final class ScheduledActionsDeleteByScopeSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/scheduledActions/scheduledAction-delete-shared.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * scheduledActions/scheduledAction-delete-shared.json
      */
     /**
      * Sample code: ScheduledActionDeleteByScope.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void scheduledActionDeleteByScope(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .scheduledActions()
-            .deleteByScopeWithResponse(
-                "subscriptions/00000000-0000-0000-0000-000000000000",
-                "monthlyCostByResource",
+    public static void
+        scheduledActionDeleteByScope(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.scheduledActions()
+            .deleteByScopeWithResponse("subscriptions/00000000-0000-0000-0000-000000000000", "monthlyCostByResource",
                 com.azure.core.util.Context.NONE);
     }
 }

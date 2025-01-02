@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Google BigQuery Dataset Properties.
  */
 @Fluent
-public final class GoogleBigQueryV2DatasetTypeProperties {
+public final class GoogleBigQueryV2DatasetTypeProperties
+    implements JsonSerializable<GoogleBigQueryV2DatasetTypeProperties> {
     /*
      * The table name of the Google BigQuery. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "table")
     private Object table;
 
     /*
      * The database name of the Google BigQuery. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "dataset")
     private Object dataset;
 
     /**
@@ -80,5 +83,45 @@ public final class GoogleBigQueryV2DatasetTypeProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("table", this.table);
+        jsonWriter.writeUntypedField("dataset", this.dataset);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GoogleBigQueryV2DatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GoogleBigQueryV2DatasetTypeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GoogleBigQueryV2DatasetTypeProperties.
+     */
+    public static GoogleBigQueryV2DatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GoogleBigQueryV2DatasetTypeProperties deserializedGoogleBigQueryV2DatasetTypeProperties
+                = new GoogleBigQueryV2DatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("table".equals(fieldName)) {
+                    deserializedGoogleBigQueryV2DatasetTypeProperties.table = reader.readUntyped();
+                } else if ("dataset".equals(fieldName)) {
+                    deserializedGoogleBigQueryV2DatasetTypeProperties.dataset = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGoogleBigQueryV2DatasetTypeProperties;
+        });
     }
 }

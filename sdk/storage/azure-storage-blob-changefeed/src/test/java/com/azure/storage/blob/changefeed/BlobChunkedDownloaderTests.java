@@ -55,7 +55,8 @@ public class BlobChunkedDownloaderTests extends TestProxyTestBase {
         prefix = getCrc32(testContextManager.getTestPlaybackRecordingName());
         BlobServiceAsyncClient primaryBlobServiceAsyncClient = getServiceAsyncClient(ENV.getPrimaryAccount());
 
-        BlobContainerAsyncClient cc = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
+        BlobContainerAsyncClient cc
+            = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
         cc.create().block();
         bc = new DownloadWithResponseTrackingClient(cc.getBlobAsyncClient(generateBlobName()));
         factory = new BlobChunkedDownloaderFactory(cc);
@@ -67,8 +68,7 @@ public class BlobChunkedDownloaderTests extends TestProxyTestBase {
             return;
         }
 
-        BlobServiceClient cleanupClient = new BlobServiceClientBuilder()
-            .httpClient(getHttpClient())
+        BlobServiceClient cleanupClient = new BlobServiceClientBuilder().httpClient(getHttpClient())
             .credential(ENV.getPrimaryAccount().getCredential())
             .endpoint(ENV.getPrimaryAccount().getBlobEndpoint())
             .buildClient();
@@ -92,8 +92,7 @@ public class BlobChunkedDownloaderTests extends TestProxyTestBase {
     }
 
     BlobServiceAsyncClient getServiceAsyncClient(TestAccount account) {
-        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-            .endpoint(account.getBlobEndpoint());
+        BlobServiceClientBuilder builder = new BlobServiceClientBuilder().endpoint(account.getBlobEndpoint());
 
         instrument(builder);
 
@@ -130,15 +129,14 @@ public class BlobChunkedDownloaderTests extends TestProxyTestBase {
 
     private static Stream<Arguments> downloadBlockSizeSupplier() {
         // size | blockSize | numDownloads
-        return Stream.of(
-            Arguments.of(Constants.KB, Constants.KB, 1), // blockSize = size. 1 download call.
+        return Stream.of(Arguments.of(Constants.KB, Constants.KB, 1), // blockSize = size. 1 download call.
             Arguments.of(Constants.KB, Constants.MB, 1), // blockSize > size. 1 download call.
             Arguments.of(4 * Constants.KB, Constants.KB, 4) // blockSize < size. 4 download calls.
         );
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {0, 200, 512, 1000})
+    @ValueSource(ints = { 0, 200, 512, 1000 })
     public void downloadOffset(int offset) {
         byte[] input = uploadHelper(Constants.KB);
         byte[] output = downloadHelper(new BlobChunkedDownloader(bc, Constants.KB, offset));
@@ -159,8 +157,7 @@ public class BlobChunkedDownloaderTests extends TestProxyTestBase {
 
     private static Stream<Arguments> downloadBlockSizeOffsetSupplier() {
         // size | blockSize | offset | numDownloads
-        return Stream.of(
-            Arguments.of(4 * Constants.KB, Constants.KB, Constants.KB, 3), // 3 download calls.
+        return Stream.of(Arguments.of(4 * Constants.KB, Constants.KB, Constants.KB, 3), // 3 download calls.
             Arguments.of(4 * Constants.KB, Constants.KB, 2 * Constants.KB, 2) // 2 download calls.
         );
     }
@@ -170,8 +167,8 @@ public class BlobChunkedDownloaderTests extends TestProxyTestBase {
     public void downloadInvalidOffset() {
         uploadHelper(Constants.KB);
 
-        assertThrows(BlobStorageException.class, () ->
-            downloadHelper(factory.getBlobLazyDownloader(bc.getBlobName(), Constants.KB, Constants.KB * 2)));
+        assertThrows(BlobStorageException.class,
+            () -> downloadHelper(factory.getBlobLazyDownloader(bc.getBlobName(), Constants.KB, Constants.KB * 2)));
     }
 
     /* Tests case for downloading only the header. */
@@ -180,7 +177,6 @@ public class BlobChunkedDownloaderTests extends TestProxyTestBase {
     public void downloadPartialSupplier(int uploadSize, int downloadSize) {
         byte[] input = uploadHelper(uploadSize);
         byte[] output = downloadHelper(new BlobChunkedDownloader(bc, downloadSize));
-
 
         assertEquals(downloadSize, output.length);
         TestUtils.assertArraysEqual(input, 0, output, 0, downloadSize);

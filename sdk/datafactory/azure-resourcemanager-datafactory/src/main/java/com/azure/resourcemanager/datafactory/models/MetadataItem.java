@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Specify the name and value of custom metadata item.
  */
 @Fluent
-public final class MetadataItem {
+public final class MetadataItem implements JsonSerializable<MetadataItem> {
     /*
      * Metadata item key name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "name")
     private Object name;
 
     /*
      * Metadata item value. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "value")
     private Object value;
 
     /**
@@ -76,5 +78,44 @@ public final class MetadataItem {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("name", this.name);
+        jsonWriter.writeUntypedField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetadataItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetadataItem if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetadataItem.
+     */
+    public static MetadataItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetadataItem deserializedMetadataItem = new MetadataItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedMetadataItem.name = reader.readUntyped();
+                } else if ("value".equals(fieldName)) {
+                    deserializedMetadataItem.value = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetadataItem;
+        });
     }
 }

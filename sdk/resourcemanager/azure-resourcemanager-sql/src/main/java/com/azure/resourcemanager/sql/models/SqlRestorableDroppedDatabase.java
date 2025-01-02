@@ -15,12 +15,8 @@ import java.time.OffsetDateTime;
 
 /** Response containing Azure SQL restorable dropped database. */
 @Fluent
-public interface SqlRestorableDroppedDatabase
-    extends Refreshable<SqlRestorableDroppedDatabase>,
-        HasInnerModel<RestorableDroppedDatabaseInner>,
-        HasResourceGroup,
-        HasName,
-        HasId {
+public interface SqlRestorableDroppedDatabase extends Refreshable<SqlRestorableDroppedDatabase>,
+    HasInnerModel<RestorableDroppedDatabaseInner>, HasResourceGroup, HasName, HasId {
 
     /** @return the geo-location where the resource lives */
     Region region();

@@ -21,8 +21,7 @@ public final class VirtualNetworksImpl implements VirtualNetworks {
 
     private final com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager;
 
-    public VirtualNetworksImpl(
-        VirtualNetworksClient innerClient,
+    public VirtualNetworksImpl(VirtualNetworksClient innerClient,
         com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -30,25 +29,22 @@ public final class VirtualNetworksImpl implements VirtualNetworks {
 
     public PagedIterable<VirtualNetwork> list(String regionId, String pcName, String resourcePoolName) {
         PagedIterable<VirtualNetworkInner> inner = this.serviceClient().list(regionId, pcName, resourcePoolName);
-        return Utils.mapPage(inner, inner1 -> new VirtualNetworkImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualNetworkImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<VirtualNetwork> list(
-        String regionId, String pcName, String resourcePoolName, Context context) {
-        PagedIterable<VirtualNetworkInner> inner =
-            this.serviceClient().list(regionId, pcName, resourcePoolName, context);
-        return Utils.mapPage(inner, inner1 -> new VirtualNetworkImpl(inner1, this.manager()));
+    public PagedIterable<VirtualNetwork> list(String regionId, String pcName, String resourcePoolName,
+        Context context) {
+        PagedIterable<VirtualNetworkInner> inner
+            = this.serviceClient().list(regionId, pcName, resourcePoolName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualNetworkImpl(inner1, this.manager()));
     }
 
-    public Response<VirtualNetwork> getWithResponse(
-        String regionId, String pcName, String virtualNetworkName, Context context) {
-        Response<VirtualNetworkInner> inner =
-            this.serviceClient().getWithResponse(regionId, pcName, virtualNetworkName, context);
+    public Response<VirtualNetwork> getWithResponse(String regionId, String pcName, String virtualNetworkName,
+        Context context) {
+        Response<VirtualNetworkInner> inner
+            = this.serviceClient().getWithResponse(regionId, pcName, virtualNetworkName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new VirtualNetworkImpl(inner.getValue(), this.manager()));
         } else {
             return null;

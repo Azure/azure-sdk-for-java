@@ -9,6 +9,7 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.AddressSpaceAggregationOption;
 import com.azure.resourcemanager.network.models.ChildResource;
 import com.azure.resourcemanager.network.models.NetworkIntentPolicyBasedService;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -31,14 +32,9 @@ public final class SecurityAdminConfigurationInner extends ChildResource {
     private SystemData systemData;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * A unique read-only string that changes whenever the resource is updated.
      */
-    private String id;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
+    private String etag;
 
     /*
      * The type of the resource.
@@ -46,9 +42,14 @@ public final class SecurityAdminConfigurationInner extends ChildResource {
     private String type;
 
     /*
-     * A unique read-only string that changes whenever the resource is updated.
+     * The name of the resource.
      */
-    private String etag;
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of SecurityAdminConfigurationInner class.
@@ -75,23 +76,13 @@ public final class SecurityAdminConfigurationInner extends ChildResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
      * 
-     * @return the id value.
+     * @return the etag value.
      */
     @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
+    public String etag() {
+        return this.etag;
     }
 
     /**
@@ -105,13 +96,23 @@ public final class SecurityAdminConfigurationInner extends ChildResource {
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     * Get the name property: The name of the resource.
      * 
-     * @return the etag value.
+     * @return the name value.
      */
     @Override
-    public String etag() {
-        return this.etag;
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -162,6 +163,34 @@ public final class SecurityAdminConfigurationInner extends ChildResource {
     }
 
     /**
+     * Get the networkGroupAddressSpaceAggregationOption property: Determine update behavior for changes to network
+     * groups referenced within the rules in this configuration.
+     * 
+     * @return the networkGroupAddressSpaceAggregationOption value.
+     */
+    public AddressSpaceAggregationOption networkGroupAddressSpaceAggregationOption() {
+        return this.innerProperties() == null
+            ? null
+            : this.innerProperties().networkGroupAddressSpaceAggregationOption();
+    }
+
+    /**
+     * Set the networkGroupAddressSpaceAggregationOption property: Determine update behavior for changes to network
+     * groups referenced within the rules in this configuration.
+     * 
+     * @param networkGroupAddressSpaceAggregationOption the networkGroupAddressSpaceAggregationOption value to set.
+     * @return the SecurityAdminConfigurationInner object itself.
+     */
+    public SecurityAdminConfigurationInner withNetworkGroupAddressSpaceAggregationOption(
+        AddressSpaceAggregationOption networkGroupAddressSpaceAggregationOption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityAdminConfigurationPropertiesFormat();
+        }
+        this.innerProperties().withNetworkGroupAddressSpaceAggregationOption(networkGroupAddressSpaceAggregationOption);
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the resource.
      * 
      * @return the provisioningState value.
@@ -186,7 +215,6 @@ public final class SecurityAdminConfigurationInner extends ChildResource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }

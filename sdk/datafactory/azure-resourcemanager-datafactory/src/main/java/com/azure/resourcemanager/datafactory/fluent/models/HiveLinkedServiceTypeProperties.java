@@ -6,88 +6,80 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.HiveAuthenticationType;
 import com.azure.resourcemanager.datafactory.models.HiveServerType;
 import com.azure.resourcemanager.datafactory.models.HiveThriftTransportProtocol;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Hive Server linked service properties.
  */
 @Fluent
-public final class HiveLinkedServiceTypeProperties {
+public final class HiveLinkedServiceTypeProperties implements JsonSerializable<HiveLinkedServiceTypeProperties> {
     /*
      * IP address or host name of the Hive server, separated by ';' for multiple hosts (only when serviceDiscoveryMode
      * is enable).
      */
-    @JsonProperty(value = "host", required = true)
     private Object host;
 
     /*
      * The TCP port that the Hive server uses to listen for client connections.
      */
-    @JsonProperty(value = "port")
     private Object port;
 
     /*
      * The type of Hive server.
      */
-    @JsonProperty(value = "serverType")
     private HiveServerType serverType;
 
     /*
      * The transport protocol to use in the Thrift layer.
      */
-    @JsonProperty(value = "thriftTransportProtocol")
     private HiveThriftTransportProtocol thriftTransportProtocol;
 
     /*
      * The authentication method used to access the Hive server.
      */
-    @JsonProperty(value = "authenticationType", required = true)
     private HiveAuthenticationType authenticationType;
 
     /*
      * true to indicate using the ZooKeeper service, false not.
      */
-    @JsonProperty(value = "serviceDiscoveryMode")
     private Object serviceDiscoveryMode;
 
     /*
      * The namespace on ZooKeeper under which Hive Server 2 nodes are added.
      */
-    @JsonProperty(value = "zooKeeperNameSpace")
     private Object zooKeeperNameSpace;
 
     /*
      * Specifies whether the driver uses native HiveQL queries,or converts them into an equivalent form in HiveQL.
      */
-    @JsonProperty(value = "useNativeQuery")
     private Object useNativeQuery;
 
     /*
      * The user name that you use to access Hive Server.
      */
-    @JsonProperty(value = "username")
     private Object username;
 
     /*
      * The password corresponding to the user name that you provided in the Username field
      */
-    @JsonProperty(value = "password")
     private SecretBase password;
 
     /*
      * The partial URL corresponding to the Hive server.
      */
-    @JsonProperty(value = "httpPath")
     private Object httpPath;
 
     /*
      * Specifies whether the connections to the server are encrypted using SSL. The default value is false.
      */
-    @JsonProperty(value = "enableSsl")
     private Object enableSsl;
 
     /*
@@ -95,34 +87,29 @@ public final class HiveLinkedServiceTypeProperties {
      * SSL. This property can only be set when using SSL on self-hosted IR. The default value is the cacerts.pem file
      * installed with the IR.
      */
-    @JsonProperty(value = "trustedCertPath")
     private Object trustedCertPath;
 
     /*
      * Specifies whether to use a CA certificate from the system trust store or from a specified PEM file. The default
      * value is false.
      */
-    @JsonProperty(value = "useSystemTrustStore")
     private Object useSystemTrustStore;
 
     /*
      * Specifies whether to require a CA-issued SSL certificate name to match the host name of the server when
      * connecting over SSL. The default value is false.
      */
-    @JsonProperty(value = "allowHostNameCNMismatch")
     private Object allowHostnameCNMismatch;
 
     /*
      * Specifies whether to allow self-signed certificates from the server. The default value is false.
      */
-    @JsonProperty(value = "allowSelfSignedServerCert")
     private Object allowSelfSignedServerCert;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /**
@@ -512,4 +499,95 @@ public final class HiveLinkedServiceTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(HiveLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("host", this.host);
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        jsonWriter.writeUntypedField("port", this.port);
+        jsonWriter.writeStringField("serverType", this.serverType == null ? null : this.serverType.toString());
+        jsonWriter.writeStringField("thriftTransportProtocol",
+            this.thriftTransportProtocol == null ? null : this.thriftTransportProtocol.toString());
+        jsonWriter.writeUntypedField("serviceDiscoveryMode", this.serviceDiscoveryMode);
+        jsonWriter.writeUntypedField("zooKeeperNameSpace", this.zooKeeperNameSpace);
+        jsonWriter.writeUntypedField("useNativeQuery", this.useNativeQuery);
+        jsonWriter.writeUntypedField("username", this.username);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeUntypedField("httpPath", this.httpPath);
+        jsonWriter.writeUntypedField("enableSsl", this.enableSsl);
+        jsonWriter.writeUntypedField("trustedCertPath", this.trustedCertPath);
+        jsonWriter.writeUntypedField("useSystemTrustStore", this.useSystemTrustStore);
+        jsonWriter.writeUntypedField("allowHostNameCNMismatch", this.allowHostnameCNMismatch);
+        jsonWriter.writeUntypedField("allowSelfSignedServerCert", this.allowSelfSignedServerCert);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HiveLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HiveLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HiveLinkedServiceTypeProperties.
+     */
+    public static HiveLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HiveLinkedServiceTypeProperties deserializedHiveLinkedServiceTypeProperties
+                = new HiveLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("host".equals(fieldName)) {
+                    deserializedHiveLinkedServiceTypeProperties.host = reader.readUntyped();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedHiveLinkedServiceTypeProperties.authenticationType
+                        = HiveAuthenticationType.fromString(reader.getString());
+                } else if ("port".equals(fieldName)) {
+                    deserializedHiveLinkedServiceTypeProperties.port = reader.readUntyped();
+                } else if ("serverType".equals(fieldName)) {
+                    deserializedHiveLinkedServiceTypeProperties.serverType
+                        = HiveServerType.fromString(reader.getString());
+                } else if ("thriftTransportProtocol".equals(fieldName)) {
+                    deserializedHiveLinkedServiceTypeProperties.thriftTransportProtocol
+                        = HiveThriftTransportProtocol.fromString(reader.getString());
+                } else if ("serviceDiscoveryMode".equals(fieldName)) {
+                    deserializedHiveLinkedServiceTypeProperties.serviceDiscoveryMode = reader.readUntyped();
+                } else if ("zooKeeperNameSpace".equals(fieldName)) {
+                    deserializedHiveLinkedServiceTypeProperties.zooKeeperNameSpace = reader.readUntyped();
+                } else if ("useNativeQuery".equals(fieldName)) {
+                    deserializedHiveLinkedServiceTypeProperties.useNativeQuery = reader.readUntyped();
+                } else if ("username".equals(fieldName)) {
+                    deserializedHiveLinkedServiceTypeProperties.username = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedHiveLinkedServiceTypeProperties.password = SecretBase.fromJson(reader);
+                } else if ("httpPath".equals(fieldName)) {
+                    deserializedHiveLinkedServiceTypeProperties.httpPath = reader.readUntyped();
+                } else if ("enableSsl".equals(fieldName)) {
+                    deserializedHiveLinkedServiceTypeProperties.enableSsl = reader.readUntyped();
+                } else if ("trustedCertPath".equals(fieldName)) {
+                    deserializedHiveLinkedServiceTypeProperties.trustedCertPath = reader.readUntyped();
+                } else if ("useSystemTrustStore".equals(fieldName)) {
+                    deserializedHiveLinkedServiceTypeProperties.useSystemTrustStore = reader.readUntyped();
+                } else if ("allowHostNameCNMismatch".equals(fieldName)) {
+                    deserializedHiveLinkedServiceTypeProperties.allowHostnameCNMismatch = reader.readUntyped();
+                } else if ("allowSelfSignedServerCert".equals(fieldName)) {
+                    deserializedHiveLinkedServiceTypeProperties.allowSelfSignedServerCert = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedHiveLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHiveLinkedServiceTypeProperties;
+        });
+    }
 }

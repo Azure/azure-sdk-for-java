@@ -4,22 +4,24 @@
 
 package com.azure.resourcemanager.alertsmanagement.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for AlertProcessingRules GetByResourceGroup. */
+/**
+ * Samples for AlertProcessingRules GetByResourceGroup.
+ */
 public final class AlertProcessingRulesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/stable/2021-08-08/examples/AlertProcessingRules_GetById.json
+     * x-ms-original-file:
+     * specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/stable/2021-08-08/examples/
+     * AlertProcessingRules_GetById.json
      */
     /**
      * Sample code: GetAlertProcessingRuleById.
-     *
+     * 
      * @param manager Entry point to AlertsManagementManager.
      */
-    public static void getAlertProcessingRuleById(
-        com.azure.resourcemanager.alertsmanagement.AlertsManagementManager manager) {
-        manager
-            .alertProcessingRules()
-            .getByResourceGroupWithResponse("alertscorrelationrg", "DailySuppression", Context.NONE);
+    public static void
+        getAlertProcessingRuleById(com.azure.resourcemanager.alertsmanagement.AlertsManagementManager manager) {
+        manager.alertProcessingRules()
+            .getByResourceGroupWithResponse("alertscorrelationrg", "DailySuppression",
+                com.azure.core.util.Context.NONE);
     }
 }

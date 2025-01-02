@@ -8,25 +8,27 @@ import com.azure.resourcemanager.delegatednetwork.models.DelegatedController;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Controller Patch. */
+/**
+ * Samples for Controller Patch.
+ */
 public final class ControllerPatchSamples {
     /*
-     * x-ms-original-file: specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/patchController.json
+     * x-ms-original-file:
+     * specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/patchController.json
      */
     /**
      * Sample code: update controller.
-     *
+     * 
      * @param manager Entry point to DelegatedNetworkManager.
      */
     public static void updateController(com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager manager) {
-        DelegatedController resource =
-            manager
-                .controllers()
-                .getByResourceGroupWithResponse("TestRG", "testcontroller", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource.update().withTags(mapOf("key", "value")).apply();
+        DelegatedController resource = manager.controllers()
+            .getByResourceGroupWithResponse("TestRG", "testcontroller", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("key", "fakeTokenPlaceholder")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

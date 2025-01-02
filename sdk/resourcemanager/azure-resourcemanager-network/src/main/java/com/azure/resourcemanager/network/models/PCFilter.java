@@ -67,13 +67,9 @@ public interface PCFilter extends Indexable, HasParent<PacketCapture>, HasInnerM
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface Blank<ParentT>
-            extends HasProtocol.DefinitionStages.WithProtocol<
-                    WithAttach<PacketCapture.DefinitionStages.WithCreate>, PcProtocol>,
-                WithLocalIP<ParentT>,
-                WithRemoteIpAddress<ParentT>,
-                WithLocalPort<ParentT>,
-                WithRemotePort<ParentT> {
+        interface Blank<ParentT> extends
+            HasProtocol.DefinitionStages.WithProtocol<WithAttach<PacketCapture.DefinitionStages.WithCreate>, PcProtocol>,
+            WithLocalIP<ParentT>, WithRemoteIpAddress<ParentT>, WithLocalPort<ParentT>, WithRemotePort<ParentT> {
         }
 
         /**
