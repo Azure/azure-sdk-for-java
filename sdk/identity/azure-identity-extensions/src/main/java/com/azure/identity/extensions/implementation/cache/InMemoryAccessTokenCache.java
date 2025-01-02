@@ -6,21 +6,21 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class InMemoryAccessTokenCache implements IdentityCache<String, AccessToken> {
 
-    private static final ConcurrentHashMap<String, AccessToken> cache = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, AccessToken> CACHE = new ConcurrentHashMap<>();
 
     @Override
     public synchronized void put(String key, AccessToken value) {
-        cache.putIfAbsent(key, value);
+        CACHE.putIfAbsent(key, value);
     }
 
     @Override
     public AccessToken get(String key) {
-        return cache.get(key);
+        return CACHE.get(key);
     }
 
     @Override
     public synchronized void remove(String key) {
-        cache.remove(key);
+        CACHE.remove(key);
     }
 
 }

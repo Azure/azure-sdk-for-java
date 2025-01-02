@@ -16,7 +16,7 @@ import static com.azure.identity.extensions.implementation.utils.StringUtils.get
  */
 public class DefaultCacheTokenCredentialProvider implements TokenCredentialProvider {
 
-    private final ClientLogger LOGGER = new ClientLogger(DefaultCacheTokenCredentialProvider.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DefaultCacheTokenCredentialProvider.class);
 
     private final TokenCredentialProviderOptions options;
 

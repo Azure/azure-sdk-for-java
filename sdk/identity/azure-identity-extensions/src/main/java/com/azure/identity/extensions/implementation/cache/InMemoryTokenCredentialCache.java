@@ -6,21 +6,21 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class InMemoryTokenCredentialCache implements IdentityCache<String, TokenCredential> {
 
-    private static final ConcurrentHashMap<String, TokenCredential> cache = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, TokenCredential> CACHE = new ConcurrentHashMap<>();
 
     @Override
     public synchronized void put(String key, TokenCredential value) {
-        cache.putIfAbsent(key, value);
+        CACHE.putIfAbsent(key, value);
     }
 
     @Override
     public TokenCredential get(String key) {
-        return cache.get(key);
+        return CACHE.get(key);
     }
 
     @Override
     public synchronized void remove(String key) {
-        cache.remove(key);
+        CACHE.remove(key);
     }
 
 }
