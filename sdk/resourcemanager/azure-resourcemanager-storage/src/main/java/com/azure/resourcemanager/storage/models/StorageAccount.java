@@ -101,7 +101,7 @@ public interface StorageAccount extends GroupableResource<StorageManager, Storag
     StorageAccountEncryptionKeySource encryptionKeySource();
 
     /**
-     * Geets the encryption statuses indexed by storage service type.
+     * Gets the encryption statuses indexed by storage service type.
      *
      * @return the encryption statuses indexed by storage service type.
      */
