@@ -1,14 +1,20 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0 (2025-01-02)
 
-### Features Added
+- Azure Resource Manager EdgeOrder client library for Java. This package contains Microsoft Azure SDK for EdgeOrder Management SDK. Edge Order API's. Package tag package-2021-12. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.Pav2MeterDetails` was modified
 
-### Other Changes
+* `chargingType()` was removed
+* `multiplier()` was removed
+
+#### `models.PurchaseMeterDetails` was modified
+
+* `chargingType()` was removed
+* `multiplier()` was removed
 
 ## 1.0.0-beta.2 (2024-10-06)
 

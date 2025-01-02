@@ -35,16 +35,6 @@ public final class PurchaseMeterDetails extends MeterDetails {
      */
     private String termId;
 
-    /*
-     * Charging type.
-     */
-    private ChargingType chargingType;
-
-    /*
-     * Billing unit applicable for Pav2 billing
-     */
-    private Double multiplier;
-
     /**
      * Creates an instance of PurchaseMeterDetails class.
      */
@@ -89,26 +79,6 @@ public final class PurchaseMeterDetails extends MeterDetails {
     }
 
     /**
-     * Get the chargingType property: Charging type.
-     * 
-     * @return the chargingType value.
-     */
-    @Override
-    public ChargingType chargingType() {
-        return this.chargingType;
-    }
-
-    /**
-     * Get the multiplier property: Billing unit applicable for Pav2 billing.
-     * 
-     * @return the multiplier value.
-     */
-    @Override
-    public Double multiplier() {
-        return this.multiplier;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -143,9 +113,9 @@ public final class PurchaseMeterDetails extends MeterDetails {
                 reader.nextToken();
 
                 if ("multiplier".equals(fieldName)) {
-                    deserializedPurchaseMeterDetails.multiplier = reader.getNullable(JsonReader::getDouble);
+                    deserializedPurchaseMeterDetails.withMultiplier(reader.getNullable(JsonReader::getDouble));
                 } else if ("chargingType".equals(fieldName)) {
-                    deserializedPurchaseMeterDetails.chargingType = ChargingType.fromString(reader.getString());
+                    deserializedPurchaseMeterDetails.withChargingType(ChargingType.fromString(reader.getString()));
                 } else if ("billingType".equals(fieldName)) {
                     deserializedPurchaseMeterDetails.billingType = BillingType.fromString(reader.getString());
                 } else if ("productId".equals(fieldName)) {
