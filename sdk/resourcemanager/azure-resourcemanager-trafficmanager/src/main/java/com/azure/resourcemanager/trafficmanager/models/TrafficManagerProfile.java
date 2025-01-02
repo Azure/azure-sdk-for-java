@@ -38,9 +38,9 @@ public interface TrafficManagerProfile extends GroupableResource<TrafficManager,
     long timeToLive();
 
     /**
-     * Checks whether the traffic manager profile is enabled, false if enabled.
+     * Checks whether the traffic manager profile is enabled.
      *
-     * @return true if the traffic manager profile is enabled, false if enabled
+     * @return true if the traffic manager profile is enabled, false if disabled
      */
     boolean isEnabled();
 
