@@ -92,7 +92,19 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         PartitionLevelFailoverInfo partitionLevelFailoverInfo = this.partitionKeyRangeToLocation.get(partitionKeyRangeWrapper);
 
         if (partitionLevelFailoverInfo != null) {
-            request.requestContext.routeToLocation(partitionLevelFailoverInfo.current);
+
+            URI locationEndpointToOverrideSnapshot = partitionLevelFailoverInfo.current;
+
+            request.requestContext.routeToLocation(locationEndpointToOverrideSnapshot);
+
+            PointOperationContextForPerPartitionAutomaticFailover pointOperationContextForPerPartitionAutomaticFailover
+                = request.requestContext.getPointOperationContextForPerPartitionAutomaticFailover();
+
+            if (pointOperationContextForPerPartitionAutomaticFailover != null) {
+                String regionToOverride = this.globalEndpointManager.getRegionName(locationEndpointToOverrideSnapshot, OperationType.Read);
+                pointOperationContextForPerPartitionAutomaticFailover.setOverriddenLocationForPrimaryRequest(regionToOverride);
+            }
+
             return true;
         }
 

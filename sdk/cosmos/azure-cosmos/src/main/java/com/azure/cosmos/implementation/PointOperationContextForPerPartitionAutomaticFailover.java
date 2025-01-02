@@ -3,11 +3,15 @@
 
 package com.azure.cosmos.implementation;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 public class PointOperationContextForPerPartitionAutomaticFailover {
 
     private final boolean isOperationEligibleForParallelWriteRegionDiscovery;
 
     private final boolean isParallelWriteRegionDiscoveryAttempt;
+
+    private final AtomicReference<String> overriddenLocationForPrimaryRequest;
 
     public PointOperationContextForPerPartitionAutomaticFailover(
         boolean isOperationEligibleForParallelWriteRegionDiscoveryAttempt,
@@ -15,6 +19,7 @@ public class PointOperationContextForPerPartitionAutomaticFailover {
 
         this.isOperationEligibleForParallelWriteRegionDiscovery = isOperationEligibleForParallelWriteRegionDiscoveryAttempt;
         this.isParallelWriteRegionDiscoveryAttempt = isParallelWriteRegionDiscoveryAttempt;
+        this.overriddenLocationForPrimaryRequest = new AtomicReference<>();
     }
 
     public boolean isOperationEligibleForParallelWriteRegionDiscovery() {
@@ -23,5 +28,13 @@ public class PointOperationContextForPerPartitionAutomaticFailover {
 
     public boolean isParallelWriteRegionDiscoveryAttempt() {
         return this.isParallelWriteRegionDiscoveryAttempt;
+    }
+
+    public void setOverriddenLocationForPrimaryRequest(String location) {
+        this.overriddenLocationForPrimaryRequest.set(location);
+    }
+
+    public String getOverriddenLocationForPrimaryRequest() {
+        return this.overriddenLocationForPrimaryRequest.get();
     }
 }

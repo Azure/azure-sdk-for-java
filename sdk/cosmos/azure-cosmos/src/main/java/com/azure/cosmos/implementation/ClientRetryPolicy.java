@@ -109,6 +109,25 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             logger.info("Endpoint not writable. Will refresh cache and retry ", e);
 
             if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request)) {
+
+                DocumentServiceRequestContext requestContext = this.request.requestContext;
+
+                if (requestContext != null) {
+
+                    PointOperationContextForPerPartitionAutomaticFailover pointOperationContextForPerPartitionAutomaticFailover
+                        = requestContext.getPointOperationContextForPerPartitionAutomaticFailover();
+
+
+                    if (pointOperationContextForPerPartitionAutomaticFailover != null) {
+
+                        boolean isParallelWriteRegionDiscoveryAttempt = pointOperationContextForPerPartitionAutomaticFailover.isParallelWriteRegionDiscoveryAttempt();
+
+                        if (isParallelWriteRegionDiscoveryAttempt) {
+                            return Mono.just(ShouldRetryResult.noRetry());
+                        }
+                    }
+                }
+
                 return Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO));
             }
 
