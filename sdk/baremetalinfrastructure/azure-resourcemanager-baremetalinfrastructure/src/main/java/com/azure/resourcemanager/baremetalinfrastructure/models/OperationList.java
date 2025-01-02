@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.baremetalinfrastructure.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,29 +14,23 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of
- * results.
+ * List of AzureBareMetal operations.
  */
-@Immutable
-public final class OperationListResult implements JsonSerializable<OperationListResult> {
+@Fluent
+public final class OperationList implements JsonSerializable<OperationList> {
     /*
-     * List of operations supported by the resource provider
+     * List of AzureBareMetal operations
      */
     private List<OperationInner> value;
 
-    /*
-     * URL to get the next set of operation list results (if there are any).
-     */
-    private String nextLink;
-
     /**
-     * Creates an instance of OperationListResult class.
+     * Creates an instance of OperationList class.
      */
-    public OperationListResult() {
+    public OperationList() {
     }
 
     /**
-     * Get the value property: List of operations supported by the resource provider.
+     * Get the value property: List of AzureBareMetal operations.
      * 
      * @return the value value.
      */
@@ -45,12 +39,14 @@ public final class OperationListResult implements JsonSerializable<OperationList
     }
 
     /**
-     * Get the nextLink property: URL to get the next set of operation list results (if there are any).
+     * Set the value property: List of AzureBareMetal operations.
      * 
-     * @return the nextLink value.
+     * @param value the value value to set.
+     * @return the OperationList object itself.
      */
-    public String nextLink() {
-        return this.nextLink;
+    public OperationList withValue(List<OperationInner> value) {
+        this.value = value;
+        return this;
     }
 
     /**
@@ -70,35 +66,34 @@ public final class OperationListResult implements JsonSerializable<OperationList
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of OperationListResult from the JsonReader.
+     * Reads an instance of OperationList from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of OperationListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of OperationList if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the OperationListResult.
+     * @throws IOException If an error occurs while reading the OperationList.
      */
-    public static OperationListResult fromJson(JsonReader jsonReader) throws IOException {
+    public static OperationList fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            OperationListResult deserializedOperationListResult = new OperationListResult();
+            OperationList deserializedOperationList = new OperationList();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("value".equals(fieldName)) {
                     List<OperationInner> value = reader.readArray(reader1 -> OperationInner.fromJson(reader1));
-                    deserializedOperationListResult.value = value;
-                } else if ("nextLink".equals(fieldName)) {
-                    deserializedOperationListResult.nextLink = reader.getString();
+                    deserializedOperationList.value = value;
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedOperationListResult;
+            return deserializedOperationList;
         });
     }
 }
