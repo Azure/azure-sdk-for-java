@@ -36,7 +36,12 @@ public final class LoggingKeys {
     /**
      * Key representing duration of call in milliseconds, the value should be a number.
      * <p>
-     * This time can
+     * This time represents the most accurate duration that logging policy can record.
+     * <p>
+     * If exception was thrown, this time represents time to exception.
+     * If response was received and body logging is disabled, it represents time to get the response (headers and status code).
+     * If response was received and body logging is enabled, it represents time-to-last-byte (or, if response was closed before
+     * body was fully received, time to closure).
      */
     public static final String DURATION_MS_KEY = "durationMs";
 

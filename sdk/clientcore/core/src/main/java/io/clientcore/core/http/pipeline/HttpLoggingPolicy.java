@@ -33,12 +33,13 @@ import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
  */
 public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private static final HttpLogOptions DEFAULT_HTTP_LOG_OPTIONS = new HttpLogOptions();
+    private static final Set<HttpHeaderName> ALWAYS_ALLOWED_HEADERS = Set.of(TRACEPARENT);
     private static final int MAX_BODY_LOG_SIZE = 1024 * 16;
     private static final String REDACTED_PLACEHOLDER = "REDACTED";
     private static final ClientLogger LOGGER = new ClientLogger(HttpLoggingPolicy.class);
     private final HttpLogOptions.HttpLogDetailLevel httpLogDetailLevel;
     private final Set<HttpHeaderName> allowedHeaderNames;
-    private final Set<HttpHeaderName> alwaysAllowedHeaders = Set.of(TRACEPARENT);
+
     private final Set<String> allowedQueryParameterNames;
 
     private static final String HTTP_REQUEST_EVENT_NAME = "http.request";
@@ -298,7 +299,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 logBuilder.addKeyValue(headerName.toString(), headerValue);
             }
         } else {
-            for (HttpHeaderName headerName : alwaysAllowedHeaders) {
+            for (HttpHeaderName headerName : ALWAYS_ALLOWED_HEADERS) {
                 String headerValue = headers.getValue(headerName);
                 if (headerValue != null) {
                     logBuilder.addKeyValue(headerName.toString(), headerValue);
