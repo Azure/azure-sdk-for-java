@@ -24,7 +24,7 @@ public final class DnsResolversCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"etag\":\"qxwbpokulpiu\",\"properties\":{\"virtualNetwork\":{\"id\":\"aasipqi\"},\"dnsResolverState\":\"Disconnected\",\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"erpqlpqwcciuqg\"},\"location\":\"butauvfb\",\"tags\":{\"afnn\":\"whhmhykojo\",\"ymkcdyhb\":\"lpichk\",\"ovljxywsu\":\"kkpwdreqnovvq\",\"aeneqnzarrwl\":\"syrsndsytgadgvra\"},\"id\":\"uu\",\"name\":\"jfqka\",\"type\":\"e\"}";
+            = "{\"etag\":\"us\",\"properties\":{\"virtualNetwork\":{\"id\":\"touwaboekqv\"},\"dnsResolverState\":\"Connected\",\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"vbxwyjsflhh\"},\"location\":\"aln\",\"tags\":{\"kiidzyex\":\"isxyawjoyaqcslyj\",\"hb\":\"nelixhnrztfo\",\"dtpnapnyiropuhp\":\"xknalaulppg\",\"gqgitxmedjvcsl\":\"gvpgy\"},\"id\":\"n\",\"name\":\"wwncwzzhxgk\",\"type\":\"rmgucnap\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,18 +34,19 @@ public final class DnsResolversCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DnsResolver response = manager.dnsResolvers()
-            .define("ksmond")
-            .withRegion("glyatddckcbcuej")
-            .withExistingResourceGroup("xkp")
-            .withVirtualNetwork(new SubResource().withId("hojvpajqgxysmocm"))
-            .withTags(mapOf("sxsdqrhzoymibm", "gciqibrh"))
-            .withIfMatch("voqacpiexpbt")
-            .withIfNoneMatch("iwbwoenwashrtdtk")
+            .define("nmxiebwwaloayqc")
+            .withRegion("vriuhprwmdyvx")
+            .withExistingResourceGroup("xzvlvqhjkbegib")
+            .withVirtualNetwork(new SubResource().withId("wyzmhtxon"))
+            .withTags(mapOf("xrmcqibycnojvk", "yriwwroyqb", "vgqzcjrvxd", "mefqsgzvahapjyzh", "vawjvzunlu",
+                "zlmwlxkvugfhz", "xipeilpjzuaejx", "hnnpr"))
+            .withIfMatch("wozuhkf")
+            .withIfNoneMatch("bsjyofdx")
             .create();
 
-        Assertions.assertEquals("butauvfb", response.location());
-        Assertions.assertEquals("whhmhykojo", response.tags().get("afnn"));
-        Assertions.assertEquals("aasipqi", response.virtualNetwork().id());
+        Assertions.assertEquals("aln", response.location());
+        Assertions.assertEquals("isxyawjoyaqcslyj", response.tags().get("kiidzyex"));
+        Assertions.assertEquals("touwaboekqv", response.virtualNetwork().id());
     }
 
     // Use "Map.of" if available

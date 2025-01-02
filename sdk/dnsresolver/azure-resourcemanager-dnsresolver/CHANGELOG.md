@@ -1,14 +1,89 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0 (2025-01-02)
 
-### Features Added
+- Azure Resource Manager DnsResolver client library for Java. This package contains Microsoft Azure SDK for DnsResolver Management SDK. DNS Resolver Client. Package tag package-2022-07. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.DnsResolverPolicyVirtualNetworkLink` was removed
 
-### Other Changes
+#### `models.DnsSecurityRuleAction` was removed
+
+#### `models.DnsResolverPolicyListResult` was removed
+
+#### `models.DnsSecurityRule$UpdateStages` was removed
+
+#### `models.DnsResolverPolicyVirtualNetworkLink$DefinitionStages` was removed
+
+#### `models.DnsSecurityRule$Definition` was removed
+
+#### `models.DnsResolverDomainList` was removed
+
+#### `models.DnsResolverPolicyVirtualNetworkLink$Definition` was removed
+
+#### `models.DnsResolverDomainListResult` was removed
+
+#### `models.DnsResolverPolicies` was removed
+
+#### `models.DnsResolverDomainList$DefinitionStages` was removed
+
+#### `models.BlockResponseCode` was removed
+
+#### `models.DnsSecurityRule$Update` was removed
+
+#### `models.DnsResolverPolicyVirtualNetworkLink$Update` was removed
+
+#### `models.DnsSecurityRuleListResult` was removed
+
+#### `models.ActionType` was removed
+
+#### `models.DnsResolverPolicyVirtualNetworkLinks` was removed
+
+#### `models.DnsSecurityRule` was removed
+
+#### `models.DnsResolverPolicy$DefinitionStages` was removed
+
+#### `models.DnsSecurityRulePatch` was removed
+
+#### `models.DnsResolverDomainLists` was removed
+
+#### `models.DnsResolverDomainListPatch` was removed
+
+#### `models.DnsSecurityRuleState` was removed
+
+#### `models.DnsSecurityRules` was removed
+
+#### `models.DnsResolverPolicyPatch` was removed
+
+#### `models.DnsSecurityRule$DefinitionStages` was removed
+
+#### `models.DnsResolverDomainList$Definition` was removed
+
+#### `models.DnsResolverPolicyVirtualNetworkLinkListResult` was removed
+
+#### `models.DnsResolverPolicy$Update` was removed
+
+#### `models.DnsResolverDomainList$UpdateStages` was removed
+
+#### `models.DnsResolverDomainList$Update` was removed
+
+#### `models.DnsResolverPolicyVirtualNetworkLink$UpdateStages` was removed
+
+#### `models.DnsResolverPolicy$UpdateStages` was removed
+
+#### `models.DnsResolverPolicyVirtualNetworkLinkPatch` was removed
+
+#### `models.DnsResolverPolicy$Definition` was removed
+
+#### `models.DnsResolverPolicy` was removed
+
+#### `DnsResolverManager` was modified
+
+* `dnsSecurityRules()` was removed
+* `dnsResolverPolicyVirtualNetworkLinks()` was removed
+* `dnsResolverPolicies()` was removed
+* `dnsResolverDomainLists()` was removed
 
 ## 1.0.0-beta.4 (2024-10-23)
 
