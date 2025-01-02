@@ -4,6 +4,10 @@
 
 - Azure Resource Manager Automanage client library for Java. This package contains Microsoft Azure SDK for Automanage Management SDK. Automanage Client. Package tag package-2022-05. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
+### Other Changes
+
+- Release for Azure Resource Manager Automanage client library for Java.
+
 ## 1.0.0-beta.2 (2024-10-10)
 
 - Azure Resource Manager Automanage client library for Java. This package contains Microsoft Azure SDK for Automanage Management SDK. Automanage Client. Package tag package-2022-05. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
