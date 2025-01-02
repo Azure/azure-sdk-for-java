@@ -1,14 +1,8 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0 (2025-01-02)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Azure Resource Manager Purview client library for Java. This package contains Microsoft Azure SDK for Purview Management SDK. Creates a Microsoft.Purview management client. Package tag package-2021-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## 1.0.0-beta.3 (2024-10-17)
 
