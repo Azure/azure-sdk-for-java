@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.synapse.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
 /**
@@ -19,13 +20,14 @@ public interface SqlPoolOperationResults {
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
      * @param operationId Operation ID.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a SQL pool operation.
+     * @return the status of a SQL pool operation along with {@link Response}.
      */
-    SqlPool getLocationHeaderResult(String resourceGroupName, String workspaceName, String sqlPoolName,
-        String operationId);
+    Response<Object> getLocationHeaderResultWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String operationId, Context context);
 
     /**
      * Get SQL pool operation status
@@ -36,12 +38,11 @@ public interface SqlPoolOperationResults {
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
      * @param operationId Operation ID.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of a SQL pool operation.
      */
-    SqlPool getLocationHeaderResult(String resourceGroupName, String workspaceName, String sqlPoolName,
-        String operationId, Context context);
+    Object getLocationHeaderResult(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String operationId);
 }

@@ -24,7 +24,7 @@ public final class IntegrationRuntimesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"vqbavp\",\"\":{\"uji\":\"datacsrbvvniwqpcqy\",\"j\":\"datavrkpul\",\"yr\":\"datafy\",\"lzlkugkgnu\":\"datapclvpnoayckzshvc\"}},\"name\":\"aeqposnnwnz\",\"type\":\"kvjevjapsopjhaqu\",\"etag\":\"uypcnno\",\"id\":\"syqailqtqrtkdeyu\"}";
+            = "{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"eb\",\"\":{\"ytkehfoephiphoyg\":\"datadlahrd\",\"q\":\"datac\"}},\"name\":\"uk\",\"type\":\"vhqism\",\"etag\":\"logfxbvl\",\"id\":\"fdnaj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,15 +34,15 @@ public final class IntegrationRuntimesCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IntegrationRuntimeResource response = manager.integrationRuntimes()
-            .define("cyg")
-            .withExistingFactory("bwkxevnroew", "rhvdwrow")
-            .withProperties(new IntegrationRuntime().withDescription("jhc")
+            .define("jgvuvjsnbhnuujkj")
+            .withExistingFactory("avppos", "imtouclsabjzh")
+            .withProperties(new IntegrationRuntime().withDescription("yewtlomagxaqvra")
                 .withAdditionalProperties(mapOf("type", "IntegrationRuntime")))
-            .withIfMatch("xicjl")
+            .withIfMatch("ifptynhulefltub")
             .create();
 
-        Assertions.assertEquals("syqailqtqrtkdeyu", response.id());
-        Assertions.assertEquals("vqbavp", response.properties().description());
+        Assertions.assertEquals("fdnaj", response.id());
+        Assertions.assertEquals("eb", response.properties().description());
     }
 
     // Use "Map.of" if available

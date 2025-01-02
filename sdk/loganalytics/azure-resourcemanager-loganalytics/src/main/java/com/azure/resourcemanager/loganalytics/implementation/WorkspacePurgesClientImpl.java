@@ -30,17 +30,23 @@ import com.azure.resourcemanager.loganalytics.models.WorkspacePurgeBody;
 import com.azure.resourcemanager.loganalytics.models.WorkspacePurgesPurgeResponse;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in WorkspacePurgesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkspacePurgesClient.
+ */
 public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final WorkspacePurgesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final OperationalInsightsManagementClientImpl client;
 
     /**
      * Initializes an instance of WorkspacePurgesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     WorkspacePurgesClientImpl(OperationalInsightsManagementClientImpl client) {
@@ -78,15 +84,15 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
 
     /**
      * Purges data in an Log Analytics workspace by a set of user-defined filters.
-     *
-     * <p>In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch
-     * the execution of purge requests by sending a single command whose predicate includes all user identities that
-     * require purging. Use the in operator to specify multiple identities. You should run the query prior to using for
-     * a purge request to verify that the results are expected. Log Analytics only supports purge operations required
-     * for compliance with GDPR. The Log Analytics product team reserves the right to reject requests for purge
-     * operations that are not for the purpose of GDPR compliance. In the event of a dispute, please create a support
-     * ticket.
-     *
+     * 
+     * In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch the
+     * execution of purge requests by sending a single command whose predicate includes all user identities that require
+     * purging. Use the in operator to specify multiple identities. You should run the query prior to using for a purge
+     * request to verify that the results are expected.
+     * Log Analytics only supports purge operations required for compliance with GDPR. The Log Analytics product team
+     * reserves the right to reject requests for purge operations that are not for the purpose of GDPR compliance. In
+     * the event of a dispute, please create a support ticket.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param body Describes the body of a request to purge data in a single table of an Log Analytics Workspace.
@@ -128,15 +134,15 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
 
     /**
      * Purges data in an Log Analytics workspace by a set of user-defined filters.
-     *
-     * <p>In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch
-     * the execution of purge requests by sending a single command whose predicate includes all user identities that
-     * require purging. Use the in operator to specify multiple identities. You should run the query prior to using for
-     * a purge request to verify that the results are expected. Log Analytics only supports purge operations required
-     * for compliance with GDPR. The Log Analytics product team reserves the right to reject requests for purge
-     * operations that are not for the purpose of GDPR compliance. In the event of a dispute, please create a support
-     * ticket.
-     *
+     * 
+     * In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch the
+     * execution of purge requests by sending a single command whose predicate includes all user identities that require
+     * purging. Use the in operator to specify multiple identities. You should run the query prior to using for a purge
+     * request to verify that the results are expected.
+     * Log Analytics only supports purge operations required for compliance with GDPR. The Log Analytics product team
+     * reserves the right to reject requests for purge operations that are not for the purpose of GDPR compliance. In
+     * the event of a dispute, please create a support ticket.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param body Describes the body of a request to purge data in a single table of an Log Analytics Workspace.
@@ -178,15 +184,15 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
 
     /**
      * Purges data in an Log Analytics workspace by a set of user-defined filters.
-     *
-     * <p>In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch
-     * the execution of purge requests by sending a single command whose predicate includes all user identities that
-     * require purging. Use the in operator to specify multiple identities. You should run the query prior to using for
-     * a purge request to verify that the results are expected. Log Analytics only supports purge operations required
-     * for compliance with GDPR. The Log Analytics product team reserves the right to reject requests for purge
-     * operations that are not for the purpose of GDPR compliance. In the event of a dispute, please create a support
-     * ticket.
-     *
+     * 
+     * In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch the
+     * execution of purge requests by sending a single command whose predicate includes all user identities that require
+     * purging. Use the in operator to specify multiple identities. You should run the query prior to using for a purge
+     * request to verify that the results are expected.
+     * Log Analytics only supports purge operations required for compliance with GDPR. The Log Analytics product team
+     * reserves the right to reject requests for purge operations that are not for the purpose of GDPR compliance. In
+     * the event of a dispute, please create a support ticket.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param body Describes the body of a request to purge data in a single table of an Log Analytics Workspace.
@@ -204,15 +210,15 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
 
     /**
      * Purges data in an Log Analytics workspace by a set of user-defined filters.
-     *
-     * <p>In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch
-     * the execution of purge requests by sending a single command whose predicate includes all user identities that
-     * require purging. Use the in operator to specify multiple identities. You should run the query prior to using for
-     * a purge request to verify that the results are expected. Log Analytics only supports purge operations required
-     * for compliance with GDPR. The Log Analytics product team reserves the right to reject requests for purge
-     * operations that are not for the purpose of GDPR compliance. In the event of a dispute, please create a support
-     * ticket.
-     *
+     * 
+     * In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch the
+     * execution of purge requests by sending a single command whose predicate includes all user identities that require
+     * purging. Use the in operator to specify multiple identities. You should run the query prior to using for a purge
+     * request to verify that the results are expected.
+     * Log Analytics only supports purge operations required for compliance with GDPR. The Log Analytics product team
+     * reserves the right to reject requests for purge operations that are not for the purpose of GDPR compliance. In
+     * the event of a dispute, please create a support ticket.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param body Describes the body of a request to purge data in a single table of an Log Analytics Workspace.
@@ -230,15 +236,15 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
 
     /**
      * Purges data in an Log Analytics workspace by a set of user-defined filters.
-     *
-     * <p>In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch
-     * the execution of purge requests by sending a single command whose predicate includes all user identities that
-     * require purging. Use the in operator to specify multiple identities. You should run the query prior to using for
-     * a purge request to verify that the results are expected. Log Analytics only supports purge operations required
-     * for compliance with GDPR. The Log Analytics product team reserves the right to reject requests for purge
-     * operations that are not for the purpose of GDPR compliance. In the event of a dispute, please create a support
-     * ticket.
-     *
+     * 
+     * In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch the
+     * execution of purge requests by sending a single command whose predicate includes all user identities that require
+     * purging. Use the in operator to specify multiple identities. You should run the query prior to using for a purge
+     * request to verify that the results are expected.
+     * Log Analytics only supports purge operations required for compliance with GDPR. The Log Analytics product team
+     * reserves the right to reject requests for purge operations that are not for the purpose of GDPR compliance. In
+     * the event of a dispute, please create a support ticket.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param body Describes the body of a request to purge data in a single table of an Log Analytics Workspace.
@@ -254,15 +260,15 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
 
     /**
      * Gets status of an ongoing purge operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param purgeId In a purge status request, this is the Id of the operation the status of which is returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of an ongoing purge operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return status of an ongoing purge operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkspacePurgeStatusResponseInner>> getPurgeStatusWithResponseAsync(String resourceGroupName,
@@ -295,7 +301,7 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
 
     /**
      * Gets status of an ongoing purge operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param purgeId In a purge status request, this is the Id of the operation the status of which is returned.
@@ -303,8 +309,8 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of an ongoing purge operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return status of an ongoing purge operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkspacePurgeStatusResponseInner>> getPurgeStatusWithResponseAsync(String resourceGroupName,
@@ -336,7 +342,7 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
 
     /**
      * Gets status of an ongoing purge operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param purgeId In a purge status request, this is the Id of the operation the status of which is returned.
@@ -354,7 +360,7 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
 
     /**
      * Gets status of an ongoing purge operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param purgeId In a purge status request, this is the Id of the operation the status of which is returned.
@@ -372,7 +378,7 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
 
     /**
      * Gets status of an ongoing purge operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param purgeId In a purge status request, this is the Id of the operation the status of which is returned.

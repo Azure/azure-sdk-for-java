@@ -107,6 +107,12 @@ class QuickPulseDataSender implements Runnable {
                 CollectionConfigurationInfo body = responseMono.getValue();
                 if (body != null && !configuration.get().getETag().equals(body.getETag())) {
                     configuration.set(new FilteringConfiguration(body));
+                    // TODO (harskaur): remove logging when manual testing done
+                    try {
+                        logger.verbose("passed in config {}", body.toJsonString());
+                    } catch (IOException e) {
+                        logger.error(e.getMessage());
+                    }
                 }
 
             } catch (RuntimeException | IOException e) { // this includes ServiceErrorException & RuntimeException thrown from quickpulse post api

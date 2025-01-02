@@ -18,7 +18,7 @@ public final class EnvironmentsDeleteSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void environmentsDelete(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.environments().deleteWithResponse("contoso-resources", "contoso", "default", "public",
-            com.azure.core.util.Context.NONE);
+        manager.environments()
+            .deleteWithResponse("contoso-resources", "contoso", "default", "public", com.azure.core.util.Context.NONE);
     }
 }

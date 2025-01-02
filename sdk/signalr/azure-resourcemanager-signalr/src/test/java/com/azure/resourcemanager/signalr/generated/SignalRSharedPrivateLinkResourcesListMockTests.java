@@ -22,7 +22,7 @@ public final class SignalRSharedPrivateLinkResourcesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupId\":\"hhulrtywikdm\",\"privateLinkResourceId\":\"lakuflgbhgauacd\",\"provisioningState\":\"Creating\",\"requestMessage\":\"ufr\",\"status\":\"Rejected\"},\"id\":\"qg\",\"name\":\"kfnozoeoqbvj\",\"type\":\"vefgwbmqjchntas\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"hqlkccuzgygqwaho\",\"privateLinkResourceId\":\"ulwgniiprglvawuw\",\"provisioningState\":\"Canceled\",\"requestMessage\":\"ypivlsbb\",\"status\":\"Approved\"},\"id\":\"cubkmi\",\"name\":\"oxxkubvp\",\"type\":\"avp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class SignalRSharedPrivateLinkResourcesListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SharedPrivateLinkResource> response = manager.signalRSharedPrivateLinkResources()
-            .list("upeuknijduyye", "pydjfboc", com.azure.core.util.Context.NONE);
+            .list("e", "dptjgwdtgukranb", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hhulrtywikdm", response.iterator().next().groupId());
-        Assertions.assertEquals("lakuflgbhgauacd", response.iterator().next().privateLinkResourceId());
-        Assertions.assertEquals("ufr", response.iterator().next().requestMessage());
+        Assertions.assertEquals("hqlkccuzgygqwaho", response.iterator().next().groupId());
+        Assertions.assertEquals("ulwgniiprglvawuw", response.iterator().next().privateLinkResourceId());
+        Assertions.assertEquals("ypivlsbb", response.iterator().next().requestMessage());
     }
 }

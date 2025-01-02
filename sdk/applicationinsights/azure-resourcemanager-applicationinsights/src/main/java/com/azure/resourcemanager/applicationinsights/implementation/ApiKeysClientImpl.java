@@ -34,17 +34,23 @@ import com.azure.resourcemanager.applicationinsights.models.ApiKeyRequest;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsComponentApiKeyListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ApiKeysClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ApiKeysClient.
+ */
 public final class ApiKeysClientImpl implements ApiKeysClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ApiKeysService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApplicationInsightsManagementClientImpl client;
 
     /**
      * Initializes an instance of ApiKeysClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ApiKeysClientImpl(ApplicationInsightsManagementClientImpl client) {
@@ -99,14 +105,14 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
 
     /**
      * Gets a list of API keys of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of API keys of an Application Insights component along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationInsightsComponentApiKeyInner>> listSinglePageAsync(String resourceGroupName,
@@ -138,7 +144,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
 
     /**
      * Gets a list of API keys of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param context The context to associate with this operation.
@@ -146,7 +152,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of API keys of an Application Insights component along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationInsightsComponentApiKeyInner>> listSinglePageAsync(String resourceGroupName,
@@ -178,7 +184,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
 
     /**
      * Gets a list of API keys of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -194,7 +200,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
 
     /**
      * Gets a list of API keys of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param context The context to associate with this operation.
@@ -211,7 +217,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
 
     /**
      * Gets a list of API keys of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -226,7 +232,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
 
     /**
      * Gets a list of API keys of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param context The context to associate with this operation.
@@ -243,16 +249,16 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
 
     /**
      * Create an API Key of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param apiKeyProperties Properties that need to be specified to create an API key of a Application Insights
-     *     component.
+     * component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties that define an API key of an Application Insights Component along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentApiKeyInner>> createWithResponseAsync(String resourceGroupName,
@@ -288,17 +294,17 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
 
     /**
      * Create an API Key of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param apiKeyProperties Properties that need to be specified to create an API key of a Application Insights
-     *     component.
+     * component.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties that define an API key of an Application Insights Component along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentApiKeyInner>> createWithResponseAsync(String resourceGroupName,
@@ -333,16 +339,16 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
 
     /**
      * Create an API Key of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param apiKeyProperties Properties that need to be specified to create an API key of a Application Insights
-     *     component.
+     * component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define an API key of an Application Insights Component on successful completion of {@link
-     *     Mono}.
+     * @return properties that define an API key of an Application Insights Component on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationInsightsComponentApiKeyInner> createAsync(String resourceGroupName, String resourceName,
@@ -353,11 +359,11 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
 
     /**
      * Create an API Key of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param apiKeyProperties Properties that need to be specified to create an API key of a Application Insights
-     *     component.
+     * component.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -372,11 +378,11 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
 
     /**
      * Create an API Key of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param apiKeyProperties Properties that need to be specified to create an API key of a Application Insights
-     *     component.
+     * component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -390,7 +396,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
 
     /**
      * Delete an API Key of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param keyId The API Key ID. This is unique within a Application Insights component.
@@ -398,7 +404,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties that define an API key of an Application Insights Component along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentApiKeyInner>> deleteWithResponseAsync(String resourceGroupName,
@@ -431,7 +437,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
 
     /**
      * Delete an API Key of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param keyId The API Key ID. This is unique within a Application Insights component.
@@ -440,7 +446,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties that define an API key of an Application Insights Component along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentApiKeyInner>> deleteWithResponseAsync(String resourceGroupName,
@@ -472,15 +478,15 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
 
     /**
      * Delete an API Key of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param keyId The API Key ID. This is unique within a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define an API key of an Application Insights Component on successful completion of {@link
-     *     Mono}.
+     * @return properties that define an API key of an Application Insights Component on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationInsightsComponentApiKeyInner> deleteAsync(String resourceGroupName, String resourceName,
@@ -491,7 +497,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
 
     /**
      * Delete an API Key of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param keyId The API Key ID. This is unique within a Application Insights component.
@@ -509,7 +515,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
 
     /**
      * Delete an API Key of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param keyId The API Key ID. This is unique within a Application Insights component.
@@ -525,7 +531,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
 
     /**
      * Get the API Key for this key id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param keyId The API Key ID. This is unique within a Application Insights component.
@@ -565,7 +571,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
 
     /**
      * Get the API Key for this key id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param keyId The API Key ID. This is unique within a Application Insights component.
@@ -605,7 +611,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
 
     /**
      * Get the API Key for this key id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param keyId The API Key ID. This is unique within a Application Insights component.
@@ -623,7 +629,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
 
     /**
      * Get the API Key for this key id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param keyId The API Key ID. This is unique within a Application Insights component.
@@ -641,7 +647,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
 
     /**
      * Get the API Key for this key id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param keyId The API Key ID. This is unique within a Application Insights component.

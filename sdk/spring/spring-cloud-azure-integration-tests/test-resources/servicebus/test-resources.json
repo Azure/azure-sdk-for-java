@@ -66,7 +66,7 @@
     {
       "type": "Microsoft.ServiceBus/namespaces/queues",
       "apiVersion": "2022-01-01-preview",
-      "name": "[concat(variables('azureServiceBusNamespaceName'), '/que001')]",
+      "name": "[concat(variables('azureServiceBusNamespaceName'), '/sdk_clients_queue')]",
       "location": "[variables('location')]",
       "dependsOn": [
         "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName'))]"
@@ -91,7 +91,82 @@
     {
       "type": "Microsoft.ServiceBus/namespaces/queues",
       "apiVersion": "2022-01-01-preview",
-      "name": "[concat(variables('azureServiceBusNamespaceName'), '/passwordless_que001')]",
+      "name": "[concat(variables('azureServiceBusNamespaceName'), '/conn_string_pool_queue')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName'))]"
+      ],
+      "properties": {
+        "maxMessageSizeInKilobytes": 256,
+        "lockDuration": "PT30S",
+        "maxSizeInMegabytes": 1024,
+        "requiresDuplicateDetection": false,
+        "requiresSession": false,
+        "defaultMessageTimeToLive": "P14D",
+        "deadLetteringOnMessageExpiration": false,
+        "enableBatchedOperations": true,
+        "duplicateDetectionHistoryTimeWindow": "PT10M",
+        "maxDeliveryCount": 10,
+        "status": "Active",
+        "autoDeleteOnIdle": "P10675199DT2H48M5.4775807S",
+        "enablePartitioning": false,
+        "enableExpress": false
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/queues",
+      "apiVersion": "2022-01-01-preview",
+      "name": "[concat(variables('azureServiceBusNamespaceName'), '/passwordless_pool_queue')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName'))]"
+      ],
+      "properties": {
+        "maxMessageSizeInKilobytes": 256,
+        "lockDuration": "PT30S",
+        "maxSizeInMegabytes": 1024,
+        "requiresDuplicateDetection": false,
+        "requiresSession": false,
+        "defaultMessageTimeToLive": "P14D",
+        "deadLetteringOnMessageExpiration": false,
+        "enableBatchedOperations": true,
+        "duplicateDetectionHistoryTimeWindow": "PT10M",
+        "maxDeliveryCount": 10,
+        "status": "Active",
+        "autoDeleteOnIdle": "P10675199DT2H48M5.4775807S",
+        "enablePartitioning": false,
+        "enableExpress": false
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/queues",
+      "apiVersion": "2022-01-01-preview",
+      "name": "[concat(variables('azureServiceBusNamespaceName'), '/passwordless_caching_queue')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName'))]"
+      ],
+      "properties": {
+        "maxMessageSizeInKilobytes": 256,
+        "lockDuration": "PT30S",
+        "maxSizeInMegabytes": 1024,
+        "requiresDuplicateDetection": false,
+        "requiresSession": false,
+        "defaultMessageTimeToLive": "P14D",
+        "deadLetteringOnMessageExpiration": false,
+        "enableBatchedOperations": true,
+        "duplicateDetectionHistoryTimeWindow": "PT10M",
+        "maxDeliveryCount": 10,
+        "status": "Active",
+        "autoDeleteOnIdle": "P10675199DT2H48M5.4775807S",
+        "enablePartitioning": false,
+        "enableExpress": false
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/queues",
+      "apiVersion": "2022-01-01-preview",
+      "name": "[concat(variables('azureServiceBusNamespaceName'), '/passwordless_default_queue')]",
       "location": "[variables('location')]",
       "dependsOn": [
         "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName'))]"
@@ -276,7 +351,7 @@
     {
       "type": "Microsoft.ServiceBus/namespaces/queues",
       "apiVersion": "2017-04-01",
-      "name": "[concat(variables('azureServiceBusNamespaceName_1'), '/queue1')]",
+      "name": "[concat(variables('azureServiceBusNamespaceName_1'), '/single_binder_queue')]",
       "location": "[variables('location')]",
       "dependsOn": [
         "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName_1'))]"
@@ -300,7 +375,55 @@
     {
       "type": "Microsoft.ServiceBus/namespaces/queues",
       "apiVersion": "2017-04-01",
-      "name": "[concat(variables('azureServiceBusNamespaceName_3'), '/queue1')]",
+      "name": "[concat(variables('azureServiceBusNamespaceName_1'), '/single_binder_no_inherit_queue')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName_1'))]"
+      ],
+      "properties": {
+        "lockDuration": "PT30S",
+        "maxSizeInMegabytes": 1024,
+        "requiresDuplicateDetection": false,
+        "requiresSession": false,
+        "defaultMessageTimeToLive": "P14D",
+        "deadLetteringOnMessageExpiration": false,
+        "enableBatchedOperations": true,
+        "duplicateDetectionHistoryTimeWindow": "PT10M",
+        "maxDeliveryCount": 10,
+        "status": "Active",
+        "autoDeleteOnIdle": "P10675199DT2H48M5.4775807S",
+        "enablePartitioning": false,
+        "enableExpress": false
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/queues",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('azureServiceBusNamespaceName_3'), '/single_multi_binder_queue')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName_3'))]"
+      ],
+      "properties": {
+        "lockDuration": "PT30S",
+        "maxSizeInMegabytes": 1024,
+        "requiresDuplicateDetection": false,
+        "requiresSession": false,
+        "defaultMessageTimeToLive": "P14D",
+        "deadLetteringOnMessageExpiration": false,
+        "enableBatchedOperations": true,
+        "duplicateDetectionHistoryTimeWindow": "PT10M",
+        "maxDeliveryCount": 10,
+        "status": "Active",
+        "autoDeleteOnIdle": "P10675199DT2H48M5.4775807S",
+        "enablePartitioning": false,
+        "enableExpress": false
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/queues",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('azureServiceBusNamespaceName_3'), '/single_multi_binder_no_inherit_queue')]",
       "location": "[variables('location')]",
       "dependsOn": [
         "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName_3'))]"
@@ -324,7 +447,7 @@
     {
       "type": "Microsoft.ServiceBus/namespaces/topics",
       "apiVersion": "2017-04-01",
-      "name": "[concat(variables('azureServiceBusNamespaceName_1'), '/topic1')]",
+      "name": "[concat(variables('azureServiceBusNamespaceName_1'), '/single_binder_topic')]",
       "location": "[variables('location')]",
       "dependsOn": [
         "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName_1'))]"
@@ -345,7 +468,49 @@
     {
       "type": "Microsoft.ServiceBus/namespaces/topics",
       "apiVersion": "2017-04-01",
-      "name": "[concat(variables('azureServiceBusNamespaceName_2'), '/topic1')]",
+      "name": "[concat(variables('azureServiceBusNamespaceName_1'), '/single_binder_no_inherit_topic')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName_1'))]"
+      ],
+      "properties": {
+        "defaultMessageTimeToLive": "P14D",
+        "maxSizeInMegabytes": 1024,
+        "requiresDuplicateDetection": false,
+        "duplicateDetectionHistoryTimeWindow": "PT10M",
+        "enableBatchedOperations": true,
+        "status": "Active",
+        "supportOrdering": true,
+        "autoDeleteOnIdle": "P10675199DT2H48M5.4775807S",
+        "enablePartitioning": false,
+        "enableExpress": false
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/topics",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('azureServiceBusNamespaceName_2'), '/single_multi_binder_topic')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName_2'))]"
+      ],
+      "properties": {
+        "defaultMessageTimeToLive": "P14D",
+        "maxSizeInMegabytes": 1024,
+        "requiresDuplicateDetection": false,
+        "duplicateDetectionHistoryTimeWindow": "PT10M",
+        "enableBatchedOperations": true,
+        "status": "Active",
+        "supportOrdering": true,
+        "autoDeleteOnIdle": "P10675199DT2H48M5.4775807S",
+        "enablePartitioning": false,
+        "enableExpress": false
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/topics",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('azureServiceBusNamespaceName_2'), '/single_multi_binder_no_inherit_topic')]",
       "location": "[variables('location')]",
       "dependsOn": [
         "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName_2'))]"
@@ -366,10 +531,10 @@
     {
       "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions",
       "apiVersion": "2018-01-01-preview",
-      "name": "[concat(variables('azureServiceBusNamespaceName_1'), '/topic1/topicSub')]",
+      "name": "[concat(variables('azureServiceBusNamespaceName_1'), '/single_binder_topic/topicSub')]",
       "location": "[variables('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.ServiceBus/namespaces/topics', variables('azureServiceBusNamespaceName_1'), 'topic1')]",
+        "[resourceId('Microsoft.ServiceBus/namespaces/topics', variables('azureServiceBusNamespaceName_1'), 'single_binder_topic')]",
         "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName_1'))]"
       ],
       "properties": {
@@ -387,10 +552,52 @@
     {
       "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions",
       "apiVersion": "2018-01-01-preview",
-      "name": "[concat(variables('azureServiceBusNamespaceName_2'), '/topic1/topicSub')]",
+      "name": "[concat(variables('azureServiceBusNamespaceName_1'), '/single_binder_no_inherit_topic/topicSub')]",
       "location": "[variables('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.ServiceBus/namespaces/topics', variables('azureServiceBusNamespaceName_2'), 'topic1')]",
+        "[resourceId('Microsoft.ServiceBus/namespaces/topics', variables('azureServiceBusNamespaceName_1'), 'single_binder_no_inherit_topic')]",
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName_1'))]"
+      ],
+      "properties": {
+        "lockDuration": "PT30S",
+        "requiresSession": false,
+        "defaultMessageTimeToLive": "P14D",
+        "deadLetteringOnMessageExpiration": false,
+        "deadLetteringOnFilterEvaluationExceptions": false,
+        "maxDeliveryCount": 1,
+        "status": "Active",
+        "enableBatchedOperations": true,
+        "autoDeleteOnIdle": "P14D"
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions",
+      "apiVersion": "2018-01-01-preview",
+      "name": "[concat(variables('azureServiceBusNamespaceName_2'), '/single_multi_binder_topic/topicSub')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ServiceBus/namespaces/topics', variables('azureServiceBusNamespaceName_2'), 'single_multi_binder_topic')]",
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName_2'))]"
+      ],
+      "properties": {
+        "lockDuration": "PT30S",
+        "requiresSession": false,
+        "defaultMessageTimeToLive": "P14D",
+        "deadLetteringOnMessageExpiration": false,
+        "deadLetteringOnFilterEvaluationExceptions": false,
+        "maxDeliveryCount": 1,
+        "status": "Active",
+        "enableBatchedOperations": true,
+        "autoDeleteOnIdle": "P14D"
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions",
+      "apiVersion": "2018-01-01-preview",
+      "name": "[concat(variables('azureServiceBusNamespaceName_2'), '/single_multi_binder_no_inherit_topic/topicSub')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ServiceBus/namespaces/topics', variables('azureServiceBusNamespaceName_2'), 'single_multi_binder_no_inherit_topic')]",
         "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName_2'))]"
       ],
       "properties": {
@@ -421,7 +628,7 @@
     },
     "AZURE_SERVICE_BUS_ENTITY_NAME": {
       "type": "string",
-      "value": "que001"
+      "value": "sdk_clients_queue"
     },
     "AZURE_SERVICE_BUS_ENTITY_TYPE": {
       "type": "string",

@@ -35,12 +35,6 @@ public final class IntegrationRuntimeDataFlowProperties
     private Integer timeToLive;
 
     /*
-     * Cluster will not be recycled and it will be used in next data flow activity run until TTL (time to live) is
-     * reached if this is set as false. Default is true.
-     */
-    private Boolean cleanup;
-
-    /*
      * Data flow properties for managed integration runtime.
      */
     private Map<String, Object> additionalProperties;
@@ -114,28 +108,6 @@ public final class IntegrationRuntimeDataFlowProperties
     }
 
     /**
-     * Get the cleanup property: Cluster will not be recycled and it will be used in next data flow activity run until
-     * TTL (time to live) is reached if this is set as false. Default is true.
-     * 
-     * @return the cleanup value.
-     */
-    public Boolean cleanup() {
-        return this.cleanup;
-    }
-
-    /**
-     * Set the cleanup property: Cluster will not be recycled and it will be used in next data flow activity run until
-     * TTL (time to live) is reached if this is set as false. Default is true.
-     * 
-     * @param cleanup the cleanup value to set.
-     * @return the IntegrationRuntimeDataFlowProperties object itself.
-     */
-    public IntegrationRuntimeDataFlowProperties withCleanup(Boolean cleanup) {
-        this.cleanup = cleanup;
-        return this;
-    }
-
-    /**
      * Get the additionalProperties property: Data flow properties for managed integration runtime.
      * 
      * @return the additionalProperties value.
@@ -172,7 +144,6 @@ public final class IntegrationRuntimeDataFlowProperties
         jsonWriter.writeStringField("computeType", this.computeType == null ? null : this.computeType.toString());
         jsonWriter.writeNumberField("coreCount", this.coreCount);
         jsonWriter.writeNumberField("timeToLive", this.timeToLive);
-        jsonWriter.writeBooleanField("cleanup", this.cleanup);
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -206,9 +177,6 @@ public final class IntegrationRuntimeDataFlowProperties
                 } else if ("timeToLive".equals(fieldName)) {
                     deserializedIntegrationRuntimeDataFlowProperties.timeToLive
                         = reader.getNullable(JsonReader::getInt);
-                } else if ("cleanup".equals(fieldName)) {
-                    deserializedIntegrationRuntimeDataFlowProperties.cleanup
-                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();

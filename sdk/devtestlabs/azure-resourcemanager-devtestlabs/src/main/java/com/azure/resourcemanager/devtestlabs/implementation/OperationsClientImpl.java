@@ -25,17 +25,23 @@ import com.azure.resourcemanager.devtestlabs.fluent.OperationsClient;
 import com.azure.resourcemanager.devtestlabs.fluent.models.OperationResultInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in OperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OperationsClient.
+ */
 public final class OperationsClientImpl implements OperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final OperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DevTestLabsClientImpl client;
 
     /**
      * Initializes an instance of OperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     OperationsClientImpl(DevTestLabsClientImpl client) {
@@ -63,7 +69,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Get operation.
-     *
+     * 
      * @param locationName The name of the location.
      * @param name The name of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -96,7 +102,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Get operation.
-     *
+     * 
      * @param locationName The name of the location.
      * @param name The name of the operation.
      * @param context The context to associate with this operation.
@@ -130,7 +136,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Get operation.
-     *
+     * 
      * @param locationName The name of the location.
      * @param name The name of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -145,7 +151,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Get operation.
-     *
+     * 
      * @param locationName The name of the location.
      * @param name The name of the operation.
      * @param context The context to associate with this operation.
@@ -161,7 +167,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Get operation.
-     *
+     * 
      * @param locationName The name of the location.
      * @param name The name of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

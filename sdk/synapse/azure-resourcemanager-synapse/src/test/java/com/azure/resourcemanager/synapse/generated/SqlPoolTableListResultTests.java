@@ -11,7 +11,7 @@ public final class SqlPoolTableListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlPoolTableListResult model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"kvi\",\"name\":\"mdscwxqupev\",\"type\":\"hfstotxhojujbyp\"}],\"nextLink\":\"mc\"}")
+            "{\"value\":[{\"id\":\"wm\",\"name\":\"xmeb\",\"type\":\"jscjpahl\"},{\"id\":\"veabfqxnmwmqtib\",\"name\":\"yijddtvqcttad\",\"type\":\"jaeukmrsieekpn\"},{\"id\":\"zaapmudqmeqwi\",\"name\":\"pibudqwyxebeybpm\",\"type\":\"znrtffyaqit\"},{\"id\":\"hheioqaqhvseuf\",\"name\":\"qyrxp\",\"type\":\"lcgqlsismj\"}],\"nextLink\":\"rddga\"}")
             .toObject(SqlPoolTableListResult.class);
     }
 

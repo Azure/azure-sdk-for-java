@@ -20,16 +20,32 @@ import java.util.Set;
 public interface AvailabilitySet extends GroupableResource<ComputeManager, AvailabilitySetInner>,
     Refreshable<AvailabilitySet>, Updatable<AvailabilitySet.Update> {
 
-    /** @return the update domain count of this availability set */
+    /**
+     * Gets the update domain count of this availability set.
+     *
+     * @return the update domain count of this availability set
+     */
     int updateDomainCount();
 
-    /** @return the fault domain count of this availability set */
+    /**
+     * Gets the fault domain count of this availability set.
+     *
+     * @return the fault domain count of this availability set
+     */
     int faultDomainCount();
 
-    /** @return the availability set SKU */
+    /**
+     * Gets the availability set SKU.
+     *
+     * @return the availability set SKU
+     */
     AvailabilitySetSkuTypes sku();
 
-    /** @return the resource IDs of the virtual machines in the availability set */
+    /**
+     * Gets the resource IDs of the virtual machines in the availability set.
+     *
+     * @return the resource IDs of the virtual machines in the availability set
+     */
     Set<String> virtualMachineIds();
 
     /**
@@ -40,10 +56,18 @@ public interface AvailabilitySet extends GroupableResource<ComputeManager, Avail
      */
     ProximityPlacementGroup proximityPlacementGroup();
 
-    /** @return the statuses of the existing virtual machines in the availability set */
+    /**
+     * Gets the statuses of the existing virtual machines in the availability set.
+     *
+     * @return the statuses of the existing virtual machines in the availability set
+     */
     List<InstanceViewStatus> statuses();
 
-    /** @return the virtual machine sizes supported in the availability set */
+    /**
+     * Gets the virtual machine sizes supported in the availability set.
+     *
+     * @return the virtual machine sizes supported in the availability set
+     */
     PagedIterable<VirtualMachineSize> listVirtualMachineSizes();
 
     // Fluent interfaces

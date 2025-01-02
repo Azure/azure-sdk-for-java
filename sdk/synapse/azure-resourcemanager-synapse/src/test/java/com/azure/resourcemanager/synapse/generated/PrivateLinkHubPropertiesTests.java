@@ -12,15 +12,15 @@ public final class PrivateLinkHubPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkHubProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"avxbniwdjswztsdb\",\"privateEndpointConnections\":[{\"id\":\"ytxhp\",\"properties\":{\"privateEndpoint\":{\"id\":\"pfza\"},\"privateLinkServiceConnectionState\":{\"status\":\"cuh\",\"description\":\"tcty\",\"actionsRequired\":\"klbb\"},\"provisioningState\":\"plwzbhvgyugu\"}},{\"id\":\"vmkfssxqu\",\"properties\":{\"privateEndpoint\":{\"id\":\"l\"},\"privateLinkServiceConnectionState\":{\"status\":\"sxnkjzkdeslpvlo\",\"description\":\"i\",\"actionsRequired\":\"ghxpkdw\"},\"provisioningState\":\"aiuebbaumnyqu\"}}]}")
+            "{\"provisioningState\":\"gofel\",\"privateEndpointConnections\":[{\"id\":\"qmqhldvriii\",\"properties\":{\"privateEndpoint\":{\"id\":\"lg\"},\"privateLinkServiceConnectionState\":{\"status\":\"vtvsexsowueluq\",\"description\":\"ahhxvrh\",\"actionsRequired\":\"kwpjgwwspughftqs\"},\"provisioningState\":\"qxujxukndxd\"}},{\"id\":\"rjguufzdmsyqtf\",\"properties\":{\"privateEndpoint\":{\"id\":\"botzingamvppho\"},\"privateLinkServiceConnectionState\":{\"status\":\"zudphqamvdkfw\",\"description\":\"wcvtbvkayhmtnvyq\",\"actionsRequired\":\"tkzwpcnpwzc\"},\"provisioningState\":\"esgvvsccyaj\"}},{\"id\":\"qfhwyg\",\"properties\":{\"privateEndpoint\":{\"id\":\"nk\"},\"privateLinkServiceConnectionState\":{\"status\":\"semdwzrmu\",\"description\":\"pfcqdp\",\"actionsRequired\":\"xqv\"},\"provisioningState\":\"vuoy\"}}]}")
             .toObject(PrivateLinkHubProperties.class);
-        Assertions.assertEquals("avxbniwdjswztsdb", model.provisioningState());
+        Assertions.assertEquals("gofel", model.provisioningState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkHubProperties model = new PrivateLinkHubProperties().withProvisioningState("avxbniwdjswztsdb");
+        PrivateLinkHubProperties model = new PrivateLinkHubProperties().withProvisioningState("gofel");
         model = BinaryData.fromObject(model).toObject(PrivateLinkHubProperties.class);
-        Assertions.assertEquals("avxbniwdjswztsdb", model.provisioningState());
+        Assertions.assertEquals("gofel", model.provisioningState());
     }
 }

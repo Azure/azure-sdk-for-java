@@ -49,7 +49,7 @@ This client library is currently made available **only in our dev feed**. For de
 ### Adding the package to your project
 
 This project is currently only available in the dev feed. For detailed instructions on how to set up your project to consume the dev feed
-please visit the [dev feed documentation page.][dev_feed_instructions] Here you can find the steps for the `maven` and `gradle setup.
+please visit the [dev feed documentation page.][dev_feed_instructions] Here you can find the steps for the `maven` and `gradle` setup.
 
 #### Maven dev feed setup
 
@@ -99,6 +99,9 @@ Add to your project's pom.xml file
 </dependency>
 ```
 [//]: # ({x-version-update-end})
+
+> [!IMPORTANT]
+> This package is currently only released in the dev feed. Therefore, the `1.0.0-beta.1` version displayed in the example needs to be replaced with the correct version name from the dev feed. Search for `realtime` in the filter bar in the [Java dev feed][dev_feed]
 
 Then run:
 
@@ -305,6 +308,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [aoai_samples_readme_api_concepts]: https://github.com/Azure-Samples/aoai-realtime-audio-sdk/blob/main/README.md#api-concepts
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_openai_access]: https://learn.microsoft.com/azure/cognitive-services/openai/overview#how-do-i-get-access-to-azure-openai
+[dev_feed]: https://dev.azure.com/azure-sdk/public/_artifacts/feed/azure-sdk-for-java
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [dev_feed_instructions]: https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md#dev-feed
 [log_levels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java

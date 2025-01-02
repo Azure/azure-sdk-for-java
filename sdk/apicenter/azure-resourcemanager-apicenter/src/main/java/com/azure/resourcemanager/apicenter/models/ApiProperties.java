@@ -6,72 +6,66 @@ package com.azure.resourcemanager.apicenter.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * API properties.
  */
 @Fluent
-public final class ApiProperties {
+public final class ApiProperties implements JsonSerializable<ApiProperties> {
     /*
      * API title.
      */
-    @JsonProperty(value = "title", required = true)
     private String title;
 
     /*
      * Kind of API. For example, REST or GraphQL.
      */
-    @JsonProperty(value = "kind", required = true)
     private ApiKind kind;
 
     /*
      * Description of the API.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Short description of the API.
      */
-    @JsonProperty(value = "summary")
     private String summary;
 
     /*
      * Current lifecycle stage of the API.
      */
-    @JsonProperty(value = "lifecycleStage", access = JsonProperty.Access.WRITE_ONLY)
     private LifecycleStage lifecycleStage;
 
     /*
      * Terms of service for the API.
      */
-    @JsonProperty(value = "termsOfService")
     private TermsOfService termsOfService;
 
     /*
      * The set of external documentation
      */
-    @JsonProperty(value = "externalDocumentation")
     private List<ExternalDocumentation> externalDocumentation;
 
     /*
      * The set of contacts
      */
-    @JsonProperty(value = "contacts")
     private List<Contact> contacts;
 
     /*
      * The license information for the API.
      */
-    @JsonProperty(value = "license")
     private License license;
 
     /*
      * The custom metadata defined for API catalog entities.
      */
-    @JsonProperty(value = "customProperties")
     private Object customProperties;
 
     /**
@@ -276,12 +270,12 @@ public final class ApiProperties {
      */
     public void validate() {
         if (title() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property title in model ApiProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property title in model ApiProperties"));
         }
         if (kind() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property kind in model ApiProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property kind in model ApiProperties"));
         }
         if (termsOfService() != null) {
             termsOfService().validate();
@@ -298,4 +292,71 @@ public final class ApiProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ApiProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("summary", this.summary);
+        jsonWriter.writeJsonField("termsOfService", this.termsOfService);
+        jsonWriter.writeArrayField("externalDocumentation", this.externalDocumentation,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("contacts", this.contacts, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("license", this.license);
+        jsonWriter.writeUntypedField("customProperties", this.customProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApiProperties.
+     */
+    public static ApiProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiProperties deserializedApiProperties = new ApiProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("title".equals(fieldName)) {
+                    deserializedApiProperties.title = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedApiProperties.kind = ApiKind.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedApiProperties.description = reader.getString();
+                } else if ("summary".equals(fieldName)) {
+                    deserializedApiProperties.summary = reader.getString();
+                } else if ("lifecycleStage".equals(fieldName)) {
+                    deserializedApiProperties.lifecycleStage = LifecycleStage.fromString(reader.getString());
+                } else if ("termsOfService".equals(fieldName)) {
+                    deserializedApiProperties.termsOfService = TermsOfService.fromJson(reader);
+                } else if ("externalDocumentation".equals(fieldName)) {
+                    List<ExternalDocumentation> externalDocumentation
+                        = reader.readArray(reader1 -> ExternalDocumentation.fromJson(reader1));
+                    deserializedApiProperties.externalDocumentation = externalDocumentation;
+                } else if ("contacts".equals(fieldName)) {
+                    List<Contact> contacts = reader.readArray(reader1 -> Contact.fromJson(reader1));
+                    deserializedApiProperties.contacts = contacts;
+                } else if ("license".equals(fieldName)) {
+                    deserializedApiProperties.license = License.fromJson(reader);
+                } else if ("customProperties".equals(fieldName)) {
+                    deserializedApiProperties.customProperties = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiProperties;
+        });
+    }
 }

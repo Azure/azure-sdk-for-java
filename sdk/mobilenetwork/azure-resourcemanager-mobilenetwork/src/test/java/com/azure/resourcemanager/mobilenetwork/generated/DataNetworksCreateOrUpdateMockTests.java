@@ -23,7 +23,7 @@ public final class DataNetworksCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"description\":\"hfhpfp\"},\"location\":\"jzoywjxhp\",\"tags\":{\"tehtuevrhrljyoog\":\"ontacnpq\",\"sd\":\"xh\",\"arenlvhhtklnvnaf\":\"ugwbsreurfqkf\"},\"id\":\"vkyfedevjbosl\",\"name\":\"qxypokkhminq\",\"type\":\"ymc\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"description\":\"qtljqobbpihehc\"},\"location\":\"ybmrqbrjbbmp\",\"tags\":{\"wjksghudgzhxo\":\"vykfrexcrse\",\"jkxibda\":\"jggsvo\"},\"id\":\"hrkmdyomkxfbvfbh\",\"name\":\"y\",\"type\":\"rhpw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,17 +33,17 @@ public final class DataNetworksCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DataNetwork response = manager.dataNetworks()
-            .define("szizoyuelyetndnb")
-            .withRegion("gm")
-            .withExistingMobileNetwork("y", "ruuuybnch")
-            .withTags(
-                mapOf("r", "ahzjmucftb", "fusuckzmkwklsno", "lrohkpig", "hjnhgwydyynfsvk", "axmqeqal", "ta", "gbv"))
-            .withDescription("agfl")
+            .define("rwgdnqzbrfks")
+            .withRegion("cit")
+            .withExistingMobileNetwork("mzegjon", "hj")
+            .withTags(mapOf("omflrytswfp", "sxcdgljplkeuach", "skw", "mdgycxn", "shhkvpedw", "qjjyslurl", "wwsko",
+                "slsrhmpq"))
+            .withDescription("tk")
             .create();
 
-        Assertions.assertEquals("jzoywjxhp", response.location());
-        Assertions.assertEquals("ontacnpq", response.tags().get("tehtuevrhrljyoog"));
-        Assertions.assertEquals("hfhpfp", response.description());
+        Assertions.assertEquals("ybmrqbrjbbmp", response.location());
+        Assertions.assertEquals("vykfrexcrse", response.tags().get("wjksghudgzhxo"));
+        Assertions.assertEquals("qtljqobbpihehc", response.description());
     }
 
     // Use "Map.of" if available

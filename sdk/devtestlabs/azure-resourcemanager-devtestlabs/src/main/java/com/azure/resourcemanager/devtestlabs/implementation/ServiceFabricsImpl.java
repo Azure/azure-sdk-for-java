@@ -31,14 +31,14 @@ public final class ServiceFabricsImpl implements ServiceFabrics {
 
     public PagedIterable<ServiceFabric> list(String resourceGroupName, String labName, String username) {
         PagedIterable<ServiceFabricInner> inner = this.serviceClient().list(resourceGroupName, labName, username);
-        return Utils.mapPage(inner, inner1 -> new ServiceFabricImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ServiceFabricImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ServiceFabric> list(String resourceGroupName, String labName, String username, String expand,
         String filter, Integer top, String orderby, Context context) {
         PagedIterable<ServiceFabricInner> inner
             = this.serviceClient().list(resourceGroupName, labName, username, expand, filter, top, orderby, context);
-        return Utils.mapPage(inner, inner1 -> new ServiceFabricImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ServiceFabricImpl(inner1, this.manager()));
     }
 
     public Response<ServiceFabric> getWithResponse(String resourceGroupName, String labName, String username,
@@ -110,22 +110,22 @@ public final class ServiceFabricsImpl implements ServiceFabrics {
     }
 
     public ServiceFabric getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String labName = Utils.getValueFromIdByName(id, "labs");
+        String labName = ResourceManagerUtils.getValueFromIdByName(id, "labs");
         if (labName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
-        String username = Utils.getValueFromIdByName(id, "users");
+        String username = ResourceManagerUtils.getValueFromIdByName(id, "users");
         if (username == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'users'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "servicefabrics");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "servicefabrics");
         if (name == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'servicefabrics'.", id)));
@@ -135,22 +135,22 @@ public final class ServiceFabricsImpl implements ServiceFabrics {
     }
 
     public Response<ServiceFabric> getByIdWithResponse(String id, String expand, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String labName = Utils.getValueFromIdByName(id, "labs");
+        String labName = ResourceManagerUtils.getValueFromIdByName(id, "labs");
         if (labName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
-        String username = Utils.getValueFromIdByName(id, "users");
+        String username = ResourceManagerUtils.getValueFromIdByName(id, "users");
         if (username == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'users'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "servicefabrics");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "servicefabrics");
         if (name == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'servicefabrics'.", id)));
@@ -159,22 +159,22 @@ public final class ServiceFabricsImpl implements ServiceFabrics {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String labName = Utils.getValueFromIdByName(id, "labs");
+        String labName = ResourceManagerUtils.getValueFromIdByName(id, "labs");
         if (labName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
-        String username = Utils.getValueFromIdByName(id, "users");
+        String username = ResourceManagerUtils.getValueFromIdByName(id, "users");
         if (username == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'users'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "servicefabrics");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "servicefabrics");
         if (name == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'servicefabrics'.", id)));
@@ -183,22 +183,22 @@ public final class ServiceFabricsImpl implements ServiceFabrics {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String labName = Utils.getValueFromIdByName(id, "labs");
+        String labName = ResourceManagerUtils.getValueFromIdByName(id, "labs");
         if (labName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
-        String username = Utils.getValueFromIdByName(id, "users");
+        String username = ResourceManagerUtils.getValueFromIdByName(id, "users");
         if (username == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'users'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "servicefabrics");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "servicefabrics");
         if (name == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'servicefabrics'.", id)));

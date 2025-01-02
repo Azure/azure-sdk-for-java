@@ -52,7 +52,7 @@ public final class HostSettingsResponseInner implements JsonSerializable<HostSet
     private Boolean validateAuthority;
 
     /*
-     * Same as toBotFromChannelOpenIdMetadataUrl, used by SDK < v4.12
+     * Same as ToBotFromChannelOpenIdMetadataUrl, used by SDK < v4.12
      */
     private String botOpenIdMetadata;
 
@@ -203,7 +203,7 @@ public final class HostSettingsResponseInner implements JsonSerializable<HostSet
     }
 
     /**
-     * Get the botOpenIdMetadata property: Same as toBotFromChannelOpenIdMetadataUrl, used by SDK &lt; v4.12.
+     * Get the botOpenIdMetadata property: Same as ToBotFromChannelOpenIdMetadataUrl, used by SDK &lt; v4.12.
      * 
      * @return the botOpenIdMetadata value.
      */
@@ -212,7 +212,7 @@ public final class HostSettingsResponseInner implements JsonSerializable<HostSet
     }
 
     /**
-     * Set the botOpenIdMetadata property: Same as toBotFromChannelOpenIdMetadataUrl, used by SDK &lt; v4.12.
+     * Set the botOpenIdMetadata property: Same as ToBotFromChannelOpenIdMetadataUrl, used by SDK &lt; v4.12.
      * 
      * @param botOpenIdMetadata the botOpenIdMetadata value to set.
      * @return the HostSettingsResponseInner object itself.

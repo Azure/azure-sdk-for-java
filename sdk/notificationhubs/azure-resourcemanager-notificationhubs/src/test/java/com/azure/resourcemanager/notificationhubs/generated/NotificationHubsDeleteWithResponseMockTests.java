@@ -27,7 +27,7 @@ public final class NotificationHubsDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.notificationHubs().deleteWithResponse("fikdowwqu", "v", "zx", com.azure.core.util.Context.NONE);
+        manager.notificationHubs().deleteWithResponse("oekqvk", "lns", "vbxwyjsflhh", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -44,4 +44,8 @@ public class TraceDataColumns implements TelemetryColumns {
         result.add((String) mapping.get(KnownTraceColumns.MESSAGE));
         return result;
     }
+
+    public double getCustomDimValueForProjection(String key) {
+        return customDims.getCustomDimValueForProjection(key);
+    }
 }

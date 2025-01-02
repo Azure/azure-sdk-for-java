@@ -6,29 +6,31 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Azure VM unmanaged disk input details.
  */
 @Fluent
-public final class A2AProtectionIntentDiskInputDetails {
+public final class A2AProtectionIntentDiskInputDetails
+    implements JsonSerializable<A2AProtectionIntentDiskInputDetails> {
     /*
      * The disk Uri.
      */
-    @JsonProperty(value = "diskUri", required = true)
     private String diskUri;
 
     /*
      * The recovery VHD storage account input.
      */
-    @JsonProperty(value = "recoveryAzureStorageAccountCustomInput")
     private StorageAccountCustomDetails recoveryAzureStorageAccountCustomInput;
 
     /*
      * The primary staging storage account input.
      */
-    @JsonProperty(value = "primaryStagingStorageAccountCustomInput")
     private StorageAccountCustomDetails primaryStagingStorageAccountCustomInput;
 
     /**
@@ -106,8 +108,9 @@ public final class A2AProtectionIntentDiskInputDetails {
      */
     public void validate() {
         if (diskUri() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property diskUri in model A2AProtectionIntentDiskInputDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property diskUri in model A2AProtectionIntentDiskInputDetails"));
         }
         if (recoveryAzureStorageAccountCustomInput() != null) {
             recoveryAzureStorageAccountCustomInput().validate();
@@ -118,4 +121,52 @@ public final class A2AProtectionIntentDiskInputDetails {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(A2AProtectionIntentDiskInputDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("diskUri", this.diskUri);
+        jsonWriter.writeJsonField("recoveryAzureStorageAccountCustomInput",
+            this.recoveryAzureStorageAccountCustomInput);
+        jsonWriter.writeJsonField("primaryStagingStorageAccountCustomInput",
+            this.primaryStagingStorageAccountCustomInput);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of A2AProtectionIntentDiskInputDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of A2AProtectionIntentDiskInputDetails if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the A2AProtectionIntentDiskInputDetails.
+     */
+    public static A2AProtectionIntentDiskInputDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            A2AProtectionIntentDiskInputDetails deserializedA2AProtectionIntentDiskInputDetails
+                = new A2AProtectionIntentDiskInputDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("diskUri".equals(fieldName)) {
+                    deserializedA2AProtectionIntentDiskInputDetails.diskUri = reader.getString();
+                } else if ("recoveryAzureStorageAccountCustomInput".equals(fieldName)) {
+                    deserializedA2AProtectionIntentDiskInputDetails.recoveryAzureStorageAccountCustomInput
+                        = StorageAccountCustomDetails.fromJson(reader);
+                } else if ("primaryStagingStorageAccountCustomInput".equals(fieldName)) {
+                    deserializedA2AProtectionIntentDiskInputDetails.primaryStagingStorageAccountCustomInput
+                        = StorageAccountCustomDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedA2AProtectionIntentDiskInputDetails;
+        });
+    }
 }

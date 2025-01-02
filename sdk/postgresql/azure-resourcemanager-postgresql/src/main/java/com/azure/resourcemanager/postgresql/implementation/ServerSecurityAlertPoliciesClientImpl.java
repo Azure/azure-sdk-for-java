@@ -28,7 +28,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.postgresql.fluent.ServerSecurityAlertPoliciesClient;
@@ -39,19 +38,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ServerSecurityAlertPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ServerSecurityAlertPoliciesClient.
+ */
 public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecurityAlertPoliciesClient {
-    private final ClientLogger logger = new ClientLogger(ServerSecurityAlertPoliciesClientImpl.class);
-
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ServerSecurityAlertPoliciesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PostgreSqlManagementClientImpl client;
 
     /**
      * Initializes an instance of ServerSecurityAlertPoliciesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ServerSecurityAlertPoliciesClientImpl(PostgreSqlManagementClientImpl client) {
@@ -66,10 +69,9 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      */
     @Host("{$host}")
     @ServiceInterface(name = "PostgreSqlManagement")
-    private interface ServerSecurityAlertPoliciesService {
+    public interface ServerSecurityAlertPoliciesService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
-            + "/servers/{serverName}/securityAlertPolicies/{securityAlertPolicyName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}/securityAlertPolicies/{securityAlertPolicyName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerSecurityAlertPolicyInner>> get(@HostParam("$host") String endpoint,
@@ -79,8 +81,7 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
-            + "/servers/{serverName}/securityAlertPolicies/{securityAlertPolicyName}")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}/securityAlertPolicies/{securityAlertPolicyName}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
@@ -91,8 +92,7 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
-            + "/servers/{serverName}/securityAlertPolicies")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}/securityAlertPolicies")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerSecurityAlertPolicyListResult>> listByServer(@HostParam("$host") String endpoint,
@@ -111,7 +111,7 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
 
     /**
      * Get a server's security alert policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param securityAlertPolicyName The name of the security alert policy.
@@ -121,7 +121,7 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @return a server's security alert policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ServerSecurityAlertPolicyInner>> getWithResponseAsync(String resourceGroupName,
+    public Mono<Response<ServerSecurityAlertPolicyInner>> getWithResponseAsync(String resourceGroupName,
         String serverName, SecurityAlertPolicyName securityAlertPolicyName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -152,7 +152,7 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
 
     /**
      * Get a server's security alert policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param securityAlertPolicyName The name of the security alert policy.
@@ -193,7 +193,7 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
 
     /**
      * Get a server's security alert policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param securityAlertPolicyName The name of the security alert policy.
@@ -203,38 +203,15 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @return a server's security alert policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ServerSecurityAlertPolicyInner> getAsync(String resourceGroupName, String serverName,
+    public Mono<ServerSecurityAlertPolicyInner> getAsync(String resourceGroupName, String serverName,
         SecurityAlertPolicyName securityAlertPolicyName) {
         return getWithResponseAsync(resourceGroupName, serverName, securityAlertPolicyName)
-            .flatMap((Response<ServerSecurityAlertPolicyInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get a server's security alert policy.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server's security alert policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerSecurityAlertPolicyInner get(String resourceGroupName, String serverName,
-        SecurityAlertPolicyName securityAlertPolicyName) {
-        return getAsync(resourceGroupName, serverName, securityAlertPolicyName).block();
-    }
-
-    /**
-     * Get a server's security alert policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param securityAlertPolicyName The name of the security alert policy.
@@ -251,8 +228,25 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
     }
 
     /**
+     * Get a server's security alert policy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param securityAlertPolicyName The name of the security alert policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a server's security alert policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ServerSecurityAlertPolicyInner get(String resourceGroupName, String serverName,
+        SecurityAlertPolicyName securityAlertPolicyName) {
+        return getWithResponse(resourceGroupName, serverName, securityAlertPolicyName, Context.NONE).getValue();
+    }
+
+    /**
      * Creates or updates a threat detection policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param securityAlertPolicyName The name of the threat detection policy.
@@ -263,8 +257,8 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @return a server security alert policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String serverName, SecurityAlertPolicyName securityAlertPolicyName, ServerSecurityAlertPolicyInner parameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
+        SecurityAlertPolicyName securityAlertPolicyName, ServerSecurityAlertPolicyInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -299,7 +293,7 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
 
     /**
      * Creates or updates a threat detection policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param securityAlertPolicyName The name of the threat detection policy.
@@ -347,7 +341,7 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
 
     /**
      * Creates or updates a threat detection policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param securityAlertPolicyName The name of the threat detection policy.
@@ -355,10 +349,10 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server security alert policy along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of a server security alert policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ServerSecurityAlertPolicyInner>, ServerSecurityAlertPolicyInner>
+    public PollerFlux<PollResult<ServerSecurityAlertPolicyInner>, ServerSecurityAlertPolicyInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String serverName,
             SecurityAlertPolicyName securityAlertPolicyName, ServerSecurityAlertPolicyInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono
@@ -370,7 +364,7 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
 
     /**
      * Creates or updates a threat detection policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param securityAlertPolicyName The name of the threat detection policy.
@@ -379,7 +373,7 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server security alert policy along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of a server security alert policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServerSecurityAlertPolicyInner>, ServerSecurityAlertPolicyInner>
@@ -396,7 +390,7 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
 
     /**
      * Creates or updates a threat detection policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param securityAlertPolicyName The name of the threat detection policy.
@@ -404,19 +398,19 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server security alert policy along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of a server security alert policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerSecurityAlertPolicyInner>, ServerSecurityAlertPolicyInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, SecurityAlertPolicyName securityAlertPolicyName,
         ServerSecurityAlertPolicyInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, securityAlertPolicyName, parameters)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, securityAlertPolicyName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a threat detection policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param securityAlertPolicyName The name of the threat detection policy.
@@ -425,19 +419,20 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server security alert policy along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of a server security alert policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerSecurityAlertPolicyInner>, ServerSecurityAlertPolicyInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, SecurityAlertPolicyName securityAlertPolicyName,
         ServerSecurityAlertPolicyInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, securityAlertPolicyName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, securityAlertPolicyName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a threat detection policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param securityAlertPolicyName The name of the threat detection policy.
@@ -448,7 +443,7 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @return a server security alert policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ServerSecurityAlertPolicyInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+    public Mono<ServerSecurityAlertPolicyInner> createOrUpdateAsync(String resourceGroupName, String serverName,
         SecurityAlertPolicyName securityAlertPolicyName, ServerSecurityAlertPolicyInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, serverName, securityAlertPolicyName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -456,7 +451,7 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
 
     /**
      * Creates or updates a threat detection policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param securityAlertPolicyName The name of the threat detection policy.
@@ -477,7 +472,7 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
 
     /**
      * Creates or updates a threat detection policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param securityAlertPolicyName The name of the threat detection policy.
@@ -495,7 +490,7 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
 
     /**
      * Creates or updates a threat detection policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param securityAlertPolicyName The name of the threat detection policy.
@@ -514,14 +509,14 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
 
     /**
      * Get the server's threat detection policies.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the server's threat detection policies along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerSecurityAlertPolicyInner>> listByServerSinglePageAsync(String resourceGroupName,
@@ -553,7 +548,7 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
 
     /**
      * Get the server's threat detection policies.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -561,7 +556,7 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the server's threat detection policies along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerSecurityAlertPolicyInner>> listByServerSinglePageAsync(String resourceGroupName,
@@ -593,30 +588,30 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
 
     /**
      * Get the server's threat detection policies.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the server's threat detection policies.
+     * @return the server's threat detection policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ServerSecurityAlertPolicyInner> listByServerAsync(String resourceGroupName, String serverName) {
+    public PagedFlux<ServerSecurityAlertPolicyInner> listByServerAsync(String resourceGroupName, String serverName) {
         return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName),
             nextLink -> listByServerNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get the server's threat detection policies.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the server's threat detection policies.
+     * @return the server's threat detection policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ServerSecurityAlertPolicyInner> listByServerAsync(String resourceGroupName, String serverName,
@@ -627,13 +622,13 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
 
     /**
      * Get the server's threat detection policies.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the server's threat detection policies.
+     * @return the server's threat detection policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServerSecurityAlertPolicyInner> listByServer(String resourceGroupName, String serverName) {
@@ -642,14 +637,14 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
 
     /**
      * Get the server's threat detection policies.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the server's threat detection policies.
+     * @return the server's threat detection policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServerSecurityAlertPolicyInner> listByServer(String resourceGroupName, String serverName,
@@ -659,13 +654,13 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of the server's security alert policies along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerSecurityAlertPolicyInner>> listByServerNextSinglePageAsync(String nextLink) {
@@ -686,14 +681,14 @@ public final class ServerSecurityAlertPoliciesClientImpl implements ServerSecuri
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of the server's security alert policies along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerSecurityAlertPolicyInner>> listByServerNextSinglePageAsync(String nextLink,

@@ -137,21 +137,6 @@ public final class SignalRProperties implements JsonSerializable<SignalRProperti
      */
     private Boolean disableAadAuth;
 
-    /*
-     * Enable or disable the regional endpoint. Default to "Enabled".
-     * When it's Disabled, new connections will not be routed to this endpoint, however existing connections will not be
-     * affected.
-     * This property is replica specific. Disable the regional endpoint without replica is not allowed.
-     */
-    private String regionEndpointEnabled;
-
-    /*
-     * Stop or start the resource. Default to "False".
-     * When it's true, the data plane of the resource is shutdown.
-     * When it's false, the data plane of the resource is started.
-     */
-    private String resourceStopped;
-
     /**
      * Creates an instance of SignalRProperties class.
      */
@@ -484,56 +469,6 @@ public final class SignalRProperties implements JsonSerializable<SignalRProperti
     }
 
     /**
-     * Get the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled".
-     * When it's Disabled, new connections will not be routed to this endpoint, however existing connections will not be
-     * affected.
-     * This property is replica specific. Disable the regional endpoint without replica is not allowed.
-     * 
-     * @return the regionEndpointEnabled value.
-     */
-    public String regionEndpointEnabled() {
-        return this.regionEndpointEnabled;
-    }
-
-    /**
-     * Set the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled".
-     * When it's Disabled, new connections will not be routed to this endpoint, however existing connections will not be
-     * affected.
-     * This property is replica specific. Disable the regional endpoint without replica is not allowed.
-     * 
-     * @param regionEndpointEnabled the regionEndpointEnabled value to set.
-     * @return the SignalRProperties object itself.
-     */
-    public SignalRProperties withRegionEndpointEnabled(String regionEndpointEnabled) {
-        this.regionEndpointEnabled = regionEndpointEnabled;
-        return this;
-    }
-
-    /**
-     * Get the resourceStopped property: Stop or start the resource. Default to "False".
-     * When it's true, the data plane of the resource is shutdown.
-     * When it's false, the data plane of the resource is started.
-     * 
-     * @return the resourceStopped value.
-     */
-    public String resourceStopped() {
-        return this.resourceStopped;
-    }
-
-    /**
-     * Set the resourceStopped property: Stop or start the resource. Default to "False".
-     * When it's true, the data plane of the resource is shutdown.
-     * When it's false, the data plane of the resource is started.
-     * 
-     * @param resourceStopped the resourceStopped value to set.
-     * @return the SignalRProperties object itself.
-     */
-    public SignalRProperties withResourceStopped(String resourceStopped) {
-        this.resourceStopped = resourceStopped;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -588,8 +523,6 @@ public final class SignalRProperties implements JsonSerializable<SignalRProperti
         jsonWriter.writeStringField("publicNetworkAccess", this.publicNetworkAccess);
         jsonWriter.writeBooleanField("disableLocalAuth", this.disableLocalAuth);
         jsonWriter.writeBooleanField("disableAadAuth", this.disableAadAuth);
-        jsonWriter.writeStringField("regionEndpointEnabled", this.regionEndpointEnabled);
-        jsonWriter.writeStringField("resourceStopped", this.resourceStopped);
         return jsonWriter.writeEndObject();
     }
 
@@ -653,10 +586,6 @@ public final class SignalRProperties implements JsonSerializable<SignalRProperti
                     deserializedSignalRProperties.disableLocalAuth = reader.getNullable(JsonReader::getBoolean);
                 } else if ("disableAadAuth".equals(fieldName)) {
                     deserializedSignalRProperties.disableAadAuth = reader.getNullable(JsonReader::getBoolean);
-                } else if ("regionEndpointEnabled".equals(fieldName)) {
-                    deserializedSignalRProperties.regionEndpointEnabled = reader.getString();
-                } else if ("resourceStopped".equals(fieldName)) {
-                    deserializedSignalRProperties.resourceStopped = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

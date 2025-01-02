@@ -18,7 +18,7 @@ public final class ManagedPrivateEndpointsGetSamples {
      * @param manager Entry point to DashboardManager.
      */
     public static void managedPrivateEndpointGet(com.azure.resourcemanager.dashboard.DashboardManager manager) {
-        manager.managedPrivateEndpoints().getWithResponse("myResourceGroup", "myWorkspace", "myMPEName",
-            com.azure.core.util.Context.NONE);
+        manager.managedPrivateEndpoints()
+            .getWithResponse("myResourceGroup", "myWorkspace", "myMPEName", com.azure.core.util.Context.NONE);
     }
 }

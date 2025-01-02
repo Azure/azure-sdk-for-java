@@ -12,21 +12,21 @@ public final class OperationMetaLogSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationMetaLogSpecification model = BinaryData
-            .fromString("{\"displayName\":\"asxazjpqyegualhb\",\"blobDuration\":\"hejjz\",\"name\":\"dudgwdslfhot\"}")
+            .fromString("{\"displayName\":\"jhhyxxrwlycoduhp\",\"blobDuration\":\"kgymareqnajxqug\",\"name\":\"ky\"}")
             .toObject(OperationMetaLogSpecification.class);
-        Assertions.assertEquals("asxazjpqyegualhb", model.displayName());
-        Assertions.assertEquals("hejjz", model.blobDuration());
-        Assertions.assertEquals("dudgwdslfhot", model.name());
+        Assertions.assertEquals("jhhyxxrwlycoduhp", model.displayName());
+        Assertions.assertEquals("kgymareqnajxqug", model.blobDuration());
+        Assertions.assertEquals("ky", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationMetaLogSpecification model = new OperationMetaLogSpecification().withDisplayName("asxazjpqyegualhb")
-            .withBlobDuration("hejjz")
-            .withName("dudgwdslfhot");
+        OperationMetaLogSpecification model = new OperationMetaLogSpecification().withDisplayName("jhhyxxrwlycoduhp")
+            .withBlobDuration("kgymareqnajxqug")
+            .withName("ky");
         model = BinaryData.fromObject(model).toObject(OperationMetaLogSpecification.class);
-        Assertions.assertEquals("asxazjpqyegualhb", model.displayName());
-        Assertions.assertEquals("hejjz", model.blobDuration());
-        Assertions.assertEquals("dudgwdslfhot", model.name());
+        Assertions.assertEquals("jhhyxxrwlycoduhp", model.displayName());
+        Assertions.assertEquals("kgymareqnajxqug", model.blobDuration());
+        Assertions.assertEquals("ky", model.name());
     }
 }

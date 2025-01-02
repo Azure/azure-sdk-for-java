@@ -9,15 +9,31 @@ import java.util.List;
 
 /** An immutable client-side representation of a permission. */
 public interface Permission extends HasInnerModel<PermissionInner> {
-    /** @return allowed actions */
+    /**
+     * Gets allowed actions.
+     *
+     * @return allowed actions
+     */
     List<String> actions();
 
-    /** @return denied actions */
+    /**
+     * Gets denied actions.
+     *
+     * @return denied actions
+     */
     List<String> notActions();
 
-    /** @return allowed Data actions */
+    /**
+     * Gets allowed Data actions.
+     *
+     * @return allowed Data actions
+     */
     List<String> dataActions();
 
-    /** @return denied Data actions */
+    /**
+     * Gets denied Data actions.
+     *
+     * @return denied Data actions
+     */
     List<String> notDataActions();
 }

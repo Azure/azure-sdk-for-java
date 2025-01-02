@@ -6,7 +6,6 @@ package com.azure.resourcemanager.signalr.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -23,11 +22,6 @@ public final class PrivateLinkResourceInner extends ProxyResource {
      * Private link resource properties
      */
     private PrivateLinkResourceProperties innerProperties;
-
-    /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     */
-    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -57,15 +51,6 @@ public final class PrivateLinkResourceInner extends ProxyResource {
      */
     private PrivateLinkResourceProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     * 
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**
@@ -239,8 +224,6 @@ public final class PrivateLinkResourceInner extends ProxyResource {
                 } else if ("properties".equals(fieldName)) {
                     deserializedPrivateLinkResourceInner.innerProperties
                         = PrivateLinkResourceProperties.fromJson(reader);
-                } else if ("systemData".equals(fieldName)) {
-                    deserializedPrivateLinkResourceInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

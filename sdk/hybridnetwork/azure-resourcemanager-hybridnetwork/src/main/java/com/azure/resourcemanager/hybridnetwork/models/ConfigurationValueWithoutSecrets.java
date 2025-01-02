@@ -5,27 +5,40 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The ConfigurationValue with no secrets.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "configurationType")
-@JsonTypeName("Open")
 @Fluent
 public final class ConfigurationValueWithoutSecrets extends ConfigurationGroupValuePropertiesFormat {
     /*
+     * The value which indicates if configuration values are secrets
+     */
+    private ConfigurationGroupValueConfigurationType configurationType = ConfigurationGroupValueConfigurationType.OPEN;
+
+    /*
      * Name and value pairs that define the configuration value. It can be a well formed escaped JSON string.
      */
-    @JsonProperty(value = "configurationValue")
     private String configurationValue;
 
     /**
      * Creates an instance of ConfigurationValueWithoutSecrets class.
      */
     public ConfigurationValueWithoutSecrets() {
+    }
+
+    /**
+     * Get the configurationType property: The value which indicates if configuration values are secrets.
+     * 
+     * @return the configurationType value.
+     */
+    @Override
+    public ConfigurationGroupValueConfigurationType configurationType() {
+        return this.configurationType;
     }
 
     /**
@@ -67,6 +80,68 @@ public final class ConfigurationValueWithoutSecrets extends ConfigurationGroupVa
      */
     @Override
     public void validate() {
-        super.validate();
+        if (configurationGroupSchemaResourceReference() != null) {
+            configurationGroupSchemaResourceReference().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("configurationGroupSchemaResourceReference",
+            configurationGroupSchemaResourceReference());
+        jsonWriter.writeStringField("configurationType",
+            this.configurationType == null ? null : this.configurationType.toString());
+        jsonWriter.writeStringField("configurationValue", this.configurationValue);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfigurationValueWithoutSecrets from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfigurationValueWithoutSecrets if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConfigurationValueWithoutSecrets.
+     */
+    public static ConfigurationValueWithoutSecrets fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfigurationValueWithoutSecrets deserializedConfigurationValueWithoutSecrets
+                = new ConfigurationValueWithoutSecrets();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedConfigurationValueWithoutSecrets
+                        .withProvisioningState(ProvisioningState.fromString(reader.getString()));
+                } else if ("publisherName".equals(fieldName)) {
+                    deserializedConfigurationValueWithoutSecrets.withPublisherName(reader.getString());
+                } else if ("publisherScope".equals(fieldName)) {
+                    deserializedConfigurationValueWithoutSecrets
+                        .withPublisherScope(PublisherScope.fromString(reader.getString()));
+                } else if ("configurationGroupSchemaName".equals(fieldName)) {
+                    deserializedConfigurationValueWithoutSecrets.withConfigurationGroupSchemaName(reader.getString());
+                } else if ("configurationGroupSchemaOfferingLocation".equals(fieldName)) {
+                    deserializedConfigurationValueWithoutSecrets
+                        .withConfigurationGroupSchemaOfferingLocation(reader.getString());
+                } else if ("configurationGroupSchemaResourceReference".equals(fieldName)) {
+                    deserializedConfigurationValueWithoutSecrets
+                        .withConfigurationGroupSchemaResourceReference(DeploymentResourceIdReference.fromJson(reader));
+                } else if ("configurationType".equals(fieldName)) {
+                    deserializedConfigurationValueWithoutSecrets.configurationType
+                        = ConfigurationGroupValueConfigurationType.fromString(reader.getString());
+                } else if ("configurationValue".equals(fieldName)) {
+                    deserializedConfigurationValueWithoutSecrets.configurationValue = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfigurationValueWithoutSecrets;
+        });
     }
 }

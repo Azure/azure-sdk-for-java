@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of a lab's support banner. */
+/**
+ * Properties of a lab's support banner.
+ */
 @Fluent
-public final class LabSupportProperties {
+public final class LabSupportProperties implements JsonSerializable<LabSupportProperties> {
     /*
      * Is the lab support banner active/enabled at this time?
      */
-    @JsonProperty(value = "enabled")
     private EnableStatus enabled;
 
     /*
      * The markdown text (if any) that this lab displays in the UI. If left empty/null, nothing will be shown.
      */
-    @JsonProperty(value = "markdown")
     private String markdown;
 
-    /** Creates an instance of LabSupportProperties class. */
+    /**
+     * Creates an instance of LabSupportProperties class.
+     */
     public LabSupportProperties() {
     }
 
     /**
      * Get the enabled property: Is the lab support banner active/enabled at this time?.
-     *
+     * 
      * @return the enabled value.
      */
     public EnableStatus enabled() {
@@ -37,7 +43,7 @@ public final class LabSupportProperties {
 
     /**
      * Set the enabled property: Is the lab support banner active/enabled at this time?.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the LabSupportProperties object itself.
      */
@@ -49,7 +55,7 @@ public final class LabSupportProperties {
     /**
      * Get the markdown property: The markdown text (if any) that this lab displays in the UI. If left empty/null,
      * nothing will be shown.
-     *
+     * 
      * @return the markdown value.
      */
     public String markdown() {
@@ -59,7 +65,7 @@ public final class LabSupportProperties {
     /**
      * Set the markdown property: The markdown text (if any) that this lab displays in the UI. If left empty/null,
      * nothing will be shown.
-     *
+     * 
      * @param markdown the markdown value to set.
      * @return the LabSupportProperties object itself.
      */
@@ -70,9 +76,48 @@ public final class LabSupportProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("enabled", this.enabled == null ? null : this.enabled.toString());
+        jsonWriter.writeStringField("markdown", this.markdown);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LabSupportProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LabSupportProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LabSupportProperties.
+     */
+    public static LabSupportProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LabSupportProperties deserializedLabSupportProperties = new LabSupportProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedLabSupportProperties.enabled = EnableStatus.fromString(reader.getString());
+                } else if ("markdown".equals(fieldName)) {
+                    deserializedLabSupportProperties.markdown = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLabSupportProperties;
+        });
     }
 }

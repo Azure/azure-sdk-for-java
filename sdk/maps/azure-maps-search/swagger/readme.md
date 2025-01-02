@@ -44,9 +44,6 @@ directive:
       from: Address
       to: MapsSearchAddress
   - rename-model:
-      from: Polygon
-      to: MapsPolygon
-  - rename-model:
       from: SearchAddressBatchResult
       to: SearchAddressBatchResultPrivate
   - rename-model:
@@ -58,12 +55,9 @@ directive:
   - rename-model:
       from: ReverseSearchAddressBatchItem
       to: ReverseSearchAddressBatchItemPrivate
-  - rename-model:
-      from: BoundingBox
-      to: BoundingBoxPrivate
 
 title: SearchClient
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/maps/data-plane/Search/preview/1.0/search.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/maps/data-plane/Search/stable/2023-06-01/search.json
 namespace: com.azure.maps.search
 java: true
 use: '@autorest/java@4.1.29'
@@ -79,7 +73,7 @@ generate-sync-async-clients: false
 polling: {}
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: MapsSearchAddress,AddressRanges,EntryPoint,BatchResultSummary,Brand,BrandName,Classification,ClassificationName,DataSource,ElectricVehicleConnector,EntryPointType,GeographicEntityType,GeometryIdentifier,LocalizedMapView,OperatingHoursRange,MatchType,OperatingHours,OperatingHoursTimeRange,PointOfInterest,PointOfInterestCategory,PointOfInterestCategorySet,PointOfInterestCategoryTreeResult,PointOfInterestExtendedPostalCodes,MapsPolygon,ReverseSearchAddressResult,ReverseSearchAddressResultItem,ReverseSearchCrossStreetAddressResultItem,ReverseSearchCrossStreetAddressResult,RoadUseType,SearchAddressResultType,SearchAddressResultItem,SearchSummary,SearchIndexes,SearchAddressResult,QueryType
+custom-types: MapsSearchAddress,Boundary,BoundaryResultTypeEnum,ResolutionEnum,GeoJsonFeature,GeoJsonObjectType,GeocodingResponse,GeocodingBatchResponse,GeocodingBatchRequestBody,ReverseGeocodingBatchRequestBody,GeoJsonGeometry,GeocodingBatchResponseSummary,FeatureCollectionEnum,Intersection,GeoJsonObject,MapsSearchAddressCountryRegion
 customization-class: src/main/java/SearchCustomization.java
 generic-response-type: true
 no-custom-headers: true

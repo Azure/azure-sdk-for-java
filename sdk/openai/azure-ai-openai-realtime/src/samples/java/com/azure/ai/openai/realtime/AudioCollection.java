@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.ai.openai.realtime;
 
-import com.azure.ai.openai.realtime.implementation.AudioFile;
-import com.azure.ai.openai.realtime.implementation.FileUtils;
+import com.azure.ai.openai.realtime.utils.AudioFile;
+import com.azure.ai.openai.realtime.utils.FileUtils;
 import com.azure.ai.openai.realtime.models.RealtimeAudioInputTranscriptionModel;
 import com.azure.ai.openai.realtime.models.RealtimeAudioInputTranscriptionSettings;
 import com.azure.ai.openai.realtime.models.SessionUpdateEvent;

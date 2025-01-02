@@ -23,12 +23,10 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.synapse.fluent.AzureADOnlyAuthenticationsClient;
 import com.azure.resourcemanager.synapse.fluent.BigDataPoolsClient;
 import com.azure.resourcemanager.synapse.fluent.DataMaskingPoliciesClient;
 import com.azure.resourcemanager.synapse.fluent.DataMaskingRulesClient;
 import com.azure.resourcemanager.synapse.fluent.ExtendedSqlPoolBlobAuditingPoliciesClient;
-import com.azure.resourcemanager.synapse.fluent.GetsClient;
 import com.azure.resourcemanager.synapse.fluent.IntegrationRuntimeAuthKeysOperationsClient;
 import com.azure.resourcemanager.synapse.fluent.IntegrationRuntimeConnectionInfosClient;
 import com.azure.resourcemanager.synapse.fluent.IntegrationRuntimeCredentialsClient;
@@ -40,15 +38,6 @@ import com.azure.resourcemanager.synapse.fluent.IntegrationRuntimeStatusOperatio
 import com.azure.resourcemanager.synapse.fluent.IntegrationRuntimesClient;
 import com.azure.resourcemanager.synapse.fluent.IpFirewallRulesClient;
 import com.azure.resourcemanager.synapse.fluent.KeysClient;
-import com.azure.resourcemanager.synapse.fluent.KustoOperationsClient;
-import com.azure.resourcemanager.synapse.fluent.KustoPoolAttachedDatabaseConfigurationsClient;
-import com.azure.resourcemanager.synapse.fluent.KustoPoolChildResourcesClient;
-import com.azure.resourcemanager.synapse.fluent.KustoPoolDataConnectionsClient;
-import com.azure.resourcemanager.synapse.fluent.KustoPoolDatabasePrincipalAssignmentsClient;
-import com.azure.resourcemanager.synapse.fluent.KustoPoolDatabasesClient;
-import com.azure.resourcemanager.synapse.fluent.KustoPoolPrincipalAssignmentsClient;
-import com.azure.resourcemanager.synapse.fluent.KustoPoolPrivateLinkResourcesOperationsClient;
-import com.azure.resourcemanager.synapse.fluent.KustoPoolsClient;
 import com.azure.resourcemanager.synapse.fluent.LibrariesClient;
 import com.azure.resourcemanager.synapse.fluent.LibrariesOperationsClient;
 import com.azure.resourcemanager.synapse.fluent.OperationsClient;
@@ -56,10 +45,8 @@ import com.azure.resourcemanager.synapse.fluent.PrivateEndpointConnectionsClient
 import com.azure.resourcemanager.synapse.fluent.PrivateEndpointConnectionsPrivateLinkHubsClient;
 import com.azure.resourcemanager.synapse.fluent.PrivateLinkHubPrivateLinkResourcesClient;
 import com.azure.resourcemanager.synapse.fluent.PrivateLinkHubsClient;
-import com.azure.resourcemanager.synapse.fluent.PrivateLinkResourcesOperationsClient;
+import com.azure.resourcemanager.synapse.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.synapse.fluent.RestorableDroppedSqlPoolsClient;
-import com.azure.resourcemanager.synapse.fluent.SparkConfigurationsClient;
-import com.azure.resourcemanager.synapse.fluent.SparkConfigurationsOperationsClient;
 import com.azure.resourcemanager.synapse.fluent.SqlPoolBlobAuditingPoliciesClient;
 import com.azure.resourcemanager.synapse.fluent.SqlPoolColumnsClient;
 import com.azure.resourcemanager.synapse.fluent.SqlPoolConnectionPoliciesClient;
@@ -90,7 +77,6 @@ import com.azure.resourcemanager.synapse.fluent.SynapseManagementClient;
 import com.azure.resourcemanager.synapse.fluent.WorkspaceAadAdminsClient;
 import com.azure.resourcemanager.synapse.fluent.WorkspaceManagedIdentitySqlControlSettingsClient;
 import com.azure.resourcemanager.synapse.fluent.WorkspaceManagedSqlServerBlobAuditingPoliciesClient;
-import com.azure.resourcemanager.synapse.fluent.WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient;
 import com.azure.resourcemanager.synapse.fluent.WorkspaceManagedSqlServerEncryptionProtectorsClient;
 import com.azure.resourcemanager.synapse.fluent.WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClient;
 import com.azure.resourcemanager.synapse.fluent.WorkspaceManagedSqlServerRecoverableSqlPoolsClient;
@@ -142,6 +128,20 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
     }
 
     /**
+     * Api Version.
+     */
+    private final String apiVersion;
+
+    /**
+     * Gets Api Version.
+     * 
+     * @return the apiVersion value.
+     */
+    public String getApiVersion() {
+        return this.apiVersion;
+    }
+
+    /**
      * The HTTP pipeline to send requests through.
      */
     private final HttpPipeline httpPipeline;
@@ -184,17 +184,17 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
     }
 
     /**
-     * The AzureADOnlyAuthenticationsClient object to access its operations.
+     * The BigDataPoolsClient object to access its operations.
      */
-    private final AzureADOnlyAuthenticationsClient azureADOnlyAuthentications;
+    private final BigDataPoolsClient bigDataPools;
 
     /**
-     * Gets the AzureADOnlyAuthenticationsClient object to access its operations.
+     * Gets the BigDataPoolsClient object to access its operations.
      * 
-     * @return the AzureADOnlyAuthenticationsClient object.
+     * @return the BigDataPoolsClient object.
      */
-    public AzureADOnlyAuthenticationsClient getAzureADOnlyAuthentications() {
-        return this.azureADOnlyAuthentications;
+    public BigDataPoolsClient getBigDataPools() {
+        return this.bigDataPools;
     }
 
     /**
@@ -226,6 +226,132 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
     }
 
     /**
+     * The IntegrationRuntimesClient object to access its operations.
+     */
+    private final IntegrationRuntimesClient integrationRuntimes;
+
+    /**
+     * Gets the IntegrationRuntimesClient object to access its operations.
+     * 
+     * @return the IntegrationRuntimesClient object.
+     */
+    public IntegrationRuntimesClient getIntegrationRuntimes() {
+        return this.integrationRuntimes;
+    }
+
+    /**
+     * The IntegrationRuntimeNodeIpAddressOperationsClient object to access its operations.
+     */
+    private final IntegrationRuntimeNodeIpAddressOperationsClient integrationRuntimeNodeIpAddressOperations;
+
+    /**
+     * Gets the IntegrationRuntimeNodeIpAddressOperationsClient object to access its operations.
+     * 
+     * @return the IntegrationRuntimeNodeIpAddressOperationsClient object.
+     */
+    public IntegrationRuntimeNodeIpAddressOperationsClient getIntegrationRuntimeNodeIpAddressOperations() {
+        return this.integrationRuntimeNodeIpAddressOperations;
+    }
+
+    /**
+     * The IntegrationRuntimeObjectMetadatasClient object to access its operations.
+     */
+    private final IntegrationRuntimeObjectMetadatasClient integrationRuntimeObjectMetadatas;
+
+    /**
+     * Gets the IntegrationRuntimeObjectMetadatasClient object to access its operations.
+     * 
+     * @return the IntegrationRuntimeObjectMetadatasClient object.
+     */
+    public IntegrationRuntimeObjectMetadatasClient getIntegrationRuntimeObjectMetadatas() {
+        return this.integrationRuntimeObjectMetadatas;
+    }
+
+    /**
+     * The IntegrationRuntimeNodesClient object to access its operations.
+     */
+    private final IntegrationRuntimeNodesClient integrationRuntimeNodes;
+
+    /**
+     * Gets the IntegrationRuntimeNodesClient object to access its operations.
+     * 
+     * @return the IntegrationRuntimeNodesClient object.
+     */
+    public IntegrationRuntimeNodesClient getIntegrationRuntimeNodes() {
+        return this.integrationRuntimeNodes;
+    }
+
+    /**
+     * The IntegrationRuntimeCredentialsClient object to access its operations.
+     */
+    private final IntegrationRuntimeCredentialsClient integrationRuntimeCredentials;
+
+    /**
+     * Gets the IntegrationRuntimeCredentialsClient object to access its operations.
+     * 
+     * @return the IntegrationRuntimeCredentialsClient object.
+     */
+    public IntegrationRuntimeCredentialsClient getIntegrationRuntimeCredentials() {
+        return this.integrationRuntimeCredentials;
+    }
+
+    /**
+     * The IntegrationRuntimeConnectionInfosClient object to access its operations.
+     */
+    private final IntegrationRuntimeConnectionInfosClient integrationRuntimeConnectionInfos;
+
+    /**
+     * Gets the IntegrationRuntimeConnectionInfosClient object to access its operations.
+     * 
+     * @return the IntegrationRuntimeConnectionInfosClient object.
+     */
+    public IntegrationRuntimeConnectionInfosClient getIntegrationRuntimeConnectionInfos() {
+        return this.integrationRuntimeConnectionInfos;
+    }
+
+    /**
+     * The IntegrationRuntimeAuthKeysOperationsClient object to access its operations.
+     */
+    private final IntegrationRuntimeAuthKeysOperationsClient integrationRuntimeAuthKeysOperations;
+
+    /**
+     * Gets the IntegrationRuntimeAuthKeysOperationsClient object to access its operations.
+     * 
+     * @return the IntegrationRuntimeAuthKeysOperationsClient object.
+     */
+    public IntegrationRuntimeAuthKeysOperationsClient getIntegrationRuntimeAuthKeysOperations() {
+        return this.integrationRuntimeAuthKeysOperations;
+    }
+
+    /**
+     * The IntegrationRuntimeMonitoringDatasClient object to access its operations.
+     */
+    private final IntegrationRuntimeMonitoringDatasClient integrationRuntimeMonitoringDatas;
+
+    /**
+     * Gets the IntegrationRuntimeMonitoringDatasClient object to access its operations.
+     * 
+     * @return the IntegrationRuntimeMonitoringDatasClient object.
+     */
+    public IntegrationRuntimeMonitoringDatasClient getIntegrationRuntimeMonitoringDatas() {
+        return this.integrationRuntimeMonitoringDatas;
+    }
+
+    /**
+     * The IntegrationRuntimeStatusOperationsClient object to access its operations.
+     */
+    private final IntegrationRuntimeStatusOperationsClient integrationRuntimeStatusOperations;
+
+    /**
+     * Gets the IntegrationRuntimeStatusOperationsClient object to access its operations.
+     * 
+     * @return the IntegrationRuntimeStatusOperationsClient object.
+     */
+    public IntegrationRuntimeStatusOperationsClient getIntegrationRuntimeStatusOperations() {
+        return this.integrationRuntimeStatusOperations;
+    }
+
+    /**
      * The KeysClient object to access its operations.
      */
     private final KeysClient keys;
@@ -237,6 +363,34 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
      */
     public KeysClient getKeys() {
         return this.keys;
+    }
+
+    /**
+     * The LibrariesClient object to access its operations.
+     */
+    private final LibrariesClient libraries;
+
+    /**
+     * Gets the LibrariesClient object to access its operations.
+     * 
+     * @return the LibrariesClient object.
+     */
+    public LibrariesClient getLibraries() {
+        return this.libraries;
+    }
+
+    /**
+     * The LibrariesOperationsClient object to access its operations.
+     */
+    private final LibrariesOperationsClient librariesOperations;
+
+    /**
+     * Gets the LibrariesOperationsClient object to access its operations.
+     * 
+     * @return the LibrariesOperationsClient object.
+     */
+    public LibrariesOperationsClient getLibrariesOperations() {
+        return this.librariesOperations;
     }
 
     /**
@@ -254,17 +408,17 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
     }
 
     /**
-     * The PrivateLinkResourcesOperationsClient object to access its operations.
+     * The PrivateLinkResourcesClient object to access its operations.
      */
-    private final PrivateLinkResourcesOperationsClient privateLinkResourcesOperations;
+    private final PrivateLinkResourcesClient privateLinkResources;
 
     /**
-     * Gets the PrivateLinkResourcesOperationsClient object to access its operations.
+     * Gets the PrivateLinkResourcesClient object to access its operations.
      * 
-     * @return the PrivateLinkResourcesOperationsClient object.
+     * @return the PrivateLinkResourcesClient object.
      */
-    public PrivateLinkResourcesOperationsClient getPrivateLinkResourcesOperations() {
-        return this.privateLinkResourcesOperations;
+    public PrivateLinkResourcesClient getPrivateLinkResources() {
+        return this.privateLinkResources;
     }
 
     /**
@@ -816,21 +970,6 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
     }
 
     /**
-     * The WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient object to access its operations.
-     */
-    private final WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings;
-
-    /**
-     * Gets the WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient object to access its operations.
-     * 
-     * @return the WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient object.
-     */
-    public WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
-        getWorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings() {
-        return this.workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings;
-    }
-
-    /**
      * The WorkspacesClient object to access its operations.
      */
     private final WorkspacesClient workspaces;
@@ -901,342 +1040,6 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
     }
 
     /**
-     * The BigDataPoolsClient object to access its operations.
-     */
-    private final BigDataPoolsClient bigDataPools;
-
-    /**
-     * Gets the BigDataPoolsClient object to access its operations.
-     * 
-     * @return the BigDataPoolsClient object.
-     */
-    public BigDataPoolsClient getBigDataPools() {
-        return this.bigDataPools;
-    }
-
-    /**
-     * The LibrariesClient object to access its operations.
-     */
-    private final LibrariesClient libraries;
-
-    /**
-     * Gets the LibrariesClient object to access its operations.
-     * 
-     * @return the LibrariesClient object.
-     */
-    public LibrariesClient getLibraries() {
-        return this.libraries;
-    }
-
-    /**
-     * The LibrariesOperationsClient object to access its operations.
-     */
-    private final LibrariesOperationsClient librariesOperations;
-
-    /**
-     * Gets the LibrariesOperationsClient object to access its operations.
-     * 
-     * @return the LibrariesOperationsClient object.
-     */
-    public LibrariesOperationsClient getLibrariesOperations() {
-        return this.librariesOperations;
-    }
-
-    /**
-     * The IntegrationRuntimesClient object to access its operations.
-     */
-    private final IntegrationRuntimesClient integrationRuntimes;
-
-    /**
-     * Gets the IntegrationRuntimesClient object to access its operations.
-     * 
-     * @return the IntegrationRuntimesClient object.
-     */
-    public IntegrationRuntimesClient getIntegrationRuntimes() {
-        return this.integrationRuntimes;
-    }
-
-    /**
-     * The IntegrationRuntimeNodeIpAddressOperationsClient object to access its operations.
-     */
-    private final IntegrationRuntimeNodeIpAddressOperationsClient integrationRuntimeNodeIpAddressOperations;
-
-    /**
-     * Gets the IntegrationRuntimeNodeIpAddressOperationsClient object to access its operations.
-     * 
-     * @return the IntegrationRuntimeNodeIpAddressOperationsClient object.
-     */
-    public IntegrationRuntimeNodeIpAddressOperationsClient getIntegrationRuntimeNodeIpAddressOperations() {
-        return this.integrationRuntimeNodeIpAddressOperations;
-    }
-
-    /**
-     * The IntegrationRuntimeObjectMetadatasClient object to access its operations.
-     */
-    private final IntegrationRuntimeObjectMetadatasClient integrationRuntimeObjectMetadatas;
-
-    /**
-     * Gets the IntegrationRuntimeObjectMetadatasClient object to access its operations.
-     * 
-     * @return the IntegrationRuntimeObjectMetadatasClient object.
-     */
-    public IntegrationRuntimeObjectMetadatasClient getIntegrationRuntimeObjectMetadatas() {
-        return this.integrationRuntimeObjectMetadatas;
-    }
-
-    /**
-     * The IntegrationRuntimeNodesClient object to access its operations.
-     */
-    private final IntegrationRuntimeNodesClient integrationRuntimeNodes;
-
-    /**
-     * Gets the IntegrationRuntimeNodesClient object to access its operations.
-     * 
-     * @return the IntegrationRuntimeNodesClient object.
-     */
-    public IntegrationRuntimeNodesClient getIntegrationRuntimeNodes() {
-        return this.integrationRuntimeNodes;
-    }
-
-    /**
-     * The IntegrationRuntimeCredentialsClient object to access its operations.
-     */
-    private final IntegrationRuntimeCredentialsClient integrationRuntimeCredentials;
-
-    /**
-     * Gets the IntegrationRuntimeCredentialsClient object to access its operations.
-     * 
-     * @return the IntegrationRuntimeCredentialsClient object.
-     */
-    public IntegrationRuntimeCredentialsClient getIntegrationRuntimeCredentials() {
-        return this.integrationRuntimeCredentials;
-    }
-
-    /**
-     * The IntegrationRuntimeConnectionInfosClient object to access its operations.
-     */
-    private final IntegrationRuntimeConnectionInfosClient integrationRuntimeConnectionInfos;
-
-    /**
-     * Gets the IntegrationRuntimeConnectionInfosClient object to access its operations.
-     * 
-     * @return the IntegrationRuntimeConnectionInfosClient object.
-     */
-    public IntegrationRuntimeConnectionInfosClient getIntegrationRuntimeConnectionInfos() {
-        return this.integrationRuntimeConnectionInfos;
-    }
-
-    /**
-     * The IntegrationRuntimeAuthKeysOperationsClient object to access its operations.
-     */
-    private final IntegrationRuntimeAuthKeysOperationsClient integrationRuntimeAuthKeysOperations;
-
-    /**
-     * Gets the IntegrationRuntimeAuthKeysOperationsClient object to access its operations.
-     * 
-     * @return the IntegrationRuntimeAuthKeysOperationsClient object.
-     */
-    public IntegrationRuntimeAuthKeysOperationsClient getIntegrationRuntimeAuthKeysOperations() {
-        return this.integrationRuntimeAuthKeysOperations;
-    }
-
-    /**
-     * The IntegrationRuntimeMonitoringDatasClient object to access its operations.
-     */
-    private final IntegrationRuntimeMonitoringDatasClient integrationRuntimeMonitoringDatas;
-
-    /**
-     * Gets the IntegrationRuntimeMonitoringDatasClient object to access its operations.
-     * 
-     * @return the IntegrationRuntimeMonitoringDatasClient object.
-     */
-    public IntegrationRuntimeMonitoringDatasClient getIntegrationRuntimeMonitoringDatas() {
-        return this.integrationRuntimeMonitoringDatas;
-    }
-
-    /**
-     * The IntegrationRuntimeStatusOperationsClient object to access its operations.
-     */
-    private final IntegrationRuntimeStatusOperationsClient integrationRuntimeStatusOperations;
-
-    /**
-     * Gets the IntegrationRuntimeStatusOperationsClient object to access its operations.
-     * 
-     * @return the IntegrationRuntimeStatusOperationsClient object.
-     */
-    public IntegrationRuntimeStatusOperationsClient getIntegrationRuntimeStatusOperations() {
-        return this.integrationRuntimeStatusOperations;
-    }
-
-    /**
-     * The GetsClient object to access its operations.
-     */
-    private final GetsClient gets;
-
-    /**
-     * Gets the GetsClient object to access its operations.
-     * 
-     * @return the GetsClient object.
-     */
-    public GetsClient getGets() {
-        return this.gets;
-    }
-
-    /**
-     * The SparkConfigurationsClient object to access its operations.
-     */
-    private final SparkConfigurationsClient sparkConfigurations;
-
-    /**
-     * Gets the SparkConfigurationsClient object to access its operations.
-     * 
-     * @return the SparkConfigurationsClient object.
-     */
-    public SparkConfigurationsClient getSparkConfigurations() {
-        return this.sparkConfigurations;
-    }
-
-    /**
-     * The SparkConfigurationsOperationsClient object to access its operations.
-     */
-    private final SparkConfigurationsOperationsClient sparkConfigurationsOperations;
-
-    /**
-     * Gets the SparkConfigurationsOperationsClient object to access its operations.
-     * 
-     * @return the SparkConfigurationsOperationsClient object.
-     */
-    public SparkConfigurationsOperationsClient getSparkConfigurationsOperations() {
-        return this.sparkConfigurationsOperations;
-    }
-
-    /**
-     * The KustoOperationsClient object to access its operations.
-     */
-    private final KustoOperationsClient kustoOperations;
-
-    /**
-     * Gets the KustoOperationsClient object to access its operations.
-     * 
-     * @return the KustoOperationsClient object.
-     */
-    public KustoOperationsClient getKustoOperations() {
-        return this.kustoOperations;
-    }
-
-    /**
-     * The KustoPoolsClient object to access its operations.
-     */
-    private final KustoPoolsClient kustoPools;
-
-    /**
-     * Gets the KustoPoolsClient object to access its operations.
-     * 
-     * @return the KustoPoolsClient object.
-     */
-    public KustoPoolsClient getKustoPools() {
-        return this.kustoPools;
-    }
-
-    /**
-     * The KustoPoolChildResourcesClient object to access its operations.
-     */
-    private final KustoPoolChildResourcesClient kustoPoolChildResources;
-
-    /**
-     * Gets the KustoPoolChildResourcesClient object to access its operations.
-     * 
-     * @return the KustoPoolChildResourcesClient object.
-     */
-    public KustoPoolChildResourcesClient getKustoPoolChildResources() {
-        return this.kustoPoolChildResources;
-    }
-
-    /**
-     * The KustoPoolAttachedDatabaseConfigurationsClient object to access its operations.
-     */
-    private final KustoPoolAttachedDatabaseConfigurationsClient kustoPoolAttachedDatabaseConfigurations;
-
-    /**
-     * Gets the KustoPoolAttachedDatabaseConfigurationsClient object to access its operations.
-     * 
-     * @return the KustoPoolAttachedDatabaseConfigurationsClient object.
-     */
-    public KustoPoolAttachedDatabaseConfigurationsClient getKustoPoolAttachedDatabaseConfigurations() {
-        return this.kustoPoolAttachedDatabaseConfigurations;
-    }
-
-    /**
-     * The KustoPoolDatabasesClient object to access its operations.
-     */
-    private final KustoPoolDatabasesClient kustoPoolDatabases;
-
-    /**
-     * Gets the KustoPoolDatabasesClient object to access its operations.
-     * 
-     * @return the KustoPoolDatabasesClient object.
-     */
-    public KustoPoolDatabasesClient getKustoPoolDatabases() {
-        return this.kustoPoolDatabases;
-    }
-
-    /**
-     * The KustoPoolDataConnectionsClient object to access its operations.
-     */
-    private final KustoPoolDataConnectionsClient kustoPoolDataConnections;
-
-    /**
-     * Gets the KustoPoolDataConnectionsClient object to access its operations.
-     * 
-     * @return the KustoPoolDataConnectionsClient object.
-     */
-    public KustoPoolDataConnectionsClient getKustoPoolDataConnections() {
-        return this.kustoPoolDataConnections;
-    }
-
-    /**
-     * The KustoPoolPrincipalAssignmentsClient object to access its operations.
-     */
-    private final KustoPoolPrincipalAssignmentsClient kustoPoolPrincipalAssignments;
-
-    /**
-     * Gets the KustoPoolPrincipalAssignmentsClient object to access its operations.
-     * 
-     * @return the KustoPoolPrincipalAssignmentsClient object.
-     */
-    public KustoPoolPrincipalAssignmentsClient getKustoPoolPrincipalAssignments() {
-        return this.kustoPoolPrincipalAssignments;
-    }
-
-    /**
-     * The KustoPoolDatabasePrincipalAssignmentsClient object to access its operations.
-     */
-    private final KustoPoolDatabasePrincipalAssignmentsClient kustoPoolDatabasePrincipalAssignments;
-
-    /**
-     * Gets the KustoPoolDatabasePrincipalAssignmentsClient object to access its operations.
-     * 
-     * @return the KustoPoolDatabasePrincipalAssignmentsClient object.
-     */
-    public KustoPoolDatabasePrincipalAssignmentsClient getKustoPoolDatabasePrincipalAssignments() {
-        return this.kustoPoolDatabasePrincipalAssignments;
-    }
-
-    /**
-     * The KustoPoolPrivateLinkResourcesOperationsClient object to access its operations.
-     */
-    private final KustoPoolPrivateLinkResourcesOperationsClient kustoPoolPrivateLinkResourcesOperations;
-
-    /**
-     * Gets the KustoPoolPrivateLinkResourcesOperationsClient object to access its operations.
-     * 
-     * @return the KustoPoolPrivateLinkResourcesOperationsClient object.
-     */
-    public KustoPoolPrivateLinkResourcesOperationsClient getKustoPoolPrivateLinkResourcesOperations() {
-        return this.kustoPoolPrivateLinkResourcesOperations;
-    }
-
-    /**
      * Initializes an instance of SynapseManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -1253,12 +1056,24 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.azureADOnlyAuthentications = new AzureADOnlyAuthenticationsClientImpl(this);
+        this.apiVersion = "2021-03-01";
+        this.bigDataPools = new BigDataPoolsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.ipFirewallRules = new IpFirewallRulesClientImpl(this);
+        this.integrationRuntimes = new IntegrationRuntimesClientImpl(this);
+        this.integrationRuntimeNodeIpAddressOperations = new IntegrationRuntimeNodeIpAddressOperationsClientImpl(this);
+        this.integrationRuntimeObjectMetadatas = new IntegrationRuntimeObjectMetadatasClientImpl(this);
+        this.integrationRuntimeNodes = new IntegrationRuntimeNodesClientImpl(this);
+        this.integrationRuntimeCredentials = new IntegrationRuntimeCredentialsClientImpl(this);
+        this.integrationRuntimeConnectionInfos = new IntegrationRuntimeConnectionInfosClientImpl(this);
+        this.integrationRuntimeAuthKeysOperations = new IntegrationRuntimeAuthKeysOperationsClientImpl(this);
+        this.integrationRuntimeMonitoringDatas = new IntegrationRuntimeMonitoringDatasClientImpl(this);
+        this.integrationRuntimeStatusOperations = new IntegrationRuntimeStatusOperationsClientImpl(this);
         this.keys = new KeysClientImpl(this);
+        this.libraries = new LibrariesClientImpl(this);
+        this.librariesOperations = new LibrariesOperationsClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
-        this.privateLinkResourcesOperations = new PrivateLinkResourcesOperationsClientImpl(this);
+        this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.privateLinkHubPrivateLinkResources = new PrivateLinkHubPrivateLinkResourcesClientImpl(this);
         this.privateLinkHubs = new PrivateLinkHubsClientImpl(this);
         this.privateEndpointConnectionsPrivateLinkHubs = new PrivateEndpointConnectionsPrivateLinkHubsClientImpl(this);
@@ -1305,38 +1120,12 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
         this.workspaceManagedSqlServerUsages = new WorkspaceManagedSqlServerUsagesClientImpl(this);
         this.workspaceManagedSqlServerRecoverableSqlPools
             = new WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl(this);
-        this.workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings
-            = new WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClientImpl(this);
         this.workspaces = new WorkspacesClientImpl(this);
         this.workspaceAadAdmins = new WorkspaceAadAdminsClientImpl(this);
         this.workspaceSqlAadAdmins = new WorkspaceSqlAadAdminsClientImpl(this);
         this.workspaceManagedIdentitySqlControlSettings
             = new WorkspaceManagedIdentitySqlControlSettingsClientImpl(this);
         this.restorableDroppedSqlPools = new RestorableDroppedSqlPoolsClientImpl(this);
-        this.bigDataPools = new BigDataPoolsClientImpl(this);
-        this.libraries = new LibrariesClientImpl(this);
-        this.librariesOperations = new LibrariesOperationsClientImpl(this);
-        this.integrationRuntimes = new IntegrationRuntimesClientImpl(this);
-        this.integrationRuntimeNodeIpAddressOperations = new IntegrationRuntimeNodeIpAddressOperationsClientImpl(this);
-        this.integrationRuntimeObjectMetadatas = new IntegrationRuntimeObjectMetadatasClientImpl(this);
-        this.integrationRuntimeNodes = new IntegrationRuntimeNodesClientImpl(this);
-        this.integrationRuntimeCredentials = new IntegrationRuntimeCredentialsClientImpl(this);
-        this.integrationRuntimeConnectionInfos = new IntegrationRuntimeConnectionInfosClientImpl(this);
-        this.integrationRuntimeAuthKeysOperations = new IntegrationRuntimeAuthKeysOperationsClientImpl(this);
-        this.integrationRuntimeMonitoringDatas = new IntegrationRuntimeMonitoringDatasClientImpl(this);
-        this.integrationRuntimeStatusOperations = new IntegrationRuntimeStatusOperationsClientImpl(this);
-        this.gets = new GetsClientImpl(this);
-        this.sparkConfigurations = new SparkConfigurationsClientImpl(this);
-        this.sparkConfigurationsOperations = new SparkConfigurationsOperationsClientImpl(this);
-        this.kustoOperations = new KustoOperationsClientImpl(this);
-        this.kustoPools = new KustoPoolsClientImpl(this);
-        this.kustoPoolChildResources = new KustoPoolChildResourcesClientImpl(this);
-        this.kustoPoolAttachedDatabaseConfigurations = new KustoPoolAttachedDatabaseConfigurationsClientImpl(this);
-        this.kustoPoolDatabases = new KustoPoolDatabasesClientImpl(this);
-        this.kustoPoolDataConnections = new KustoPoolDataConnectionsClientImpl(this);
-        this.kustoPoolPrincipalAssignments = new KustoPoolPrincipalAssignmentsClientImpl(this);
-        this.kustoPoolDatabasePrincipalAssignments = new KustoPoolDatabasePrincipalAssignmentsClientImpl(this);
-        this.kustoPoolPrivateLinkResourcesOperations = new KustoPoolPrivateLinkResourcesOperationsClientImpl(this);
     }
 
     /**

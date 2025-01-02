@@ -6,32 +6,38 @@ package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.connectedvmware.fluent.models.HostModelInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of Hosts. */
+/**
+ * List of Hosts.
+ */
 @Fluent
-public final class HostsList {
+public final class HostsList implements JsonSerializable<HostsList> {
     /*
      * Url to follow for getting next page of Hosts.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * Array of Hosts
      */
-    @JsonProperty(value = "value", required = true)
     private List<HostModelInner> value;
 
-    /** Creates an instance of HostsList class. */
+    /**
+     * Creates an instance of HostsList class.
+     */
     public HostsList() {
     }
 
     /**
      * Get the nextLink property: Url to follow for getting next page of Hosts.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -40,7 +46,7 @@ public final class HostsList {
 
     /**
      * Set the nextLink property: Url to follow for getting next page of Hosts.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the HostsList object itself.
      */
@@ -51,7 +57,7 @@ public final class HostsList {
 
     /**
      * Get the value property: Array of Hosts.
-     *
+     * 
      * @return the value value.
      */
     public List<HostModelInner> value() {
@@ -60,7 +66,7 @@ public final class HostsList {
 
     /**
      * Set the value property: Array of Hosts.
-     *
+     * 
      * @param value the value value to set.
      * @return the HostsList object itself.
      */
@@ -71,17 +77,58 @@ public final class HostsList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model HostsList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model HostsList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(HostsList.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HostsList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HostsList if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HostsList.
+     */
+    public static HostsList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HostsList deserializedHostsList = new HostsList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<HostModelInner> value = reader.readArray(reader1 -> HostModelInner.fromJson(reader1));
+                    deserializedHostsList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedHostsList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHostsList;
+        });
+    }
 }

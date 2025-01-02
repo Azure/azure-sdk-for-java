@@ -5,41 +5,40 @@
 package com.azure.resourcemanager.confluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * API Key Resource details which can be kafka cluster or schema registry cluster.
  */
 @Fluent
-public final class ApiKeyResourceEntity {
+public final class ApiKeyResourceEntity implements JsonSerializable<ApiKeyResourceEntity> {
     /*
      * Id of the resource
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The environment of the api key
      */
-    @JsonProperty(value = "environment")
     private String environment;
 
     /*
      * API URL for accessing or modifying the api key resource object
      */
-    @JsonProperty(value = "related")
     private String related;
 
     /*
      * CRN reference to the referred resource
      */
-    @JsonProperty(value = "resourceName")
     private String resourceName;
 
     /*
      * Type of the owner which can be service or user account
      */
-    @JsonProperty(value = "kind")
     private String kind;
 
     /**
@@ -154,5 +153,53 @@ public final class ApiKeyResourceEntity {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("environment", this.environment);
+        jsonWriter.writeStringField("related", this.related);
+        jsonWriter.writeStringField("resourceName", this.resourceName);
+        jsonWriter.writeStringField("kind", this.kind);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiKeyResourceEntity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiKeyResourceEntity if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiKeyResourceEntity.
+     */
+    public static ApiKeyResourceEntity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiKeyResourceEntity deserializedApiKeyResourceEntity = new ApiKeyResourceEntity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedApiKeyResourceEntity.id = reader.getString();
+                } else if ("environment".equals(fieldName)) {
+                    deserializedApiKeyResourceEntity.environment = reader.getString();
+                } else if ("related".equals(fieldName)) {
+                    deserializedApiKeyResourceEntity.related = reader.getString();
+                } else if ("resourceName".equals(fieldName)) {
+                    deserializedApiKeyResourceEntity.resourceName = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedApiKeyResourceEntity.kind = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiKeyResourceEntity;
+        });
     }
 }

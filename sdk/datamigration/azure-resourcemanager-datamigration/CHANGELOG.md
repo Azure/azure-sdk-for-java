@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,286 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2024-12-24)
+
+- Azure Resource Manager DataMigration client library for Java. This package contains Microsoft Azure SDK for DataMigration Management SDK. Data Migration Client. Package tag package-2018-04-19. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.ValidateMigrationInputSqlServerSqlDbSyncTaskProperties` was modified
+
+* `errors()` was removed
+* `state()` was removed
+* `commands()` was removed
+
+#### `models.MigrateSqlServerSqlMISyncTaskOutputMigrationLevel` was modified
+
+* `id()` was removed
+
+#### `models.MigrateSqlServerSqlDbTaskOutputValidationResult` was modified
+
+* `id()` was removed
+
+#### `models.MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError` was modified
+
+* `id()` was removed
+
+#### `models.MigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties` was modified
+
+* `commands()` was removed
+* `errors()` was removed
+* `state()` was removed
+
+#### `models.MigrateSqlServerSqlDbSyncTaskOutputDatabaseError` was modified
+
+* `id()` was removed
+
+#### `models.MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel` was modified
+
+* `id()` was removed
+
+#### `models.GetUserTablesSqlSyncTaskProperties` was modified
+
+* `commands()` was removed
+* `state()` was removed
+* `errors()` was removed
+
+#### `models.MigrateSqlServerSqlDbTaskOutputTableLevel` was modified
+
+* `id()` was removed
+
+#### `models.MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel` was modified
+
+* `id()` was removed
+
+#### `models.ValidateMigrationInputSqlServerSqlMITaskProperties` was modified
+
+* `state()` was removed
+* `commands()` was removed
+* `errors()` was removed
+
+#### `models.GetUserTablesSqlTaskProperties` was modified
+
+* `state()` was removed
+* `errors()` was removed
+* `commands()` was removed
+
+#### `models.MigrateSqlServerSqlDbTaskProperties` was modified
+
+* `errors()` was removed
+* `state()` was removed
+* `commands()` was removed
+
+#### `models.ConnectToTargetAzureDbForMySqlTaskProperties` was modified
+
+* `state()` was removed
+* `commands()` was removed
+* `errors()` was removed
+
+#### `models.MigrateSqlServerSqlMITaskOutputMigrationLevel` was modified
+
+* `id()` was removed
+
+#### `models.MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel` was modified
+
+* `id()` was removed
+
+#### `models.MigrateSqlServerSqlDbTaskOutputError` was modified
+
+* `id()` was removed
+
+#### `models.ConnectToTargetSqlDbTaskProperties` was modified
+
+* `errors()` was removed
+* `commands()` was removed
+* `state()` was removed
+
+#### `models.MigrateSyncCompleteCommandProperties` was modified
+
+* `state()` was removed
+* `errors()` was removed
+
+#### `models.ConnectToTargetSqlDbSyncTaskProperties` was modified
+
+* `errors()` was removed
+* `commands()` was removed
+* `state()` was removed
+
+#### `models.MigrateSqlServerSqlDbSyncTaskOutputTableLevel` was modified
+
+* `id()` was removed
+
+#### `models.ValidateMigrationInputSqlServerSqlMISyncTaskProperties` was modified
+
+* `errors()` was removed
+* `state()` was removed
+* `commands()` was removed
+
+#### `models.ConnectToSourcePostgreSqlSyncTaskProperties` was modified
+
+* `commands()` was removed
+* `errors()` was removed
+* `state()` was removed
+
+#### `models.MigrateSqlServerSqlDbSyncTaskOutputMigrationLevel` was modified
+
+* `id()` was removed
+
+#### `models.MigrateSqlServerSqlMITaskOutputLoginLevel` was modified
+
+* `id()` was removed
+
+#### `models.GetTdeCertificatesSqlTaskProperties` was modified
+
+* `state()` was removed
+* `commands()` was removed
+* `errors()` was removed
+
+#### `models.MigrateMISyncCompleteCommandProperties` was modified
+
+* `state()` was removed
+* `errors()` was removed
+
+#### `models.ConnectToSourceSqlServerTaskOutputAgentJobLevel` was modified
+
+* `id()` was removed
+
+#### `models.MigrateSqlServerSqlMISyncTaskOutputError` was modified
+
+* `id()` was removed
+
+#### `models.ConnectToSourceSqlServerSyncTaskProperties` was modified
+
+* `state()` was removed
+* `errors()` was removed
+* `commands()` was removed
+
+#### `models.ConnectToSourceMySqlTaskProperties` was modified
+
+* `errors()` was removed
+* `state()` was removed
+* `commands()` was removed
+
+#### `models.MigrateSqlServerSqlMITaskOutputError` was modified
+
+* `id()` was removed
+
+#### `models.MigrateSqlServerSqlDbSyncTaskOutputDatabaseLevel` was modified
+
+* `id()` was removed
+
+#### `models.ConnectToTargetSqlMISyncTaskProperties` was modified
+
+* `commands()` was removed
+* `state()` was removed
+* `errors()` was removed
+
+#### `models.MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputError` was modified
+
+* `id()` was removed
+
+#### `models.MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult` was modified
+
+* `id()` was removed
+
+#### `models.MigrateSqlServerSqlMITaskOutputDatabaseLevel` was modified
+
+* `id()` was removed
+
+#### `models.MigrateSqlServerSqlMITaskProperties` was modified
+
+* `errors()` was removed
+* `state()` was removed
+* `commands()` was removed
+
+#### `models.MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseLevel` was modified
+
+* `id()` was removed
+
+#### `models.ConnectToSourceSqlServerTaskOutputLoginLevel` was modified
+
+* `id()` was removed
+
+#### `models.ConnectToTargetSqlMITaskProperties` was modified
+
+* `commands()` was removed
+* `state()` was removed
+* `errors()` was removed
+
+#### `models.ConnectToTargetAzureDbForPostgreSqlSyncTaskProperties` was modified
+
+* `errors()` was removed
+* `state()` was removed
+* `commands()` was removed
+
+#### `models.ConnectToSourceSqlServerTaskOutputTaskLevel` was modified
+
+* `id()` was removed
+
+#### `models.MigrateSqlServerSqlMISyncTaskProperties` was modified
+
+* `errors()` was removed
+* `commands()` was removed
+* `state()` was removed
+
+#### `models.MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseError` was modified
+
+* `id()` was removed
+
+#### `models.MigrateSqlServerSqlDbTaskOutputMigrationLevel` was modified
+
+* `id()` was removed
+
+#### `models.ConnectToSourceSqlServerTaskProperties` was modified
+
+* `state()` was removed
+* `errors()` was removed
+* `commands()` was removed
+
+#### `models.MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel` was modified
+
+* `id()` was removed
+
+#### `models.MigrateSqlServerSqlDbSyncTaskOutputError` was modified
+
+* `id()` was removed
+
+#### `models.MigrateMySqlAzureDbForMySqlSyncTaskOutputError` was modified
+
+* `id()` was removed
+
+#### `models.MigrateMySqlAzureDbForMySqlSyncTaskOutputMigrationLevel` was modified
+
+* `id()` was removed
+
+#### `models.MigrateMySqlAzureDbForMySqlSyncTaskProperties` was modified
+
+* `commands()` was removed
+* `errors()` was removed
+* `state()` was removed
+
+#### `models.MigrateSqlServerSqlMITaskOutputAgentJobLevel` was modified
+
+* `id()` was removed
+
+#### `models.ConnectToSourceSqlServerTaskOutputDatabaseLevel` was modified
+
+* `id()` was removed
+
+#### `models.MigrateSqlServerSqlDbSyncTaskProperties` was modified
+
+* `state()` was removed
+* `commands()` was removed
+* `errors()` was removed
+
+#### `models.MigrateSqlServerSqlDbTaskOutputDatabaseLevel` was modified
+
+* `id()` was removed
+
+#### `models.MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseLevel` was modified
+
+* `id()` was removed
 
 ## 1.0.0-beta.3 (2024-10-17)
 

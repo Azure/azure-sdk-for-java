@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Package containing OkHttp HTTP client plugin for azure-core.
+ * Package containing OkHttp HTTP client plugin for Client Core.
  */
 package io.clientcore.http.okhttp3;

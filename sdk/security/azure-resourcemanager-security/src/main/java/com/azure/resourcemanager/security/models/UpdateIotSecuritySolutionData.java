@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.fluent.models.UpdateIoTSecuritySolutionProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +21,6 @@ public final class UpdateIotSecuritySolutionData extends TagsResource {
     /*
      * Security Solution data
      */
-    @JsonProperty(value = "properties")
     private UpdateIoTSecuritySolutionProperties innerProperties;
 
     /**
@@ -99,9 +101,50 @@ public final class UpdateIotSecuritySolutionData extends TagsResource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateIotSecuritySolutionData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateIotSecuritySolutionData if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateIotSecuritySolutionData.
+     */
+    public static UpdateIotSecuritySolutionData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateIotSecuritySolutionData deserializedUpdateIotSecuritySolutionData
+                = new UpdateIotSecuritySolutionData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedUpdateIotSecuritySolutionData.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedUpdateIotSecuritySolutionData.innerProperties
+                        = UpdateIoTSecuritySolutionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateIotSecuritySolutionData;
+        });
     }
 }

@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.devtestlabs.generated;
 
-/** Samples for VirtualMachineSchedules List. */
+/**
+ * Samples for VirtualMachineSchedules List.
+ */
 public final class VirtualMachineSchedulesListSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachineSchedules_List.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * VirtualMachineSchedules_List.json
      */
     /**
      * Sample code: VirtualMachineSchedules_List.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void virtualMachineSchedulesList(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .virtualMachineSchedules()
-            .list(
-                "resourceGroupName", "{labName}", "{vmName}", null, null, null, null, com.azure.core.util.Context.NONE);
+        manager.virtualMachineSchedules()
+            .list("resourceGroupName", "{labName}", "{vmName}", null, null, null, null,
+                com.azure.core.util.Context.NONE);
     }
 }

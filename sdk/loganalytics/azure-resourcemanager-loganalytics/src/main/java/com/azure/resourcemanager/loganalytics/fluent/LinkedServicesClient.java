@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.loganalytics.fluent.models.LinkedServiceInner;
 
-/** An instance of this class provides access to all the operations defined in LinkedServicesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LinkedServicesClient.
+ */
 public interface LinkedServicesClient {
     /**
      * Create or update a linked service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param linkedServiceName Name of the linkedServices resource.
@@ -33,7 +35,7 @@ public interface LinkedServicesClient {
 
     /**
      * Create or update a linked service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param linkedServiceName Name of the linkedServices resource.
@@ -50,7 +52,7 @@ public interface LinkedServicesClient {
 
     /**
      * Create or update a linked service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param linkedServiceName Name of the linkedServices resource.
@@ -66,7 +68,7 @@ public interface LinkedServicesClient {
 
     /**
      * Create or update a linked service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param linkedServiceName Name of the linkedServices resource.
@@ -83,7 +85,7 @@ public interface LinkedServicesClient {
 
     /**
      * Deletes a linked service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param linkedServiceName Name of the linked service.
@@ -98,7 +100,7 @@ public interface LinkedServicesClient {
 
     /**
      * Deletes a linked service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param linkedServiceName Name of the linked service.
@@ -114,7 +116,7 @@ public interface LinkedServicesClient {
 
     /**
      * Deletes a linked service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param linkedServiceName Name of the linked service.
@@ -128,7 +130,7 @@ public interface LinkedServicesClient {
 
     /**
      * Deletes a linked service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param linkedServiceName Name of the linked service.
@@ -144,7 +146,7 @@ public interface LinkedServicesClient {
 
     /**
      * Gets a linked service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param linkedServiceName Name of the linked service.
@@ -160,7 +162,7 @@ public interface LinkedServicesClient {
 
     /**
      * Gets a linked service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param linkedServiceName Name of the linked service.
@@ -174,7 +176,7 @@ public interface LinkedServicesClient {
 
     /**
      * Gets the linked services instances in a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -187,7 +189,7 @@ public interface LinkedServicesClient {
 
     /**
      * Gets the linked services instances in a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.

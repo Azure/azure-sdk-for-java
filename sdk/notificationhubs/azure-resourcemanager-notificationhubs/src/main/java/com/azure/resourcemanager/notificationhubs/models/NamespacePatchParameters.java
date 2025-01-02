@@ -9,29 +9,23 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.notificationhubs.fluent.models.NamespaceProperties;
 import java.io.IOException;
 import java.util.Map;
 
 /**
- * Patch parameter for NamespaceResource.
+ * Parameters supplied to the Patch Namespace operation.
  */
 @Fluent
 public final class NamespacePatchParameters implements JsonSerializable<NamespacePatchParameters> {
     /*
-     * The Sku description for a namespace
-     */
-    private Sku sku;
-
-    /*
-     * Represents namespace properties.
-     */
-    private NamespaceProperties properties;
-
-    /*
-     * Dictionary of <string>
+     * Resource tags
      */
     private Map<String, String> tags;
+
+    /*
+     * The sku of the created namespace
+     */
+    private Sku sku;
 
     /**
      * Creates an instance of NamespacePatchParameters class.
@@ -40,47 +34,7 @@ public final class NamespacePatchParameters implements JsonSerializable<Namespac
     }
 
     /**
-     * Get the sku property: The Sku description for a namespace.
-     * 
-     * @return the sku value.
-     */
-    public Sku sku() {
-        return this.sku;
-    }
-
-    /**
-     * Set the sku property: The Sku description for a namespace.
-     * 
-     * @param sku the sku value to set.
-     * @return the NamespacePatchParameters object itself.
-     */
-    public NamespacePatchParameters withSku(Sku sku) {
-        this.sku = sku;
-        return this;
-    }
-
-    /**
-     * Get the properties property: Represents namespace properties.
-     * 
-     * @return the properties value.
-     */
-    public NamespaceProperties properties() {
-        return this.properties;
-    }
-
-    /**
-     * Set the properties property: Represents namespace properties.
-     * 
-     * @param properties the properties value to set.
-     * @return the NamespacePatchParameters object itself.
-     */
-    public NamespacePatchParameters withProperties(NamespaceProperties properties) {
-        this.properties = properties;
-        return this;
-    }
-
-    /**
-     * Get the tags property: Dictionary of &lt;string&gt;.
+     * Get the tags property: Resource tags.
      * 
      * @return the tags value.
      */
@@ -89,13 +43,33 @@ public final class NamespacePatchParameters implements JsonSerializable<Namespac
     }
 
     /**
-     * Set the tags property: Dictionary of &lt;string&gt;.
+     * Set the tags property: Resource tags.
      * 
      * @param tags the tags value to set.
      * @return the NamespacePatchParameters object itself.
      */
     public NamespacePatchParameters withTags(Map<String, String> tags) {
         this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the sku property: The sku of the created namespace.
+     * 
+     * @return the sku value.
+     */
+    public Sku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The sku of the created namespace.
+     * 
+     * @param sku the sku value to set.
+     * @return the NamespacePatchParameters object itself.
+     */
+    public NamespacePatchParameters withSku(Sku sku) {
+        this.sku = sku;
         return this;
     }
 
@@ -108,9 +82,6 @@ public final class NamespacePatchParameters implements JsonSerializable<Namespac
         if (sku() != null) {
             sku().validate();
         }
-        if (properties() != null) {
-            properties().validate();
-        }
     }
 
     /**
@@ -119,9 +90,8 @@ public final class NamespacePatchParameters implements JsonSerializable<Namespac
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("sku", this.sku);
-        jsonWriter.writeJsonField("properties", this.properties);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
         return jsonWriter.writeEndObject();
     }
 
@@ -140,13 +110,11 @@ public final class NamespacePatchParameters implements JsonSerializable<Namespac
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("sku".equals(fieldName)) {
-                    deserializedNamespacePatchParameters.sku = Sku.fromJson(reader);
-                } else if ("properties".equals(fieldName)) {
-                    deserializedNamespacePatchParameters.properties = NamespaceProperties.fromJson(reader);
-                } else if ("tags".equals(fieldName)) {
+                if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedNamespacePatchParameters.tags = tags;
+                } else if ("sku".equals(fieldName)) {
+                    deserializedNamespacePatchParameters.sku = Sku.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

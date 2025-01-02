@@ -7,6 +7,8 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.s
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationInfo;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentStreamInfo;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentFilterConjunctionGroupInfo;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.AggregationType;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.TelemetryType;
 
 import java.util.Set;
 import java.util.List;
@@ -19,33 +21,39 @@ public class FilteringConfiguration {
     private final Set<String> seenMetricIds = new HashSet<>();
 
     // key is the telemetry type
-    private final Map<String, List<DerivedMetricInfo>> validDerivedMetricInfos;
+    private final Map<TelemetryType, List<DerivedMetricInfo>> validDerivedMetricInfos;
 
     // first key is the telemetry type, second key is the id associated with the document filters
-    private final Map<String, Map<String, List<FilterConjunctionGroupInfo>>> validDocumentFilterConjunctionGroupInfos;
+    private final Map<TelemetryType, Map<String, List<FilterConjunctionGroupInfo>>> validDocumentFilterConjunctionGroupInfos;
 
     private final String etag;
+
+    // key is the derived metric id
+    private final Map<String, AggregationType> validProjectionInfo;
 
     public FilteringConfiguration() {
         validDerivedMetricInfos = new HashMap<>();
         validDocumentFilterConjunctionGroupInfos = new HashMap<>();
         etag = "";
+        validProjectionInfo = new HashMap<>();
     }
 
     public FilteringConfiguration(CollectionConfigurationInfo configuration) {
         validDerivedMetricInfos = parseMetricFilterConfiguration(configuration);
         validDocumentFilterConjunctionGroupInfos = parseDocumentFilterConfiguration(configuration);
         etag = configuration.getETag();
+        validProjectionInfo = initValidProjectionInfo();
     }
 
-    public List<DerivedMetricInfo> fetchMetricConfigForTelemetryType(String telemetryType) {
+    public List<DerivedMetricInfo> fetchMetricConfigForTelemetryType(TelemetryType telemetryType) {
         if (validDerivedMetricInfos.containsKey(telemetryType)) {
             return new ArrayList<>(validDerivedMetricInfos.get(telemetryType));
         }
         return new ArrayList<>();
     }
 
-    public Map<String, List<FilterConjunctionGroupInfo>> fetchDocumentsConfigForTelemetryType(String telemetryType) {
+    public Map<String, List<FilterConjunctionGroupInfo>>
+        fetchDocumentsConfigForTelemetryType(TelemetryType telemetryType) {
         Map<String, List<FilterConjunctionGroupInfo>> result;
         if (validDocumentFilterConjunctionGroupInfos.containsKey(telemetryType)) {
             result = new HashMap<>(validDocumentFilterConjunctionGroupInfos.get(telemetryType));
@@ -59,14 +67,18 @@ public class FilteringConfiguration {
         return etag;
     }
 
-    private Map<String, Map<String, List<FilterConjunctionGroupInfo>>>
+    public Map<String, AggregationType> getValidProjectionInitInfo() {
+        return new HashMap<>(validProjectionInfo);
+    }
+
+    private Map<TelemetryType, Map<String, List<FilterConjunctionGroupInfo>>>
         parseDocumentFilterConfiguration(CollectionConfigurationInfo configuration) {
-        Map<String, Map<String, List<FilterConjunctionGroupInfo>>> result = new HashMap<>();
+        Map<TelemetryType, Map<String, List<FilterConjunctionGroupInfo>>> result = new HashMap<>();
         for (DocumentStreamInfo documentStreamInfo : configuration.getDocumentStreams()) {
             String documentStreamId = documentStreamInfo.getId();
             for (DocumentFilterConjunctionGroupInfo documentFilterGroupInfo : documentStreamInfo
                 .getDocumentFilterGroups()) {
-                String telemetryType = documentFilterGroupInfo.getTelemetryType().getValue();
+                TelemetryType telemetryType = documentFilterGroupInfo.getTelemetryType();
                 FilterConjunctionGroupInfo filterGroup = documentFilterGroupInfo.getFilters();
 
                 // TODO (harskaur): In later PR, validate input before adding it to newValidDocumentsConfig
@@ -89,11 +101,11 @@ public class FilteringConfiguration {
         return result;
     }
 
-    private Map<String, List<DerivedMetricInfo>>
+    private Map<TelemetryType, List<DerivedMetricInfo>>
         parseMetricFilterConfiguration(CollectionConfigurationInfo configuration) {
-        Map<String, List<DerivedMetricInfo>> result = new HashMap<>();
+        Map<TelemetryType, List<DerivedMetricInfo>> result = new HashMap<>();
         for (DerivedMetricInfo derivedMetricInfo : configuration.getMetrics()) {
-            String telemetryType = derivedMetricInfo.getTelemetryType();
+            TelemetryType telemetryType = TelemetryType.fromString(derivedMetricInfo.getTelemetryType());
             String id = derivedMetricInfo.getId();
             if (!seenMetricIds.contains(id)) {
                 seenMetricIds.add(id);
@@ -107,6 +119,16 @@ public class FilteringConfiguration {
                     infos.add(derivedMetricInfo);
                     result.put(telemetryType, infos);
                 }
+            }
+        }
+        return result;
+    }
+
+    private Map<String, AggregationType> initValidProjectionInfo() {
+        Map<String, AggregationType> result = new HashMap<>();
+        for (List<DerivedMetricInfo> derivedMetricInfoList : validDerivedMetricInfos.values()) {
+            for (DerivedMetricInfo derivedMetricInfo : derivedMetricInfoList) {
+                result.put(derivedMetricInfo.getId(), derivedMetricInfo.getAggregation());
             }
         }
         return result;

@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-frontdoor</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -45,15 +45,11 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 
 ### Authentication
 
-By default, Microsoft Entra ID token authentication depends on correct configuration of the following environment variables.
+Microsoft Entra ID token authentication relies on the [credential class][azure_identity_credentials] from [Azure Identity][azure_identity] package.
 
-- `AZURE_CLIENT_ID` for Azure client ID.
-- `AZURE_TENANT_ID` for Azure tenant ID.
-- `AZURE_CLIENT_SECRET` or `AZURE_CLIENT_CERTIFICATE_PATH` for client secret or client certificate.
+Azure subscription ID can be configured via `AZURE_SUBSCRIPTION_ID` environment variable.
 
-In addition, Azure subscription ID can be configured via `AZURE_SUBSCRIPTION_ID` environment variable.
-
-With above configuration, `azure` client can be authenticated using the following code:
+Assuming the use of the `DefaultAzureCredential` credential class, the client can be authenticated using the following code:
 
 ```java
 AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
@@ -93,56 +89,50 @@ String loadBalancingSettingsId = getResourceId("loadBalancingSettings", loadBala
 String healthProbeSettingsId = getResourceId("healthProbeSettings", healthProbeName);
 String backendPoolsId = getResourceId("backendPools", backendPoolName);
 
-FrontDoor frontDoor = manager.frontDoors().define(fdName)
+FrontDoor frontDoor = manager.frontDoors()
+    .define(fdName)
     .withRegion("global")
     .withExistingResourceGroup(resourceGroupName)
-    .withFrontendEndpoints(Collections.singletonList(
-        new FrontendEndpointInner()
-            .withName(frontendName)
-            .withHostname(fdName + ".azurefd.net")
-            .withSessionAffinityEnabledState(SessionAffinityEnabledState.DISABLED)
-    ))
-    .withBackendPools(Collections.singletonList(
-        new BackendPool().withName(backendPoolName).withBackends(Collections.singletonList(
-                new Backend()
-                    .withAddress(backendAddress)
-                    .withEnabledState(BackendEnabledState.ENABLED)
-                    .withBackendHostHeader(backendAddress)
-                    .withHttpPort(80)
-                    .withHttpsPort(443)
-                    .withPriority(1)
-                    .withWeight(50)
-            ))
-            .withLoadBalancingSettings(new SubResource().withId(loadBalancingSettingsId))
-            .withHealthProbeSettings(new SubResource().withId(healthProbeSettingsId))
-    ))
-    .withLoadBalancingSettings(Collections.singletonList(
-        new LoadBalancingSettingsModel()
-            .withName(loadBalancingName)
+    .withFrontendEndpoints(Collections.singletonList(new FrontendEndpointInner().withName(frontendName)
+        .withHostname(fdName + ".azurefd.net")
+        .withSessionAffinityEnabledState(SessionAffinityEnabledState.DISABLED)))
+    .withBackendPools(Collections.singletonList(new BackendPool().withName(backendPoolName)
+        .withBackends(Collections.singletonList(new Backend().withAddress(backendAddress)
+            .withEnabledState(BackendEnabledState.ENABLED)
+            .withBackendHostHeader(backendAddress)
+            .withHttpPort(80)
+            .withHttpsPort(443)
+            .withPriority(1)
+            .withWeight(50)))
+        .withLoadBalancingSettings(new SubResource().withId(loadBalancingSettingsId))
+        .withHealthProbeSettings(new SubResource().withId(healthProbeSettingsId))))
+    .withLoadBalancingSettings(
+        Collections.singletonList(new LoadBalancingSettingsModel().withName(loadBalancingName)
             .withSampleSize(4)
             .withSuccessfulSamplesRequired(2)
-            .withAdditionalLatencyMilliseconds(0)
-    ))
-    .withHealthProbeSettings(Collections.singletonList(
-        new HealthProbeSettingsModel()
-            .withName(healthProbeName)
+            .withAdditionalLatencyMilliseconds(0)))
+    .withHealthProbeSettings(
+        Collections.singletonList(new HealthProbeSettingsModel().withName(healthProbeName)
             .withEnabledState(HealthProbeEnabled.ENABLED)
             .withPath("/")
             .withProtocol(FrontDoorProtocol.HTTPS)
             .withHealthProbeMethod(FrontDoorHealthProbeMethod.HEAD)
-            .withIntervalInSeconds(30)
-    ))
-    .withRoutingRules(Collections.singletonList(
-        new RoutingRule()
-            .withName(routingRuleName)
-            .withEnabledState(RoutingRuleEnabledState.ENABLED)
-            .withFrontendEndpoints(Collections.singletonList(new SubResource().withId(frontendEndpointsId)))
-            .withAcceptedProtocols(Arrays.asList(FrontDoorProtocol.HTTP, FrontDoorProtocol.HTTPS))
-            .withPatternsToMatch(Collections.singletonList("/*"))
-            .withRouteConfiguration(new ForwardingConfiguration()
-                .withForwardingProtocol(FrontDoorForwardingProtocol.HTTPS_ONLY)
-                .withBackendPool(new SubResource().withId(backendPoolsId)))
-    ))
+            .withIntervalInSeconds(30)))
+    .withRoutingRules(Collections.singletonList(new RoutingRule().withName(routingRuleName)
+        .withEnabledState(RoutingRuleEnabledState.ENABLED)
+        .withFrontendEndpoints(Collections.singletonList(new SubResource().withId(frontendEndpointsId)))
+        .withAcceptedProtocols(Arrays.asList(FrontDoorProtocol.HTTP, FrontDoorProtocol.HTTPS))
+        .withPatternsToMatch(Collections.singletonList("/*"))
+        .withRouteConfiguration(
+            new ForwardingConfiguration().withForwardingProtocol(FrontDoorForwardingProtocol.HTTPS_ONLY)
+                .withBackendPool(new SubResource().withId(backendPoolsId)))))
+    .create();
+```
+```java
+policy = frontDoorManager.policies()
+    .define(policyName)
+    .withRegion(REGION)
+    .withExistingResourceGroup(resourceGroupName)
     .create();
 ```
 [Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/frontdoor/azure-resourcemanager-frontdoor/SAMPLE.md)
@@ -168,6 +158,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [jdk]: https://learn.microsoft.com/azure/developer/java/fundamentals/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
+[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
 [azure_core_http_netty]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-netty
 [authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/AUTH.md
 [design]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/DESIGN.md

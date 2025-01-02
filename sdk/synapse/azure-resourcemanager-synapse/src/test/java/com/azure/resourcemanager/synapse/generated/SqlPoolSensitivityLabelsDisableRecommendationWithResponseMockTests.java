@@ -28,8 +28,8 @@ public final class SqlPoolSensitivityLabelsDisableRecommendationWithResponseMock
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.sqlPoolSensitivityLabels()
-            .disableRecommendationWithResponse("wz", "drpizfulgyctsdb", "qgkujds", "oxrqw", "eurbtigapdyarik",
-                "ejdpdfhtwm", com.azure.core.util.Context.NONE);
+            .disableRecommendationWithResponse("dpr", "yxelyicghflr", "fss", "yghsf", "rkbhammgmqfm", "fgvqcpdw",
+                com.azure.core.util.Context.NONE);
 
     }
 }

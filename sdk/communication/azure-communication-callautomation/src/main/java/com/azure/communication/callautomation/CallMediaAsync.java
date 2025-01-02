@@ -11,6 +11,7 @@ import com.azure.communication.callautomation.implementation.models.DtmfOptionsI
 import com.azure.communication.callautomation.implementation.models.DtmfToneInternal;
 import com.azure.communication.callautomation.implementation.models.FileSourceInternal;
 import com.azure.communication.callautomation.implementation.models.HoldRequest;
+import com.azure.communication.callautomation.implementation.models.InterruptAudioAndAnnounceRequest;
 import com.azure.communication.callautomation.implementation.models.PlayOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.PlayRequest;
 import com.azure.communication.callautomation.implementation.models.PlaySourceInternal;
@@ -39,6 +40,7 @@ import com.azure.communication.callautomation.models.ContinuousDtmfRecognitionOp
 import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.HoldOptions;
+import com.azure.communication.callautomation.models.InterruptAudioAndAnnounceOptions;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlaySource;
 import com.azure.communication.callautomation.models.PlayToAllOptions;
@@ -1005,6 +1007,52 @@ public final class CallMediaAsync {
                 request.setOperationCallbackUri(options.getOperationCallbackUrl());
             }
             return contentsInternal.stopMediaStreamingWithResponseAsync(callConnectionId, request, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+    * Interrupt audio and play announment to the participant in call.
+    * @param playTo the target.
+    * @param playSource the play source.
+    * @return Response for successful operation.
+    */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> interruptAudioAndAnnounce(PlaySource playSource, CommunicationIdentifier playTo) {
+        return interruptAudioAndAnnounceWithResponse(new InterruptAudioAndAnnounceOptions(playSource, playTo))
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Interrupt audio and play announment to the participant in call.
+     * @param options - Different options to pass to the request.
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> interruptAudioAndAnnounceWithResponse(InterruptAudioAndAnnounceOptions options) {
+        return withContext(context -> interruptAudioAndAnnounceWithResponseInternal(options, context));
+    }
+
+    Mono<Response<Void>> interruptAudioAndAnnounceWithResponseInternal(InterruptAudioAndAnnounceOptions options,
+        Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+            List<PlaySourceInternal> playSourcesInternal = new ArrayList<>();
+            InterruptAudioAndAnnounceRequest request = new InterruptAudioAndAnnounceRequest()
+                .setPlayTo(CommunicationIdentifierConverter.convert(options.getPlayTo()))
+                .setOperationContext(options.getOperationContext());
+
+            if (options.getPlaySources() != null) {
+                for (PlaySource playSource : options.getPlaySources()) {
+                    if (playSource != null) {
+                        playSourcesInternal.add(convertPlaySourceToPlaySourceInternal(playSource));
+                    }
+                }
+            }
+            request.setPlaySources(playSourcesInternal);
+
+            return contentsInternal.interruptAudioAndAnnounceWithResponseAsync(callConnectionId, request, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

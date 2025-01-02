@@ -31,16 +31,6 @@ public final class CustomerDiskJobSecrets extends JobSecrets {
      */
     private String carrierAccountNumber;
 
-    /*
-     * Error while fetching the secrets.
-     */
-    private CloudError error;
-
-    /*
-     * Dc Access Security Code for Customer Managed Shipping
-     */
-    private DcAccessSecurityCode dcAccessSecurityCode;
-
     /**
      * Creates an instance of CustomerDiskJobSecrets class.
      */
@@ -73,26 +63,6 @@ public final class CustomerDiskJobSecrets extends JobSecrets {
      */
     public String carrierAccountNumber() {
         return this.carrierAccountNumber;
-    }
-
-    /**
-     * Get the error property: Error while fetching the secrets.
-     * 
-     * @return the error value.
-     */
-    @Override
-    public CloudError error() {
-        return this.error;
-    }
-
-    /**
-     * Get the dcAccessSecurityCode property: Dc Access Security Code for Customer Managed Shipping.
-     * 
-     * @return the dcAccessSecurityCode value.
-     */
-    @Override
-    public DcAccessSecurityCode dcAccessSecurityCode() {
-        return this.dcAccessSecurityCode;
     }
 
     /**
@@ -140,9 +110,9 @@ public final class CustomerDiskJobSecrets extends JobSecrets {
                 reader.nextToken();
 
                 if ("dcAccessSecurityCode".equals(fieldName)) {
-                    deserializedCustomerDiskJobSecrets.dcAccessSecurityCode = DcAccessSecurityCode.fromJson(reader);
+                    deserializedCustomerDiskJobSecrets.withDcAccessSecurityCode(DcAccessSecurityCode.fromJson(reader));
                 } else if ("error".equals(fieldName)) {
-                    deserializedCustomerDiskJobSecrets.error = CloudError.fromJson(reader);
+                    deserializedCustomerDiskJobSecrets.withError(CloudError.fromJson(reader));
                 } else if ("jobSecretsType".equals(fieldName)) {
                     deserializedCustomerDiskJobSecrets.jobSecretsType
                         = ClassDiscriminator.fromString(reader.getString());

@@ -94,7 +94,11 @@ public final class KeyVaultManager extends Manager<KeyVaultManagementClient> {
         this.tenantId = profile.getTenantId();
     }
 
-    /** @return the KeyVault account management API entry point */
+    /**
+     * Gets the KeyVault account management API entry point.
+     *
+     * @return the KeyVault account management API entry point
+     */
     public Vaults vaults() {
         if (vaults == null) {
             vaults = new VaultsImpl(this, authorizationManager, tenantId);
@@ -102,7 +106,11 @@ public final class KeyVaultManager extends Manager<KeyVaultManagementClient> {
         return vaults;
     }
 
-    /** @return the Managed Hardware Security Module management API entry point */
+    /**
+     * Gets the Managed Hardware Security Module management API entry point.
+     *
+     * @return the Managed Hardware Security Module management API entry point
+     */
     public ManagedHsms managedHsms() {
         if (managedHsms == null) {
             managedHsms = new ManagedHsmsImpl(this, tenantId);

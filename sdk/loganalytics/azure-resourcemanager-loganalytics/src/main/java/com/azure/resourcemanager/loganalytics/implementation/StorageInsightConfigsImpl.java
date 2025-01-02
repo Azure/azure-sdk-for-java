@@ -60,28 +60,28 @@ public final class StorageInsightConfigsImpl implements StorageInsightConfigs {
     public PagedIterable<StorageInsight> listByWorkspace(String resourceGroupName, String workspaceName) {
         PagedIterable<StorageInsightInner> inner
             = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new StorageInsightImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageInsightImpl(inner1, this.manager()));
     }
 
     public PagedIterable<StorageInsight> listByWorkspace(String resourceGroupName, String workspaceName,
         Context context) {
         PagedIterable<StorageInsightInner> inner
             = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, context);
-        return Utils.mapPage(inner, inner1 -> new StorageInsightImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageInsightImpl(inner1, this.manager()));
     }
 
     public StorageInsight getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String storageInsightName = Utils.getValueFromIdByName(id, "storageInsightConfigs");
+        String storageInsightName = ResourceManagerUtils.getValueFromIdByName(id, "storageInsightConfigs");
         if (storageInsightName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'storageInsightConfigs'.", id)));
@@ -90,17 +90,17 @@ public final class StorageInsightConfigsImpl implements StorageInsightConfigs {
     }
 
     public Response<StorageInsight> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String storageInsightName = Utils.getValueFromIdByName(id, "storageInsightConfigs");
+        String storageInsightName = ResourceManagerUtils.getValueFromIdByName(id, "storageInsightConfigs");
         if (storageInsightName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'storageInsightConfigs'.", id)));
@@ -109,17 +109,17 @@ public final class StorageInsightConfigsImpl implements StorageInsightConfigs {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String storageInsightName = Utils.getValueFromIdByName(id, "storageInsightConfigs");
+        String storageInsightName = ResourceManagerUtils.getValueFromIdByName(id, "storageInsightConfigs");
         if (storageInsightName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'storageInsightConfigs'.", id)));
@@ -128,17 +128,17 @@ public final class StorageInsightConfigsImpl implements StorageInsightConfigs {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String storageInsightName = Utils.getValueFromIdByName(id, "storageInsightConfigs");
+        String storageInsightName = ResourceManagerUtils.getValueFromIdByName(id, "storageInsightConfigs");
         if (storageInsightName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'storageInsightConfigs'.", id)));

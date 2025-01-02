@@ -12,17 +12,17 @@ public final class ChannelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Channel model = BinaryData.fromString(
-            "{\"channelName\":\"Channel\",\"etag\":\"wgcu\",\"provisioningState\":\"tumkdosvqwhbm\",\"location\":\"bbjfddgmbmbexp\"}")
+            "{\"channelName\":\"Channel\",\"etag\":\"ozwyiftyhxhuro\",\"provisioningState\":\"tyxolniwpwc\",\"location\":\"jfkgiawxk\"}")
             .toObject(Channel.class);
-        Assertions.assertEquals("wgcu", model.etag());
-        Assertions.assertEquals("bbjfddgmbmbexp", model.location());
+        Assertions.assertEquals("ozwyiftyhxhuro", model.etag());
+        Assertions.assertEquals("jfkgiawxk", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Channel model = new Channel().withEtag("wgcu").withLocation("bbjfddgmbmbexp");
+        Channel model = new Channel().withEtag("ozwyiftyhxhuro").withLocation("jfkgiawxk");
         model = BinaryData.fromObject(model).toObject(Channel.class);
-        Assertions.assertEquals("wgcu", model.etag());
-        Assertions.assertEquals("bbjfddgmbmbexp", model.location());
+        Assertions.assertEquals("ozwyiftyhxhuro", model.etag());
+        Assertions.assertEquals("jfkgiawxk", model.location());
     }
 }

@@ -7,11 +7,13 @@ package com.azure.resourcemanager.postgresql.models;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.postgresql.fluent.models.ConfigurationListResultInner;
 
-/** Resource collection API of ServerParameters. */
+/**
+ * Resource collection API of ServerParameters.
+ */
 public interface ServerParameters {
     /**
      * Update a list of configurations in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param value The parameters for updating a list of server configuration.
@@ -25,7 +27,7 @@ public interface ServerParameters {
 
     /**
      * Update a list of configurations in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param value The parameters for updating a list of server configuration.

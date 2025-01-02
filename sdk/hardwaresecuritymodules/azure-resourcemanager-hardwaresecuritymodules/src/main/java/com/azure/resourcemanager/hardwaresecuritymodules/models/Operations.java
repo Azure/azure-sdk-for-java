@@ -12,22 +12,24 @@ import com.azure.core.util.Context;
  */
 public interface Operations {
     /**
-     * Get a list of Hardware Security Modules operations.
+     * Get a list of Dedicated HSM operations.
      * 
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
+     * by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Hardware Security Modules operations as paginated response with {@link PagedIterable}.
+     * @return a list of Dedicated HSM operations as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Operation> list();
+    PagedIterable<DedicatedHsmOperation> list();
 
     /**
-     * Get a list of Hardware Security Modules operations.
+     * Get a list of Dedicated HSM operations.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
+     * by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Hardware Security Modules operations as paginated response with {@link PagedIterable}.
+     * @return a list of Dedicated HSM operations as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Operation> list(Context context);
+    PagedIterable<DedicatedHsmOperation> list(Context context);
 }

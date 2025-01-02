@@ -20,7 +20,7 @@ public final class ReplicationLogicalNetworksListByReplicationFabr {
      */
     public static void getsTheListOfLogicalNetworksUnderAFabric(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationLogicalNetworks().listByReplicationFabrics("vault1", "resourceGroupPS1", "cloud1",
-            com.azure.core.util.Context.NONE);
+        manager.replicationLogicalNetworks()
+            .listByReplicationFabrics("vault1", "resourceGroupPS1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

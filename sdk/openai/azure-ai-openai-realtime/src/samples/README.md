@@ -28,6 +28,7 @@ Synchronous:
 
 Asynchronous:
 - [Audio prompt and audio response with transcript][audio_collection_async]
+- [Audio prompt and tool call definition for text response][tool_call]
 
 Cookbook:
 - [Low level event handling (Azure)][low_level_client_azure]
@@ -55,4 +56,6 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [audio_collection_sync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai-realtime/src/samples/java/com/azure/ai/openai/realtime/AudioCollectionSync.java
 [low_level_client_azure]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai-realtime/src/samples/java/com/azure/ai/openai/realtime/LowLevelClient.java
 [low_level_client_non_azure]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai-realtime/src/samples/java/com/azure/ai/openai/realtime/NonAzureLowLevelClient.java
+[tool_call]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai-realtime/src/samples/java/com/azure/ai/openai/realtime/ToolCall.java
+
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fopenai%2Fazure-ai-openai%2FREADME.png)

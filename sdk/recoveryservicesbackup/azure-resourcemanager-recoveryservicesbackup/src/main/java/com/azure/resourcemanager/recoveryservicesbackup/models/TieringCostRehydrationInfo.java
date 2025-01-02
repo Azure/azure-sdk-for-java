@@ -5,40 +5,31 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.TieringCostInfoInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
 /**
  * Response parameters for tiering cost info for rehydration.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "objectType",
-    defaultImpl = TieringCostRehydrationInfo.class,
-    visible = true)
-@JsonTypeName("TieringCostRehydrationInfo")
 @Fluent
 public final class TieringCostRehydrationInfo extends TieringCostInfoInner {
     /*
-     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
      */
-    @JsonTypeId
-    @JsonProperty(value = "objectType", required = true)
     private String objectType = "TieringCostRehydrationInfo";
 
     /*
      * Rehydration size in bytes
      */
-    @JsonProperty(value = "rehydrationSizeInBytes", required = true)
     private long rehydrationSizeInBytes;
 
     /*
      * Source tier to target tier rehydration cost per GB per month
      */
-    @JsonProperty(value = "retailRehydrationCostPerGBPerMonth", required = true)
     private double retailRehydrationCostPerGBPerMonth;
 
     /**
@@ -108,6 +99,48 @@ public final class TieringCostRehydrationInfo extends TieringCostInfoInner {
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeLongField("rehydrationSizeInBytes", this.rehydrationSizeInBytes);
+        jsonWriter.writeDoubleField("retailRehydrationCostPerGBPerMonth", this.retailRehydrationCostPerGBPerMonth);
+        jsonWriter.writeStringField("objectType", this.objectType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TieringCostRehydrationInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TieringCostRehydrationInfo if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TieringCostRehydrationInfo.
+     */
+    public static TieringCostRehydrationInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TieringCostRehydrationInfo deserializedTieringCostRehydrationInfo = new TieringCostRehydrationInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("rehydrationSizeInBytes".equals(fieldName)) {
+                    deserializedTieringCostRehydrationInfo.rehydrationSizeInBytes = reader.getLong();
+                } else if ("retailRehydrationCostPerGBPerMonth".equals(fieldName)) {
+                    deserializedTieringCostRehydrationInfo.retailRehydrationCostPerGBPerMonth = reader.getDouble();
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedTieringCostRehydrationInfo.objectType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTieringCostRehydrationInfo;
+        });
     }
 }

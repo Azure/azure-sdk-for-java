@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Helm artifact profile.
  */
 @Fluent
-public final class HelmArtifactProfile {
+public final class HelmArtifactProfile implements JsonSerializable<HelmArtifactProfile> {
     /*
      * Helm package name.
      */
-    @JsonProperty(value = "helmPackageName")
     private String helmPackageName;
 
     /*
      * Helm package version range.
      */
-    @JsonProperty(value = "helmPackageVersionRange")
     private String helmPackageVersionRange;
 
     /*
      * The registry values path list.
      */
-    @JsonProperty(value = "registryValuesPaths")
     private List<String> registryValuesPaths;
 
     /*
      * The image pull secrets values path list.
      */
-    @JsonProperty(value = "imagePullSecretsValuesPaths")
     private List<String> imagePullSecretsValuesPaths;
 
     /**
@@ -129,5 +129,54 @@ public final class HelmArtifactProfile {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("helmPackageName", this.helmPackageName);
+        jsonWriter.writeStringField("helmPackageVersionRange", this.helmPackageVersionRange);
+        jsonWriter.writeArrayField("registryValuesPaths", this.registryValuesPaths,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("imagePullSecretsValuesPaths", this.imagePullSecretsValuesPaths,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HelmArtifactProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HelmArtifactProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HelmArtifactProfile.
+     */
+    public static HelmArtifactProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HelmArtifactProfile deserializedHelmArtifactProfile = new HelmArtifactProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("helmPackageName".equals(fieldName)) {
+                    deserializedHelmArtifactProfile.helmPackageName = reader.getString();
+                } else if ("helmPackageVersionRange".equals(fieldName)) {
+                    deserializedHelmArtifactProfile.helmPackageVersionRange = reader.getString();
+                } else if ("registryValuesPaths".equals(fieldName)) {
+                    List<String> registryValuesPaths = reader.readArray(reader1 -> reader1.getString());
+                    deserializedHelmArtifactProfile.registryValuesPaths = registryValuesPaths;
+                } else if ("imagePullSecretsValuesPaths".equals(fieldName)) {
+                    List<String> imagePullSecretsValuesPaths = reader.readArray(reader1 -> reader1.getString());
+                    deserializedHelmArtifactProfile.imagePullSecretsValuesPaths = imagePullSecretsValuesPaths;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHelmArtifactProfile;
+        });
     }
 }

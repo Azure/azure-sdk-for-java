@@ -13,15 +13,15 @@ public final class SqlPoolColumnInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlPoolColumnInner model = BinaryData.fromString(
-            "{\"properties\":{\"columnType\":\"tinyint\",\"isComputed\":false},\"id\":\"ubxcbihw\",\"name\":\"knfd\",\"type\":\"twjchrdg\"}")
+            "{\"properties\":{\"columnType\":\"real\",\"isComputed\":false},\"id\":\"ashcxlpmjerbdk\",\"name\":\"lvidizozs\",\"type\":\"bccxjmonfdgn\"}")
             .toObject(SqlPoolColumnInner.class);
-        Assertions.assertEquals(ColumnDataType.TINYINT, model.columnType());
+        Assertions.assertEquals(ColumnDataType.REAL, model.columnType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlPoolColumnInner model = new SqlPoolColumnInner().withColumnType(ColumnDataType.TINYINT);
+        SqlPoolColumnInner model = new SqlPoolColumnInner().withColumnType(ColumnDataType.REAL);
         model = BinaryData.fromObject(model).toObject(SqlPoolColumnInner.class);
-        Assertions.assertEquals(ColumnDataType.TINYINT, model.columnType());
+        Assertions.assertEquals(ColumnDataType.REAL, model.columnType());
     }
 }

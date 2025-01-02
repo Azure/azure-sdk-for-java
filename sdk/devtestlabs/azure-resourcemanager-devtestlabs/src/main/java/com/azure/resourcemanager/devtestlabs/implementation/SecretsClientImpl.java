@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SecretsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SecretsClient.
+ */
 public final class SecretsClientImpl implements SecretsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SecretsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DevTestLabsClientImpl client;
 
     /**
      * Initializes an instance of SecretsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SecretsClientImpl(DevTestLabsClientImpl client) {
@@ -130,7 +136,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * List secrets in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -141,8 +147,8 @@ public final class SecretsClientImpl implements SecretsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecretInner>> listSinglePageAsync(String resourceGroupName, String labName,
@@ -177,7 +183,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * List secrets in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -189,8 +195,8 @@ public final class SecretsClientImpl implements SecretsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecretInner>> listSinglePageAsync(String resourceGroupName, String labName,
@@ -224,7 +230,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * List secrets in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -247,7 +253,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * List secrets in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -269,7 +275,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * List secrets in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -293,7 +299,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * List secrets in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -313,7 +319,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * List secrets in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -336,7 +342,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Get secret.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -380,7 +386,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Get secret.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -424,7 +430,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Get secret.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -443,7 +449,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Get secret.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -463,7 +469,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Get secret.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -481,7 +487,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Create or replace an existing secret. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -530,7 +536,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Create or replace an existing secret. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -579,7 +585,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Create or replace an existing secret. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -601,7 +607,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Create or replace an existing secret. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -625,7 +631,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Create or replace an existing secret. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -644,7 +650,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Create or replace an existing secret. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -665,7 +671,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Create or replace an existing secret. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -685,7 +691,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Create or replace an existing secret. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -706,7 +712,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Create or replace an existing secret. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -725,7 +731,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Create or replace an existing secret. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -745,7 +751,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Delete secret.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -788,7 +794,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Delete secret.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -831,7 +837,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Delete secret.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -848,7 +854,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Delete secret.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -867,7 +873,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Delete secret.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -883,7 +889,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Allows modifying tags of secrets. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -932,7 +938,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Allows modifying tags of secrets. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -981,7 +987,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Allows modifying tags of secrets. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1001,7 +1007,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Allows modifying tags of secrets. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1021,7 +1027,7 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Allows modifying tags of secrets. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1040,14 +1046,13 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecretInner>> listNextSinglePageAsync(String nextLink) {
@@ -1067,15 +1072,14 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecretInner>> listNextSinglePageAsync(String nextLink, Context context) {

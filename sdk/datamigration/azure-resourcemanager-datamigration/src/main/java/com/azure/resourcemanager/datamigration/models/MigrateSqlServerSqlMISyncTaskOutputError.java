@@ -25,11 +25,6 @@ public final class MigrateSqlServerSqlMISyncTaskOutputError extends MigrateSqlSe
      */
     private ReportableException error;
 
-    /*
-     * Result identifier
-     */
-    private String id;
-
     /**
      * Creates an instance of MigrateSqlServerSqlMISyncTaskOutputError class.
      */
@@ -53,16 +48,6 @@ public final class MigrateSqlServerSqlMISyncTaskOutputError extends MigrateSqlSe
      */
     public ReportableException error() {
         return this.error;
-    }
-
-    /**
-     * Get the id property: Result identifier.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
     }
 
     /**
@@ -104,7 +89,7 @@ public final class MigrateSqlServerSqlMISyncTaskOutputError extends MigrateSqlSe
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedMigrateSqlServerSqlMISyncTaskOutputError.id = reader.getString();
+                    deserializedMigrateSqlServerSqlMISyncTaskOutputError.withId(reader.getString());
                 } else if ("resultType".equals(fieldName)) {
                     deserializedMigrateSqlServerSqlMISyncTaskOutputError.resultType = reader.getString();
                 } else if ("error".equals(fieldName)) {

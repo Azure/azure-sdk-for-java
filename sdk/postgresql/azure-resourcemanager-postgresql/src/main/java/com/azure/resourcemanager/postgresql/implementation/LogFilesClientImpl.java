@@ -25,25 +25,28 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.postgresql.fluent.LogFilesClient;
 import com.azure.resourcemanager.postgresql.fluent.models.LogFileInner;
 import com.azure.resourcemanager.postgresql.models.LogFileListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LogFilesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LogFilesClient.
+ */
 public final class LogFilesClientImpl implements LogFilesClient {
-    private final ClientLogger logger = new ClientLogger(LogFilesClientImpl.class);
-
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final LogFilesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PostgreSqlManagementClientImpl client;
 
     /**
      * Initializes an instance of LogFilesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     LogFilesClientImpl(PostgreSqlManagementClientImpl client) {
@@ -57,10 +60,9 @@ public final class LogFilesClientImpl implements LogFilesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "PostgreSqlManagement")
-    private interface LogFilesService {
+    public interface LogFilesService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
-            + "/servers/{serverName}/logFiles")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}/logFiles")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LogFileListResult>> listByServer(@HostParam("$host") String endpoint,
@@ -71,7 +73,7 @@ public final class LogFilesClientImpl implements LogFilesClient {
 
     /**
      * List all the log files in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -108,7 +110,7 @@ public final class LogFilesClientImpl implements LogFilesClient {
 
     /**
      * List all the log files in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -147,29 +149,29 @@ public final class LogFilesClientImpl implements LogFilesClient {
 
     /**
      * List all the log files in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of log files.
+     * @return a list of log files as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<LogFileInner> listByServerAsync(String resourceGroupName, String serverName) {
+    public PagedFlux<LogFileInner> listByServerAsync(String resourceGroupName, String serverName) {
         return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName));
     }
 
     /**
      * List all the log files in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of log files.
+     * @return a list of log files as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LogFileInner> listByServerAsync(String resourceGroupName, String serverName, Context context) {
@@ -178,13 +180,13 @@ public final class LogFilesClientImpl implements LogFilesClient {
 
     /**
      * List all the log files in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of log files.
+     * @return a list of log files as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LogFileInner> listByServer(String resourceGroupName, String serverName) {
@@ -193,14 +195,14 @@ public final class LogFilesClientImpl implements LogFilesClient {
 
     /**
      * List all the log files in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of log files.
+     * @return a list of log files as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LogFileInner> listByServer(String resourceGroupName, String serverName, Context context) {

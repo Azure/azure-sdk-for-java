@@ -18,7 +18,9 @@ public final class ApiVersionsCreateOrUpdateSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void apiVersionsCreateOrUpdate(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.apiVersions().define("2023-01-01")
-            .withExistingApi("contoso-resources", "contoso", "default", "echo-api").create();
+        manager.apiVersions()
+            .define("2023-01-01")
+            .withExistingApi("contoso-resources", "contoso", "default", "echo-api")
+            .create();
     }
 }

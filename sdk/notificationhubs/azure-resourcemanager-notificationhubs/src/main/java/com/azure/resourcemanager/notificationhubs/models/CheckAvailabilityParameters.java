@@ -14,45 +14,44 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Parameters supplied to the Check Name Availability for Namespace and
- * NotificationHubs.
+ * Parameters supplied to the Check Name Availability for Namespace and NotificationHubs.
  */
 @Fluent
 public final class CheckAvailabilityParameters implements JsonSerializable<CheckAvailabilityParameters> {
     /*
-     * Gets resource Id
+     * Resource Id
      */
     private String id;
 
     /*
-     * Gets or sets resource name
+     * Resource name
      */
     private String name;
 
     /*
-     * Gets resource type
+     * Resource type
      */
     private String type;
 
     /*
-     * Gets or sets resource location
+     * Resource location
      */
     private String location;
 
     /*
-     * Gets or sets resource tags
+     * Resource tags
      */
     private Map<String, String> tags;
 
     /*
-     * Not used and deprecated since API version 2023-01-01-preview
-     */
-    private Boolean isAvailiable;
-
-    /*
-     * The Sku description for a namespace
+     * The sku of the created namespace
      */
     private Sku sku;
+
+    /*
+     * True if the name is available and can be used to create new Namespace/NotificationHub. Otherwise false.
+     */
+    private Boolean isAvailiable;
 
     /**
      * Creates an instance of CheckAvailabilityParameters class.
@@ -61,7 +60,7 @@ public final class CheckAvailabilityParameters implements JsonSerializable<Check
     }
 
     /**
-     * Get the id property: Gets resource Id.
+     * Get the id property: Resource Id.
      * 
      * @return the id value.
      */
@@ -70,7 +69,7 @@ public final class CheckAvailabilityParameters implements JsonSerializable<Check
     }
 
     /**
-     * Get the name property: Gets or sets resource name.
+     * Get the name property: Resource name.
      * 
      * @return the name value.
      */
@@ -79,7 +78,7 @@ public final class CheckAvailabilityParameters implements JsonSerializable<Check
     }
 
     /**
-     * Set the name property: Gets or sets resource name.
+     * Set the name property: Resource name.
      * 
      * @param name the name value to set.
      * @return the CheckAvailabilityParameters object itself.
@@ -90,7 +89,7 @@ public final class CheckAvailabilityParameters implements JsonSerializable<Check
     }
 
     /**
-     * Get the type property: Gets resource type.
+     * Get the type property: Resource type.
      * 
      * @return the type value.
      */
@@ -99,7 +98,7 @@ public final class CheckAvailabilityParameters implements JsonSerializable<Check
     }
 
     /**
-     * Get the location property: Gets or sets resource location.
+     * Get the location property: Resource location.
      * 
      * @return the location value.
      */
@@ -108,7 +107,7 @@ public final class CheckAvailabilityParameters implements JsonSerializable<Check
     }
 
     /**
-     * Set the location property: Gets or sets resource location.
+     * Set the location property: Resource location.
      * 
      * @param location the location value to set.
      * @return the CheckAvailabilityParameters object itself.
@@ -119,7 +118,7 @@ public final class CheckAvailabilityParameters implements JsonSerializable<Check
     }
 
     /**
-     * Get the tags property: Gets or sets resource tags.
+     * Get the tags property: Resource tags.
      * 
      * @return the tags value.
      */
@@ -128,7 +127,7 @@ public final class CheckAvailabilityParameters implements JsonSerializable<Check
     }
 
     /**
-     * Set the tags property: Gets or sets resource tags.
+     * Set the tags property: Resource tags.
      * 
      * @param tags the tags value to set.
      * @return the CheckAvailabilityParameters object itself.
@@ -139,27 +138,7 @@ public final class CheckAvailabilityParameters implements JsonSerializable<Check
     }
 
     /**
-     * Get the isAvailiable property: Not used and deprecated since API version 2023-01-01-preview.
-     * 
-     * @return the isAvailiable value.
-     */
-    public Boolean isAvailiable() {
-        return this.isAvailiable;
-    }
-
-    /**
-     * Set the isAvailiable property: Not used and deprecated since API version 2023-01-01-preview.
-     * 
-     * @param isAvailiable the isAvailiable value to set.
-     * @return the CheckAvailabilityParameters object itself.
-     */
-    public CheckAvailabilityParameters withIsAvailiable(Boolean isAvailiable) {
-        this.isAvailiable = isAvailiable;
-        return this;
-    }
-
-    /**
-     * Get the sku property: The Sku description for a namespace.
+     * Get the sku property: The sku of the created namespace.
      * 
      * @return the sku value.
      */
@@ -168,13 +147,35 @@ public final class CheckAvailabilityParameters implements JsonSerializable<Check
     }
 
     /**
-     * Set the sku property: The Sku description for a namespace.
+     * Set the sku property: The sku of the created namespace.
      * 
      * @param sku the sku value to set.
      * @return the CheckAvailabilityParameters object itself.
      */
     public CheckAvailabilityParameters withSku(Sku sku) {
         this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the isAvailiable property: True if the name is available and can be used to create new
+     * Namespace/NotificationHub. Otherwise false.
+     * 
+     * @return the isAvailiable value.
+     */
+    public Boolean isAvailiable() {
+        return this.isAvailiable;
+    }
+
+    /**
+     * Set the isAvailiable property: True if the name is available and can be used to create new
+     * Namespace/NotificationHub. Otherwise false.
+     * 
+     * @param isAvailiable the isAvailiable value to set.
+     * @return the CheckAvailabilityParameters object itself.
+     */
+    public CheckAvailabilityParameters withIsAvailiable(Boolean isAvailiable) {
+        this.isAvailiable = isAvailiable;
         return this;
     }
 
@@ -205,8 +206,8 @@ public final class CheckAvailabilityParameters implements JsonSerializable<Check
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("location", this.location);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeBooleanField("isAvailiable", this.isAvailiable);
         jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeBooleanField("isAvailiable", this.isAvailiable);
         return jsonWriter.writeEndObject();
     }
 
@@ -237,10 +238,10 @@ public final class CheckAvailabilityParameters implements JsonSerializable<Check
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedCheckAvailabilityParameters.tags = tags;
-                } else if ("isAvailiable".equals(fieldName)) {
-                    deserializedCheckAvailabilityParameters.isAvailiable = reader.getNullable(JsonReader::getBoolean);
                 } else if ("sku".equals(fieldName)) {
                     deserializedCheckAvailabilityParameters.sku = Sku.fromJson(reader);
+                } else if ("isAvailiable".equals(fieldName)) {
+                    deserializedCheckAvailabilityParameters.isAvailiable = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

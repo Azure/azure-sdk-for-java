@@ -7,11 +7,13 @@ package com.azure.resourcemanager.devtestlabs.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of PolicySets. */
+/**
+ * Resource collection API of PolicySets.
+ */
 public interface PolicySets {
     /**
      * Evaluates lab policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the policy set.
@@ -27,7 +29,7 @@ public interface PolicySets {
 
     /**
      * Evaluates lab policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the policy set.

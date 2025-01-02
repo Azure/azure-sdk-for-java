@@ -21,12 +21,12 @@ public final class ServerForUpdate implements JsonSerializable<ServerForUpdate> 
     /*
      * The cmk identity for the server.
      */
-    private MySqlServerIdentity identity;
+    private Identity identity;
 
     /*
      * The SKU (pricing tier) of the server.
      */
-    private MySqlServerSku sku;
+    private Sku sku;
 
     /*
      * The properties that can be updated for a server.
@@ -49,7 +49,7 @@ public final class ServerForUpdate implements JsonSerializable<ServerForUpdate> 
      * 
      * @return the identity value.
      */
-    public MySqlServerIdentity identity() {
+    public Identity identity() {
         return this.identity;
     }
 
@@ -59,7 +59,7 @@ public final class ServerForUpdate implements JsonSerializable<ServerForUpdate> 
      * @param identity the identity value to set.
      * @return the ServerForUpdate object itself.
      */
-    public ServerForUpdate withIdentity(MySqlServerIdentity identity) {
+    public ServerForUpdate withIdentity(Identity identity) {
         this.identity = identity;
         return this;
     }
@@ -69,7 +69,7 @@ public final class ServerForUpdate implements JsonSerializable<ServerForUpdate> 
      * 
      * @return the sku value.
      */
-    public MySqlServerSku sku() {
+    public Sku sku() {
         return this.sku;
     }
 
@@ -79,7 +79,7 @@ public final class ServerForUpdate implements JsonSerializable<ServerForUpdate> 
      * @param sku the sku value to set.
      * @return the ServerForUpdate object itself.
      */
-    public ServerForUpdate withSku(MySqlServerSku sku) {
+    public ServerForUpdate withSku(Sku sku) {
         this.sku = sku;
         return this;
     }
@@ -133,29 +133,6 @@ public final class ServerForUpdate implements JsonSerializable<ServerForUpdate> 
             this.innerProperties = new ServerPropertiesForUpdate();
         }
         this.innerProperties().withAdministratorLoginPassword(administratorLoginPassword);
-        return this;
-    }
-
-    /**
-     * Get the version property: Server version.
-     * 
-     * @return the version value.
-     */
-    public ServerVersion version() {
-        return this.innerProperties() == null ? null : this.innerProperties().version();
-    }
-
-    /**
-     * Set the version property: Server version.
-     * 
-     * @param version the version value to set.
-     * @return the ServerForUpdate object itself.
-     */
-    public ServerForUpdate withVersion(ServerVersion version) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ServerPropertiesForUpdate();
-        }
-        this.innerProperties().withVersion(version);
         return this;
     }
 
@@ -298,29 +275,6 @@ public final class ServerForUpdate implements JsonSerializable<ServerForUpdate> 
     }
 
     /**
-     * Get the network property: Network related properties of a server.
-     * 
-     * @return the network value.
-     */
-    public Network network() {
-        return this.innerProperties() == null ? null : this.innerProperties().network();
-    }
-
-    /**
-     * Set the network property: Network related properties of a server.
-     * 
-     * @param network the network value to set.
-     * @return the ServerForUpdate object itself.
-     */
-    public ServerForUpdate withNetwork(Network network) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ServerPropertiesForUpdate();
-        }
-        this.innerProperties().withNetwork(network);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -366,9 +320,9 @@ public final class ServerForUpdate implements JsonSerializable<ServerForUpdate> 
                 reader.nextToken();
 
                 if ("identity".equals(fieldName)) {
-                    deserializedServerForUpdate.identity = MySqlServerIdentity.fromJson(reader);
+                    deserializedServerForUpdate.identity = Identity.fromJson(reader);
                 } else if ("sku".equals(fieldName)) {
-                    deserializedServerForUpdate.sku = MySqlServerSku.fromJson(reader);
+                    deserializedServerForUpdate.sku = Sku.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedServerForUpdate.innerProperties = ServerPropertiesForUpdate.fromJson(reader);
                 } else if ("tags".equals(fieldName)) {

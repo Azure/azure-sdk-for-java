@@ -29,17 +29,23 @@ import com.azure.resourcemanager.loganalytics.fluent.models.SavedSearchInner;
 import com.azure.resourcemanager.loganalytics.fluent.models.SavedSearchesListResultInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SavedSearchesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SavedSearchesClient.
+ */
 public final class SavedSearchesClientImpl implements SavedSearchesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SavedSearchesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final OperationalInsightsManagementClientImpl client;
 
     /**
      * Initializes an instance of SavedSearchesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SavedSearchesClientImpl(OperationalInsightsManagementClientImpl client) {
@@ -98,7 +104,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
 
     /**
      * Deletes the specified saved search in a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param savedSearchId The id of the saved search.
@@ -137,7 +143,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
 
     /**
      * Deletes the specified saved search in a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param savedSearchId The id of the saved search.
@@ -176,7 +182,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
 
     /**
      * Deletes the specified saved search in a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param savedSearchId The id of the saved search.
@@ -193,7 +199,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
 
     /**
      * Deletes the specified saved search in a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param savedSearchId The id of the saved search.
@@ -211,7 +217,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
 
     /**
      * Deletes the specified saved search in a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param savedSearchId The id of the saved search.
@@ -226,7 +232,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
 
     /**
      * Creates or updates a saved search for a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param savedSearchId The id of the saved search.
@@ -234,8 +240,8 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return value object for saved search results along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return value object for saved search results along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SavedSearchInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -273,7 +279,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
 
     /**
      * Creates or updates a saved search for a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param savedSearchId The id of the saved search.
@@ -282,8 +288,8 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return value object for saved search results along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return value object for saved search results along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SavedSearchInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -320,7 +326,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
 
     /**
      * Creates or updates a saved search for a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param savedSearchId The id of the saved search.
@@ -339,7 +345,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
 
     /**
      * Creates or updates a saved search for a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param savedSearchId The id of the saved search.
@@ -359,7 +365,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
 
     /**
      * Creates or updates a saved search for a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param savedSearchId The id of the saved search.
@@ -378,7 +384,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
 
     /**
      * Gets the specified saved search for a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param savedSearchId The id of the saved search.
@@ -386,7 +392,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified saved search for a given workspace along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SavedSearchInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
@@ -419,7 +425,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
 
     /**
      * Gets the specified saved search for a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param savedSearchId The id of the saved search.
@@ -428,7 +434,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified saved search for a given workspace along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SavedSearchInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
@@ -460,7 +466,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
 
     /**
      * Gets the specified saved search for a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param savedSearchId The id of the saved search.
@@ -477,7 +483,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
 
     /**
      * Gets the specified saved search for a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param savedSearchId The id of the saved search.
@@ -495,7 +501,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
 
     /**
      * Gets the specified saved search for a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param savedSearchId The id of the saved search.
@@ -511,14 +517,14 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
 
     /**
      * Gets the saved searches for a given Log Analytics Workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the saved searches for a given Log Analytics Workspace along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SavedSearchesListResultInner>> listByWorkspaceWithResponseAsync(String resourceGroupName,
@@ -548,7 +554,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
 
     /**
      * Gets the saved searches for a given Log Analytics Workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -556,7 +562,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the saved searches for a given Log Analytics Workspace along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SavedSearchesListResultInner>> listByWorkspaceWithResponseAsync(String resourceGroupName,
@@ -585,7 +591,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
 
     /**
      * Gets the saved searches for a given Log Analytics Workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -601,7 +607,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
 
     /**
      * Gets the saved searches for a given Log Analytics Workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -618,7 +624,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
 
     /**
      * Gets the saved searches for a given Log Analytics Workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -10,8 +10,7 @@ package com.azure.resourcemanager.mysqlflexibleserver.generated;
 public final class ServersDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/ServerDelete
-     * .json
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/ServerDelete.json
      */
     /**
      * Sample code: Delete a server.

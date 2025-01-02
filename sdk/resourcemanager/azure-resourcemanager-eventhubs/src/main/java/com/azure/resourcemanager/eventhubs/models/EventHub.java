@@ -24,71 +24,99 @@ import java.util.Set;
 public interface EventHub extends NestedResource, HasManager<EventHubsManager>, Refreshable<EventHub>,
     Updatable<EventHub.Update>, HasInnerModel<EventhubInner> {
     /**
+     * Gets the resource group of the parent namespace.
+     *
      * @return the resource group of the parent namespace
      */
     String namespaceResourceGroupName();
 
     /**
+     * Gets name of the parent namespace.
+     *
      * @return name of the parent namespace
      */
     String namespaceName();
 
     /**
+     * Checks whether the data capture enabled for the event hub events.
+     *
      * @return true if the data capture enabled for the event hub events, false otherwise
      */
     boolean isDataCaptureEnabled();
 
     /**
+     * Gets configured window in seconds to be used for event capturing when capturing is enabled.
+     *
      * @return configured window in seconds to be used for event capturing when capturing is enabled
      */
     int dataCaptureWindowSizeInSeconds();
 
     /**
+     * Gets configured window in MB to be used for event capturing when capturing is enabled.
+     *
      * @return configured window in MB to be used for event capturing when capturing is enabled
      */
     int dataCaptureWindowSizeInMB();
 
     /**
+     * Checks whether to skip empty archives when capturing is enabled.
+     *
      * @return whether to skip empty archives when capturing is enabled
      */
     boolean dataCaptureSkipEmptyArchives();
 
     /**
+     * Gets the format file name that stores captured data when capturing is enabled.
+     *
      * @return the format file name that stores captured data when capturing is enabled
      */
     String dataCaptureFileNameFormat();
 
     /**
+     * Gets description of the destination where captured data will be stored.
+     *
      * @return description of the destination where captured data will be stored
      */
     Destination captureDestination();
 
     /**
+     * Gets the partition identifiers.
+     *
      * @return the partition identifiers
      */
     Set<String> partitionIds();
 
     /**
+     * Gets retention period of events in days.
+     *
      * @return retention period of events in days
      */
     int messageRetentionPeriodInDays();
 
     /**
+     * Gets consumer group in the event hub.
+     *
      * @return consumer group in the event hub
      */
     PagedFlux<EventHubConsumerGroup> listConsumerGroupsAsync();
 
     /**
+     * Gets authorization rules enabled for the event hub.
+     *
      * @return authorization rules enabled for the event hub
      */
     PagedFlux<EventHubAuthorizationRule> listAuthorizationRulesAsync();
 
     /**
+     * Gets consumer group in the event hub.
+     *
      * @return consumer group in the event hub
      */
     PagedIterable<EventHubConsumerGroup> listConsumerGroups();
 
     /**
+     * Gets authorization rules enabled for the event hub.
+     *
      * @return authorization rules enabled for the event hub
      */
     PagedIterable<EventHubAuthorizationRule> listAuthorizationRules();

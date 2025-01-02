@@ -32,17 +32,23 @@ import com.azure.resourcemanager.applicationinsights.models.ItemTypeParameter;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AnalyticsItemsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AnalyticsItemsClient.
+ */
 public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AnalyticsItemsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApplicationInsightsManagementClientImpl client;
 
     /**
      * Initializes an instance of AnalyticsItemsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AnalyticsItemsClientImpl(ApplicationInsightsManagementClientImpl client) {
@@ -106,21 +112,21 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
 
     /**
      * Gets a list of Analytics Items defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @param scope Enum indicating if this item definition is owned by a specific user or is shared between all users
-     *     with access to the Application Insights component.
+     * with access to the Application Insights component.
      * @param type Enum indicating the type of the Analytics item.
      * @param includeContent Flag indicating whether or not to return the content of each applicable item. If false,
-     *     only return the item information.
+     * only return the item information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Analytics Items defined within an Application Insights component along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<ApplicationInsightsComponentAnalyticsItemInner>>> listWithResponseAsync(
@@ -154,22 +160,22 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
 
     /**
      * Gets a list of Analytics Items defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @param scope Enum indicating if this item definition is owned by a specific user or is shared between all users
-     *     with access to the Application Insights component.
+     * with access to the Application Insights component.
      * @param type Enum indicating the type of the Analytics item.
      * @param includeContent Flag indicating whether or not to return the content of each applicable item. If false,
-     *     only return the item information.
+     * only return the item information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Analytics Items defined within an Application Insights component along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<ApplicationInsightsComponentAnalyticsItemInner>>> listWithResponseAsync(
@@ -202,16 +208,16 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
 
     /**
      * Gets a list of Analytics Items defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Analytics Items defined within an Application Insights component on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<List<ApplicationInsightsComponentAnalyticsItemInner>> listAsync(String resourceGroupName,
@@ -225,16 +231,16 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
 
     /**
      * Gets a list of Analytics Items defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @param scope Enum indicating if this item definition is owned by a specific user or is shared between all users
-     *     with access to the Application Insights component.
+     * with access to the Application Insights component.
      * @param type Enum indicating the type of the Analytics item.
      * @param includeContent Flag indicating whether or not to return the content of each applicable item. If false,
-     *     only return the item information.
+     * only return the item information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -251,11 +257,11 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
 
     /**
      * Gets a list of Analytics Items defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -273,18 +279,18 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
 
     /**
      * Gets a specific Analytics Items defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @param id The Id of a specific item defined in the Application Insights component.
      * @param name The name of a specific item defined in the Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific Analytics Items defined within an Application Insights component along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentAnalyticsItemInner>> getWithResponseAsync(
@@ -317,11 +323,11 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
 
     /**
      * Gets a specific Analytics Items defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @param id The Id of a specific item defined in the Application Insights component.
      * @param name The name of a specific item defined in the Application Insights component.
      * @param context The context to associate with this operation.
@@ -329,7 +335,7 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific Analytics Items defined within an Application Insights component along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentAnalyticsItemInner>> getWithResponseAsync(
@@ -362,16 +368,16 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
 
     /**
      * Gets a specific Analytics Items defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific Analytics Items defined within an Application Insights component on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationInsightsComponentAnalyticsItemInner> getAsync(String resourceGroupName, String resourceName,
@@ -384,11 +390,11 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
 
     /**
      * Gets a specific Analytics Items defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @param id The Id of a specific item defined in the Application Insights component.
      * @param name The name of a specific item defined in the Application Insights component.
      * @param context The context to associate with this operation.
@@ -405,11 +411,11 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
 
     /**
      * Gets a specific Analytics Items defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -425,20 +431,20 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
 
     /**
      * Adds or Updates a specific Analytics Item within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @param itemProperties Properties that need to be specified to create a new item and add it to an Application
-     *     Insights component.
+     * Insights component.
      * @param overrideItem Flag indicating whether or not to force save an item. This allows overriding an item if it
-     *     already exists.
+     * already exists.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties that define an Analytics item that is associated to an Application Insights component along
-     *     with {@link Response} on successful completion of {@link Mono}.
+     * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentAnalyticsItemInner>> putWithResponseAsync(
@@ -477,21 +483,21 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
 
     /**
      * Adds or Updates a specific Analytics Item within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @param itemProperties Properties that need to be specified to create a new item and add it to an Application
-     *     Insights component.
+     * Insights component.
      * @param overrideItem Flag indicating whether or not to force save an item. This allows overriding an item if it
-     *     already exists.
+     * already exists.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties that define an Analytics item that is associated to an Application Insights component along
-     *     with {@link Response} on successful completion of {@link Mono}.
+     * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentAnalyticsItemInner>> putWithResponseAsync(
@@ -529,18 +535,18 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
 
     /**
      * Adds or Updates a specific Analytics Item within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @param itemProperties Properties that need to be specified to create a new item and add it to an Application
-     *     Insights component.
+     * Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties that define an Analytics item that is associated to an Application Insights component on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationInsightsComponentAnalyticsItemInner> putAsync(String resourceGroupName, String resourceName,
@@ -552,21 +558,21 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
 
     /**
      * Adds or Updates a specific Analytics Item within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @param itemProperties Properties that need to be specified to create a new item and add it to an Application
-     *     Insights component.
+     * Insights component.
      * @param overrideItem Flag indicating whether or not to force save an item. This allows overriding an item if it
-     *     already exists.
+     * already exists.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties that define an Analytics item that is associated to an Application Insights component along
-     *     with {@link Response}.
+     * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInsightsComponentAnalyticsItemInner> putWithResponse(String resourceGroupName,
@@ -578,13 +584,13 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
 
     /**
      * Adds or Updates a specific Analytics Item within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @param itemProperties Properties that need to be specified to create a new item and add it to an Application
-     *     Insights component.
+     * Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -600,11 +606,11 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
 
     /**
      * Deletes a specific Analytics Items defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @param id The Id of a specific item defined in the Application Insights component.
      * @param name The name of a specific item defined in the Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -642,11 +648,11 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
 
     /**
      * Deletes a specific Analytics Items defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @param id The Id of a specific item defined in the Application Insights component.
      * @param name The name of a specific item defined in the Application Insights component.
      * @param context The context to associate with this operation.
@@ -684,11 +690,11 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
 
     /**
      * Deletes a specific Analytics Items defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -704,11 +710,11 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
 
     /**
      * Deletes a specific Analytics Items defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @param id The Id of a specific item defined in the Application Insights component.
      * @param name The name of a specific item defined in the Application Insights component.
      * @param context The context to associate with this operation.
@@ -725,11 +731,11 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
 
     /**
      * Deletes a specific Analytics Items defined within an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
+     * users with access to the Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

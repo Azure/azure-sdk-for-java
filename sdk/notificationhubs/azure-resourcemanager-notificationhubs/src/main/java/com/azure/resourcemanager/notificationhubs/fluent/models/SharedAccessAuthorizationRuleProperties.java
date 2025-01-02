@@ -5,15 +5,12 @@
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.notificationhubs.models.AccessRights;
 import java.io.IOException;
-import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
@@ -23,49 +20,47 @@ import java.util.List;
 public final class SharedAccessAuthorizationRuleProperties
     implements JsonSerializable<SharedAccessAuthorizationRuleProperties> {
     /*
-     * Gets or sets the rights associated with the rule.
+     * The rights associated with the rule.
      */
     private List<AccessRights> rights;
 
     /*
-     * Gets a base64-encoded 256-bit primary key for signing and
-     * validating the SAS token.
+     * A base64-encoded 256-bit primary key for signing and validating the SAS token.
      */
     private String primaryKey;
 
     /*
-     * Gets a base64-encoded 256-bit primary key for signing and
-     * validating the SAS token.
+     * A base64-encoded 256-bit primary key for signing and validating the SAS token.
      */
     private String secondaryKey;
 
     /*
-     * Gets a string that describes the authorization rule.
+     * A string that describes the authorization rule.
      */
     private String keyName;
 
     /*
-     * Gets the last modified time for this rule
-     */
-    private OffsetDateTime modifiedTime;
-
-    /*
-     * Gets the created time for this rule
-     */
-    private OffsetDateTime createdTime;
-
-    /*
-     * Gets a string that describes the claim type
+     * A string that describes the claim type
      */
     private String claimType;
 
     /*
-     * Gets a string that describes the claim value
+     * A string that describes the claim value
      */
     private String claimValue;
 
     /*
-     * Gets the revision number for the rule
+     * The last modified time for this rule
+     */
+    private String modifiedTime;
+
+    /*
+     * The created time for this rule
+     */
+    private String createdTime;
+
+    /*
+     * The revision number for the rule
      */
     private Integer revision;
 
@@ -76,7 +71,7 @@ public final class SharedAccessAuthorizationRuleProperties
     }
 
     /**
-     * Get the rights property: Gets or sets the rights associated with the rule.
+     * Get the rights property: The rights associated with the rule.
      * 
      * @return the rights value.
      */
@@ -85,7 +80,7 @@ public final class SharedAccessAuthorizationRuleProperties
     }
 
     /**
-     * Set the rights property: Gets or sets the rights associated with the rule.
+     * Set the rights property: The rights associated with the rule.
      * 
      * @param rights the rights value to set.
      * @return the SharedAccessAuthorizationRuleProperties object itself.
@@ -96,8 +91,7 @@ public final class SharedAccessAuthorizationRuleProperties
     }
 
     /**
-     * Get the primaryKey property: Gets a base64-encoded 256-bit primary key for signing and
-     * validating the SAS token.
+     * Get the primaryKey property: A base64-encoded 256-bit primary key for signing and validating the SAS token.
      * 
      * @return the primaryKey value.
      */
@@ -106,20 +100,7 @@ public final class SharedAccessAuthorizationRuleProperties
     }
 
     /**
-     * Set the primaryKey property: Gets a base64-encoded 256-bit primary key for signing and
-     * validating the SAS token.
-     * 
-     * @param primaryKey the primaryKey value to set.
-     * @return the SharedAccessAuthorizationRuleProperties object itself.
-     */
-    public SharedAccessAuthorizationRuleProperties withPrimaryKey(String primaryKey) {
-        this.primaryKey = primaryKey;
-        return this;
-    }
-
-    /**
-     * Get the secondaryKey property: Gets a base64-encoded 256-bit primary key for signing and
-     * validating the SAS token.
+     * Get the secondaryKey property: A base64-encoded 256-bit primary key for signing and validating the SAS token.
      * 
      * @return the secondaryKey value.
      */
@@ -128,19 +109,7 @@ public final class SharedAccessAuthorizationRuleProperties
     }
 
     /**
-     * Set the secondaryKey property: Gets a base64-encoded 256-bit primary key for signing and
-     * validating the SAS token.
-     * 
-     * @param secondaryKey the secondaryKey value to set.
-     * @return the SharedAccessAuthorizationRuleProperties object itself.
-     */
-    public SharedAccessAuthorizationRuleProperties withSecondaryKey(String secondaryKey) {
-        this.secondaryKey = secondaryKey;
-        return this;
-    }
-
-    /**
-     * Get the keyName property: Gets a string that describes the authorization rule.
+     * Get the keyName property: A string that describes the authorization rule.
      * 
      * @return the keyName value.
      */
@@ -149,25 +118,7 @@ public final class SharedAccessAuthorizationRuleProperties
     }
 
     /**
-     * Get the modifiedTime property: Gets the last modified time for this rule.
-     * 
-     * @return the modifiedTime value.
-     */
-    public OffsetDateTime modifiedTime() {
-        return this.modifiedTime;
-    }
-
-    /**
-     * Get the createdTime property: Gets the created time for this rule.
-     * 
-     * @return the createdTime value.
-     */
-    public OffsetDateTime createdTime() {
-        return this.createdTime;
-    }
-
-    /**
-     * Get the claimType property: Gets a string that describes the claim type.
+     * Get the claimType property: A string that describes the claim type.
      * 
      * @return the claimType value.
      */
@@ -176,7 +127,7 @@ public final class SharedAccessAuthorizationRuleProperties
     }
 
     /**
-     * Get the claimValue property: Gets a string that describes the claim value.
+     * Get the claimValue property: A string that describes the claim value.
      * 
      * @return the claimValue value.
      */
@@ -185,7 +136,25 @@ public final class SharedAccessAuthorizationRuleProperties
     }
 
     /**
-     * Get the revision property: Gets the revision number for the rule.
+     * Get the modifiedTime property: The last modified time for this rule.
+     * 
+     * @return the modifiedTime value.
+     */
+    public String modifiedTime() {
+        return this.modifiedTime;
+    }
+
+    /**
+     * Get the createdTime property: The created time for this rule.
+     * 
+     * @return the createdTime value.
+     */
+    public String createdTime() {
+        return this.createdTime;
+    }
+
+    /**
+     * Get the revision property: The revision number for the rule.
      * 
      * @return the revision value.
      */
@@ -199,14 +168,7 @@ public final class SharedAccessAuthorizationRuleProperties
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (rights() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property rights in model SharedAccessAuthorizationRuleProperties"));
-        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(SharedAccessAuthorizationRuleProperties.class);
 
     /**
      * {@inheritDoc}
@@ -216,8 +178,6 @@ public final class SharedAccessAuthorizationRuleProperties
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("rights", this.rights,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
-        jsonWriter.writeStringField("primaryKey", this.primaryKey);
-        jsonWriter.writeStringField("secondaryKey", this.secondaryKey);
         return jsonWriter.writeEndObject();
     }
 
@@ -227,7 +187,6 @@ public final class SharedAccessAuthorizationRuleProperties
      * @param jsonReader The JsonReader being read.
      * @return An instance of SharedAccessAuthorizationRuleProperties if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SharedAccessAuthorizationRuleProperties.
      */
     public static SharedAccessAuthorizationRuleProperties fromJson(JsonReader jsonReader) throws IOException {
@@ -248,16 +207,14 @@ public final class SharedAccessAuthorizationRuleProperties
                     deserializedSharedAccessAuthorizationRuleProperties.secondaryKey = reader.getString();
                 } else if ("keyName".equals(fieldName)) {
                     deserializedSharedAccessAuthorizationRuleProperties.keyName = reader.getString();
-                } else if ("modifiedTime".equals(fieldName)) {
-                    deserializedSharedAccessAuthorizationRuleProperties.modifiedTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("createdTime".equals(fieldName)) {
-                    deserializedSharedAccessAuthorizationRuleProperties.createdTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("claimType".equals(fieldName)) {
                     deserializedSharedAccessAuthorizationRuleProperties.claimType = reader.getString();
                 } else if ("claimValue".equals(fieldName)) {
                     deserializedSharedAccessAuthorizationRuleProperties.claimValue = reader.getString();
+                } else if ("modifiedTime".equals(fieldName)) {
+                    deserializedSharedAccessAuthorizationRuleProperties.modifiedTime = reader.getString();
+                } else if ("createdTime".equals(fieldName)) {
+                    deserializedSharedAccessAuthorizationRuleProperties.createdTime = reader.getString();
                 } else if ("revision".equals(fieldName)) {
                     deserializedSharedAccessAuthorizationRuleProperties.revision
                         = reader.getNullable(JsonReader::getInt);
