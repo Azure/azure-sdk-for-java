@@ -13,6 +13,9 @@ found [here](https://azure.github.io/azure-sdk/releases/latest/#java-packages).
 Azure Core allows client libraries to expose common functionality consistently, so that once you learn how to use these
 APIs in one client library, you will know how to use them in other client libraries.
 
+Testing cspell changes
+
+
 ## Getting started
 
 ### Prerequisites
