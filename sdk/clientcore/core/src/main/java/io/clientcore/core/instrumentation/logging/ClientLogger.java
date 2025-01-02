@@ -1,15 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.util;
+package io.clientcore.core.instrumentation.logging;
 
 import io.clientcore.core.annotation.Metadata;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.instrumentation.DefaultInstrumentation;
-import io.clientcore.core.implementation.util.DefaultLogger;
-import io.clientcore.core.implementation.util.Slf4jLoggerShim;
+import io.clientcore.core.implementation.instrumentation.Slf4jLoggerShim;
+import io.clientcore.core.implementation.instrumentation.DefaultLogger;
 import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.serialization.json.implementation.DefaultJsonWriter;
+import io.clientcore.core.util.Context;
 import io.clientcore.core.util.configuration.Configuration;
 
 import java.io.IOException;
@@ -443,15 +444,15 @@ public class ClientLogger {
             return this;
         }
 
+        /**
+         * Sets operation context on the log event being created.
+         * It's used to correlate logs between each other and with other telemetry items.
+         *
+         * @param context operation context.
+         * @return The updated {@code LoggingEventBuilder} object.
+         */
         public LoggingEvent setContext(Context context) {
             this.context = context;
-            return this;
-        }
-
-        public LoggingEvent setCause(Throwable throwable) {
-            if (this.isEnabled) {
-                setThrowableInternal(throwable, logger.canLogAtLevel(LogLevel.VERBOSE));
-            }
             return this;
         }
 
@@ -469,6 +470,7 @@ public class ClientLogger {
 
         /**
          * Logs event annotated with context.
+         * Logs event with context.
          */
         public void log() {
             log(null);

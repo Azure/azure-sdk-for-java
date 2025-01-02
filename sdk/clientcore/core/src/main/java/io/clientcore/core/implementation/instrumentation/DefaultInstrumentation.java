@@ -16,7 +16,7 @@ import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
 import io.clientcore.core.instrumentation.tracing.TraceContextSetter;
 import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.instrumentation.tracing.TracingScope;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.util.Context;
 
 import java.util.HashMap;
@@ -60,17 +60,22 @@ public class DefaultInstrumentation implements Instrumentation {
             .addKeyValue("span.id", span.getSpanContext().getSpanId());
     }
 
-    private static final class DefaultTracer implements Tracer {
+    public static final class DefaultTracer implements Tracer {
         private final boolean isEnabled;
         private final ClientLogger logger;
 
         DefaultTracer(InstrumentationOptions<?> instrumentationOptions, LibraryInstrumentationOptions libraryOptions) {
-            this.isEnabled = instrumentationOptions.isTracingEnabled(); // TODO: probably need additional config for log-based tracing
+            this.isEnabled = instrumentationOptions == null || instrumentationOptions.isTracingEnabled(); // TODO: probably need additional config for log-based tracing
             Map<String, Object> libraryContext = new HashMap<>(2);
             libraryContext.put("library.version", libraryOptions.getLibraryVersion());
             libraryContext.put("library.instrumentation.schema_url", libraryOptions.getSchemaUrl());
 
-            this.logger = new ClientLogger(libraryOptions.getLibraryName() + ".tracing", libraryContext);
+            Object providedLogger = instrumentationOptions == null ? null : instrumentationOptions.getProvider();
+            if (providedLogger instanceof ClientLogger) {
+                this.logger = (ClientLogger) providedLogger;
+            } else {
+                this.logger = new ClientLogger(libraryOptions.getLibraryName() + ".tracing", libraryContext);
+            }
         }
 
         @Override

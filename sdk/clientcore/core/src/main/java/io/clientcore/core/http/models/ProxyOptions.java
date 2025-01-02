@@ -3,7 +3,7 @@
 
 package io.clientcore.core.http.models;
 
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.util.auth.BasicChallengeHandler;
 import io.clientcore.core.util.auth.ChallengeHandler;
 import io.clientcore.core.util.auth.DigestChallengeHandler;

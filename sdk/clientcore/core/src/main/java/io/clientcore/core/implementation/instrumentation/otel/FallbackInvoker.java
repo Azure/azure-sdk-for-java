@@ -4,7 +4,7 @@
 package io.clientcore.core.implementation.instrumentation.otel;
 
 import io.clientcore.core.implementation.ReflectiveInvoker;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 /**
  * A wrapper around a {@link ReflectiveInvoker} that provides a fallback value if the invocation fails,

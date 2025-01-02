@@ -4,7 +4,7 @@
 package io.clientcore.core.implementation.instrumentation.otel.tracing;
 
 import io.clientcore.core.instrumentation.Instrumentation;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.util.Context;
 
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.CONTEXT_CLASS;

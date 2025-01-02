@@ -90,7 +90,7 @@ public class HttpPatch extends ScenarioBase<StressOptions> {
         HttpLogOptions logOptions = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.HEADERS);
 
         HttpPipelineBuilder builder
-            = new HttpPipelineBuilder().policies(new HttpRetryPolicy(), new HttpLoggingPolicy(logOptions));
+            = new HttpPipelineBuilder().policies(new HttpRetryPolicy(), new InstrumentationPolicy(null, logOptions));
 
         if (options.getHttpClient() == PerfStressOptions.HttpClientType.OKHTTP) {
             builder.httpClient(new OkHttpHttpClientProvider().getSharedInstance());

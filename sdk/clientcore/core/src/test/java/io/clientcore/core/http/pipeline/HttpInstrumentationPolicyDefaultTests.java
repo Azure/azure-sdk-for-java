@@ -20,29 +20,46 @@ import java.net.SocketException;
 
 import static io.clientcore.core.http.models.HttpHeaderName.TRACEPARENT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class HttpInstrumentationPolicyNoopTests {
+public class HttpInstrumentationPolicyDefaultTests {
     private static final InstrumentationOptions<?> OPTIONS = new InstrumentationOptions<>();
+    private static final InstrumentationOptions<?> DISABLED_TRACING_OPTIONS
+        = new InstrumentationOptions<>().setTracingEnabled(false);
     private static final HttpLogOptions ENABLED_HTTP_LOG_OPTIONS
         = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.HEADERS);
     private static final HttpHeaderName TRACESTATE = HttpHeaderName.fromString("tracestate");
 
+    @Test
+    public void simpleRequestTracingDisabled() throws IOException {
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new HttpInstrumentationPolicy(DISABLED_TRACING_OPTIONS, ENABLED_HTTP_LOG_OPTIONS))
+            .httpClient(request -> new MockHttpResponse(request, 200))
+            .build();
+
+        // should not throw
+        try (Response<?> response = pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost/"))) {
+            assertEquals(200, response.getStatusCode());
+            assertNull(response.getRequest().getHeaders().get(TRACESTATE));
+            assertNull(response.getRequest().getHeaders().get(TRACEPARENT));
+        }
+    }
+
     @ParameterizedTest
     @ValueSource(ints = { 200, 201, 206, 302, 400, 404, 500, 503 })
-    public void simpleRequestTracingDisabled(int statusCode) throws IOException {
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(new HttpInstrumentationPolicy(OPTIONS, ENABLED_HTTP_LOG_OPTIONS),
-                new HttpLoggingPolicy(ENABLED_HTTP_LOG_OPTIONS))
-            .httpClient(request -> new MockHttpResponse(request, statusCode))
-            .build();
+    public void simpleRequestTracingEnabled(int statusCode) throws IOException {
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(OPTIONS, ENABLED_HTTP_LOG_OPTIONS))
+                .httpClient(request -> new MockHttpResponse(request, statusCode))
+                .build();
 
         // should not throw
         try (Response<?> response = pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost/"))) {
             assertEquals(statusCode, response.getStatusCode());
             assertNull(response.getRequest().getHeaders().get(TRACESTATE));
-            assertNull(response.getRequest().getHeaders().get(TRACEPARENT));
+            assertNotNull(response.getRequest().getHeaders().get(TRACEPARENT));
         }
     }
 
@@ -50,9 +67,7 @@ public class HttpInstrumentationPolicyNoopTests {
     public void exceptionTracingDisabled() {
         SocketException exception = new SocketException("test exception");
         HttpPipeline pipeline
-            = new HttpPipelineBuilder()
-                .policies(new HttpInstrumentationPolicy(OPTIONS, ENABLED_HTTP_LOG_OPTIONS),
-                    new HttpLoggingPolicy(ENABLED_HTTP_LOG_OPTIONS))
+            = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(OPTIONS, ENABLED_HTTP_LOG_OPTIONS))
                 .httpClient(request -> {
                     throw exception;
                 })

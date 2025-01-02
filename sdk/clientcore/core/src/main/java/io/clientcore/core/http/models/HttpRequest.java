@@ -5,7 +5,7 @@ package io.clientcore.core.http.models;
 
 import io.clientcore.core.annotation.Metadata;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.util.binarydata.BinaryData;
 
 import java.net.URI;

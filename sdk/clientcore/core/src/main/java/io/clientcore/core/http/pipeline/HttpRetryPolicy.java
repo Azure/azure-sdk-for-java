@@ -9,8 +9,7 @@ import io.clientcore.core.http.models.HttpRetryOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
 import io.clientcore.core.implementation.util.ImplUtils;
-import io.clientcore.core.implementation.util.LoggingKeys;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.util.configuration.Configuration;
 
 import java.io.IOException;
@@ -26,6 +25,8 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_DURATION_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_RESEND_COUNT_KEY;
 import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
 import static io.clientcore.core.util.configuration.Configuration.PROPERTY_REQUEST_RETRY_COUNT;
 
@@ -271,18 +272,18 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
 
     private static void logRetry(int tryCount, Duration delayDuration) {
         LOGGER.atVerbose()
-            .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
-            .addKeyValue(LoggingKeys.DURATION_MS_KEY, delayDuration.toMillis())
+            .addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount)
+            .addKeyValue(HTTP_REQUEST_DURATION_KEY, delayDuration.toMillis())
             .log("Retrying.");
     }
 
     private static void logRetryExhausted(int tryCount) {
-        LOGGER.atInfo().addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount).log("Retry attempts have been exhausted.");
+        LOGGER.atInfo().addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount).log("Retry attempts have been exhausted.");
     }
 
     private static void logRetryWithError(ClientLogger.LoggingEvent loggingEvent, int tryCount, String message,
         Throwable throwable) {
-        loggingEvent.addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount).log(message, throwable);
+        loggingEvent.addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount).log(message, throwable);
     }
 
     private Duration calculateRetryDelay(int retryAttempts) {

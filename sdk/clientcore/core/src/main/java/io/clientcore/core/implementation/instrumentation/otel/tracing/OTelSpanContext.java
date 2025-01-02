@@ -6,7 +6,7 @@ package io.clientcore.core.implementation.instrumentation.otel.tracing;
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.instrumentation.otel.FallbackInvoker;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.SPAN_CONTEXT_CLASS;

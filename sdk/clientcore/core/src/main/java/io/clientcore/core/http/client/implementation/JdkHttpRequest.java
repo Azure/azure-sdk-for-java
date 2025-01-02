@@ -3,7 +3,7 @@
 package io.clientcore.core.http.client.implementation;
 
 import io.clientcore.core.http.models.HttpMethod;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.net.URI;
 import java.net.http.HttpClient;

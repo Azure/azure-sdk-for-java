@@ -4,7 +4,7 @@ package io.clientcore.core.http.client.implementation;
 
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.util.SharedExecutorService;
 import io.clientcore.core.util.configuration.Configuration;
 

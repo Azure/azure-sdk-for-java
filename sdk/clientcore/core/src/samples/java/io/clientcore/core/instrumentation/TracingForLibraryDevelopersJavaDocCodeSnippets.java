@@ -7,7 +7,6 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpLogOptions;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
-import io.clientcore.core.http.pipeline.HttpLoggingPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
@@ -50,6 +49,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
     /**
      * This example shows minimal distributed tracing instrumentation.
      */
+    @SuppressWarnings("try")
     public void traceCall() {
 
         Tracer tracer = Instrumentation.create(null, LIBRARY_OPTIONS).getTracer();
@@ -83,6 +83,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
     /**
      * This example shows full distributed tracing instrumentation that adds attributes.
      */
+    @SuppressWarnings("try")
     public void traceWithAttributes() {
 
         Tracer tracer = Instrumentation.create(null, LIBRARY_OPTIONS).getTracer();
@@ -123,8 +124,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(
                 new HttpRetryPolicy(),
-                new HttpInstrumentationPolicy(instrumentationOptions, logOptions),
-                new HttpLoggingPolicy(logOptions))
+                new HttpInstrumentationPolicy(instrumentationOptions, logOptions))
             .build();
 
         // END:  io.clientcore.core.telemetry.tracing.instrumentationpolicy
@@ -143,8 +143,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(
                 new HttpRetryPolicy(),
-                new HttpInstrumentationPolicy(instrumentationOptions, logOptions),
-                new HttpLoggingPolicy(logOptions))
+                new HttpInstrumentationPolicy(instrumentationOptions, logOptions))
             .build();
 
         // END:  io.clientcore.core.telemetry.tracing.customizeinstrumentationpolicy
@@ -169,8 +168,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
             .policies(
                 new HttpRetryPolicy(),
                 new HttpInstrumentationPolicy(instrumentationOptions, logOptions),
-                enrichingPolicy,
-                new HttpLoggingPolicy(logOptions))
+                enrichingPolicy)
             .build();
 
 

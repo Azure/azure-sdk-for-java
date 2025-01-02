@@ -10,7 +10,7 @@ import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
 import io.clientcore.core.instrumentation.tracing.TracingScope;
 import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.util.Objects;
 

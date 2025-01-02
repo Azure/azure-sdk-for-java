@@ -76,4 +76,45 @@ public interface Span {
      * @return The {@link TracingScope} object.
      */
     TracingScope makeCurrent();
+
+    /**
+     * Returns a no-op span.
+     * @return A no-op span.
+     */
+    static Span noop() {
+        return new Span() {
+            private final static TracingScope NOOP_SCOPE = () -> {
+            };
+
+            @Override
+            public Span setAttribute(String key, Object value) {
+                return this;
+            }
+
+            @Override
+            public Span setError(String errorType) {
+                return this;
+            }
+
+            @Override
+            public void end(Throwable throwable) {
+
+            }
+
+            @Override
+            public void end() {
+
+            }
+
+            @Override
+            public boolean isRecording() {
+                return false;
+            }
+
+            @Override
+            public TracingScope makeCurrent() {
+                return NOOP_SCOPE;
+            }
+        };
+    }
 }

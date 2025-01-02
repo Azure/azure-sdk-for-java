@@ -71,7 +71,8 @@
       <Class name="io.clientcore.core.implementation.http.rest.SwaggerMethodParser" />
       <Class name="io.clientcore.core.implementation.instrumentation.otel.OTelInstrumentation" />
       <Class name="io.clientcore.core.serialization.json.implementation.jackson.core.util.RequestPayload" />
-      <Class name="io.clientcore.core.util.ClientLogger" />
+      <Class name="io.clientcore.core.instrumentation.logging.ClientLogger" />
+      <Class name="io.clientcore.core.implementation.instrumentation.otel.OTelInstrumentation" />
     </Or>
   </Match>
   <Match>
@@ -165,7 +166,7 @@
   <Match>
     <Bug pattern="INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE" />
     <Or>
-      <Class name="io.clientcore.core.implementation.util.DefaultLogger" />
+      <Class name="io.clientcore.core.implementation.instrumentation.DefaultLogger" />
       <Class name="io.clientcore.core.serialization.xml.implementation.aalto.UncheckedStreamException" />
       <Class name="io.clientcore.core.util.ClientLoggerTests" />
     </Or>

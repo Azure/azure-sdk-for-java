@@ -6,7 +6,7 @@ package io.clientcore.core.http.models;
 import io.clientcore.core.http.annotation.QueryParam;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.implementation.http.rest.UriEscapers;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.util.Context;
 import io.clientcore.core.util.binarydata.BinaryData;
 

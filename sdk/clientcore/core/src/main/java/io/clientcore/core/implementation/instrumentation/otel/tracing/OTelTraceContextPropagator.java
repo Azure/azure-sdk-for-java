@@ -9,7 +9,7 @@ import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
 import io.clientcore.core.instrumentation.tracing.TraceContextGetter;
 import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
 import io.clientcore.core.instrumentation.tracing.TraceContextSetter;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.util.Context;
 
 import java.lang.reflect.InvocationHandler;

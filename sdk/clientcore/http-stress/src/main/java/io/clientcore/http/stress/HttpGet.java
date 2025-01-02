@@ -21,6 +21,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.lang.instrument.Instrumentation;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
@@ -152,7 +153,7 @@ public class HttpGet extends ScenarioBase<StressOptions> {
         HttpLogOptions logOptions = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.HEADERS);
 
         HttpPipelineBuilder builder
-            = new HttpPipelineBuilder().policies(new HttpRetryPolicy(), new HttpLoggingPolicy(logOptions));
+            = new HttpPipelineBuilder().policies(new HttpRetryPolicy(), new InstrumentationPolicy(null, logOptions));
 
         if (options.getHttpClient() == PerfStressOptions.HttpClientType.OKHTTP) {
             builder.httpClient(new OkHttpHttpClientProvider().getSharedInstance());

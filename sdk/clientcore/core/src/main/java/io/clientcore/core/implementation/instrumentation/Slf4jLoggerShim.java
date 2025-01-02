@@ -1,16 +1,13 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
-package io.clientcore.core.implementation.util;
+package io.clientcore.core.implementation.instrumentation;
 
 import io.clientcore.core.implementation.ReflectionUtils;
 import io.clientcore.core.implementation.ReflectiveInvoker;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
-import static io.clientcore.core.util.ClientLogger.LogLevel.ERROR;
-import static io.clientcore.core.util.ClientLogger.LogLevel.INFORMATIONAL;
-import static io.clientcore.core.util.ClientLogger.LogLevel.VERBOSE;
-import static io.clientcore.core.util.ClientLogger.LogLevel.WARNING;
+import static io.clientcore.core.instrumentation.logging.ClientLogger.LogLevel.ERROR;
+import static io.clientcore.core.instrumentation.logging.ClientLogger.LogLevel.INFORMATIONAL;
+import static io.clientcore.core.instrumentation.logging.ClientLogger.LogLevel.VERBOSE;
+import static io.clientcore.core.instrumentation.logging.ClientLogger.LogLevel.WARNING;
 
 public class Slf4jLoggerShim {
     private static final DefaultLogger DEFAULT_LOGGER = new DefaultLogger(Slf4jLoggerShim.class);

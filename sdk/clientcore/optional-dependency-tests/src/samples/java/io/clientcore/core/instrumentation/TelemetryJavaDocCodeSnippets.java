@@ -104,6 +104,7 @@ public class TelemetryJavaDocCodeSnippets {
      * client library with spans from application code
      * using current context.
      */
+    @SuppressWarnings("try")
     public void correlationWithImplicitContext() {
         // BEGIN: io.clientcore.core.telemetry.correlationwithimplicitcontext
 

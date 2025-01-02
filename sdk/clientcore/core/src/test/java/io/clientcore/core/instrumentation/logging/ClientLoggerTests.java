@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.util;
+package io.clientcore.core.instrumentation.logging;
 
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
-import io.clientcore.core.implementation.util.DefaultLogger;
+import io.clientcore.core.implementation.instrumentation.DefaultLogger;
 import io.clientcore.core.serialization.json.JsonOptions;
 import io.clientcore.core.serialization.json.JsonProviders;
 import io.clientcore.core.serialization.json.JsonReader;
-import io.clientcore.core.util.ClientLogger.LogLevel;
+import io.clientcore.core.instrumentation.logging.ClientLogger.LogLevel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
