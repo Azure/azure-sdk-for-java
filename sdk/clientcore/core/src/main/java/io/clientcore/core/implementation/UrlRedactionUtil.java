@@ -21,11 +21,13 @@ public final class UrlRedactionUtil {
      *
      * @param uri URI where the request is being sent.
      * @param allowedQueryParameterNames Set of query parameter names that are allowed to be logged.
-     * @return A URI with query parameters redacted based on configurations in this policy.
+     * @return A URI with query parameters redacted based on provided allow-list.
      */
     public static String getRedactedUri(URI uri, Set<String> allowedQueryParameterNames) {
         String query = uri.getQuery();
-        StringBuilder uriBuilder = new StringBuilder();
+
+        int estimatedUriLength = uri.toString().length() + 128;
+        StringBuilder uriBuilder = new StringBuilder(estimatedUriLength);
 
         // Add the protocol, host and port to the uriBuilder
         uriBuilder.append(uri.getScheme()).append("://").append(uri.getHost());

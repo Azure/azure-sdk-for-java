@@ -98,6 +98,6 @@ public class OTelSpanContext {
     }
 
     private boolean isInitialized() {
-        return (OTelInitializer.isInitialized() && otelSpanContext != null);
+        return otelSpanContext != null && OTelInitializer.isInitialized();
     }
 }

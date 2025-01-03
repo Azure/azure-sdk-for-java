@@ -91,7 +91,7 @@ public class OTelTraceContextPropagator implements TraceContextPropagator {
     }
 
     private boolean isInitialized() {
-        return OTelInitializer.isInitialized() && otelPropagator != null;
+        return otelPropagator != null && OTelInitializer.isInitialized();
     }
 
     private static final class Setter<C> implements InvocationHandler {

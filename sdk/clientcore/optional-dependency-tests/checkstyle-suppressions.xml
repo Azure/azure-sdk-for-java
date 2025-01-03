@@ -4,5 +4,5 @@
 
 <suppressions>
   <suppress files="io.clientcore.core.instrumentation.*" checks="IllegalImport" />
-  <suppress files="io.clientcore.core.http.pipeline.InstrumentationPolicyTests.java" checks="IllegalImport" />
+  <suppress files="io.clientcore.core.http.pipeline.HttpInstrumentationPolicyTests.java" checks="IllegalImport" />
 </suppressions>

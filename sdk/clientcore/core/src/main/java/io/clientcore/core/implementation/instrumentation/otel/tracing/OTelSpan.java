@@ -213,6 +213,6 @@ public class OTelSpan implements Span {
     }
 
     private boolean isInitialized() {
-        return OTelInitializer.isInitialized() && otelSpan != null;
+        return otelSpan != null && OTelInitializer.isInitialized();
     }
 }

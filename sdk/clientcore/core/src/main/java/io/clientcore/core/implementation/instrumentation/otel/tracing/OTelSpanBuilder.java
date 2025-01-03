@@ -165,6 +165,6 @@ public class OTelSpanBuilder implements SpanBuilder {
     }
 
     private boolean isInitialized() {
-        return OTelInitializer.isInitialized() && otelSpanBuilder != null;
+        return otelSpanBuilder != null && OTelInitializer.isInitialized();
     }
 }

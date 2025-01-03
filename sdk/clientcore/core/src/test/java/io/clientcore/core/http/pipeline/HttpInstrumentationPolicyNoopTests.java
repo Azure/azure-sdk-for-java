@@ -22,14 +22,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class InstrumentationPolicyNoopTests {
+public class HttpInstrumentationPolicyNoopTests {
     private static final InstrumentationOptions<?> OPTIONS = new InstrumentationOptions<>();
     private static final HttpHeaderName TRACESTATE = HttpHeaderName.fromString("tracestate");
 
     @ParameterizedTest
     @ValueSource(ints = { 200, 201, 206, 302, 400, 404, 500, 503 })
     public void simpleRequestTracingDisabled(int statusCode) throws IOException {
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new InstrumentationPolicy(OPTIONS, null))
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(OPTIONS, null))
             .httpClient(request -> new MockHttpResponse(request, statusCode))
             .build();
 
@@ -45,7 +45,7 @@ public class InstrumentationPolicyNoopTests {
     public void exceptionTracingDisabled() {
         SocketException exception = new SocketException("test exception");
         HttpPipeline pipeline
-            = new HttpPipelineBuilder().policies(new InstrumentationPolicy(OPTIONS, null)).httpClient(request -> {
+            = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(OPTIONS, null)).httpClient(request -> {
                 throw exception;
             }).build();
 

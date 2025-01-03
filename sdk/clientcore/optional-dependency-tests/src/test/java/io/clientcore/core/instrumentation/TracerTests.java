@@ -26,6 +26,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.io.IOException;
 import java.util.stream.Stream;
 
+import static io.clientcore.core.instrumentation.Instrumentation.TRACE_CONTEXT_KEY;
 import static io.clientcore.core.instrumentation.tracing.SpanKind.INTERNAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -176,8 +177,8 @@ public class TracerTests {
         io.opentelemetry.api.trace.Tracer otelTracer = otelOptions.getProvider().getTracer("test");
         io.opentelemetry.api.trace.Span parent = otelTracer.spanBuilder("parent").startSpan();
 
-        RequestOptions requestOptions = new RequestOptions().setContext(Context.of(Instrumentation.TRACE_CONTEXT_KEY,
-            parent.storeInContext(io.opentelemetry.context.Context.current())));
+        RequestOptions requestOptions = new RequestOptions().addContext(TRACE_CONTEXT_KEY,
+            parent.storeInContext(io.opentelemetry.context.Context.current()));
         Span child = tracer.spanBuilder("child", INTERNAL, requestOptions).startSpan();
         child.end();
         parent.end();
@@ -194,7 +195,7 @@ public class TracerTests {
     @Test
     public void explicitParentWrongType() {
         RequestOptions requestOptions = new RequestOptions()
-            .setContext(Context.of(Instrumentation.TRACE_CONTEXT_KEY, "This is not a valid trace context"));
+            .addContext(TRACE_CONTEXT_KEY, "This is not a valid trace context");
         Span child = tracer.spanBuilder("child", INTERNAL, requestOptions).startSpan();
         child.end();
 

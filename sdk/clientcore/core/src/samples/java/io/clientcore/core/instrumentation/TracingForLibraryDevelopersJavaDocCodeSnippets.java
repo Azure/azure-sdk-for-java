@@ -6,12 +6,12 @@ package io.clientcore.core.instrumentation;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpLogOptions;
 import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
 import io.clientcore.core.http.pipeline.HttpLoggingPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
 import io.clientcore.core.http.pipeline.HttpRetryPolicy;
-import io.clientcore.core.http.pipeline.InstrumentationPolicy;
 import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.clientcore.core.instrumentation.tracing.Tracer;
@@ -63,10 +63,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
         // we'll propagate context implicitly using span.makeCurrent() as shown later.
         // Libraries that write async code should propagate context explicitly in addition to implicit propagation.
         if (tracer.isEnabled()) {
-            if (requestOptions == null) {
-                requestOptions = new RequestOptions();
-            }
-            requestOptions.setContext(requestOptions.getContext().put(TRACE_CONTEXT_KEY, span));
+            requestOptions.addContext(TRACE_CONTEXT_KEY, span);
         }
 
         try (TracingScope scope = span.makeCurrent()) {
@@ -126,7 +123,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(
                 new HttpRetryPolicy(),
-                new InstrumentationPolicy(instrumentationOptions, logOptions),
+                new HttpInstrumentationPolicy(instrumentationOptions, logOptions),
                 new HttpLoggingPolicy(logOptions))
             .build();
 
@@ -146,7 +143,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(
                 new HttpRetryPolicy(),
-                new InstrumentationPolicy(instrumentationOptions, logOptions),
+                new HttpInstrumentationPolicy(instrumentationOptions, logOptions),
                 new HttpLoggingPolicy(logOptions))
             .build();
 
@@ -171,7 +168,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(
                 new HttpRetryPolicy(),
-                new InstrumentationPolicy(instrumentationOptions, logOptions),
+                new HttpInstrumentationPolicy(instrumentationOptions, logOptions),
                 enrichingPolicy,
                 new HttpLoggingPolicy(logOptions))
             .build();

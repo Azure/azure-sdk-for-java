@@ -14,6 +14,7 @@ import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationO
 import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
 import io.clientcore.core.instrumentation.InstrumentationOptions;
+import io.clientcore.core.instrumentation.tracing.SpanBuilder;
 import io.clientcore.core.instrumentation.tracing.TracingScope;
 import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
@@ -29,6 +30,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.net.URI;
 
 import static io.clientcore.core.implementation.UrlRedactionUtil.getRedactedUri;
 import static io.clientcore.core.instrumentation.Instrumentation.DISABLE_TRACING_KEY;
@@ -36,22 +38,22 @@ import static io.clientcore.core.instrumentation.Instrumentation.TRACE_CONTEXT_K
 import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
 
 /**
- * The {@link InstrumentationPolicy} is responsible for instrumenting the HTTP request and response with distributed tracing
+ * The {@link HttpInstrumentationPolicy} is responsible for instrumenting the HTTP request and response with distributed tracing
  * and (in the future) metrics following
  * <a href="https://github.com/open-telemetry/semantic-conventions/blob/main/docs/http/http-spans.md">OpenTelemetry Semantic Conventions</a>.
  * <p>
  * It propagates context to the downstream service following <a href="https://www.w3.org/TR/trace-context-1/">W3C Trace Context</a> specification.
  * <p>
- * The {@link InstrumentationPolicy} should be added to the HTTP pipeline by client libraries. It should be added between
- * {@link HttpRetryPolicy} and {@link HttpLoggingPolicy} so that it's executed on each try (redirect), and logging happens
+ * The {@link HttpInstrumentationPolicy} should be added to the HTTP pipeline by client libraries. It should be added between
+ * {@link HttpRetryPolicy} and {@link HttpLoggingPolicy} so that it's executed on each try or redirect and logging happens
  * in the scope of the span.
  * <p>
  * The policy supports basic customizations using {@link InstrumentationOptions} and {@link HttpLogOptions}.
  * <p>
  * If your client library needs a different approach to distributed tracing,
- * you can create a custom policy and use it instead of the {@link InstrumentationPolicy}. If you want to enrich instrumentation
- * policy spans with additional attributes, you can create a custom policy and add it under the {@link InstrumentationPolicy}
- * so that it's executed in the scope of the span created by the {@link InstrumentationPolicy}.
+ * you can create a custom policy and use it instead of the {@link HttpInstrumentationPolicy}. If you want to enrich instrumentation
+ * policy spans with additional attributes, you can create a custom policy and add it under the {@link HttpInstrumentationPolicy}
+ * so that it's executed in the scope of the span created by the {@link HttpInstrumentationPolicy}.
  *
  * <p><strong>Configure instrumentation policy:</strong></p>
  * <!-- src_embed io.clientcore.core.telemetry.tracing.instrumentationpolicy -->
@@ -60,7 +62,7 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
  *     .policies&#40;
  *         new HttpRetryPolicy&#40;&#41;,
- *         new InstrumentationPolicy&#40;instrumentationOptions, logOptions&#41;,
+ *         new HttpInstrumentationPolicy&#40;instrumentationOptions, logOptions&#41;,
  *         new HttpLoggingPolicy&#40;logOptions&#41;&#41;
  *     .build&#40;&#41;;
  *
@@ -79,7 +81,7 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
  *     .policies&#40;
  *         new HttpRetryPolicy&#40;&#41;,
- *         new InstrumentationPolicy&#40;instrumentationOptions, logOptions&#41;,
+ *         new HttpInstrumentationPolicy&#40;instrumentationOptions, logOptions&#41;,
  *         new HttpLoggingPolicy&#40;logOptions&#41;&#41;
  *     .build&#40;&#41;;
  *
@@ -102,7 +104,7 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
  *     .policies&#40;
  *         new HttpRetryPolicy&#40;&#41;,
- *         new InstrumentationPolicy&#40;instrumentationOptions, logOptions&#41;,
+ *         new HttpInstrumentationPolicy&#40;instrumentationOptions, logOptions&#41;,
  *         enrichingPolicy,
  *         new HttpLoggingPolicy&#40;logOptions&#41;&#41;
  *     .build&#40;&#41;;
@@ -112,10 +114,9 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
  * <!-- end io.clientcore.core.telemetry.tracing.enrichhttpspans -->
  *
  */
-public final class InstrumentationPolicy implements HttpPipelinePolicy {
-    private static final ClientLogger LOGGER = new ClientLogger(InstrumentationPolicy.class);
+public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
+    private static final ClientLogger LOGGER = new ClientLogger(HttpInstrumentationPolicy.class);
     private static final HttpLogOptions DEFAULT_LOG_OPTIONS = new HttpLogOptions();
-    private static final String REDACTED_PLACEHOLDER = "REDACTED";
     private static final String LIBRARY_NAME;
     private static final String LIBRARY_VERSION;
     private static final LibraryInstrumentationOptions LIBRARY_OPTIONS;
@@ -155,7 +156,7 @@ public final class InstrumentationPolicy implements HttpPipelinePolicy {
      * @param instrumentationOptions Application telemetry options.
      * @param logOptions Http log options. TODO: we should merge this with telemetry options.
      */
-    public InstrumentationPolicy(InstrumentationOptions<?> instrumentationOptions, HttpLogOptions logOptions) {
+    public HttpInstrumentationPolicy(InstrumentationOptions<?> instrumentationOptions, HttpLogOptions logOptions) {
         Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS);
         this.tracer = instrumentation.getTracer();
         this.traceContextPropagator = instrumentation.getW3CTraceContextPropagator();
@@ -199,12 +200,39 @@ public final class InstrumentationPolicy implements HttpPipelinePolicy {
     }
 
     private Span startHttpSpan(HttpRequest request, String sanitizedUrl) {
-        return tracer.spanBuilder(request.getHttpMethod().toString(), CLIENT, request.getRequestOptions())
-            .setAttribute(HTTP_REQUEST_METHOD, request.getHttpMethod().toString())
-            .setAttribute(URL_FULL, sanitizedUrl)
-            .setAttribute(SERVER_ADDRESS, request.getUri().getHost())
-            .setAttribute(SERVER_PORT, request.getUri().getPort() == -1 ? 443 : request.getUri().getPort())
-            .startSpan();
+        SpanBuilder spanBuilder
+            = tracer.spanBuilder(request.getHttpMethod().toString(), CLIENT, request.getRequestOptions())
+                .setAttribute(HTTP_REQUEST_METHOD, request.getHttpMethod().toString())
+                .setAttribute(URL_FULL, sanitizedUrl)
+                .setAttribute(SERVER_ADDRESS, request.getUri().getHost());
+        maybeSetServerPort(spanBuilder, request.getUri());
+        return spanBuilder.startSpan();
+    }
+
+    /**
+     * Does the best effort to capture the server port with minimum perf overhead.
+     * If port is not set, we check scheme for "http" and "https" (case-sensitive).
+     * If scheme is not one of those, we don't set the port.
+     *
+     * @param spanBuilder span builder
+     * @param uri request URI
+     */
+    private static void maybeSetServerPort(SpanBuilder spanBuilder, URI uri) {
+        int port = uri.getPort();
+        if (port == -1) {
+            switch (uri.getScheme()) {
+                case "http":
+                    spanBuilder.setAttribute(SERVER_PORT, 80);
+                    break;
+
+                case "https":
+                    spanBuilder.setAttribute(SERVER_PORT, 443);
+                    break;
+
+                default:
+                    break;
+            }
+        }
     }
 
     private void addDetails(HttpRequest request, Response<?> response, Span span) {
@@ -257,7 +285,7 @@ public final class InstrumentationPolicy implements HttpPipelinePolicy {
 
     private static Map<String, String> getProperties(String propertiesFileName) {
         try (InputStream inputStream
-            = InstrumentationPolicy.class.getClassLoader().getResourceAsStream(propertiesFileName)) {
+            = HttpInstrumentationPolicy.class.getClassLoader().getResourceAsStream(propertiesFileName)) {
             if (inputStream != null) {
                 Properties properties = new Properties();
                 properties.load(inputStream);

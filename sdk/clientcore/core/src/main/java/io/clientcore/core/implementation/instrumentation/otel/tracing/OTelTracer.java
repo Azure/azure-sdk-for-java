@@ -111,6 +111,6 @@ public final class OTelTracer implements Tracer {
      */
     @Override
     public boolean isEnabled() {
-        return OTelInitializer.isInitialized() && otelTracer != null;
+        return otelTracer != null && OTelInitializer.isInitialized();
     }
 }

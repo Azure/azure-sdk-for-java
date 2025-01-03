@@ -92,7 +92,7 @@ public class OTelInstrumentation implements Instrumentation {
      */
     @Override
     public Tracer getTracer() {
-        if (OTelInitializer.isInitialized() && isTracingEnabled) {
+        if (isTracingEnabled && OTelInitializer.isInitialized()) {
             Object otelTracerProvider = GET_PROVIDER_INVOKER.invoke(getOtelInstance());
 
             if (otelTracerProvider != null && otelTracerProvider != NOOP_PROVIDER) {

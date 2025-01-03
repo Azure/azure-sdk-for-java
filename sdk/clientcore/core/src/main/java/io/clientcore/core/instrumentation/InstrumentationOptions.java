@@ -3,13 +3,15 @@
 
 package io.clientcore.core.instrumentation;
 
+import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
+
 /**
  * Telemetry options describe application-level configuration and can be configured on specific
  * client instances via the corresponding client builder.
  * <p>
  *
  * Library should use them on all instance of {@link io.clientcore.core.instrumentation.tracing.Tracer}
- * it creates and, if it sets up {@link io.clientcore.core.http.pipeline.InstrumentationPolicy}, it should pass
+ * it creates and, if it sets up {@link HttpInstrumentationPolicy}, it should pass
  * {@link InstrumentationOptions} to the policy.
  *
  * @param <T> The type of the provider. Only {@code io.opentelemetry.api.OpenTelemetry} is supported.

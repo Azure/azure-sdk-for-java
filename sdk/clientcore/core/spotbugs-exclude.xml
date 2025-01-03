@@ -396,10 +396,10 @@
   </Match>
   <Match>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE" />
-    <Class name="io.clientcore.core.http.pipeline.InstrumentationPolicy" />
+    <Class name="io.clientcore.core.http.pipeline.HttpInstrumentationPolicy" />
   </Match>
   <Match>
     <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE" />
-    <Class name="io.clientcore.core.http.pipeline.InstrumentationPolicy" />
+    <Class name="io.clientcore.core.http.pipeline.HttpInstrumentationPolicy" />
   </Match>
 </FindBugsFilter>

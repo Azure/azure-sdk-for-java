@@ -8,10 +8,10 @@
   </Match>
   <Match>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON" />
-    <Class name="io.clientcore.core.http.pipeline.InstrumentationPolicyTests" />
+    <Class name="io.clientcore.core.http.pipeline.HttpInstrumentationPolicyTests" />
   </Match>
   <Match>
     <Bug pattern="NM_CONFUSING" />
-    <Class name="io.clientcore.core.http.pipeline.InstrumentationPolicyTests" />
+    <Class name="io.clientcore.core.http.pipeline.HttpInstrumentationPolicyTests" />
   </Match>
 </FindBugsFilter>
