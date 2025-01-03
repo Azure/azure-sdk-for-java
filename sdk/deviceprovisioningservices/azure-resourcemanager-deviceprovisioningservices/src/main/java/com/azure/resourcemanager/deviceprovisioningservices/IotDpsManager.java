@@ -213,7 +213,7 @@ public final class IotDpsManager {
                 .append("-")
                 .append("com.azure.resourcemanager.deviceprovisioningservices")
                 .append("/")
-                .append("1.0.0");
+                .append("1.1.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
