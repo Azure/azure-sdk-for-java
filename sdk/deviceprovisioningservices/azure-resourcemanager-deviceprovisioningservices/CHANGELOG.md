@@ -1,14 +1,31 @@
 # Release History
 
-## 1.1.0-beta.3 (Unreleased)
+## 1.0.0 (2025-01-03)
 
-### Features Added
+- Azure Resource Manager IotDps client library for Java. This package contains Microsoft Azure SDK for IotDps Management SDK. API for using the Azure IoT Hub Device Provisioning Service features. Package tag package-2022-02. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### Serialization/Deserialization change
 
-### Other Changes
+- `Jackson` is removed from dependency and no longer supported.
+
+##### Migration Guide
+
+If you are using `Jackson`/`ObjectMapper` for manual serialization/deserialization, configure your `ObjectMapper` for backward compatibility:
+```java
+objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule());
+```
+
+### Features Added
+
+#### `models.ErrorDetails` was modified
+
+* `getAdditionalInfo()` was added
+* `getTarget()` was added
+* `getMessage()` was added
+* `getCode()` was added
+* `getDetails()` was added
 
 ## 1.1.0-beta.2 (2022-07-12)
 
