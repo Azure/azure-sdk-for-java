@@ -3,6 +3,7 @@
 ## 1.15.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added missing `executorService` API to `ManagedIdentityCredentialBuilder`, cleaned up comments in other types for this method.
 
 ### Breaking Changes
 
