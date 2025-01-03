@@ -4,6 +4,7 @@
 
 #### Bugs Fixed
 - Fix the issue where the token acquisition timeout is not set via the property `azure.accessTokenTimeoutInSeconds`. [#43512](https://github.com/Azure/azure-sdk-for-java/issues/43512).
+- Fix inefficiencies: Support cache for token credential and access token level. [#39393](https://github.com/Azure/azure-sdk-for-java/issues/39393).
 
 ### Other Changes
 

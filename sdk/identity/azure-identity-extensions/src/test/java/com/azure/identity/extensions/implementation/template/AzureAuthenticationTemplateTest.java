@@ -162,7 +162,7 @@ class AzureAuthenticationTemplateTest {
             }
         });
         // mock
-        try (MockedConstruction<DefaultTokenCredentialProvider> ignored
+        try (MockedConstruction<DefaultTokenCredentialProvider> credentialProviderMock
                  = mockConstruction(DefaultTokenCredentialProvider.class, (defaultTokenCredentialProvider, context) -> {
             when(defaultTokenCredentialProvider.get()).thenReturn(mockTokenCredential);
         })) {
@@ -179,6 +179,7 @@ class AzureAuthenticationTemplateTest {
             TimeUnit.SECONDS.sleep(tokenExpireSeconds + 1);
             verifyNonCacheToken("token2-", 1, template);
             verifyNonCacheToken("token2-", 6, template2);
+            assertNotNull(credentialProviderMock);
         }
     }
 
@@ -205,7 +206,7 @@ class AzureAuthenticationTemplateTest {
             }
         });
         // mock
-        try (MockedConstruction<DefaultTokenCredentialProvider> ignored
+        try (MockedConstruction<DefaultTokenCredentialProvider> credentialProviderMock
                  = mockConstruction(DefaultTokenCredentialProvider.class, (defaultTokenCredentialProvider, context) -> {
             when(defaultTokenCredentialProvider.get()).thenReturn(mockTokenCredential);
         })) {
@@ -220,6 +221,7 @@ class AzureAuthenticationTemplateTest {
             TimeUnit.SECONDS.sleep(tokenExpireSeconds + 1);
             verifyCacheToken("token2-0", template, template2);
             assertEquals(template.getTokenAsPassword(), template2.getTokenAsPassword());
+            assertNotNull(credentialProviderMock);
         }
     }
 
