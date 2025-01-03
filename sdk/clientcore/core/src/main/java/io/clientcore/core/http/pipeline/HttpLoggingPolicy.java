@@ -112,7 +112,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
     private void logRequest(ClientLogger logger, HttpRequest request, long startNanoTime, long requestContentLength,
         String redactedUrl, int tryCount) {
-        ClientLogger.LoggingEventBuilder logBuilder = logger.atLevel(HTTP_REQUEST_LOG_LEVEL);
+        ClientLogger.LoggingEvent logBuilder = logger.atLevel(HTTP_REQUEST_LOG_LEVEL);
         if (!logBuilder.isEnabled() || httpLogDetailLevel == HttpLogOptions.HttpLogDetailLevel.NONE) {
             return;
         }
@@ -142,7 +142,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
     private Response<?> logResponse(ClientLogger logger, Response<?> response, long startNanoTime,
         long requestContentLength, String redactedUrl, int tryCount) {
-        ClientLogger.LoggingEventBuilder logBuilder = logger.atLevel(HTTP_RESPONSE_LOG_LEVEL);
+        ClientLogger.LoggingEvent logBuilder = logger.atLevel(HTTP_RESPONSE_LOG_LEVEL);
         if (httpLogDetailLevel == HttpLogOptions.HttpLogDetailLevel.NONE) {
             return response;
         }
@@ -185,7 +185,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private <T extends Throwable> T logException(ClientLogger logger, HttpRequest request, Response<?> response,
         T throwable, long startNanoTime, Long responseStartNanoTime, long requestContentLength, String redactedUrl,
         int tryCount) {
-        ClientLogger.LoggingEventBuilder logBuilder = logger.atLevel(ClientLogger.LogLevel.WARNING);
+        ClientLogger.LoggingEvent logBuilder = logger.atLevel(ClientLogger.LogLevel.WARNING);
         if (!logBuilder.isEnabled() || httpLogDetailLevel == HttpLogOptions.HttpLogDetailLevel.NONE) {
             return throwable;
         }
@@ -285,7 +285,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @param headers HTTP headers on the request or response.
      * @param logBuilder Log message builder.
      */
-    private void addHeadersToLogMessage(HttpHeaders headers, ClientLogger.LoggingEventBuilder logBuilder) {
+    private void addHeadersToLogMessage(HttpHeaders headers, ClientLogger.LoggingEvent logBuilder) {
         if (httpLogDetailLevel.shouldLogHeaders()) {
             for (HttpHeader header : headers) {
                 HttpHeaderName headerName = header.getName();

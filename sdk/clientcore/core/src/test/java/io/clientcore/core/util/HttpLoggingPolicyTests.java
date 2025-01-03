@@ -528,7 +528,7 @@ public class HttpLoggingPolicyTests {
 
         Long expectedResponseLength = getLength(response.getBody(), response.getHeaders());
         assertEquals(expectedResponseLength, (int) log.get("responseContentLength"));
-        assertInstanceOf(Double.class, log.get("timeToHeadersMs"));
+        assertInstanceOf(Double.class, log.get("timeToResponseMs"));
         assertInstanceOf(Double.class, log.get("durationMs"));
         assertEquals("", log.get("message"));
     }
@@ -546,7 +546,7 @@ public class HttpLoggingPolicyTests {
 
         assertEquals(response.getStatusCode(), log.get("statusCode"));
 
-        assertInstanceOf(Double.class, log.get("timeToHeadersMs"));
+        assertInstanceOf(Double.class, log.get("timeToResponseMs"));
         assertInstanceOf(Double.class, log.get("durationMs"));
         assertEquals(error.getMessage(), log.get("exception.message"));
         assertEquals(error.getClass().getCanonicalName(), log.get("exception.type"));
@@ -564,7 +564,7 @@ public class HttpLoggingPolicyTests {
 
         assertNull(log.get("statusCode"));
         assertNull(log.get("responseContentLength"));
-        assertNull(log.get("timeToHeadersMs"));
+        assertNull(log.get("timeToResponseMs"));
         assertInstanceOf(Double.class, log.get("durationMs"));
         assertEquals(error.getMessage(), log.get("exception.message"));
         assertEquals(error.getClass().getCanonicalName(), log.get("exception.type"));
