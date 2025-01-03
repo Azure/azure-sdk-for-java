@@ -126,18 +126,15 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         addHeadersToLogMessage(request.getHeaders(), logBuilder);
 
         if (httpLogDetailLevel.shouldLogBody() && canLogBody(request.getBody())) {
-            String content;
             try {
                 BinaryData bufferedBody = request.getBody().toReplayableBinaryData();
                 request.setBody(bufferedBody);
-                content = bufferedBody.toString();
+                logBuilder.addKeyValue(LoggingKeys.BODY_KEY, bufferedBody.toString());
             } catch (RuntimeException e) {
                 // we'll log exception at the appropriate level.
                 throw logException(logger, request, null, e, startNanoTime, null, requestContentLength, redactedUrl,
                     tryCount);
             }
-
-            logBuilder.addKeyValue(LoggingKeys.BODY_KEY, content);
         }
 
         logBuilder.log();
