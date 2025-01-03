@@ -332,7 +332,7 @@ public final class RequestOptions {
      *
      * @see #setContext(Context)
      */
-    public RequestOptions addContext(String key, Object value) {
+    public RequestOptions putContext(Object key, Object value) {
         if (locked) {
             throw LOGGER.logThrowableAsError(
                 new IllegalStateException("This instance of RequestOptions is immutable. Cannot set context."));

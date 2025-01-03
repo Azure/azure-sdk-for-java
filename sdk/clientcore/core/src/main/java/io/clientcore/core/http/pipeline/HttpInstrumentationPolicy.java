@@ -219,7 +219,9 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
      */
     private static void maybeSetServerPort(SpanBuilder spanBuilder, URI uri) {
         int port = uri.getPort();
-        if (port == -1) {
+        if (port != -1) {
+            spanBuilder.setAttribute(SERVER_PORT, port);
+        } else {
             switch (uri.getScheme()) {
                 case "http":
                     spanBuilder.setAttribute(SERVER_PORT, 80);

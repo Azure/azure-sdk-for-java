@@ -63,7 +63,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
         // we'll propagate context implicitly using span.makeCurrent() as shown later.
         // Libraries that write async code should propagate context explicitly in addition to implicit propagation.
         if (tracer.isEnabled()) {
-            requestOptions.addContext(TRACE_CONTEXT_KEY, span);
+            requestOptions.putContext(TRACE_CONTEXT_KEY, span);
         }
 
         try (TracingScope scope = span.makeCurrent()) {
