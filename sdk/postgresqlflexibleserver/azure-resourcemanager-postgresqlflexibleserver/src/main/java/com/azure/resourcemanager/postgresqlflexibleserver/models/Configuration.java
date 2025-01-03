@@ -41,7 +41,7 @@ public interface Configuration {
     SystemData systemData();
 
     /**
-     * Gets the value property: Value of the configuration.
+     * Gets the value property: Value of the configuration. Required to update the configuration.
      * 
      * @return the value value.
      */
@@ -76,7 +76,7 @@ public interface Configuration {
     String allowedValues();
 
     /**
-     * Gets the source property: Source of the configuration.
+     * Gets the source property: Source of the configuration. Required to update the configuration.
      * 
      * @return the source value.
      */
@@ -188,9 +188,9 @@ public interface Configuration {
          */
         interface WithValue {
             /**
-             * Specifies the value property: Value of the configuration..
+             * Specifies the value property: Value of the configuration. Required to update the configuration..
              * 
-             * @param value Value of the configuration.
+             * @param value Value of the configuration. Required to update the configuration.
              * @return the next definition stage.
              */
             WithCreate withValue(String value);
@@ -201,9 +201,9 @@ public interface Configuration {
          */
         interface WithSource {
             /**
-             * Specifies the source property: Source of the configuration..
+             * Specifies the source property: Source of the configuration. Required to update the configuration..
              * 
-             * @param source Source of the configuration.
+             * @param source Source of the configuration. Required to update the configuration.
              * @return the next definition stage.
              */
             WithCreate withSource(String source);
@@ -246,9 +246,9 @@ public interface Configuration {
          */
         interface WithValue {
             /**
-             * Specifies the value property: Value of the configuration..
+             * Specifies the value property: Value of the configuration. Required to update the configuration..
              * 
-             * @param value Value of the configuration.
+             * @param value Value of the configuration. Required to update the configuration.
              * @return the next definition stage.
              */
             Update withValue(String value);
@@ -259,9 +259,9 @@ public interface Configuration {
          */
         interface WithSource {
             /**
-             * Specifies the source property: Source of the configuration..
+             * Specifies the source property: Source of the configuration. Required to update the configuration..
              * 
-             * @param source Source of the configuration.
+             * @param source Source of the configuration. Required to update the configuration.
              * @return the next definition stage.
              */
             Update withSource(String source);

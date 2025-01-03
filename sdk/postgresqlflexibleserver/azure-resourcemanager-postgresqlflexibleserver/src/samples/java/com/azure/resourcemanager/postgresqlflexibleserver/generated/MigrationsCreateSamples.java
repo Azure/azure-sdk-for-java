@@ -20,7 +20,7 @@ import java.util.Arrays;
 public final class MigrationsCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
      * Migrations_Create_With_PrivateEndpoint_Servers.json
      */
     /**
@@ -49,7 +49,7 @@ public final class MigrationsCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
      * Migrations_Create_With_Roles.json
      */
     /**
@@ -77,7 +77,7 @@ public final class MigrationsCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
      * Migrations_Create_Validate_Only.json
      */
     /**
@@ -105,7 +105,7 @@ public final class MigrationsCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
      * Migrations_Create_With_Other_Users.json
      */
     /**
@@ -133,8 +133,8 @@ public final class MigrationsCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
-     * Migrations_Create.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/Migrations_Create.
+     * json
      */
     /**
      * Sample code: Migrations_Create.
@@ -161,7 +161,7 @@ public final class MigrationsCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
      * Migrations_Create_Other_SourceTypes_Validate_Migrate.json
      */
     /**
