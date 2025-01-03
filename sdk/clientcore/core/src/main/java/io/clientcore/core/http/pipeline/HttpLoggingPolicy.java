@@ -11,7 +11,6 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
-import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
 import io.clientcore.core.implementation.util.ImplUtils;
 import io.clientcore.core.implementation.util.LoggingKeys;
 import io.clientcore.core.util.ClientLogger;
@@ -129,7 +128,9 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         if (httpLogDetailLevel.shouldLogBody() && canLogBody(request.getBody())) {
             String content;
             try {
-                content = request.getBody().toString();
+                BinaryData bufferedBody = request.getBody().toReplayableBinaryData();
+                request.setBody(bufferedBody);
+                content = bufferedBody.toString();
             } catch (RuntimeException e) {
                 // we'll log exception at the appropriate level.
                 throw logException(logger, request, null, e, startNanoTime, null, requestContentLength, redactedUrl,
@@ -169,7 +170,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         if (httpLogDetailLevel.shouldLogBody() && canLogBody(response.getBody())) {
             return new LoggingHttpResponse<>(response, content -> {
                 if (logBuilder.isEnabled()) {
-                    logBuilder.addKeyValue(LoggingKeys.BODY_KEY, content)
+                    logBuilder.addKeyValue(LoggingKeys.BODY_KEY, content.toString())
                         .addKeyValue(LoggingKeys.DURATION_MS_KEY, getDurationMs(startNanoTime, System.nanoTime()))
                         .log();
                 }
@@ -231,11 +232,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private static boolean canLogBody(BinaryData data) {
         // TODO: limolkova - we might want to filter out binary data, but
         // if somebody enabled logging it - why not log it?
-        return data != null
-            && data.isReplayable()
-            && data.getLength() != null
-            && data.getLength() > 0
-            && data.getLength() < MAX_BODY_LOG_SIZE;
+        return data != null && data.getLength() != null && data.getLength() > 0 && data.getLength() < MAX_BODY_LOG_SIZE;
     }
 
     /**
@@ -344,32 +341,31 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     }
 
     private static final class LoggingHttpResponse<T> extends HttpResponse<T> {
-        private boolean logged = false;
-        private final Consumer<String> onContent;
+        private final Consumer<BinaryData> onContent;
         private final Consumer<Throwable> onException;
+        private final BinaryData originalBody;
+        private BinaryData bufferedBody;
 
-        private LoggingHttpResponse(Response<T> actualResponse, Consumer<String> onContent,
+        private LoggingHttpResponse(Response<T> actualResponse, Consumer<BinaryData> onContent,
             Consumer<Throwable> onException) {
             super(actualResponse.getRequest(), actualResponse.getStatusCode(), actualResponse.getHeaders(),
                 actualResponse.getValue());
 
-            HttpResponseAccessHelper.setBody(this, actualResponse.getBody());
-
             this.onContent = onContent;
             this.onException = onException;
+            this.originalBody = actualResponse.getBody();
         }
 
         @Override
         public BinaryData getBody() {
-            if (logged) {
-                return super.getBody();
+            if (bufferedBody != null) {
+                return bufferedBody;
             }
 
-            logged = true;
             try {
-                BinaryData content = super.getBody();
-                onContent.accept(content.toString());
-                return content;
+                bufferedBody = originalBody.toReplayableBinaryData();
+                onContent.accept(bufferedBody);
+                return bufferedBody;
             } catch (RuntimeException e) {
                 // we'll log exception at the appropriate level.
                 onException.accept(e);
@@ -379,10 +375,13 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
         @Override
         public void close() throws IOException {
-            if (!logged) {
+            if (bufferedBody == null) {
                 getBody();
             }
-            super.close();
+            if (bufferedBody != null) {
+                bufferedBody.close();
+            }
+            originalBody.close();
         }
     }
 }

@@ -44,9 +44,11 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Execution(ExecutionMode.SAME_THREAD)
 public class HttpLoggingPolicyTests {
@@ -156,7 +158,7 @@ public class HttpLoggingPolicyTests {
         ClientLogger logger = setupLogLevelAndGetLogger(level);
         HttpLogOptions options = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.BODY);
 
-        TestStream requestStream = new TestStream(1024, true, new IOException("socket error"));
+        TestStream requestStream = new TestStream(1024, new IOException("socket error"));
         BinaryData requestBody = BinaryData.fromStream(requestStream, 1024L);
         HttpPipeline pipeline = createPipeline(options);
 
@@ -179,7 +181,7 @@ public class HttpLoggingPolicyTests {
         ClientLogger logger = setupLogLevelAndGetLogger(level);
         HttpLogOptions options = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.BODY);
 
-        TestStream responseStream = new TestStream(1024, true, new IOException("socket error"));
+        TestStream responseStream = new TestStream(1024, new IOException("socket error"));
         HttpPipeline pipeline = createPipeline(options,
             request -> new MockHttpResponse(request, 200, BinaryData.fromStream(responseStream, 1024L)));
 
@@ -321,18 +323,56 @@ public class HttpLoggingPolicyTests {
     }
 
     @Test
+    public void testStreamBodyLogging() {
+        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE);
+        HttpLogOptions options = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.BODY);
+
+        BinaryData responseBody = BinaryData.fromString("Response body");
+        TestStream responseStream = new TestStream(responseBody);
+
+        HttpPipeline pipeline = createPipeline(options, request -> new MockHttpResponse(request, 200,
+            BinaryData.fromStream(responseStream, responseBody.getLength())));
+
+        BinaryData requestBody = BinaryData.fromString("Request body");
+        TestStream requestStream = new TestStream(requestBody);
+        HttpRequest request = createRequest(HttpMethod.PUT, URI, logger);
+        request.setBody(BinaryData.fromStream(requestStream, requestBody.getLength()));
+        assertFalse(request.getBody().isReplayable());
+
+        Response<?> response = pipeline.send(request);
+        assertTrue(request.getBody().isReplayable());
+        assertTrue(response.getBody().isReplayable());
+
+        assertEquals("Response body", response.getBody().toString());
+
+        List<Map<String, Object>> logMessages = parseLogMessages();
+        assertEquals(2, logMessages.size());
+
+        Map<String, Object> requestLog = logMessages.get(0);
+        assertRequestLog(requestLog, REDACTED_URI, request);
+        assertEquals("Request body", requestLog.get("body"));
+
+        Map<String, Object> responseLog = logMessages.get(1);
+        assertResponseLog(responseLog, REDACTED_URI, response);
+        assertEquals("Response body", responseLog.get("body"));
+
+        assertEquals(requestBody.getLength(), requestStream.getPosition());
+        assertEquals(responseBody.getLength(), responseStream.getPosition());
+    }
+
+    @Test
     public void testHugeBodyNotLogged() throws IOException {
         ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE);
         HttpLogOptions options = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.BODY);
 
-        TestStream requestStream = new TestStream(Integer.MAX_VALUE, true);
-        TestStream responseStream = new TestStream(Integer.MAX_VALUE, true);
-        HttpPipeline pipeline = createPipeline(options, request -> new MockHttpResponse(request, 200,
-            BinaryData.fromStream(responseStream, (long) Integer.MAX_VALUE)));
+        TestStream requestStream = new TestStream(1024 * 1024);
+        TestStream responseStream = new TestStream(1024 * 1024);
+        HttpPipeline pipeline = createPipeline(options,
+            request -> new MockHttpResponse(request, 200, BinaryData.fromStream(responseStream, (long) 1024 * 1024)));
 
         HttpRequest request = createRequest(HttpMethod.PUT, URI, logger);
 
-        request.setBody(BinaryData.fromStream(requestStream, (long) Integer.MAX_VALUE));
+        request.setBody(BinaryData.fromStream(requestStream, 1024 * 1024L));
 
         Response<?> response = pipeline.send(request);
         response.close();
@@ -352,12 +392,12 @@ public class HttpLoggingPolicyTests {
     }
 
     @Test
-    public void testNonReplayableBodyNotLogged() throws IOException {
+    public void testBodyWithUnknownLengthNotLogged() throws IOException {
         ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE);
         HttpLogOptions options = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.BODY);
 
-        TestStream requestStream = new TestStream(1024, false);
-        TestStream responseStream = new TestStream(1024, false);
+        TestStream requestStream = new TestStream(1024);
+        TestStream responseStream = new TestStream(1024);
         HttpPipeline pipeline = createPipeline(options,
             request -> new MockHttpResponse(request, 200, BinaryData.fromStream(responseStream)));
 
@@ -409,21 +449,27 @@ public class HttpLoggingPolicyTests {
     }
 
     private static class TestStream extends InputStream {
-        private final long length;
-        private final boolean replayable;
+        private final byte[] content;
+        private int length;
         private final IOException throwOnRead;
-        private long position = 0;
+        private int position = 0;
 
-        TestStream(long length, boolean replayable) {
+        TestStream(int length) {
             this.length = length;
             this.throwOnRead = null;
-            this.replayable = replayable;
+            this.content = new byte[length];
         }
 
-        TestStream(long length, boolean replayable, IOException throwOnRead) {
+        TestStream(BinaryData content) {
+            this.length = content.getLength().intValue();
+            this.throwOnRead = null;
+            this.content = content.toBytes();
+        }
+
+        TestStream(int length, IOException throwOnRead) {
             this.length = length;
             this.throwOnRead = throwOnRead;
-            this.replayable = replayable;
+            this.content = new byte[length];
         }
 
         @Override
@@ -435,28 +481,9 @@ public class HttpLoggingPolicyTests {
             if (position >= length) {
                 return -1;
             }
+
             position++;
-
-            return 1;
-        }
-
-        @Override
-        public boolean markSupported() {
-            return replayable;
-        }
-
-        @Override
-        public void mark(int readlimit) {
-            // no-op
-        }
-
-        @Override
-        public void reset() throws IOException {
-            if (!replayable) {
-                throw new IOException("Stream is not replayable");
-            }
-
-            position = 0;
+            return content[position - 1];
         }
 
         public long getPosition() {
@@ -519,8 +546,6 @@ public class HttpLoggingPolicyTests {
 
         assertEquals(response.getStatusCode(), log.get("statusCode"));
 
-        Long expectedResponseLength = getLength(response.getBody(), response.getHeaders());
-        assertEquals(expectedResponseLength, (int) log.get("responseContentLength"));
         assertInstanceOf(Double.class, log.get("timeToHeadersMs"));
         assertInstanceOf(Double.class, log.get("durationMs"));
         assertEquals(error.getMessage(), log.get("exception.message"));
