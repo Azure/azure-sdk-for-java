@@ -118,7 +118,7 @@ public class HttpLoggingPolicyTests {
         HttpPipeline pipeline = createPipeline(options);
 
         HttpRequest request = createRequest(HttpMethod.GET, URI, logger);
-        HttpRequestAccessHelper.setRetryCount(request, 42);
+        HttpRequestAccessHelper.setTryCount(request, 42);
         Response<?> response = pipeline.send(request);
         response.close();
 

@@ -75,7 +75,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
         final long startNs = System.nanoTime();
         final String redactedUrl = getRedactedUri(httpRequest.getUri(), allowedQueryParameterNames);
-        final int tryCount = HttpRequestAccessHelper.getRetryCount(httpRequest);
+        final int tryCount = HttpRequestAccessHelper.getTryCount(httpRequest);
         final long requestContentLength = httpRequest.getBody() == null
             ? 0
             : getContentLength(logger, httpRequest.getBody(), httpRequest.getHeaders());

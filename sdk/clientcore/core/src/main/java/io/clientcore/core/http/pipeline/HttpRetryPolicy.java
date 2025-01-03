@@ -136,7 +136,10 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
 
     private Response<?> attempt(final HttpRequest httpRequest, final HttpPipelineNextPolicy next, final int tryCount,
         final List<Exception> suppressed) {
-        HttpRequestAccessHelper.setRetryCount(httpRequest, tryCount);
+
+        // the tryCount is updated by the caller and represents the number of attempts made so far.
+        // It can be used by the policies during the process call.
+        HttpRequestAccessHelper.setTryCount(httpRequest, tryCount);
 
         Response<?> response;
 
