@@ -6950,6 +6950,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             monoList.add(initialMonoAcrossAllRegions);
         }
 
+        final AtomicInteger orderedApplicableRegionsIndex = new AtomicInteger(0);
+
         for (int i = 1; i < orderedApplicableRegionsCount; i++) {
 
             // Non-Transient errors are mapped to a value - this ensures the firstWithValue
@@ -6957,11 +6959,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             // and non-transient errors
             Mono<NonTransientPointOperationResult> regionalCrossRegionRetryMono;
 
-            final int finalI = i;
-
             regionalCrossRegionRetryMono = initialMonoAcrossAllRegions.onErrorResume(throwable -> {
 
-                String region = orderedApplicableRegionsForSpeculation.get(finalI);
+                String region = orderedApplicableRegionsForSpeculation.get(orderedApplicableRegionsIndex.incrementAndGet());
 
                 getEffectiveExcludedRegionsForHedging(
                     nonNullRequestOptions.getExcludedRegions(),
@@ -6980,6 +6980,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     CosmosException ex = Utils.as(Exceptions.unwrap(throwable), CosmosException.class);
 
                     logger.warn("Received exception forcing parallel write region discovery for PPAF : {}", ex.getDiagnostics().toString());
+                    logger.warn("Region possibly used : {}", region);
 
                     PointOperationContextForPerPartitionAutomaticFailover pointOperationContextForPpafForHedgedRequest = new PointOperationContextForPerPartitionAutomaticFailover(true, true);
 
@@ -6999,7 +7000,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if (logger.isDebugEnabled()) {
                 monoList.add(
                     regionalCrossRegionRetryMono
-                        .doOnSubscribe(c -> logger.debug("STARTING to process {} operation in region '{}'", operationType, orderedApplicableRegionsForSpeculation.get(finalI))));
+                        .doOnSubscribe(c -> logger.debug("STARTING to process {} operation in region '{}'", operationType, orderedApplicableRegionsForSpeculation.get(orderedApplicableRegionsIndex.get()))));
             } else {
                 monoList.add(regionalCrossRegionRetryMono);
             }

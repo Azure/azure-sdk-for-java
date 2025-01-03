@@ -19,7 +19,7 @@ public class PointOperationContextForPerPartitionAutomaticFailover {
 
         this.isOperationEligibleForParallelWriteRegionDiscovery = isOperationEligibleForParallelWriteRegionDiscoveryAttempt;
         this.isParallelWriteRegionDiscoveryAttempt = isParallelWriteRegionDiscoveryAttempt;
-        this.overriddenLocationForPrimaryRequest = new AtomicReference<>();
+        this.overriddenLocationForPrimaryRequest = new AtomicReference<>("");
     }
 
     public boolean isOperationEligibleForParallelWriteRegionDiscovery() {
