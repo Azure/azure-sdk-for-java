@@ -10,7 +10,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.fluent.models.CloudApplicationEntityProperties;
-import com.azure.resourcemanager.securityinsights.fluent.models.EntityInner;
 import java.io.IOException;
 import java.util.Map;
 
@@ -18,11 +17,11 @@ import java.util.Map;
  * Represents a cloud application entity.
  */
 @Immutable
-public final class CloudApplicationEntity extends EntityInner {
+public final class CloudApplicationEntity extends Entity {
     /*
      * The kind of the entity.
      */
-    private EntityKind kind = EntityKind.CLOUD_APPLICATION;
+    private EntityKindEnum kind = EntityKindEnum.CLOUD_APPLICATION;
 
     /*
      * CloudApplication entity properties
@@ -61,7 +60,7 @@ public final class CloudApplicationEntity extends EntityInner {
      * @return the kind value.
      */
     @Override
-    public EntityKind kind() {
+    public EntityKindEnum kind() {
         return this.kind;
     }
 
@@ -210,7 +209,7 @@ public final class CloudApplicationEntity extends EntityInner {
                 } else if ("systemData".equals(fieldName)) {
                     deserializedCloudApplicationEntity.systemData = SystemData.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
-                    deserializedCloudApplicationEntity.kind = EntityKind.fromString(reader.getString());
+                    deserializedCloudApplicationEntity.kind = EntityKindEnum.fromString(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedCloudApplicationEntity.innerProperties
                         = CloudApplicationEntityProperties.fromJson(reader);

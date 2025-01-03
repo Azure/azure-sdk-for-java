@@ -22,7 +22,7 @@ public final class AlertRulesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"kind\":\"AlertRule\",\"etag\":\"nsugisn\",\"id\":\"wnwngh\",\"name\":\"jovkeyym\",\"type\":\"cjixxf\"}]}";
+            = "{\"value\":[{\"kind\":\"AlertRule\",\"etag\":\"jqfutlxj\",\"id\":\"zasunwqrjzfrgq\",\"name\":\"aohcmbuocn\",\"type\":\"r\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class AlertRulesListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<AlertRule> response
-            = manager.alertRules().list("htcuuwdhtqqhyhn", "m", com.azure.core.util.Context.NONE);
+            = manager.alertRules().list("mizvgbgatzuuvbx", "grebwggahttzlsw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nsugisn", response.iterator().next().etag());
+        Assertions.assertEquals("jqfutlxj", response.iterator().next().etag());
     }
 }
