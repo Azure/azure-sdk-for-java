@@ -49,7 +49,7 @@ public final class AccountEntityProperties extends EntityCommonProperties {
     private Boolean isDomainJoined;
 
     /*
-     * The NetBIOS domain name as it appears in the alert format domain/username. Examples: NT AUTHORITY.
+     * The NetBIOS domain name as it appears in the alert format - domain/username. Examples: NT AUTHORITY.
      */
     private String ntDomain;
 
@@ -153,7 +153,7 @@ public final class AccountEntityProperties extends EntityCommonProperties {
     }
 
     /**
-     * Get the ntDomain property: The NetBIOS domain name as it appears in the alert format domain/username. Examples:
+     * Get the ntDomain property: The NetBIOS domain name as it appears in the alert format - domain/username. Examples:
      * NT AUTHORITY.
      * 
      * @return the ntDomain value.

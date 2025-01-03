@@ -1,14 +1,868 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0 (2025-01-03)
 
-### Features Added
+- Azure Resource Manager SecurityInsights client library for Java. This package contains Microsoft Azure SDK for SecurityInsights Management SDK. API spec for Microsoft.SecurityInsights (Azure Security Insights) resource provider. Package tag package-2022-11. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.InsightQueryItemPropertiesReferenceTimeRange` was removed
 
-### Other Changes
+#### `models.DeploymentInfo` was removed
+
+#### `models.InsightQueryItemPropertiesTableQuery` was removed
+
+#### `models.FusionSourceSettings` was removed
+
+#### `models.AutomationRulePropertyArrayConditionSupportedArrayType` was removed
+
+#### `models.AwsS3CheckRequirements` was removed
+
+#### `models.InsightQueryItemPropertiesDefaultTimeRange` was removed
+
+#### `models.InsightQueryItemProperties` was removed
+
+#### `models.ExpansionResultsMetadata` was removed
+
+#### `models.ContentPathMap` was removed
+
+#### `models.EntityAnalytics` was removed
+
+#### `models.MetadataList` was removed
+
+#### `models.MdatpCheckRequirements` was removed
+
+#### `models.CodelessUiConnectorConfigPropertiesDataTypesItem` was removed
+
+#### `models.EntityExpandResponse` was removed
+
+#### `models.Metadatas` was removed
+
+#### `models.AatpCheckRequirements` was removed
+
+#### `models.DeploymentState` was removed
+
+#### `models.SourceType` was removed
+
+#### `models.MLBehaviorAnalyticsAlertRuleTemplate` was removed
+
+#### `models.ExpansionEntityQuery` was removed
+
+#### `models.MstiDataConnectorDataTypesBingSafetyPhishingUrl` was removed
+
+#### `models.EnrichmentDomainWhoisContact` was removed
+
+#### `models.EntityQueries` was removed
+
+#### `models.SourceKind` was removed
+
+#### `models.ThreatIntelligenceAlertRuleTemplate` was removed
+
+#### `models.EntityQueryItemProperties` was removed
+
+#### `models.Repo` was removed
+
+#### `models.EntityGetInsightsParameters` was removed
+
+#### `models.ThreatIntelligenceAlertRule` was removed
+
+#### `models.Anomalies` was removed
+
+#### `models.IoTCheckRequirements` was removed
+
+#### `models.TimelineError` was removed
+
+#### `models.EntityTimelineParameters` was removed
+
+#### `models.DeploymentFetchStatus` was removed
+
+#### `models.EntityTimelineKind` was removed
+
+#### `models.SettingList` was removed
+
+#### `models.NicEntity` was removed
+
+#### `models.NrtAlertRuleTemplate` was removed
+
+#### `models.AwsS3DataConnectorDataTypes` was removed
+
+#### `models.TiTaxiiCheckRequirements` was removed
+
+#### `models.CodelessUiConnectorConfigPropertiesConnectivityCriteriaItem` was removed
+
+#### `models.ProviderName` was removed
+
+#### `models.WatchlistsCreateOrUpdateResponse` was removed
+
+#### `models.TeamProperties` was removed
+
+#### `models.PermissionsResourceProviderItem` was removed
+
+#### `models.GitHubResourceInfo` was removed
+
+#### `models.MetadataDependencies` was removed
+
+#### `models.BookmarkTimelineItem` was removed
+
+#### `models.SourceControls` was removed
+
+#### `models.ActivityEntityQueriesPropertiesQueryDefinitions` was removed
+
+#### `models.Kind` was removed
+
+#### `models.BookmarkEntityMappings` was removed
+
+#### `models.OfficeConsentList` was removed
+
+#### `models.InstructionSteps` was removed
+
+#### `models.EntityGetInsightsResponse` was removed
+
+#### `models.IngestionMode` was removed
+
+#### `models.CodelessConnectorPollingAuthProperties` was removed
+
+#### `models.TimelineAggregation` was removed
+
+#### `models.EyesOn` was removed
+
+#### `models.BookmarkExpandResponseValue` was removed
+
+#### `models.PropertyArrayConditionProperties` was removed
+
+#### `models.FusionSubTypeSeverityFilter` was removed
+
+#### `models.DataTypeDefinitions` was removed
+
+#### `models.IncidentProperties` was removed
+
+#### `models.AutomationRulePropertyArrayConditionSupportedArrayConditionType` was removed
+
+#### `models.FileImport$DefinitionStages` was removed
+
+#### `models.ContentType` was removed
+
+#### `models.GetInsightsError` was removed
+
+#### `models.OfficeIrmCheckRequirements` was removed
+
+#### `models.DeviceImportance` was removed
+
+#### `models.EntityQueryKind` was removed
+
+#### `models.FusionScenarioExclusionPattern` was removed
+
+#### `models.GetInsightsResultsMetadata` was removed
+
+#### `models.Operator` was removed
+
+#### `models.MtpCheckRequirements` was removed
+
+#### `models.MetadataModel` was removed
+
+#### `models.Office365ProjectCheckRequirements` was removed
+
+#### `models.EntityTimelineItem` was removed
+
+#### `models.ManualTriggerRequestBody` was removed
+
+#### `models.EntityExpandParameters` was removed
+
+#### `models.AnomalyTimelineItem` was removed
+
+#### `models.DataConnectorAuthorizationState` was removed
+
+#### `models.GetQueriesResponse` was removed
+
+#### `models.Entities` was removed
+
+#### `models.ConnectivityType` was removed
+
+#### `models.DataConnectorTenantId` was removed
+
+#### `models.InsightsTableResultColumnsItem` was removed
+
+#### `models.SourceControl` was removed
+
+#### `models.PermissionProviderScope` was removed
+
+#### `models.EntitiesGetTimelines` was removed
+
+#### `models.TiTaxiiDataConnectorDataTypesTaxiiClient` was removed
+
+#### `models.ActivityEntityQueryTemplatePropertiesQueryDefinitions` was removed
+
+#### `models.MstiDataConnectorDataTypes` was removed
+
+#### `models.MetadataModel$Update` was removed
+
+#### `models.InsightQueryItemPropertiesAdditionalQuery` was removed
+
+#### `models.ConnectedEntity` was removed
+
+#### `models.SourceControl$Definition` was removed
+
+#### `models.DataConnectorLicenseState` was removed
+
+#### `models.PermissionsCustomsItem` was removed
+
+#### `models.DataConnectorConnectBody` was removed
+
+#### `models.EntityQueryItem` was removed
+
+#### `models.DomainWhois` was removed
+
+#### `models.MtpDataConnectorDataTypes` was removed
+
+#### `models.FusionTemplateSourceSubType` was removed
+
+#### `models.ConnectorInstructionModelBase` was removed
+
+#### `models.ConnectivityCriteria` was removed
+
+#### `models.SourceControlList` was removed
+
+#### `models.EntityInsightItem` was removed
+
+#### `models.InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem` was removed
+
+#### `models.McasCheckRequirements` was removed
+
+#### `models.Constant88` was removed
+
+#### `models.MetadataAuthor` was removed
+
+#### `models.SourceControlsOperations` was removed
+
+#### `models.FusionSubTypeSeverityFiltersItem` was removed
+
+#### `models.RepoList` was removed
+
+#### `models.Settings` was removed
+
+#### `models.Dynamics365DataConnectorDataTypesDynamics365CdsActivities` was removed
+
+#### `models.EntityExpandResponseValue` was removed
+
+#### `models.MetadataCategories` was removed
+
+#### `models.CodelessConnectorPollingResponseProperties` was removed
+
+#### `models.EntityProviders` was removed
+
+#### `models.AwsS3DataConnectorDataTypesLogs` was removed
+
+#### `models.EntityItemQueryKind` was removed
+
+#### `models.ThreatIntelligenceResourceKindEnum` was removed
+
+#### `models.EntityType` was removed
+
+#### `models.DataConnectorRequirementsState` was removed
+
+#### `models.EntitiesRelations` was removed
+
+#### `models.MtpDataConnectorDataTypesIncidents` was removed
+
+#### `models.CodelessConnectorPollingRequestProperties` was removed
+
+#### `models.FileImportState` was removed
+
+#### `models.ConnectAuthKind` was removed
+
+#### `models.EntityTimelineResponse` was removed
+
+#### `models.AutomationRulePropertyArrayValuesCondition` was removed
+
+#### `models.AlertRuleTemplatePropertiesBase` was removed
+
+#### `models.GetInsightsErrorKind` was removed
+
+#### `models.EntityQueryTemplateKind` was removed
+
+#### `models.Office365ProjectConnectorDataTypes` was removed
+
+#### `models.FileMetadata` was removed
+
+#### `models.EntityInsightItemQueryTimeInterval` was removed
+
+#### `models.FileFormat` was removed
+
+#### `models.FusionSourceSubTypeSetting` was removed
+
+#### `models.AscCheckRequirements` was removed
+
+#### `models.EnrichmentDomainWhoisContacts` was removed
+
+#### `models.FileImport` was removed
+
+#### `models.ThreatIntelligenceSortingCriteriaEnum` was removed
+
+#### `models.EntityRelations` was removed
+
+#### `models.BookmarkExpandResponse` was removed
+
+#### `models.AlertRuleTemplateWithMitreProperties` was removed
+
+#### `models.CustomEntityQueryKind` was removed
+
+#### `models.FileImportContentType` was removed
+
+#### `models.ResourceProvider` was removed
+
+#### `models.EntityKind` was removed
+
+#### `models.AadCheckRequirements` was removed
+
+#### `models.MetadataModel$UpdateStages` was removed
+
+#### `models.Office365ProjectDataConnector` was removed
+
+#### `models.EnrichmentDomainWhoisDetails` was removed
+
+#### `models.EnrichmentIpGeodata` was removed
+
+#### `models.MetadataSupport` was removed
+
+#### `models.ExpansionResultAggregation` was removed
+
+#### `models.TICheckRequirements` was removed
+
+#### `models.IpGeodatas` was removed
+
+#### `models.BookmarkOperations` was removed
+
+#### `models.ProductSettings` was removed
+
+#### `models.MtpDataConnector` was removed
+
+#### `models.EntityQueryItemPropertiesDataTypesItem` was removed
+
+#### `models.NrtAlertRule` was removed
+
+#### `models.ActivityTimelineItem` was removed
+
+#### `models.IoTDataConnector` was removed
+
+#### `models.TeamInformation` was removed
+
+#### `models.CustomsPermission` was removed
+
+#### `models.QueryBasedAlertRuleTemplateProperties` was removed
+
+#### `models.OfficePowerBIConnectorDataTypesLogs` was removed
+
+#### `models.FileImports` was removed
+
+#### `models.TiTaxiiDataConnectorDataTypes` was removed
+
+#### `models.CodelessUiConnectorConfigPropertiesSampleQueriesItem` was removed
+
+#### `models.Dynamics365DataConnectorDataTypes` was removed
+
+#### `models.MetadataSource` was removed
+
+#### `models.RequiredPermissions` was removed
+
+#### `models.Deployment` was removed
+
+#### `models.WatchlistsDeleteResponse` was removed
+
+#### `models.CodelessConnectorPollingPagingProperties` was removed
+
+#### `models.CodelessUiConnectorConfigPropertiesInstructionStepsItem` was removed
+
+#### `models.InsightQueryItem` was removed
+
+#### `models.CodelessApiPollingDataConnector` was removed
+
+#### `models.Webhook` was removed
+
+#### `models.TiTaxiiDataConnector` was removed
+
+#### `models.MetadataModel$DefinitionStages` was removed
+
+#### `models.TimelineResultsMetadata` was removed
+
+#### `models.MstiDataConnector` was removed
+
+#### `models.DeploymentResult` was removed
+
+#### `models.AwsCloudTrailCheckRequirements` was removed
+
+#### `models.EntityQueryTemplateList` was removed
+
+#### `models.EntityQuery` was removed
+
+#### `models.OfficeConsent` was removed
+
+#### `models.BooleanConditionProperties` was removed
+
+#### `models.SecurityAlertTimelineItem` was removed
+
+#### `models.AvailabilityStatus` was removed
+
+#### `models.ActivityCustomEntityQuery` was removed
+
+#### `models.AwsS3DataConnector` was removed
+
+#### `models.MLBehaviorAnalyticsAlertRule` was removed
+
+#### `models.SettingType` was removed
+
+#### `models.WatchlistsDeleteHeaders` was removed
+
+#### `models.Permissions` was removed
+
+#### `models.CodelessUiDataConnector` was removed
+
+#### `models.InsightsTableResult` was removed
+
+#### `models.AzureDevOpsResourceInfo` was removed
+
+#### `models.CustomEntityQuery` was removed
+
+#### `models.GraphQueries` was removed
+
+#### `models.SupportTier` was removed
+
+#### `models.EntityList` was removed
+
+#### `models.OfficeAtpDataConnector` was removed
+
+#### `models.Version` was removed
+
+#### `models.OfficeConsents` was removed
+
+#### `models.LastDataReceivedDataType` was removed
+
+#### `models.DataConnectorsCheckRequirementsOperations` was removed
+
+#### `models.EnrichmentDomainWhois` was removed
+
+#### `models.MetadataPatch` was removed
+
+#### `models.Dynamics365DataConnector` was removed
+
+#### `models.WatchlistsCreateOrUpdateHeaders` was removed
+
+#### `models.ActivityEntityQueryTemplate` was removed
+
+#### `models.Office365ProjectConnectorDataTypesLogs` was removed
+
+#### `models.RepositoryResourceInfo` was removed
+
+#### `models.OfficePowerBIDataConnector` was removed
+
+#### `models.EnrichmentDomainWhoisRegistrarDetails` was removed
+
+#### `models.ValidationError` was removed
+
+#### `models.BookmarkExpandParameters` was removed
+
+#### `models.CodelessUiConnectorConfigPropertiesGraphQueriesItem` was removed
+
+#### `models.FileImport$Definition` was removed
+
+#### `models.RepoType` was removed
+
+#### `models.OfficePowerBIConnectorDataTypes` was removed
+
+#### `models.OutputType` was removed
+
+#### `models.SettingKind` was removed
+
+#### `models.BookmarkRelations` was removed
+
+#### `models.EntityQueriesKind` was removed
+
+#### `models.OfficePowerBICheckRequirements` was removed
+
+#### `models.Dynamics365CheckRequirements` was removed
+
+#### `models.AutomationRuleBooleanConditionSupportedOperator` was removed
+
+#### `models.SampleQueries` was removed
+
+#### `models.MstiCheckRequirements` was removed
+
+#### `models.SourceControl$DefinitionStages` was removed
+
+#### `models.UebaDataSources` was removed
+
+#### `models.CodelessUiConnectorConfigProperties` was removed
+
+#### `models.PollingFrequency` was removed
+
+#### `models.FusionTemplateSubTypeSeverityFilter` was removed
+
+#### `models.Repository` was removed
+
+#### `models.EntityQueryTemplate` was removed
+
+#### `models.InstructionStepsInstructionsItem` was removed
+
+#### `models.InsightQueryItemPropertiesTableQueryQueriesDefinitionsPropertiesItemsItem` was removed
+
+#### `models.EntityEdges` was removed
+
+#### `models.EntityFieldMapping` was removed
+
+#### `models.InsightQueryItemPropertiesTableQueryColumnsDefinitionsItem` was removed
+
+#### `models.FileImportList` was removed
+
+#### `models.MetadataModel$Definition` was removed
+
+#### `models.OfficeAtpCheckRequirements` was removed
+
+#### `models.Customs` was removed
+
+#### `models.DeleteStatus` was removed
+
+#### `models.Ueba` was removed
+
+#### `models.OfficeIrmDataConnector` was removed
+
+#### `models.Availability` was removed
+
+#### `models.AutomationRuleBooleanCondition` was removed
+
+#### `models.MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed` was removed
+
+#### `models.EntityQueryTemplates` was removed
+
+#### `models.FusionTemplateSourceSetting` was removed
+
+#### `models.DataConnectorsCheckRequirements` was removed
+
+#### `models.CodelessConnectorPollingConfigProperties` was removed
+
+#### `models.EntityQueryList` was removed
+
+#### `models.ActivityEntityQuery` was removed
+
+#### `models.Relation$DefinitionStages` was modified
+
+* `withExistingBookmark(java.lang.String,java.lang.String,java.lang.String)` was removed in stage 1
+
+#### `models.Watchlist` was modified
+
+* `sourceType()` was removed
+* `java.lang.String source()` -> `models.Source source()`
+
+#### `models.ThreatIntelligenceSortingCriteria` was modified
+
+* `withSortOrder(models.ThreatIntelligenceSortingCriteriaEnum)` was removed
+* `models.ThreatIntelligenceSortingCriteriaEnum sortOrder()` -> `models.ThreatIntelligenceSortingOrder sortOrder()`
+
+#### `models.IncidentAdditionalData` was modified
+
+* `providerIncidentUrl()` was removed
+* `techniques()` was removed
+
+#### `models.AzureResourceEntity` was modified
+
+* `models.EntityKind kind()` -> `models.EntityKindEnum kind()`
+
+#### `models.ThreatIntelligenceIndicatorsOperations` was modified
+
+* `list(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.SecurityAlert` was modified
+
+* `models.EntityKind kind()` -> `models.EntityKindEnum kind()`
+
+#### `models.FusionAlertRuleTemplate` was modified
+
+* `withSourceSettings(java.util.List)` was removed
+* `sourceSettings()` was removed
+
+#### `models.Watchlist$Update` was modified
+
+* `withSourceType(models.SourceType)` was removed
+* `withSource(java.lang.String)` was removed
+
+#### `models.IoTDeviceEntity` was modified
+
+* `isAuthorized()` was removed
+* `isProgramming()` was removed
+* `isScanner()` was removed
+* `zone()` was removed
+* `deviceSubType()` was removed
+* `importance()` was removed
+* `purdueLayer()` was removed
+* `sensor()` was removed
+* `nicEntityIds()` was removed
+* `site()` was removed
+* `owners()` was removed
+* `models.EntityKind kind()` -> `models.EntityKindEnum kind()`
+* `withImportance(models.DeviceImportance)` was removed
+
+#### `models.Watchlist$Definition` was modified
+
+* `withSource(java.lang.String)` was removed
+* `withSourceType(models.SourceType)` was removed
+
+#### `models.Bookmark$Update` was modified
+
+* `withTactics(java.util.List)` was removed
+* `withTechniques(java.util.List)` was removed
+* `withEntityMappings(java.util.List)` was removed
+
+#### `models.CloudApplicationEntity` was modified
+
+* `models.EntityKind kind()` -> `models.EntityKindEnum kind()`
+
+#### `models.Bookmark` was modified
+
+* `techniques()` was removed
+* `tactics()` was removed
+* `entityMappings()` was removed
+
+#### `models.AccountEntity` was modified
+
+* `models.EntityKind kind()` -> `models.EntityKindEnum kind()`
+
+#### `models.DataConnectors` was modified
+
+* `disconnect(java.lang.String,java.lang.String,java.lang.String)` was removed
+* `disconnectWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `connectWithResponse(java.lang.String,java.lang.String,java.lang.String,models.DataConnectorConnectBody,com.azure.core.util.Context)` was removed
+* `connect(java.lang.String,java.lang.String,java.lang.String,models.DataConnectorConnectBody)` was removed
+
+#### `models.MailboxEntity` was modified
+
+* `models.EntityKind kind()` -> `models.EntityKindEnum kind()`
+
+#### `models.Incidents` was modified
+
+* `createTeam(java.lang.String,java.lang.String,java.lang.String,models.TeamProperties)` was removed
+* `runPlaybookWithResponse(java.lang.String,java.lang.String,java.lang.String,models.ManualTriggerRequestBody,com.azure.core.util.Context)` was removed
+* `createTeamWithResponse(java.lang.String,java.lang.String,java.lang.String,models.TeamProperties,com.azure.core.util.Context)` was removed
+* `runPlaybook(java.lang.String,java.lang.String,java.lang.String)` was removed
+
+#### `models.Incident` was modified
+
+* `teamInformation()` was removed
+* `createTeam(models.TeamProperties)` was removed
+* `createTeamWithResponse(models.TeamProperties,com.azure.core.util.Context)` was removed
+* `providerName()` was removed
+* `providerIncidentId()` was removed
+
+#### `SecurityInsightsManager` was modified
+
+* `ipGeodatas()` was removed
+* `productSettings()` was removed
+* `metadatas()` was removed
+* `dataConnectorsCheckRequirementsOperations()` was removed
+* `fileImports()` was removed
+* `bookmarkOperations()` was removed
+* `sourceControlsOperations()` was removed
+* `domainWhois()` was removed
+* `entityQueryTemplates()` was removed
+* `officeConsents()` was removed
+* `sourceControls()` was removed
+* `bookmarkRelations()` was removed
+* `entitiesRelations()` was removed
+* `entityRelations()` was removed
+* `entities()` was removed
+* `entityQueries()` was removed
+* `entitiesGetTimelines()` was removed
+
+#### `models.HostEntity` was modified
+
+* `models.EntityKind kind()` -> `models.EntityKindEnum kind()`
+
+#### `models.WatchlistItem$Definition` was modified
+
+* `withEntityMapping(java.util.Map)` was removed
+* `withItemsKeyValue(java.util.Map)` was removed
+
+#### `models.RegistryValueEntity` was modified
+
+* `models.EntityKind kind()` -> `models.EntityKindEnum kind()`
+
+#### `models.RegistryKeyEntity` was modified
+
+* `models.EntityKind kind()` -> `models.EntityKindEnum kind()`
+
+#### `models.WatchlistItem` was modified
+
+* `java.util.Map itemsKeyValue()` -> `java.lang.Object itemsKeyValue()`
+* `java.util.Map entityMapping()` -> `java.lang.Object entityMapping()`
+
+#### `models.Relation$Definition` was modified
+
+* `withExistingBookmark(java.lang.String,java.lang.String,java.lang.String)` was removed
+
+#### `models.Incident$Definition` was modified
+
+* `withProviderName(java.lang.String)` was removed
+* `withTeamInformation(fluent.models.TeamInformationInner)` was removed
+* `withProviderIncidentId(java.lang.String)` was removed
+
+#### `models.SecurityGroupEntity` was modified
+
+* `models.EntityKind kind()` -> `models.EntityKindEnum kind()`
+
+#### `models.WatchlistItem$Update` was modified
+
+* `withEntityMapping(java.util.Map)` was removed
+* `withItemsKeyValue(java.util.Map)` was removed
+
+#### `models.FileHashEntity` was modified
+
+* `models.EntityKind kind()` -> `models.EntityKindEnum kind()`
+
+#### `models.Bookmark$Definition` was modified
+
+* `withEntityMappings(java.util.List)` was removed
+* `withTactics(java.util.List)` was removed
+* `withTechniques(java.util.List)` was removed
+
+#### `models.ThreatIntelligenceIndicatorModel` was modified
+
+* `models.ThreatIntelligenceResourceKindEnum kind()` -> `models.ThreatIntelligenceResourceInnerKind kind()`
+
+#### `models.ThreatIntelligenceInformation` was modified
+
+* `models.ThreatIntelligenceResourceKindEnum kind()` -> `models.ThreatIntelligenceResourceInnerKind kind()`
+
+#### `models.DnsEntity` was modified
+
+* `models.EntityKind kind()` -> `models.EntityKindEnum kind()`
+
+#### `models.Watchlists` was modified
+
+* `models.WatchlistsDeleteResponse deleteWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `com.azure.core.http.rest.Response deleteWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `models.WatchlistsDeleteResponse deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `com.azure.core.http.rest.Response deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+
+#### `models.FileEntity` was modified
+
+* `models.EntityKind kind()` -> `models.EntityKindEnum kind()`
+
+#### `models.HuntingBookmark` was modified
+
+* `models.EntityKind kind()` -> `models.EntityKindEnum kind()`
+
+#### `models.MailClusterEntity` was modified
+
+* `models.EntityKind kind()` -> `models.EntityKindEnum kind()`
+
+#### `models.IncidentEntitiesResultsMetadata` was modified
+
+* `models.EntityKind entityKind()` -> `models.EntityKindEnum entityKind()`
+* `withEntityKind(models.EntityKind)` was removed
+
+#### `models.FusionAlertRule` was modified
+
+* `withScenarioExclusionPatterns(java.util.List)` was removed
+* `scenarioExclusionPatterns()` was removed
+* `sourceSettings()` was removed
+* `withSourceSettings(java.util.List)` was removed
+
+#### `models.IncidentRelations` was modified
+
+* `createOrUpdate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,fluent.models.RelationInner)` was removed
+* `createOrUpdateWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,fluent.models.RelationInner,com.azure.core.util.Context)` was removed
+
+#### `models.Entity` was modified
+
+* `models.EntityKind kind()` -> `models.EntityKindEnum kind()`
+* `com.azure.core.management.SystemData systemData()` -> `com.azure.core.management.SystemData systemData()`
+* `innerModel()` was removed
+* `java.lang.String name()` -> `java.lang.String name()`
+* `java.lang.String id()` -> `java.lang.String id()`
+* `java.lang.String type()` -> `java.lang.String type()`
+
+#### `models.MailMessageEntity` was modified
+
+* `models.EntityKind kind()` -> `models.EntityKindEnum kind()`
+
+#### `models.UrlEntity` was modified
+
+* `models.EntityKind kind()` -> `models.EntityKindEnum kind()`
+
+#### `models.Incident$Update` was modified
+
+* `withProviderIncidentId(java.lang.String)` was removed
+* `withProviderName(java.lang.String)` was removed
+* `withTeamInformation(fluent.models.TeamInformationInner)` was removed
+
+#### `models.IpEntity` was modified
+
+* `models.EntityKind kind()` -> `models.EntityKindEnum kind()`
+
+#### `models.SubmissionMailEntity` was modified
+
+* `models.EntityKind kind()` -> `models.EntityKindEnum kind()`
+
+#### `models.ProcessEntity` was modified
+
+* `models.EntityKind kind()` -> `models.EntityKindEnum kind()`
+
+#### `models.MalwareEntity` was modified
+
+* `models.EntityKind kind()` -> `models.EntityKindEnum kind()`
+
+### Features Added
+
+* `models.ThreatIntelligenceResourceInnerKind` was added
+
+* `models.Source` was added
+
+* `models.ThreatIntelligenceSortingOrder` was added
+
+* `models.EntityKindEnum` was added
+
+#### `models.ThreatIntelligenceSortingCriteria` was modified
+
+* `withSortOrder(models.ThreatIntelligenceSortingOrder)` was added
+
+#### `models.ThreatIntelligenceIndicatorsOperations` was modified
+
+* `list(java.lang.String,java.lang.String,java.lang.String,java.lang.Integer,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.Watchlist$Update` was modified
+
+* `withSource(models.Source)` was added
+
+#### `models.Watchlist$Definition` was modified
+
+* `withSource(models.Source)` was added
+
+#### `models.WatchlistItem$Definition` was modified
+
+* `withItemsKeyValue(java.lang.Object)` was added
+* `withEntityMapping(java.lang.Object)` was added
+
+#### `models.Relation$Definition` was modified
+
+* `withExistingIncident(java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `models.WatchlistItem$Update` was modified
+
+* `withEntityMapping(java.lang.Object)` was added
+* `withItemsKeyValue(java.lang.Object)` was added
+
+#### `models.IncidentEntitiesResultsMetadata` was modified
+
+* `withEntityKind(models.EntityKindEnum)` was added
+
+#### `models.IncidentRelations` was modified
+
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `deleteById(java.lang.String)` was added
+* `getById(java.lang.String)` was added
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `define(java.lang.String)` was added
+
+#### `models.Entity` was modified
+
+* `validate()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 ## 1.0.0-beta.5 (2024-10-14)
 

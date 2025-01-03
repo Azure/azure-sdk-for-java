@@ -10,7 +10,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.securityinsights.SecurityInsightsManager;
-import com.azure.resourcemanager.securityinsights.models.EntityKind;
+import com.azure.resourcemanager.securityinsights.models.EntityKindEnum;
 import com.azure.resourcemanager.securityinsights.models.IncidentEntitiesResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -22,7 +22,7 @@ public final class IncidentsListEntitiesWithResponseMockTests {
     @Test
     public void testListEntitiesWithResponse() throws Exception {
         String responseStr
-            = "{\"entities\":[{\"kind\":\"Entity\",\"id\":\"pbntqqwwgf\",\"name\":\"sqxile\",\"type\":\"ejse\"},{\"kind\":\"Entity\",\"id\":\"znequq\",\"name\":\"nttwk\",\"type\":\"hajksbsyogjmqjhg\"}],\"metaData\":[{\"count\":1327084859,\"entityKind\":\"SubmissionMail\"},{\"count\":470515986,\"entityKind\":\"AzureResource\"},{\"count\":1951367208,\"entityKind\":\"IoTDevice\"}]}";
+            = "{\"entities\":[{\"kind\":\"Entity\",\"id\":\"idisczskosw\",\"name\":\"qiqazugamxzkr\",\"type\":\"coiisbamnppcce\"}],\"metaData\":[{\"count\":2123887167,\"entityKind\":\"Ip\"},{\"count\":1946574379,\"entityKind\":\"RegistryKey\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class IncidentsListEntitiesWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IncidentEntitiesResponse response = manager.incidents()
-            .listEntitiesWithResponse("gdqyxajc", "grcavqc", "yzoqzkmqcwwsjnk", com.azure.core.util.Context.NONE)
+            .listEntitiesWithResponse("grmtqjk", "evadrmmwiu", "wvcmj", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(1327084859, response.metadata().get(0).count());
-        Assertions.assertEquals(EntityKind.SUBMISSION_MAIL, response.metadata().get(0).entityKind());
+        Assertions.assertEquals(2123887167, response.metadata().get(0).count());
+        Assertions.assertEquals(EntityKindEnum.IP, response.metadata().get(0).entityKind());
     }
 }
