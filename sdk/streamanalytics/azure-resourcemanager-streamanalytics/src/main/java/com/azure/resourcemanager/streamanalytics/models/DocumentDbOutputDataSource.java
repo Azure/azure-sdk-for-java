@@ -49,7 +49,7 @@ public final class DocumentDbOutputDataSource extends OutputDataSource {
      * 
      * @return the innerProperties value.
      */
-    private DocumentDbOutputDataSourceProperties innerProperties() {
+    DocumentDbOutputDataSourceProperties innerProperties() {
         return this.innerProperties;
     }
 
@@ -202,29 +202,6 @@ public final class DocumentDbOutputDataSource extends OutputDataSource {
             this.innerProperties = new DocumentDbOutputDataSourceProperties();
         }
         this.innerProperties().withDocumentId(documentId);
-        return this;
-    }
-
-    /**
-     * Get the authenticationMode property: Authentication Mode.
-     * 
-     * @return the authenticationMode value.
-     */
-    public AuthenticationMode authenticationMode() {
-        return this.innerProperties() == null ? null : this.innerProperties().authenticationMode();
-    }
-
-    /**
-     * Set the authenticationMode property: Authentication Mode.
-     * 
-     * @param authenticationMode the authenticationMode value to set.
-     * @return the DocumentDbOutputDataSource object itself.
-     */
-    public DocumentDbOutputDataSource withAuthenticationMode(AuthenticationMode authenticationMode) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DocumentDbOutputDataSourceProperties();
-        }
-        this.innerProperties().withAuthenticationMode(authenticationMode);
         return this;
     }
 

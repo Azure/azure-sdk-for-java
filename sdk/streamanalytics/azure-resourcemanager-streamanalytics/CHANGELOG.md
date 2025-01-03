@@ -1,14 +1,348 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0 (2025-01-03)
 
-### Features Added
+- Azure Resource Manager StreamAnalytics client library for Java. This package contains Microsoft Azure SDK for StreamAnalytics Management SDK. Stream Analytics Client. Package tag package-pure-2020-03. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.External` was removed
 
-### Other Changes
+#### `models.CSharpFunctionRetrieveDefaultDefinitionParameters` was removed
+
+#### `models.GetStreamingJobSkuResultSku` was removed
+
+#### `models.UpdatableUdfRefreshType` was removed
+
+#### `models.ClusterProperties` was removed
+
+#### `models.CompileQuery` was removed
+
+#### `models.AzureMachineLearningServiceFunctionRetrieveDefaultDefinitionParameters` was removed
+
+#### `models.AzureMachineLearningStudioFunctionBinding` was removed
+
+#### `models.AzureMachineLearningServiceInputColumn` was removed
+
+#### `models.DeltaSerialization` was removed
+
+#### `models.RawOutputDatasource` was removed
+
+#### `models.GetStreamingJobSkuResult` was removed
+
+#### `models.AzureMachineLearningStudioInputColumn` was removed
+
+#### `models.AzureDataExplorerOutputDataSource` was removed
+
+#### `models.UpdateMode` was removed
+
+#### `models.RefreshConfiguration` was removed
+
+#### `models.SkuCapacity` was removed
+
+#### `models.CustomClrSerialization` was removed
+
+#### `models.EventGridStreamInputDataSource` was removed
+
+#### `models.InputWatermarkProperties` was removed
+
+#### `models.QueryFunction` was removed
+
+#### `models.LastOutputEventTimestamp` was removed
+
+#### `models.PostgreSqlOutputDataSource` was removed
+
+#### `models.SampleInputResult` was removed
+
+#### `models.SkuCapacityScaleType` was removed
+
+#### `models.TestDatasourceResult` was removed
+
+#### `models.RawStreamInputDataSource` was removed
+
+#### `models.SampleInput` was removed
+
+#### `models.PostgreSqlDataSourceProperties` was removed
+
+#### `models.QueryCompilationResult` was removed
+
+#### `models.Skus` was removed
+
+#### `models.AzureMachineLearningServiceOutputColumn` was removed
+
+#### `models.PrivateEndpointProperties` was removed
+
+#### `models.GetStreamingJobSkuResults` was removed
+
+#### `models.QueryCompilationError` was removed
+
+#### `models.TestQuery` was removed
+
+#### `models.ResourceType` was removed
+
+#### `models.EventGridEventSchemaType` was removed
+
+#### `models.TestOutput` was removed
+
+#### `models.AzureMachineLearningStudioInputs` was removed
+
+#### `models.RawReferenceInputDataSource` was removed
+
+#### `models.InputWatermarkMode` was removed
+
+#### `models.TestDatasourceResultStatus` was removed
+
+#### `models.AzureMachineLearningServiceFunctionBinding` was removed
+
+#### `models.AzureMachineLearningStudioOutputColumn` was removed
+
+#### `models.TestQueryDiagnostics` was removed
+
+#### `models.SampleInputResultStatus` was removed
+
+#### `models.OutputWatermarkMode` was removed
+
+#### `models.BlobWriteMode` was removed
+
+#### `models.QueryInput` was removed
+
+#### `models.QueryTestingResult` was removed
+
+#### `models.CSharpFunctionBinding` was removed
+
+#### `models.OutputWatermarkProperties` was removed
+
+#### `models.AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionParameters` was removed
+
+#### `models.QueryTestingResultStatus` was removed
+
+#### `models.TestInput` was removed
+
+#### `models.BlobOutputDataSource` was modified
+
+* `blobWriteMode()` was removed
+* `withBlobWriteMode(models.BlobWriteMode)` was removed
+
+#### `models.AzureSynapseDataSourceProperties` was modified
+
+* `authenticationMode()` was removed
+* `withAuthenticationMode(models.AuthenticationMode)` was removed
+
+#### `models.Sku` was modified
+
+* `withCapacity(java.lang.Integer)` was removed
+* `capacity()` was removed
+
+#### `models.StreamingJobProperties` was modified
+
+* `externals()` was removed
+
+#### `StreamAnalyticsManager` was modified
+
+* `skus()` was removed
+
+#### `models.EventHubDataSourceProperties` was modified
+
+* `partitionCount()` was removed
+* `withPartitionCount(java.lang.Integer)` was removed
+
+#### `models.Output$Definition` was modified
+
+* `withWatermarkSettings(models.OutputWatermarkProperties)` was removed
+
+#### `models.Output$Update` was modified
+
+* `withWatermarkSettings(models.OutputWatermarkProperties)` was removed
+
+#### `models.Cluster` was modified
+
+* `properties()` was removed
+
+#### `models.Identity` was modified
+
+* `userAssignedIdentities()` was removed
+* `withUserAssignedIdentities(java.util.Map)` was removed
+
+#### `models.EventHubV2OutputDataSource` was modified
+
+* `withPartitionCount(java.lang.Integer)` was removed
+* `partitionCount()` was removed
+
+#### `models.BlobReferenceInputDataSource` was modified
+
+* `withFullSnapshotRefreshRate(java.lang.String)` was removed
+* `withDeltaSnapshotRefreshRate(java.lang.String)` was removed
+* `deltaPathPattern()` was removed
+* `withBlobName(java.lang.String)` was removed
+* `withSourcePartitionCount(java.lang.Integer)` was removed
+* `blobName()` was removed
+* `fullSnapshotRefreshRate()` was removed
+* `withDeltaPathPattern(java.lang.String)` was removed
+* `deltaSnapshotRefreshRate()` was removed
+* `sourcePartitionCount()` was removed
+
+#### `models.JobStorageAccount` was modified
+
+* `withAuthenticationMode(models.AuthenticationMode)` was removed
+
+#### `models.EventHubOutputDataSource` was modified
+
+* `withPartitionCount(java.lang.Integer)` was removed
+* `partitionCount()` was removed
+
+#### `models.InputProperties` was modified
+
+* `withWatermarkSettings(models.InputWatermarkProperties)` was removed
+* `watermarkSettings()` was removed
+
+#### `models.AzureSynapseOutputDataSource` was modified
+
+* `authenticationMode()` was removed
+* `withAuthenticationMode(models.AuthenticationMode)` was removed
+
+#### `models.StreamingJob$Definition` was modified
+
+* `withExternals(models.External)` was removed
+* `withSkuPropertiesSku(models.Sku)` was removed
+
+#### `models.EventHubStreamInputDataSource` was modified
+
+* `partitionCount()` was removed
+* `prefetchCount()` was removed
+* `withPrefetchCount(java.lang.Integer)` was removed
+* `withPartitionCount(java.lang.Integer)` was removed
+
+#### `models.Cluster$Update` was modified
+
+* `withProperties(models.ClusterProperties)` was removed
+
+#### `models.StreamingJob$Update` was modified
+
+* `withExternals(models.External)` was removed
+* `withSkuPropertiesSku(models.Sku)` was removed
+
+#### `models.PrivateEndpoint$Update` was modified
+
+* `withProperties(models.PrivateEndpointProperties)` was removed
+
+#### `models.StorageAccount` was modified
+
+* `withAuthenticationMode(models.AuthenticationMode)` was removed
+* `authenticationMode()` was removed
+
+#### `models.PrivateEndpoint` was modified
+
+* `properties()` was removed
+
+#### `models.AggregateFunctionProperties` was modified
+
+* `etag()` was removed
+
+#### `models.PrivateEndpoint$Definition` was modified
+
+* `withProperties(models.PrivateEndpointProperties)` was removed
+
+#### `models.Cluster$Definition` was modified
+
+* `withProperties(models.ClusterProperties)` was removed
+
+#### `models.ScalarFunctionProperties` was modified
+
+* `etag()` was removed
+
+#### `models.AzureSqlReferenceInputDataSource` was modified
+
+* `withAuthenticationMode(models.AuthenticationMode)` was removed
+* `authenticationMode()` was removed
+
+#### `models.StreamingJob` was modified
+
+* `skuPropertiesSku()` was removed
+* `externals()` was removed
+
+#### `models.ReferenceInputProperties` was modified
+
+* `etag()` was removed
+* `withWatermarkSettings(models.InputWatermarkProperties)` was removed
+* `diagnostics()` was removed
+
+#### `models.StreamInputProperties` was modified
+
+* `etag()` was removed
+* `withWatermarkSettings(models.InputWatermarkProperties)` was removed
+* `diagnostics()` was removed
+
+#### `models.Subscriptions` was modified
+
+* `testQuery(java.lang.String,fluent.models.TestQueryInner)` was removed
+* `testInput(java.lang.String,fluent.models.TestInputInner)` was removed
+* `testOutput(java.lang.String,fluent.models.TestOutputInner)` was removed
+* `sampleInput(java.lang.String,fluent.models.SampleInputInner,com.azure.core.util.Context)` was removed
+* `testOutput(java.lang.String,fluent.models.TestOutputInner,com.azure.core.util.Context)` was removed
+* `compileQuery(java.lang.String,models.CompileQuery)` was removed
+* `testQuery(java.lang.String,fluent.models.TestQueryInner,com.azure.core.util.Context)` was removed
+* `compileQueryWithResponse(java.lang.String,models.CompileQuery,com.azure.core.util.Context)` was removed
+* `sampleInput(java.lang.String,fluent.models.SampleInputInner)` was removed
+* `testInput(java.lang.String,fluent.models.TestInputInner,com.azure.core.util.Context)` was removed
+
+#### `models.DocumentDbOutputDataSource` was modified
+
+* `authenticationMode()` was removed
+* `withAuthenticationMode(models.AuthenticationMode)` was removed
+
+#### `models.EventHubV2StreamInputDataSource` was modified
+
+* `partitionCount()` was removed
+* `withPrefetchCount(java.lang.Integer)` was removed
+* `prefetchCount()` was removed
+* `withPartitionCount(java.lang.Integer)` was removed
+
+#### `models.Output` was modified
+
+* `lastOutputEventTimestamps()` was removed
+* `watermarkSettings()` was removed
+
+### Features Added
+
+* `models.AzureMachineLearningWebServiceOutputColumn` was added
+
+* `models.AzureMachineLearningWebServiceInputs` was added
+
+* `models.AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters` was added
+
+* `models.AzureMachineLearningWebServiceFunctionBinding` was added
+
+* `models.AzureMachineLearningWebServiceInputColumn` was added
+
+#### `models.Cluster` was modified
+
+* `clusterId()` was added
+* `createdDate()` was added
+* `capacityAssigned()` was added
+* `capacityAllocated()` was added
+* `provisioningState()` was added
+
+#### `models.JobStorageAccount` was modified
+
+* `authenticationMode()` was added
+
+#### `models.PrivateEndpoint$Update` was modified
+
+* `withManualPrivateLinkServiceConnections(java.util.List)` was added
+
+#### `models.PrivateEndpoint` was modified
+
+* `manualPrivateLinkServiceConnections()` was added
+* `createdDate()` was added
+
+#### `models.PrivateEndpoint$Definition` was modified
+
+* `withManualPrivateLinkServiceConnections(java.util.List)` was added
+
+#### `models.AzureSqlReferenceInputDataSource` was modified
+
+* `withTable(java.lang.String)` was added
+* `table()` was added
 
 ## 1.0.0-beta.4 (2024-10-31)
 

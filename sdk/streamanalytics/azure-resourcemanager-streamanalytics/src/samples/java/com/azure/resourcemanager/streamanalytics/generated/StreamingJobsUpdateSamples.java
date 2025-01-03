@@ -12,7 +12,7 @@ import com.azure.resourcemanager.streamanalytics.models.StreamingJob;
 public final class StreamingJobsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * StreamingJob_Update.json
      */
     /**
