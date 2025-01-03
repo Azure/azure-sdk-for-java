@@ -147,7 +147,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             return response;
         }
 
-        long timeToHeadersNanoTime = System.nanoTime();
+        long responseStartNanoTime = System.nanoTime();
 
         // response may be disabled, but we still need to log the exception if an exception occurs during stream reading.
         if (logBuilder.isEnabled()) {
@@ -155,7 +155,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 .addKeyValue(LoggingKeys.HTTP_METHOD_KEY, response.getRequest().getHttpMethod())
                 .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
                 .addKeyValue(LoggingKeys.URI_KEY, redactedUrl)
-                .addKeyValue(LoggingKeys.TIME_TO_HEADERS_MS, getDurationMs(startNanoTime, timeToHeadersNanoTime))
+                .addKeyValue(LoggingKeys.TIME_TO_RESPONSE_MS_KEY, getDurationMs(startNanoTime, responseStartNanoTime))
                 .addKeyValue(LoggingKeys.STATUS_CODE_KEY, response.getStatusCode())
                 .addKeyValue(LoggingKeys.REQUEST_CONTENT_LENGTH_KEY, requestContentLength)
                 .addKeyValue(LoggingKeys.RESPONSE_CONTENT_LENGTH_KEY,
@@ -172,7 +172,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                         .log();
                 }
             }, throwable -> logException(logger, response.getRequest(), response, throwable, startNanoTime,
-                timeToHeadersNanoTime, requestContentLength, redactedUrl, tryCount));
+                responseStartNanoTime, requestContentLength, redactedUrl, tryCount));
         }
 
         if (logBuilder.isEnabled()) {
@@ -183,7 +183,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     }
 
     private <T extends Throwable> T logException(ClientLogger logger, HttpRequest request, Response<?> response,
-        T throwable, long startNanoTime, Long timeToHeadersNanoTime, long requestContentLength, String redactedUrl,
+        T throwable, long startNanoTime, Long responseStartNanoTime, long requestContentLength, String redactedUrl,
         int tryCount) {
         ClientLogger.LoggingEventBuilder logBuilder = logger.atLevel(ClientLogger.LogLevel.WARNING);
         if (!logBuilder.isEnabled() || httpLogDetailLevel == HttpLogOptions.HttpLogDetailLevel.NONE) {
@@ -204,9 +204,9 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                     getContentLength(logger, response.getBody(), response.getHeaders()))
                 .addKeyValue(LoggingKeys.STATUS_CODE_KEY, response.getStatusCode());
 
-            if (timeToHeadersNanoTime != null) {
-                logBuilder.addKeyValue(LoggingKeys.TIME_TO_HEADERS_MS,
-                    getDurationMs(startNanoTime, timeToHeadersNanoTime));
+            if (responseStartNanoTime != null) {
+                logBuilder.addKeyValue(LoggingKeys.TIME_TO_RESPONSE_MS_KEY,
+                    getDurationMs(startNanoTime, responseStartNanoTime));
             }
         }
 

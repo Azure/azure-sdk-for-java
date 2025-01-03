@@ -446,9 +446,7 @@ public class ClientLogger {
          * Logs event annotated with context.
          */
         public void log() {
-            if (this.isEnabled) {
-                logger.performLogging(level, getMessageWithContext(null), null);
-            }
+            log(null);
         }
 
         /**

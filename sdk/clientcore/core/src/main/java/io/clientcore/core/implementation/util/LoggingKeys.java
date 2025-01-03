@@ -26,12 +26,12 @@ public final class LoggingKeys {
     public static final String TRY_COUNT_KEY = "tryCount";
 
     /**
-     * Key representing time from request start to the moment response (headers and response code) were received in milliseconds,
+     * Key representing time in milliseconds from request start to the moment response (headers and response code) were received,
      * the value should be a number.
      * <p>
      * Depending on the implementation and content type, this time may include time to receive the body.
      */
-    public static final String TIME_TO_HEADERS_MS = "timeToHeadersMs";
+    public static final String TIME_TO_RESPONSE_MS_KEY = "timeToResponseMs";
 
     /**
      * Key representing duration of call in milliseconds, the value should be a number.
