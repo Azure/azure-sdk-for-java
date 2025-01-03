@@ -12,15 +12,15 @@ public final class IncidentCommentPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IncidentCommentProperties model = BinaryData.fromString(
-            "{\"createdTimeUtc\":\"2021-04-02T08:10:55Z\",\"lastModifiedTimeUtc\":\"2021-06-28T06:04:22Z\",\"message\":\"zmqpnodawopqhewj\",\"author\":{\"email\":\"cgsbost\",\"name\":\"lnd\",\"objectId\":\"e36c71dd-7cc4-4dd4-b865-a92732368a83\",\"userPrincipalName\":\"utmzlbiojlvfhrbb\"}}")
+            "{\"createdTimeUtc\":\"2021-07-27T00:52:16Z\",\"lastModifiedTimeUtc\":\"2021-09-21T20:48:34Z\",\"message\":\"rey\",\"author\":{\"email\":\"ikf\",\"name\":\"wneaiv\",\"objectId\":\"7f3809ae-7018-4ecc-a220-1b8688af8bd9\",\"userPrincipalName\":\"zel\"}}")
             .toObject(IncidentCommentProperties.class);
-        Assertions.assertEquals("zmqpnodawopqhewj", model.message());
+        Assertions.assertEquals("rey", model.message());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IncidentCommentProperties model = new IncidentCommentProperties().withMessage("zmqpnodawopqhewj");
+        IncidentCommentProperties model = new IncidentCommentProperties().withMessage("rey");
         model = BinaryData.fromObject(model).toObject(IncidentCommentProperties.class);
-        Assertions.assertEquals("zmqpnodawopqhewj", model.message());
+        Assertions.assertEquals("rey", model.message());
     }
 }

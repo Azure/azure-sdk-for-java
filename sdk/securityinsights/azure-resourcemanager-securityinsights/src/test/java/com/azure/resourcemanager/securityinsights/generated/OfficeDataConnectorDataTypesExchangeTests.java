@@ -13,15 +13,15 @@ public final class OfficeDataConnectorDataTypesExchangeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OfficeDataConnectorDataTypesExchange model
-            = BinaryData.fromString("{\"state\":\"Disabled\"}").toObject(OfficeDataConnectorDataTypesExchange.class);
-        Assertions.assertEquals(DataTypeState.DISABLED, model.state());
+            = BinaryData.fromString("{\"state\":\"Enabled\"}").toObject(OfficeDataConnectorDataTypesExchange.class);
+        Assertions.assertEquals(DataTypeState.ENABLED, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OfficeDataConnectorDataTypesExchange model
-            = new OfficeDataConnectorDataTypesExchange().withState(DataTypeState.DISABLED);
+            = new OfficeDataConnectorDataTypesExchange().withState(DataTypeState.ENABLED);
         model = BinaryData.fromObject(model).toObject(OfficeDataConnectorDataTypesExchange.class);
-        Assertions.assertEquals(DataTypeState.DISABLED, model.state());
+        Assertions.assertEquals(DataTypeState.ENABLED, model.state());
     }
 }

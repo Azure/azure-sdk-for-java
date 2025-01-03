@@ -12,15 +12,15 @@ public final class RelationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RelationProperties model = BinaryData.fromString(
-            "{\"relatedResourceId\":\"edeojnabc\",\"relatedResourceName\":\"smtxpsieb\",\"relatedResourceType\":\"hvpesapskrdqm\",\"relatedResourceKind\":\"jdhtldwkyzxu\"}")
+            "{\"relatedResourceId\":\"zrtuzq\",\"relatedResourceName\":\"sexnevfdnw\",\"relatedResourceType\":\"mewzsyyc\",\"relatedResourceKind\":\"zsoibjudpfrxtr\"}")
             .toObject(RelationProperties.class);
-        Assertions.assertEquals("edeojnabc", model.relatedResourceId());
+        Assertions.assertEquals("zrtuzq", model.relatedResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RelationProperties model = new RelationProperties().withRelatedResourceId("edeojnabc");
+        RelationProperties model = new RelationProperties().withRelatedResourceId("zrtuzq");
         model = BinaryData.fromObject(model).toObject(RelationProperties.class);
-        Assertions.assertEquals("edeojnabc", model.relatedResourceId());
+        Assertions.assertEquals("zrtuzq", model.relatedResourceId());
     }
 }
