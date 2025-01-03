@@ -6,54 +6,51 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * UE Session Info for 5G.
  */
 @Fluent
-public final class UeSessionInfo5G {
+public final class UeSessionInfo5G implements JsonSerializable<UeSessionInfo5G> {
     /*
      * PDU session identifier
      */
-    @JsonProperty(value = "pduSessionId", required = true)
     private int pduSessionId;
 
     /*
      * Data network name
      */
-    @JsonProperty(value = "dnn", required = true)
     private String dnn;
 
     /*
      * Single-network slice selection assistance information (S-NSSAI).
      */
-    @JsonProperty(value = "snssai", required = true)
     private Snssai snssai;
 
     /*
      * UE IP address
      */
-    @JsonProperty(value = "ueIpAddress", required = true)
     private UeIpAddress ueIpAddress;
 
     /*
      * Packet Data Network Type
      */
-    @JsonProperty(value = "pdnType", required = true)
     private PdnType pdnType;
 
     /*
      * Aggregate maximum bit rate.
      */
-    @JsonProperty(value = "ambr", required = true)
     private Ambr ambr;
 
     /*
      * The qosFlow property.
      */
-    @JsonProperty(value = "qosFlow", required = true)
     private List<UeQosFlow> qosFlow;
 
     /**
@@ -243,4 +240,60 @@ public final class UeSessionInfo5G {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UeSessionInfo5G.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("pduSessionId", this.pduSessionId);
+        jsonWriter.writeStringField("dnn", this.dnn);
+        jsonWriter.writeJsonField("snssai", this.snssai);
+        jsonWriter.writeJsonField("ueIpAddress", this.ueIpAddress);
+        jsonWriter.writeStringField("pdnType", this.pdnType == null ? null : this.pdnType.toString());
+        jsonWriter.writeJsonField("ambr", this.ambr);
+        jsonWriter.writeArrayField("qosFlow", this.qosFlow, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UeSessionInfo5G from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UeSessionInfo5G if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UeSessionInfo5G.
+     */
+    public static UeSessionInfo5G fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UeSessionInfo5G deserializedUeSessionInfo5G = new UeSessionInfo5G();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("pduSessionId".equals(fieldName)) {
+                    deserializedUeSessionInfo5G.pduSessionId = reader.getInt();
+                } else if ("dnn".equals(fieldName)) {
+                    deserializedUeSessionInfo5G.dnn = reader.getString();
+                } else if ("snssai".equals(fieldName)) {
+                    deserializedUeSessionInfo5G.snssai = Snssai.fromJson(reader);
+                } else if ("ueIpAddress".equals(fieldName)) {
+                    deserializedUeSessionInfo5G.ueIpAddress = UeIpAddress.fromJson(reader);
+                } else if ("pdnType".equals(fieldName)) {
+                    deserializedUeSessionInfo5G.pdnType = PdnType.fromString(reader.getString());
+                } else if ("ambr".equals(fieldName)) {
+                    deserializedUeSessionInfo5G.ambr = Ambr.fromJson(reader);
+                } else if ("qosFlow".equals(fieldName)) {
+                    List<UeQosFlow> qosFlow = reader.readArray(reader1 -> UeQosFlow.fromJson(reader1));
+                    deserializedUeSessionInfo5G.qosFlow = qosFlow;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUeSessionInfo5G;
+        });
+    }
 }

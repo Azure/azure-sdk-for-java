@@ -112,6 +112,8 @@ public final class EventHubsManager extends Manager<EventHubManagementClient> {
     }
 
     /**
+     * Gets entry point to manage EventHub namespaces.
+     *
      * @return entry point to manage EventHub namespaces
      */
     public EventHubNamespaces namespaces() {
@@ -122,6 +124,8 @@ public final class EventHubsManager extends Manager<EventHubManagementClient> {
     }
 
     /**
+     * Gets entry point to manage event hubs.
+     *
      * @return entry point to manage event hubs
      */
     public EventHubs eventHubs() {
@@ -132,6 +136,8 @@ public final class EventHubsManager extends Manager<EventHubManagementClient> {
     }
 
     /**
+     * Gets entry point to manage event hub consumer groups.
+     *
      * @return entry point to manage event hub consumer groups
      */
     public EventHubConsumerGroups consumerGroups() {
@@ -142,6 +148,8 @@ public final class EventHubsManager extends Manager<EventHubManagementClient> {
     }
 
     /**
+     * Gets entry point to manage disaster recovery pairing of event hub namespaces.
+     *
      * @return entry point to manage disaster recovery pairing of event hub namespaces.
      */
     public EventHubDisasterRecoveryPairings eventHubDisasterRecoveryPairings() {
@@ -152,6 +160,8 @@ public final class EventHubsManager extends Manager<EventHubManagementClient> {
     }
 
     /**
+     * Gets entry point to manage event hub authorization rules.
+     *
      * @return entry point to manage event hub authorization rules.
      */
     public EventHubAuthorizationRules eventHubAuthorizationRules() {
@@ -162,6 +172,8 @@ public final class EventHubsManager extends Manager<EventHubManagementClient> {
     }
 
     /**
+     * Gets entry point to manage event hub namespace authorization rules.
+     *
      * @return entry point to manage event hub namespace authorization rules.
      */
     public EventHubNamespaceAuthorizationRules namespaceAuthorizationRules() {
@@ -172,6 +184,8 @@ public final class EventHubsManager extends Manager<EventHubManagementClient> {
     }
 
     /**
+     * Gets entry point to manage disaster recovery pairing authorization rules.
+     *
      * @return entry point to manage disaster recovery pairing authorization rules.
      */
     public DisasterRecoveryPairingAuthorizationRules disasterRecoveryPairingAuthorizationRules() {

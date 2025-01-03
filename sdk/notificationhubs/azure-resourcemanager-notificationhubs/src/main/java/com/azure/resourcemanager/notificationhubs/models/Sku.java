@@ -18,27 +18,27 @@ import java.io.IOException;
 @Fluent
 public final class Sku implements JsonSerializable<Sku> {
     /*
-     * Namespace SKU name.
+     * Name of the notification hub sku
      */
     private SkuName name;
 
     /*
-     * Gets or sets the tier of particular sku
+     * The tier of particular sku
      */
     private String tier;
 
     /*
-     * Gets or sets the Sku size
+     * The Sku size
      */
     private String size;
 
     /*
-     * Gets or sets the Sku Family
+     * The Sku Family
      */
     private String family;
 
     /*
-     * Gets or sets the capacity of the resource
+     * The capacity of the resource
      */
     private Integer capacity;
 
@@ -49,7 +49,7 @@ public final class Sku implements JsonSerializable<Sku> {
     }
 
     /**
-     * Get the name property: Namespace SKU name.
+     * Get the name property: Name of the notification hub sku.
      * 
      * @return the name value.
      */
@@ -58,7 +58,7 @@ public final class Sku implements JsonSerializable<Sku> {
     }
 
     /**
-     * Set the name property: Namespace SKU name.
+     * Set the name property: Name of the notification hub sku.
      * 
      * @param name the name value to set.
      * @return the Sku object itself.
@@ -69,7 +69,7 @@ public final class Sku implements JsonSerializable<Sku> {
     }
 
     /**
-     * Get the tier property: Gets or sets the tier of particular sku.
+     * Get the tier property: The tier of particular sku.
      * 
      * @return the tier value.
      */
@@ -78,7 +78,7 @@ public final class Sku implements JsonSerializable<Sku> {
     }
 
     /**
-     * Set the tier property: Gets or sets the tier of particular sku.
+     * Set the tier property: The tier of particular sku.
      * 
      * @param tier the tier value to set.
      * @return the Sku object itself.
@@ -89,7 +89,7 @@ public final class Sku implements JsonSerializable<Sku> {
     }
 
     /**
-     * Get the size property: Gets or sets the Sku size.
+     * Get the size property: The Sku size.
      * 
      * @return the size value.
      */
@@ -98,7 +98,7 @@ public final class Sku implements JsonSerializable<Sku> {
     }
 
     /**
-     * Set the size property: Gets or sets the Sku size.
+     * Set the size property: The Sku size.
      * 
      * @param size the size value to set.
      * @return the Sku object itself.
@@ -109,7 +109,7 @@ public final class Sku implements JsonSerializable<Sku> {
     }
 
     /**
-     * Get the family property: Gets or sets the Sku Family.
+     * Get the family property: The Sku Family.
      * 
      * @return the family value.
      */
@@ -118,7 +118,7 @@ public final class Sku implements JsonSerializable<Sku> {
     }
 
     /**
-     * Set the family property: Gets or sets the Sku Family.
+     * Set the family property: The Sku Family.
      * 
      * @param family the family value to set.
      * @return the Sku object itself.
@@ -129,7 +129,7 @@ public final class Sku implements JsonSerializable<Sku> {
     }
 
     /**
-     * Get the capacity property: Gets or sets the capacity of the resource.
+     * Get the capacity property: The capacity of the resource.
      * 
      * @return the capacity value.
      */
@@ -138,7 +138,7 @@ public final class Sku implements JsonSerializable<Sku> {
     }
 
     /**
-     * Set the capacity property: Gets or sets the capacity of the resource.
+     * Set the capacity property: The capacity of the resource.
      * 
      * @param capacity the capacity value to set.
      * @return the Sku object itself.

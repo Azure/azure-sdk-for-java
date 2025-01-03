@@ -46,11 +46,6 @@ public final class ConnectToSourceSqlServerTaskOutputLoginLevel extends ConnectT
      */
     private MigrationEligibilityInfo migrationEligibility;
 
-    /*
-     * Result identifier
-     */
-    private String id;
-
     /**
      * Creates an instance of ConnectToSourceSqlServerTaskOutputLoginLevel class.
      */
@@ -113,16 +108,6 @@ public final class ConnectToSourceSqlServerTaskOutputLoginLevel extends ConnectT
     }
 
     /**
-     * Get the id property: Result identifier.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -161,7 +146,7 @@ public final class ConnectToSourceSqlServerTaskOutputLoginLevel extends ConnectT
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedConnectToSourceSqlServerTaskOutputLoginLevel.id = reader.getString();
+                    deserializedConnectToSourceSqlServerTaskOutputLoginLevel.withId(reader.getString());
                 } else if ("resultType".equals(fieldName)) {
                     deserializedConnectToSourceSqlServerTaskOutputLoginLevel.resultType = reader.getString();
                 } else if ("name".equals(fieldName)) {

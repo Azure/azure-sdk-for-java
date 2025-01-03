@@ -13,17 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class DedicatedHsmPatchParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DedicatedHsmPatchParameters model = BinaryData.fromString("{\"tags\":{\"bycnojvkn\":\"wroyqbexrmcq\"}}")
-            .toObject(DedicatedHsmPatchParameters.class);
-        Assertions.assertEquals("wroyqbexrmcq", model.tags().get("bycnojvkn"));
+        DedicatedHsmPatchParameters model
+            = BinaryData.fromString("{\"tags\":{\"tmrldhugjzzdatq\":\"je\",\"gphuticndvka\":\"hocdgeab\"}}")
+                .toObject(DedicatedHsmPatchParameters.class);
+        Assertions.assertEquals("je", model.tags().get("tmrldhugjzzdatq"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DedicatedHsmPatchParameters model
-            = new DedicatedHsmPatchParameters().withTags(mapOf("bycnojvkn", "wroyqbexrmcq"));
+            = new DedicatedHsmPatchParameters().withTags(mapOf("tmrldhugjzzdatq", "je", "gphuticndvka", "hocdgeab"));
         model = BinaryData.fromObject(model).toObject(DedicatedHsmPatchParameters.class);
-        Assertions.assertEquals("wroyqbexrmcq", model.tags().get("bycnojvkn"));
+        Assertions.assertEquals("je", model.tags().get("tmrldhugjzzdatq"));
     }
 
     // Use "Map.of" if available

@@ -10,15 +10,15 @@ package com.azure.resourcemanager.notificationhubs.generated;
 public final class NotificationHubsDeleteAuthorizationRuleSamples {
     /*
      * x-ms-original-file:
-     * specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/preview/2023-10-01-preview/examples/
-     * NotificationHubs/AuthorizationRuleDelete.json
+     * specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/
+     * NotificationHubs/NotificationHubAuthorizationRuleDelete.json
      */
     /**
-     * Sample code: NotificationHubs_DeleteAuthorizationRule.
+     * Sample code: NotificationHubAuthorizationRuleDelete.
      * 
      * @param manager Entry point to NotificationHubsManager.
      */
-    public static void notificationHubsDeleteAuthorizationRule(
+    public static void notificationHubAuthorizationRuleDelete(
         com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
         manager.notificationHubs()
             .deleteAuthorizationRuleWithResponse("5ktrial", "nh-sdk-ns", "nh-sdk-hub",

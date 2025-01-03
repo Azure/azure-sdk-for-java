@@ -6,60 +6,93 @@ package com.azure.resourcemanager.postgresql.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.postgresql.fluent.models.ServerKeyInner;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ServerKeysClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ServerKeysClient.
+ */
 public interface ServerKeysClient {
     /**
      * Gets a list of Server keys.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Server keys.
+     * @return a list of Server keys as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<ServerKeyInner> listAsync(String resourceGroupName, String serverName);
+
+    /**
+     * Gets a list of Server keys.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of Server keys as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ServerKeyInner> list(String resourceGroupName, String serverName);
 
     /**
      * Gets a list of Server keys.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Server keys.
+     * @return a list of Server keys as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ServerKeyInner> list(String resourceGroupName, String serverName, Context context);
 
     /**
      * Gets a PostgreSQL Server key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param keyName The name of the PostgreSQL Server key to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a PostgreSQL Server key.
+     * @return a PostgreSQL Server key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServerKeyInner get(String resourceGroupName, String serverName, String keyName);
+    Mono<Response<ServerKeyInner>> getWithResponseAsync(String resourceGroupName, String serverName, String keyName);
 
     /**
      * Gets a PostgreSQL Server key.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param keyName The name of the PostgreSQL Server key to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a PostgreSQL Server key on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ServerKeyInner> getAsync(String resourceGroupName, String serverName, String keyName);
+
+    /**
+     * Gets a PostgreSQL Server key.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param keyName The name of the PostgreSQL Server key to be retrieved.
@@ -74,8 +107,22 @@ public interface ServerKeysClient {
         Context context);
 
     /**
+     * Gets a PostgreSQL Server key.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param keyName The name of the PostgreSQL Server key to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a PostgreSQL Server key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ServerKeyInner get(String resourceGroupName, String serverName, String keyName);
+
+    /**
      * Creates or updates a PostgreSQL Server key.
-     *
+     * 
      * @param serverName The name of the server.
      * @param keyName The name of the PostgreSQL Server key to be operated on (updated or created).
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -85,13 +132,45 @@ public interface ServerKeysClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a PostgreSQL Server key along with {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String serverName, String keyName,
+        String resourceGroupName, ServerKeyInner parameters);
+
+    /**
+     * Creates or updates a PostgreSQL Server key.
+     * 
+     * @param serverName The name of the server.
+     * @param keyName The name of the PostgreSQL Server key to be operated on (updated or created).
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param parameters The requested PostgreSQL Server key resource state.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a PostgreSQL Server key.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<ServerKeyInner>, ServerKeyInner> beginCreateOrUpdateAsync(String serverName, String keyName,
+        String resourceGroupName, ServerKeyInner parameters);
+
+    /**
+     * Creates or updates a PostgreSQL Server key.
+     * 
+     * @param serverName The name of the server.
+     * @param keyName The name of the PostgreSQL Server key to be operated on (updated or created).
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param parameters The requested PostgreSQL Server key resource state.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a PostgreSQL Server key.
+     */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServerKeyInner>, ServerKeyInner> beginCreateOrUpdate(String serverName, String keyName,
         String resourceGroupName, ServerKeyInner parameters);
 
     /**
      * Creates or updates a PostgreSQL Server key.
-     *
+     * 
      * @param serverName The name of the server.
      * @param keyName The name of the PostgreSQL Server key to be operated on (updated or created).
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -100,7 +179,7 @@ public interface ServerKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a PostgreSQL Server key along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of a PostgreSQL Server key.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServerKeyInner>, ServerKeyInner> beginCreateOrUpdate(String serverName, String keyName,
@@ -108,7 +187,23 @@ public interface ServerKeysClient {
 
     /**
      * Creates or updates a PostgreSQL Server key.
-     *
+     * 
+     * @param serverName The name of the server.
+     * @param keyName The name of the PostgreSQL Server key to be operated on (updated or created).
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param parameters The requested PostgreSQL Server key resource state.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a PostgreSQL Server key on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ServerKeyInner> createOrUpdateAsync(String serverName, String keyName, String resourceGroupName,
+        ServerKeyInner parameters);
+
+    /**
+     * Creates or updates a PostgreSQL Server key.
+     * 
      * @param serverName The name of the server.
      * @param keyName The name of the PostgreSQL Server key to be operated on (updated or created).
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -124,7 +219,7 @@ public interface ServerKeysClient {
 
     /**
      * Creates or updates a PostgreSQL Server key.
-     *
+     * 
      * @param serverName The name of the server.
      * @param keyName The name of the PostgreSQL Server key to be operated on (updated or created).
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -141,7 +236,7 @@ public interface ServerKeysClient {
 
     /**
      * Deletes the PostgreSQL Server key with the given name.
-     *
+     * 
      * @param serverName The name of the server.
      * @param keyName The name of the PostgreSQL Server key to be deleted.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -150,12 +245,41 @@ public interface ServerKeysClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String serverName, String keyName,
+        String resourceGroupName);
+
+    /**
+     * Deletes the PostgreSQL Server key with the given name.
+     * 
+     * @param serverName The name of the server.
+     * @param keyName The name of the PostgreSQL Server key to be deleted.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String serverName, String keyName, String resourceGroupName);
+
+    /**
+     * Deletes the PostgreSQL Server key with the given name.
+     * 
+     * @param serverName The name of the server.
+     * @param keyName The name of the PostgreSQL Server key to be deleted.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String serverName, String keyName, String resourceGroupName);
 
     /**
      * Deletes the PostgreSQL Server key with the given name.
-     *
+     * 
      * @param serverName The name of the server.
      * @param keyName The name of the PostgreSQL Server key to be deleted.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -163,7 +287,7 @@ public interface ServerKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String serverName, String keyName, String resourceGroupName,
@@ -171,7 +295,21 @@ public interface ServerKeysClient {
 
     /**
      * Deletes the PostgreSQL Server key with the given name.
-     *
+     * 
+     * @param serverName The name of the server.
+     * @param keyName The name of the PostgreSQL Server key to be deleted.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteAsync(String serverName, String keyName, String resourceGroupName);
+
+    /**
+     * Deletes the PostgreSQL Server key with the given name.
+     * 
      * @param serverName The name of the server.
      * @param keyName The name of the PostgreSQL Server key to be deleted.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -184,7 +322,7 @@ public interface ServerKeysClient {
 
     /**
      * Deletes the PostgreSQL Server key with the given name.
-     *
+     * 
      * @param serverName The name of the server.
      * @param keyName The name of the PostgreSQL Server key to be deleted.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.

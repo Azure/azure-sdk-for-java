@@ -9,8 +9,7 @@ package com.azure.resourcemanager.mysqlflexibleserver.generated;
  */
 public final class ServersListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/
      * ServersListByResourceGroup.json
      */
     /**

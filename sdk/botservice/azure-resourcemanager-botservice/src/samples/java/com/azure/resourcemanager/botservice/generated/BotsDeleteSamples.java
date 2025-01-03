@@ -10,7 +10,7 @@ package com.azure.resourcemanager.botservice.generated;
 public final class BotsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/DeleteBot.json
+     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/DeleteBot.json
      */
     /**
      * Sample code: Delete Bot.

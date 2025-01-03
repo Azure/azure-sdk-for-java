@@ -13,11 +13,9 @@ import com.azure.resourcemanager.postgresql.fluent.ServersClient;
 import com.azure.resourcemanager.postgresql.fluent.models.ServerInner;
 import com.azure.resourcemanager.postgresql.models.Server;
 import com.azure.resourcemanager.postgresql.models.Servers;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ServersImpl implements Servers {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ServersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServersImpl.class);
 
     private final ServersClient innerClient;
 
@@ -37,15 +35,6 @@ public final class ServersImpl implements Servers {
         this.serviceClient().delete(resourceGroupName, serverName, context);
     }
 
-    public Server getByResourceGroup(String resourceGroupName, String serverName) {
-        ServerInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, serverName);
-        if (inner != null) {
-            return new ServerImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Server> getByResourceGroupWithResponse(String resourceGroupName, String serverName,
         Context context) {
         Response<ServerInner> inner
@@ -58,24 +47,33 @@ public final class ServersImpl implements Servers {
         }
     }
 
+    public Server getByResourceGroup(String resourceGroupName, String serverName) {
+        ServerInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, serverName);
+        if (inner != null) {
+            return new ServerImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public PagedIterable<Server> listByResourceGroup(String resourceGroupName) {
         PagedIterable<ServerInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new ServerImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ServerImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Server> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<ServerInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new ServerImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ServerImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Server> list() {
         PagedIterable<ServerInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ServerImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ServerImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Server> list(Context context) {
         PagedIterable<ServerInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ServerImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ServerImpl(inner1, this.manager()));
     }
 
     public void restart(String resourceGroupName, String serverName) {
@@ -87,56 +85,56 @@ public final class ServersImpl implements Servers {
     }
 
     public Server getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serverName = Utils.getValueFromIdByName(id, "servers");
+        String serverName = ResourceManagerUtils.getValueFromIdByName(id, "servers");
         if (serverName == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'servers'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, serverName, Context.NONE).getValue();
     }
 
     public Response<Server> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serverName = Utils.getValueFromIdByName(id, "servers");
+        String serverName = ResourceManagerUtils.getValueFromIdByName(id, "servers");
         if (serverName == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'servers'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, serverName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serverName = Utils.getValueFromIdByName(id, "servers");
+        String serverName = ResourceManagerUtils.getValueFromIdByName(id, "servers");
         if (serverName == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'servers'.", id)));
         }
         this.delete(resourceGroupName, serverName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serverName = Utils.getValueFromIdByName(id, "servers");
+        String serverName = ResourceManagerUtils.getValueFromIdByName(id, "servers");
         if (serverName == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'servers'.", id)));
         }
         this.delete(resourceGroupName, serverName, context);

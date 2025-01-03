@@ -28,7 +28,7 @@ public final class ApplicationTypeVersionsDeleteMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.applicationTypeVersions()
-            .delete("kgkxn", "edabgyvudtjue", "bcihxuuwhc", "yxccyb", com.azure.core.util.Context.NONE);
+            .delete("dwvvba", "xlllchp", "db", "evwrdnhfuk", com.azure.core.util.Context.NONE);
 
     }
 }

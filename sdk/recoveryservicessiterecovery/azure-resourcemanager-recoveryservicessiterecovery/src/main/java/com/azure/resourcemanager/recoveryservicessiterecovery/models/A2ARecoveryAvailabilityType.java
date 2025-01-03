@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class A2ARecoveryAvailabilityType extends ExpandableStringEnum<A2AR
      * @param name a name to look for.
      * @return the corresponding A2ARecoveryAvailabilityType.
      */
-    @JsonCreator
     public static A2ARecoveryAvailabilityType fromString(String name) {
         return fromString(name, A2ARecoveryAvailabilityType.class);
     }

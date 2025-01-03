@@ -5,28 +5,30 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Recovery virtual network input to create new virtual network from given source network.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resourceType")
-@JsonTypeName("New")
 @Fluent
 public final class NewRecoveryVirtualNetwork extends RecoveryVirtualNetworkCustomDetails {
     /*
-     * The name of the resource group to be used to create the recovery virtual network. If absent, target network
-     * would be created in the same resource group as target VM.
+     * The class type.
      */
-    @JsonProperty(value = "recoveryVirtualNetworkResourceGroupName")
+    private String resourceType = "New";
+
+    /*
+     * The name of the resource group to be used to create the recovery virtual network. If absent, target network would
+     * be created in the same resource group as target VM.
+     */
     private String recoveryVirtualNetworkResourceGroupName;
 
     /*
      * The recovery virtual network name.
      */
-    @JsonProperty(value = "recoveryVirtualNetworkName")
     private String recoveryVirtualNetworkName;
 
     /**
@@ -36,9 +38,18 @@ public final class NewRecoveryVirtualNetwork extends RecoveryVirtualNetworkCusto
     }
 
     /**
-     * Get the recoveryVirtualNetworkResourceGroupName property: The name of the resource group to be used to create
-     * the recovery virtual network. If absent, target network would be created in the same resource group as target
-     * VM.
+     * Get the resourceType property: The class type.
+     * 
+     * @return the resourceType value.
+     */
+    @Override
+    public String resourceType() {
+        return this.resourceType;
+    }
+
+    /**
+     * Get the recoveryVirtualNetworkResourceGroupName property: The name of the resource group to be used to create the
+     * recovery virtual network. If absent, target network would be created in the same resource group as target VM.
      * 
      * @return the recoveryVirtualNetworkResourceGroupName value.
      */
@@ -47,9 +58,8 @@ public final class NewRecoveryVirtualNetwork extends RecoveryVirtualNetworkCusto
     }
 
     /**
-     * Set the recoveryVirtualNetworkResourceGroupName property: The name of the resource group to be used to create
-     * the recovery virtual network. If absent, target network would be created in the same resource group as target
-     * VM.
+     * Set the recoveryVirtualNetworkResourceGroupName property: The name of the resource group to be used to create the
+     * recovery virtual network. If absent, target network would be created in the same resource group as target VM.
      * 
      * @param recoveryVirtualNetworkResourceGroupName the recoveryVirtualNetworkResourceGroupName value to set.
      * @return the NewRecoveryVirtualNetwork object itself.
@@ -87,6 +97,48 @@ public final class NewRecoveryVirtualNetwork extends RecoveryVirtualNetworkCusto
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeStringField("recoveryVirtualNetworkResourceGroupName",
+            this.recoveryVirtualNetworkResourceGroupName);
+        jsonWriter.writeStringField("recoveryVirtualNetworkName", this.recoveryVirtualNetworkName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NewRecoveryVirtualNetwork from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NewRecoveryVirtualNetwork if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NewRecoveryVirtualNetwork.
+     */
+    public static NewRecoveryVirtualNetwork fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NewRecoveryVirtualNetwork deserializedNewRecoveryVirtualNetwork = new NewRecoveryVirtualNetwork();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceType".equals(fieldName)) {
+                    deserializedNewRecoveryVirtualNetwork.resourceType = reader.getString();
+                } else if ("recoveryVirtualNetworkResourceGroupName".equals(fieldName)) {
+                    deserializedNewRecoveryVirtualNetwork.recoveryVirtualNetworkResourceGroupName = reader.getString();
+                } else if ("recoveryVirtualNetworkName".equals(fieldName)) {
+                    deserializedNewRecoveryVirtualNetwork.recoveryVirtualNetworkName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNewRecoveryVirtualNetwork;
+        });
     }
 }

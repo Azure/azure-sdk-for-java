@@ -177,7 +177,6 @@
               <includes>
                 <include>io.vertx:vertx-codegen:[4.5.10]</include> <!-- {x-include-update;io.vertx:vertx-codegen;external_dependency} -->
                 <include>io.vertx:vertx-core:[4.5.10]</include> <!-- {x-include-update;io.vertx:vertx-core;external_dependency} -->
-                <include>io.vertx:vertx-reactive-streams:[4.5.10]</include> <!-- {x-include-update;io.vertx:vertx-reactive-streams;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

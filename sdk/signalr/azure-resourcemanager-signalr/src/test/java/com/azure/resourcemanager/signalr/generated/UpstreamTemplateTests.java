@@ -15,30 +15,30 @@ public final class UpstreamTemplateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpstreamTemplate model = BinaryData.fromString(
-            "{\"hubPattern\":\"vwxnbkfe\",\"eventPattern\":\"xscyhwzdgirujbz\",\"categoryPattern\":\"mvzzbtdcqvp\",\"urlTemplate\":\"iyujviylwdshfs\",\"auth\":{\"type\":\"None\",\"managedIdentity\":{\"resource\":\"efr\"}}}")
+            "{\"hubPattern\":\"yzhftwesgogczh\",\"eventPattern\":\"nxkrlgnyhmossxkk\",\"categoryPattern\":\"h\",\"urlTemplate\":\"rghxjb\",\"auth\":{\"type\":\"ManagedIdentity\",\"managedIdentity\":{\"resource\":\"xgfrpdsofbshrnsv\"}}}")
             .toObject(UpstreamTemplate.class);
-        Assertions.assertEquals("vwxnbkfe", model.hubPattern());
-        Assertions.assertEquals("xscyhwzdgirujbz", model.eventPattern());
-        Assertions.assertEquals("mvzzbtdcqvp", model.categoryPattern());
-        Assertions.assertEquals("iyujviylwdshfs", model.urlTemplate());
-        Assertions.assertEquals(UpstreamAuthType.NONE, model.auth().type());
-        Assertions.assertEquals("efr", model.auth().managedIdentity().resource());
+        Assertions.assertEquals("yzhftwesgogczh", model.hubPattern());
+        Assertions.assertEquals("nxkrlgnyhmossxkk", model.eventPattern());
+        Assertions.assertEquals("h", model.categoryPattern());
+        Assertions.assertEquals("rghxjb", model.urlTemplate());
+        Assertions.assertEquals(UpstreamAuthType.MANAGED_IDENTITY, model.auth().type());
+        Assertions.assertEquals("xgfrpdsofbshrnsv", model.auth().managedIdentity().resource());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpstreamTemplate model = new UpstreamTemplate().withHubPattern("vwxnbkfe")
-            .withEventPattern("xscyhwzdgirujbz")
-            .withCategoryPattern("mvzzbtdcqvp")
-            .withUrlTemplate("iyujviylwdshfs")
-            .withAuth(new UpstreamAuthSettings().withType(UpstreamAuthType.NONE)
-                .withManagedIdentity(new ManagedIdentitySettings().withResource("efr")));
+        UpstreamTemplate model = new UpstreamTemplate().withHubPattern("yzhftwesgogczh")
+            .withEventPattern("nxkrlgnyhmossxkk")
+            .withCategoryPattern("h")
+            .withUrlTemplate("rghxjb")
+            .withAuth(new UpstreamAuthSettings().withType(UpstreamAuthType.MANAGED_IDENTITY)
+                .withManagedIdentity(new ManagedIdentitySettings().withResource("xgfrpdsofbshrnsv")));
         model = BinaryData.fromObject(model).toObject(UpstreamTemplate.class);
-        Assertions.assertEquals("vwxnbkfe", model.hubPattern());
-        Assertions.assertEquals("xscyhwzdgirujbz", model.eventPattern());
-        Assertions.assertEquals("mvzzbtdcqvp", model.categoryPattern());
-        Assertions.assertEquals("iyujviylwdshfs", model.urlTemplate());
-        Assertions.assertEquals(UpstreamAuthType.NONE, model.auth().type());
-        Assertions.assertEquals("efr", model.auth().managedIdentity().resource());
+        Assertions.assertEquals("yzhftwesgogczh", model.hubPattern());
+        Assertions.assertEquals("nxkrlgnyhmossxkk", model.eventPattern());
+        Assertions.assertEquals("h", model.categoryPattern());
+        Assertions.assertEquals("rghxjb", model.urlTemplate());
+        Assertions.assertEquals(UpstreamAuthType.MANAGED_IDENTITY, model.auth().type());
+        Assertions.assertEquals("xgfrpdsofbshrnsv", model.auth().managedIdentity().resource());
     }
 }

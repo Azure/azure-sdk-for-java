@@ -28,7 +28,7 @@ public final class SignalRCustomCertificatesDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.signalRCustomCertificates()
-            .deleteWithResponse("guihywar", "spphk", "xkykxdssjp", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("z", "iblkujr", "lfojuidjp", com.azure.core.util.Context.NONE);
 
     }
 }

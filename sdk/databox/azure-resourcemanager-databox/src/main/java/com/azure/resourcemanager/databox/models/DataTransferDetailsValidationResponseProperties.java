@@ -25,11 +25,6 @@ public final class DataTransferDetailsValidationResponseProperties extends Valid
      */
     private ValidationStatus status;
 
-    /*
-     * Error code and message of validation response.
-     */
-    private CloudError error;
-
     /**
      * Creates an instance of DataTransferDetailsValidationResponseProperties class.
      */
@@ -53,16 +48,6 @@ public final class DataTransferDetailsValidationResponseProperties extends Valid
      */
     public ValidationStatus status() {
         return this.status;
-    }
-
-    /**
-     * Get the error property: Error code and message of validation response.
-     * 
-     * @return the error value.
-     */
-    @Override
-    public CloudError error() {
-        return this.error;
     }
 
     /**
@@ -105,7 +90,7 @@ public final class DataTransferDetailsValidationResponseProperties extends Valid
                 reader.nextToken();
 
                 if ("error".equals(fieldName)) {
-                    deserializedDataTransferDetailsValidationResponseProperties.error = CloudError.fromJson(reader);
+                    deserializedDataTransferDetailsValidationResponseProperties.withError(CloudError.fromJson(reader));
                 } else if ("validationType".equals(fieldName)) {
                     deserializedDataTransferDetailsValidationResponseProperties.validationType
                         = ValidationInputDiscriminator.fromString(reader.getString());

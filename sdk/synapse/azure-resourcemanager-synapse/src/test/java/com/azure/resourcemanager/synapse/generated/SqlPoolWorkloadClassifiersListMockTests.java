@@ -22,7 +22,7 @@ public final class SqlPoolWorkloadClassifiersListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"memberName\":\"zkddnvovb\",\"label\":\"qbmdqrxyglaets\",\"context\":\"lw\",\"startTime\":\"dtlri\",\"endTime\":\"ooy\",\"importance\":\"uxdtzcq\"},\"id\":\"psdudgco\",\"name\":\"zomehxlantolam\",\"type\":\"bijux\"}]}";
+            = "{\"value\":[{\"properties\":{\"memberName\":\"wcrpt\",\"label\":\"ajczxvl\",\"context\":\"rgkrfi\",\"startTime\":\"pywlptyuqhrl\",\"endTime\":\"skykpfuofix\",\"importance\":\"pcfykkpy\"},\"id\":\"cpawmp\",\"name\":\"prdpwrpc\",\"type\":\"pcf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class SqlPoolWorkloadClassifiersListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<WorkloadClassifier> response = manager.sqlPoolWorkloadClassifiers()
-            .list("uif", "ulxfaryrvjl", "dezvjqw", "hoyiyaxqvjweiw", com.azure.core.util.Context.NONE);
+            .list("u", "jew", "ahwkxjjm", "tnlmsoodtmvecdhd", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zkddnvovb", response.iterator().next().memberName());
-        Assertions.assertEquals("qbmdqrxyglaets", response.iterator().next().label());
-        Assertions.assertEquals("lw", response.iterator().next().context());
-        Assertions.assertEquals("dtlri", response.iterator().next().startTime());
-        Assertions.assertEquals("ooy", response.iterator().next().endTime());
-        Assertions.assertEquals("uxdtzcq", response.iterator().next().importance());
+        Assertions.assertEquals("wcrpt", response.iterator().next().memberName());
+        Assertions.assertEquals("ajczxvl", response.iterator().next().label());
+        Assertions.assertEquals("rgkrfi", response.iterator().next().context());
+        Assertions.assertEquals("pywlptyuqhrl", response.iterator().next().startTime());
+        Assertions.assertEquals("skykpfuofix", response.iterator().next().endTime());
+        Assertions.assertEquals("pcfykkpy", response.iterator().next().importance());
     }
 }

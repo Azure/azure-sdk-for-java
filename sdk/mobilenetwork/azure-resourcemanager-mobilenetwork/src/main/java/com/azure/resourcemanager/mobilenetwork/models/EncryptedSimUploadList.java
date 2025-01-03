@@ -6,48 +6,47 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The SIMs to upload. The SIM credentials must be encrypted.
  */
 @Fluent
-public final class EncryptedSimUploadList {
+public final class EncryptedSimUploadList implements JsonSerializable<EncryptedSimUploadList> {
     /*
      * The upload file format version.
      */
-    @JsonProperty(value = "version", required = true)
     private int version;
 
     /*
      * An identifier for the Azure SIM onboarding public key used for encrypted upload.
      */
-    @JsonProperty(value = "azureKeyIdentifier", required = true)
     private int azureKeyIdentifier;
 
     /*
-     * The fingerprint of the SIM vendor public key. The private counterpart is used for signing the encrypted transport key.
+     * The fingerprint of the SIM vendor public key. The private counterpart is used for signing the encrypted transport
+     * key.
      */
-    @JsonProperty(value = "vendorKeyFingerprint", required = true)
     private String vendorKeyFingerprint;
 
     /*
      * The transport key used for encrypting SIM credentials, encrypted using the SIM onboarding public key.
      */
-    @JsonProperty(value = "encryptedTransportKey", required = true)
     private String encryptedTransportKey;
 
     /*
      * The encrypted transport key, signed using the SIM vendor private key.
      */
-    @JsonProperty(value = "signedTransportKey", required = true)
     private String signedTransportKey;
 
     /*
      * A list of SIMs to upload, with encrypted properties.
      */
-    @JsonProperty(value = "sims", required = true)
     private List<SimNameAndEncryptedProperties> sims;
 
     /**
@@ -212,4 +211,58 @@ public final class EncryptedSimUploadList {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EncryptedSimUploadList.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("version", this.version);
+        jsonWriter.writeIntField("azureKeyIdentifier", this.azureKeyIdentifier);
+        jsonWriter.writeStringField("vendorKeyFingerprint", this.vendorKeyFingerprint);
+        jsonWriter.writeStringField("encryptedTransportKey", this.encryptedTransportKey);
+        jsonWriter.writeStringField("signedTransportKey", this.signedTransportKey);
+        jsonWriter.writeArrayField("sims", this.sims, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EncryptedSimUploadList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EncryptedSimUploadList if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EncryptedSimUploadList.
+     */
+    public static EncryptedSimUploadList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EncryptedSimUploadList deserializedEncryptedSimUploadList = new EncryptedSimUploadList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedEncryptedSimUploadList.version = reader.getInt();
+                } else if ("azureKeyIdentifier".equals(fieldName)) {
+                    deserializedEncryptedSimUploadList.azureKeyIdentifier = reader.getInt();
+                } else if ("vendorKeyFingerprint".equals(fieldName)) {
+                    deserializedEncryptedSimUploadList.vendorKeyFingerprint = reader.getString();
+                } else if ("encryptedTransportKey".equals(fieldName)) {
+                    deserializedEncryptedSimUploadList.encryptedTransportKey = reader.getString();
+                } else if ("signedTransportKey".equals(fieldName)) {
+                    deserializedEncryptedSimUploadList.signedTransportKey = reader.getString();
+                } else if ("sims".equals(fieldName)) {
+                    List<SimNameAndEncryptedProperties> sims
+                        = reader.readArray(reader1 -> SimNameAndEncryptedProperties.fromJson(reader1));
+                    deserializedEncryptedSimUploadList.sims = sims;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEncryptedSimUploadList;
+        });
+    }
 }

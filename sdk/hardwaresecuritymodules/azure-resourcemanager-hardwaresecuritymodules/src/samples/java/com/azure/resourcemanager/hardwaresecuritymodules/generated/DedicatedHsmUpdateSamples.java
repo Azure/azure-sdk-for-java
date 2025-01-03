@@ -14,8 +14,8 @@ import java.util.Map;
 public final class DedicatedHsmUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/preview/2024-06-30-
-     * preview/examples/DedicatedHsm_Update.json
+     * specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/
+     * examples/DedicatedHsm_Update.json
      */
     /**
      * Sample code: Update an existing dedicated HSM.
@@ -32,8 +32,8 @@ public final class DedicatedHsmUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/preview/2024-06-30-
-     * preview/examples/PaymentHsm_Update.json
+     * specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/
+     * examples/PaymentHsm_Update.json
      */
     /**
      * Sample code: Update an existing payment HSM.

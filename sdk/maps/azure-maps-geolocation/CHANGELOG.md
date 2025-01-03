@@ -1,5 +1,21 @@
 # Release History
 
+## 1.0.0-beta.4 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.3 (2024-12-27)
+
+### Features added
+
+- Integrated support for SAS-based authentication
+
 ## 1.0.0-beta.2 (2024-11-08)
 
 ### Other Changes

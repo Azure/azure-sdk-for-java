@@ -398,6 +398,13 @@ public final class CallAutomationAsyncClient {
                     = getTranscriptionOptionsInternal(answerCallOptions.getTranscriptionOptions());
                 request.setTranscriptionOptions(transcriptionOptionsInternal);
             }
+            if (answerCallOptions.getCustomCallingContext().getSipHeaders() != null
+                || answerCallOptions.getCustomCallingContext().getVoipHeaders() != null) {
+                CustomCallingContext customContext = new CustomCallingContext();
+                customContext.setSipHeaders(answerCallOptions.getCustomCallingContext().getSipHeaders());
+                customContext.setVoipHeaders(answerCallOptions.getCustomCallingContext().getVoipHeaders());
+                request.setCustomCallingContext(customContext);
+            }
 
             return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(request, context)
                 .map(response -> {
