@@ -50,7 +50,7 @@ public final class BlobOutputDataSource extends OutputDataSource {
      * 
      * @return the innerProperties value.
      */
-    private BlobOutputDataSourceProperties innerProperties() {
+    BlobOutputDataSourceProperties innerProperties() {
         return this.innerProperties;
     }
 
@@ -74,29 +74,6 @@ public final class BlobOutputDataSource extends OutputDataSource {
             this.innerProperties = new BlobOutputDataSourceProperties();
         }
         this.innerProperties().withBlobPathPrefix(blobPathPrefix);
-        return this;
-    }
-
-    /**
-     * Get the blobWriteMode property: Blob write mode.
-     * 
-     * @return the blobWriteMode value.
-     */
-    public BlobWriteMode blobWriteMode() {
-        return this.innerProperties() == null ? null : this.innerProperties().blobWriteMode();
-    }
-
-    /**
-     * Set the blobWriteMode property: Blob write mode.
-     * 
-     * @param blobWriteMode the blobWriteMode value to set.
-     * @return the BlobOutputDataSource object itself.
-     */
-    public BlobOutputDataSource withBlobWriteMode(BlobWriteMode blobWriteMode) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new BlobOutputDataSourceProperties();
-        }
-        this.innerProperties().withBlobWriteMode(blobWriteMode);
         return this;
     }
 
