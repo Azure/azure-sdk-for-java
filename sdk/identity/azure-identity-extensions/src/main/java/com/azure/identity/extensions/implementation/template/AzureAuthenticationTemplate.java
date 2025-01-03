@@ -5,6 +5,7 @@ package com.azure.identity.extensions.implementation.template;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.extensions.implementation.credential.provider.CachingTokenCredentialProvider;
 import com.azure.identity.extensions.implementation.credential.provider.TokenCredentialProvider;
 import com.azure.identity.extensions.implementation.credential.TokenCredentialProviderOptions;
 import com.azure.identity.extensions.implementation.enums.AuthProperty;
@@ -13,6 +14,7 @@ import com.azure.identity.extensions.implementation.token.AccessTokenResolverOpt
 import java.time.Duration;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
+
 import reactor.core.publisher.Mono;
 import static com.azure.identity.extensions.implementation.enums.AuthProperty.GET_TOKEN_TIMEOUT;
 
@@ -61,19 +63,17 @@ public class AzureAuthenticationTemplate {
             LOGGER.verbose("Initializing AzureAuthenticationTemplate.");
 
             if (getTokenCredentialProvider() == null) {
-                this.tokenCredentialProvider
-                    = TokenCredentialProvider.createDefault(new TokenCredentialProviderOptions(properties));
+                TokenCredentialProviderOptions options = new TokenCredentialProviderOptions(properties);
+                this.tokenCredentialProvider = TokenCredentialProvider.createDefault(options);
+
+                if (Boolean.TRUE.equals(AuthProperty.ACCESS_TOKEN_CACHE_ENABLED.getBoolean(properties))) {
+                    this.tokenCredentialProvider = new CachingTokenCredentialProvider(options, this.tokenCredentialProvider);
+                }
             }
 
             if (getAccessTokenResolver() == null) {
-                Boolean accessTokenCacheEnabled = AuthProperty.ACCESS_TOKEN_CACHE_ENABLED.getBoolean(properties);
-                if (accessTokenCacheEnabled) {
-                    this.accessTokenResolver
-                        = AccessTokenResolver.createDefaultCache(new AccessTokenResolverOptions(properties));
-                } else {
-                    this.accessTokenResolver
-                        = AccessTokenResolver.createDefault(new AccessTokenResolverOptions(properties));
-                }
+                this.accessTokenResolver
+                    = AccessTokenResolver.createDefault(new AccessTokenResolverOptions(properties));
             }
 
             if (properties.containsKey(GET_TOKEN_TIMEOUT.getPropertyKey())) {

@@ -17,14 +17,18 @@ import reactor.util.annotation.Nullable;
  */
 public class DefaultTokenCredentialProvider implements TokenCredentialProvider {
 
+    private final TokenCredentialProviderOptions options;
+
     private final TokenCredential tokenCredential;
 
     DefaultTokenCredentialProvider() {
-        this(new TokenCredentialProviderOptions());
+        this.options = new TokenCredentialProviderOptions();
+        this.tokenCredential = get(this.options);
     }
 
     DefaultTokenCredentialProvider(TokenCredentialProviderOptions options) {
-        this.tokenCredential = get(options);
+        this.options = options;
+        this.tokenCredential = get(this.options);
     }
 
     @Override

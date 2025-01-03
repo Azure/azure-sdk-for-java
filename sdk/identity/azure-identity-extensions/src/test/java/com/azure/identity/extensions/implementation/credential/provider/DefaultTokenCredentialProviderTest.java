@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class DefaultTokenCredentialProviderTest {
 
     @ParameterizedTest
-    @ValueSource(classes = { DefaultTokenCredentialProvider.class, DefaultCacheTokenCredentialProvider.class })
+    @ValueSource(classes = { DefaultTokenCredentialProvider.class, CachingTokenCredentialProvider.class })
     void testOptionsIsNull(Class providerClass) {
         TokenCredentialProvider provider = instantiateClass(providerClass);
         TokenCredential tokenCredential1 = provider.get();
@@ -37,7 +37,7 @@ class DefaultTokenCredentialProviderTest {
     }
 
     @ParameterizedTest
-    @ValueSource(classes = { DefaultTokenCredentialProvider.class, DefaultCacheTokenCredentialProvider.class })
+    @ValueSource(classes = { DefaultTokenCredentialProvider.class, CachingTokenCredentialProvider.class })
     void testDefaultConstructor(Class providerClass) {
         TokenCredentialProvider provider = instantiateClass(providerClass);
         TokenCredential tokenCredential1 = provider.get();
@@ -67,7 +67,7 @@ class DefaultTokenCredentialProviderTest {
             options.setAuthorityHost(providedAuthorityHost);
         }
         verifyClientSecretCredentialByProvider(options, DefaultTokenCredentialProvider.class);
-        verifyClientSecretCredentialByProvider(options, DefaultCacheTokenCredentialProvider.class);
+        verifyClientSecretCredentialByProvider(options, CachingTokenCredentialProvider.class);
     }
 
     private static void verifyClientSecretCredentialByProvider(TokenCredentialProviderOptions options,
@@ -94,7 +94,7 @@ class DefaultTokenCredentialProviderTest {
             options.setAuthorityHost(providedAuthorityHost);
         }
         verifyClientCertificateCredentialByProvider(options, DefaultTokenCredentialProvider.class);
-        verifyClientCertificateCredentialByProvider(options, DefaultCacheTokenCredentialProvider.class);
+        verifyClientCertificateCredentialByProvider(options, CachingTokenCredentialProvider.class);
     }
 
     private static void verifyClientCertificateCredentialByProvider(TokenCredentialProviderOptions options,
@@ -122,7 +122,7 @@ class DefaultTokenCredentialProviderTest {
             options.setAuthorityHost(providedAuthorityHost);
         }
         verifyUsernamePasswordCredentialByProvider(options, DefaultTokenCredentialProvider.class);
-        verifyUsernamePasswordCredentialByProvider(options, DefaultCacheTokenCredentialProvider.class);
+        verifyUsernamePasswordCredentialByProvider(options, CachingTokenCredentialProvider.class);
     }
 
     private static void verifyUsernamePasswordCredentialByProvider(TokenCredentialProviderOptions options,
@@ -144,7 +144,7 @@ class DefaultTokenCredentialProviderTest {
         options.setManagedIdentityEnabled(true);
 
         verifyManagedIdentityCredentialByProvider(options, DefaultTokenCredentialProvider.class);
-        verifyManagedIdentityCredentialByProvider(options, DefaultCacheTokenCredentialProvider.class);
+        verifyManagedIdentityCredentialByProvider(options, CachingTokenCredentialProvider.class);
     }
 
     private static void verifyManagedIdentityCredentialByProvider(TokenCredentialProviderOptions options,
@@ -163,7 +163,7 @@ class DefaultTokenCredentialProviderTest {
     void testDefaultAzureCredential() {
         TokenCredentialProviderOptions options = new TokenCredentialProviderOptions();
         verifyDefaultCredentialByProvider(options, DefaultTokenCredentialProvider.class);
-        verifyDefaultCredentialByProvider(options, DefaultCacheTokenCredentialProvider.class);
+        verifyDefaultCredentialByProvider(options, CachingTokenCredentialProvider.class);
     }
 
     private static void verifyDefaultCredentialByProvider(TokenCredentialProviderOptions options,

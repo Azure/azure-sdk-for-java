@@ -20,7 +20,4 @@ public interface AccessTokenResolver extends Function<TokenCredential, Mono<Acce
         return new AccessTokenResolverImpl(options);
     }
 
-    static AccessTokenResolver createDefaultCache(AccessTokenResolverOptions options) {
-        return new AccessTokenResolverCacheImpl(options);
-    }
 }

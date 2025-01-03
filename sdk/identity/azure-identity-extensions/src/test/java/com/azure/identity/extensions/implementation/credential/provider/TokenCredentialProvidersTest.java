@@ -35,8 +35,8 @@ class TokenCredentialProvidersTest {
     @Test
     void testCreateCacheTokenCredentialProvider() {
         TokenCredentialProviderOptions option = new TokenCredentialProviderOptions();
-        option.setTokenCredentialProviderClassName(DefaultCacheTokenCredentialProvider.class.getName());
+        option.setTokenCredentialProviderClassName(CachingTokenCredentialProvider.class.getName());
         TokenCredentialProvider credentialProvider = TokenCredentialProviders.createInstance(option);
-        Assertions.assertTrue(credentialProvider instanceof DefaultCacheTokenCredentialProvider);
+        Assertions.assertTrue(credentialProvider instanceof CachingTokenCredentialProvider);
     }
 }
