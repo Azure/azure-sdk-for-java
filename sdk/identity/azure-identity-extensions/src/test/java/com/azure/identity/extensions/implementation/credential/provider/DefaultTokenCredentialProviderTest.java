@@ -15,20 +15,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.stream.Stream;
 
-import static com.azure.identity.extensions.implementation.utils.ClassUtil.instantiateClass;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SuppressWarnings("rawtypes")
 class DefaultTokenCredentialProviderTest {
 
-    @ParameterizedTest
-    @ValueSource(classes = { DefaultTokenCredentialProvider.class, CachingTokenCredentialProvider.class })
-    void testOptionsIsNull(Class providerClass) {
-        TokenCredentialProvider provider = instantiateClass(providerClass);
+    @Test
+    void testOptionsIsNull() {
+        DefaultTokenCredentialProvider provider = new DefaultTokenCredentialProvider(null);
         TokenCredential tokenCredential1 = provider.get();
         TokenCredential tokenCredential2 = provider.get();
         assertTrue(tokenCredential1 instanceof DefaultAzureCredential);
@@ -36,10 +32,9 @@ class DefaultTokenCredentialProviderTest {
         assertTrue(tokenCredential1 == tokenCredential2);
     }
 
-    @ParameterizedTest
-    @ValueSource(classes = { DefaultTokenCredentialProvider.class, CachingTokenCredentialProvider.class })
-    void testDefaultConstructor(Class providerClass) {
-        TokenCredentialProvider provider = instantiateClass(providerClass);
+    @Test
+    void testDefaultConstructor() {
+        DefaultTokenCredentialProvider provider = new DefaultTokenCredentialProvider();
         TokenCredential tokenCredential1 = provider.get();
         TokenCredential tokenCredential2 = provider.get();
         assertTrue(tokenCredential1 instanceof DefaultAzureCredential);
@@ -66,13 +61,7 @@ class DefaultTokenCredentialProviderTest {
         if (!providedAuthorityHost.isEmpty()) {
             options.setAuthorityHost(providedAuthorityHost);
         }
-        verifyClientSecretCredentialByProvider(options, DefaultTokenCredentialProvider.class);
-        verifyClientSecretCredentialByProvider(options, CachingTokenCredentialProvider.class);
-    }
-
-    private static void verifyClientSecretCredentialByProvider(TokenCredentialProviderOptions options,
-                                                               Class providerClass) {
-        TokenCredentialProvider provider = instantiateClass(providerClass, options);
+        DefaultTokenCredentialProvider provider = new DefaultTokenCredentialProvider(options);
         TokenCredential tokenCredential1 = provider.get();
         TokenCredential tokenCredential2 = provider.get();
 
@@ -80,6 +69,7 @@ class DefaultTokenCredentialProviderTest {
         assertTrue(tokenCredential1 instanceof ClientSecretCredential);
         assertTrue(tokenCredential2 instanceof ClientSecretCredential);
         assertTrue(tokenCredential1 == tokenCredential2);
+
     }
 
     @ParameterizedTest
@@ -93,13 +83,7 @@ class DefaultTokenCredentialProviderTest {
         if (!providedAuthorityHost.isEmpty()) {
             options.setAuthorityHost(providedAuthorityHost);
         }
-        verifyClientCertificateCredentialByProvider(options, DefaultTokenCredentialProvider.class);
-        verifyClientCertificateCredentialByProvider(options, CachingTokenCredentialProvider.class);
-    }
-
-    private static void verifyClientCertificateCredentialByProvider(TokenCredentialProviderOptions options,
-                                                               Class providerClass) {
-        TokenCredentialProvider provider = instantiateClass(providerClass, options);
+        DefaultTokenCredentialProvider provider = new DefaultTokenCredentialProvider(options);
         TokenCredential tokenCredential1 = provider.get();
         TokenCredential tokenCredential2 = provider.get();
 
@@ -121,13 +105,7 @@ class DefaultTokenCredentialProviderTest {
         if (!providedAuthorityHost.isEmpty()) {
             options.setAuthorityHost(providedAuthorityHost);
         }
-        verifyUsernamePasswordCredentialByProvider(options, DefaultTokenCredentialProvider.class);
-        verifyUsernamePasswordCredentialByProvider(options, CachingTokenCredentialProvider.class);
-    }
-
-    private static void verifyUsernamePasswordCredentialByProvider(TokenCredentialProviderOptions options,
-                                                                   Class providerClass) {
-        TokenCredentialProvider provider = instantiateClass(providerClass, options);
+        DefaultTokenCredentialProvider provider = new DefaultTokenCredentialProvider(options);
         TokenCredential tokenCredential1 = provider.get();
         TokenCredential tokenCredential2 = provider.get();
 
@@ -135,6 +113,7 @@ class DefaultTokenCredentialProviderTest {
         assertTrue(tokenCredential1 instanceof UsernamePasswordCredential);
         assertTrue(tokenCredential2 instanceof UsernamePasswordCredential);
         assertTrue(tokenCredential1 == tokenCredential2);
+
     }
 
     @Test
@@ -143,13 +122,7 @@ class DefaultTokenCredentialProviderTest {
         TokenCredentialProviderOptions options = new TokenCredentialProviderOptions();
         options.setManagedIdentityEnabled(true);
 
-        verifyManagedIdentityCredentialByProvider(options, DefaultTokenCredentialProvider.class);
-        verifyManagedIdentityCredentialByProvider(options, CachingTokenCredentialProvider.class);
-    }
-
-    private static void verifyManagedIdentityCredentialByProvider(TokenCredentialProviderOptions options,
-                                                                  Class providerClass) {
-        TokenCredentialProvider provider = instantiateClass(providerClass, options);
+        DefaultTokenCredentialProvider provider = new DefaultTokenCredentialProvider(options);
         TokenCredential tokenCredential1 = provider.get();
         TokenCredential tokenCredential2 = provider.get();
 
@@ -157,18 +130,13 @@ class DefaultTokenCredentialProviderTest {
         assertTrue(tokenCredential1 instanceof ManagedIdentityCredential);
         assertTrue(tokenCredential2 instanceof ManagedIdentityCredential);
         assertTrue(tokenCredential1 == tokenCredential2);
+
     }
 
     @Test
     void testDefaultAzureCredential() {
         TokenCredentialProviderOptions options = new TokenCredentialProviderOptions();
-        verifyDefaultCredentialByProvider(options, DefaultTokenCredentialProvider.class);
-        verifyDefaultCredentialByProvider(options, CachingTokenCredentialProvider.class);
-    }
-
-    private static void verifyDefaultCredentialByProvider(TokenCredentialProviderOptions options,
-                                                          Class providerClass) {
-        TokenCredentialProvider provider = instantiateClass(providerClass, options);
+        DefaultTokenCredentialProvider provider = new DefaultTokenCredentialProvider(options);
         TokenCredential tokenCredential1 = provider.get();
         TokenCredential tokenCredential2 = provider.get();
 

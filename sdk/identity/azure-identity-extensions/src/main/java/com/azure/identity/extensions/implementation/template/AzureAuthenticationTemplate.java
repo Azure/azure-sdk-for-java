@@ -66,8 +66,9 @@ public class AzureAuthenticationTemplate {
                 TokenCredentialProviderOptions options = new TokenCredentialProviderOptions(properties);
                 this.tokenCredentialProvider = TokenCredentialProvider.createDefault(options);
 
-                if (Boolean.TRUE.equals(AuthProperty.ACCESS_TOKEN_CACHE_ENABLED.getBoolean(properties))) {
-                    this.tokenCredentialProvider = new CachingTokenCredentialProvider(options, this.tokenCredentialProvider);
+                if (Boolean.TRUE.equals(AuthProperty.TOKEN_CREDENTIAL_CACHE_ENABLED.getBoolean(properties))) {
+                    this.tokenCredentialProvider
+                        = new CachingTokenCredentialProvider(options, this.tokenCredentialProvider);
                 }
             }
 

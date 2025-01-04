@@ -12,10 +12,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import static com.azure.identity.extensions.implementation.credential.provider.StringUtils.getTokenCredentialCacheKey;
-
 /**
- * Default cache tokenCredentialProvider implementation that provides tokenCredential instance.
+ * Caching tokenCredentialProvider implementation that provides tokenCredential instance.
  */
 public class CachingTokenCredentialProvider implements TokenCredentialProvider {
 
@@ -24,10 +22,11 @@ public class CachingTokenCredentialProvider implements TokenCredentialProvider {
     private static final ConcurrentHashMap<String, TokenCredential> CACHE = new ConcurrentHashMap<>();
 
     private final TokenCredentialProviderOptions defaultOptions;
+
     private final TokenCredentialProvider delegate;
 
     public CachingTokenCredentialProvider(TokenCredentialProviderOptions defaultOptions,
-                                          TokenCredentialProvider tokenCredentialProvider) {
+        TokenCredentialProvider tokenCredentialProvider) {
         this.defaultOptions = defaultOptions;
         this.delegate = tokenCredentialProvider;
     }
@@ -43,15 +42,14 @@ public class CachingTokenCredentialProvider implements TokenCredentialProvider {
     }
 
     private static TokenCredential getOrCreate(Map<String, TokenCredential> cache,
-                                               TokenCredentialProviderOptions options,
-                                               TokenCredentialProvider tokenCredentialProvider) {
+        TokenCredentialProviderOptions options, TokenCredentialProvider tokenCredentialProvider) {
         String tokenCredentialCacheKey = convertToTokenCredentialCacheKey(options);
 
         if (cache.containsKey(tokenCredentialCacheKey)) {
             LOGGER.verbose("Retrieving token credential from cache.");
         } else {
             LOGGER.verbose("Caching token credential.");
-            cache.put(tokenCredentialCacheKey, tokenCredentialProvider.get(options));
+            cache.put(tokenCredentialCacheKey, tokenCredentialProvider.get());
         }
 
         return cache.get(tokenCredentialCacheKey);
@@ -62,17 +60,16 @@ public class CachingTokenCredentialProvider implements TokenCredentialProvider {
             return CachingTokenCredentialProvider.class.getSimpleName();
         }
 
-        return Arrays.stream(new String[]{
+        return Arrays
+            .stream(new String[] {
                 options.getTenantId(),
                 options.getClientId(),
                 options.getClientCertificatePath(),
                 options.getUsername(),
                 String.valueOf(options.isManagedIdentityEnabled()),
                 options.getTokenCredentialProviderClassName(),
-                options.getTokenCredentialBeanName()
-            })
+                options.getTokenCredentialBeanName() })
             .map(option -> option == null ? "" : option)
             .collect(Collectors.joining(","));
     }
-
 }
