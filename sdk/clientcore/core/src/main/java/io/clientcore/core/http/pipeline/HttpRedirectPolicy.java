@@ -121,7 +121,7 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
                 .addKeyValue("url.full.to", redirectUri)
                 .addKeyValue("url.full.all", attemptedRedirectUris::toString)
                 .setEventName("http.request.redirect")
-                .setContext(context)
+                //.setContext(context)
                 .log();
 
             attemptedRedirectUris.add(redirectUri);
@@ -143,7 +143,7 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
         if (tryCount >= this.maxAttempts) {
             LOGGER.atError()
                 .addKeyValue("maxAttempts", this.maxAttempts)
-                .setContext(context)
+                //.setContext(context)
                 .log("Redirect attempts have been exhausted.");
 
             return false;
@@ -166,7 +166,7 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
         if (attemptedRedirectUris.contains(redirectUri)) {
             LOGGER.atError()
                 .addKeyValue(URL_FULL_KEY, redirectUri)
-                .setContext(context)
+                //.setContext(context)
                 .log("Request was redirected more than once to the same URI.");
 
             return true;
@@ -187,7 +187,7 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
             return true;
         } else {
             LOGGER.atError()
-                .setContext(context)
+                //.setContext(context)
                 .addKeyValue(AttributeKeys.HTTP_REQUEST_METHOD_KEY, httpMethod)
                 .log("Request redirection is not enabled for this HTTP method.");
 

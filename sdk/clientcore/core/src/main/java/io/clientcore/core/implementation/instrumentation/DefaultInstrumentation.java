@@ -3,9 +3,8 @@
 
 package io.clientcore.core.implementation.instrumentation;
 
-import io.clientcore.core.http.models.RequestOptions;
-import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
 import io.clientcore.core.instrumentation.Instrumentation;
+import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.InstrumentationOptions;
 import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
 import io.clientcore.core.instrumentation.tracing.Span;
@@ -17,70 +16,82 @@ import io.clientcore.core.instrumentation.tracing.TraceContextSetter;
 import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.instrumentation.tracing.TracingScope;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.Context;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * Default implementation of {@link Instrumentation} which implements correlation and context propagation
+ * and records traces as logs.
+ */
 public class DefaultInstrumentation implements Instrumentation {
+    public static final DefaultInstrumentation DEFAULT_INSTANCE = new DefaultInstrumentation(null, null);
     private static final String INVALID_TRACE_ID = "00000000000000000000000000000000";
     private static final String INVALID_SPAN_ID = "0000000000000000";
 
     private final InstrumentationOptions<?> instrumentationOptions;
     private final LibraryInstrumentationOptions libraryOptions;
 
+    /**
+     * Creates a new instance of {@link DefaultInstrumentation}.
+     * @param instrumentationOptions the application instrumentation options
+     * @param libraryOptions the library instrumentation options
+     */
     public DefaultInstrumentation(InstrumentationOptions<?> instrumentationOptions,
         LibraryInstrumentationOptions libraryOptions) {
         this.instrumentationOptions = instrumentationOptions;
         this.libraryOptions = libraryOptions;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Tracer getTracer() {
         return new DefaultTracer(instrumentationOptions, libraryOptions);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TraceContextPropagator getW3CTraceContextPropagator() {
         return DefaultContextPropagator.W3C_TRACE_CONTEXT_PROPAGATOR;
     }
 
-    public static ClientLogger.LoggingEvent enrichLog(ClientLogger.LoggingEvent log, Context context) {
-        if (OTelInitializer.isInitialized()) {
-            return log;
+    public <T> InstrumentationContext createInstrumentationContext(T context) {
+        if (context instanceof DefaultSpanContext) {
+            return (DefaultSpanContext) context;
+        } else if (context instanceof DefaultSpan) {
+            return ((DefaultSpan) context).spanContext;
+        } else {
+            return DefaultSpanContext.INVALID;
         }
-
-        DefaultSpan span = DefaultSpan.fromContextOrCurrent(context);
-        if (span == null) {
-            return log;
-        }
-
-        return log.addKeyValue("trace.id", span.getSpanContext().getTraceId())
-            .addKeyValue("span.id", span.getSpanContext().getSpanId());
     }
 
-    public static final class DefaultTracer implements Tracer {
+    static final class DefaultTracer implements Tracer {
         private final boolean isEnabled;
         private final ClientLogger logger;
 
         DefaultTracer(InstrumentationOptions<?> instrumentationOptions, LibraryInstrumentationOptions libraryOptions) {
             this.isEnabled = instrumentationOptions == null || instrumentationOptions.isTracingEnabled(); // TODO: probably need additional config for log-based tracing
-            Map<String, Object> libraryContext = new HashMap<>(2);
-            libraryContext.put("library.version", libraryOptions.getLibraryVersion());
-            libraryContext.put("library.instrumentation.schema_url", libraryOptions.getSchemaUrl());
 
             Object providedLogger = instrumentationOptions == null ? null : instrumentationOptions.getProvider();
             if (providedLogger instanceof ClientLogger) {
                 this.logger = (ClientLogger) providedLogger;
             } else {
+                Map<String, Object> libraryContext = new HashMap<>(2);
+                libraryContext.put("library.version", libraryOptions.getLibraryVersion());
+                libraryContext.put("library.instrumentation.schema_url", libraryOptions.getSchemaUrl());
+
                 this.logger = new ClientLogger(libraryOptions.getLibraryName() + ".tracing", libraryContext);
             }
         }
 
         @Override
-        public SpanBuilder spanBuilder(String spanName, SpanKind spanKind, RequestOptions requestOptions) {
-            return new DefaultSpanBuilder(this.logger, spanName, spanKind, requestOptions);
+        public SpanBuilder spanBuilder(String spanName, SpanKind spanKind, InstrumentationContext instrumentationContext) {
+            return new DefaultSpanBuilder(this.logger, spanName, spanKind, instrumentationContext);
         }
 
         @Override
@@ -92,17 +103,14 @@ public class DefaultInstrumentation implements Instrumentation {
     private static final class DefaultSpanBuilder implements SpanBuilder {
         private final ClientLogger.LoggingEvent log;
         private final boolean isRecording;
-        private final DefaultSpanContext spanContext;
+        private final DefaultSpanContext parentSpanContext;
 
-        DefaultSpanBuilder(ClientLogger logger, String spanName, SpanKind spanKind, RequestOptions requestOptions) {
+        DefaultSpanBuilder(ClientLogger logger, String spanName, SpanKind spanKind, InstrumentationContext instrumentationContext) {
             isRecording = logger.canLogAtLevel(ClientLogger.LogLevel.INFORMATIONAL);
-            DefaultSpanContext parentSpanContext = requestOptions == null
-                ? DefaultSpanContext.INVALID
-                : DefaultSpanContext.fromContext(requestOptions.getContext());
-            spanContext = DefaultSpanContext.fromParent(parentSpanContext, isRecording);
+            DefaultSpanContext parentSpanContext = instrumentationContext instanceof DefaultSpanContext
+                ? (DefaultSpanContext) instrumentationContext : DefaultSpanContext.INVALID;
+            this.parentSpanContext = parentSpanContext;
             this.log = logger.atInfo()
-                .addKeyValue("span.trace_id", spanContext.getTraceId())
-                .addKeyValue("span.id", spanContext.getSpanId())
                 .addKeyValue("span.parent.id", parentSpanContext.getSpanId())
                 .addKeyValue("span.name", spanName)
                 .addKeyValue("span.kind", spanKind.name());
@@ -116,7 +124,7 @@ public class DefaultInstrumentation implements Instrumentation {
 
         @Override
         public Span startSpan() {
-            return new DefaultSpan(log, spanContext, isRecording);
+            return new DefaultSpan(log, parentSpanContext, isRecording);
         }
     }
 
@@ -127,18 +135,20 @@ public class DefaultInstrumentation implements Instrumentation {
         private final DefaultSpanContext spanContext;
         private String errorType;
 
-        DefaultSpan(ClientLogger.LoggingEvent log, DefaultSpanContext spanContext, boolean isRecording) {
+        DefaultSpan(ClientLogger.LoggingEvent log, DefaultSpanContext parentSpanContext, boolean isRecording) {
             this.log = log;
             this.startTime = System.nanoTime();
-            this.spanContext = spanContext;
             this.isRecording = isRecording;
+            this.spanContext = DefaultSpanContext.create(parentSpanContext, isRecording, this);
+            if (log != null) {
+                this.log
+                    .addKeyValue("trace.id", spanContext.getTraceId())
+                    .addKeyValue("span.id", spanContext.getSpanId());
+            }
         }
 
-        DefaultSpan(DefaultSpanContext spanContext) {
-            this.spanContext = spanContext;
-            this.isRecording = false;
-            this.log = null;
-            this.startTime = 0;
+        DefaultSpan(DefaultSpanContext parentSpanContext) {
+            this(null, parentSpanContext, false);
         }
 
         @Override
@@ -191,28 +201,14 @@ public class DefaultInstrumentation implements Instrumentation {
             return new DefaultScope(this);
         }
 
-        public DefaultSpanContext getSpanContext() {
+        @Override
+        public InstrumentationContext getInstrumentationContext() {
             return spanContext;
         }
-
-        public static DefaultSpan fromContextOrCurrent(Context context) {
-            if (context != null) {
-                Object span = context.get(TRACE_CONTEXT_KEY);
-                if (span instanceof DefaultSpan) {
-                    return (DefaultSpan) span;
-                }
-
-                if (span != null) {
-                    return null;
-                }
-            }
-
-            return DefaultScope.getCurrent();
-        }
-    };
+    }
 
     private static final class DefaultScope implements TracingScope {
-        private final static ThreadLocal<DefaultSpan> CURRENT_SPAN = new ThreadLocal<>();
+        private static final ThreadLocal<DefaultSpan> CURRENT_SPAN = new ThreadLocal<>();
         private final DefaultSpan originalSpan;
 
         DefaultScope(DefaultSpan span) {
@@ -224,10 +220,6 @@ public class DefaultInstrumentation implements Instrumentation {
         public void close() {
             CURRENT_SPAN.set(originalSpan);
         }
-
-        static DefaultSpan getCurrent() {
-            return CURRENT_SPAN.get();
-        }
     }
 
     private static final class DefaultContextPropagator implements TraceContextPropagator {
@@ -237,8 +229,7 @@ public class DefaultInstrumentation implements Instrumentation {
         }
 
         @Override
-        public <C> void inject(Context context, C carrier, TraceContextSetter<C> setter) {
-            DefaultSpanContext spanContext = DefaultSpanContext.fromContext(context);
+        public <C> void inject(InstrumentationContext spanContext, C carrier, TraceContextSetter<C> setter) {
             if (spanContext.isValid()) {
                 setter.set(carrier, "traceparent", "00-" + spanContext.getTraceId() + "-" + spanContext.getSpanId()
                     + "-" + spanContext.getTraceFlags());
@@ -246,15 +237,14 @@ public class DefaultInstrumentation implements Instrumentation {
         }
 
         @Override
-        public <C> Context extract(Context context, C carrier, TraceContextGetter<C> getter) {
+        public <C> InstrumentationContext extract(InstrumentationContext context, C carrier, TraceContextGetter<C> getter) {
             String traceparent = getter.get(carrier, "traceparent");
             if (traceparent != null) {
                 if (isValidTraceparent(traceparent)) {
                     String traceId = traceparent.substring(3, 35);
                     String spanId = traceparent.substring(36, 52);
                     String traceFlags = traceparent.substring(53, 55);
-                    DefaultSpanContext spanContext = new DefaultSpanContext(traceId, spanId, traceFlags);
-                    return context.put(TRACE_CONTEXT_KEY, new DefaultSpan(spanContext));
+                    return new DefaultSpanContext(traceId, spanId, traceFlags, Span.noop());
                 } else {
                     // TODO log
                 }
@@ -266,29 +256,39 @@ public class DefaultInstrumentation implements Instrumentation {
             // TODO: add more validation
             return traceparent.startsWith("00-") && traceparent.length() == 55;
         }
-    };
+    }
 
-    private static final class DefaultSpanContext {
+    private static final class DefaultSpanContext implements InstrumentationContext {
         static final DefaultSpanContext INVALID = new DefaultSpanContext();
         private final String traceId;
         private final String spanId;
         private final String traceFlags;
         private final boolean isValid;
+        private final Span span;
 
-        String getTraceId() {
+        @Override
+        public String getTraceId() {
             return traceId;
         }
 
-        String getSpanId() {
+        @Override
+        public String getSpanId() {
             return spanId;
         }
 
-        String getTraceFlags() {
-            return traceFlags;
+        @Override
+        public boolean isValid() {
+            return isValid;
         }
 
-        boolean isValid() {
-            return isValid;
+        @Override
+        public Span getSpan() {
+            return this.span;
+        }
+
+        @Override
+        public String getTraceFlags() {
+            return traceFlags;
         }
 
         DefaultSpanContext() {
@@ -296,30 +296,21 @@ public class DefaultInstrumentation implements Instrumentation {
             this.spanId = INVALID_SPAN_ID;
             this.traceFlags = "00";
             this.isValid = false;
+            this.span = Span.noop();
         }
 
-        DefaultSpanContext(String traceId, String spanId, String traceFlags) {
+        DefaultSpanContext(String traceId, String spanId, String traceFlags, Span span) {
             this.traceId = traceId;
             this.spanId = spanId;
             this.traceFlags = traceFlags;
             this.isValid = true;
+            this.span = span;
         }
 
-        static DefaultSpanContext fromParent(DefaultSpanContext parent, boolean isSampled) {
+        static DefaultSpanContext create(DefaultSpanContext parent, boolean isSampled, DefaultSpan span) {
             return parent.isValid()
-                ? new DefaultSpanContext(parent.traceId, getRandomId(16), isSampled ? "01" : "00")
-                : new DefaultSpanContext(getRandomId(32), getRandomId(16), isSampled ? "01" : "00");
-        }
-
-        static DefaultSpanContext fromContext(Context context) {
-            Object span = context.get(TRACE_CONTEXT_KEY);
-            if (span instanceof DefaultSpan) {
-                return ((DefaultSpan) span).getSpanContext();
-            } else if (span != null) {
-                // TODO log
-            }
-
-            return INVALID;
+                ? new DefaultSpanContext(parent.traceId, getRandomId(16), isSampled ? "01" : "00", span)
+                : new DefaultSpanContext(getRandomId(32), getRandomId(16), isSampled ? "01" : "00", span);
         }
 
         /**
@@ -330,5 +321,5 @@ public class DefaultInstrumentation implements Instrumentation {
             UUID uuid = UUID.randomUUID();
             return uuid.toString().replace("-", "").substring(32 - length);
         }
-    };
+    }
 }

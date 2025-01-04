@@ -5,9 +5,9 @@
  * This module provides core functionality for the Java SDK.
  */
 module io.clientcore.core {
-    requires transitive java.xml;
 
     requires java.net.http;
+    requires java.desktop;
 
     // public API surface area
     exports io.clientcore.core.annotation;

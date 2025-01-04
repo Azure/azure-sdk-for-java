@@ -5,7 +5,6 @@ package io.clientcore.core.implementation.instrumentation.tracing;
 
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
-import io.clientcore.core.implementation.instrumentation.DefaultInstrumentation;
 import io.clientcore.core.implementation.instrumentation.DefaultLogger;
 import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.instrumentation.InstrumentationOptions;
@@ -15,13 +14,11 @@ import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.clientcore.core.instrumentation.tracing.Tracer;
 import org.junit.jupiter.api.Test;
-import org.openjdk.jmh.annotations.Setup;
 
 import java.io.PrintStream;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -40,10 +37,9 @@ public class DefaultInstrumentationTests {
         Tracer tracer = Instrumentation.create(null, DEFAULT_LIB_OPTIONS).getTracer();
         assertTrue(tracer.isEnabled());
 
-        Span span = tracer.spanBuilder("test-span", SpanKind.INTERNAL, RequestOptions.none()).startSpan();
+        Span span = tracer.spanBuilder("test-span", SpanKind.INTERNAL, null).startSpan();
 
         assertFalse(span.isRecording());
-        assertInstanceOf(DefaultInstrumentation.DefaultSpan.class, span);
     }
 
     @Test
@@ -54,7 +50,7 @@ public class DefaultInstrumentationTests {
         assertFalse(tracer.isEnabled());
 
         // should not throw
-        Span span = tracer.spanBuilder("test-span", SpanKind.INTERNAL, RequestOptions.none()).startSpan();
+        Span span = tracer.spanBuilder("test-span", SpanKind.INTERNAL, null).startSpan();
 
         assertNotNull(span);
         assertFalse(span.isRecording());

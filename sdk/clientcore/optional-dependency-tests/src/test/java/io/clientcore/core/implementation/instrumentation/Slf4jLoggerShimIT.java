@@ -29,24 +29,24 @@ public class Slf4jLoggerShimIT {
     @BeforeEach
     public void setupLogLevels() {
         slf4jLoggerShimITLogLevel = System
-            .setProperty(LOG_LEVEL_PREFIX + "io.clientcore.core.implementation.util.Slf4jLoggerShimIT", "debug");
+            .setProperty(LOG_LEVEL_PREFIX + "io.clientcore.core.implementation.instrumentation.Slf4jLoggerShimIT", "debug");
         slf4jLoggerShimLogLevel
-            = System.setProperty(LOG_LEVEL_PREFIX + "io.clientcore.core.implementation.util.Slf4jLoggerShim", "info");
+            = System.setProperty(LOG_LEVEL_PREFIX + "io.clientcore.core.implementation.instrumentation.Slf4jLoggerShim", "info");
     }
 
     @AfterEach
     public void resetLogLevels() {
         if (slf4jLoggerShimITLogLevel == null) {
-            System.clearProperty(LOG_LEVEL_PREFIX + "io.clientcore.core.implementation.util.Slf4jLoggerShimIT");
+            System.clearProperty(LOG_LEVEL_PREFIX + "io.clientcore.core.implementation.instrumentation.Slf4jLoggerShimIT");
         } else {
-            System.setProperty(LOG_LEVEL_PREFIX + "io.clientcore.core.implementation.util.Slf4jLoggerShimIT",
+            System.setProperty(LOG_LEVEL_PREFIX + "io.clientcore.core.implementation.instrumentation.Slf4jLoggerShimIT",
                 slf4jLoggerShimITLogLevel);
         }
 
         if (slf4jLoggerShimLogLevel == null) {
-            System.clearProperty(LOG_LEVEL_PREFIX + "io.clientcore.core.implementation.util.Slf4jLoggerShim");
+            System.clearProperty(LOG_LEVEL_PREFIX + "io.clientcore.core.implementation.instrumentation.Slf4jLoggerShim");
         } else {
-            System.setProperty(LOG_LEVEL_PREFIX + "io.clientcore.core.implementation.util.Slf4jLoggerShim",
+            System.setProperty(LOG_LEVEL_PREFIX + "io.clientcore.core.implementation.instrumentation.Slf4jLoggerShim",
                 slf4jLoggerShimLogLevel);
         }
     }

@@ -4,6 +4,7 @@
 package io.clientcore.core.instrumentation.tracing;
 
 import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.instrumentation.InstrumentationContext;
 
 /**
  * Represents a tracer - a component that creates spans.
@@ -73,10 +74,10 @@ public interface Tracer {
      *
      * @param spanName The name of the span.
      * @param spanKind The kind of the span.
-     * @param requestOptions The request options.
+     * @param instrumentationContext The parent context.
      * @return The span builder.
      */
-    SpanBuilder spanBuilder(String spanName, SpanKind spanKind, RequestOptions requestOptions);
+    SpanBuilder spanBuilder(String spanName, SpanKind spanKind, InstrumentationContext instrumentationContext);
 
     /**
      * Checks if the tracer is enabled.

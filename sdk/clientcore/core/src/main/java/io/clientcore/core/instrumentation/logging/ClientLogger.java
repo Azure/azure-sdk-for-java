@@ -5,12 +5,11 @@ package io.clientcore.core.instrumentation.logging;
 
 import io.clientcore.core.annotation.Metadata;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
-import io.clientcore.core.implementation.instrumentation.DefaultInstrumentation;
 import io.clientcore.core.implementation.instrumentation.Slf4jLoggerShim;
 import io.clientcore.core.implementation.instrumentation.DefaultLogger;
+import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.serialization.json.implementation.DefaultJsonWriter;
-import io.clientcore.core.util.Context;
 import io.clientcore.core.util.configuration.Configuration;
 
 import java.io.IOException;
@@ -301,7 +300,7 @@ public class ClientLogger {
         private final boolean isEnabled;
         private Map<String, Object> keyValuePairs;
         private String eventName;
-        private Context context;
+        private InstrumentationContext context = null;
 
         /**
          * Creates {@code LoggingEvent} for provided level and  {@link ClientLogger}.
@@ -451,7 +450,7 @@ public class ClientLogger {
          * @param context operation context.
          * @return The updated {@code LoggingEventBuilder} object.
          */
-        public LoggingEvent setContext(Context context) {
+        public LoggingEvent setContext(InstrumentationContext context) {
             this.context = context;
             return this;
         }
@@ -523,7 +522,10 @@ public class ClientLogger {
                 message = "";
             }
 
-            DefaultInstrumentation.enrichLog(this, context);
+            if (this.context != null && this.context.isValid()) {
+                addKeyValue("trace.id", context.getTraceId());
+                addKeyValue("span.id", context.getSpanId());
+            }
 
             int pairsCount
                 = (keyValuePairs == null ? 0 : keyValuePairs.size()) + (globalPairs == null ? 0 : globalPairs.size());

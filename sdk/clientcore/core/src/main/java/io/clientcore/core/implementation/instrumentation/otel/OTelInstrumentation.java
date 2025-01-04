@@ -4,9 +4,12 @@
 package io.clientcore.core.implementation.instrumentation.otel;
 
 import io.clientcore.core.implementation.ReflectiveInvoker;
+import io.clientcore.core.implementation.instrumentation.otel.tracing.OTelSpan;
+import io.clientcore.core.implementation.instrumentation.otel.tracing.OTelSpanContext;
 import io.clientcore.core.implementation.instrumentation.otel.tracing.OTelTraceContextPropagator;
 import io.clientcore.core.implementation.instrumentation.otel.tracing.OTelTracer;
 import io.clientcore.core.instrumentation.Instrumentation;
+import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
 import io.clientcore.core.instrumentation.InstrumentationOptions;
 import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
@@ -14,8 +17,11 @@ import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker;
+import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.CONTEXT_CLASS;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.GLOBAL_OTEL_CLASS;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.OTEL_CLASS;
+import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.SPAN_CLASS;
+import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.SPAN_CONTEXT_CLASS;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.TRACER_PROVIDER_CLASS;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.W3C_PROPAGATOR_CLASS;
 
@@ -23,6 +29,7 @@ import static io.clientcore.core.implementation.instrumentation.otel.OTelInitial
  * A {@link Instrumentation} implementation that uses OpenTelemetry.
  */
 public class OTelInstrumentation implements Instrumentation {
+    public static final OTelInstrumentation DEFAULT_INSTANCE = new OTelInstrumentation(null, null);
     private static final FallbackInvoker GET_PROVIDER_INVOKER;
     private static final FallbackInvoker GET_GLOBAL_OTEL_INVOKER;
 
@@ -109,6 +116,21 @@ public class OTelInstrumentation implements Instrumentation {
     @Override
     public TraceContextPropagator getW3CTraceContextPropagator() {
         return OTelInitializer.isInitialized() ? W3C_PROPAGATOR_INSTANCE : OTelTraceContextPropagator.NOOP;
+    }
+
+    public <T> InstrumentationContext createInstrumentationContext(T context) {
+        if (context instanceof InstrumentationContext) {
+            return (InstrumentationContext) context;
+        } else if (SPAN_CLASS.isInstance(context)) {
+            return OTelSpanContext.fromOTelSpan(context);
+        } else if (CONTEXT_CLASS.isInstance(context)) {
+            return OTelSpanContext.fromOTelContext(context);
+        } else if (SPAN_CONTEXT_CLASS.isInstance(context)) {
+            return new OTelSpanContext(context, null);
+        }
+
+        return OTelSpanContext.getInvalid();
+
     }
 
     private Object getOtelInstance() {

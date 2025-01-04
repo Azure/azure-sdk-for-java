@@ -6,6 +6,7 @@ package io.clientcore.core.http.models;
 import io.clientcore.core.http.annotation.QueryParam;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.implementation.http.rest.UriEscapers;
+import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.util.Context;
 import io.clientcore.core.util.binarydata.BinaryData;
@@ -119,6 +120,7 @@ public final class RequestOptions {
     private ResponseBodyMode responseBodyMode;
     private boolean locked;
     private ClientLogger logger;
+    private InstrumentationContext instrumentationContext;
 
     /**
      * Creates a new instance of {@link RequestOptions}.
@@ -407,5 +409,34 @@ public final class RequestOptions {
      */
     public static RequestOptions none() {
         return NONE;
+    }
+
+    /**
+     * Gets the {@link InstrumentationContext} used to instrument the request.
+     *
+     * @return The {@link InstrumentationContext} used to instrument the request.
+     */
+    public InstrumentationContext getInstrumentationContext() {
+        return instrumentationContext;
+    }
+
+    /**
+     * Sets the {@link InstrumentationContext} used to instrument the request.
+     *
+     * @param instrumentationContext The {@link InstrumentationContext} used to instrument the request.
+     *
+     * @return The updated {@link RequestOptions} object.
+     *
+     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
+     */
+    public RequestOptions setInstrumentationContext(InstrumentationContext instrumentationContext) {
+        if (locked) {
+            throw LOGGER.logThrowableAsError(new IllegalStateException(
+                "This instance of RequestOptions is immutable. Cannot set instrumentation context."));
+        }
+
+        this.instrumentationContext = instrumentationContext;
+
+        return this;
     }
 }

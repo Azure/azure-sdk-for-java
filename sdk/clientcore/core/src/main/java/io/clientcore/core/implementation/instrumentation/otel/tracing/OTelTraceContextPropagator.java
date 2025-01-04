@@ -6,6 +6,7 @@ package io.clientcore.core.implementation.instrumentation.otel.tracing;
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.instrumentation.otel.FallbackInvoker;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
+import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.tracing.TraceContextGetter;
 import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
 import io.clientcore.core.instrumentation.tracing.TraceContextSetter;
@@ -22,8 +23,6 @@ import static io.clientcore.core.implementation.instrumentation.otel.OTelInitial
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.TEXT_MAP_GETTER_CLASS;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.TEXT_MAP_PROPAGATOR_CLASS;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.TEXT_MAP_SETTER_CLASS;
-import static io.clientcore.core.implementation.instrumentation.otel.tracing.OTelUtils.getOTelContext;
-import static io.clientcore.core.instrumentation.Instrumentation.TRACE_CONTEXT_KEY;
 
 /**
  * OpenTelemetry implementation of {@link TraceContextPropagator}.
@@ -69,9 +68,9 @@ public class OTelTraceContextPropagator implements TraceContextPropagator {
      * {@inheritDoc}
      */
     @Override
-    public <C> void inject(Context context, C carrier, TraceContextSetter<C> setter) {
+    public <C> void inject(InstrumentationContext context, C carrier, TraceContextSetter<C> setter) {
         if (isInitialized()) {
-            INJECT_INVOKER.invoke(otelPropagator, getOTelContext(context), carrier, Setter.toOTelSetter(setter));
+            INJECT_INVOKER.invoke(otelPropagator, OTelContext.fromInstrumentationContext(context), carrier, Setter.toOTelSetter(setter));
         }
     }
 
@@ -79,12 +78,12 @@ public class OTelTraceContextPropagator implements TraceContextPropagator {
      * {@inheritDoc}
      */
     @Override
-    public <C> Context extract(Context context, C carrier, TraceContextGetter<C> getter) {
+    public <C> InstrumentationContext extract(InstrumentationContext context, C carrier, TraceContextGetter<C> getter) {
         if (isInitialized()) {
             Object updatedContext
-                = EXTRACT_INVOKER.invoke(otelPropagator, getOTelContext(context), carrier, Getter.toOTelGetter(getter));
+                = EXTRACT_INVOKER.invoke(otelPropagator, OTelContext.fromInstrumentationContext(context), carrier, Getter.toOTelGetter(getter));
             if (updatedContext != null) {
-                return context.put(TRACE_CONTEXT_KEY, updatedContext);
+                return OTelSpanContext.fromOTelContext(updatedContext);
             }
         }
         return context;

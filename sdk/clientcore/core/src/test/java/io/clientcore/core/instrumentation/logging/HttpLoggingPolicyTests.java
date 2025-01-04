@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 // we want to access package-private ClientLogger constructor
-package io.clientcore.core.util;
+package io.clientcore.core.instrumentation.logging;
 
 import io.clientcore.core.http.MockHttpResponse;
 import io.clientcore.core.http.models.HttpHeader;
@@ -18,7 +18,7 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
-import io.clientcore.core.implementation.util.DefaultLogger;
+import io.clientcore.core.implementation.instrumentation.DefaultLogger;
 import io.clientcore.core.serialization.json.JsonOptions;
 import io.clientcore.core.serialization.json.JsonProviders;
 import io.clientcore.core.serialization.json.JsonReader;

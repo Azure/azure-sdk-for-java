@@ -12,9 +12,10 @@ import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
-import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
 import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
+import io.clientcore.core.implementation.util.LoggingKeys;
 import io.clientcore.core.instrumentation.Instrumentation;
+import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
 import io.clientcore.core.instrumentation.InstrumentationOptions;
 import io.clientcore.core.instrumentation.tracing.SpanBuilder;
@@ -24,17 +25,13 @@ import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
 import io.clientcore.core.instrumentation.tracing.TraceContextSetter;
 import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.util.Context;
 import io.clientcore.core.util.binarydata.BinaryData;
-import io.clientcore.core.util.serializer.ObjectSerializer;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.reflect.Type;
-import java.nio.ByteBuffer;
 import java.util.Collections;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -42,20 +39,20 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.net.URI;
 
+import static io.clientcore.core.http.models.HttpHeaderName.TRACEPARENT;
 import static io.clientcore.core.implementation.UrlRedactionUtil.getRedactedUri;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_BODY_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_BODY_SIZE_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_DURATION_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_METHOD_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_RESEND_COUNT_KEY;
-import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_TIME_TO_HEADERS_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_TIME_TO_RESPONSE_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_RESPONSE_BODY_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_RESPONSE_BODY_SIZE_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_RESPONSE_STATUS_CODE_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.URL_FULL_KEY;
 import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
 import static io.clientcore.core.instrumentation.Instrumentation.DISABLE_TRACING_KEY;
-import static io.clientcore.core.instrumentation.Instrumentation.TRACE_CONTEXT_KEY;
 import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
 
 /**
@@ -134,7 +131,8 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
  */
 public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(HttpInstrumentationPolicy.class);
-    private static final HttpLogOptions DEFAULT_LOG_OPTIONS = new HttpLogOptions();
+    private static final Set<HttpHeaderName> ALWAYS_ALLOWED_HEADERS = Set.of(TRACEPARENT);
+    private static final HttpLogOptions DEFAULT_HTTP_LOG_OPTIONS = new HttpLogOptions();
     private static final String LIBRARY_NAME;
     private static final String LIBRARY_VERSION;
     private static final LibraryInstrumentationOptions LIBRARY_OPTIONS;
@@ -165,12 +163,15 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
     private static final int MAX_BODY_LOG_SIZE = 1024 * 16;
     private static final String REDACTED_PLACEHOLDER = "REDACTED";
 
+    // request log level is low (verbose) since almost all request details are also
+    // captured on the response log.
+    private static final ClientLogger.LogLevel HTTP_REQUEST_LOG_LEVEL = ClientLogger.LogLevel.VERBOSE;
+    private static final ClientLogger.LogLevel HTTP_RESPONSE_LOG_LEVEL = ClientLogger.LogLevel.INFORMATIONAL;
+
     private final Tracer tracer;
     private final TraceContextPropagator traceContextPropagator;
     private final Set<String> allowedQueryParameterNames;
     private final HttpLogOptions.HttpLogDetailLevel httpLogDetailLevel;
-    private final HttpRequestLogger requestLogger;
-    private final HttpResponseLogger responseLogger;
     private final Set<HttpHeaderName> allowedHeaderNames;
 
     /**
@@ -183,17 +184,13 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         this.tracer = instrumentation.getTracer();
         this.traceContextPropagator = instrumentation.getW3CTraceContextPropagator();
 
-        HttpLogOptions logOptionsToUse = logOptions == null ? DEFAULT_LOG_OPTIONS : logOptions;
-        this.allowedQueryParameterNames = logOptionsToUse.getAllowedQueryParamNames();
+        HttpLogOptions logOptionsToUse = logOptions == null ? DEFAULT_HTTP_LOG_OPTIONS : logOptions;
         this.httpLogDetailLevel = logOptionsToUse.getLogLevel();
-
-        this.requestLogger = logOptionsToUse.getRequestLogger() == null
-            ? new DefaultHttpRequestLogger()
-            : logOptionsToUse.getRequestLogger();
-        this.responseLogger = logOptionsToUse.getResponseLogger() == null
-            ? new DefaultHttpResponseLogger()
-            : logOptionsToUse.getResponseLogger();
         this.allowedHeaderNames = logOptionsToUse.getAllowedHeaderNames();
+        this.allowedQueryParameterNames = logOptionsToUse.getAllowedQueryParamNames()
+            .stream()
+            .map(queryParamName -> queryParamName.toLowerCase(Locale.ROOT))
+            .collect(Collectors.toSet());
     }
 
     /**
@@ -207,48 +204,59 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
             return next.process();
         }
 
-        String sanitizedUrl = getRedactedUri(request.getUri(), allowedQueryParameterNames);
-        int tryCount = HttpRequestAccessHelper.getTryCount(request);
-
-        Span span = startHttpSpan(request, sanitizedUrl);
-
-        traceContextPropagator.inject(request.getRequestOptions().getContext(), request.getHeaders(), SETTER);
-
         ClientLogger logger = getLogger(request);
         final long startNs = System.nanoTime();
-        requestLogger.logRequest(logger, request, sanitizedUrl, tryCount);
+        String redactedUrl = getRedactedUri(request.getUri(), allowedQueryParameterNames);
+        int tryCount = HttpRequestAccessHelper.getTryCount(request);
+        final long requestContentLength = getContentLength(logger, request.getBody(), request.getHeaders());
+
+        Span span = Span.noop();
+        if (isTracingEnabled(request)) {
+            span = startHttpSpan(request, redactedUrl);
+            request.getRequestOptions().setInstrumentationContext(span.getInstrumentationContext());
+            traceContextPropagator.inject(span.getInstrumentationContext(), request.getHeaders(), SETTER);
+        }
+
+        logRequest(logger, request, startNs, requestContentLength, redactedUrl, tryCount, span.getInstrumentationContext());
 
         try (TracingScope scope = span.makeCurrent()) {
             Response<?> response = next.process();
 
+            if (response == null) {
+                LOGGER.atError()
+                    .setContext(span.getInstrumentationContext())
+                    .addKeyValue(HTTP_REQUEST_METHOD_KEY, request.getHttpMethod())
+                    .addKeyValue(URL_FULL_KEY, redactedUrl)
+                    .log("HTTP response is null and no exception is thrown. Please report it to the client library maintainers.");
+
+                return null;
+            }
+
             addDetails(request, response, tryCount, span);
-            instrumentResponse((HttpResponse<?>) response, span, logger, startNs, sanitizedUrl, tryCount);
+            response =  logResponse(logger, response, startNs, requestContentLength, redactedUrl, tryCount, span.getInstrumentationContext());
+            span.end();
             return response;
-        } catch (Throwable t) {
-            responseLogger.logException(logger, request, null, t, startNs, null, sanitizedUrl, tryCount);
+        } catch (RuntimeException t) {
+            var ex = logException(logger, request, null, t, startNs, null, requestContentLength, redactedUrl, tryCount, span.getInstrumentationContext());
             span.end(unwrap(t));
-            throw t;
+            throw ex;
         }
     }
 
     private Span startHttpSpan(HttpRequest request, String sanitizedUrl) {
-        if (!isTracingEnabled(request)) {
-            return Span.noop();
-        }
-
         if (request.getRequestOptions() == null || request.getRequestOptions() == RequestOptions.none()) {
             request.setRequestOptions(new RequestOptions());
         }
 
+        InstrumentationContext context = request.getRequestOptions().getInstrumentationContext();
+
         SpanBuilder spanBuilder
-            = tracer.spanBuilder(request.getHttpMethod().toString(), CLIENT, request.getRequestOptions())
+            = tracer.spanBuilder(request.getHttpMethod().toString(), CLIENT, context)
                 .setAttribute(HTTP_REQUEST_METHOD_KEY, request.getHttpMethod().toString())
                 .setAttribute(URL_FULL_KEY, sanitizedUrl)
                 .setAttribute(SERVER_ADDRESS, request.getUri().getHost());
         maybeSetServerPort(spanBuilder, request.getUri());
-        Span span = spanBuilder.startSpan();
-        request.getRequestOptions().putContext(TRACE_CONTEXT_KEY, span);
-        return span;
+        return spanBuilder.startSpan();
     }
 
     /**
@@ -326,10 +334,6 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         return t;
     }
 
-    private void setContext(HttpRequest request, Context context) {
-
-    }
-
     private ClientLogger getLogger(HttpRequest httpRequest) {
         ClientLogger logger = null;
 
@@ -338,181 +342,6 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         }
 
         return logger == null ? LOGGER : logger;
-    }
-
-    private final class DefaultHttpRequestLogger implements HttpRequestLogger {
-        @Override
-        public void logRequest(ClientLogger logger, HttpRequest request, String redactedUrl, int tryCount) {
-            ClientLogger.LoggingEvent log = logger.atLevel(getLogLevel(request));
-            if (!log.isEnabled() || httpLogDetailLevel == HttpLogOptions.HttpLogDetailLevel.NONE) {
-                return;
-            }
-
-            log.setEventName(HTTP_REQUEST_EVENT_NAME)
-                .setContext(request.getRequestOptions().getContext())
-                .addKeyValue(HTTP_REQUEST_METHOD_KEY, request.getHttpMethod())
-                .addKeyValue(URL_FULL_KEY, redactedUrl)
-                .addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount);
-
-            addHeadersToLogMessage(request.getHeaders(), log);
-
-            long contentLength = request.getBody() == null ? 0 : getContentLength(request.getHeaders());
-            log.addKeyValue(HTTP_REQUEST_BODY_SIZE_KEY, contentLength);
-
-            if (httpLogDetailLevel.shouldLogBody() && canLogBody(request.getBody())) {
-                log.addKeyValue(HTTP_REQUEST_BODY_KEY, request.getBody().toString());
-            }
-
-            log.log();
-        }
-    }
-
-    private final class DefaultHttpResponseLogger implements HttpResponseLogger {
-        @Override
-        public void logResponse(ClientLogger logger, Response<?> response, long startNanoTime, long headersNanoTime,
-            String redactedUrl, int tryCount) {
-            ClientLogger.LoggingEvent log = logger.atLevel(getLogLevel(response));
-            if (!log.isEnabled() || httpLogDetailLevel == HttpLogOptions.HttpLogDetailLevel.NONE) {
-                return;
-            }
-
-            long contentLength = getContentLength(response.getHeaders());
-
-            log.setEventName(HTTP_RESPONSE_EVENT_NAME)
-                .setContext(response.getRequest().getRequestOptions().getContext())
-                .addKeyValue(HTTP_REQUEST_METHOD_KEY, response.getRequest().getHttpMethod())
-                .addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount)
-                .addKeyValue(URL_FULL_KEY, redactedUrl)
-                .addKeyValue(HTTP_REQUEST_TIME_TO_HEADERS_KEY, getDurationMs(startNanoTime, headersNanoTime))
-                .addKeyValue(HTTP_RESPONSE_STATUS_CODE_KEY, response.getStatusCode())
-                .addKeyValue(HTTP_RESPONSE_BODY_SIZE_KEY, contentLength);
-
-            addHeadersToLogMessage(response.getHeaders(), log);
-
-            if (httpLogDetailLevel.shouldLogBody() && canLogBody(response.getBody())) {
-                // logResponse is called after body is requested and buffered, so it's safe to call getBody().toString() here.
-                // not catching exception here, because it's caught in InstrumentedResponse.getBody() and will
-                String content = response.getBody().toString();
-                log.addKeyValue(HTTP_RESPONSE_BODY_KEY, content)
-                   .addKeyValue(HTTP_REQUEST_DURATION_KEY, getDurationMs(startNanoTime, System.nanoTime()));
-            }
-            log.log();
-        }
-
-        @Override
-        public void logException(ClientLogger logger, HttpRequest request, Response<?> response, Throwable throwable,
-            long startNanoTime, Long headersNanoTime, String redactedUrl, int tryCount) {
-            ClientLogger.LoggingEvent log = logger.atWarning();
-            if (!log.isEnabled() || httpLogDetailLevel == HttpLogOptions.HttpLogDetailLevel.NONE) {
-                return;
-            }
-
-            log.setEventName(HTTP_RESPONSE_EVENT_NAME)
-                .setContext(request.getRequestOptions().getContext())
-                .addKeyValue(HTTP_REQUEST_METHOD_KEY, request.getHttpMethod())
-                .addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount)
-                .addKeyValue(URL_FULL_KEY, redactedUrl);
-
-            // exception could happen before response code and headers were received
-            // or after that. So we may or may not have a response object.
-            if (response != null) {
-                log.addKeyValue(HTTP_RESPONSE_STATUS_CODE_KEY, response.getStatusCode());
-                addHeadersToLogMessage(response.getHeaders(), log);
-
-                if (headersNanoTime != null) {
-                    log.addKeyValue(HTTP_REQUEST_TIME_TO_HEADERS_KEY,
-                        getDurationMs(startNanoTime, headersNanoTime));
-                }
-            }
-
-            // not logging body - there was an exception
-            log.log(null, throwable);
-        }
-    }
-
-    private double getDurationMs(long startNs, long endNs) {
-        return (endNs - startNs) / 1_000_000.0;
-    }
-
-    /*
-     * Adds HTTP headers into the StringBuilder that is generating the log message.
-     *
-     * @param headers HTTP headers on the request or response.
-     * @param sb StringBuilder that is generating the log message.
-     * @param logLevel Log level the environment is configured to use.
-     */
-    private void addHeadersToLogMessage(HttpHeaders headers, ClientLogger.LoggingEvent log) {
-        if (httpLogDetailLevel.shouldLogHeaders()) {
-            for (HttpHeader header : headers) {
-                HttpHeaderName headerName = header.getName();
-                String headerValue = allowedHeaderNames.contains(headerName) ? header.getValue() : REDACTED_PLACEHOLDER;
-                log.addKeyValue(headerName.toString(), headerValue);
-            }
-        }
-    }
-
-    /*
-     * Attempts to retrieve and parse the Content-Length header into a numeric representation.
-     *
-     * @param logger Logger used to log a warning if the Content-Length header is an invalid number.
-     * @param headers HTTP headers that are checked for containing Content-Length.
-     * @return
-     */
-    private static long getContentLength(HttpHeaders headers) {
-        long contentLength = 0;
-
-        String contentLengthString = headers.getValue(HttpHeaderName.CONTENT_LENGTH);
-
-        if (isNullOrEmpty(contentLengthString)) {
-            return contentLength;
-        }
-
-        try {
-            contentLength = Long.parseLong(contentLengthString);
-        } catch (NumberFormatException | NullPointerException e) {
-            LOGGER.atVerbose()
-                .addKeyValue("contentLength", contentLengthString)
-                .log("Could not parse the HTTP header content-length", e);
-        }
-
-        return contentLength;
-    }
-
-    /**
-     * Determines if the request or response body should be logged.
-     *
-     * <p>The request or response body is logged if the Content-Type is not "application/octet-stream" and the body
-     * isn't empty and is less than 16KB in size.</p>
-     *
-     * @param data The request or response body.
-     * @return A flag indicating if the request or response body should be logged.
-     */
-    private static boolean canLogBody(BinaryData data) {
-        return data != null && data.isReplayable() && data.getLength() != null && data.getLength() < MAX_BODY_LOG_SIZE;
-    }
-
-    private void instrumentResponse(HttpResponse<?> actualResponse, Span span, ClientLogger logger, long startNs,
-        String sanitizedUrl, int tryCount) {
-        long timeToHeadersNs = System.nanoTime();
-        /*if (!httpLogDetailLevel.shouldLogBody()) {
-            responseLogger.logResponse(logger, actualResponse, startNs, timeToHeadersNs, sanitizedUrl, tryCount);
-
-            if (!span.isRecording()) {
-                span.end();
-                return;
-            }
-        }*/
-
-        HttpResponseAccessHelper.setBody(actualResponse, new InstrumentedBinaryData(actualResponse.getBody(), error -> {
-            if (error == null) {
-                responseLogger.logResponse(logger, actualResponse, startNs, timeToHeadersNs, sanitizedUrl, tryCount);
-                span.end();
-            } else {
-                responseLogger.logException(logger, actualResponse.getRequest(), actualResponse, error, startNs,
-                    timeToHeadersNs, sanitizedUrl, tryCount);
-                span.end(unwrap(error));
-            }
-        }));
     }
 
     private static Map<String, String> getProperties(String propertiesFileName) {
@@ -534,260 +363,237 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         return Collections.emptyMap();
     }
 
-    private static class InstrumentedBinaryData extends BinaryData {
-        private final BinaryData inner;
-        private final Consumer<Throwable> onComplete;
-        private boolean reported;
-
-        InstrumentedBinaryData(BinaryData inner, Consumer<Throwable> onComplete) {
-            this.inner = inner;
-            this.onComplete = onComplete;
+    private void logRequest(ClientLogger logger, HttpRequest request, long startNanoTime, long requestContentLength,
+                            String redactedUrl, int tryCount, InstrumentationContext context) {
+        ClientLogger.LoggingEvent logBuilder = logger.atLevel(HTTP_REQUEST_LOG_LEVEL);
+        if (!logBuilder.isEnabled() || httpLogDetailLevel == HttpLogOptions.HttpLogDetailLevel.NONE) {
+            return;
         }
 
-        @Override
-        public byte[] toBytes() {
+        logBuilder
+            .setEventName(HTTP_REQUEST_EVENT_NAME)
+            .setContext(context)
+            .addKeyValue(HTTP_REQUEST_METHOD_KEY, request.getHttpMethod())
+            .addKeyValue(URL_FULL_KEY, redactedUrl)
+            .addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount)
+            .addKeyValue(HTTP_REQUEST_BODY_SIZE_KEY, requestContentLength);
+
+        addHeadersToLogMessage(request.getHeaders(), logBuilder);
+
+        if (httpLogDetailLevel.shouldLogBody() && canLogBody(request.getBody())) {
             try {
-                byte[] bytes = inner.toBytes();
-                report();
-                return bytes;
-            } catch (RuntimeException t) {
-                report(t);
-                throw t;
+                BinaryData bufferedBody = request.getBody().toReplayableBinaryData();
+                request.setBody(bufferedBody);
+                logBuilder.addKeyValue(HTTP_REQUEST_BODY_KEY, bufferedBody.toString());
+            } catch (RuntimeException e) {
+                // we'll log exception at the appropriate level.
+                throw logException(logger, request, null, e, startNanoTime, null, requestContentLength, redactedUrl,
+                    tryCount, context);
             }
         }
 
+        logBuilder.log();
+    }
+
+    private Response<?> logResponse(ClientLogger logger, Response<?> response, long startNanoTime,
+                                    long requestContentLength, String redactedUrl, int tryCount, InstrumentationContext context) {
+        ClientLogger.LoggingEvent logBuilder = logger.atLevel(HTTP_RESPONSE_LOG_LEVEL);
+        if (httpLogDetailLevel == HttpLogOptions.HttpLogDetailLevel.NONE) {
+            return response;
+        }
+
+        long responseStartNanoTime = System.nanoTime();
+
+        // response may be disabled, but we still need to log the exception if an exception occurs during stream reading.
+        if (logBuilder.isEnabled()) {
+            logBuilder.setEventName(HTTP_RESPONSE_EVENT_NAME)
+                .setContext(context)
+                .addKeyValue(HTTP_REQUEST_METHOD_KEY, response.getRequest().getHttpMethod())
+                .addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount)
+                .addKeyValue(URL_FULL_KEY, redactedUrl)
+                .addKeyValue(HTTP_REQUEST_TIME_TO_RESPONSE_KEY, getDurationMs(startNanoTime, responseStartNanoTime))
+                .addKeyValue(HTTP_RESPONSE_STATUS_CODE_KEY, response.getStatusCode())
+                .addKeyValue(HTTP_REQUEST_BODY_SIZE_KEY, requestContentLength)
+                .addKeyValue(HTTP_RESPONSE_BODY_SIZE_KEY,
+                    getContentLength(logger, response.getBody(), response.getHeaders()));
+
+            addHeadersToLogMessage(response.getHeaders(), logBuilder);
+        }
+
+        if (httpLogDetailLevel.shouldLogBody() && canLogBody(response.getBody())) {
+            return new LoggingHttpResponse<>(response, content -> {
+                if (logBuilder.isEnabled()) {
+                    logBuilder.addKeyValue(HTTP_RESPONSE_BODY_KEY, content.toString())
+                        .addKeyValue(HTTP_REQUEST_DURATION_KEY, getDurationMs(startNanoTime, System.nanoTime()))
+                        .log();
+                }
+            }, throwable -> logException(logger, response.getRequest(), response, throwable, startNanoTime,
+                responseStartNanoTime, requestContentLength, redactedUrl, tryCount, context));
+        }
+
+        if (logBuilder.isEnabled()) {
+            logBuilder.addKeyValue(HTTP_REQUEST_DURATION_KEY, getDurationMs(startNanoTime, System.nanoTime())).log();
+        }
+
+        return response;
+    }
+
+    private <T extends Throwable> T logException(ClientLogger logger, HttpRequest request, Response<?> response,
+                                                 T throwable, long startNanoTime, Long responseStartNanoTime, long requestContentLength, String redactedUrl,
+                                                 int tryCount, InstrumentationContext context) {
+
+        ClientLogger.LoggingEvent log = logger.atLevel(ClientLogger.LogLevel.WARNING);
+        if (!log.isEnabled() || httpLogDetailLevel == HttpLogOptions.HttpLogDetailLevel.NONE) {
+            return throwable;
+        }
+
+        log.setEventName(HTTP_RESPONSE_EVENT_NAME)
+                .setContext(context)
+                .addKeyValue(HTTP_REQUEST_METHOD_KEY, request.getHttpMethod())
+                .addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount)
+                .addKeyValue(URL_FULL_KEY, redactedUrl)
+                .addKeyValue(HTTP_REQUEST_BODY_SIZE_KEY, requestContentLength)
+                .addKeyValue(HTTP_REQUEST_DURATION_KEY, getDurationMs(startNanoTime, System.nanoTime()));
+
+        if (response != null) {
+            addHeadersToLogMessage(response.getHeaders(), log);
+            log
+                    .addKeyValue(HTTP_RESPONSE_BODY_SIZE_KEY,
+                            getContentLength(logger, response.getBody(), response.getHeaders()))
+                    .addKeyValue(HTTP_RESPONSE_STATUS_CODE_KEY, response.getStatusCode());
+
+            if (responseStartNanoTime != null) {
+                log.addKeyValue(HTTP_REQUEST_TIME_TO_RESPONSE_KEY,
+                        getDurationMs(startNanoTime, responseStartNanoTime));
+            }
+        }
+
+        return log.log(null, throwable);
+    }
+
+    private double getDurationMs(long startNs, long endNs) {
+        return (endNs - startNs) / 1_000_000.0;
+    }
+
+    /**
+     * Determines if the request or response body should be logged.
+     *
+     * <p>The request or response body is logged if the body is replayable, content length is known,
+     * isn't empty, and is less than 16KB in size.</p>
+     *
+     * @param data The request or response body.
+     * @return A flag indicating if the request or response body should be logged.
+     */
+    private static boolean canLogBody(BinaryData data) {
+        // TODO: limolkova - we might want to filter out binary data, but
+        // if somebody enabled logging it - why not log it?
+        return data != null && data.getLength() != null && data.getLength() > 0 && data.getLength() < MAX_BODY_LOG_SIZE;
+    }
+
+    /**
+     * Adds HTTP headers into the StringBuilder that is generating the log message.
+     *
+     * @param headers HTTP headers on the request or response.
+     * @param logBuilder Log message builder.
+     */
+    private void addHeadersToLogMessage(HttpHeaders headers, ClientLogger.LoggingEvent logBuilder) {
+        if (httpLogDetailLevel.shouldLogHeaders()) {
+            for (HttpHeader header : headers) {
+                HttpHeaderName headerName = header.getName();
+                String headerValue = allowedHeaderNames.contains(headerName) ? header.getValue() : REDACTED_PLACEHOLDER;
+                logBuilder.addKeyValue(headerName.toString(), headerValue);
+            }
+        } else {
+            for (HttpHeaderName headerName : ALWAYS_ALLOWED_HEADERS) {
+                String headerValue = headers.getValue(headerName);
+                if (headerValue != null) {
+                    logBuilder.addKeyValue(headerName.toString(), headerValue);
+                }
+            }
+        }
+    }
+
+    /**
+     * Attempts to get request or response body content length.
+     * <p>
+     * If the body length is known, it will be returned.
+     * Otherwise, the method parses Content-Length header.
+     *
+     * @param logger Logger used to log a warning if the Content-Length header is an invalid number.
+     * @param body The request or response body object.
+     * @param headers HTTP headers that are checked for containing Content-Length.
+     * @return The numeric value of the Content-Length header or 0 if the header is not present or invalid.
+     */
+    private static long getContentLength(ClientLogger logger, BinaryData body, HttpHeaders headers) {
+        if (body == null) {
+            return 0;
+        }
+
+        if (body.getLength() != null) {
+            return body.getLength();
+        }
+
+        long contentLength = 0;
+
+        String contentLengthString = headers.getValue(HttpHeaderName.CONTENT_LENGTH);
+
+        if (isNullOrEmpty(contentLengthString)) {
+            return contentLength;
+        }
+
+        try {
+            contentLength = Long.parseLong(contentLengthString);
+        } catch (NumberFormatException | NullPointerException e) {
+            logger.atVerbose()
+                .addKeyValue("contentLength", contentLengthString)
+                .log("Could not parse the HTTP header content-length", e);
+        }
+
+        return contentLength;
+    }
+
+    private static final class LoggingHttpResponse<T> extends HttpResponse<T> {
+        private final Consumer<BinaryData> onContent;
+        private final Consumer<Throwable> onException;
+        private final BinaryData originalBody;
+        private BinaryData bufferedBody;
+
+        private LoggingHttpResponse(Response<T> actualResponse, Consumer<BinaryData> onContent,
+                                    Consumer<Throwable> onException) {
+            super(actualResponse.getRequest(), actualResponse.getStatusCode(), actualResponse.getHeaders(),
+                actualResponse.getValue());
+
+            this.onContent = onContent;
+            this.onException = onException;
+            this.originalBody = actualResponse.getBody();
+        }
+
         @Override
-        public String toString() {
+        public BinaryData getBody() {
+            if (bufferedBody != null) {
+                return bufferedBody;
+            }
+
             try {
-                String str = inner.toString();
-                report();
-                return str;
-            } catch (RuntimeException t) {
-                onComplete.accept(t);
-                throw t;
+                bufferedBody = originalBody.toReplayableBinaryData();
+                onContent.accept(bufferedBody);
+                return bufferedBody;
+            } catch (RuntimeException e) {
+                // we'll log exception at the appropriate level.
+                onException.accept(e);
+                throw e;
             }
-        }
-
-        @Override
-        public <T> T toObject(Type type, ObjectSerializer serializer) throws IOException {
-            try {
-                T value = inner.toObject(type, serializer);
-                report();
-                return value;
-            } catch (RuntimeException t) {
-                report(t);
-                throw t;
-            }
-        }
-
-        @Override
-        public InputStream toStream() {
-            InputStream stream = inner.toStream();
-            return new InputStream() {
-                @Override
-                public int read() throws IOException {
-                    try {
-                        int read = stream.read();
-                        if (read == -1) {
-                            report();
-                        }
-                        return read;
-                    } catch (IOException | RuntimeException e) {
-                        report(e);
-                        throw e;
-                    }
-                }
-
-                @Override
-                public int read(byte[] b) throws IOException {
-                    try {
-                        int read = stream.read(b);
-                        if (read == -1) {
-                            report();
-                        }
-                        return read;
-                    } catch (IOException | RuntimeException e) {
-                        report(e);
-                        throw e;
-                    }
-                }
-
-                @Override
-                public int read(byte[] b, int off, int len) throws IOException {
-                    try {
-                        int read = stream.read(b, off, len);
-                        if (read == -1) {
-                            report();
-                        }
-                        return read;
-                    } catch (IOException | RuntimeException e) {
-                        report(e);
-                        throw e;
-                    }
-                }
-
-                @Override
-                public byte[] readAllBytes() throws IOException {
-                    try {
-                        byte[] bytes = stream.readAllBytes();
-                        report();
-                        return bytes;
-                    } catch (IOException | RuntimeException e) {
-                        report(e);
-                        throw e;
-                    }
-                }
-
-                @Override
-                public int readNBytes(byte[] b, int off, int len) throws IOException {
-                    try {
-                        int read = stream.readNBytes(b, off, len);
-                        if (read < len) {
-                            report();
-                        }
-                        return read;
-                    } catch (IOException | RuntimeException e) {
-                        report(e);
-                        throw e;
-                    }
-                }
-
-                @Override
-                public byte[] readNBytes(int len) throws IOException {
-                    try {
-                        byte[] bytes = stream.readNBytes(len);
-                        if (bytes.length < len) {
-                            report();
-                        }
-                        return bytes;
-                    } catch (IOException | RuntimeException e) {
-                        report(e);
-                        throw e;
-                    }
-                }
-
-                @Override
-                public void reset() throws IOException {
-                    stream.reset();
-                }
-
-                @Override
-                public long skip(long n) throws IOException {
-                    try {
-                        return stream.skip(n);
-                    } catch (IOException | RuntimeException e) {
-                        report(e);
-                        throw e;
-                    }
-                }
-
-                @Override
-                public void skipNBytes(long n) throws IOException {
-                    try {
-                        stream.skipNBytes(n);
-                    } catch (IOException | RuntimeException e) {
-                        report(e);
-                        throw e;
-                    }
-                }
-
-                @Override
-                public int available() throws IOException {
-                    return stream.available();
-                }
-
-                @Override
-                public void mark(int readlimit) {
-                    stream.mark(readlimit);
-                }
-
-                @Override
-                public boolean markSupported() {
-                    return stream.markSupported();
-                }
-
-                @Override
-                public void close() throws IOException {
-                    try {
-                        stream.close();
-                        report();
-                    } catch (IOException e) {
-                        report(e);
-                        throw e;
-                    }
-                }
-
-                @Override
-                public long transferTo(OutputStream out) throws IOException {
-                    try {
-                        long transferred = stream.transferTo(out);
-                        report();
-                        return transferred;
-                    } catch (IOException | RuntimeException e) {
-                        report(e);
-                        throw e;
-                    }
-                }
-            };
-        }
-
-        @Override
-        public void writeTo(JsonWriter jsonWriter) throws IOException {
-            try {
-                inner.writeTo(jsonWriter);
-                report();
-            } catch (RuntimeException t) {
-                report(t);
-                throw t;
-            }
-        }
-
-        @Override
-        public ByteBuffer toByteBuffer() {
-            try {
-                ByteBuffer bb = inner.toByteBuffer();
-                report();
-                return bb;
-            } catch (RuntimeException t) {
-                report(t);
-                throw t;
-            }
-        }
-
-        @Override
-        public Long getLength() {
-            return inner.getLength();
-        }
-
-        @Override
-        public boolean isReplayable() {
-            return inner.isReplayable();
-        }
-
-        @Override
-        public BinaryData toReplayableBinaryData() {
-            if (inner.isReplayable()) {
-                return this;
-            }
-
-            return new InstrumentedBinaryData(inner.toReplayableBinaryData(), onComplete);
         }
 
         @Override
         public void close() throws IOException {
-            inner.close();
-            report();
-        }
-
-        private void report() {
-            report(null);
-        }
-
-        private void report(Throwable t) {
-            if (!reported) {
-                onComplete.accept(t);
-                reported = true;
+            if (bufferedBody == null) {
+                getBody();
             }
+            if (bufferedBody != null) {
+                bufferedBody.close();
+            }
+            originalBody.close();
         }
     }
 }

@@ -3,6 +3,8 @@
 
 package io.clientcore.core.instrumentation.tracing;
 
+import io.clientcore.core.instrumentation.InstrumentationContext;
+
 /**
  * A {@code Span} represents a single operation within a trace. Spans can be nested to form a trace tree.
  * <p><strong>This interface is intended to be used by client libraries only. Application developers should use OpenTelemetry API directly</strong></p>
@@ -77,44 +79,13 @@ public interface Span {
      */
     TracingScope makeCurrent();
 
+    InstrumentationContext getInstrumentationContext();
+
     /**
      * Returns a no-op span.
      * @return A no-op span.
      */
     static Span noop() {
-        return new Span() {
-            private final static TracingScope NOOP_SCOPE = () -> {
-            };
-
-            @Override
-            public Span setAttribute(String key, Object value) {
-                return this;
-            }
-
-            @Override
-            public Span setError(String errorType) {
-                return this;
-            }
-
-            @Override
-            public void end(Throwable throwable) {
-
-            }
-
-            @Override
-            public void end() {
-
-            }
-
-            @Override
-            public boolean isRecording() {
-                return false;
-            }
-
-            @Override
-            public TracingScope makeCurrent() {
-                return NOOP_SCOPE;
-            }
-        };
+        return NoopSpan.INSTANCE;
     }
 }

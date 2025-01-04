@@ -57,7 +57,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
 
         // BEGIN: io.clientcore.core.telemetry.tracing.tracecall
 
-        Span span = tracer.spanBuilder("{operationName}", SpanKind.CLIENT, requestOptions)
+        Span span = tracer.spanBuilder("{operationName}", SpanKind.CLIENT, null)
             .startSpan();
 
         // we'll propagate context implicitly using span.makeCurrent() as shown later.
@@ -91,7 +91,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
 
         // BEGIN: io.clientcore.core.telemetry.tracing.tracewithattributes
 
-        Span sendSpan = tracer.spanBuilder("send {queue-name}", SpanKind.PRODUCER, requestOptions)
+        Span sendSpan = tracer.spanBuilder("send {queue-name}", SpanKind.PRODUCER, null)
             // Some of the attributes should be provided at the start time (as documented in semantic conventions) -
             // they can be used by client apps to sample spans.
             .setAttribute("messaging.system", "servicebus")
@@ -156,9 +156,9 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
         // BEGIN: io.clientcore.core.telemetry.tracing.enrichhttpspans
 
         HttpPipelinePolicy enrichingPolicy = (request, next) -> {
-            Object span = request.getRequestOptions().getContext().get(TRACE_CONTEXT_KEY);
-            if (span instanceof Span) {
-                ((Span)span).setAttribute("custom.request.id", request.getHeaders().getValue(CUSTOM_REQUEST_ID));
+            Span span = Span.noop();//Instrumentation.fromContext(request.getRequestOptions().getContext());
+            if (span.isRecording()) {
+                span.setAttribute("custom.request.id", request.getHeaders().getValue(CUSTOM_REQUEST_ID));
             }
 
             return next.process();

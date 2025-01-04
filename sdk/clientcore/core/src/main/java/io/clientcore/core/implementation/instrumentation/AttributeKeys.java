@@ -31,7 +31,7 @@ public final class AttributeKeys {
     /**
      * Key representing duration of call in milliseconds, the value should be a number.
      */
-    public static final String HTTP_REQUEST_TIME_TO_HEADERS_KEY = "http.request.time_to_headers";
+    public static final String HTTP_REQUEST_TIME_TO_RESPONSE_KEY = "http.request.time_to_response";
 
     /**
      * Key representing duration of call in milliseconds, the value should be a number.

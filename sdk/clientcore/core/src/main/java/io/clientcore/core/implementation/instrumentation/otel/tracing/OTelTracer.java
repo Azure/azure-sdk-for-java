@@ -7,6 +7,7 @@ import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.instrumentation.otel.FallbackInvoker;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
+import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
 import io.clientcore.core.instrumentation.tracing.SpanBuilder;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
@@ -94,12 +95,11 @@ public final class OTelTracer implements Tracer {
      * {@inheritDoc}
      */
     @Override
-    public SpanBuilder spanBuilder(String spanName, SpanKind spanKind, RequestOptions options) {
+    public SpanBuilder spanBuilder(String spanName, SpanKind spanKind, InstrumentationContext parentContext) {
         if (isEnabled()) {
             Object otelSpanBuilder = SPAN_BUILDER_INVOKER.invoke(otelTracer, spanName);
             if (otelSpanBuilder != null) {
-                Context parent = options == null ? Context.none() : options.getContext();
-                return new OTelSpanBuilder(otelSpanBuilder, spanKind, parent, libraryOptions);
+                return new OTelSpanBuilder(otelSpanBuilder, spanKind, parentContext, libraryOptions);
             }
         }
 

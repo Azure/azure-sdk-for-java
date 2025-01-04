@@ -6,8 +6,10 @@ package io.clientcore.core.instrumentation;
 import io.clientcore.core.implementation.instrumentation.DefaultInstrumentation;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInstrumentation;
+import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
 import io.clientcore.core.instrumentation.tracing.Tracer;
+import io.clientcore.core.util.Context;
 
 import java.util.Objects;
 
@@ -77,6 +79,14 @@ public interface Instrumentation {
             return new OTelInstrumentation(applicationOptions, libraryOptions);
         } else {
             return new DefaultInstrumentation(applicationOptions, libraryOptions);
+        }
+    }
+
+    static <T> InstrumentationContext createInstrumentationContext(T context) {
+        if (OTelInitializer.isInitialized()) {
+            return OTelInstrumentation.DEFAULT_INSTANCE.createInstrumentationContext(context);
+        } else {
+            return DefaultInstrumentation.DEFAULT_INSTANCE.createInstrumentationContext(context);
         }
     }
 }
