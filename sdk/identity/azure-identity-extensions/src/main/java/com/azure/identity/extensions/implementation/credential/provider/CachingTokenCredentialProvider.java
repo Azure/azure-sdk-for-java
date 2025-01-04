@@ -25,6 +25,11 @@ public class CachingTokenCredentialProvider implements TokenCredentialProvider {
 
     private final TokenCredentialProvider delegate;
 
+    /**
+     * CachingTokenCredentialProvider constructor.
+     * @param defaultOptions the {@link TokenCredentialProviderOptions} for the delegate {@link TokenCredentialProvider} initialization.
+     * @param tokenCredentialProvider the delegate {@link TokenCredentialProvider}.
+     */
     public CachingTokenCredentialProvider(TokenCredentialProviderOptions defaultOptions,
         TokenCredentialProvider tokenCredentialProvider) {
         this.defaultOptions = defaultOptions;

@@ -116,7 +116,7 @@ class AzureAuthenticationTemplateTest {
     }
 
     @Test
-    void getTokenAsPasswordWithCachingCredentialProvider() throws InterruptedException {
+    void getTokenAsPasswordWithDefaultCredentialProvider() throws InterruptedException {
         // setup
         String token1 = "token1";
         String token2 = "token2";
@@ -131,10 +131,10 @@ class AzureAuthenticationTemplateTest {
             }
         });
         // mock
-        try (MockedConstruction<CachingTokenCredentialProvider> identityClientMock
-            = mockConstruction(CachingTokenCredentialProvider.class, (cachingTokenCredentialProvider, context) -> {
-                when(cachingTokenCredentialProvider.get()).thenReturn(mockTokenCredential);
-            })) {
+        try (MockedConstruction<DefaultTokenCredentialProvider> defaultCredentialProviderMock
+                 = mockConstruction(DefaultTokenCredentialProvider.class, (defaultTokenCredentialProvider, context) -> {
+            when(defaultTokenCredentialProvider.get()).thenReturn(mockTokenCredential);
+        })) {
             Properties properties = new Properties();
             properties.setProperty("azure.tokenCredentialCacheEnabled", "false");
 
@@ -146,12 +146,12 @@ class AzureAuthenticationTemplateTest {
             TimeUnit.SECONDS.sleep(tokenExpireSeconds);
             assertEquals(token2, template.getTokenAsPassword());
 
-            assertNotNull(identityClientMock);
+            assertNotNull(defaultCredentialProviderMock);
         }
     }
 
     @Test
-    void getTokenAsPasswordWithDefaultCredentialProvider() throws InterruptedException {
+    void getTokenAsPasswordWithCachingCredentialProvider() throws InterruptedException {
         int tokenExpireSeconds = 2;
         AtomicInteger tokenIndex1 = new AtomicInteger();
         AtomicInteger tokenIndex2 = new AtomicInteger(1);
@@ -166,8 +166,8 @@ class AzureAuthenticationTemplateTest {
             }
         });
         // mock
-        try (MockedConstruction<DefaultTokenCredentialProvider> credentialProviderMock
-            = mockConstruction(DefaultTokenCredentialProvider.class, (defaultTokenCredentialProvider, context) -> {
+        try (MockedConstruction<CachingTokenCredentialProvider> credentialProviderMock
+            = mockConstruction(CachingTokenCredentialProvider.class, (defaultTokenCredentialProvider, context) -> {
                 when(defaultTokenCredentialProvider.get()).thenReturn(mockTokenCredential);
             })) {
             Properties properties = new Properties();

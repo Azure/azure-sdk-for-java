@@ -44,7 +44,7 @@ public class AzureAuthenticationTemplate {
     /**
      * AzureAuthenticationTemplate constructor.
      *
-     * @param tokenCredentialProvider An TokenCredentialProvider class instance.
+     * @param tokenCredentialProvider A TokenCredentialProvider class instance.
      * @param accessTokenResolver An AccessTokenResolver class instance.
      */
     public AzureAuthenticationTemplate(TokenCredentialProvider tokenCredentialProvider,

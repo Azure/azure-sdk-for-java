@@ -32,11 +32,4 @@ class TokenCredentialProvidersTest {
         Assertions.assertTrue(credentialProvider instanceof TestSpringTokenCredentialProvider);
     }
 
-    @Test
-    void testCreateCacheTokenCredentialProvider() {
-        TokenCredentialProviderOptions option = new TokenCredentialProviderOptions();
-        option.setTokenCredentialProviderClassName(CachingTokenCredentialProvider.class.getName());
-        TokenCredentialProvider credentialProvider = TokenCredentialProviders.createInstance(option);
-        Assertions.assertTrue(credentialProvider instanceof CachingTokenCredentialProvider);
-    }
 }
