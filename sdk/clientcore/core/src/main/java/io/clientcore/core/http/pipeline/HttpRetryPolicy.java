@@ -9,6 +9,7 @@ import io.clientcore.core.http.models.HttpRetryOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
 import io.clientcore.core.implementation.util.ImplUtils;
+import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.util.configuration.Configuration;
 
@@ -142,13 +143,17 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
         // It can be used by the policies during the process call.
         HttpRequestAccessHelper.setTryCount(httpRequest, tryCount);
 
+        final InstrumentationContext instrumentationContext = httpRequest.getRequestOptions() == null
+            ? null
+            : httpRequest.getRequestOptions().getInstrumentationContext();
+
         Response<?> response;
 
         try {
             response = next.clone().process();
         } catch (RuntimeException err) {
             if (shouldRetryException(err, tryCount, suppressed)) {
-                logRetryWithError(LOGGER.atVerbose(), tryCount, "Error resume.", err);
+                logRetryWithError(LOGGER.atVerbose(), tryCount, "Error resume.", err, instrumentationContext);
 
                 boolean interrupted = false;
                 long millis = calculateRetryDelay(tryCount).toMillis();
@@ -171,7 +176,8 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
 
                 return attempt(httpRequest, next, tryCount + 1, suppressedLocal);
             } else {
-                logRetryWithError(LOGGER.atError(), tryCount, "Retry attempts have been exhausted.", err);
+                logRetryWithError(LOGGER.atError(), tryCount, "Retry attempts have been exhausted.", err,
+                    instrumentationContext);
 
                 if (suppressed != null) {
                     suppressed.forEach(err::addSuppressed);
@@ -184,7 +190,7 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
         if (shouldRetryResponse(response, tryCount, suppressed)) {
             final Duration delayDuration = determineDelayDuration(response, tryCount, delayFromHeaders);
 
-            logRetry(tryCount, delayDuration);
+            logRetry(tryCount, delayDuration, instrumentationContext);
 
             try {
                 response.close();
@@ -204,7 +210,7 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
             return attempt(httpRequest, next, tryCount + 1, suppressed);
         } else {
             if (tryCount >= maxRetries) {
-                logRetryExhausted(tryCount);
+                logRetryExhausted(tryCount, instrumentationContext);
             }
 
             return response;
@@ -270,20 +276,26 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
         return false;
     }
 
-    private static void logRetry(int tryCount, Duration delayDuration) {
+    private static void logRetry(int tryCount, Duration delayDuration, InstrumentationContext context) {
         LOGGER.atVerbose()
             .addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount)
             .addKeyValue(HTTP_REQUEST_DURATION_KEY, delayDuration.toMillis())
+            .setContext(context)
             .log("Retrying.");
     }
 
-    private static void logRetryExhausted(int tryCount) {
-        LOGGER.atInfo().addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount).log("Retry attempts have been exhausted.");
+    private static void logRetryExhausted(int tryCount, InstrumentationContext context) {
+        LOGGER.atInfo()
+            .addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount)
+            .setContext(context)
+            .log("Retry attempts have been exhausted.");
     }
 
-    private static void logRetryWithError(ClientLogger.LoggingEvent loggingEvent, int tryCount, String message,
-        Throwable throwable) {
-        loggingEvent.addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount).log(message, throwable);
+    private static void logRetryWithError(ClientLogger.LoggingEvent loggingEvent, int tryCount,
+        String message, Throwable throwable, InstrumentationContext context) {
+        loggingEvent.addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount)
+            .setContext(context)
+            .log(message, throwable);
     }
 
     private Duration calculateRetryDelay(int retryAttempts) {

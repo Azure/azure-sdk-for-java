@@ -134,8 +134,7 @@ public class OTelSpanBuilder implements SpanBuilder {
     }
 
     private boolean shouldSuppress(Object parentContext) {
-        if (suppressNestedSpans
-            && (this.spanKind == SpanKind.CLIENT || this.spanKind == SpanKind.INTERNAL)) {
+        if (suppressNestedSpans && (this.spanKind == SpanKind.CLIENT || this.spanKind == SpanKind.INTERNAL)) {
             OTelSpan span = OTelContext.getClientCoreSpan(parentContext);
             return span != null && (span.getSpanKind() == SpanKind.INTERNAL || span.getSpanKind() == SpanKind.CLIENT);
         }

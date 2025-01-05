@@ -11,7 +11,6 @@ import io.clientcore.core.instrumentation.tracing.TraceContextGetter;
 import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
 import io.clientcore.core.instrumentation.tracing.TraceContextSetter;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.Context;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -70,7 +69,8 @@ public class OTelTraceContextPropagator implements TraceContextPropagator {
     @Override
     public <C> void inject(InstrumentationContext context, C carrier, TraceContextSetter<C> setter) {
         if (isInitialized()) {
-            INJECT_INVOKER.invoke(otelPropagator, OTelContext.fromInstrumentationContext(context), carrier, Setter.toOTelSetter(setter));
+            INJECT_INVOKER.invoke(otelPropagator, OTelContext.fromInstrumentationContext(context), carrier,
+                Setter.toOTelSetter(setter));
         }
     }
 
@@ -80,8 +80,8 @@ public class OTelTraceContextPropagator implements TraceContextPropagator {
     @Override
     public <C> InstrumentationContext extract(InstrumentationContext context, C carrier, TraceContextGetter<C> getter) {
         if (isInitialized()) {
-            Object updatedContext
-                = EXTRACT_INVOKER.invoke(otelPropagator, OTelContext.fromInstrumentationContext(context), carrier, Getter.toOTelGetter(getter));
+            Object updatedContext = EXTRACT_INVOKER.invoke(otelPropagator,
+                OTelContext.fromInstrumentationContext(context), carrier, Getter.toOTelGetter(getter));
             if (updatedContext != null) {
                 return OTelSpanContext.fromOTelContext(updatedContext);
             }

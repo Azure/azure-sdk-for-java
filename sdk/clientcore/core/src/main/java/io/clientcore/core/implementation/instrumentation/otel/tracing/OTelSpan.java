@@ -23,7 +23,6 @@ import static io.clientcore.core.implementation.instrumentation.otel.OTelInitial
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.STATUS_CODE_CLASS;
 import static io.clientcore.core.implementation.instrumentation.otel.tracing.OTelContext.markCoreSpan;
 import static io.clientcore.core.implementation.instrumentation.otel.tracing.OTelSpanContext.INVALID_OTEL_SPAN_CONTEXT;
-import static io.clientcore.core.implementation.instrumentation.otel.tracing.OTelSpanContext.fromOTelSpan;
 
 /**
  * OpenTelemetry implementation of {@link Span}.
@@ -31,6 +30,7 @@ import static io.clientcore.core.implementation.instrumentation.otel.tracing.OTe
 public class OTelSpan implements Span {
     private static final ClientLogger LOGGER = new ClientLogger(OTelSpan.class);
     static final OTelSpan NOOP_SPAN;
+    private static final Object ERROR_TYPE_ATTRIBUTE_KEY;
     private static final TracingScope NOOP_SCOPE = () -> {
     };
     private static final FallbackInvoker SET_ATTRIBUTE_INVOKER;
@@ -41,7 +41,6 @@ public class OTelSpan implements Span {
     private static final FallbackInvoker STORE_IN_CONTEXT_INVOKER;
     private static final FallbackInvoker FROM_CONTEXT_INVOKER;
     private static final FallbackInvoker WRAP_INVOKER;
-    private static final FallbackInvoker CURRENT_INVOKER;
     private static final Object ERROR_STATUS_CODE;
     private final Object otelSpan;
     private final Object otelContext;
@@ -59,10 +58,10 @@ public class OTelSpan implements Span {
         ReflectiveInvoker storeInContextInvoker = null;
         ReflectiveInvoker fromContextInvoker = null;
         ReflectiveInvoker wrapInvoker = null;
-        ReflectiveInvoker currentInvoker = null;
 
         Object errorStatusCode = null;
         OTelSpan noopSpan = null;
+        Object errorTypeAttributeKey = null;
 
         if (OTelInitializer.isInitialized()) {
             try {
@@ -84,13 +83,13 @@ public class OTelSpan implements Span {
                 wrapInvoker = getMethodInvoker(SPAN_CLASS, SPAN_CLASS.getMethod("wrap", SPAN_CONTEXT_CLASS));
                 errorStatusCode = STATUS_CODE_CLASS.getField("ERROR").get(null);
 
-                currentInvoker = getMethodInvoker(SPAN_CLASS, SPAN_CLASS.getMethod("current"));
                 ReflectiveInvoker getInvalidInvoker = getMethodInvoker(SPAN_CLASS, SPAN_CLASS.getMethod("getInvalid"));
 
                 Object invalidSpan = getInvalidInvoker.invoke();
                 Object rootContext = OTelContext.getCurrent();
 
                 noopSpan = new OTelSpan(invalidSpan, rootContext);
+                errorTypeAttributeKey = OTelAttributeKey.getKey("error.type", "");
             } catch (Throwable t) {
                 OTelInitializer.initError(LOGGER, t);
             }
@@ -104,10 +103,10 @@ public class OTelSpan implements Span {
         STORE_IN_CONTEXT_INVOKER = new FallbackInvoker(storeInContextInvoker, LOGGER);
         FROM_CONTEXT_INVOKER = new FallbackInvoker(fromContextInvoker, LOGGER);
         WRAP_INVOKER = new FallbackInvoker(wrapInvoker, LOGGER);
-        CURRENT_INVOKER = new FallbackInvoker(currentInvoker, LOGGER);
         NOOP_SPAN = noopSpan;
 
         ERROR_STATUS_CODE = errorStatusCode;
+        ERROR_TYPE_ATTRIBUTE_KEY = errorTypeAttributeKey;
     }
 
     OTelSpan(Object otelSpan, Object otelParentContext, SpanKind spanKind) {
@@ -181,6 +180,34 @@ public class OTelSpan implements Span {
         return isInitialized() ? wrapOTelScope(OTelContext.makeCurrent(otelContext)) : NOOP_SCOPE;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public InstrumentationContext getInstrumentationContext() {
+        if (spanContext != null) {
+            return spanContext;
+        }
+
+        spanContext = isInitialized()
+            ? new OTelSpanContext(GET_SPAN_CONTEXT_INVOKER.invoke(otelSpan), otelContext)
+            : OTelSpanContext.getInvalid();
+
+        return spanContext;
+    }
+
+    SpanKind getSpanKind() {
+        return spanKind;
+    }
+
+    Object getOtelSpan() {
+        return otelSpan;
+    }
+
+    static OTelSpan createPropagatingSpan(OTelSpanContext spanContext) {
+        Object span = wrapSpanContext(spanContext.getOtelSpanContext());
+        return new OTelSpan(span, spanContext.getOtelContext());
+    }
+
     static Object createPropagatingSpan(Object otelContext) {
         assert CONTEXT_CLASS.isInstance(otelContext);
 
@@ -192,12 +219,7 @@ public class OTelSpan implements Span {
         return wrapSpanContext(spanContext);
     }
 
-    static OTelSpan createPropagatingSpan(OTelSpanContext spanContext) {
-        Object span = wrapSpanContext(spanContext.getOtelContext());
-        return new OTelSpan(span, spanContext.getOtelContext(), SpanKind.INTERNAL);
-    }
-
-    public static Object fromOTelContext(Object otelContext) {
+    static Object fromOTelContext(Object otelContext) {
         assert CONTEXT_CLASS.isInstance(otelContext);
 
         Object span = FROM_CONTEXT_INVOKER.invoke(otelContext);
@@ -224,32 +246,19 @@ public class OTelSpan implements Span {
         return spanContext;
     }
 
-    Object getOtelSpan() {
-        return otelSpan;
-    }
+    static Object storeInContext(Object otelSpan, Object otelContext) {
+        Object updatedContext = STORE_IN_CONTEXT_INVOKER.invoke(otelSpan, otelContext);
 
-    SpanKind getSpanKind() {
-        return spanKind;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public InstrumentationContext getInstrumentationContext() {
-        if (spanContext != null) {
-            return spanContext;
-        }
-
-        spanContext = isInitialized() ? new OTelSpanContext(GET_SPAN_CONTEXT_INVOKER.invoke(otelSpan), otelContext)
-            : OTelSpanContext.getInvalid();
-
-        return spanContext;
+        return updatedContext != null ? updatedContext : otelContext;
     }
 
     private void endSpan(Throwable throwable) {
         if (isInitialized()) {
             if (errorType != null || throwable != null) {
-                setAttribute("error.type", errorType != null ? errorType : throwable.getClass().getCanonicalName());
+
+                String errorTypeStr = errorType != null ? errorType : throwable.getClass().getCanonicalName();
+                SET_ATTRIBUTE_INVOKER.invoke(otelSpan, ERROR_TYPE_ATTRIBUTE_KEY, errorTypeStr);
+
                 SET_STATUS_INVOKER.invoke(otelSpan, ERROR_STATUS_CODE,
                     throwable == null ? null : throwable.getMessage());
             }
@@ -266,11 +275,6 @@ public class OTelSpan implements Span {
                 OTelInitializer.runtimeError(LOGGER, e);
             }
         };
-    }
-
-    static Object storeInContext(Object otelSpan, Object otelContext) {
-        Object updatedContext = STORE_IN_CONTEXT_INVOKER.invoke(otelSpan, otelContext);
-        return updatedContext != null ? updatedContext : otelContext;
     }
 
     private boolean isInitialized() {

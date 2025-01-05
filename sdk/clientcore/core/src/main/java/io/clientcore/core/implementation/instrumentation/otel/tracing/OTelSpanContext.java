@@ -18,7 +18,7 @@ import static io.clientcore.core.implementation.instrumentation.otel.OTelInitial
 /**
  * Wrapper around OpenTelemetry SpanContext.
  */
-public class OTelSpanContext implements InstrumentationContext  {
+public class OTelSpanContext implements InstrumentationContext {
     public static final Object INVALID_OTEL_SPAN_CONTEXT;
     private static final String INVALID_TRACE_ID = "00000000000000000000000000000000";
     private static final String INVALID_SPAN_ID = "0000000000000000";
@@ -58,7 +58,8 @@ public class OTelSpanContext implements InstrumentationContext  {
 
                 invalidInstance = getInvalidInvoker.invoke();
                 isValidInvoker = getMethodInvoker(SPAN_CONTEXT_CLASS, SPAN_CONTEXT_CLASS.getMethod("isValid"));
-                createInvoker = getMethodInvoker(SPAN_CONTEXT_CLASS, SPAN_CONTEXT_CLASS.getMethod("create", String.class, String.class, TRACE_FLAGS_CLASS, TRACE_STATE_CLASS));
+                createInvoker = getMethodInvoker(SPAN_CONTEXT_CLASS, SPAN_CONTEXT_CLASS.getMethod("create",
+                    String.class, String.class, TRACE_FLAGS_CLASS, TRACE_STATE_CLASS));
             } catch (Throwable t) {
                 OTelInitializer.initError(LOGGER, t);
             }
@@ -73,36 +74,49 @@ public class OTelSpanContext implements InstrumentationContext  {
         CREATE_INVOKER = new FallbackInvoker(createInvoker, INVALID_OTEL_SPAN_CONTEXT, LOGGER);
     }
 
+    /**
+     * Creates a new instance of {@link OTelSpanContext} from an OpenTelemetry {@code SpanContext}.
+     *
+     * @param otelSpanContext the instance of OpenTelemetry {@code io.opentelemetry.api.trace.SpanContext}
+     * @param otelContext the instance of OpenTelemetry {@code io.opentelemetry.context.Context}.
+     *                    It is used to propagate additional information within the process along with {@link InstrumentationContext}.
+     */
     public OTelSpanContext(Object otelSpanContext, Object otelContext) {
-        assert otelSpanContext == null || SPAN_CONTEXT_CLASS.isInstance(otelSpanContext);
-        assert otelContext == null || OTelInitializer.CONTEXT_CLASS.isInstance(otelContext);
-
         this.otelSpanContext = otelSpanContext;
         this.otelContext = otelContext;
     }
 
-    static Object toOTelSpanContext(InstrumentationContext context) {
-        if (context instanceof OTelSpanContext) {
-            return ((OTelSpanContext) context).otelSpanContext;
-        }
-
-        return CREATE_INVOKER.invoke(context.getTraceId(), context.getTraceFlags(), null);
-    }
-
+    /**
+     * Creates a new instance of {@link OTelSpanContext} from an OpenTelemetry {@code io.opentelemetry.context.Context}.
+     * @param otelContext the instance of OpenTelemetry {@code io.opentelemetry.context.Context}
+     *
+     * @return the instance of {@link OTelSpanContext}
+     */
     public static OTelSpanContext fromOTelContext(Object otelContext) {
         if (otelContext == null) {
-            otelContext = OTelContext.getCurrent();
+            return INVALID;
         }
         Object otelSpan = OTelSpan.fromOTelContext(otelContext);
         Object otelSpanContext = OTelSpan.getSpanContext(otelSpan);
         return new OTelSpanContext(otelSpanContext, otelContext);
     }
 
+    /**
+     * Creates a new instance of {@link OTelSpanContext} from an OpenTelemetry {@code io.opentelemetry.api.trace.Span}.
+     * @param otelSpan the instance of OpenTelemetry {@code io.opentelemetry.api.trace.Span}
+     * @return the instance of {@link OTelSpanContext}
+     */
     public static OTelSpanContext fromOTelSpan(Object otelSpan) {
         Object otelSpanContext = OTelSpan.getSpanContext(otelSpan);
-        return new OTelSpanContext(otelSpanContext, null); // TODO -this is  not correct
+        Object otelContext = OTelSpan.storeInContext(otelSpan, OTelContext.getCurrent());
+
+        return new OTelSpanContext(otelSpanContext, otelContext);
     }
 
+    /**
+     * Returns an invalid instance of {@link OTelSpanContext}.
+     * @return the instance of {@link OTelSpanContext}
+     */
     public static OTelSpanContext getInvalid() {
         return INVALID;
     }
@@ -165,13 +179,38 @@ public class OTelSpanContext implements InstrumentationContext  {
         return isValid;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Span getSpan() {
-        return isInitialized() && otelContext != null ? OTelContext.getClientCoreSpan(otelContext) : OTelSpan.createPropagatingSpan(this);
+        if (isInitialized()) {
+            if (otelContext != null) {
+                OTelSpan coreSpan = OTelContext.getClientCoreSpan(otelContext);
+                if (coreSpan != null) {
+                    return coreSpan;
+                }
+            }
+
+            return OTelSpan.createPropagatingSpan(this);
+        }
+        return Span.noop();
     }
 
     Object getOtelContext() {
         return otelContext;
+    }
+
+    Object getOtelSpanContext() {
+        return otelSpanContext;
+    }
+
+    static Object toOTelSpanContext(InstrumentationContext context) {
+        if (context instanceof OTelSpanContext) {
+            return ((OTelSpanContext) context).otelSpanContext;
+        }
+
+        return CREATE_INVOKER.invoke(context.getTraceId(), context.getTraceFlags(), null);
     }
 
     private boolean isInitialized() {

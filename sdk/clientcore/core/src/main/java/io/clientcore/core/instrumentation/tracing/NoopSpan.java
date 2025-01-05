@@ -1,11 +1,16 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package io.clientcore.core.instrumentation.tracing;
 
 import io.clientcore.core.instrumentation.InstrumentationContext;
 
-class NoopSpan implements Span {
+final class NoopSpan implements Span {
     static final NoopSpan INSTANCE = new NoopSpan();
+
     private NoopSpan() {
     }
+
     private static final TracingScope NOOP_SCOPE = () -> {
     };
 

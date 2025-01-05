@@ -16,8 +16,6 @@ import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.instrumentation.tracing.TracingScope;
 
-import static io.clientcore.core.instrumentation.Instrumentation.TRACE_CONTEXT_KEY;
-
 /**
  * THESE CODE SNIPPETS ARE INTENDED FOR CLIENT LIBRARY DEVELOPERS ONLY.
  * <p>
@@ -63,7 +61,10 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
         // we'll propagate context implicitly using span.makeCurrent() as shown later.
         // Libraries that write async code should propagate context explicitly in addition to implicit propagation.
         if (tracer.isEnabled()) {
-            requestOptions.putContext(TRACE_CONTEXT_KEY, span);
+            if (requestOptions == null) {
+                requestOptions = new RequestOptions();
+            }
+            requestOptions.setInstrumentationContext(span.getInstrumentationContext());
         }
 
         try (TracingScope scope = span.makeCurrent()) {
@@ -156,7 +157,9 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
         // BEGIN: io.clientcore.core.telemetry.tracing.enrichhttpspans
 
         HttpPipelinePolicy enrichingPolicy = (request, next) -> {
-            Span span = Span.noop();//Instrumentation.fromContext(request.getRequestOptions().getContext());
+            Span span = request.getRequestOptions() == null
+                ? Span.noop()
+                : request.getRequestOptions().getInstrumentationContext().getSpan();
             if (span.isRecording()) {
                 span.setAttribute("custom.request.id", request.getHeaders().getValue(CUSTOM_REQUEST_ID));
             }

@@ -522,6 +522,7 @@ public class ClientLogger {
                 message = "";
             }
 
+            // TODO (limolkova) set context from implicit current span
             if (this.context != null && this.context.isValid()) {
                 addKeyValue("trace.id", context.getTraceId());
                 addKeyValue("span.id", context.getSpanId());

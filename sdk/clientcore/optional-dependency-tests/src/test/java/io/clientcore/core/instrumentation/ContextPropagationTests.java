@@ -154,14 +154,14 @@ public class ContextPropagationTests {
     public void testExtractPreservesContext() {
         /*Map<String, String> carrier = new HashMap<>();
         carrier.put("traceparent", "00-0af7651916cd43dd8448eb211c80319c-b7ad6b7169203331-01");
-
+        
         Context original = Context.of("key", "value");
         Context updated = contextPropagator.extract(original, carrier, GETTER);
-
+        
         io.opentelemetry.context.Context otelContext
             = (io.opentelemetry.context.Context) updated.get(TRACE_CONTEXT_KEY);
         assertTrue(io.opentelemetry.api.trace.Span.fromContext(otelContext).getSpanContext().isValid());
-
+        
         assertEquals("value", updated.get("key"));*/
     }
 
@@ -171,6 +171,7 @@ public class ContextPropagationTests {
     }
 
     private String getTraceparent(SpanContext spanContext) {
-        return "00-" + spanContext.getTraceId() + "-" + spanContext.getSpanId() + "-" + spanContext.getTraceFlags().asHex();
+        return "00-" + spanContext.getTraceId() + "-" + spanContext.getSpanId() + "-"
+            + spanContext.getTraceFlags().asHex();
     }
 }

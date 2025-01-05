@@ -13,10 +13,7 @@ package io.clientcore.core.implementation.instrumentation;
  * When reporting in client libraries, please do the best effort to stay consistent with these keys, but copy the value.
  */
 public final class AttributeKeys {
-    private AttributeKeys() {
-
-    }
-
+    // Standard attribute names (defined in OpenTelemetry semantic conventions)
     /**
      * Key representing HTTP method.
      */
@@ -27,16 +24,6 @@ public final class AttributeKeys {
      * and should be an {@code int} number.
      */
     public static final String HTTP_REQUEST_RESEND_COUNT_KEY = "http.request.resend_count";
-
-    /**
-     * Key representing duration of call in milliseconds, the value should be a number.
-     */
-    public static final String HTTP_REQUEST_TIME_TO_RESPONSE_KEY = "http.request.time_to_response";
-
-    /**
-     * Key representing duration of call in milliseconds, the value should be a number.
-     */
-    public static final String HTTP_REQUEST_DURATION_KEY = "http.request.duration";
 
     /**
      * Key representing request URI.
@@ -54,6 +41,22 @@ public final class AttributeKeys {
     public static final String HTTP_RESPONSE_BODY_SIZE_KEY = "http.response.body.size";
 
     /**
+     * Key representing response status code. The value should be a number.
+     */
+    public static final String HTTP_RESPONSE_STATUS_CODE_KEY = "http.response.status_code";
+
+    // Custom attribute names, use with caution
+    /**
+     * Key representing duration of call in milliseconds, the value should be a number.
+     */
+    public static final String HTTP_REQUEST_TIME_TO_RESPONSE_KEY = "http.request.time_to_response";
+
+    /**
+     * Key representing duration of call in milliseconds, the value should be a number.
+     */
+    public static final String HTTP_REQUEST_DURATION_KEY = "http.request.duration";
+
+    /**
      * Key representing request body. The value should be populated conditionally
      * if populated at all.
      */
@@ -65,8 +68,6 @@ public final class AttributeKeys {
      */
     public static final String HTTP_RESPONSE_BODY_KEY = "http.request.body";
 
-    /**
-     * Key representing response status code. The value should be a number.
-     */
-    public static final String HTTP_RESPONSE_STATUS_CODE_KEY = "http.response.status_code";
+    private AttributeKeys() {
+    }
 }

@@ -5,6 +5,7 @@ package io.clientcore.core.instrumentation.logging;
 
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.instrumentation.DefaultLogger;
+import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.serialization.json.JsonOptions;
 import io.clientcore.core.serialization.json.JsonProviders;
 import io.clientcore.core.serialization.json.JsonReader;
@@ -28,6 +29,8 @@ import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import static io.clientcore.core.instrumentation.logging.InstrumentationTestUtils.createInvalidInstrumentationContext;
+import static io.clientcore.core.instrumentation.logging.InstrumentationTestUtils.createRandomInstrumentationContext;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -750,6 +753,38 @@ public class ClientLoggerTests {
         expectedMessage.put("linkName", "bar");
 
         assertMessage(expectedMessage, byteArraySteamToString(logCaptureStream), LogLevel.INFORMATIONAL, level);
+    }
+
+    @Test
+    public void logWithContext() {
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL);
+        InstrumentationContext context = createRandomInstrumentationContext();
+        logger.atInfo().setContext(context).addKeyValue("connectionId", "foo").log("message");
+
+        Map<String, Object> expectedMessage = new HashMap<>();
+        expectedMessage.put("message", "message");
+        expectedMessage.put("connectionId", "foo");
+        expectedMessage.put("trace.id", context.getTraceId());
+        expectedMessage.put("span.id", context.getSpanId());
+
+        assertMessage(expectedMessage, byteArraySteamToString(logCaptureStream), LogLevel.INFORMATIONAL,
+            LogLevel.INFORMATIONAL);
+    }
+
+    @Test
+    public void logWithInvalidContext() {
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL);
+        logger.atInfo()
+            .setContext(createInvalidInstrumentationContext())
+            .addKeyValue("connectionId", "foo")
+            .log("message");
+
+        Map<String, Object> expectedMessage = new HashMap<>();
+        expectedMessage.put("message", "message");
+        expectedMessage.put("connectionId", "foo");
+
+        assertMessage(expectedMessage, byteArraySteamToString(logCaptureStream), LogLevel.INFORMATIONAL,
+            LogLevel.INFORMATIONAL);
     }
 
     private String stackTraceToString(Throwable exception) {

@@ -9,8 +9,8 @@ import io.clientcore.core.http.models.HttpRedirectOptions;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.instrumentation.AttributeKeys;
+import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.Context;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -78,7 +78,10 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
     @Override
     public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         // Reset the attemptedRedirectUris for each individual request.
-        return attemptRedirect(next, 1, new LinkedHashSet<>(), httpRequest.getRequestOptions().getContext());
+        InstrumentationContext instrumentationContext = httpRequest.getRequestOptions() == null
+            ? null
+            : httpRequest.getRequestOptions().getInstrumentationContext();
+        return attemptRedirect(next, 1, new LinkedHashSet<>(), instrumentationContext);
     }
 
     /**
@@ -86,7 +89,7 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
      * new redirect URI.
      */
     private Response<?> attemptRedirect(final HttpPipelineNextPolicy next, final int redirectAttempt,
-        LinkedHashSet<String> attemptedRedirectUris, Context context) {
+        LinkedHashSet<String> attemptedRedirectUris, InstrumentationContext instrumentationContext) {
 
         // Make sure the context is not modified during redirect, except for the URI
         Response<?> response = next.clone().process();
@@ -94,26 +97,27 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
         HttpRequestRedirectCondition requestRedirectCondition
             = new HttpRequestRedirectCondition(response, redirectAttempt, attemptedRedirectUris);
         if ((shouldRedirectCondition != null && shouldRedirectCondition.test(requestRedirectCondition))
-            || (shouldRedirectCondition == null && defaultShouldAttemptRedirect(requestRedirectCondition, context))) {
+            || (shouldRedirectCondition == null
+                && defaultShouldAttemptRedirect(requestRedirectCondition, instrumentationContext))) {
             createRedirectRequest(response);
-            return attemptRedirect(next, redirectAttempt + 1, attemptedRedirectUris, context);
+            return attemptRedirect(next, redirectAttempt + 1, attemptedRedirectUris, instrumentationContext);
         }
 
         return response;
     }
 
     private boolean defaultShouldAttemptRedirect(HttpRequestRedirectCondition requestRedirectCondition,
-        Context context) {
+        InstrumentationContext instrumentationContext) {
         Response<?> response = requestRedirectCondition.getResponse();
         int tryCount = requestRedirectCondition.getTryCount();
         Set<String> attemptedRedirectUris = requestRedirectCondition.getRedirectedUris();
         String redirectUri = response.getHeaders().getValue(this.locationHeader);
 
         if (isValidRedirectStatusCode(response.getStatusCode())
-            && isValidRedirectCount(tryCount, context)
-            && isAllowedRedirectMethod(response.getRequest().getHttpMethod(), context)
+            && isValidRedirectCount(tryCount, instrumentationContext)
+            && isAllowedRedirectMethod(response.getRequest().getHttpMethod(), instrumentationContext)
             && redirectUri != null
-            && !alreadyAttemptedRedirectUri(redirectUri, attemptedRedirectUris, context)) {
+            && !alreadyAttemptedRedirectUri(redirectUri, attemptedRedirectUris, instrumentationContext)) {
 
             LOGGER.atVerbose()
                 .addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount - 1)
@@ -121,7 +125,7 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
                 .addKeyValue("url.full.to", redirectUri)
                 .addKeyValue("url.full.all", attemptedRedirectUris::toString)
                 .setEventName("http.request.redirect")
-                //.setContext(context)
+                .setContext(instrumentationContext)
                 .log();
 
             attemptedRedirectUris.add(redirectUri);
@@ -139,11 +143,11 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
      *
      * @return {@code true} if the {@code tryCount} is greater than the {@code maxAttempts}, {@code false} otherwise.
      */
-    private boolean isValidRedirectCount(int tryCount, Context context) {
+    private boolean isValidRedirectCount(int tryCount, InstrumentationContext instrumentationContext) {
         if (tryCount >= this.maxAttempts) {
             LOGGER.atError()
                 .addKeyValue("maxAttempts", this.maxAttempts)
-                //.setContext(context)
+                .setContext(instrumentationContext)
                 .log("Redirect attempts have been exhausted.");
 
             return false;
@@ -162,11 +166,11 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
      * {@code false} otherwise.
      */
     private boolean alreadyAttemptedRedirectUri(String redirectUri, Set<String> attemptedRedirectUris,
-        Context context) {
+        InstrumentationContext instrumentationContext) {
         if (attemptedRedirectUris.contains(redirectUri)) {
             LOGGER.atError()
                 .addKeyValue(URL_FULL_KEY, redirectUri)
-                //.setContext(context)
+                .setContext(instrumentationContext)
                 .log("Request was redirected more than once to the same URI.");
 
             return true;
@@ -182,12 +186,12 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
      *
      * @return {@code true} if the request {@code httpMethod} is a valid http redirect method, {@code false} otherwise.
      */
-    private boolean isAllowedRedirectMethod(HttpMethod httpMethod, Context context) {
+    private boolean isAllowedRedirectMethod(HttpMethod httpMethod, InstrumentationContext instrumentationContext) {
         if (allowedRedirectHttpMethods.contains(httpMethod)) {
             return true;
         } else {
             LOGGER.atError()
-                //.setContext(context)
+                .setContext(instrumentationContext)
                 .addKeyValue(AttributeKeys.HTTP_REQUEST_METHOD_KEY, httpMethod)
                 .log("Request redirection is not enabled for this HTTP method.");
 

@@ -185,13 +185,15 @@ public class SuppressionTests {
     @SuppressWarnings("try")
     public void testSuppressionExplicitContext(SpanKind outerKind, SpanKind innerKind, int expectedSpanCount) {
         RequestOptions options = new RequestOptions();
-        Span outerSpan
-            = tracer.spanBuilder("outerSpan", outerKind, options.getInstrumentationContext()).setAttribute("key", "valueOuter").startSpan();
+        Span outerSpan = tracer.spanBuilder("outerSpan", outerKind, options.getInstrumentationContext())
+            .setAttribute("key", "valueOuter")
+            .startSpan();
 
         options.setInstrumentationContext(outerSpan.getInstrumentationContext());
 
-        Span innerSpan
-            = tracer.spanBuilder("innerSpan", innerKind, options.getInstrumentationContext()).setAttribute("key", "valueInner").startSpan();
+        Span innerSpan = tracer.spanBuilder("innerSpan", innerKind, options.getInstrumentationContext())
+            .setAttribute("key", "valueInner")
+            .startSpan();
         // sanity check - this should not throw
         innerSpan.setAttribute("anotherKey", "anotherValue");
 
@@ -330,7 +332,8 @@ public class SuppressionTests {
 
         @SuppressWarnings("try")
         public void convenienceMethod(RequestOptions options) {
-            Span span = tracer.spanBuilder("convenienceMethod", INTERNAL, options.getInstrumentationContext()).startSpan();
+            Span span
+                = tracer.spanBuilder("convenienceMethod", INTERNAL, options.getInstrumentationContext()).startSpan();
 
             options.setInstrumentationContext(span.getInstrumentationContext());
 

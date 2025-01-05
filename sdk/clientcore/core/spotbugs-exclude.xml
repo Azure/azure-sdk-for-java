@@ -122,8 +122,8 @@
       <Class name="io.clientcore.core.serialization.xml.XmlReader" />
       <Class name="io.clientcore.core.shared.HttpClientTests" />
       <Class name="io.clientcore.core.shared.HttpClientTestsServer" />
-      <Class name="io.clientcore.core.util.ClientLoggerTests" />
-      <Class name="io.clientcore.core.util.HttpLoggingPolicyTests" />
+      <Class name="io.clientcore.core.instrumentation.logging.ClientLoggerTests" />
+      <Class name="io.clientcore.core.instrumentation.logging.InstrumentationTestUtils" />
       <Class name="io.clientcore.core.util.binarydata.BinaryDataTest" />
       <Class name="io.clientcore.core.util.serializer.JsonSerializerTests" />
     </Or>
@@ -168,7 +168,7 @@
     <Or>
       <Class name="io.clientcore.core.implementation.instrumentation.DefaultLogger" />
       <Class name="io.clientcore.core.serialization.xml.implementation.aalto.UncheckedStreamException" />
-      <Class name="io.clientcore.core.util.ClientLoggerTests" />
+      <Class name="io.clientcore.core.instrumentation.logging.ClientLoggerTests" />
     </Or>
   </Match>
   <Match>
@@ -238,13 +238,14 @@
       <Class name="io.clientcore.core.implementation.http.rest.LengthValidatingInputStreamTests" />
       <Class name="io.clientcore.core.serialization.json.implementation.StringBuilderWriterTests" />
       <Class name="io.clientcore.core.util.binarydata.BinaryDataTest" />
+      <Class name="io.clientcore.core.implementation.instrumentation.fallback.FallbackInstrumentationTests" />
     </Or>
   </Match>
   <Match>
     <Bug pattern="OS_OPEN_STREAM" />
     <Or>
       <Class name="io.clientcore.core.serialization.json.implementation.StringBuilderWriterTests" />
-      <Class name="io.clientcore.core.util.HttpLoggingPolicyTests" />
+      <Class name="io.clientcore.core.http.pipeline.HttpInstrumentationPolicyLoggingTests" />
     </Or>
   </Match>
   <Match>
@@ -260,6 +261,7 @@
       <Class name="io.clientcore.core.http.pipeline.HttpRetryPolicy" />
       <Class name="io.clientcore.core.shared.HttpClientTests" />
       <Class name="io.clientcore.core.shared.HttpClientTestsServer" />
+      <Class name="io.clientcore.core.implementation.instrumentation.fallback.RandomIdUtils" />
     </Or>
   </Match>
   <Match>
@@ -399,5 +401,17 @@
   <Match>
     <Bug pattern="XXE_XMLSTREAMREADER" />
     <Class name="io.clientcore.core.serialization.xml.XmlReader" />
+  </Match>
+  <Match>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE" />
+    <Class name="io.clientcore.core.http.pipeline.HttpInstrumentationPolicy" />
+  </Match>
+  <Match>
+    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE" />
+    <Class name="io.clientcore.core.http.pipeline.HttpInstrumentationPolicy" />
+  </Match>
+  <Match>
+    <Bug pattern="AA_ASSERTION_OF_ARGUMENTS" />
+    <Class name="io.clientcore.core.implementation.instrumentation.otel.tracing.OTelSpanContext" />
   </Match>
 </FindBugsFilter>

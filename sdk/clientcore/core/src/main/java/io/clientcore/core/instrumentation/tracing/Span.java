@@ -79,6 +79,11 @@ public interface Span {
      */
     TracingScope makeCurrent();
 
+    /**
+     * Gets the instrumentation context that is used to correlate telemetry data.
+     *
+     * @return The instrumentation context.
+     */
     InstrumentationContext getInstrumentationContext();
 
     /**

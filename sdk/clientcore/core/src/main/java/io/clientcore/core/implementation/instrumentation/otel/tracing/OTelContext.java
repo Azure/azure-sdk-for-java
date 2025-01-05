@@ -16,7 +16,6 @@ import static io.clientcore.core.implementation.instrumentation.otel.OTelInitial
 
 class OTelContext {
     private static final ClientLogger LOGGER = new ClientLogger(OTelContext.class);
-    private static final Object ROOT_CONTEXT;
     private static final TracingScope NOOP_SCOPE = () -> {
     };
     private static final FallbackInvoker CURRENT_INVOKER;
@@ -24,9 +23,7 @@ class OTelContext {
     private static final FallbackInvoker WITH_INVOKER;
     private static final FallbackInvoker GET_INVOKER;
 
-
     // this context key will indicate if the span is created by client core
-    // AND has client or internal kind (logical client operation)
     // this is used to suppress multiple spans created for the same logical operation
     // such as convenience API on top of protocol methods when both as instrumented.
     // We might need to suppress logical server (consumer) spans in the future, but that
@@ -39,7 +36,6 @@ class OTelContext {
         ReflectiveInvoker withInvoker = null;
         ReflectiveInvoker getInvoker = null;
 
-        Object hasClientSpanContextKey = null;
         Object clientCoreSpanContextKey = null;
         Object rootContext = null;
 
@@ -54,12 +50,10 @@ class OTelContext {
                 ReflectiveInvoker contextKeyNamedInvoker
                     = getMethodInvoker(CONTEXT_KEY_CLASS, CONTEXT_KEY_CLASS.getMethod("named", String.class));
 
-                hasClientSpanContextKey = contextKeyNamedInvoker.invoke("client-core-call");
                 clientCoreSpanContextKey = contextKeyNamedInvoker.invoke("client-core-span");
 
                 ReflectiveInvoker rootInvoker = getMethodInvoker(CONTEXT_CLASS, CONTEXT_CLASS.getMethod("root"));
                 rootContext = rootInvoker.invoke();
-
 
             } catch (Throwable t) {
                 OTelInitializer.initError(LOGGER, t);
@@ -70,19 +64,13 @@ class OTelContext {
         MAKE_CURRENT_INVOKER = new FallbackInvoker(makeCurrentInvoker, NOOP_SCOPE, LOGGER);
         WITH_INVOKER = new FallbackInvoker(withInvoker, LOGGER);
         GET_INVOKER = new FallbackInvoker(getInvoker, LOGGER);
-        //HAS_CLIENT_SPAN_CONTEXT_KEY = hasClientSpanContextKey;
         CLIENT_CORE_SPAN_CONTEXT_KEY = clientCoreSpanContextKey;
-        ROOT_CONTEXT = rootContext;
     }
 
     static Object getCurrent() {
         Object currentContext = CURRENT_INVOKER.invoke();
         assert CONTEXT_CLASS.isInstance(currentContext);
         return currentContext;
-    }
-
-    static Object getRoot() {
-        return ROOT_CONTEXT;
     }
 
     static AutoCloseable makeCurrent(Object context) {
@@ -112,8 +100,11 @@ class OTelContext {
      * @return the OpenTelemetry context
      */
     static Object fromInstrumentationContext(InstrumentationContext context) {
-        if (context instanceof OTelSpanContext && ((OTelSpanContext) context).getOtelContext() != null) {
-            return ((OTelSpanContext) context).getOtelContext();
+        if (context instanceof OTelSpanContext) {
+            Object otelContext = ((OTelSpanContext) context).getOtelContext();
+            if (otelContext != null) {
+                return otelContext;
+            }
         }
 
         Object currentContext = CURRENT_INVOKER.invoke();

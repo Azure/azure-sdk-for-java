@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class HttpInstrumentationPolicyDefaultTests {
+public class HttpInstrumentationPolicyFallbackTests {
     private static final InstrumentationOptions<?> OPTIONS = new InstrumentationOptions<>();
     private static final InstrumentationOptions<?> DISABLED_TRACING_OPTIONS
         = new InstrumentationOptions<>().setTracingEnabled(false);

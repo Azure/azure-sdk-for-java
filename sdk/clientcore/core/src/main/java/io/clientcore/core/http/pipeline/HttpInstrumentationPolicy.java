@@ -13,7 +13,6 @@ import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
 import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
-import io.clientcore.core.implementation.util.LoggingKeys;
 import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
@@ -39,7 +38,6 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.net.URI;
 
-import static io.clientcore.core.http.models.HttpHeaderName.TRACEPARENT;
 import static io.clientcore.core.implementation.UrlRedactionUtil.getRedactedUri;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_BODY_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_BODY_SIZE_KEY;
@@ -109,9 +107,11 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
  * <pre>
  *
  * HttpPipelinePolicy enrichingPolicy = &#40;request, next&#41; -&gt; &#123;
- *     Object span = request.getRequestOptions&#40;&#41;.getContext&#40;&#41;.get&#40;TRACE_CONTEXT_KEY&#41;;
- *     if &#40;span instanceof Span&#41; &#123;
- *         &#40;&#40;Span&#41;span&#41;.setAttribute&#40;&quot;custom.request.id&quot;, request.getHeaders&#40;&#41;.getValue&#40;CUSTOM_REQUEST_ID&#41;&#41;;
+ *     Span span = request.getRequestOptions&#40;&#41; == null
+ *         ? Span.noop&#40;&#41;
+ *         : request.getRequestOptions&#40;&#41;.getInstrumentationContext&#40;&#41;.getSpan&#40;&#41;;
+ *     if &#40;span.isRecording&#40;&#41;&#41; &#123;
+ *         span.setAttribute&#40;&quot;custom.request.id&quot;, request.getHeaders&#40;&#41;.getValue&#40;CUSTOM_REQUEST_ID&#41;&#41;;
  *     &#125;
  *
  *     return next.process&#40;&#41;;
@@ -131,7 +131,6 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
  */
 public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(HttpInstrumentationPolicy.class);
-    private static final Set<HttpHeaderName> ALWAYS_ALLOWED_HEADERS = Set.of(TRACEPARENT);
     private static final HttpLogOptions DEFAULT_HTTP_LOG_OPTIONS = new HttpLogOptions();
     private static final String LIBRARY_NAME;
     private static final String LIBRARY_VERSION;
@@ -210,14 +209,17 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         int tryCount = HttpRequestAccessHelper.getTryCount(request);
         final long requestContentLength = getContentLength(logger, request.getBody(), request.getHeaders());
 
+        InstrumentationContext context
+            = request.getRequestOptions() == null ? null : request.getRequestOptions().getInstrumentationContext();
         Span span = Span.noop();
         if (isTracingEnabled(request)) {
-            span = startHttpSpan(request, redactedUrl);
-            request.getRequestOptions().setInstrumentationContext(span.getInstrumentationContext());
+            span = startHttpSpan(request, redactedUrl, context);
+            context = span.getInstrumentationContext();
+            request.getRequestOptions().setInstrumentationContext(context);
             traceContextPropagator.inject(span.getInstrumentationContext(), request.getHeaders(), SETTER);
         }
 
-        logRequest(logger, request, startNs, requestContentLength, redactedUrl, tryCount, span.getInstrumentationContext());
+        logRequest(logger, request, startNs, requestContentLength, redactedUrl, tryCount, context);
 
         try (TracingScope scope = span.makeCurrent()) {
             Response<?> response = next.process();
@@ -227,34 +229,33 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
                     .setContext(span.getInstrumentationContext())
                     .addKeyValue(HTTP_REQUEST_METHOD_KEY, request.getHttpMethod())
                     .addKeyValue(URL_FULL_KEY, redactedUrl)
-                    .log("HTTP response is null and no exception is thrown. Please report it to the client library maintainers.");
+                    .log(
+                        "HTTP response is null and no exception is thrown. Please report it to the client library maintainers.");
 
                 return null;
             }
 
             addDetails(request, response, tryCount, span);
-            response =  logResponse(logger, response, startNs, requestContentLength, redactedUrl, tryCount, span.getInstrumentationContext());
+            response = logResponse(logger, response, startNs, requestContentLength, redactedUrl, tryCount, context);
             span.end();
             return response;
         } catch (RuntimeException t) {
-            var ex = logException(logger, request, null, t, startNs, null, requestContentLength, redactedUrl, tryCount, span.getInstrumentationContext());
+            var ex = logException(logger, request, null, t, startNs, null, requestContentLength, redactedUrl, tryCount,
+                context);
             span.end(unwrap(t));
             throw ex;
         }
     }
 
-    private Span startHttpSpan(HttpRequest request, String sanitizedUrl) {
+    private Span startHttpSpan(HttpRequest request, String sanitizedUrl, InstrumentationContext context) {
         if (request.getRequestOptions() == null || request.getRequestOptions() == RequestOptions.none()) {
             request.setRequestOptions(new RequestOptions());
         }
 
-        InstrumentationContext context = request.getRequestOptions().getInstrumentationContext();
-
-        SpanBuilder spanBuilder
-            = tracer.spanBuilder(request.getHttpMethod().toString(), CLIENT, context)
-                .setAttribute(HTTP_REQUEST_METHOD_KEY, request.getHttpMethod().toString())
-                .setAttribute(URL_FULL_KEY, sanitizedUrl)
-                .setAttribute(SERVER_ADDRESS, request.getUri().getHost());
+        SpanBuilder spanBuilder = tracer.spanBuilder(request.getHttpMethod().toString(), CLIENT, context)
+            .setAttribute(HTTP_REQUEST_METHOD_KEY, request.getHttpMethod().toString())
+            .setAttribute(URL_FULL_KEY, sanitizedUrl)
+            .setAttribute(SERVER_ADDRESS, request.getUri().getHost());
         maybeSetServerPort(spanBuilder, request.getUri());
         return spanBuilder.startSpan();
     }
@@ -337,7 +338,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
     private ClientLogger getLogger(HttpRequest httpRequest) {
         ClientLogger logger = null;
 
-        if (httpRequest.getRequestOptions() != null) {
+        if (httpRequest.getRequestOptions() != null && httpRequest.getRequestOptions().getLogger() != null) {
             logger = httpRequest.getRequestOptions().getLogger();
         }
 
@@ -370,8 +371,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
             return;
         }
 
-        logBuilder
-            .setEventName(HTTP_REQUEST_EVENT_NAME)
+        logBuilder.setEventName(HTTP_REQUEST_EVENT_NAME)
             .setContext(context)
             .addKeyValue(HTTP_REQUEST_METHOD_KEY, request.getHttpMethod())
             .addKeyValue(URL_FULL_KEY, redactedUrl)
@@ -503,13 +503,6 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
                 String headerValue = allowedHeaderNames.contains(headerName) ? header.getValue() : REDACTED_PLACEHOLDER;
                 logBuilder.addKeyValue(headerName.toString(), headerValue);
             }
-        } else {
-            for (HttpHeaderName headerName : ALWAYS_ALLOWED_HEADERS) {
-                String headerValue = headers.getValue(headerName);
-                if (headerValue != null) {
-                    logBuilder.addKeyValue(headerName.toString(), headerValue);
-                }
-            }
         }
     }
 
@@ -543,7 +536,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
 
         try {
             contentLength = Long.parseLong(contentLengthString);
-        } catch (NumberFormatException | NullPointerException e) {
+        } catch (NumberFormatException e) {
             logger.atVerbose()
                 .addKeyValue("contentLength", contentLengthString)
                 .log("Could not parse the HTTP header content-length", e);
@@ -559,7 +552,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         private BinaryData bufferedBody;
 
         private LoggingHttpResponse(Response<T> actualResponse, Consumer<BinaryData> onContent,
-                                    Consumer<Throwable> onException) {
+            Consumer<Throwable> onException) {
             super(actualResponse.getRequest(), actualResponse.getStatusCode(), actualResponse.getHeaders(),
                 actualResponse.getValue());
 

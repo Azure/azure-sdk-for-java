@@ -52,7 +52,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static io.clientcore.core.http.models.HttpHeaderName.TRACEPARENT;
 import static io.clientcore.core.instrumentation.Instrumentation.DISABLE_TRACING_KEY;
-import static io.clientcore.core.instrumentation.Instrumentation.TRACE_CONTEXT_KEY;
 import static io.clientcore.core.instrumentation.tracing.SpanKind.INTERNAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -360,7 +359,8 @@ public class HttpInstrumentationPolicyTests {
         HttpInstrumentationPolicy httpInstrumentationPolicy = new HttpInstrumentationPolicy(otelOptions, logOptions);
 
         HttpPipelinePolicy enrichingPolicy = (request, next) -> {
-            io.clientcore.core.instrumentation.tracing.Span span = request.getRequestOptions().getInstrumentationContext().getSpan();
+            io.clientcore.core.instrumentation.tracing.Span span
+                = request.getRequestOptions().getInstrumentationContext().getSpan();
             if (span.isRecording()) {
                 span.setAttribute("custom.request.id", request.getHeaders().getValue(CUSTOM_REQUEST_ID));
             }

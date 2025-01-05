@@ -4,7 +4,6 @@
 package io.clientcore.core.instrumentation.tracing;
 
 import io.clientcore.core.instrumentation.InstrumentationContext;
-import io.clientcore.core.util.Context;
 
 /**
  * A {@link TraceContextPropagator} injects and extracts tracing context from a carrier,
