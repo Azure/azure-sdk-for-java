@@ -15,14 +15,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.net.SocketException;
 
 import static io.clientcore.core.http.models.HttpHeaderName.TRACEPARENT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class HttpInstrumentationPolicyFallbackTests {
     private static final InstrumentationOptions<?> OPTIONS = new InstrumentationOptions<>();
@@ -61,19 +58,5 @@ public class HttpInstrumentationPolicyFallbackTests {
             assertNull(response.getRequest().getHeaders().get(TRACESTATE));
             assertNotNull(response.getRequest().getHeaders().get(TRACEPARENT));
         }
-    }
-
-    @Test
-    public void exceptionTracingDisabled() {
-        SocketException exception = new SocketException("test exception");
-        HttpPipeline pipeline
-            = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(OPTIONS, ENABLED_HTTP_LOG_OPTIONS))
-                .httpClient(request -> {
-                    throw exception;
-                })
-                .build();
-
-        assertThrows(UncheckedIOException.class,
-            () -> pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost/")).close());
     }
 }

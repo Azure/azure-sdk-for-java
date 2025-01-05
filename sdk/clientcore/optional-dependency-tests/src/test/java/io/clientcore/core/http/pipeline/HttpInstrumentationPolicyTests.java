@@ -51,7 +51,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static io.clientcore.core.http.models.HttpHeaderName.TRACEPARENT;
-import static io.clientcore.core.instrumentation.Instrumentation.DISABLE_TRACING_KEY;
 import static io.clientcore.core.instrumentation.tracing.SpanKind.INTERNAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -308,27 +307,6 @@ public class HttpInstrumentationPolicyTests {
 
         URI url = URI.create("http://localhost/");
         pipeline.send(new HttpRequest(HttpMethod.GET, url)).close();
-        assertNotNull(exporter.getFinishedSpanItems());
-        assertEquals(0, exporter.getFinishedSpanItems().size());
-    }
-
-    @Test
-    public void tracingIsDisabledOnRequest() throws IOException {
-        InstrumentationOptions<OpenTelemetry> options
-            = new InstrumentationOptions<OpenTelemetry>().setProvider(openTelemetry);
-        HttpPipeline pipeline
-            = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(options, null)).httpClient(request -> {
-                assertFalse(Span.current().getSpanContext().isValid());
-                assertFalse(Span.current().isRecording());
-                assertNull(request.getHeaders().get(TRACEPARENT));
-                return new MockHttpResponse(request, 200);
-            }).build();
-
-        URI url = URI.create("http://localhost/");
-
-        RequestOptions requestOptions = new RequestOptions().putContext(DISABLE_TRACING_KEY, true);
-
-        pipeline.send(new HttpRequest(HttpMethod.GET, url).setRequestOptions(requestOptions)).close();
         assertNotNull(exporter.getFinishedSpanItems());
         assertEquals(0, exporter.getFinishedSpanItems().size());
     }

@@ -24,7 +24,6 @@ import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
 import io.clientcore.core.instrumentation.tracing.TraceContextSetter;
 import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.Context;
 import io.clientcore.core.util.binarydata.BinaryData;
 
 import java.io.IOException;
@@ -57,7 +56,6 @@ import static io.clientcore.core.implementation.instrumentation.AttributeKeys.US
 import static io.clientcore.core.implementation.instrumentation.LoggingEventNames.HTTP_REQUEST_EVENT_NAME;
 import static io.clientcore.core.implementation.instrumentation.LoggingEventNames.HTTP_RESPONSE_EVENT_NAME;
 import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
-import static io.clientcore.core.instrumentation.Instrumentation.DISABLE_TRACING_KEY;
 import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
 
 /**
@@ -200,7 +198,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
     @SuppressWarnings("try")
     @Override
     public Response<?> process(HttpRequest request, HttpPipelineNextPolicy next) {
-        boolean isTracingEnabled = isTracingEnabled(request);
+        boolean isTracingEnabled = tracer.isEnabled();
         if (!isTracingEnabled && httpLogDetailLevel == HttpLogOptions.HttpLogDetailLevel.NONE) {
             return next.process();
         }
@@ -214,11 +212,16 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         InstrumentationContext context
             = request.getRequestOptions() == null ? null : request.getRequestOptions().getInstrumentationContext();
         Span span = Span.noop();
-        if (isTracingEnabled(request)) {
+        if (isTracingEnabled) {
             span = startHttpSpan(request, redactedUrl, context);
             context = span.getInstrumentationContext();
             request.getRequestOptions().setInstrumentationContext(context);
-            traceContextPropagator.inject(span.getInstrumentationContext(), request.getHeaders(), SETTER);
+        }
+
+        // even if tracing is disabled, we could have valid context to propagate
+        // explicitly provided by the application.
+        if (context != null && context.isValid()) {
+            traceContextPropagator.inject(context, request.getHeaders(), SETTER);
         }
 
         logRequest(logger, request, startNs, requestContentLength, redactedUrl, tryCount, context);
@@ -310,24 +313,6 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
             span.setError(String.valueOf(response.getStatusCode()));
         }
         // TODO (lmolkova) url.template and experimental features
-    }
-
-    private boolean isTracingEnabled(HttpRequest httpRequest) {
-        if (!tracer.isEnabled()) {
-            return false;
-        }
-
-        if (httpRequest.getRequestOptions() == null) {
-            return true;
-        }
-
-        Context context = httpRequest.getRequestOptions().getContext();
-        Object disableTracing = context.get(DISABLE_TRACING_KEY);
-        if (disableTracing instanceof Boolean) {
-            return !((Boolean) disableTracing);
-        }
-
-        return true;
     }
 
     private static Throwable unwrap(Throwable t) {
@@ -470,7 +455,8 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
             }
         }
 
-        return log.log(null, throwable);
+        log.log(null, unwrap(throwable));
+        return throwable;
     }
 
     private double getDurationMs(long startNs, long endNs) {

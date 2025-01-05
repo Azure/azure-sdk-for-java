@@ -16,12 +16,6 @@ import java.util.Objects;
  */
 public interface Instrumentation {
     /**
-     * The key used to disable tracing on a per-request basis.
-     * To disable tracing, set this key to {@code true} on the request context.
-     */
-    String DISABLE_TRACING_KEY = "disable-tracing";
-
-    /**
      * Gets the tracer.
      * <p>
      * Tracer lifetime should usually match the client lifetime. Avoid creating new tracers for each request.

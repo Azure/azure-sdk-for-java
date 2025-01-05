@@ -26,9 +26,10 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_DURATION_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_RESEND_COUNT_KEY;
-import static io.clientcore.core.implementation.instrumentation.AttributeKeys.REQUEST_MAX_ATTEMPT_COUNT_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.RETRY_DELAY_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.RETRY_WAS_LAST_ATTEMPT_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.RETRY_MAX_ATTEMPT_COUNT_KEY;
 import static io.clientcore.core.implementation.instrumentation.LoggingEventNames.HTTP_RETRY_EVENT_NAME;
 import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
 import static io.clientcore.core.util.configuration.Configuration.PROPERTY_REQUEST_RETRY_COUNT;
@@ -150,26 +151,19 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
             : httpRequest.getRequestOptions().getInstrumentationContext();
 
         Response<?> response;
-
-        // TODO (limolkova): we should log one event here:
-        // - if we are retrying, log at verbose level
-        // - if we are not retrying, log at warning level
-        // The content:
-        // - request URI, method
-        // - try count
-        // - reason why we are not retrying (if applicable)
-        // - backoff
-        // - ...
-        // This way, someone can query all occurrences of this event and get the context.
+        ClientLogger logger = getLogger(httpRequest);
 
         try {
             response = next.clone().process();
         } catch (RuntimeException err) {
             if (shouldRetryException(err, tryCount, suppressed)) {
-                logRetryWithError(LOGGER.atVerbose(), tryCount, "Error resume.", err, instrumentationContext);
+
+                Duration delayDuration = calculateRetryDelay(tryCount);
+                logRetry(logger.atVerbose(), tryCount, delayDuration, err, false, instrumentationContext);
 
                 boolean interrupted = false;
-                long millis = calculateRetryDelay(tryCount).toMillis();
+                long millis = delayDuration.toMillis();
+
                 if (millis > 0) {
                     try {
                         Thread.sleep(millis);
@@ -180,7 +174,7 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
                 }
 
                 if (interrupted) {
-                    throw LOGGER.logThrowableAsError(err);
+                    throw logger.logThrowableAsError(err);
                 }
 
                 List<Exception> suppressedLocal = suppressed == null ? new LinkedList<>() : suppressed;
@@ -189,21 +183,20 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
 
                 return attempt(httpRequest, next, tryCount + 1, suppressedLocal);
             } else {
-                logRetryWithError(LOGGER.atError(), tryCount, "Retry attempts have been exhausted.", err,
-                    instrumentationContext);
+                logRetry(logger.atError(), tryCount, null, err, true, instrumentationContext);
 
                 if (suppressed != null) {
                     suppressed.forEach(err::addSuppressed);
                 }
 
-                throw LOGGER.logThrowableAsError(err);
+                throw logger.logThrowableAsError(err);
             }
         }
 
         if (shouldRetryResponse(response, tryCount, suppressed)) {
             final Duration delayDuration = determineDelayDuration(response, tryCount, delayFromHeaders);
 
-            logRetry(tryCount, delayDuration, instrumentationContext);
+            logRetry(logger.atVerbose(), tryCount, delayDuration, null, false, instrumentationContext);
 
             try {
                 response.close();
@@ -211,7 +204,7 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
                 throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
             }
 
-            long millis = calculateRetryDelay(tryCount).toMillis();
+            long millis = delayDuration.toMillis();
             if (millis > 0) {
                 try {
                     Thread.sleep(millis);
@@ -223,9 +216,10 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
             return attempt(httpRequest, next, tryCount + 1, suppressed);
         } else {
             if (tryCount >= maxRetries) {
-                logRetryExhausted(tryCount, instrumentationContext);
+                // TODO (limolkova): do we have better heuristic to determine if we're not retrying because of error
+                // or because we got successful response?
+                logRetry(logger.atWarning(), tryCount, null, null, true, instrumentationContext);
             }
-
             return response;
         }
     }
@@ -289,30 +283,25 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
         return false;
     }
 
-    private static void logRetry(int tryCount, Duration delayDuration, InstrumentationContext context) {
-        LOGGER.atVerbose()
-            .addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount)
-            .addKeyValue(HTTP_REQUEST_DURATION_KEY, delayDuration.toMillis())
-            .setEventName(HTTP_RETRY_EVENT_NAME)
-            .setContext(context)
-            .log("Retrying.");
-    }
+    private void logRetry(ClientLogger.LoggingEvent log, int tryCount, Duration delayDuration,
+        Throwable throwable, boolean lastTry, InstrumentationContext context) {
+        if (log.isEnabled()) {
+            log.addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount)
+                .addKeyValue(RETRY_MAX_ATTEMPT_COUNT_KEY, maxRetries)
+                .addKeyValue(RETRY_WAS_LAST_ATTEMPT_KEY, lastTry)
+                .setEventName(HTTP_RETRY_EVENT_NAME)
+                .setContext(context);
 
-    private static void logRetryExhausted(int tryCount, InstrumentationContext context) {
-        LOGGER.atInfo()
-            .addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount)
-            .setEventName(HTTP_RETRY_EVENT_NAME)
-            .addKeyValue(REQUEST_MAX_ATTEMPT_COUNT_KEY, tryCount)
-            .setContext(context)
-            .log("Retry attempts have been exhausted.");
-    }
+            if (delayDuration != null) {
+                log.addKeyValue(RETRY_DELAY_KEY, delayDuration.toMillis());
+            }
 
-    private static void logRetryWithError(ClientLogger.LoggingEvent loggingEvent, int tryCount,
-        String message, Throwable throwable, InstrumentationContext context) {
-        loggingEvent.addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount)
-            .setContext(context)
-            .setEventName(HTTP_RETRY_EVENT_NAME)
-            .log(message, throwable);
+            if (throwable != null) {
+                log.log(null, throwable);
+            } else {
+                log.log();
+            }
+        }
     }
 
     private Duration calculateRetryDelay(int retryAttempts) {
@@ -340,5 +329,15 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
         } else {
             return requestRetryCondition.getException() instanceof Exception;
         }
+    }
+
+    private ClientLogger getLogger(HttpRequest httpRequest) {
+        ClientLogger logger = null;
+
+        if (httpRequest.getRequestOptions() != null && httpRequest.getRequestOptions().getLogger() != null) {
+            logger = httpRequest.getRequestOptions().getLogger();
+        }
+
+        return logger == null ? LOGGER : logger;
     }
 }

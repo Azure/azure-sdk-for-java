@@ -29,9 +29,8 @@ public class LoggingEventNames {
     public static final String HTTP_REDIRECT_EVENT_NAME = "http.redirect";
 
     /**
-     * Identifies event that is logged when an HTTP request has failed and is being retried.
-     * The event describes the reason for retrying the request and whether the retry will
-     * be performed or not.
+     * Identifies event that is logged after an HTTP request has failed and is considered to be retried.
+     * The event describes whether the retry will be performed or not.
      */
     public static final String HTTP_RETRY_EVENT_NAME = "http.retry";
 

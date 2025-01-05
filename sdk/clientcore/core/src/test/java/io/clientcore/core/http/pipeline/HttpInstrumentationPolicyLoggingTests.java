@@ -10,6 +10,7 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpLogOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.HttpRetryOptions;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
@@ -27,15 +28,21 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.UnknownHostException;
+import java.time.Duration;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import static io.clientcore.core.http.models.HttpHeaderName.TRACEPARENT;
 import static io.clientcore.core.instrumentation.logging.InstrumentationTestUtils.createInstrumentationContext;
+import static io.clientcore.core.instrumentation.logging.InstrumentationTestUtils.createRandomInstrumentationContext;
 import static io.clientcore.core.instrumentation.logging.InstrumentationTestUtils.parseLogMessages;
 import static io.clientcore.core.instrumentation.logging.InstrumentationTestUtils.setupLogLevelAndGetLogger;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -100,10 +107,10 @@ public class HttpInstrumentationPolicyLoggingTests {
         List<Map<String, Object>> logMessages = parseLogMessages(logCaptureStream);
         assertEquals(2, logMessages.size());
 
-        assertRequestLog(logMessages.get(0), expectedUri, request);
+        assertRequestLog(logMessages.get(0), expectedUri, request, null, 0);
         assertEquals(8, logMessages.get(0).size());
 
-        assertResponseLog(logMessages.get(1), expectedUri, response);
+        assertResponseLog(logMessages.get(1), expectedUri, response, 0);
         assertEquals(12, logMessages.get(1).size());
     }
 
@@ -122,10 +129,10 @@ public class HttpInstrumentationPolicyLoggingTests {
         List<Map<String, Object>> logMessages = parseLogMessages(logCaptureStream);
         assertEquals(2, logMessages.size());
 
-        assertRequestLog(logMessages.get(0), REDACTED_URI, request);
+        assertRequestLog(logMessages.get(0), request);
         assertEquals(6, logMessages.get(0).size());
 
-        assertResponseLog(logMessages.get(1), REDACTED_URI, response);
+        assertResponseLog(logMessages.get(1), response);
         assertEquals(10, logMessages.get(1).size());
     }
 
@@ -137,10 +144,9 @@ public class HttpInstrumentationPolicyLoggingTests {
 
         HttpPipeline pipeline = createPipeline(instrumentationOptions, logOptions);
 
-        HttpRequest request = createRequest(HttpMethod.GET, URI, logger);
-        request.setRequestOptions(new RequestOptions().setLogger(logger)
-            .setInstrumentationContext(
-                createInstrumentationContext("1234567890abcdef1234567890abcdef", "1234567890abcdef")));
+        InstrumentationContext instrumentationContext
+            = createInstrumentationContext("1234567890abcdef1234567890abcdef", "1234567890abcdef");
+        HttpRequest request = createRequest(HttpMethod.GET, URI, logger, instrumentationContext);
 
         Response<?> response = pipeline.send(request);
         response.close();
@@ -148,10 +154,10 @@ public class HttpInstrumentationPolicyLoggingTests {
         List<Map<String, Object>> logMessages = parseLogMessages(logCaptureStream);
         assertEquals(2, logMessages.size());
 
-        assertRequestLog(logMessages.get(0), REDACTED_URI, request);
+        assertRequestLog(logMessages.get(0), request);
         assertEquals(8, logMessages.get(0).size());
 
-        assertResponseLog(logMessages.get(1), REDACTED_URI, response);
+        assertResponseLog(logMessages.get(1), response);
         assertEquals(12, logMessages.get(1).size());
     }
 
@@ -193,7 +199,7 @@ public class HttpInstrumentationPolicyLoggingTests {
         if (!expectExceptionLog) {
             assertEquals(0, logMessages.size());
         } else {
-            assertExceptionLog(logMessages.get(0), REDACTED_URI, request, expectedException);
+            assertExceptionLog(logMessages.get(0), request, expectedException);
         }
     }
 
@@ -203,20 +209,21 @@ public class HttpInstrumentationPolicyLoggingTests {
         ClientLogger logger = setupLogLevelAndGetLogger(level, logCaptureStream);
         HttpLogOptions options = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.BODY);
 
-        TestStream requestStream = new TestStream(1024, new IOException("socket error"));
+        IOException expectedException = new IOException("socket error");
+        TestStream requestStream = new TestStream(1024, expectedException);
         BinaryData requestBody = BinaryData.fromStream(requestStream, 1024L);
         HttpPipeline pipeline = createPipeline(DEFAULT_INSTRUMENTATION_OPTIONS, options);
 
         HttpRequest request = createRequest(HttpMethod.POST, URI, logger);
         request.setBody(requestBody);
 
-        Exception actualException = assertThrows(RuntimeException.class, () -> pipeline.send(request));
+        assertThrows(RuntimeException.class, () -> pipeline.send(request));
 
         List<Map<String, Object>> logMessages = parseLogMessages(logCaptureStream);
         if (!expectExceptionLog) {
             assertEquals(0, logMessages.size());
         } else {
-            assertExceptionLog(logMessages.get(0), REDACTED_URI, request, actualException);
+            assertExceptionLog(logMessages.get(0), request, expectedException);
         }
     }
 
@@ -226,20 +233,21 @@ public class HttpInstrumentationPolicyLoggingTests {
         ClientLogger logger = setupLogLevelAndGetLogger(level, logCaptureStream);
         HttpLogOptions options = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.BODY);
 
-        TestStream responseStream = new TestStream(1024, new IOException("socket error"));
+        IOException expectedException = new IOException("socket error");
+        TestStream responseStream = new TestStream(1024, expectedException);
         HttpPipeline pipeline = createPipeline(DEFAULT_INSTRUMENTATION_OPTIONS, options,
             request -> new MockHttpResponse(request, 200, BinaryData.fromStream(responseStream, 1024L)));
 
         HttpRequest request = createRequest(HttpMethod.GET, URI, logger);
 
         Response<?> response = pipeline.send(request);
-        Exception actualException = assertThrows(RuntimeException.class, () -> response.getBody().toString());
+        assertThrows(RuntimeException.class, () -> response.getBody().toString());
 
         List<Map<String, Object>> logMessages = parseLogMessages(logCaptureStream);
         if (!expectExceptionLog) {
             assertEquals(0, logMessages.size());
         } else {
-            assertResponseAndExceptionLog(logMessages.get(0), REDACTED_URI, response, actualException);
+            assertResponseAndExceptionLog(logMessages.get(0), REDACTED_URI, response, expectedException);
         }
     }
 
@@ -259,7 +267,7 @@ public class HttpInstrumentationPolicyLoggingTests {
         response.close();
 
         List<Map<String, Object>> logMessages = parseLogMessages(logCaptureStream);
-        assertResponseLog(logMessages.get(0), REDACTED_URI, response);
+        assertResponseLog(logMessages.get(0), response);
     }
 
     @Test
@@ -297,7 +305,7 @@ public class HttpInstrumentationPolicyLoggingTests {
         List<Map<String, Object>> logMessages = parseLogMessages(logCaptureStream);
         assertEquals(1, logMessages.size());
 
-        assertResponseLog(logMessages.get(0), expectedUri, response);
+        assertResponseLog(logMessages.get(0), expectedUri, response, 0);
         assertEquals(12, logMessages.get(0).size());
     }
 
@@ -319,7 +327,7 @@ public class HttpInstrumentationPolicyLoggingTests {
         assertEquals(2, logMessages.size());
 
         Map<String, Object> requestLog = logMessages.get(0);
-        assertRequestLog(requestLog, REDACTED_URI, request);
+        assertRequestLog(requestLog, request);
         for (HttpHeader header : request.getHeaders()) {
             if (allowedHeaders.contains(header.getName())) {
                 assertEquals(header.getValue(), requestLog.get(header.getName().toString()));
@@ -329,7 +337,7 @@ public class HttpInstrumentationPolicyLoggingTests {
         }
 
         Map<String, Object> responseLog = logMessages.get(1);
-        assertResponseLog(responseLog, REDACTED_URI, response);
+        assertResponseLog(responseLog, response);
         for (HttpHeader header : response.getHeaders()) {
             if (allowedHeaders.contains(header.getName())) {
                 assertEquals(header.getValue(), responseLog.get(header.getName().toString()));
@@ -359,11 +367,11 @@ public class HttpInstrumentationPolicyLoggingTests {
         assertEquals(2, logMessages.size());
 
         Map<String, Object> requestLog = logMessages.get(0);
-        assertRequestLog(requestLog, REDACTED_URI, request);
+        assertRequestLog(requestLog, request);
         assertEquals("Request body", requestLog.get("http.request.body.content"));
 
         Map<String, Object> responseLog = logMessages.get(1);
-        assertResponseLog(responseLog, REDACTED_URI, response);
+        assertResponseLog(responseLog, response);
         assertEquals("Response body", responseLog.get("http.request.body.content"));
     }
 
@@ -395,11 +403,11 @@ public class HttpInstrumentationPolicyLoggingTests {
         assertEquals(2, logMessages.size());
 
         Map<String, Object> requestLog = logMessages.get(0);
-        assertRequestLog(requestLog, REDACTED_URI, request);
+        assertRequestLog(requestLog, request);
         assertEquals("Request body", requestLog.get("http.request.body.content"));
 
         Map<String, Object> responseLog = logMessages.get(1);
-        assertResponseLog(responseLog, REDACTED_URI, response);
+        assertResponseLog(responseLog, response);
         assertEquals("Response body", responseLog.get("http.request.body.content"));
 
         assertEquals(requestBody.getLength(), requestStream.getPosition());
@@ -427,12 +435,12 @@ public class HttpInstrumentationPolicyLoggingTests {
         assertEquals(2, logMessages.size());
 
         Map<String, Object> requestLog = logMessages.get(0);
-        assertRequestLog(requestLog, REDACTED_URI, request);
+        assertRequestLog(requestLog, request);
         assertNull(requestLog.get("http.request.body.content"));
         assertEquals(0, requestStream.getPosition());
 
         Map<String, Object> responseLog = logMessages.get(1);
-        assertResponseLog(responseLog, REDACTED_URI, response);
+        assertResponseLog(responseLog, response);
         assertNull(responseLog.get("http.request.body.content"));
         assertEquals(0, responseStream.getPosition());
     }
@@ -459,14 +467,134 @@ public class HttpInstrumentationPolicyLoggingTests {
         assertEquals(2, logMessages.size());
 
         Map<String, Object> requestLog = logMessages.get(0);
-        assertRequestLog(requestLog, REDACTED_URI, request);
+        assertRequestLog(requestLog, request);
         assertNull(requestLog.get("http.request.body.content"));
         assertEquals(0, requestStream.getPosition());
 
         Map<String, Object> responseLog = logMessages.get(1);
-        assertResponseLog(responseLog, REDACTED_URI, response);
+        assertResponseLog(responseLog, response);
         assertNull(responseLog.get("http.request.body.content"));
         assertEquals(0, responseStream.getPosition());
+    }
+
+    @SuppressWarnings("try")
+    @Test
+    public void tracingWithRetriesException() throws IOException {
+        AtomicInteger count = new AtomicInteger(0);
+        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
+        HttpLogOptions options = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.BASIC);
+
+        AtomicReference<InstrumentationContext> firstTryContext = new AtomicReference<>();
+        UnknownHostException expectedException = new UnknownHostException("test exception");
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new HttpRetryPolicy(), new HttpInstrumentationPolicy(DEFAULT_INSTRUMENTATION_OPTIONS, options))
+            .httpClient(request -> {
+                assertEquals(traceparent(request.getRequestOptions().getInstrumentationContext()),
+                    request.getHeaders().get(TRACEPARENT).getValue());
+                if (count.getAndIncrement() == 0) {
+                    firstTryContext.set(request.getRequestOptions().getInstrumentationContext());
+                    throw expectedException;
+                } else {
+                    return new MockHttpResponse(request, 200);
+                }
+            })
+            .build();
+
+        InstrumentationContext parentContext
+            = createInstrumentationContext("1234567890abcdef1234567890abcdef", "1234567890abcdef");
+        HttpRequest request = createRequest(HttpMethod.PUT, URI, logger, parentContext);
+        Response<?> response = pipeline.send(request);
+        response.close();
+
+        assertEquals(2, count.get());
+        List<Map<String, Object>> logMessages = parseLogMessages(logCaptureStream);
+        assertEquals(5, logMessages.size());
+        assertRequestLog(logMessages.get(0), REDACTED_URI, request, firstTryContext.get(), 0);
+        assertExceptionLog(logMessages.get(1), REDACTED_URI, request, expectedException, firstTryContext.get(), 0);
+
+        assertRetryLog(logMessages.get(2), 0, 3, parentContext, true);
+
+        assertRequestLog(logMessages.get(3), REDACTED_URI, request, null, 1);
+        assertResponseLog(logMessages.get(4), REDACTED_URI, response, 1);
+    }
+
+    @Test
+    public void tracingWithRetriesStatusCode() throws IOException {
+        AtomicInteger count = new AtomicInteger(0);
+        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
+        HttpLogOptions options = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.BASIC);
+
+        AtomicReference<InstrumentationContext> firstTryContext = new AtomicReference<>();
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new HttpRetryPolicy(), new HttpInstrumentationPolicy(DEFAULT_INSTRUMENTATION_OPTIONS, options))
+            .httpClient(request -> {
+                if (count.getAndIncrement() == 0) {
+                    firstTryContext.set(request.getRequestOptions().getInstrumentationContext());
+                    return new MockHttpResponse(request, 500);
+                } else {
+                    return new MockHttpResponse(request, 200);
+                }
+            })
+            .build();
+
+        InstrumentationContext parentContext = createRandomInstrumentationContext();
+        HttpRequest request = createRequest(HttpMethod.PUT, URI, logger, parentContext);
+        Response<?> response = pipeline.send(request);
+        response.close();
+
+        assertEquals(2, count.get());
+        List<Map<String, Object>> logMessages = parseLogMessages(logCaptureStream);
+        assertEquals(5, logMessages.size());
+        assertResponseLog(logMessages.get(1), REDACTED_URI, 0, 500, firstTryContext.get());
+        assertRetryLog(logMessages.get(2), 0, 3, parentContext, true);
+        assertResponseLog(logMessages.get(4), REDACTED_URI, response, 1);
+    }
+
+    @ParameterizedTest
+    @MethodSource("logLevels")
+    public void retryPolicyLoggingRetriesExhausted(ClientLogger.LogLevel logLevel, boolean expectRetryingLogs,
+        boolean expectExhaustedLog) throws IOException {
+        ClientLogger logger = setupLogLevelAndGetLogger(logLevel, logCaptureStream);
+
+        int maxRetries = 3;
+        HttpRetryOptions retryOptions = new HttpRetryOptions(maxRetries, Duration.ofMillis(5));
+
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new HttpRetryPolicy(retryOptions))
+            .httpClient(request -> new MockHttpResponse(request, 500))
+            .build();
+
+        InstrumentationContext parentContext = createRandomInstrumentationContext();
+        HttpRequest request = createRequest(HttpMethod.PUT, URI, logger, parentContext);
+        Response<?> response = pipeline.send(request);
+        response.close();
+
+        List<Map<String, Object>> logMessages = parseLogMessages(logCaptureStream);
+
+        int expectedLogCount = expectRetryingLogs ? maxRetries : 0;
+        if (expectExhaustedLog) {
+            expectedLogCount++;
+        }
+
+        assertEquals(expectedLogCount, logMessages.size());
+
+        if (expectRetryingLogs) {
+            for (int i = 0; i < maxRetries; i++) {
+                assertRetryLog(logMessages.get(i), i, 3, parentContext, true);
+            }
+        }
+
+        if (expectExhaustedLog) {
+            Map<String, Object> lastLog = logMessages.get(logMessages.size() - 1);
+            assertRetryLog(lastLog, 3, 3, parentContext, false);
+        }
+    }
+
+    public static Stream<Arguments> logLevels() {
+        return Stream.of(Arguments.of(ClientLogger.LogLevel.ERROR, false, false),
+            Arguments.of(ClientLogger.LogLevel.WARNING, false, true),
+            Arguments.of(ClientLogger.LogLevel.INFORMATIONAL, false, true),
+            Arguments.of(ClientLogger.LogLevel.VERBOSE, true, true));
     }
 
     public static Stream<Arguments> allowQueryParamSource() {
@@ -537,20 +665,44 @@ public class HttpInstrumentationPolicyLoggingTests {
         }
     }
 
-    private void assertRequestLog(Map<String, Object> log, String expectedUri, HttpRequest request) {
+    private void assertRequestLog(Map<String, Object> log, HttpRequest request) {
+        assertRequestLog(log, REDACTED_URI, request, null, 0);
+    }
+
+    private void assertRequestLog(Map<String, Object> log, String expectedUri, HttpRequest request,
+        InstrumentationContext context, int tryCount) {
         assertEquals("http.request", log.get("event.name"));
         assertEquals(expectedUri, log.get("url.full"));
-        assertEquals(0, (int) log.get("http.request.resend_count"));
+        assertEquals(tryCount, (int) log.get("http.request.resend_count"));
 
         assertEquals(getLength(request.getBody(), request.getHeaders()), (int) log.get("http.request.body.size"));
         assertEquals(request.getHttpMethod().toString(), log.get("http.request.method"));
         assertEquals("", log.get("message"));
 
-        assertTraceContext(log, request);
+        if (context == null) {
+            context = request.getRequestOptions().getInstrumentationContext();
+        }
+
+        assertTraceContext(log, context);
     }
 
-    private void assertTraceContext(Map<String, Object> log, HttpRequest request) {
-        InstrumentationContext context = request.getRequestOptions().getInstrumentationContext();
+    private void assertRetryLog(Map<String, Object> log, int tryCount, int maxAttempts, InstrumentationContext context,
+        boolean isRetrying) {
+        assertEquals("http.retry", log.get("event.name"));
+        assertEquals(tryCount, (int) log.get("http.request.resend_count"));
+        if (isRetrying) {
+            assertInstanceOf(Integer.class, log.get("retry.delay"));
+            assertFalse((boolean) log.get("retry.was_last_attempt"));
+        } else {
+            assertNull(log.get("retry.delay"));
+            assertTrue((boolean) log.get("retry.was_last_attempt"));
+        }
+        assertEquals(maxAttempts, log.get("retry.max_attempt_count"));
+        assertEquals("", log.get("message"));
+        assertTraceContext(log, context);
+    }
+
+    private void assertTraceContext(Map<String, Object> log, InstrumentationContext context) {
         if (context != null) {
             assertTrue(log.get("trace.id").toString().matches("[0-9a-f]{32}"));
             assertTrue(log.get("span.id").toString().matches("[0-9a-f]{16}"));
@@ -576,24 +728,35 @@ public class HttpInstrumentationPolicyLoggingTests {
         return 0;
     }
 
-    private void assertResponseLog(Map<String, Object> log, String expectedUri, Response<?> response) {
-        assertEquals("http.response", log.get("event.name"));
-        assertEquals(expectedUri, log.get("url.full"));
-        assertEquals(0, (int) log.get("http.request.resend_count"));
+    private void assertResponseLog(Map<String, Object> log, Response<?> response) {
+        assertResponseLog(log, REDACTED_URI, response, 0);
+    }
+
+    private void assertResponseLog(Map<String, Object> log, String expectedUri, Response<?> response, int tryCount) {
+        assertResponseLog(log, expectedUri, tryCount, response.getStatusCode(),
+            response.getRequest().getRequestOptions().getInstrumentationContext());
 
         Long expectedRequestLength = getLength(response.getRequest().getBody(), response.getRequest().getHeaders());
 
         assertEquals(expectedRequestLength, (int) log.get("http.request.body.size"));
         assertEquals(response.getRequest().getHttpMethod().toString(), log.get("http.request.method"));
 
-        assertEquals(response.getStatusCode(), log.get("http.response.status_code"));
+        assertInstanceOf(Double.class, log.get("http.request.time_to_response"));
+        assertInstanceOf(Double.class, log.get("http.request.duration"));
+    }
 
-        Long expectedResponseLength = getLength(response.getBody(), response.getHeaders());
-        assertEquals(expectedResponseLength, (int) log.get("http.response.body.size"));
+    private void assertResponseLog(Map<String, Object> log, String expectedUri, int tryCount, int statusCode,
+        InstrumentationContext context) {
+        assertEquals("http.response", log.get("event.name"));
+        assertEquals(expectedUri, log.get("url.full"));
+        assertEquals(tryCount, (int) log.get("http.request.resend_count"));
+
+        assertEquals(statusCode, log.get("http.response.status_code"));
+
         assertInstanceOf(Double.class, log.get("http.request.time_to_response"));
         assertInstanceOf(Double.class, log.get("http.request.duration"));
         assertEquals("", log.get("message"));
-        assertTraceContext(log, response.getRequest());
+        assertTraceContext(log, context);
     }
 
     private void assertResponseAndExceptionLog(Map<String, Object> log, String expectedUri, Response<?> response,
@@ -614,13 +777,18 @@ public class HttpInstrumentationPolicyLoggingTests {
         assertEquals(error.getMessage(), log.get("exception.message"));
         assertEquals(error.getClass().getCanonicalName(), log.get("exception.type"));
         assertEquals("", log.get("message"));
-        assertTraceContext(log, response.getRequest());
+        assertTraceContext(log, response.getRequest().getRequestOptions().getInstrumentationContext());
     }
 
-    private void assertExceptionLog(Map<String, Object> log, String expectedUri, HttpRequest request, Throwable error) {
+    private void assertExceptionLog(Map<String, Object> log, HttpRequest request, Throwable error) {
+        assertExceptionLog(log, REDACTED_URI, request, error, null, 0);
+    }
+
+    private void assertExceptionLog(Map<String, Object> log, String expectedUri, HttpRequest request, Throwable error,
+        InstrumentationContext context, int tryCount) {
         assertEquals("http.response", log.get("event.name"));
         assertEquals(expectedUri, log.get("url.full"));
-        assertEquals(0, (int) log.get("http.request.resend_count"));
+        assertEquals(tryCount, (int) log.get("http.request.resend_count"));
 
         Long expectedRequestLength = getLength(request.getBody(), request.getHeaders());
         assertEquals(expectedRequestLength, (int) log.get("http.request.body.size"));
@@ -634,7 +802,11 @@ public class HttpInstrumentationPolicyLoggingTests {
         assertEquals(error.getClass().getCanonicalName(), log.get("exception.type"));
 
         assertEquals("", log.get("message"));
-        assertTraceContext(log, request);
+
+        if (context == null) {
+            context = request.getRequestOptions().getInstrumentationContext();
+        }
+        assertTraceContext(log, context);
     }
 
     private HttpPipeline createPipeline(InstrumentationOptions<?> instrumentationOptions, HttpLogOptions options) {
@@ -654,11 +826,22 @@ public class HttpInstrumentationPolicyLoggingTests {
     }
 
     private HttpRequest createRequest(HttpMethod method, String url, ClientLogger logger) {
+        return createRequest(method, url, logger, null);
+    }
+
+    private HttpRequest createRequest(HttpMethod method, String url, ClientLogger logger,
+        InstrumentationContext context) {
         HttpRequest request = new HttpRequest(method, url);
         request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
         request.getHeaders().set(HttpHeaderName.AUTHORIZATION, "Bearer {token}");
-        request.setRequestOptions(new RequestOptions().setLogger(logger));
+        request.setRequestOptions(new RequestOptions().setLogger(logger).setInstrumentationContext(context));
 
         return request;
     }
+
+    private String traceparent(InstrumentationContext instrumentationContext) {
+        return String.format("00-%s-%s-%s", instrumentationContext.getTraceId(), instrumentationContext.getSpanId(),
+            instrumentationContext.getTraceFlags());
+    }
+
 }

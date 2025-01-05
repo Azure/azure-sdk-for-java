@@ -152,7 +152,17 @@ public final class AttributeKeys {
      * Key representing maximum number of redirects or retries. It's reported when the number of redirects or retries
      * was exhausted.
      */
-    public static final String REQUEST_MAX_ATTEMPT_COUNT_KEY = "request.max_attempt_count";
+    public static final String RETRY_MAX_ATTEMPT_COUNT_KEY = "retry.max_attempt_count";
+
+    /**
+     * Key representing delay before next retry attempt in milliseconds. The value should be a number.
+     */
+    public static final String RETRY_DELAY_KEY = "retry.delay";
+
+    /**
+     * Key representing whether the retry just performed was the last attempt.
+     */
+    public static final String RETRY_WAS_LAST_ATTEMPT_KEY = "retry.was_last_attempt";
 
     /**
      * Key representing span id on logs.

@@ -23,7 +23,7 @@ import java.util.function.Predicate;
 
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_RESEND_COUNT_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_RESPONSE_HEADER_LOCATION_KEY;
-import static io.clientcore.core.implementation.instrumentation.AttributeKeys.REQUEST_MAX_ATTEMPT_COUNT_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.RETRY_MAX_ATTEMPT_COUNT_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.URL_FULL_KEY;
 import static io.clientcore.core.implementation.instrumentation.LoggingEventNames.HTTP_REDIRECT_EVENT_NAME;
 
@@ -82,15 +82,18 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
         InstrumentationContext instrumentationContext = httpRequest.getRequestOptions() == null
             ? null
             : httpRequest.getRequestOptions().getInstrumentationContext();
-        return attemptRedirect(next, 1, new LinkedHashSet<>(), instrumentationContext);
+
+        ClientLogger logger = getLogger(httpRequest);
+        return attemptRedirect(logger, next, 1, new LinkedHashSet<>(), instrumentationContext);
     }
 
     /**
      * Function to process through the HTTP Response received in the pipeline and redirect sending the request with a
      * new redirect URI.
      */
-    private Response<?> attemptRedirect(final HttpPipelineNextPolicy next, final int redirectAttempt,
-        LinkedHashSet<String> attemptedRedirectUris, InstrumentationContext instrumentationContext) {
+    private Response<?> attemptRedirect(ClientLogger logger, final HttpPipelineNextPolicy next,
+        final int redirectAttempt, LinkedHashSet<String> attemptedRedirectUris,
+        InstrumentationContext instrumentationContext) {
 
         // Make sure the context is not modified during redirect, except for the URI
         Response<?> response = next.clone().process();
@@ -109,31 +112,30 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
         // - reason why we are not redirecting
         // - maybe human readable message
         // This way, someone can query all occurrences of this event and get the context of the redirect.
-
         if ((shouldRedirectCondition != null && shouldRedirectCondition.test(requestRedirectCondition))
             || (shouldRedirectCondition == null
-                && defaultShouldAttemptRedirect(requestRedirectCondition, instrumentationContext))) {
+                && defaultShouldAttemptRedirect(logger, requestRedirectCondition, instrumentationContext))) {
             createRedirectRequest(response);
-            return attemptRedirect(next, redirectAttempt + 1, attemptedRedirectUris, instrumentationContext);
+            return attemptRedirect(logger, next, redirectAttempt + 1, attemptedRedirectUris, instrumentationContext);
         }
 
         return response;
     }
 
-    private boolean defaultShouldAttemptRedirect(HttpRequestRedirectCondition requestRedirectCondition,
-        InstrumentationContext instrumentationContext) {
+    private boolean defaultShouldAttemptRedirect(ClientLogger logger,
+        HttpRequestRedirectCondition requestRedirectCondition, InstrumentationContext instrumentationContext) {
         Response<?> response = requestRedirectCondition.getResponse();
         int tryCount = requestRedirectCondition.getTryCount();
         Set<String> attemptedRedirectUris = requestRedirectCondition.getRedirectedUris();
         String redirectUri = response.getHeaders().getValue(this.locationHeader);
 
         if (isValidRedirectStatusCode(response.getStatusCode())
-            && isValidRedirectCount(tryCount, instrumentationContext)
-            && isAllowedRedirectMethod(response.getRequest().getHttpMethod(), instrumentationContext)
+            && isValidRedirectCount(logger, tryCount, instrumentationContext)
+            && isAllowedRedirectMethod(logger, response.getRequest().getHttpMethod(), instrumentationContext)
             && redirectUri != null
-            && !alreadyAttemptedRedirectUri(redirectUri, attemptedRedirectUris, instrumentationContext)) {
+            && !alreadyAttemptedRedirectUri(logger, redirectUri, attemptedRedirectUris, instrumentationContext)) {
 
-            LOGGER.atVerbose()
+            logger.atVerbose()
                 // TODO (lmolkova): -1 is probably not right, test and fix it
                 .addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount - 1)
                 .addKeyValue(URL_FULL_KEY, response.getRequest().getUri())
@@ -158,10 +160,11 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
      *
      * @return {@code true} if the {@code tryCount} is greater than the {@code maxAttempts}, {@code false} otherwise.
      */
-    private boolean isValidRedirectCount(int tryCount, InstrumentationContext instrumentationContext) {
+    private boolean isValidRedirectCount(ClientLogger logger, int tryCount,
+        InstrumentationContext instrumentationContext) {
         if (tryCount >= this.maxAttempts) {
-            LOGGER.atError()
-                .addKeyValue(REQUEST_MAX_ATTEMPT_COUNT_KEY, this.maxAttempts)
+            logger.atError()
+                .addKeyValue(RETRY_MAX_ATTEMPT_COUNT_KEY, this.maxAttempts)
                 .setEventName(HTTP_REDIRECT_EVENT_NAME)
                 .setContext(instrumentationContext)
                 .log("Redirect attempts have been exhausted.");
@@ -181,10 +184,10 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
      * @return {@code true} if the redirectUri provided in the response header is already being attempted for redirect,
      * {@code false} otherwise.
      */
-    private boolean alreadyAttemptedRedirectUri(String redirectUri, Set<String> attemptedRedirectUris,
-        InstrumentationContext instrumentationContext) {
+    private boolean alreadyAttemptedRedirectUri(ClientLogger logger, String redirectUri,
+        Set<String> attemptedRedirectUris, InstrumentationContext instrumentationContext) {
         if (attemptedRedirectUris.contains(redirectUri)) {
-            LOGGER.atError()
+            logger.atError()
                 .addKeyValue(URL_FULL_KEY, redirectUri)
                 .setContext(instrumentationContext)
                 .setEventName(HTTP_REDIRECT_EVENT_NAME)
@@ -203,11 +206,12 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
      *
      * @return {@code true} if the request {@code httpMethod} is a valid http redirect method, {@code false} otherwise.
      */
-    private boolean isAllowedRedirectMethod(HttpMethod httpMethod, InstrumentationContext instrumentationContext) {
+    private boolean isAllowedRedirectMethod(ClientLogger logger, HttpMethod httpMethod,
+        InstrumentationContext instrumentationContext) {
         if (allowedRedirectHttpMethods.contains(httpMethod)) {
             return true;
         } else {
-            LOGGER.atError()
+            logger.atError()
                 .setContext(instrumentationContext)
                 .addKeyValue(AttributeKeys.HTTP_REQUEST_METHOD_KEY, httpMethod)
                 .setEventName(HTTP_REDIRECT_EVENT_NAME)
@@ -242,5 +246,15 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
+    }
+
+    private ClientLogger getLogger(HttpRequest httpRequest) {
+        ClientLogger logger = null;
+
+        if (httpRequest.getRequestOptions() != null && httpRequest.getRequestOptions().getLogger() != null) {
+            logger = httpRequest.getRequestOptions().getLogger();
+        }
+
+        return logger == null ? LOGGER : logger;
     }
 }
