@@ -24,6 +24,12 @@ import java.util.Objects;
 import java.util.function.Supplier;
 
 import static io.clientcore.core.annotation.TypeConditions.FLUENT;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.EVENT_NAME_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.EXCEPTION_MESSAGE_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.EXCEPTION_STACKTRACE_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.EXCEPTION_TYPE_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.SPAN_ID_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.TRACE_ID_KEY;
 
 /**
  * This is a fluent logger helper class that wraps an SLF4J Logger (if available) or a default implementation of the
@@ -507,12 +513,12 @@ public class ClientLogger {
 
         private void setThrowableInternal(Throwable throwable, boolean isDebugEnabled) {
             if (throwable != null) {
-                addKeyValueInternal("exception.type", throwable.getClass().getCanonicalName());
-                addKeyValueInternal("exception.message", throwable.getMessage());
+                addKeyValueInternal(EXCEPTION_TYPE_KEY, throwable.getClass().getCanonicalName());
+                addKeyValueInternal(EXCEPTION_MESSAGE_KEY, throwable.getMessage());
                 if (isDebugEnabled) {
                     StringBuilder stackTrace = new StringBuilder();
                     DefaultLogger.appendThrowable(stackTrace, throwable);
-                    addKeyValue("exception.stacktrace", stackTrace.toString());
+                    addKeyValue(EXCEPTION_STACKTRACE_KEY, stackTrace.toString());
                 }
             }
         }
@@ -524,8 +530,8 @@ public class ClientLogger {
 
             // TODO (limolkova) set context from implicit current span
             if (this.context != null && this.context.isValid()) {
-                addKeyValue("trace.id", context.getTraceId());
-                addKeyValue("span.id", context.getSpanId());
+                addKeyValue(TRACE_ID_KEY, context.getTraceId());
+                addKeyValue(SPAN_ID_KEY, context.getSpanId());
             }
 
             int pairsCount

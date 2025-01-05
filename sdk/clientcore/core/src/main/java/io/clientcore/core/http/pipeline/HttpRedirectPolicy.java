@@ -22,7 +22,10 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_RESEND_COUNT_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_RESPONSE_HEADER_LOCATION_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.REQUEST_MAX_ATTEMPT_COUNT_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.URL_FULL_KEY;
+import static io.clientcore.core.implementation.instrumentation.LoggingEventNames.HTTP_REDIRECT_EVENT_NAME;
 
 /**
  * A {@link HttpPipelinePolicy} that redirects a {@link HttpRequest} when an HTTP Redirect is received as a
@@ -33,8 +36,6 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
     private final int maxAttempts;
     private final Predicate<HttpRequestRedirectCondition> shouldRedirectCondition;
     private static final int DEFAULT_MAX_REDIRECT_ATTEMPTS = 3;
-    private static final String REDIRECT_URIS_KEY = "redirectUris";
-    private static final String ORIGINATING_REQUEST_URI_KEY = "originatingRequestUri";
 
     private static final EnumSet<HttpMethod> DEFAULT_REDIRECT_ALLOWED_METHODS
         = EnumSet.of(HttpMethod.GET, HttpMethod.HEAD);
@@ -96,6 +97,19 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
 
         HttpRequestRedirectCondition requestRedirectCondition
             = new HttpRequestRedirectCondition(response, redirectAttempt, attemptedRedirectUris);
+
+        // TODO (limolkova): we should log one event here:
+        // - if we are redirecting, log at verbose level
+        // - if we are not redirecting, log at warning level
+        // The content:
+        // - original request URI, method
+        // - location
+        // - all prev redirect urls
+        // - redirect count
+        // - reason why we are not redirecting
+        // - maybe human readable message
+        // This way, someone can query all occurrences of this event and get the context of the redirect.
+
         if ((shouldRedirectCondition != null && shouldRedirectCondition.test(requestRedirectCondition))
             || (shouldRedirectCondition == null
                 && defaultShouldAttemptRedirect(requestRedirectCondition, instrumentationContext))) {
@@ -120,11 +134,12 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
             && !alreadyAttemptedRedirectUri(redirectUri, attemptedRedirectUris, instrumentationContext)) {
 
             LOGGER.atVerbose()
+                // TODO (lmolkova): -1 is probably not right, test and fix it
                 .addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount - 1)
-                .addKeyValue("url.full.from", response.getRequest().getUri())
-                .addKeyValue("url.full.to", redirectUri)
-                .addKeyValue("url.full.all", attemptedRedirectUris::toString)
-                .setEventName("http.request.redirect")
+                .addKeyValue(URL_FULL_KEY, response.getRequest().getUri())
+                .addKeyValue(HTTP_RESPONSE_HEADER_LOCATION_KEY, redirectUri)
+                .addKeyValue("redirect.url.full.all", attemptedRedirectUris::toString)
+                .setEventName(HTTP_REDIRECT_EVENT_NAME)
                 .setContext(instrumentationContext)
                 .log();
 
@@ -146,7 +161,8 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
     private boolean isValidRedirectCount(int tryCount, InstrumentationContext instrumentationContext) {
         if (tryCount >= this.maxAttempts) {
             LOGGER.atError()
-                .addKeyValue("maxAttempts", this.maxAttempts)
+                .addKeyValue(REQUEST_MAX_ATTEMPT_COUNT_KEY, this.maxAttempts)
+                .setEventName(HTTP_REDIRECT_EVENT_NAME)
                 .setContext(instrumentationContext)
                 .log("Redirect attempts have been exhausted.");
 
@@ -171,6 +187,7 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
             LOGGER.atError()
                 .addKeyValue(URL_FULL_KEY, redirectUri)
                 .setContext(instrumentationContext)
+                .setEventName(HTTP_REDIRECT_EVENT_NAME)
                 .log("Request was redirected more than once to the same URI.");
 
             return true;
@@ -193,6 +210,7 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
             LOGGER.atError()
                 .setContext(instrumentationContext)
                 .addKeyValue(AttributeKeys.HTTP_REQUEST_METHOD_KEY, httpMethod)
+                .setEventName(HTTP_REDIRECT_EVENT_NAME)
                 .log("Request redirection is not enabled for this HTTP method.");
 
             return false;

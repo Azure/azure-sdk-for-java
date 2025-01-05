@@ -16,6 +16,7 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import java.util.Objects;
 
 import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.ERROR_TYPE_KEY;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.ATTRIBUTE_KEY_CLASS;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.CONTEXT_CLASS;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.SPAN_CLASS;
@@ -89,7 +90,7 @@ public class OTelSpan implements Span {
                 Object rootContext = OTelContext.getCurrent();
 
                 noopSpan = new OTelSpan(invalidSpan, rootContext);
-                errorTypeAttributeKey = OTelAttributeKey.getKey("error.type", "");
+                errorTypeAttributeKey = OTelAttributeKey.getKey(ERROR_TYPE_KEY, "");
             } catch (Throwable t) {
                 OTelInitializer.initError(LOGGER, t);
             }

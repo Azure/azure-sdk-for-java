@@ -409,7 +409,7 @@ public class FallbackInstrumentationTests {
         assertEquals(1, logMessages.size());
         Map<String, Object> loggedSpan = logMessages.get(0);
         assertSpanLog(loggedSpan, "test-span", "INTERNAL", span.getInstrumentationContext(), null);
-        assertTrue((Double) loggedSpan.get("span.duration.ms") <= duration.toNanos() / 1_000_000.0);
+        assertTrue((Double) loggedSpan.get("span.duration") <= duration.toNanos() / 1_000_000.0);
     }
 
     @Test
@@ -547,8 +547,8 @@ public class FallbackInstrumentationTests {
         assertEquals(context.getTraceId(), loggedSpan.get("trace.id"));
         assertEquals(context.getSpanId(), loggedSpan.get("span.id"));
 
-        assertInstanceOf(Double.class, loggedSpan.get("span.duration.ms"));
-        double durationMs = (Double) loggedSpan.get("span.duration.ms");
+        assertInstanceOf(Double.class, loggedSpan.get("span.duration"));
+        double durationMs = (Double) loggedSpan.get("span.duration");
         assertTrue(durationMs > 0);
         assertEquals(errorType, loggedSpan.get("error.type"));
     }

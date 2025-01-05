@@ -10,6 +10,8 @@ import io.clientcore.core.instrumentation.tracing.TraceContextGetter;
 import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
 import io.clientcore.core.instrumentation.tracing.TraceContextSetter;
 
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_HEADER_TRACEPARENT_KEY;
+
 final class FallbackContextPropagator implements TraceContextPropagator {
     private static final ClientLogger LOGGER = new ClientLogger(FallbackContextPropagator.class);
     static final TraceContextPropagator W3C_TRACE_CONTEXT_PROPAGATOR = new FallbackContextPropagator();
@@ -41,7 +43,9 @@ final class FallbackContextPropagator implements TraceContextPropagator {
                 String traceFlags = traceparent.substring(53, 55);
                 return new FallbackSpanContext(traceId, spanId, traceFlags, true, Span.noop());
             } else {
-                LOGGER.atVerbose().addKeyValue("traceparent", traceparent).log("Invalid traceparent header");
+                LOGGER.atVerbose()
+                    .addKeyValue(HTTP_REQUEST_HEADER_TRACEPARENT_KEY, traceparent)
+                    .log("Invalid traceparent header");
             }
         }
         return context == null ? FallbackSpanContext.INVALID : context;

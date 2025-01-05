@@ -8,9 +8,13 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.TracingScope;
 
-final class FallbackSpan implements Span {
-    private static final String SPAN_END_EVENT = "span.ended";
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.ERROR_TYPE_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.SPAN_DURATION_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.SPAN_ID_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.TRACE_ID_KEY;
+import static io.clientcore.core.implementation.instrumentation.LoggingEventNames.SPAN_ENDED_EVENT_NAME;
 
+final class FallbackSpan implements Span {
     private final ClientLogger.LoggingEventBuilder log;
     private final long startTime;
     private final FallbackSpanContext spanContext;
@@ -21,7 +25,8 @@ final class FallbackSpan implements Span {
         this.startTime = isRecording ? System.nanoTime() : 0;
         this.spanContext = FallbackSpanContext.fromParent(parentSpanContext, isRecording, this);
         if (log != null && log.isEnabled()) {
-            this.log.addKeyValue("trace.id", spanContext.getTraceId()).addKeyValue("span.id", spanContext.getSpanId());
+            this.log.addKeyValue(TRACE_ID_KEY, spanContext.getTraceId())
+                .addKeyValue(SPAN_ID_KEY, spanContext.getSpanId());
         }
     }
 
@@ -63,12 +68,12 @@ final class FallbackSpan implements Span {
         }
 
         double durationMs = (System.nanoTime() - startTime) / 1_000_000.0;
-        log.addKeyValue("span.duration.ms", durationMs);
+        log.addKeyValue(SPAN_DURATION_KEY, durationMs);
         if (error != null || errorType != null) {
-            setAttribute("error.type", errorType != null ? errorType : error.getClass().getCanonicalName());
+            setAttribute(ERROR_TYPE_KEY, errorType != null ? errorType : error.getClass().getCanonicalName());
         }
 
-        log.setEventName(SPAN_END_EVENT);
+        log.setEventName(SPAN_ENDED_EVENT_NAME);
         if (error != null) {
             log.log(null, error);
         } else {

@@ -22,6 +22,7 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.URL_FULL_KEY;
 import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
 
 /**
@@ -342,7 +343,7 @@ public class ProxyOptions {
 
             return proxyOptions;
         } catch (URISyntaxException ex) {
-            LOGGER.atWarning().addKeyValue("uri", proxyProperty).log(INVALID_PROXY_URI, ex);
+            LOGGER.atWarning().addKeyValue(URL_FULL_KEY, proxyProperty).log(INVALID_PROXY_URI, ex);
             return null;
         }
     }

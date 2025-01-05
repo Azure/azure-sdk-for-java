@@ -39,16 +39,23 @@ import java.util.stream.Collectors;
 import java.net.URI;
 
 import static io.clientcore.core.implementation.UrlRedactionUtil.getRedactedUri;
-import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_BODY_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_BODY_CONTENT_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_BODY_SIZE_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_DURATION_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_HEADER_CONTENT_LENGTH_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_METHOD_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_RESEND_COUNT_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_TIME_TO_RESPONSE_KEY;
-import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_RESPONSE_BODY_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_RESPONSE_BODY_CONTENT_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_RESPONSE_BODY_SIZE_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_RESPONSE_HEADER_CONTENT_LENGTH_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_RESPONSE_STATUS_CODE_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.SERVER_ADDRESS_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.SERVER_PORT_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.URL_FULL_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.USER_AGENT_ORIGINAL_KEY;
+import static io.clientcore.core.implementation.instrumentation.LoggingEventNames.HTTP_REQUEST_EVENT_NAME;
+import static io.clientcore.core.implementation.instrumentation.LoggingEventNames.HTTP_RESPONSE_EVENT_NAME;
 import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
 import static io.clientcore.core.instrumentation.Instrumentation.DISABLE_TRACING_KEY;
 import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
@@ -154,11 +161,6 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         LIBRARY_OPTIONS = libOptions;
     }
 
-    private static final String SERVER_ADDRESS = "server.address";
-    private static final String SERVER_PORT = "server.port";
-    private static final String USER_AGENT_ORIGINAL = "user_agent.original";
-    private static final String HTTP_REQUEST_EVENT_NAME = "http.request";
-    private static final String HTTP_RESPONSE_EVENT_NAME = "http.response";
     private static final int MAX_BODY_LOG_SIZE = 1024 * 16;
     private static final String REDACTED_PLACEHOLDER = "REDACTED";
 
@@ -207,7 +209,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         final long startNs = System.nanoTime();
         String redactedUrl = getRedactedUri(request.getUri(), allowedQueryParameterNames);
         int tryCount = HttpRequestAccessHelper.getTryCount(request);
-        final long requestContentLength = getContentLength(logger, request.getBody(), request.getHeaders());
+        final long requestContentLength = getContentLength(logger, request.getBody(), request.getHeaders(), true);
 
         InstrumentationContext context
             = request.getRequestOptions() == null ? null : request.getRequestOptions().getInstrumentationContext();
@@ -255,7 +257,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         SpanBuilder spanBuilder = tracer.spanBuilder(request.getHttpMethod().toString(), CLIENT, context)
             .setAttribute(HTTP_REQUEST_METHOD_KEY, request.getHttpMethod().toString())
             .setAttribute(URL_FULL_KEY, sanitizedUrl)
-            .setAttribute(SERVER_ADDRESS, request.getUri().getHost());
+            .setAttribute(SERVER_ADDRESS_KEY, request.getUri().getHost());
         maybeSetServerPort(spanBuilder, request.getUri());
         return spanBuilder.startSpan();
     }
@@ -271,15 +273,15 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
     private static void maybeSetServerPort(SpanBuilder spanBuilder, URI uri) {
         int port = uri.getPort();
         if (port != -1) {
-            spanBuilder.setAttribute(SERVER_PORT, port);
+            spanBuilder.setAttribute(SERVER_PORT_KEY, port);
         } else {
             switch (uri.getScheme()) {
                 case "http":
-                    spanBuilder.setAttribute(SERVER_PORT, 80);
+                    spanBuilder.setAttribute(SERVER_PORT_KEY, 80);
                     break;
 
                 case "https":
-                    spanBuilder.setAttribute(SERVER_PORT, 443);
+                    spanBuilder.setAttribute(SERVER_PORT_KEY, 443);
                     break;
 
                 default:
@@ -301,7 +303,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
 
         String userAgent = request.getHeaders().getValue(HttpHeaderName.USER_AGENT);
         if (userAgent != null) {
-            span.setAttribute(USER_AGENT_ORIGINAL, userAgent);
+            span.setAttribute(USER_AGENT_ORIGINAL_KEY, userAgent);
         }
 
         if (response.getStatusCode() >= 400) {
@@ -384,7 +386,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
             try {
                 BinaryData bufferedBody = request.getBody().toReplayableBinaryData();
                 request.setBody(bufferedBody);
-                logBuilder.addKeyValue(HTTP_REQUEST_BODY_KEY, bufferedBody.toString());
+                logBuilder.addKeyValue(HTTP_REQUEST_BODY_CONTENT_KEY, bufferedBody.toString());
             } catch (RuntimeException e) {
                 // we'll log exception at the appropriate level.
                 throw logException(logger, request, null, e, startNanoTime, null, requestContentLength, redactedUrl,
@@ -415,7 +417,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
                 .addKeyValue(HTTP_RESPONSE_STATUS_CODE_KEY, response.getStatusCode())
                 .addKeyValue(HTTP_REQUEST_BODY_SIZE_KEY, requestContentLength)
                 .addKeyValue(HTTP_RESPONSE_BODY_SIZE_KEY,
-                    getContentLength(logger, response.getBody(), response.getHeaders()));
+                    getContentLength(logger, response.getBody(), response.getHeaders(), false));
 
             addHeadersToLogMessage(response.getHeaders(), logBuilder);
         }
@@ -423,7 +425,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         if (httpLogDetailLevel.shouldLogBody() && canLogBody(response.getBody())) {
             return new LoggingHttpResponse<>(response, content -> {
                 if (logBuilder.isEnabled()) {
-                    logBuilder.addKeyValue(HTTP_RESPONSE_BODY_KEY, content.toString())
+                    logBuilder.addKeyValue(HTTP_RESPONSE_BODY_CONTENT_KEY, content.toString())
                         .addKeyValue(HTTP_REQUEST_DURATION_KEY, getDurationMs(startNanoTime, System.nanoTime()))
                         .log();
                 }
@@ -459,7 +461,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
             addHeadersToLogMessage(response.getHeaders(), log);
             log
                     .addKeyValue(HTTP_RESPONSE_BODY_SIZE_KEY,
-                            getContentLength(logger, response.getBody(), response.getHeaders()))
+                            getContentLength(logger, response.getBody(), response.getHeaders(), false))
                     .addKeyValue(HTTP_RESPONSE_STATUS_CODE_KEY, response.getStatusCode());
 
             if (responseStartNanoTime != null) {
@@ -485,7 +487,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
      * @return A flag indicating if the request or response body should be logged.
      */
     private static boolean canLogBody(BinaryData data) {
-        // TODO: limolkova - we might want to filter out binary data, but
+        // TODO (limolkova) we might want to filter out binary data, but
         // if somebody enabled logging it - why not log it?
         return data != null && data.getLength() != null && data.getLength() > 0 && data.getLength() < MAX_BODY_LOG_SIZE;
     }
@@ -517,7 +519,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
      * @param headers HTTP headers that are checked for containing Content-Length.
      * @return The numeric value of the Content-Length header or 0 if the header is not present or invalid.
      */
-    private static long getContentLength(ClientLogger logger, BinaryData body, HttpHeaders headers) {
+    private static long getContentLength(ClientLogger logger, BinaryData body, HttpHeaders headers, boolean isRequest) {
         if (body == null) {
             return 0;
         }
@@ -538,7 +540,9 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
             contentLength = Long.parseLong(contentLengthString);
         } catch (NumberFormatException e) {
             logger.atVerbose()
-                .addKeyValue("contentLength", contentLengthString)
+                .addKeyValue(
+                    isRequest ? HTTP_REQUEST_HEADER_CONTENT_LENGTH_KEY : HTTP_RESPONSE_HEADER_CONTENT_LENGTH_KEY,
+                    contentLengthString)
                 .log("Could not parse the HTTP header content-length", e);
         }
 

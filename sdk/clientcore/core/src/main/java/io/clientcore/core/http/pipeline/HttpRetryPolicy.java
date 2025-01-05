@@ -28,6 +28,8 @@ import java.util.function.Supplier;
 
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_DURATION_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_RESEND_COUNT_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.REQUEST_MAX_ATTEMPT_COUNT_KEY;
+import static io.clientcore.core.implementation.instrumentation.LoggingEventNames.HTTP_RETRY_EVENT_NAME;
 import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
 import static io.clientcore.core.util.configuration.Configuration.PROPERTY_REQUEST_RETRY_COUNT;
 
@@ -148,6 +150,17 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
             : httpRequest.getRequestOptions().getInstrumentationContext();
 
         Response<?> response;
+
+        // TODO (limolkova): we should log one event here:
+        // - if we are retrying, log at verbose level
+        // - if we are not retrying, log at warning level
+        // The content:
+        // - request URI, method
+        // - try count
+        // - reason why we are not retrying (if applicable)
+        // - backoff
+        // - ...
+        // This way, someone can query all occurrences of this event and get the context.
 
         try {
             response = next.clone().process();
@@ -280,6 +293,7 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
         LOGGER.atVerbose()
             .addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount)
             .addKeyValue(HTTP_REQUEST_DURATION_KEY, delayDuration.toMillis())
+            .setEventName(HTTP_RETRY_EVENT_NAME)
             .setContext(context)
             .log("Retrying.");
     }
@@ -287,6 +301,8 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
     private static void logRetryExhausted(int tryCount, InstrumentationContext context) {
         LOGGER.atInfo()
             .addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount)
+            .setEventName(HTTP_RETRY_EVENT_NAME)
+            .addKeyValue(REQUEST_MAX_ATTEMPT_COUNT_KEY, tryCount)
             .setContext(context)
             .log("Retry attempts have been exhausted.");
     }
@@ -295,6 +311,7 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
         String message, Throwable throwable, InstrumentationContext context) {
         loggingEvent.addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount)
             .setContext(context)
+            .setEventName(HTTP_RETRY_EVENT_NAME)
             .log(message, throwable);
     }
 

@@ -9,6 +9,10 @@ import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.SpanBuilder;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
 
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.SPAN_KIND_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.SPAN_NAME_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.SPAN_PARENT_ID_KEY;
+
 final class FallbackSpanBuilder implements SpanBuilder {
     static final FallbackSpanBuilder NOOP = new FallbackSpanBuilder();
     private final ClientLogger.LoggingEventBuilder log;
@@ -24,9 +28,9 @@ final class FallbackSpanBuilder implements SpanBuilder {
         this.parentSpanContext = FallbackSpanContext.fromInstrumentationContext(instrumentationContext);
         this.log = logger.atInfo();
         if (log.isEnabled()) {
-            log.addKeyValue("span.name", spanName).addKeyValue("span.kind", spanKind.name());
+            log.addKeyValue(SPAN_NAME_KEY, spanName).addKeyValue(SPAN_KIND_KEY, spanKind.name());
             if (parentSpanContext.isValid()) {
-                log.addKeyValue("span.parent.id", parentSpanContext.getSpanId());
+                log.addKeyValue(SPAN_PARENT_ID_KEY, parentSpanContext.getSpanId());
             }
         }
     }

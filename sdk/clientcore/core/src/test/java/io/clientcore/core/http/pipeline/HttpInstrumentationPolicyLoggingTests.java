@@ -360,11 +360,11 @@ public class HttpInstrumentationPolicyLoggingTests {
 
         Map<String, Object> requestLog = logMessages.get(0);
         assertRequestLog(requestLog, REDACTED_URI, request);
-        assertEquals("Request body", requestLog.get("http.request.body"));
+        assertEquals("Request body", requestLog.get("http.request.body.content"));
 
         Map<String, Object> responseLog = logMessages.get(1);
         assertResponseLog(responseLog, REDACTED_URI, response);
-        assertEquals("Response body", responseLog.get("http.request.body"));
+        assertEquals("Response body", responseLog.get("http.request.body.content"));
     }
 
     @Test
@@ -396,11 +396,11 @@ public class HttpInstrumentationPolicyLoggingTests {
 
         Map<String, Object> requestLog = logMessages.get(0);
         assertRequestLog(requestLog, REDACTED_URI, request);
-        assertEquals("Request body", requestLog.get("http.request.body"));
+        assertEquals("Request body", requestLog.get("http.request.body.content"));
 
         Map<String, Object> responseLog = logMessages.get(1);
         assertResponseLog(responseLog, REDACTED_URI, response);
-        assertEquals("Response body", responseLog.get("http.request.body"));
+        assertEquals("Response body", responseLog.get("http.request.body.content"));
 
         assertEquals(requestBody.getLength(), requestStream.getPosition());
         assertEquals(responseBody.getLength(), responseStream.getPosition());
@@ -428,12 +428,12 @@ public class HttpInstrumentationPolicyLoggingTests {
 
         Map<String, Object> requestLog = logMessages.get(0);
         assertRequestLog(requestLog, REDACTED_URI, request);
-        assertNull(requestLog.get("http.request.body"));
+        assertNull(requestLog.get("http.request.body.content"));
         assertEquals(0, requestStream.getPosition());
 
         Map<String, Object> responseLog = logMessages.get(1);
         assertResponseLog(responseLog, REDACTED_URI, response);
-        assertNull(responseLog.get("http.request.body"));
+        assertNull(responseLog.get("http.request.body.content"));
         assertEquals(0, responseStream.getPosition());
     }
 
@@ -460,12 +460,12 @@ public class HttpInstrumentationPolicyLoggingTests {
 
         Map<String, Object> requestLog = logMessages.get(0);
         assertRequestLog(requestLog, REDACTED_URI, request);
-        assertNull(requestLog.get("http.request.body"));
+        assertNull(requestLog.get("http.request.body.content"));
         assertEquals(0, requestStream.getPosition());
 
         Map<String, Object> responseLog = logMessages.get(1);
         assertResponseLog(responseLog, REDACTED_URI, response);
-        assertNull(responseLog.get("http.request.body"));
+        assertNull(responseLog.get("http.request.body.content"));
         assertEquals(0, responseStream.getPosition());
     }
 
