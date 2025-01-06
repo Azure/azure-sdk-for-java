@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Added support to enable thin client mode with system property `COSMOS.THINCLIENT_ENABLED`, setting the thin client endpoint with system property `COSMOS.THINCLIENT_ENDPOINT`, and default thin client endpoint with system property `COSMOS.DEFAULT_THINCLIENT_ENDPOINT`. - [PR 43188](https://github.com/Azure/azure-sdk-for-java/pull/43188)
 * Added support to enable http2 for gateway mode with system property `COSMOS.HTTP2_ENABLED` and system variable `COSMOS_HTTP2_ENABLED`. - [PR 42947](https://github.com/Azure/azure-sdk-for-java/pull/42947)
 * Added support to allow changing http2 max connection pool size with system property `COSMOS.HTTP2_MAX_CONNECTION_POOL_SIZE` and system variable `COSMOS_HTTP2_MAX_CONNECTION_POOL_SIZE`. - [PR 42947](https://github.com/Azure/azure-sdk-for-java/pull/42947)
 * Added support to allow changing http2 max connection pool size with system property `COSMOS.HTTP2_MIN_CONNECTION_POOL_SIZE` and system variable `COSMOS_HTTP2_MIN_CONNECTION_POOL_SIZE`. - [PR 42947](https://github.com/Azure/azure-sdk-for-java/pull/42947)
