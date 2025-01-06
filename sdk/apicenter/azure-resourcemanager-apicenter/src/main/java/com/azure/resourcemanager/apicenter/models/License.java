@@ -5,31 +5,32 @@
 package com.azure.resourcemanager.apicenter.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The license information for the API.
  */
 @Fluent
-public final class License {
+public final class License implements JsonSerializable<License> {
     /*
      * Name of the license.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * URL pointing to the license details. The URL field is mutually exclusive of the
      * identifier field.
      */
-    @JsonProperty(value = "url")
     private String url;
 
     /*
      * SPDX license information for the API. The identifier field is mutually
      * exclusive of the URL field.
      */
-    @JsonProperty(value = "identifier")
     private String identifier;
 
     /**
@@ -108,5 +109,47 @@ public final class License {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeStringField("identifier", this.identifier);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of License from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of License if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the License.
+     */
+    public static License fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            License deserializedLicense = new License();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedLicense.name = reader.getString();
+                } else if ("url".equals(fieldName)) {
+                    deserializedLicense.url = reader.getString();
+                } else if ("identifier".equals(fieldName)) {
+                    deserializedLicense.identifier = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLicense;
+        });
     }
 }

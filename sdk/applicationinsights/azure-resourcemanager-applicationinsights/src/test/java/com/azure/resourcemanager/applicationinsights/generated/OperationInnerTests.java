@@ -13,23 +13,22 @@ public final class OperationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationInner model = BinaryData.fromString(
-            "{\"name\":\"tko\",\"display\":{\"provider\":\"ou\",\"resource\":\"vudwtiukbldng\",\"operation\":\"ocipazyxoeg\"}}")
+            "{\"name\":\"butr\",\"display\":{\"provider\":\"na\",\"resource\":\"mhjrunmpxttdbhr\",\"operation\":\"l\"}}")
             .toObject(OperationInner.class);
-        Assertions.assertEquals("tko", model.name());
-        Assertions.assertEquals("ou", model.display().provider());
-        Assertions.assertEquals("vudwtiukbldng", model.display().resource());
-        Assertions.assertEquals("ocipazyxoeg", model.display().operation());
+        Assertions.assertEquals("butr", model.name());
+        Assertions.assertEquals("na", model.display().provider());
+        Assertions.assertEquals("mhjrunmpxttdbhr", model.display().resource());
+        Assertions.assertEquals("l", model.display().operation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationInner model = new OperationInner().withName("tko")
-            .withDisplay(
-                new OperationDisplay().withProvider("ou").withResource("vudwtiukbldng").withOperation("ocipazyxoeg"));
+        OperationInner model = new OperationInner().withName("butr")
+            .withDisplay(new OperationDisplay().withProvider("na").withResource("mhjrunmpxttdbhr").withOperation("l"));
         model = BinaryData.fromObject(model).toObject(OperationInner.class);
-        Assertions.assertEquals("tko", model.name());
-        Assertions.assertEquals("ou", model.display().provider());
-        Assertions.assertEquals("vudwtiukbldng", model.display().resource());
-        Assertions.assertEquals("ocipazyxoeg", model.display().operation());
+        Assertions.assertEquals("butr", model.name());
+        Assertions.assertEquals("na", model.display().provider());
+        Assertions.assertEquals("mhjrunmpxttdbhr", model.display().resource());
+        Assertions.assertEquals("l", model.display().operation());
     }
 }

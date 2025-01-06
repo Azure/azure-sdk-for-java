@@ -107,9 +107,9 @@ public final class EndpointResourceImpl
         com.azure.resourcemanager.hybridconnectivity.HybridConnectivityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceUri = Utils.getValueFromIdByParameterName(innerObject.id(),
+        this.resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}", "resourceUri");
-        this.endpointName = Utils.getValueFromIdByParameterName(innerObject.id(),
+        this.endpointName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}", "endpointName");
     }
 

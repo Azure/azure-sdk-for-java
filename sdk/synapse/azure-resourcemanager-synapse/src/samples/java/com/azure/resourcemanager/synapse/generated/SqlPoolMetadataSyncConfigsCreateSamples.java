@@ -11,7 +11,7 @@ import com.azure.resourcemanager.synapse.fluent.models.MetadataSyncConfigInner;
  */
 public final class SqlPoolMetadataSyncConfigsCreateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * CreateSqlPoolMetadataSyncConfig.json
      */
     /**

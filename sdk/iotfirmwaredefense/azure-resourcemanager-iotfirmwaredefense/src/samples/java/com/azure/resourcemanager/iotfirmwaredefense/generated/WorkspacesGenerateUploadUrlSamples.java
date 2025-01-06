@@ -21,8 +21,9 @@ public final class WorkspacesGenerateUploadUrlSamples {
      */
     public static void workspacesGenerateUploadUrlMinimumSetGen(
         com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.workspaces().generateUploadUrlWithResponse("rgworkspaces", "E___-3", new GenerateUploadUrlRequest(),
-            com.azure.core.util.Context.NONE);
+        manager.workspaces()
+            .generateUploadUrlWithResponse("rgworkspaces", "E___-3", new GenerateUploadUrlRequest(),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +37,8 @@ public final class WorkspacesGenerateUploadUrlSamples {
      */
     public static void workspacesGenerateUploadUrlMaximumSetGen(
         com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.workspaces().generateUploadUrlWithResponse("rgworkspaces", "E___-3",
-            new GenerateUploadUrlRequest().withFirmwareId("ytsfprbywi"), com.azure.core.util.Context.NONE);
+        manager.workspaces()
+            .generateUploadUrlWithResponse("rgworkspaces", "E___-3",
+                new GenerateUploadUrlRequest().withFirmwareId("ytsfprbywi"), com.azure.core.util.Context.NONE);
     }
 }

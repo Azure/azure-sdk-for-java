@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.resourcehealth.fluent.models.EventImpactedResourceInner;
 
-/** An instance of this class provides access to all the operations defined in ImpactedResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ImpactedResourcesClient.
+ */
 public interface ImpactedResourcesClient {
     /**
      * Lists impacted resources in the subscription by an event.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -27,10 +29,10 @@ public interface ImpactedResourcesClient {
 
     /**
      * Lists impacted resources in the subscription by an event.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -43,7 +45,7 @@ public interface ImpactedResourcesClient {
 
     /**
      * Gets the specific impacted resource in the subscription by an event.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param impactedResourceName Name of the Impacted Resource.
      * @param context The context to associate with this operation.
@@ -58,7 +60,7 @@ public interface ImpactedResourcesClient {
 
     /**
      * Gets the specific impacted resource in the subscription by an event.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param impactedResourceName Name of the Impacted Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -71,7 +73,7 @@ public interface ImpactedResourcesClient {
 
     /**
      * Lists impacted resources in the tenant by an event.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -83,10 +85,10 @@ public interface ImpactedResourcesClient {
 
     /**
      * Lists impacted resources in the tenant by an event.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -99,7 +101,7 @@ public interface ImpactedResourcesClient {
 
     /**
      * Gets the specific impacted resource in the tenant by an event.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param impactedResourceName Name of the Impacted Resource.
      * @param context The context to associate with this operation.
@@ -114,7 +116,7 @@ public interface ImpactedResourcesClient {
 
     /**
      * Gets the specific impacted resource in the tenant by an event.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param impactedResourceName Name of the Impacted Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

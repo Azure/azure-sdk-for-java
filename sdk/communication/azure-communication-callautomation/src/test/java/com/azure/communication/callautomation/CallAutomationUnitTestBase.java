@@ -28,7 +28,7 @@ import com.azure.communication.callautomation.models.MediaStreamingOptions;
 import com.azure.communication.callautomation.models.MediaStreamingContent;
 import com.azure.communication.callautomation.models.MediaStreamingTransport;
 import com.azure.communication.callautomation.models.TranscriptionOptions;
-import com.azure.communication.callautomation.models.TranscriptionTransportType;
+import com.azure.communication.callautomation.models.TranscriptionTransport;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -46,7 +46,9 @@ public class CallAutomationUnitTestBase {
     static final String MOCK_CONNECTION_STRING = String.format("endpoint=%s;accesskey=eyJhbG", MOCK_ENDPOINT);
     static final String CALL_CONNECTION_ID = "callConnectionId";
     static final String CALL_SERVER_CALL_ID = "serverCallId";
-    static final String CALL_CALLER_ID = "callerId";
+    static final String ROOM_ID = "roomId";
+    static final String CALL_CALLER_ID = "acs_callerId";
+    static final String TEAMS_APP_CALL_CALLER_ID = "teams_app_callerId";
     static final CommunicationUserIdentifier USER_1 = new CommunicationUserIdentifier("userId1");
     static final String CALL_CALLER_DISPLAY_NAME = "callerDisplayName";
     static final String CALL_TARGET_ID = "targetId";
@@ -56,19 +58,15 @@ public class CallAutomationUnitTestBase {
     static final String CALL_CALLBACK_URL = "https://REDACTED.com/events";
     static final String CALL_INCOMING_CALL_CONTEXT = "eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.REDACTED";
     static final String CALL_OPERATION_CONTEXT = "operationContext";
-    static final String MEDIA_SUBSCRIPTION_ID = "mediaSubscriptionId";
-    static final String DATA_SUBSCRIPTION_ID = "dataSubscriptionId";
     static final String DIALOG_ID = "dialogId";
     static final String BOT_APP_ID = "botAppId";
-    static final String MICROSOFT_TEAMS_APP_ID = "28:acs:redacted";
-    static final String PHONE_NUMBER = "+18001234567";
 
     static final MediaStreamingOptions MEDIA_STREAMING_CONFIGURATION
         = new MediaStreamingOptions("https://websocket.url.com", MediaStreamingTransport.WEBSOCKET,
-            MediaStreamingContent.AUDIO, MediaStreamingAudioChannel.MIXED);
+            MediaStreamingContent.AUDIO, MediaStreamingAudioChannel.MIXED, true);
 
     static final TranscriptionOptions TRANSCRIPTION_CONFIGURATION
-        = new TranscriptionOptions("https://websocket.url.com", TranscriptionTransportType.WEBSOCKET, "en-US", true);
+        = new TranscriptionOptions("https://websocket.url.com", TranscriptionTransport.WEBSOCKET, "en-US", true);
 
     public static String generateDownloadResult(String content) {
         return content;
@@ -91,16 +89,16 @@ public class CallAutomationUnitTestBase {
         return serializeObject(result);
     }
 
-    public static String generateOPSCallProperties(String callConnectionId, String serverCallId, String targetId,
-        String connectionState, String callbackUri, String opsSourceId) {
+    public static String generateTeamsAppCallProperties(String callConnectionId, String serverCallId, String targetId,
+        String connectionState, String callbackUri, String teamsAppSourceId) {
         CallConnectionPropertiesInternal result = new CallConnectionPropertiesInternal()
             .setCallConnectionId(callConnectionId)
             .setServerCallId(serverCallId)
             .setCallbackUri(callbackUri)
             .setCallConnectionState(CallConnectionStateModelInternal.fromString(connectionState))
-            .setSource(new CommunicationIdentifierModel().setRawId(opsSourceId)
+            .setSource(new CommunicationIdentifierModel().setRawId("28:orgid:" + teamsAppSourceId)
                 .setKind(CommunicationIdentifierModelKind.MICROSOFT_TEAMS_APP)
-                .setMicrosoftTeamsApp(new MicrosoftTeamsAppIdentifierModel().setAppId(opsSourceId)
+                .setMicrosoftTeamsApp(new MicrosoftTeamsAppIdentifierModel().setAppId(teamsAppSourceId)
                     .setCloud(CommunicationCloudEnvironmentModel.PUBLIC)))
             .setTargets(
                 new ArrayList<>(Collections.singletonList(new CommunicationIdentifierModel().setRawId("+4:" + targetId)

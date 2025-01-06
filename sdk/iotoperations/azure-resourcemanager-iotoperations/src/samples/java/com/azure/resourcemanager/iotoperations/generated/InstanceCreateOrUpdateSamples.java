@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public final class InstanceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-09-15-preview/Instance_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-01/Instance_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Instance_CreateOrUpdate.

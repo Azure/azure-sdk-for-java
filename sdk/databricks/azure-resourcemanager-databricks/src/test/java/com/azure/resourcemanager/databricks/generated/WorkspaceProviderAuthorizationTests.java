@@ -13,19 +13,19 @@ public final class WorkspaceProviderAuthorizationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkspaceProviderAuthorization model = BinaryData.fromString(
-            "{\"principalId\":\"c3f5a96c-6527-4851-bf07-a57d5e307900\",\"roleDefinitionId\":\"b11b224f-3b4f-49f8-a1ae-ebc435f63eb7\"}")
+            "{\"principalId\":\"d6e0aaeb-d8f1-4869-b3c9-29269dd9f78c\",\"roleDefinitionId\":\"f6b20eeb-d309-43ca-835a-864257ff0a62\"}")
             .toObject(WorkspaceProviderAuthorization.class);
-        Assertions.assertEquals(UUID.fromString("c3f5a96c-6527-4851-bf07-a57d5e307900"), model.principalId());
-        Assertions.assertEquals(UUID.fromString("b11b224f-3b4f-49f8-a1ae-ebc435f63eb7"), model.roleDefinitionId());
+        Assertions.assertEquals(UUID.fromString("d6e0aaeb-d8f1-4869-b3c9-29269dd9f78c"), model.principalId());
+        Assertions.assertEquals(UUID.fromString("f6b20eeb-d309-43ca-835a-864257ff0a62"), model.roleDefinitionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WorkspaceProviderAuthorization model = new WorkspaceProviderAuthorization()
-            .withPrincipalId(UUID.fromString("c3f5a96c-6527-4851-bf07-a57d5e307900"))
-            .withRoleDefinitionId(UUID.fromString("b11b224f-3b4f-49f8-a1ae-ebc435f63eb7"));
+            .withPrincipalId(UUID.fromString("d6e0aaeb-d8f1-4869-b3c9-29269dd9f78c"))
+            .withRoleDefinitionId(UUID.fromString("f6b20eeb-d309-43ca-835a-864257ff0a62"));
         model = BinaryData.fromObject(model).toObject(WorkspaceProviderAuthorization.class);
-        Assertions.assertEquals(UUID.fromString("c3f5a96c-6527-4851-bf07-a57d5e307900"), model.principalId());
-        Assertions.assertEquals(UUID.fromString("b11b224f-3b4f-49f8-a1ae-ebc435f63eb7"), model.roleDefinitionId());
+        Assertions.assertEquals(UUID.fromString("d6e0aaeb-d8f1-4869-b3c9-29269dd9f78c"), model.principalId());
+        Assertions.assertEquals(UUID.fromString("f6b20eeb-d309-43ca-835a-864257ff0a62"), model.roleDefinitionId());
     }
 }

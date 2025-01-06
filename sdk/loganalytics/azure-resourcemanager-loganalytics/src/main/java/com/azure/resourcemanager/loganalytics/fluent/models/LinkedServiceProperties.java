@@ -5,40 +5,45 @@
 package com.azure.resourcemanager.loganalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.loganalytics.models.LinkedServiceEntityStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Linked service properties. */
+/**
+ * Linked service properties.
+ */
 @Fluent
-public final class LinkedServiceProperties {
+public final class LinkedServiceProperties implements JsonSerializable<LinkedServiceProperties> {
     /*
      * The resource id of the resource that will be linked to the workspace. This should be used for linking resources
      * which require read access
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * The resource id of the resource that will be linked to the workspace. This should be used for linking resources
      * which require write access
      */
-    @JsonProperty(value = "writeAccessResourceId")
     private String writeAccessResourceId;
 
     /*
      * The provisioning state of the linked service.
      */
-    @JsonProperty(value = "provisioningState")
     private LinkedServiceEntityStatus provisioningState;
 
-    /** Creates an instance of LinkedServiceProperties class. */
+    /**
+     * Creates an instance of LinkedServiceProperties class.
+     */
     public LinkedServiceProperties() {
     }
 
     /**
      * Get the resourceId property: The resource id of the resource that will be linked to the workspace. This should be
      * used for linking resources which require read access.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -48,7 +53,7 @@ public final class LinkedServiceProperties {
     /**
      * Set the resourceId property: The resource id of the resource that will be linked to the workspace. This should be
      * used for linking resources which require read access.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the LinkedServiceProperties object itself.
      */
@@ -60,7 +65,7 @@ public final class LinkedServiceProperties {
     /**
      * Get the writeAccessResourceId property: The resource id of the resource that will be linked to the workspace.
      * This should be used for linking resources which require write access.
-     *
+     * 
      * @return the writeAccessResourceId value.
      */
     public String writeAccessResourceId() {
@@ -70,7 +75,7 @@ public final class LinkedServiceProperties {
     /**
      * Set the writeAccessResourceId property: The resource id of the resource that will be linked to the workspace.
      * This should be used for linking resources which require write access.
-     *
+     * 
      * @param writeAccessResourceId the writeAccessResourceId value to set.
      * @return the LinkedServiceProperties object itself.
      */
@@ -81,7 +86,7 @@ public final class LinkedServiceProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the linked service.
-     *
+     * 
      * @return the provisioningState value.
      */
     public LinkedServiceEntityStatus provisioningState() {
@@ -90,7 +95,7 @@ public final class LinkedServiceProperties {
 
     /**
      * Set the provisioningState property: The provisioning state of the linked service.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the LinkedServiceProperties object itself.
      */
@@ -101,9 +106,53 @@ public final class LinkedServiceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("writeAccessResourceId", this.writeAccessResourceId);
+        jsonWriter.writeStringField("provisioningState",
+            this.provisioningState == null ? null : this.provisioningState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinkedServiceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinkedServiceProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LinkedServiceProperties.
+     */
+    public static LinkedServiceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinkedServiceProperties deserializedLinkedServiceProperties = new LinkedServiceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedLinkedServiceProperties.resourceId = reader.getString();
+                } else if ("writeAccessResourceId".equals(fieldName)) {
+                    deserializedLinkedServiceProperties.writeAccessResourceId = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedLinkedServiceProperties.provisioningState
+                        = LinkedServiceEntityStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinkedServiceProperties;
+        });
     }
 }

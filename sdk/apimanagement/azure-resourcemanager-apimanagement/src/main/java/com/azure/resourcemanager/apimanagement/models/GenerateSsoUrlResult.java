@@ -6,18 +6,20 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.resourcemanager.apimanagement.fluent.models.GenerateSsoUrlResultInner;
 
-/** An immutable client-side representation of GenerateSsoUrlResult. */
+/**
+ * An immutable client-side representation of GenerateSsoUrlResult.
+ */
 public interface GenerateSsoUrlResult {
     /**
      * Gets the value property: Redirect Url containing the SSO URL value.
-     *
+     * 
      * @return the value value.
      */
     String value();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.GenerateSsoUrlResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     GenerateSsoUrlResultInner innerModel();

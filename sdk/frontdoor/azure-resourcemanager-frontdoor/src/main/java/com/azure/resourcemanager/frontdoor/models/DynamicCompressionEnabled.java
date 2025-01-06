@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class DynamicCompressionEnabled extends ExpandableStringEnum<Dynami
      * @param name a name to look for.
      * @return the corresponding DynamicCompressionEnabled.
      */
-    @JsonCreator
     public static DynamicCompressionEnabled fromString(String name) {
         return fromString(name, DynamicCompressionEnabled.class);
     }

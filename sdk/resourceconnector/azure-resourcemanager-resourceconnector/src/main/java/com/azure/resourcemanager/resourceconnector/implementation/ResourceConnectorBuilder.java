@@ -14,7 +14,9 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the ResourceConnectorImpl type. */
+/**
+ * A builder for creating a new instance of the ResourceConnectorImpl type.
+ */
 @ServiceClientBuilder(serviceClients = { ResourceConnectorImpl.class })
 public final class ResourceConnectorBuilder {
     /*
@@ -24,7 +26,7 @@ public final class ResourceConnectorBuilder {
 
     /**
      * Sets The ID of the target subscription.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the ResourceConnectorBuilder.
      */
@@ -40,7 +42,7 @@ public final class ResourceConnectorBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the ResourceConnectorBuilder.
      */
@@ -56,7 +58,7 @@ public final class ResourceConnectorBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the ResourceConnectorBuilder.
      */
@@ -72,7 +74,7 @@ public final class ResourceConnectorBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the ResourceConnectorBuilder.
      */
@@ -88,7 +90,7 @@ public final class ResourceConnectorBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the ResourceConnectorBuilder.
      */
@@ -104,7 +106,7 @@ public final class ResourceConnectorBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the ResourceConnectorBuilder.
      */
@@ -115,7 +117,7 @@ public final class ResourceConnectorBuilder {
 
     /**
      * Builds an instance of ResourceConnectorImpl with the provided parameters.
-     *
+     * 
      * @return an instance of ResourceConnectorImpl.
      */
     public ResourceConnectorImpl buildClient() {

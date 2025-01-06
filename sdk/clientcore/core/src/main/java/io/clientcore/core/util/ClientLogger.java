@@ -7,8 +7,8 @@ import io.clientcore.core.annotation.Metadata;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.util.DefaultLogger;
 import io.clientcore.core.implementation.util.Slf4jLoggerShim;
-import io.clientcore.core.json.JsonProviders;
-import io.clientcore.core.json.JsonWriter;
+import io.clientcore.core.serialization.json.JsonWriter;
+import io.clientcore.core.serialization.json.implementation.DefaultJsonWriter;
 import io.clientcore.core.util.configuration.Configuration;
 
 import java.io.IOException;
@@ -33,7 +33,7 @@ import static io.clientcore.core.annotation.TypeConditions.FLUENT;
  * logged.</p>
  *
  * <p>A minimum logging level threshold is determined by the
- * {@link Configuration#PROPERTY_LOG_LEVEL AZURE_LOG_LEVEL} environment configuration. By default logging is
+ * {@link Configuration#PROPERTY_LOG_LEVEL LOG_LEVEL} environment configuration. By default logging is
  * <b>disabled</b>.</p>
  *
  * <p>The logger is capable of producing json-formatted messages enriched with key value pairs.
@@ -465,7 +465,7 @@ public class ClientLogger {
                 = (keyValuePairs == null ? 0 : keyValuePairs.size()) + (globalPairs == null ? 0 : globalPairs.size());
             int speculatedSize = 20 + pairsCount * 20 + message.length();
             try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream(speculatedSize);
-                JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+                JsonWriter jsonWriter = DefaultJsonWriter.toStream(outputStream, null)) {
                 jsonWriter.writeStartObject().writeStringField("message", message);
 
                 if (globalPairs != null) {
@@ -498,7 +498,7 @@ public class ClientLogger {
     }
 
     /**
-     * Enum which represent logging levels used in Azure SDKs.
+     * Enum which represent logging levels used.
      */
     public enum LogLevel {
         /**

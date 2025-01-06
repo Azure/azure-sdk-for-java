@@ -28,14 +28,14 @@ public final class ApiProductsImpl implements ApiProducts {
     public PagedIterable<ProductContract> listByApis(String resourceGroupName, String serviceName, String apiId) {
         PagedIterable<ProductContractInner> inner
             = this.serviceClient().listByApis(resourceGroupName, serviceName, apiId);
-        return Utils.mapPage(inner, inner1 -> new ProductContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProductContractImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ProductContract> listByApis(String resourceGroupName, String serviceName, String apiId,
         String filter, Integer top, Integer skip, Context context) {
         PagedIterable<ProductContractInner> inner
             = this.serviceClient().listByApis(resourceGroupName, serviceName, apiId, filter, top, skip, context);
-        return Utils.mapPage(inner, inner1 -> new ProductContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProductContractImpl(inner1, this.manager()));
     }
 
     private ApiProductsClient serviceClient() {

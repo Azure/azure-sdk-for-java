@@ -9,7 +9,8 @@ package com.azure.resourcemanager.support.generated;
  */
 public final class ServicesListSamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListServices.json
+     * x-ms-original-file:
+     * specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListServices.json
      */
     /**
      * Sample code: Gets list of services for which a support ticket can be created.

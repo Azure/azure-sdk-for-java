@@ -11,7 +11,7 @@ public final class AccountEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AccountEntity model = BinaryData.fromString(
-            "{\"kind\":\"Account\",\"properties\":{\"aadTenantId\":\"h\",\"aadUserId\":\"ymjzu\",\"accountName\":\"wmejjqhd\",\"displayName\":\"vmqxi\",\"hostEntityId\":\"okyfoz\",\"isDomainJoined\":false,\"ntDomain\":\"x\",\"objectGuid\":\"879ffa82-4948-452f-bee4-ab04a4a426ae\",\"puid\":\"fqpgaixwrgr\",\"sid\":\"derfrswqikwepwog\",\"upnSuffix\":\"icwn\",\"dnsDomain\":\"tfmcqbsudzpgc\",\"additionalData\":{\"kynrceqavf\":\"datagfqumjdjxhzghgo\",\"jdnaju\":\"databdfmm\"},\"friendlyName\":\"jyyqmkw\"},\"id\":\"vcwloqd\",\"name\":\"jk\",\"type\":\"uxxrwzobuzms\"}")
+            "{\"kind\":\"Account\",\"properties\":{\"aadTenantId\":\"pfhvfslk\",\"aadUserId\":\"tjlrigjksky\",\"accountName\":\"oov\",\"displayName\":\"dsxwaab\",\"hostEntityId\":\"ifrygzn\",\"isDomainJoined\":false,\"ntDomain\":\"ri\",\"objectGuid\":\"16435a79-b22c-4e8b-9883-fdab1dde04b7\",\"puid\":\"obgop\",\"sid\":\"hsln\",\"upnSuffix\":\"xieixynllxec\",\"dnsDomain\":\"rojphslhcawjutif\",\"additionalData\":{\"orq\":\"datamvi\",\"ujeickp\":\"databttzhraglkafhonq\",\"nwcl\":\"datavcpopmxe\",\"xm\":\"datayjede\"},\"friendlyName\":\"mkqscaz\"},\"id\":\"wxtzxpuamwab\",\"name\":\"xrvxcushsphai\",\"type\":\"mxyasflvgsgzw\"}")
             .toObject(AccountEntity.class);
     }
 

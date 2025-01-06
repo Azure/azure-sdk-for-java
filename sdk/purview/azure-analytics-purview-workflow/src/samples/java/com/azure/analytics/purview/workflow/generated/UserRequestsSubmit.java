@@ -14,15 +14,13 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class UserRequestsSubmit {
     public static void main(String[] args) {
-        UserRequestsClient userRequestsClient =
-                new UserRequestsClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                        .buildClient();
+        UserRequestsClient userRequestsClient
+            = new UserRequestsClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
+                .buildClient();
         // BEGIN:com.azure.analytics.purview.workflow.generated.userrequestssubmit.userrequestssubmit
-        BinaryData userRequestsPayload =
-                BinaryData.fromString(
-                        "{\"comment\":\"Thanks!\",\"operations\":[{\"type\":\"CreateTerm\",\"payload\":{\"glossaryTerm\":{\"name\":\"term\",\"anchor\":{\"glossaryGuid\":\"20031e20-b4df-4a66-a61d-1b0716f3fa48\"},\"nickName\":\"term\",\"status\":\"Approved\"}}}]}");
+        BinaryData userRequestsPayload = BinaryData.fromString(
+            "{\"comment\":\"Thanks!\",\"operations\":[{\"type\":\"CreateTerm\",\"payload\":{\"glossaryTerm\":{\"name\":\"term\",\"anchor\":{\"glossaryGuid\":\"20031e20-b4df-4a66-a61d-1b0716f3fa48\"},\"nickName\":\"term\",\"status\":\"Approved\"}}}]}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = userRequestsClient.submitWithResponse(userRequestsPayload, requestOptions);
         // END:com.azure.analytics.purview.workflow.generated.userrequestssubmit.userrequestssubmit

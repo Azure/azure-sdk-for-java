@@ -115,10 +115,10 @@ public final class LinkedStorageAccountsResourceImpl implements LinkedStorageAcc
         com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourcegroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.dataSourceType
-            = DataSourceType.fromString(Utils.getValueFromIdByName(innerObject.id(), "linkedStorageAccounts"));
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourcegroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.dataSourceType = DataSourceType
+            .fromString(ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "linkedStorageAccounts"));
     }
 
     public LinkedStorageAccountsResource refresh() {

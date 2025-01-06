@@ -12,7 +12,7 @@ public final class ComputePolicyInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ComputePolicyInner model = BinaryData.fromString(
-            "{\"properties\":{\"objectId\":\"f1d7b3d4-3f1b-49db-ad4a-0e340d8f7309\",\"objectType\":\"Group\",\"maxDegreeOfParallelismPerJob\":792570944,\"minPriorityPerJob\":1370032032},\"name\":\"h\",\"type\":\"fbowskanyk\",\"id\":\"lcuiywgqywgndr\"}")
+            "{\"properties\":{\"objectId\":\"231fe99d-e99c-4567-9d96-82468cd73094\",\"objectType\":\"Group\",\"maxDegreeOfParallelismPerJob\":792570944,\"minPriorityPerJob\":1370032032},\"name\":\"h\",\"type\":\"fbowskanyk\",\"id\":\"lcuiywgqywgndr\"}")
             .toObject(ComputePolicyInner.class);
         Assertions.assertEquals("lcuiywgqywgndr", model.id());
     }

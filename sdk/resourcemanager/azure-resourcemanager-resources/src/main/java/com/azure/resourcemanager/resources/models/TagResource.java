@@ -16,11 +16,15 @@ import java.util.Map;
 public interface TagResource extends HasId, HasName, HasInnerModel<TagsResourceInner> {
 
     /**
+     * Gets the type of the resource.
+     *
      * @return the type of the resource
      */
     String type();
 
     /**
+     * Gets the tags for the resource.
+     *
      * @return the tags for the resource
      */
     Map<String, String> tags();

@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.quota.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.quota.fluent.models.GroupQuotasEnforcementResponseInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * List of Azure regions, where the group quotas is enabled for enforcement.
  */
 @Fluent
-public final class GroupQuotasEnforcementListResponse {
+public final class GroupQuotasEnforcementListResponse implements JsonSerializable<GroupQuotasEnforcementListResponse> {
     /*
      * List of Azure Regions.
      */
-    @JsonProperty(value = "value")
     private List<GroupQuotasEnforcementResponseInner> value;
 
     /*
      * The URL to use for getting the next set of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -70,5 +72,46 @@ public final class GroupQuotasEnforcementListResponse {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GroupQuotasEnforcementListResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GroupQuotasEnforcementListResponse if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GroupQuotasEnforcementListResponse.
+     */
+    public static GroupQuotasEnforcementListResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GroupQuotasEnforcementListResponse deserializedGroupQuotasEnforcementListResponse
+                = new GroupQuotasEnforcementListResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<GroupQuotasEnforcementResponseInner> value
+                        = reader.readArray(reader1 -> GroupQuotasEnforcementResponseInner.fromJson(reader1));
+                    deserializedGroupQuotasEnforcementListResponse.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedGroupQuotasEnforcementListResponse.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGroupQuotasEnforcementListResponse;
+        });
     }
 }

@@ -19,7 +19,6 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.NetworkSecu
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.NodeTypeNatConfig;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.SecurityType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VaultSecretGroup;
-import com.azure.resourcemanager.servicefabricmanagedclusters.models.VmApplication;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VmImagePlan;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VmManagedIdentity;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VmSetupAction;
@@ -307,11 +306,6 @@ public final class NodeTypeProperties implements JsonSerializable<NodeTypeProper
      * specified for the node type name.
      */
     private String computerNamePrefix;
-
-    /*
-     * Specifies the gallery applications that should be made available to the underlying VMSS.
-     */
-    private List<VmApplication> vmApplications;
 
     /**
      * Creates an instance of NodeTypeProperties class.
@@ -1390,28 +1384,6 @@ public final class NodeTypeProperties implements JsonSerializable<NodeTypeProper
     }
 
     /**
-     * Get the vmApplications property: Specifies the gallery applications that should be made available to the
-     * underlying VMSS.
-     * 
-     * @return the vmApplications value.
-     */
-    public List<VmApplication> vmApplications() {
-        return this.vmApplications;
-    }
-
-    /**
-     * Set the vmApplications property: Specifies the gallery applications that should be made available to the
-     * underlying VMSS.
-     * 
-     * @param vmApplications the vmApplications value to set.
-     * @return the NodeTypeProperties object itself.
-     */
-    public NodeTypeProperties withVmApplications(List<VmApplication> vmApplications) {
-        this.vmApplications = vmApplications;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -1449,9 +1421,6 @@ public final class NodeTypeProperties implements JsonSerializable<NodeTypeProper
         }
         if (additionalNetworkInterfaceConfigurations() != null) {
             additionalNetworkInterfaceConfigurations().forEach(e -> e.validate());
-        }
-        if (vmApplications() != null) {
-            vmApplications().forEach(e -> e.validate());
         }
     }
 
@@ -1517,8 +1486,6 @@ public final class NodeTypeProperties implements JsonSerializable<NodeTypeProper
         jsonWriter.writeArrayField("additionalNetworkInterfaceConfigurations",
             this.additionalNetworkInterfaceConfigurations, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("computerNamePrefix", this.computerNamePrefix);
-        jsonWriter.writeArrayField("vmApplications", this.vmApplications,
-            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -1657,9 +1624,6 @@ public final class NodeTypeProperties implements JsonSerializable<NodeTypeProper
                         = additionalNetworkInterfaceConfigurations;
                 } else if ("computerNamePrefix".equals(fieldName)) {
                     deserializedNodeTypeProperties.computerNamePrefix = reader.getString();
-                } else if ("vmApplications".equals(fieldName)) {
-                    List<VmApplication> vmApplications = reader.readArray(reader1 -> VmApplication.fromJson(reader1));
-                    deserializedNodeTypeProperties.vmApplications = vmApplications;
                 } else {
                     reader.skipChildren();
                 }

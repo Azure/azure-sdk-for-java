@@ -4,31 +4,37 @@
 
 package com.azure.resourcemanager.postgresql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.postgresql.models.PrivateEndpointConnection;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for PrivateEndpointConnections UpdateTags. */
+/**
+ * Samples for PrivateEndpointConnections UpdateTags.
+ */
 public final class PrivateEndpointConnectionsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2018-06-01/examples/PrivateEndpointConnectionUpdateTags.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2018-06-01/examples/
+     * PrivateEndpointConnectionUpdateTags.json
      */
     /**
      * Sample code: Update private endpoint connection Tags.
-     *
+     * 
      * @param manager Entry point to PostgreSqlManager.
      */
-    public static void updatePrivateEndpointConnectionTags(
-        com.azure.resourcemanager.postgresql.PostgreSqlManager manager) {
-        PrivateEndpointConnection resource =
-            manager
-                .privateEndpointConnections()
-                .getWithResponse("Default", "test-svr", "private-endpoint-connection-name", Context.NONE)
-                .getValue();
-        resource.update().withTags(mapOf("key1", "val1", "key2", "val2", "key3", "val3")).apply();
+    public static void
+        updatePrivateEndpointConnectionTags(com.azure.resourcemanager.postgresql.PostgreSqlManager manager) {
+        PrivateEndpointConnection resource = manager.privateEndpointConnections()
+            .getWithResponse("Default", "test-svr", "private-endpoint-connection-name",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(
+                mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder", "key3", "fakeTokenPlaceholder"))
+            .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

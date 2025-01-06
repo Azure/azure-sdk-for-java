@@ -21,7 +21,7 @@ public final class IntegrationRuntimeMonitoringDatasListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"name\":\"gcfddofxnfb\",\"nodes\":[{\"nodeName\":\"rqaedwo\",\"availableMemoryInMB\":2113031573,\"cpuUtilization\":985224132,\"concurrentJobsLimit\":1883014762,\"concurrentJobsRunning\":1033040325,\"maxConcurrentJobs\":996802016,\"sentBytes\":92.0443,\"receivedBytes\":0.35558343,\"\":{\"zvothmkh\":\"dataihwpadhedbfobd\",\"scmyhrhjvszf\":\"dataaozvbwfcnjhbpoel\",\"ojoevzzufytdx\":\"databokndwpppq\"}},{\"nodeName\":\"ynzlyvapb\",\"availableMemoryInMB\":1995367383,\"cpuUtilization\":1359157425,\"concurrentJobsLimit\":463587841,\"concurrentJobsRunning\":1491414535,\"maxConcurrentJobs\":1608675846,\"sentBytes\":52.639305,\"receivedBytes\":37.606518,\"\":{\"lpsftqkrvm\":\"datazijvaylzeo\"}},{\"nodeName\":\"bvvcpw\",\"availableMemoryInMB\":70927281,\"cpuUtilization\":1256455737,\"concurrentJobsLimit\":1973554471,\"concurrentJobsRunning\":668815019,\"maxConcurrentJobs\":988785355,\"sentBytes\":50.177048,\"receivedBytes\":82.911674,\"\":{\"wacycsyotctkhf\":\"datavrntfk\",\"mhnmizhvprhqqw\":\"datafsatvcsx\"}}]}";
+            = "{\"name\":\"gna\",\"nodes\":[{\"nodeName\":\"gfbktyjmf\",\"availableMemoryInMB\":182959035,\"cpuUtilization\":1103835863,\"concurrentJobsLimit\":1442210769,\"concurrentJobsRunning\":2065461601,\"maxConcurrentJobs\":776279047,\"sentBytes\":4.1725993,\"receivedBytes\":27.622026,\"\":{\"jcx\":\"dataqmje\",\"vxisimjcea\":\"datayqgxhlus\",\"mywzashxgonoy\":\"databjqvls\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class IntegrationRuntimeMonitoringDatasListWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IntegrationRuntimeMonitoringData response = manager.integrationRuntimeMonitoringDatas()
-            .listWithResponse("nyzcwyjsmk", "qldqabn", "vpaqbqxfb", com.azure.core.util.Context.NONE)
+            .listWithResponse("suvjslcz", "ciidjs", "lfryvdmvxadqac", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("gcfddofxnfb", response.name());
+        Assertions.assertEquals("gna", response.name());
     }
 }

@@ -17,26 +17,25 @@ public final class DedicatedHsmResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DedicatedHsmResource model = BinaryData.fromString(
-            "{\"sku\":{\"name\":\"SafeNet Luna Network HSM A790\"},\"zones\":[\"iydmcwyhzdxs\",\"adbzmnvdfznud\",\"od\",\"xzb\"],\"location\":\"cblylpstdbhhxsr\",\"tags\":{\"jmygtdsslswtmwer\":\"ucerscdntnevfi\",\"yqsemwa\":\"ofz\",\"tshhszhedp\":\"n\",\"k\":\"vwiwubmwmbesld\"},\"id\":\"wtppjflcxogaoko\",\"name\":\"z\",\"type\":\"nsikvmkqzeqqkdl\"}")
+            "{\"sku\":{\"name\":\"payShield10K_LMK1_CPS2500\"},\"zones\":[\"rljdouskcqv\",\"ocrcjdk\",\"tnhxbn\"],\"location\":\"biksq\",\"tags\":{\"fmppe\":\"ssainqpjwnzll\",\"c\":\"bvmgxsabkyqduuji\"},\"id\":\"czdzev\",\"name\":\"dhkrwpdappdsbdk\",\"type\":\"wrwjfeu\"}")
             .toObject(DedicatedHsmResource.class);
-        Assertions.assertEquals("cblylpstdbhhxsr", model.location());
-        Assertions.assertEquals("ucerscdntnevfi", model.tags().get("jmygtdsslswtmwer"));
-        Assertions.assertEquals(SkuName.SAFE_NET_LUNA_NETWORK_HSM_A790, model.sku().name());
-        Assertions.assertEquals("iydmcwyhzdxs", model.zones().get(0));
+        Assertions.assertEquals("biksq", model.location());
+        Assertions.assertEquals("ssainqpjwnzll", model.tags().get("fmppe"));
+        Assertions.assertEquals(SkuName.PAY_SHIELD10K_LMK1_CPS2500, model.sku().name());
+        Assertions.assertEquals("rljdouskcqv", model.zones().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DedicatedHsmResource model = new DedicatedHsmResource().withLocation("cblylpstdbhhxsr")
-            .withTags(
-                mapOf("jmygtdsslswtmwer", "ucerscdntnevfi", "yqsemwa", "ofz", "tshhszhedp", "n", "k", "vwiwubmwmbesld"))
-            .withSku(new Sku().withName(SkuName.SAFE_NET_LUNA_NETWORK_HSM_A790))
-            .withZones(Arrays.asList("iydmcwyhzdxs", "adbzmnvdfznud", "od", "xzb"));
+        DedicatedHsmResource model = new DedicatedHsmResource().withLocation("biksq")
+            .withTags(mapOf("fmppe", "ssainqpjwnzll", "c", "bvmgxsabkyqduuji"))
+            .withSku(new Sku().withName(SkuName.PAY_SHIELD10K_LMK1_CPS2500))
+            .withZones(Arrays.asList("rljdouskcqv", "ocrcjdk", "tnhxbn"));
         model = BinaryData.fromObject(model).toObject(DedicatedHsmResource.class);
-        Assertions.assertEquals("cblylpstdbhhxsr", model.location());
-        Assertions.assertEquals("ucerscdntnevfi", model.tags().get("jmygtdsslswtmwer"));
-        Assertions.assertEquals(SkuName.SAFE_NET_LUNA_NETWORK_HSM_A790, model.sku().name());
-        Assertions.assertEquals("iydmcwyhzdxs", model.zones().get(0));
+        Assertions.assertEquals("biksq", model.location());
+        Assertions.assertEquals("ssainqpjwnzll", model.tags().get("fmppe"));
+        Assertions.assertEquals(SkuName.PAY_SHIELD10K_LMK1_CPS2500, model.sku().name());
+        Assertions.assertEquals("rljdouskcqv", model.zones().get(0));
     }
 
     // Use "Map.of" if available

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.newrelicobservability.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The MonitorsSwitchBillingHeaders model.
@@ -17,7 +16,6 @@ public final class MonitorsSwitchBillingHeaders {
     /*
      * The Retry-After property.
      */
-    @JsonProperty(value = "Retry-After")
     private Integer retryAfter;
 
     // HttpHeaders containing the raw property values.

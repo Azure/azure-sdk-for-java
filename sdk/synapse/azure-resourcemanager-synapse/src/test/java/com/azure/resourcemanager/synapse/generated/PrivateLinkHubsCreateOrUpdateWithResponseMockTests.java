@@ -23,7 +23,7 @@ public final class PrivateLinkHubsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"vsaaxwsp\",\"privateEndpointConnections\":[{\"id\":\"khfjqebglcxkx\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"mvygysem\"}},{\"id\":\"esrfsvpinkzpatq\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"xspvckojazb\"}}]},\"location\":\"gspftesu\",\"tags\":{\"srfjbdxzfxnx\":\"vpvdylytcovqse\",\"kjmdihdcyy\":\"lbmuos\"},\"id\":\"zlwhbwzjnufzrfgm\",\"name\":\"qgnnbz\",\"type\":\"tftedz\"}";
+            = "{\"properties\":{\"provisioningState\":\"eojhtollhsvi\",\"privateEndpointConnections\":[{\"id\":\"zln\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"ovyoanf\"}}]},\"location\":\"cswqa\",\"tags\":{\"tpgaeukya\":\"vtxigvjr\",\"csklhsidsjt\":\"ohpmwhqn\",\"gazlsvbz\":\"lpbnin\",\"e\":\"cpuo\"},\"id\":\"wjcciklhsy\",\"name\":\"krdre\",\"type\":\"xolriy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,16 +33,16 @@ public final class PrivateLinkHubsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateLinkHub response = manager.privateLinkHubs()
-            .define("zhwilzzh")
-            .withRegion("rhwv")
-            .withExistingResourceGroup("ukhsusmmorf")
-            .withTags(mapOf("rcl", "qggljkybs", "hxpcvrdnyeita", "vtzqnrbctbhp"))
-            .withProvisioningState("mriprlk")
+            .define("asvvoqsbpkfl")
+            .withRegion("umzued")
+            .withExistingResourceGroup("guhfupe")
+            .withTags(mapOf("gvqrnhyhlwcj", "bfvxovqkxiuxq", "bxrqrkijp", "qggjhf", "qztvx", "uqlsdx"))
+            .withProvisioningState("k")
             .create();
 
-        Assertions.assertEquals("gspftesu", response.location());
-        Assertions.assertEquals("vpvdylytcovqse", response.tags().get("srfjbdxzfxnx"));
-        Assertions.assertEquals("vsaaxwsp", response.provisioningState());
+        Assertions.assertEquals("cswqa", response.location());
+        Assertions.assertEquals("vtxigvjr", response.tags().get("tpgaeukya"));
+        Assertions.assertEquals("eojhtollhsvi", response.provisioningState());
     }
 
     // Use "Map.of" if available

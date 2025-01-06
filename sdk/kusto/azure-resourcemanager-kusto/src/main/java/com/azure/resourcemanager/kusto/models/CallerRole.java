@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CallerRole. */
+/**
+ * Defines values for CallerRole.
+ */
 public final class CallerRole extends ExpandableStringEnum<CallerRole> {
-    /** Static value Admin for CallerRole. */
+    /**
+     * Static value Admin for CallerRole.
+     */
     public static final CallerRole ADMIN = fromString("Admin");
 
-    /** Static value None for CallerRole. */
+    /**
+     * Static value None for CallerRole.
+     */
     public static final CallerRole NONE = fromString("None");
 
     /**
      * Creates a new instance of CallerRole value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class CallerRole extends ExpandableStringEnum<CallerRole> {
 
     /**
      * Creates or finds a CallerRole from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CallerRole.
      */
-    @JsonCreator
     public static CallerRole fromString(String name) {
         return fromString(name, CallerRole.class);
     }
 
     /**
      * Gets known CallerRole values.
-     *
+     * 
      * @return known CallerRole values.
      */
     public static Collection<CallerRole> values() {

@@ -36,11 +36,6 @@ public final class StatelessServiceProperties extends ServiceResourceProperties 
      */
     private String instanceCloseDelayDuration;
 
-    /*
-     * The current deployment or provisioning state, which only appears in the response
-     */
-    private String provisioningState;
-
     /**
      * Creates an instance of StatelessServiceProperties class.
      */
@@ -103,17 +98,6 @@ public final class StatelessServiceProperties extends ServiceResourceProperties 
     public StatelessServiceProperties withInstanceCloseDelayDuration(String instanceCloseDelayDuration) {
         this.instanceCloseDelayDuration = instanceCloseDelayDuration;
         return this;
-    }
-
-    /**
-     * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
-     * response.
-     * 
-     * @return the provisioningState value.
-     */
-    @Override
-    public String provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -277,7 +261,7 @@ public final class StatelessServiceProperties extends ServiceResourceProperties 
                 } else if ("defaultMoveCost".equals(fieldName)) {
                     deserializedStatelessServiceProperties.withDefaultMoveCost(MoveCost.fromString(reader.getString()));
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedStatelessServiceProperties.provisioningState = reader.getString();
+                    deserializedStatelessServiceProperties.withProvisioningState(reader.getString());
                 } else if ("serviceTypeName".equals(fieldName)) {
                     deserializedStatelessServiceProperties.withServiceTypeName(reader.getString());
                 } else if ("partitionDescription".equals(fieldName)) {

@@ -15,31 +15,31 @@ public final class MaintenanceWindowsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MaintenanceWindowsInner model = BinaryData.fromString(
-            "{\"properties\":{\"timeRanges\":[{\"dayOfWeek\":\"Monday\",\"startTime\":\"ogjltdtbnnhad\",\"duration\":\"crkvcikhnv\"},{\"dayOfWeek\":\"Wednesday\",\"startTime\":\"gxqquezik\",\"duration\":\"ggxkallatmelwuip\"},{\"dayOfWeek\":\"Friday\",\"startTime\":\"zkzivgvvcnay\",\"duration\":\"yrnxxmueedn\"},{\"dayOfWeek\":\"Saturday\",\"startTime\":\"stkwqqtch\",\"duration\":\"lmfmtdaay\"}]},\"id\":\"dvwvgpio\",\"name\":\"g\",\"type\":\"xrtfudxep\"}")
+            "{\"properties\":{\"timeRanges\":[{\"dayOfWeek\":\"Tuesday\",\"startTime\":\"lerchpq\",\"duration\":\"f\"},{\"dayOfWeek\":\"Thursday\",\"startTime\":\"bwidfcxsspuunn\",\"duration\":\"yhkx\"},{\"dayOfWeek\":\"Tuesday\",\"startTime\":\"rihpfhoq\",\"duration\":\"a\"},{\"dayOfWeek\":\"Sunday\",\"startTime\":\"omdjvlpjxxkzbrm\",\"duration\":\"eivsiykzkdnc\"}]},\"id\":\"dxonbzoggculap\",\"name\":\"wyrpgogtqxepnyl\",\"type\":\"fuajly\"}")
             .toObject(MaintenanceWindowsInner.class);
-        Assertions.assertEquals(DayOfWeek.MONDAY, model.timeRanges().get(0).dayOfWeek());
-        Assertions.assertEquals("ogjltdtbnnhad", model.timeRanges().get(0).startTime());
-        Assertions.assertEquals("crkvcikhnv", model.timeRanges().get(0).duration());
+        Assertions.assertEquals(DayOfWeek.TUESDAY, model.timeRanges().get(0).dayOfWeek());
+        Assertions.assertEquals("lerchpq", model.timeRanges().get(0).startTime());
+        Assertions.assertEquals("f", model.timeRanges().get(0).duration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MaintenanceWindowsInner model = new MaintenanceWindowsInner().withTimeRanges(Arrays.asList(
-            new MaintenanceWindowTimeRange().withDayOfWeek(DayOfWeek.MONDAY)
-                .withStartTime("ogjltdtbnnhad")
-                .withDuration("crkvcikhnv"),
-            new MaintenanceWindowTimeRange().withDayOfWeek(DayOfWeek.WEDNESDAY)
-                .withStartTime("gxqquezik")
-                .withDuration("ggxkallatmelwuip"),
-            new MaintenanceWindowTimeRange().withDayOfWeek(DayOfWeek.FRIDAY)
-                .withStartTime("zkzivgvvcnay")
-                .withDuration("yrnxxmueedn"),
-            new MaintenanceWindowTimeRange().withDayOfWeek(DayOfWeek.SATURDAY)
-                .withStartTime("stkwqqtch")
-                .withDuration("lmfmtdaay")));
+            new MaintenanceWindowTimeRange().withDayOfWeek(DayOfWeek.TUESDAY)
+                .withStartTime("lerchpq")
+                .withDuration("f"),
+            new MaintenanceWindowTimeRange().withDayOfWeek(DayOfWeek.THURSDAY)
+                .withStartTime("bwidfcxsspuunn")
+                .withDuration("yhkx"),
+            new MaintenanceWindowTimeRange().withDayOfWeek(DayOfWeek.TUESDAY)
+                .withStartTime("rihpfhoq")
+                .withDuration("a"),
+            new MaintenanceWindowTimeRange().withDayOfWeek(DayOfWeek.SUNDAY)
+                .withStartTime("omdjvlpjxxkzbrm")
+                .withDuration("eivsiykzkdnc")));
         model = BinaryData.fromObject(model).toObject(MaintenanceWindowsInner.class);
-        Assertions.assertEquals(DayOfWeek.MONDAY, model.timeRanges().get(0).dayOfWeek());
-        Assertions.assertEquals("ogjltdtbnnhad", model.timeRanges().get(0).startTime());
-        Assertions.assertEquals("crkvcikhnv", model.timeRanges().get(0).duration());
+        Assertions.assertEquals(DayOfWeek.TUESDAY, model.timeRanges().get(0).dayOfWeek());
+        Assertions.assertEquals("lerchpq", model.timeRanges().get(0).startTime());
+        Assertions.assertEquals("f", model.timeRanges().get(0).duration());
     }
 }

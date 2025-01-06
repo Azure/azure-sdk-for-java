@@ -1,6 +1,8 @@
 spring:
   cloud:
     azure:
+      credential:
+        token-credential-bean-name: integrationTestTokenCredential
       storage:
         fileshare:
           account-name: ${AZURE_STORAGE_ACCOUNT_NAME}

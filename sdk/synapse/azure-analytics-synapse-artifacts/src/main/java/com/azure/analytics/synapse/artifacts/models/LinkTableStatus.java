@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,7 +25,9 @@ public final class LinkTableStatus implements JsonSerializable<LinkTableStatus> 
     private String id;
 
     /*
-     * Link table status, please refer to this [articles](https://learn.microsoft.com/azure/synapse-analytics/synapse-link/sql-database-synapse-link#monitoring) for details.
+     * Link table status, please refer to this
+     * [articles](https://learn.microsoft.com/azure/synapse-analytics/synapse-link/sql-database-synapse-link#monitoring)
+     * for details.
      */
     private String status;
 
@@ -307,11 +310,11 @@ public final class LinkTableStatus implements JsonSerializable<LinkTableStatus> 
                 } else if ("errorCode".equals(fieldName)) {
                     deserializedLinkTableStatus.errorCode = reader.getString();
                 } else if ("lastProcessedData".equals(fieldName)) {
-                    deserializedLinkTableStatus.lastProcessedData
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedLinkTableStatus.lastProcessedData = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("lastTransactionCommitTime".equals(fieldName)) {
-                    deserializedLinkTableStatus.lastTransactionCommitTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedLinkTableStatus.lastTransactionCommitTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

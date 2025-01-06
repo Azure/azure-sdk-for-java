@@ -5,35 +5,26 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.fluent.models.ServiceBusQueueEventSubscriptionDestinationProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Information about the service bus destination for an event subscription.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "endpointType",
-    defaultImpl = ServiceBusQueueEventSubscriptionDestination.class,
-    visible = true)
-@JsonTypeName("ServiceBusQueue")
 @Fluent
 public final class ServiceBusQueueEventSubscriptionDestination extends EventSubscriptionDestination {
     /*
      * Type of the endpoint for the event subscription destination.
      */
-    @JsonTypeId
-    @JsonProperty(value = "endpointType", required = true)
     private EndpointType endpointType = EndpointType.SERVICE_BUS_QUEUE;
 
     /*
      * Service Bus Properties of the event subscription destination.
      */
-    @JsonProperty(value = "properties")
     private ServiceBusQueueEventSubscriptionDestinationProperties innerProperties;
 
     /**
@@ -117,9 +108,50 @@ public final class ServiceBusQueueEventSubscriptionDestination extends EventSubs
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceBusQueueEventSubscriptionDestination from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceBusQueueEventSubscriptionDestination if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceBusQueueEventSubscriptionDestination.
+     */
+    public static ServiceBusQueueEventSubscriptionDestination fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceBusQueueEventSubscriptionDestination deserializedServiceBusQueueEventSubscriptionDestination
+                = new ServiceBusQueueEventSubscriptionDestination();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endpointType".equals(fieldName)) {
+                    deserializedServiceBusQueueEventSubscriptionDestination.endpointType
+                        = EndpointType.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedServiceBusQueueEventSubscriptionDestination.innerProperties
+                        = ServiceBusQueueEventSubscriptionDestinationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceBusQueueEventSubscriptionDestination;
+        });
     }
 }

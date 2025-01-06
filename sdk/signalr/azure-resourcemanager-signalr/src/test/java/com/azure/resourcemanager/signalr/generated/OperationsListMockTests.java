@@ -22,7 +22,7 @@ public final class OperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"uqgsj\",\"isDataAction\":true,\"display\":{\"provider\":\"xgketwz\",\"resource\":\"zjhfjmhvv\",\"operation\":\"vgpmun\",\"description\":\"sx\"},\"origin\":\"hfbuzjyihsasbhud\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{\"name\":\"emslynsqyrp\",\"displayName\":\"obrltt\",\"displayDescription\":\"sjnygqdnfwqzdzgt\",\"unit\":\"axhnfh\",\"aggregationType\":\"yvi\",\"fillGapWithZero\":\"uwivkxoy\",\"category\":\"nbixxrti\",\"dimensions\":[{},{}]}],\"logSpecifications\":[{\"name\":\"gclrci\",\"displayName\":\"soxfrken\"},{\"name\":\"m\",\"displayName\":\"efrp\"},{\"name\":\"dnqqskawaoqvmmb\",\"displayName\":\"qfr\"}]}}}]}";
+            = "{\"value\":[{\"name\":\"rr\",\"isDataAction\":false,\"display\":{\"provider\":\"ydzgkrvqeevtoe\",\"resource\":\"yutnwytpzdmov\",\"operation\":\"fvaawzqa\",\"description\":\"lgzurig\"},\"origin\":\"ecxn\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{\"name\":\"pvz\",\"displayName\":\"qtmldgxo\",\"displayDescription\":\"irclnpk\",\"unit\":\"ayzri\",\"aggregationType\":\"hya\",\"fillGapWithZero\":\"vjlboxqvk\",\"category\":\"mxho\",\"dimensions\":[{},{},{}]},{\"name\":\"hdwdi\",\"displayName\":\"mbnraauzzp\",\"displayDescription\":\"a\",\"unit\":\"sdzhezww\",\"aggregationType\":\"iqyuvvfo\",\"fillGapWithZero\":\"p\",\"category\":\"qyikvy\",\"dimensions\":[{}]}],\"logSpecifications\":[{\"name\":\"luwmncst\",\"displayName\":\"jfybvpoekrsgsgb\"},{\"name\":\"uzqgnjdgkynsc\",\"displayName\":\"qhzvhxnkomt\"},{\"name\":\"bo\",\"displayName\":\"pnvdxz\"}]}}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,18 +33,18 @@ public final class OperationsListMockTests {
 
         PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("uqgsj", response.iterator().next().name());
-        Assertions.assertEquals(true, response.iterator().next().isDataAction());
-        Assertions.assertEquals("xgketwz", response.iterator().next().display().provider());
-        Assertions.assertEquals("zjhfjmhvv", response.iterator().next().display().resource());
-        Assertions.assertEquals("vgpmun", response.iterator().next().display().operation());
-        Assertions.assertEquals("sx", response.iterator().next().display().description());
-        Assertions.assertEquals("hfbuzjyihsasbhud", response.iterator().next().origin());
-        Assertions.assertEquals("emslynsqyrp",
+        Assertions.assertEquals("rr", response.iterator().next().name());
+        Assertions.assertEquals(false, response.iterator().next().isDataAction());
+        Assertions.assertEquals("ydzgkrvqeevtoe", response.iterator().next().display().provider());
+        Assertions.assertEquals("yutnwytpzdmov", response.iterator().next().display().resource());
+        Assertions.assertEquals("fvaawzqa", response.iterator().next().display().operation());
+        Assertions.assertEquals("lgzurig", response.iterator().next().display().description());
+        Assertions.assertEquals("ecxn", response.iterator().next().origin());
+        Assertions.assertEquals("pvz",
             response.iterator().next().properties().serviceSpecification().metricSpecifications().get(0).name());
-        Assertions.assertEquals("obrltt",
+        Assertions.assertEquals("qtmldgxo",
             response.iterator().next().properties().serviceSpecification().metricSpecifications().get(0).displayName());
-        Assertions.assertEquals("sjnygqdnfwqzdzgt",
+        Assertions.assertEquals("irclnpk",
             response.iterator()
                 .next()
                 .properties()
@@ -52,9 +52,9 @@ public final class OperationsListMockTests {
                 .metricSpecifications()
                 .get(0)
                 .displayDescription());
-        Assertions.assertEquals("axhnfh",
+        Assertions.assertEquals("ayzri",
             response.iterator().next().properties().serviceSpecification().metricSpecifications().get(0).unit());
-        Assertions.assertEquals("yvi",
+        Assertions.assertEquals("hya",
             response.iterator()
                 .next()
                 .properties()
@@ -62,7 +62,7 @@ public final class OperationsListMockTests {
                 .metricSpecifications()
                 .get(0)
                 .aggregationType());
-        Assertions.assertEquals("uwivkxoy",
+        Assertions.assertEquals("vjlboxqvk",
             response.iterator()
                 .next()
                 .properties()
@@ -70,11 +70,11 @@ public final class OperationsListMockTests {
                 .metricSpecifications()
                 .get(0)
                 .fillGapWithZero());
-        Assertions.assertEquals("nbixxrti",
+        Assertions.assertEquals("mxho",
             response.iterator().next().properties().serviceSpecification().metricSpecifications().get(0).category());
-        Assertions.assertEquals("gclrci",
+        Assertions.assertEquals("luwmncst",
             response.iterator().next().properties().serviceSpecification().logSpecifications().get(0).name());
-        Assertions.assertEquals("soxfrken",
+        Assertions.assertEquals("jfybvpoekrsgsgb",
             response.iterator().next().properties().serviceSpecification().logSpecifications().get(0).displayName());
     }
 }

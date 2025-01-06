@@ -5,33 +5,32 @@
 package com.azure.resourcemanager.newrelicobservability.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.newrelicobservability.fluent.models.NewRelicMonitorResourceUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * The type used for update operations of the NewRelicMonitorResource.
  */
 @Fluent
-public final class NewRelicMonitorResourceUpdate {
+public final class NewRelicMonitorResourceUpdate implements JsonSerializable<NewRelicMonitorResourceUpdate> {
     /*
      * The managed service identities assigned to this resource.
      */
-    @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
 
     /*
      * Resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The updatable properties of the NewRelicMonitorResource.
      */
-    @JsonProperty(value = "properties")
     private NewRelicMonitorResourceUpdateProperties innerProperties;
 
     /**
@@ -217,5 +216,50 @@ public final class NewRelicMonitorResourceUpdate {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NewRelicMonitorResourceUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NewRelicMonitorResourceUpdate if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NewRelicMonitorResourceUpdate.
+     */
+    public static NewRelicMonitorResourceUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NewRelicMonitorResourceUpdate deserializedNewRelicMonitorResourceUpdate
+                = new NewRelicMonitorResourceUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("identity".equals(fieldName)) {
+                    deserializedNewRelicMonitorResourceUpdate.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedNewRelicMonitorResourceUpdate.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedNewRelicMonitorResourceUpdate.innerProperties
+                        = NewRelicMonitorResourceUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNewRelicMonitorResourceUpdate;
+        });
     }
 }

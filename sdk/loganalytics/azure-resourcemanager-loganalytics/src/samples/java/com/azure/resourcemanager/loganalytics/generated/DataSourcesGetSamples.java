@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-/** Samples for DataSources Get. */
+/**
+ * Samples for DataSources Get.
+ */
 public final class DataSourcesGetSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/DataSourcesGet.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * DataSourcesGet.json
      */
     /**
      * Sample code: DataSourcesGet.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void dataSourcesGet(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .dataSources()
+        manager.dataSources()
             .getWithResponse("OIAutoRest5123", "AzTest9724", "AzTestDS774", com.azure.core.util.Context.NONE);
     }
 }

@@ -54,22 +54,26 @@ public class MongoDbLinkedService extends LinkedService {
     private Object authSource;
 
     /*
-     * The TCP port number that the MongoDB server uses to listen for client connections. The default value is 27017. Type: integer (or Expression with resultType integer), minimum: 0.
+     * The TCP port number that the MongoDB server uses to listen for client connections. The default value is 27017.
+     * Type: integer (or Expression with resultType integer), minimum: 0.
      */
     private Object port;
 
     /*
-     * Specifies whether the connections to the server are encrypted using SSL. The default value is false. Type: boolean (or Expression with resultType boolean).
+     * Specifies whether the connections to the server are encrypted using SSL. The default value is false. Type:
+     * boolean (or Expression with resultType boolean).
      */
     private Object enableSsl;
 
     /*
-     * Specifies whether to allow self-signed certificates from the server. The default value is false. Type: boolean (or Expression with resultType boolean).
+     * Specifies whether to allow self-signed certificates from the server. The default value is false. Type: boolean
+     * (or Expression with resultType boolean).
      */
     private Object allowSelfSignedServerCert;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     private Object encryptedCredential;
 

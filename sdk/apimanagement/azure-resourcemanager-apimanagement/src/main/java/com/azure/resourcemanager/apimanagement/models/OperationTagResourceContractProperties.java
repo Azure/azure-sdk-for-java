@@ -5,67 +5,68 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Operation Entity contract Properties. */
+/**
+ * Operation Entity contract Properties.
+ */
 @Fluent
-public final class OperationTagResourceContractProperties {
+public final class OperationTagResourceContractProperties
+    implements JsonSerializable<OperationTagResourceContractProperties> {
     /*
      * Identifier of the operation in form /operations/{operationId}.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Operation name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * API Name.
      */
-    @JsonProperty(value = "apiName", access = JsonProperty.Access.WRITE_ONLY)
     private String apiName;
 
     /*
      * API Revision.
      */
-    @JsonProperty(value = "apiRevision", access = JsonProperty.Access.WRITE_ONLY)
     private String apiRevision;
 
     /*
      * API Version.
      */
-    @JsonProperty(value = "apiVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String apiVersion;
 
     /*
      * Operation Description.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * A Valid HTTP Operation Method. Typical Http Methods like GET, PUT, POST but not limited by only them.
      */
-    @JsonProperty(value = "method", access = JsonProperty.Access.WRITE_ONLY)
     private String method;
 
     /*
      * Relative URL template identifying the target resource for this operation. May include parameters. Example:
      * /customers/{cid}/orders/{oid}/?date={date}
      */
-    @JsonProperty(value = "urlTemplate", access = JsonProperty.Access.WRITE_ONLY)
     private String urlTemplate;
 
-    /** Creates an instance of OperationTagResourceContractProperties class. */
+    /**
+     * Creates an instance of OperationTagResourceContractProperties class.
+     */
     public OperationTagResourceContractProperties() {
     }
 
     /**
      * Get the id property: Identifier of the operation in form /operations/{operationId}.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -74,7 +75,7 @@ public final class OperationTagResourceContractProperties {
 
     /**
      * Set the id property: Identifier of the operation in form /operations/{operationId}.
-     *
+     * 
      * @param id the id value to set.
      * @return the OperationTagResourceContractProperties object itself.
      */
@@ -85,7 +86,7 @@ public final class OperationTagResourceContractProperties {
 
     /**
      * Get the name property: Operation name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -94,7 +95,7 @@ public final class OperationTagResourceContractProperties {
 
     /**
      * Get the apiName property: API Name.
-     *
+     * 
      * @return the apiName value.
      */
     public String apiName() {
@@ -103,7 +104,7 @@ public final class OperationTagResourceContractProperties {
 
     /**
      * Get the apiRevision property: API Revision.
-     *
+     * 
      * @return the apiRevision value.
      */
     public String apiRevision() {
@@ -112,7 +113,7 @@ public final class OperationTagResourceContractProperties {
 
     /**
      * Get the apiVersion property: API Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String apiVersion() {
@@ -121,7 +122,7 @@ public final class OperationTagResourceContractProperties {
 
     /**
      * Get the description property: Operation Description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -131,7 +132,7 @@ public final class OperationTagResourceContractProperties {
     /**
      * Get the method property: A Valid HTTP Operation Method. Typical Http Methods like GET, PUT, POST but not limited
      * by only them.
-     *
+     * 
      * @return the method value.
      */
     public String method() {
@@ -141,7 +142,7 @@ public final class OperationTagResourceContractProperties {
     /**
      * Get the urlTemplate property: Relative URL template identifying the target resource for this operation. May
      * include parameters. Example: /customers/{cid}/orders/{oid}/?date={date}.
-     *
+     * 
      * @return the urlTemplate value.
      */
     public String urlTemplate() {
@@ -150,9 +151,60 @@ public final class OperationTagResourceContractProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationTagResourceContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationTagResourceContractProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationTagResourceContractProperties.
+     */
+    public static OperationTagResourceContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationTagResourceContractProperties deserializedOperationTagResourceContractProperties
+                = new OperationTagResourceContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedOperationTagResourceContractProperties.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedOperationTagResourceContractProperties.name = reader.getString();
+                } else if ("apiName".equals(fieldName)) {
+                    deserializedOperationTagResourceContractProperties.apiName = reader.getString();
+                } else if ("apiRevision".equals(fieldName)) {
+                    deserializedOperationTagResourceContractProperties.apiRevision = reader.getString();
+                } else if ("apiVersion".equals(fieldName)) {
+                    deserializedOperationTagResourceContractProperties.apiVersion = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedOperationTagResourceContractProperties.description = reader.getString();
+                } else if ("method".equals(fieldName)) {
+                    deserializedOperationTagResourceContractProperties.method = reader.getString();
+                } else if ("urlTemplate".equals(fieldName)) {
+                    deserializedOperationTagResourceContractProperties.urlTemplate = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationTagResourceContractProperties;
+        });
     }
 }

@@ -4,16 +4,17 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
+import com.azure.resourcemanager.devcenter.models.ScheduleEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ScheduledFrequency;
 import com.azure.resourcemanager.devcenter.models.ScheduledType;
-import com.azure.resourcemanager.devcenter.models.ScheduleEnableStatus;
 
 /**
  * Samples for Schedules CreateOrUpdate.
  */
 public final class SchedulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Schedules_CreateDailyShutdownPoolSchedule.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/
+     * Schedules_CreateDailyShutdownPoolSchedule.json
      */
     /**
      * Sample code: Schedules_CreateDailyShutdownPoolSchedule.

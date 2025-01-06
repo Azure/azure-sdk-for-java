@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.managednetworkfabric.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.ExternalNetworkInner;
 import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
@@ -37,8 +38,8 @@ public final class ExternalNetworkImpl implements ExternalNetwork, ExternalNetwo
         return this.innerModel().type();
     }
 
-    public String networkToNetworkInterconnectId() {
-        return this.innerModel().networkToNetworkInterconnectId();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public PeeringOption peeringOption() {
@@ -63,6 +64,10 @@ public final class ExternalNetworkImpl implements ExternalNetwork, ExternalNetwo
 
     public AdministrativeState administrativeState() {
         return this.innerModel().administrativeState();
+    }
+
+    public String networkToNetworkInterconnectId() {
+        return this.innerModel().networkToNetworkInterconnectId();
     }
 
     public String importRoutePolicyId() {
@@ -155,9 +160,9 @@ public final class ExternalNetworkImpl implements ExternalNetwork, ExternalNetwo
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.l3IsolationDomainName = Utils.getValueFromIdByName(innerObject.id(), "l3IsolationDomains");
-        this.externalNetworkName = Utils.getValueFromIdByName(innerObject.id(), "externalNetworks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.l3IsolationDomainName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "l3IsolationDomains");
+        this.externalNetworkName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "externalNetworks");
     }
 
     public ExternalNetwork refresh() {
@@ -224,6 +229,16 @@ public final class ExternalNetworkImpl implements ExternalNetwork, ExternalNetwo
     public ExternalNetworkImpl withOptionAProperties(ExternalNetworkPropertiesOptionAProperties optionAProperties) {
         this.innerModel().withOptionAProperties(optionAProperties);
         return this;
+    }
+
+    public ExternalNetworkImpl withNetworkToNetworkInterconnectId(String networkToNetworkInterconnectId) {
+        if (isInCreateMode()) {
+            this.innerModel().withNetworkToNetworkInterconnectId(networkToNetworkInterconnectId);
+            return this;
+        } else {
+            this.updateBody.withNetworkToNetworkInterconnectId(networkToNetworkInterconnectId);
+            return this;
+        }
     }
 
     public ExternalNetworkImpl withImportRoutePolicyId(String importRoutePolicyId) {

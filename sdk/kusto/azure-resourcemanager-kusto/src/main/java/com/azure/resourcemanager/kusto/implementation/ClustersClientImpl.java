@@ -55,17 +55,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ClustersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ClustersClient.
+ */
 public final class ClustersClientImpl implements ClustersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ClustersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final KustoManagementClientImpl client;
 
     /**
      * Initializes an instance of ClustersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ClustersClientImpl(KustoManagementClientImpl client) {
@@ -269,7 +275,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Gets a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -304,7 +310,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Gets a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -339,7 +345,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Gets a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -355,7 +361,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Gets a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -372,7 +378,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Gets a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -387,14 +393,14 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Create or update a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new cluster to be created, but to prevent updating an existing cluster.
-     *     Other values will result in a 412 Pre-condition Failed response.
+     * Other values will result in a 412 Pre-condition Failed response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -433,14 +439,14 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Create or update a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new cluster to be created, but to prevent updating an existing cluster.
-     *     Other values will result in a 412 Pre-condition Failed response.
+     * Other values will result in a 412 Pre-condition Failed response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -478,14 +484,14 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Create or update a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new cluster to be created, but to prevent updating an existing cluster.
-     *     Other values will result in a 412 Pre-condition Failed response.
+     * Other values will result in a 412 Pre-condition Failed response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -502,7 +508,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Create or update a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the CreateOrUpdate operation.
@@ -524,14 +530,14 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Create or update a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new cluster to be created, but to prevent updating an existing cluster.
-     *     Other values will result in a 412 Pre-condition Failed response.
+     * Other values will result in a 412 Pre-condition Failed response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -550,7 +556,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Create or update a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the CreateOrUpdate operation.
@@ -570,14 +576,14 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Create or update a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new cluster to be created, but to prevent updating an existing cluster.
-     *     Other values will result in a 412 Pre-condition Failed response.
+     * Other values will result in a 412 Pre-condition Failed response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -593,14 +599,14 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Create or update a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new cluster to be created, but to prevent updating an existing cluster.
-     *     Other values will result in a 412 Pre-condition Failed response.
+     * Other values will result in a 412 Pre-condition Failed response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -615,7 +621,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Create or update a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the CreateOrUpdate operation.
@@ -635,14 +641,14 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Create or update a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new cluster to be created, but to prevent updating an existing cluster.
-     *     Other values will result in a 412 Pre-condition Failed response.
+     * Other values will result in a 412 Pre-condition Failed response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -659,7 +665,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Create or update a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the CreateOrUpdate operation.
@@ -677,14 +683,14 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Create or update a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new cluster to be created, but to prevent updating an existing cluster.
-     *     Other values will result in a 412 Pre-condition Failed response.
+     * Other values will result in a 412 Pre-condition Failed response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -699,12 +705,12 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Update a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the Update operation.
      * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -742,12 +748,12 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Update a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the Update operation.
      * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -785,12 +791,12 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Update a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the Update operation.
      * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -807,7 +813,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Update a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the Update operation.
@@ -828,12 +834,12 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Update a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the Update operation.
      * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -852,7 +858,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Update a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the Update operation.
@@ -870,12 +876,12 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Update a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the Update operation.
      * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -890,12 +896,12 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Update a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the Update operation.
      * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -910,7 +916,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Update a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the Update operation.
@@ -928,12 +934,12 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Update a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the Update operation.
      * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -949,7 +955,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Update a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the Update operation.
@@ -966,12 +972,12 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Update a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the Update operation.
      * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -986,7 +992,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Deletes a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1020,7 +1026,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Deletes a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -1055,7 +1061,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Deletes a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1072,7 +1078,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Deletes a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -1092,7 +1098,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Deletes a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1107,7 +1113,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Deletes a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -1124,7 +1130,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Deletes a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1139,7 +1145,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Deletes a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -1156,7 +1162,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Deletes a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1170,7 +1176,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Deletes a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -1185,7 +1191,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Stops a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1219,7 +1225,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Stops a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -1254,7 +1260,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Stops a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1271,7 +1277,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Stops a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -1291,7 +1297,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Stops a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1306,7 +1312,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Stops a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -1322,7 +1328,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Stops a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1337,7 +1343,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Stops a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -1354,7 +1360,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Stops a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1368,7 +1374,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Stops a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -1383,7 +1389,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Starts a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1417,7 +1423,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Starts a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -1452,7 +1458,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Starts a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1469,7 +1475,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Starts a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -1489,7 +1495,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Starts a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1504,7 +1510,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Starts a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -1521,7 +1527,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Starts a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1536,7 +1542,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Starts a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -1553,7 +1559,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Starts a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1567,7 +1573,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Starts a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -1582,7 +1588,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Migrate data from a Kusto cluster to another cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param clusterMigrateRequest The cluster migrate request parameters.
@@ -1624,7 +1630,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Migrate data from a Kusto cluster to another cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param clusterMigrateRequest The cluster migrate request parameters.
@@ -1666,7 +1672,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Migrate data from a Kusto cluster to another cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param clusterMigrateRequest The cluster migrate request parameters.
@@ -1686,7 +1692,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Migrate data from a Kusto cluster to another cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param clusterMigrateRequest The cluster migrate request parameters.
@@ -1708,7 +1714,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Migrate data from a Kusto cluster to another cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param clusterMigrateRequest The cluster migrate request parameters.
@@ -1725,7 +1731,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Migrate data from a Kusto cluster to another cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param clusterMigrateRequest The cluster migrate request parameters.
@@ -1743,7 +1749,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Migrate data from a Kusto cluster to another cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param clusterMigrateRequest The cluster migrate request parameters.
@@ -1761,7 +1767,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Migrate data from a Kusto cluster to another cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param clusterMigrateRequest The cluster migrate request parameters.
@@ -1780,7 +1786,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Migrate data from a Kusto cluster to another cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param clusterMigrateRequest The cluster migrate request parameters.
@@ -1795,7 +1801,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Migrate data from a Kusto cluster to another cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param clusterMigrateRequest The cluster migrate request parameters.
@@ -1812,14 +1818,14 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Returns a list of databases that are owned by this cluster and were followed by another cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto database principals operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FollowerDatabaseDefinitionInner>>
@@ -1850,7 +1856,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Returns a list of databases that are owned by this cluster and were followed by another cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -1858,7 +1864,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto database principals operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FollowerDatabaseDefinitionInner>>
@@ -1889,7 +1895,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Returns a list of databases that are owned by this cluster and were followed by another cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1905,7 +1911,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Returns a list of databases that are owned by this cluster and were followed by another cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -1922,7 +1928,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Returns a list of databases that are owned by this cluster and were followed by another cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1938,7 +1944,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Returns a list of databases that are owned by this cluster and were followed by another cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -1955,7 +1961,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Detaches all followers of a database owned by this cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param followerDatabaseToRemove The follower databases properties to remove.
@@ -1998,7 +2004,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Detaches all followers of a database owned by this cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param followerDatabaseToRemove The follower databases properties to remove.
@@ -2040,7 +2046,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Detaches all followers of a database owned by this cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param followerDatabaseToRemove The follower databases properties to remove.
@@ -2060,7 +2066,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Detaches all followers of a database owned by this cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param followerDatabaseToRemove The follower databases properties to remove.
@@ -2082,7 +2088,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Detaches all followers of a database owned by this cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param followerDatabaseToRemove The follower databases properties to remove.
@@ -2100,7 +2106,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Detaches all followers of a database owned by this cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param followerDatabaseToRemove The follower databases properties to remove.
@@ -2119,7 +2125,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Detaches all followers of a database owned by this cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param followerDatabaseToRemove The follower databases properties to remove.
@@ -2137,7 +2143,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Detaches all followers of a database owned by this cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param followerDatabaseToRemove The follower databases properties to remove.
@@ -2157,7 +2163,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Detaches all followers of a database owned by this cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param followerDatabaseToRemove The follower databases properties to remove.
@@ -2173,7 +2179,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Detaches all followers of a database owned by this cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param followerDatabaseToRemove The follower databases properties to remove.
@@ -2190,7 +2196,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Diagnoses network connectivity status for external resources on which the service is dependent on.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2225,7 +2231,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Diagnoses network connectivity status for external resources on which the service is dependent on.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -2260,7 +2266,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Diagnoses network connectivity status for external resources on which the service is dependent on.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2279,7 +2285,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Diagnoses network connectivity status for external resources on which the service is dependent on.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -2301,7 +2307,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Diagnoses network connectivity status for external resources on which the service is dependent on.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2317,7 +2323,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Diagnoses network connectivity status for external resources on which the service is dependent on.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -2334,7 +2340,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Diagnoses network connectivity status for external resources on which the service is dependent on.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2351,7 +2357,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Diagnoses network connectivity status for external resources on which the service is dependent on.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -2369,7 +2375,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Diagnoses network connectivity status for external resources on which the service is dependent on.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2384,7 +2390,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Diagnoses network connectivity status for external resources on which the service is dependent on.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -2401,13 +2407,13 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Lists all Kusto clusters within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto clusters operation response along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ClusterInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -2434,14 +2440,14 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Lists all Kusto clusters within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto clusters operation response along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ClusterInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -2469,7 +2475,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Lists all Kusto clusters within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2483,7 +2489,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Lists all Kusto clusters within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2498,7 +2504,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Lists all Kusto clusters within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2512,7 +2518,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Lists all Kusto clusters within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2527,11 +2533,11 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Lists all Kusto clusters within a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto clusters operation response along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ClusterInner>> listSinglePageAsync() {
@@ -2554,13 +2560,13 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Lists all Kusto clusters within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto clusters operation response along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ClusterInner>> listSinglePageAsync(Context context) {
@@ -2583,7 +2589,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Lists all Kusto clusters within a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto clusters operation response as paginated response with {@link PagedFlux}.
@@ -2595,7 +2601,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Lists all Kusto clusters within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2609,7 +2615,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Lists all Kusto clusters within a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto clusters operation response as paginated response with {@link PagedIterable}.
@@ -2621,7 +2627,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Lists all Kusto clusters within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2635,11 +2641,11 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Lists eligible SKUs for Kusto resource provider.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the EngagementFabric SKU descriptions along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuDescriptionInner>> listSkusSinglePageAsync() {
@@ -2662,13 +2668,13 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Lists eligible SKUs for Kusto resource provider.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the EngagementFabric SKU descriptions along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuDescriptionInner>> listSkusSinglePageAsync(Context context) {
@@ -2691,7 +2697,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Lists eligible SKUs for Kusto resource provider.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the EngagementFabric SKU descriptions as paginated response with {@link PagedFlux}.
@@ -2703,7 +2709,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Lists eligible SKUs for Kusto resource provider.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2717,7 +2723,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Lists eligible SKUs for Kusto resource provider.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the EngagementFabric SKU descriptions as paginated response with {@link PagedIterable}.
@@ -2729,7 +2735,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Lists eligible SKUs for Kusto resource provider.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2743,14 +2749,14 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Checks that the cluster name is valid and is not already in use.
-     *
+     * 
      * @param location The name of Azure region.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String location,
@@ -2780,7 +2786,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Checks that the cluster name is valid and is not already in use.
-     *
+     * 
      * @param location The name of Azure region.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -2788,7 +2794,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String location,
@@ -2817,7 +2823,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Checks that the cluster name is valid and is not already in use.
-     *
+     * 
      * @param location The name of Azure region.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2834,7 +2840,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Checks that the cluster name is valid and is not already in use.
-     *
+     * 
      * @param location The name of Azure region.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -2851,7 +2857,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Checks that the cluster name is valid and is not already in use.
-     *
+     * 
      * @param location The name of Azure region.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2866,14 +2872,14 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Returns the SKUs available for the provided resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of available SKUs for a Kusto Cluster along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureResourceSkuInner>> listSkusByResourceSinglePageAsync(String resourceGroupName,
@@ -2904,7 +2910,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Returns the SKUs available for the provided resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -2912,7 +2918,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of available SKUs for a Kusto Cluster along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureResourceSkuInner>> listSkusByResourceSinglePageAsync(String resourceGroupName,
@@ -2943,7 +2949,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Returns the SKUs available for the provided resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2958,7 +2964,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Returns the SKUs available for the provided resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -2975,7 +2981,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Returns the SKUs available for the provided resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2990,7 +2996,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Returns the SKUs available for the provided resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -3007,14 +3013,14 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Gets the network endpoints of all outbound dependencies of a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the network endpoints of all outbound dependencies of a Kusto cluster along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OutboundNetworkDependenciesEndpointInner>>
@@ -3047,7 +3053,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Gets the network endpoints of all outbound dependencies of a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -3055,7 +3061,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the network endpoints of all outbound dependencies of a Kusto cluster along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OutboundNetworkDependenciesEndpointInner>>
@@ -3087,14 +3093,14 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Gets the network endpoints of all outbound dependencies of a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the network endpoints of all outbound dependencies of a Kusto cluster as paginated response with {@link
-     *     PagedFlux}.
+     * @return the network endpoints of all outbound dependencies of a Kusto cluster as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OutboundNetworkDependenciesEndpointInner>
@@ -3106,15 +3112,15 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Gets the network endpoints of all outbound dependencies of a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the network endpoints of all outbound dependencies of a Kusto cluster as paginated response with {@link
-     *     PagedFlux}.
+     * @return the network endpoints of all outbound dependencies of a Kusto cluster as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OutboundNetworkDependenciesEndpointInner>
@@ -3126,14 +3132,14 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Gets the network endpoints of all outbound dependencies of a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the network endpoints of all outbound dependencies of a Kusto cluster as paginated response with {@link
-     *     PagedIterable}.
+     * @return the network endpoints of all outbound dependencies of a Kusto cluster as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OutboundNetworkDependenciesEndpointInner>
@@ -3143,15 +3149,15 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Gets the network endpoints of all outbound dependencies of a Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the network endpoints of all outbound dependencies of a Kusto cluster as paginated response with {@link
-     *     PagedIterable}.
+     * @return the network endpoints of all outbound dependencies of a Kusto cluster as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OutboundNetworkDependenciesEndpointInner>
@@ -3162,14 +3168,14 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Returns a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of language extension objects along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LanguageExtensionInner>> listLanguageExtensionsSinglePageAsync(String resourceGroupName,
@@ -3201,7 +3207,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Returns a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -3209,7 +3215,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of language extension objects along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LanguageExtensionInner>> listLanguageExtensionsSinglePageAsync(String resourceGroupName,
@@ -3240,7 +3246,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Returns a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3256,7 +3262,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Returns a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -3273,7 +3279,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Returns a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3288,7 +3294,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Returns a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -3305,7 +3311,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Add a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param languageExtensionsToAdd The language extensions to add.
@@ -3348,7 +3354,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Add a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param languageExtensionsToAdd The language extensions to add.
@@ -3390,7 +3396,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Add a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param languageExtensionsToAdd The language extensions to add.
@@ -3410,7 +3416,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Add a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param languageExtensionsToAdd The language extensions to add.
@@ -3432,7 +3438,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Add a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param languageExtensionsToAdd The language extensions to add.
@@ -3450,7 +3456,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Add a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param languageExtensionsToAdd The language extensions to add.
@@ -3469,7 +3475,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Add a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param languageExtensionsToAdd The language extensions to add.
@@ -3487,7 +3493,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Add a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param languageExtensionsToAdd The language extensions to add.
@@ -3506,7 +3512,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Add a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param languageExtensionsToAdd The language extensions to add.
@@ -3522,7 +3528,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Add a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param languageExtensionsToAdd The language extensions to add.
@@ -3539,7 +3545,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Remove a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param languageExtensionsToRemove The language extensions to remove.
@@ -3582,7 +3588,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Remove a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param languageExtensionsToRemove The language extensions to remove.
@@ -3624,7 +3630,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Remove a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param languageExtensionsToRemove The language extensions to remove.
@@ -3644,7 +3650,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Remove a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param languageExtensionsToRemove The language extensions to remove.
@@ -3666,7 +3672,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Remove a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param languageExtensionsToRemove The language extensions to remove.
@@ -3684,7 +3690,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Remove a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param languageExtensionsToRemove The language extensions to remove.
@@ -3704,7 +3710,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Remove a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param languageExtensionsToRemove The language extensions to remove.
@@ -3722,7 +3728,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Remove a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param languageExtensionsToRemove The language extensions to remove.
@@ -3742,7 +3748,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Remove a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param languageExtensionsToRemove The language extensions to remove.
@@ -3758,7 +3764,7 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Remove a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param languageExtensionsToRemove The language extensions to remove.
@@ -3775,14 +3781,13 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Outbound Environment Endpoints along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OutboundNetworkDependenciesEndpointInner>>
@@ -3806,15 +3811,14 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Outbound Environment Endpoints along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OutboundNetworkDependenciesEndpointInner>>

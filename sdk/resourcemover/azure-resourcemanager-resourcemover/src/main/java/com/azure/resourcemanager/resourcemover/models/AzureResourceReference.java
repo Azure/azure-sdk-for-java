@@ -6,24 +6,31 @@ package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines reference to an Azure resource. */
+/**
+ * Defines reference to an Azure resource.
+ */
 @Fluent
-public class AzureResourceReference {
+public class AzureResourceReference implements JsonSerializable<AzureResourceReference> {
     /*
      * Gets the ARM resource ID of the tracked resource being referenced.
      */
-    @JsonProperty(value = "sourceArmResourceId", required = true)
     private String sourceArmResourceId;
 
-    /** Creates an instance of AzureResourceReference class. */
+    /**
+     * Creates an instance of AzureResourceReference class.
+     */
     public AzureResourceReference() {
     }
 
     /**
      * Get the sourceArmResourceId property: Gets the ARM resource ID of the tracked resource being referenced.
-     *
+     * 
      * @return the sourceArmResourceId value.
      */
     public String sourceArmResourceId() {
@@ -32,7 +39,7 @@ public class AzureResourceReference {
 
     /**
      * Set the sourceArmResourceId property: Gets the ARM resource ID of the tracked resource being referenced.
-     *
+     * 
      * @param sourceArmResourceId the sourceArmResourceId value to set.
      * @return the AzureResourceReference object itself.
      */
@@ -43,15 +50,53 @@ public class AzureResourceReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sourceArmResourceId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property sourceArmResourceId in model AzureResourceReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceArmResourceId in model AzureResourceReference"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureResourceReference.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sourceArmResourceId", this.sourceArmResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureResourceReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureResourceReference if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureResourceReference.
+     */
+    public static AzureResourceReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureResourceReference deserializedAzureResourceReference = new AzureResourceReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceArmResourceId".equals(fieldName)) {
+                    deserializedAzureResourceReference.sourceArmResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureResourceReference;
+        });
+    }
 }

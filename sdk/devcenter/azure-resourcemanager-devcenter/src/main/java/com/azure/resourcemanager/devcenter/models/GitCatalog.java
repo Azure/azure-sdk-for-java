@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.devcenter.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties for a Git repository catalog.
  */
 @Fluent
-public final class GitCatalog {
+public final class GitCatalog implements JsonSerializable<GitCatalog> {
     /*
      * Git URI.
      */
-    @JsonProperty(value = "uri")
     private String uri;
 
     /*
      * Git branch.
      */
-    @JsonProperty(value = "branch")
     private String branch;
 
     /*
      * A reference to the Key Vault secret containing a security token to authenticate to a Git repository.
      */
-    @JsonProperty(value = "secretIdentifier")
     private String secretIdentifier;
 
     /*
      * The folder where the catalog items can be found inside the repository.
      */
-    @JsonProperty(value = "path")
     private String path;
 
     /**
@@ -130,5 +130,50 @@ public final class GitCatalog {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("uri", this.uri);
+        jsonWriter.writeStringField("branch", this.branch);
+        jsonWriter.writeStringField("secretIdentifier", this.secretIdentifier);
+        jsonWriter.writeStringField("path", this.path);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GitCatalog from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GitCatalog if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the GitCatalog.
+     */
+    public static GitCatalog fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GitCatalog deserializedGitCatalog = new GitCatalog();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("uri".equals(fieldName)) {
+                    deserializedGitCatalog.uri = reader.getString();
+                } else if ("branch".equals(fieldName)) {
+                    deserializedGitCatalog.branch = reader.getString();
+                } else if ("secretIdentifier".equals(fieldName)) {
+                    deserializedGitCatalog.secretIdentifier = reader.getString();
+                } else if ("path".equals(fieldName)) {
+                    deserializedGitCatalog.path = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGitCatalog;
+        });
     }
 }

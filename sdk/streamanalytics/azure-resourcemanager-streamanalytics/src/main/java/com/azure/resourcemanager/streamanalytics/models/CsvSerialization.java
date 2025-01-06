@@ -49,7 +49,7 @@ public final class CsvSerialization extends Serialization {
      * 
      * @return the innerProperties value.
      */
-    private CsvSerializationProperties innerProperties() {
+    CsvSerializationProperties innerProperties() {
         return this.innerProperties;
     }
 

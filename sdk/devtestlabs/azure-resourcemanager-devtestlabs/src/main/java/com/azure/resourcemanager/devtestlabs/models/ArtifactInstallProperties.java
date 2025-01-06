@@ -5,62 +5,65 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Properties of an artifact. */
+/**
+ * Properties of an artifact.
+ */
 @Fluent
-public final class ArtifactInstallProperties {
+public final class ArtifactInstallProperties implements JsonSerializable<ArtifactInstallProperties> {
     /*
      * The artifact's identifier.
      */
-    @JsonProperty(value = "artifactId")
     private String artifactId;
 
     /*
      * The artifact's title.
      */
-    @JsonProperty(value = "artifactTitle")
     private String artifactTitle;
 
     /*
      * The parameters of the artifact.
      */
-    @JsonProperty(value = "parameters")
     private List<ArtifactParameterProperties> parameters;
 
     /*
      * The status of the artifact.
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /*
      * The status message from the deployment.
      */
-    @JsonProperty(value = "deploymentStatusMessage")
     private String deploymentStatusMessage;
 
     /*
      * The status message from the virtual machine extension.
      */
-    @JsonProperty(value = "vmExtensionStatusMessage")
     private String vmExtensionStatusMessage;
 
     /*
      * The time that the artifact starts to install on the virtual machine.
      */
-    @JsonProperty(value = "installTime")
     private OffsetDateTime installTime;
 
-    /** Creates an instance of ArtifactInstallProperties class. */
+    /**
+     * Creates an instance of ArtifactInstallProperties class.
+     */
     public ArtifactInstallProperties() {
     }
 
     /**
      * Get the artifactId property: The artifact's identifier.
-     *
+     * 
      * @return the artifactId value.
      */
     public String artifactId() {
@@ -69,7 +72,7 @@ public final class ArtifactInstallProperties {
 
     /**
      * Set the artifactId property: The artifact's identifier.
-     *
+     * 
      * @param artifactId the artifactId value to set.
      * @return the ArtifactInstallProperties object itself.
      */
@@ -80,7 +83,7 @@ public final class ArtifactInstallProperties {
 
     /**
      * Get the artifactTitle property: The artifact's title.
-     *
+     * 
      * @return the artifactTitle value.
      */
     public String artifactTitle() {
@@ -89,7 +92,7 @@ public final class ArtifactInstallProperties {
 
     /**
      * Set the artifactTitle property: The artifact's title.
-     *
+     * 
      * @param artifactTitle the artifactTitle value to set.
      * @return the ArtifactInstallProperties object itself.
      */
@@ -100,7 +103,7 @@ public final class ArtifactInstallProperties {
 
     /**
      * Get the parameters property: The parameters of the artifact.
-     *
+     * 
      * @return the parameters value.
      */
     public List<ArtifactParameterProperties> parameters() {
@@ -109,7 +112,7 @@ public final class ArtifactInstallProperties {
 
     /**
      * Set the parameters property: The parameters of the artifact.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the ArtifactInstallProperties object itself.
      */
@@ -120,7 +123,7 @@ public final class ArtifactInstallProperties {
 
     /**
      * Get the status property: The status of the artifact.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -129,7 +132,7 @@ public final class ArtifactInstallProperties {
 
     /**
      * Set the status property: The status of the artifact.
-     *
+     * 
      * @param status the status value to set.
      * @return the ArtifactInstallProperties object itself.
      */
@@ -140,7 +143,7 @@ public final class ArtifactInstallProperties {
 
     /**
      * Get the deploymentStatusMessage property: The status message from the deployment.
-     *
+     * 
      * @return the deploymentStatusMessage value.
      */
     public String deploymentStatusMessage() {
@@ -149,7 +152,7 @@ public final class ArtifactInstallProperties {
 
     /**
      * Set the deploymentStatusMessage property: The status message from the deployment.
-     *
+     * 
      * @param deploymentStatusMessage the deploymentStatusMessage value to set.
      * @return the ArtifactInstallProperties object itself.
      */
@@ -160,7 +163,7 @@ public final class ArtifactInstallProperties {
 
     /**
      * Get the vmExtensionStatusMessage property: The status message from the virtual machine extension.
-     *
+     * 
      * @return the vmExtensionStatusMessage value.
      */
     public String vmExtensionStatusMessage() {
@@ -169,7 +172,7 @@ public final class ArtifactInstallProperties {
 
     /**
      * Set the vmExtensionStatusMessage property: The status message from the virtual machine extension.
-     *
+     * 
      * @param vmExtensionStatusMessage the vmExtensionStatusMessage value to set.
      * @return the ArtifactInstallProperties object itself.
      */
@@ -180,7 +183,7 @@ public final class ArtifactInstallProperties {
 
     /**
      * Get the installTime property: The time that the artifact starts to install on the virtual machine.
-     *
+     * 
      * @return the installTime value.
      */
     public OffsetDateTime installTime() {
@@ -189,7 +192,7 @@ public final class ArtifactInstallProperties {
 
     /**
      * Set the installTime property: The time that the artifact starts to install on the virtual machine.
-     *
+     * 
      * @param installTime the installTime value to set.
      * @return the ArtifactInstallProperties object itself.
      */
@@ -200,12 +203,70 @@ public final class ArtifactInstallProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (parameters() != null) {
             parameters().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("artifactId", this.artifactId);
+        jsonWriter.writeStringField("artifactTitle", this.artifactTitle);
+        jsonWriter.writeArrayField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeStringField("deploymentStatusMessage", this.deploymentStatusMessage);
+        jsonWriter.writeStringField("vmExtensionStatusMessage", this.vmExtensionStatusMessage);
+        jsonWriter.writeStringField("installTime",
+            this.installTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.installTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ArtifactInstallProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ArtifactInstallProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ArtifactInstallProperties.
+     */
+    public static ArtifactInstallProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ArtifactInstallProperties deserializedArtifactInstallProperties = new ArtifactInstallProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("artifactId".equals(fieldName)) {
+                    deserializedArtifactInstallProperties.artifactId = reader.getString();
+                } else if ("artifactTitle".equals(fieldName)) {
+                    deserializedArtifactInstallProperties.artifactTitle = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    List<ArtifactParameterProperties> parameters
+                        = reader.readArray(reader1 -> ArtifactParameterProperties.fromJson(reader1));
+                    deserializedArtifactInstallProperties.parameters = parameters;
+                } else if ("status".equals(fieldName)) {
+                    deserializedArtifactInstallProperties.status = reader.getString();
+                } else if ("deploymentStatusMessage".equals(fieldName)) {
+                    deserializedArtifactInstallProperties.deploymentStatusMessage = reader.getString();
+                } else if ("vmExtensionStatusMessage".equals(fieldName)) {
+                    deserializedArtifactInstallProperties.vmExtensionStatusMessage = reader.getString();
+                } else if ("installTime".equals(fieldName)) {
+                    deserializedArtifactInstallProperties.installTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedArtifactInstallProperties;
+        });
     }
 }

@@ -49,25 +49,12 @@ public final class BigDataPoolsImpl implements BigDataPools {
         }
     }
 
-    public BigDataPoolResourceInfo delete(String resourceGroupName, String workspaceName, String bigDataPoolName) {
-        BigDataPoolResourceInfoInner inner
-            = this.serviceClient().delete(resourceGroupName, workspaceName, bigDataPoolName);
-        if (inner != null) {
-            return new BigDataPoolResourceInfoImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public Object delete(String resourceGroupName, String workspaceName, String bigDataPoolName) {
+        return this.serviceClient().delete(resourceGroupName, workspaceName, bigDataPoolName);
     }
 
-    public BigDataPoolResourceInfo delete(String resourceGroupName, String workspaceName, String bigDataPoolName,
-        Context context) {
-        BigDataPoolResourceInfoInner inner
-            = this.serviceClient().delete(resourceGroupName, workspaceName, bigDataPoolName, context);
-        if (inner != null) {
-            return new BigDataPoolResourceInfoImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public Object delete(String resourceGroupName, String workspaceName, String bigDataPoolName, Context context) {
+        return this.serviceClient().delete(resourceGroupName, workspaceName, bigDataPoolName, context);
     }
 
     public PagedIterable<BigDataPoolResourceInfo> listByWorkspace(String resourceGroupName, String workspaceName) {
@@ -121,7 +108,7 @@ public final class BigDataPoolsImpl implements BigDataPools {
         return this.getWithResponse(resourceGroupName, workspaceName, bigDataPoolName, context);
     }
 
-    public BigDataPoolResourceInfo deleteById(String id) {
+    public Object deleteById(String id) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -140,7 +127,7 @@ public final class BigDataPoolsImpl implements BigDataPools {
         return this.delete(resourceGroupName, workspaceName, bigDataPoolName, Context.NONE);
     }
 
-    public BigDataPoolResourceInfo deleteByIdWithResponse(String id, Context context) {
+    public Object deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(

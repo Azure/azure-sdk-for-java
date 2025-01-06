@@ -30,17 +30,23 @@ import com.azure.resourcemanager.workloads.fluent.models.SapLandscapeMonitorInne
 import com.azure.resourcemanager.workloads.fluent.models.SapLandscapeMonitorListResultInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SapLandscapeMonitorsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SapLandscapeMonitorsClient.
+ */
 public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitorsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SapLandscapeMonitorsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final WorkloadsClientImpl client;
 
     /**
      * Initializes an instance of SapLandscapeMonitorsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SapLandscapeMonitorsClientImpl(WorkloadsClientImpl client) {
@@ -106,17 +112,17 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
 
     /**
      * Gets configuration values for Single Pane Of Glass for SAP monitor.
-     *
-     * <p>Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
+     * 
+     * Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
      * group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
-     *     group, and resource name along with {@link Response} on successful completion of {@link Mono}.
+     * group, and resource name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SapLandscapeMonitorInner>> getWithResponseAsync(String resourceGroupName,
@@ -145,10 +151,10 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
 
     /**
      * Gets configuration values for Single Pane Of Glass for SAP monitor.
-     *
-     * <p>Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
+     * 
+     * Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
      * group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param context The context to associate with this operation.
@@ -156,7 +162,7 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
-     *     group, and resource name along with {@link Response} on successful completion of {@link Mono}.
+     * group, and resource name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SapLandscapeMonitorInner>> getWithResponseAsync(String resourceGroupName, String monitorName,
@@ -184,17 +190,17 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
 
     /**
      * Gets configuration values for Single Pane Of Glass for SAP monitor.
-     *
-     * <p>Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
+     * 
+     * Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
      * group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
-     *     group, and resource name on successful completion of {@link Mono}.
+     * group, and resource name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SapLandscapeMonitorInner> getAsync(String resourceGroupName, String monitorName) {
@@ -203,10 +209,10 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
 
     /**
      * Gets configuration values for Single Pane Of Glass for SAP monitor.
-     *
-     * <p>Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
+     * 
+     * Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
      * group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param context The context to associate with this operation.
@@ -214,7 +220,7 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
-     *     group, and resource name along with {@link Response}.
+     * group, and resource name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SapLandscapeMonitorInner> getWithResponse(String resourceGroupName, String monitorName,
@@ -224,17 +230,17 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
 
     /**
      * Gets configuration values for Single Pane Of Glass for SAP monitor.
-     *
-     * <p>Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
+     * 
+     * Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
      * group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
-     *     group, and resource name.
+     * group, and resource name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SapLandscapeMonitorInner get(String resourceGroupName, String monitorName) {
@@ -243,18 +249,18 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
 
     /**
      * Creates a SAP Landscape Monitor Dashboard.
-     *
-     * <p>Creates a SAP Landscape Monitor Dashboard for the specified subscription, resource group, and resource name.
-     *
+     * 
+     * Creates a SAP Landscape Monitor Dashboard for the specified subscription, resource group, and resource name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param sapLandscapeMonitorParameter Request body representing a configuration for Sap Landscape Monitor
-     *     Dashboard.
+     * Dashboard.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration associated with SAP Landscape Monitor Dashboard along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SapLandscapeMonitorInner>> createWithResponseAsync(String resourceGroupName,
@@ -290,19 +296,19 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
 
     /**
      * Creates a SAP Landscape Monitor Dashboard.
-     *
-     * <p>Creates a SAP Landscape Monitor Dashboard for the specified subscription, resource group, and resource name.
-     *
+     * 
+     * Creates a SAP Landscape Monitor Dashboard for the specified subscription, resource group, and resource name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param sapLandscapeMonitorParameter Request body representing a configuration for Sap Landscape Monitor
-     *     Dashboard.
+     * Dashboard.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration associated with SAP Landscape Monitor Dashboard along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SapLandscapeMonitorInner>> createWithResponseAsync(String resourceGroupName,
@@ -336,13 +342,13 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
 
     /**
      * Creates a SAP Landscape Monitor Dashboard.
-     *
-     * <p>Creates a SAP Landscape Monitor Dashboard for the specified subscription, resource group, and resource name.
-     *
+     * 
+     * Creates a SAP Landscape Monitor Dashboard for the specified subscription, resource group, and resource name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param sapLandscapeMonitorParameter Request body representing a configuration for Sap Landscape Monitor
-     *     Dashboard.
+     * Dashboard.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -357,13 +363,13 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
 
     /**
      * Creates a SAP Landscape Monitor Dashboard.
-     *
-     * <p>Creates a SAP Landscape Monitor Dashboard for the specified subscription, resource group, and resource name.
-     *
+     * 
+     * Creates a SAP Landscape Monitor Dashboard for the specified subscription, resource group, and resource name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param sapLandscapeMonitorParameter Request body representing a configuration for Sap Landscape Monitor
-     *     Dashboard.
+     * Dashboard.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -378,13 +384,13 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
 
     /**
      * Creates a SAP Landscape Monitor Dashboard.
-     *
-     * <p>Creates a SAP Landscape Monitor Dashboard for the specified subscription, resource group, and resource name.
-     *
+     * 
+     * Creates a SAP Landscape Monitor Dashboard for the specified subscription, resource group, and resource name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param sapLandscapeMonitorParameter Request body representing a configuration for Sap Landscape Monitor
-     *     Dashboard.
+     * Dashboard.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -399,10 +405,9 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
 
     /**
      * Deletes a SAP Landscape Monitor Dashboard.
-     *
-     * <p>Deletes a SAP Landscape Monitor Dashboard with the specified subscription, resource group, and SAP monitor
-     * name.
-     *
+     * 
+     * Deletes a SAP Landscape Monitor Dashboard with the specified subscription, resource group, and SAP monitor name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -436,10 +441,9 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
 
     /**
      * Deletes a SAP Landscape Monitor Dashboard.
-     *
-     * <p>Deletes a SAP Landscape Monitor Dashboard with the specified subscription, resource group, and SAP monitor
-     * name.
-     *
+     * 
+     * Deletes a SAP Landscape Monitor Dashboard with the specified subscription, resource group, and SAP monitor name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param context The context to associate with this operation.
@@ -474,10 +478,9 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
 
     /**
      * Deletes a SAP Landscape Monitor Dashboard.
-     *
-     * <p>Deletes a SAP Landscape Monitor Dashboard with the specified subscription, resource group, and SAP monitor
-     * name.
-     *
+     * 
+     * Deletes a SAP Landscape Monitor Dashboard with the specified subscription, resource group, and SAP monitor name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -492,10 +495,9 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
 
     /**
      * Deletes a SAP Landscape Monitor Dashboard.
-     *
-     * <p>Deletes a SAP Landscape Monitor Dashboard with the specified subscription, resource group, and SAP monitor
-     * name.
-     *
+     * 
+     * Deletes a SAP Landscape Monitor Dashboard with the specified subscription, resource group, and SAP monitor name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param context The context to associate with this operation.
@@ -511,10 +513,9 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
 
     /**
      * Deletes a SAP Landscape Monitor Dashboard.
-     *
-     * <p>Deletes a SAP Landscape Monitor Dashboard with the specified subscription, resource group, and SAP monitor
-     * name.
-     *
+     * 
+     * Deletes a SAP Landscape Monitor Dashboard with the specified subscription, resource group, and SAP monitor name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -528,19 +529,18 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
 
     /**
      * Patches the SAP Landscape Monitor Dashboard.
-     *
-     * <p>Patches the SAP Landscape Monitor Dashboard for the specified subscription, resource group, and SAP monitor
-     * name.
-     *
+     * 
+     * Patches the SAP Landscape Monitor Dashboard for the specified subscription, resource group, and SAP monitor name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param sapLandscapeMonitorParameter Request body representing a configuration for Sap Landscape Monitor
-     *     Dashboard.
+     * Dashboard.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration associated with SAP Landscape Monitor Dashboard along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SapLandscapeMonitorInner>> updateWithResponseAsync(String resourceGroupName,
@@ -576,20 +576,19 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
 
     /**
      * Patches the SAP Landscape Monitor Dashboard.
-     *
-     * <p>Patches the SAP Landscape Monitor Dashboard for the specified subscription, resource group, and SAP monitor
-     * name.
-     *
+     * 
+     * Patches the SAP Landscape Monitor Dashboard for the specified subscription, resource group, and SAP monitor name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param sapLandscapeMonitorParameter Request body representing a configuration for Sap Landscape Monitor
-     *     Dashboard.
+     * Dashboard.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration associated with SAP Landscape Monitor Dashboard along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SapLandscapeMonitorInner>> updateWithResponseAsync(String resourceGroupName,
@@ -623,14 +622,13 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
 
     /**
      * Patches the SAP Landscape Monitor Dashboard.
-     *
-     * <p>Patches the SAP Landscape Monitor Dashboard for the specified subscription, resource group, and SAP monitor
-     * name.
-     *
+     * 
+     * Patches the SAP Landscape Monitor Dashboard for the specified subscription, resource group, and SAP monitor name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param sapLandscapeMonitorParameter Request body representing a configuration for Sap Landscape Monitor
-     *     Dashboard.
+     * Dashboard.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -645,14 +643,13 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
 
     /**
      * Patches the SAP Landscape Monitor Dashboard.
-     *
-     * <p>Patches the SAP Landscape Monitor Dashboard for the specified subscription, resource group, and SAP monitor
-     * name.
-     *
+     * 
+     * Patches the SAP Landscape Monitor Dashboard for the specified subscription, resource group, and SAP monitor name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param sapLandscapeMonitorParameter Request body representing a configuration for Sap Landscape Monitor
-     *     Dashboard.
+     * Dashboard.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -667,14 +664,13 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
 
     /**
      * Patches the SAP Landscape Monitor Dashboard.
-     *
-     * <p>Patches the SAP Landscape Monitor Dashboard for the specified subscription, resource group, and SAP monitor
-     * name.
-     *
+     * 
+     * Patches the SAP Landscape Monitor Dashboard for the specified subscription, resource group, and SAP monitor name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param sapLandscapeMonitorParameter Request body representing a configuration for Sap Landscape Monitor
-     *     Dashboard.
+     * Dashboard.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -689,17 +685,17 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
 
     /**
      * Gets configuration values for Single Pane Of Glass for SAP monitor.
-     *
-     * <p>Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
+     * 
+     * Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
      * group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
-     *     group, and resource name along with {@link Response} on successful completion of {@link Mono}.
+     * group, and resource name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SapLandscapeMonitorListResultInner>> listWithResponseAsync(String resourceGroupName,
@@ -728,10 +724,10 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
 
     /**
      * Gets configuration values for Single Pane Of Glass for SAP monitor.
-     *
-     * <p>Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
+     * 
+     * Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
      * group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param context The context to associate with this operation.
@@ -739,7 +735,7 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
-     *     group, and resource name along with {@link Response} on successful completion of {@link Mono}.
+     * group, and resource name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SapLandscapeMonitorListResultInner>> listWithResponseAsync(String resourceGroupName,
@@ -767,17 +763,17 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
 
     /**
      * Gets configuration values for Single Pane Of Glass for SAP monitor.
-     *
-     * <p>Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
+     * 
+     * Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
      * group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
-     *     group, and resource name on successful completion of {@link Mono}.
+     * group, and resource name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SapLandscapeMonitorListResultInner> listAsync(String resourceGroupName, String monitorName) {
@@ -786,10 +782,10 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
 
     /**
      * Gets configuration values for Single Pane Of Glass for SAP monitor.
-     *
-     * <p>Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
+     * 
+     * Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
      * group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @param context The context to associate with this operation.
@@ -797,7 +793,7 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
-     *     group, and resource name along with {@link Response}.
+     * group, and resource name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SapLandscapeMonitorListResultInner> listWithResponse(String resourceGroupName, String monitorName,
@@ -807,17 +803,17 @@ public final class SapLandscapeMonitorsClientImpl implements SapLandscapeMonitor
 
     /**
      * Gets configuration values for Single Pane Of Glass for SAP monitor.
-     *
-     * <p>Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
+     * 
+     * Gets configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
      * group, and resource name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
-     *     group, and resource name.
+     * group, and resource name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SapLandscapeMonitorListResultInner list(String resourceGroupName, String monitorName) {

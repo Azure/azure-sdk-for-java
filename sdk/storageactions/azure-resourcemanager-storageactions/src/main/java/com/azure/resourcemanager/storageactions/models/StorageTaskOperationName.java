@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storageactions.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -62,7 +61,6 @@ public final class StorageTaskOperationName extends ExpandableStringEnum<Storage
      * @param name a name to look for.
      * @return the corresponding StorageTaskOperationName.
      */
-    @JsonCreator
     public static StorageTaskOperationName fromString(String name) {
         return fromString(name, StorageTaskOperationName.class);
     }

@@ -12,42 +12,42 @@ public final class SkypeChannelPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkypeChannelProperties model = BinaryData.fromString(
-            "{\"enableMessaging\":true,\"enableMediaCards\":false,\"enableVideo\":true,\"enableCalling\":true,\"enableScreenSharing\":false,\"enableGroups\":true,\"groupsMode\":\"dytdxwitx\",\"callingWebHook\":\"jawgqwg\",\"incomingCallRoute\":\"ni\",\"isEnabled\":true}")
+            "{\"enableMessaging\":false,\"enableMediaCards\":false,\"enableVideo\":false,\"enableCalling\":false,\"enableScreenSharing\":true,\"enableGroups\":false,\"groupsMode\":\"dnhjdauwhvylw\",\"callingWebHook\":\"tdhxujznbmpowuwp\",\"incomingCallRoute\":\"qlveualupjmkh\",\"isEnabled\":true}")
             .toObject(SkypeChannelProperties.class);
-        Assertions.assertEquals(true, model.enableMessaging());
+        Assertions.assertEquals(false, model.enableMessaging());
         Assertions.assertEquals(false, model.enableMediaCards());
-        Assertions.assertEquals(true, model.enableVideo());
-        Assertions.assertEquals(true, model.enableCalling());
-        Assertions.assertEquals(false, model.enableScreenSharing());
-        Assertions.assertEquals(true, model.enableGroups());
-        Assertions.assertEquals("dytdxwitx", model.groupsMode());
-        Assertions.assertEquals("jawgqwg", model.callingWebhook());
-        Assertions.assertEquals("ni", model.incomingCallRoute());
+        Assertions.assertEquals(false, model.enableVideo());
+        Assertions.assertEquals(false, model.enableCalling());
+        Assertions.assertEquals(true, model.enableScreenSharing());
+        Assertions.assertEquals(false, model.enableGroups());
+        Assertions.assertEquals("dnhjdauwhvylw", model.groupsMode());
+        Assertions.assertEquals("tdhxujznbmpowuwp", model.callingWebhook());
+        Assertions.assertEquals("qlveualupjmkh", model.incomingCallRoute());
         Assertions.assertEquals(true, model.isEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkypeChannelProperties model = new SkypeChannelProperties().withEnableMessaging(true)
+        SkypeChannelProperties model = new SkypeChannelProperties().withEnableMessaging(false)
             .withEnableMediaCards(false)
-            .withEnableVideo(true)
-            .withEnableCalling(true)
-            .withEnableScreenSharing(false)
-            .withEnableGroups(true)
-            .withGroupsMode("dytdxwitx")
-            .withCallingWebhook("jawgqwg")
-            .withIncomingCallRoute("ni")
+            .withEnableVideo(false)
+            .withEnableCalling(false)
+            .withEnableScreenSharing(true)
+            .withEnableGroups(false)
+            .withGroupsMode("dnhjdauwhvylw")
+            .withCallingWebhook("tdhxujznbmpowuwp")
+            .withIncomingCallRoute("qlveualupjmkh")
             .withIsEnabled(true);
         model = BinaryData.fromObject(model).toObject(SkypeChannelProperties.class);
-        Assertions.assertEquals(true, model.enableMessaging());
+        Assertions.assertEquals(false, model.enableMessaging());
         Assertions.assertEquals(false, model.enableMediaCards());
-        Assertions.assertEquals(true, model.enableVideo());
-        Assertions.assertEquals(true, model.enableCalling());
-        Assertions.assertEquals(false, model.enableScreenSharing());
-        Assertions.assertEquals(true, model.enableGroups());
-        Assertions.assertEquals("dytdxwitx", model.groupsMode());
-        Assertions.assertEquals("jawgqwg", model.callingWebhook());
-        Assertions.assertEquals("ni", model.incomingCallRoute());
+        Assertions.assertEquals(false, model.enableVideo());
+        Assertions.assertEquals(false, model.enableCalling());
+        Assertions.assertEquals(true, model.enableScreenSharing());
+        Assertions.assertEquals(false, model.enableGroups());
+        Assertions.assertEquals("dnhjdauwhvylw", model.groupsMode());
+        Assertions.assertEquals("tdhxujznbmpowuwp", model.callingWebhook());
+        Assertions.assertEquals("qlveualupjmkh", model.incomingCallRoute());
         Assertions.assertEquals(true, model.isEnabled());
     }
 }

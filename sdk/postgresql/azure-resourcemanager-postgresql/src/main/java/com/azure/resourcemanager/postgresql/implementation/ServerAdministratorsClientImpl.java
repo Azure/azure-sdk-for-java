@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.postgresql.fluent.ServerAdministratorsClient;
@@ -39,19 +38,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ServerAdministratorsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ServerAdministratorsClient.
+ */
 public final class ServerAdministratorsClientImpl implements ServerAdministratorsClient {
-    private final ClientLogger logger = new ClientLogger(ServerAdministratorsClientImpl.class);
-
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ServerAdministratorsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PostgreSqlManagementClientImpl client;
 
     /**
      * Initializes an instance of ServerAdministratorsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ServerAdministratorsClientImpl(PostgreSqlManagementClientImpl client) {
@@ -66,10 +69,9 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
      */
     @Host("{$host}")
     @ServiceInterface(name = "PostgreSqlManagement")
-    private interface ServerAdministratorsService {
+    public interface ServerAdministratorsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
-            + "/servers/{serverName}/administrators/activeDirectory")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}/administrators/activeDirectory")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerAdministratorResourceInner>> get(@HostParam("$host") String endpoint,
@@ -78,8 +80,7 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
-            + "/servers/{serverName}/administrators/activeDirectory")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}/administrators/activeDirectory")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
@@ -89,8 +90,7 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
-            + "/servers/{serverName}/administrators/activeDirectory")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}/administrators/activeDirectory")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
@@ -99,8 +99,7 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
-            + "/servers/{serverName}/administrators")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}/administrators")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerAdministratorResourceListResult>> list(@HostParam("$host") String endpoint,
@@ -111,17 +110,17 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
 
     /**
      * Gets information about a AAD server administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a AAD server administrator along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ServerAdministratorResourceInner>> getWithResponseAsync(String resourceGroupName,
+    public Mono<Response<ServerAdministratorResourceInner>> getWithResponseAsync(String resourceGroupName,
         String serverName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -148,7 +147,7 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
 
     /**
      * Gets information about a AAD server administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -156,7 +155,7 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a AAD server administrator along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServerAdministratorResourceInner>> getWithResponseAsync(String resourceGroupName,
@@ -185,7 +184,7 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
 
     /**
      * Gets information about a AAD server administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -194,35 +193,13 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
      * @return information about a AAD server administrator on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ServerAdministratorResourceInner> getAsync(String resourceGroupName, String serverName) {
-        return getWithResponseAsync(resourceGroupName, serverName)
-            .flatMap((Response<ServerAdministratorResourceInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+    public Mono<ServerAdministratorResourceInner> getAsync(String resourceGroupName, String serverName) {
+        return getWithResponseAsync(resourceGroupName, serverName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets information about a AAD server administrator.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a AAD server administrator.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerAdministratorResourceInner get(String resourceGroupName, String serverName) {
-        return getAsync(resourceGroupName, serverName).block();
-    }
-
-    /**
-     * Gets information about a AAD server administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -238,9 +215,24 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
     }
 
     /**
+     * Gets information about a AAD server administrator.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a AAD server administrator.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ServerAdministratorResourceInner get(String resourceGroupName, String serverName) {
+        return getWithResponse(resourceGroupName, serverName, Context.NONE).getValue();
+    }
+
+    /**
      * Creates or update active directory administrator on an existing server. The update action will overwrite the
      * existing administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param properties The required parameters for creating or updating an AAD server administrator.
@@ -248,11 +240,11 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a and external administrator to be created along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String serverName, ServerAdministratorResourceInner properties) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
+        ServerAdministratorResourceInner properties) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -284,7 +276,7 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
     /**
      * Creates or update active directory administrator on an existing server. The update action will overwrite the
      * existing administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param properties The required parameters for creating or updating an AAD server administrator.
@@ -293,7 +285,7 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a and external administrator to be created along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -328,18 +320,17 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
     /**
      * Creates or update active directory administrator on an existing server. The update action will overwrite the
      * existing administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param properties The required parameters for creating or updating an AAD server administrator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a and external administrator to be created along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of represents a and external administrator to be created.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ServerAdministratorResourceInner>, ServerAdministratorResourceInner>
+    public PollerFlux<PollResult<ServerAdministratorResourceInner>, ServerAdministratorResourceInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String serverName,
             ServerAdministratorResourceInner properties) {
         Mono<Response<Flux<ByteBuffer>>> mono
@@ -352,7 +343,7 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
     /**
      * Creates or update active directory administrator on an existing server. The update action will overwrite the
      * existing administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param properties The required parameters for creating or updating an AAD server administrator.
@@ -360,8 +351,7 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a and external administrator to be created along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of represents a and external administrator to be created.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServerAdministratorResourceInner>, ServerAdministratorResourceInner>
@@ -378,26 +368,25 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
     /**
      * Creates or update active directory administrator on an existing server. The update action will overwrite the
      * existing administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param properties The required parameters for creating or updating an AAD server administrator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a and external administrator to be created along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of represents a and external administrator to be created.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerAdministratorResourceInner>, ServerAdministratorResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String serverName, ServerAdministratorResourceInner properties) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, properties).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, properties).getSyncPoller();
     }
 
     /**
      * Creates or update active directory administrator on an existing server. The update action will overwrite the
      * existing administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param properties The required parameters for creating or updating an AAD server administrator.
@@ -405,20 +394,19 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a and external administrator to be created along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of represents a and external administrator to be created.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerAdministratorResourceInner>, ServerAdministratorResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String serverName, ServerAdministratorResourceInner properties,
             Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, properties, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, properties, context).getSyncPoller();
     }
 
     /**
      * Creates or update active directory administrator on an existing server. The update action will overwrite the
      * existing administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param properties The required parameters for creating or updating an AAD server administrator.
@@ -428,7 +416,7 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
      * @return represents a and external administrator to be created on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ServerAdministratorResourceInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+    public Mono<ServerAdministratorResourceInner> createOrUpdateAsync(String resourceGroupName, String serverName,
         ServerAdministratorResourceInner properties) {
         return beginCreateOrUpdateAsync(resourceGroupName, serverName, properties).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -437,7 +425,7 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
     /**
      * Creates or update active directory administrator on an existing server. The update action will overwrite the
      * existing administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param properties The required parameters for creating or updating an AAD server administrator.
@@ -457,7 +445,7 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
     /**
      * Creates or update active directory administrator on an existing server. The update action will overwrite the
      * existing administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param properties The required parameters for creating or updating an AAD server administrator.
@@ -475,7 +463,7 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
     /**
      * Creates or update active directory administrator on an existing server. The update action will overwrite the
      * existing administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param properties The required parameters for creating or updating an AAD server administrator.
@@ -493,7 +481,7 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
 
     /**
      * Deletes server active directory administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -502,7 +490,7 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -528,7 +516,7 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
 
     /**
      * Deletes server active directory administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -564,16 +552,16 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
 
     /**
      * Deletes server active directory administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serverName);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
@@ -581,14 +569,14 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
 
     /**
      * Deletes server active directory administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName,
@@ -601,39 +589,39 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
 
     /**
      * Deletes server active directory administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName) {
-        return beginDeleteAsync(resourceGroupName, serverName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName).getSyncPoller();
     }
 
     /**
      * Deletes server active directory administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
         Context context) {
-        return beginDeleteAsync(resourceGroupName, serverName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, context).getSyncPoller();
     }
 
     /**
      * Deletes server active directory administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -642,13 +630,13 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String serverName) {
+    public Mono<Void> deleteAsync(String resourceGroupName, String serverName) {
         return beginDeleteAsync(resourceGroupName, serverName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes server active directory administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -665,7 +653,7 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
 
     /**
      * Deletes server active directory administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -679,7 +667,7 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
 
     /**
      * Deletes server active directory administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -694,14 +682,14 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
 
     /**
      * Returns a list of server Administrators.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a list Active Directory Administrators request along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerAdministratorResourceInner>> listSinglePageAsync(String resourceGroupName,
@@ -733,7 +721,7 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
 
     /**
      * Returns a list of server Administrators.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -741,7 +729,7 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a list Active Directory Administrators request along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerAdministratorResourceInner>> listSinglePageAsync(String resourceGroupName,
@@ -773,29 +761,31 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
 
     /**
      * Returns a list of server Administrators.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list Active Directory Administrators request.
+     * @return the response to a list Active Directory Administrators request as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ServerAdministratorResourceInner> listAsync(String resourceGroupName, String serverName) {
+    public PagedFlux<ServerAdministratorResourceInner> listAsync(String resourceGroupName, String serverName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, serverName));
     }
 
     /**
      * Returns a list of server Administrators.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list Active Directory Administrators request.
+     * @return the response to a list Active Directory Administrators request as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ServerAdministratorResourceInner> listAsync(String resourceGroupName, String serverName,
@@ -805,13 +795,14 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
 
     /**
      * Returns a list of server Administrators.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list Active Directory Administrators request.
+     * @return the response to a list Active Directory Administrators request as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServerAdministratorResourceInner> list(String resourceGroupName, String serverName) {
@@ -820,14 +811,15 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
 
     /**
      * Returns a list of server Administrators.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list Active Directory Administrators request.
+     * @return the response to a list Active Directory Administrators request as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServerAdministratorResourceInner> list(String resourceGroupName, String serverName,

@@ -5,48 +5,47 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * The status of the archive.
  */
 @Immutable
-public final class AmlFilesystemArchiveStatus {
+public final class AmlFilesystemArchiveStatus implements JsonSerializable<AmlFilesystemArchiveStatus> {
     /*
      * The state of the archive operation
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private ArchiveStatusType state;
 
     /*
      * The time of the last completed archive operation
      */
-    @JsonProperty(value = "lastCompletionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastCompletionTime;
 
     /*
      * The time the latest archive operation started
      */
-    @JsonProperty(value = "lastStartedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastStartedTime;
 
     /*
      * The completion percentage of the archive operation
      */
-    @JsonProperty(value = "percentComplete", access = JsonProperty.Access.WRITE_ONLY)
     private Integer percentComplete;
 
     /*
      * Server-defined error code for the archive operation
      */
-    @JsonProperty(value = "errorCode", access = JsonProperty.Access.WRITE_ONLY)
     private String errorCode;
 
     /*
      * Server-defined error message for the archive operation
      */
-    @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String errorMessage;
 
     /**
@@ -115,5 +114,52 @@ public final class AmlFilesystemArchiveStatus {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AmlFilesystemArchiveStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AmlFilesystemArchiveStatus if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AmlFilesystemArchiveStatus.
+     */
+    public static AmlFilesystemArchiveStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AmlFilesystemArchiveStatus deserializedAmlFilesystemArchiveStatus = new AmlFilesystemArchiveStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedAmlFilesystemArchiveStatus.state = ArchiveStatusType.fromString(reader.getString());
+                } else if ("lastCompletionTime".equals(fieldName)) {
+                    deserializedAmlFilesystemArchiveStatus.lastCompletionTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastStartedTime".equals(fieldName)) {
+                    deserializedAmlFilesystemArchiveStatus.lastStartedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("percentComplete".equals(fieldName)) {
+                    deserializedAmlFilesystemArchiveStatus.percentComplete = reader.getNullable(JsonReader::getInt);
+                } else if ("errorCode".equals(fieldName)) {
+                    deserializedAmlFilesystemArchiveStatus.errorCode = reader.getString();
+                } else if ("errorMessage".equals(fieldName)) {
+                    deserializedAmlFilesystemArchiveStatus.errorMessage = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAmlFilesystemArchiveStatus;
+        });
     }
 }

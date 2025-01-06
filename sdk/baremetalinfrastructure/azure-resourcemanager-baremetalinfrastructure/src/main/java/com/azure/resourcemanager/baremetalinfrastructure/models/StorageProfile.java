@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Specifies the storage settings for the Azure Bare Metal instance disks.
+ * Specifies the storage settings for the AzureBareMetal instance disks.
  */
 @Fluent
 public final class StorageProfile implements JsonSerializable<StorageProfile> {
@@ -23,7 +23,7 @@ public final class StorageProfile implements JsonSerializable<StorageProfile> {
     private String nfsIpAddress;
 
     /*
-     * Specifies information about the operating system disk used by bare metal instance.
+     * Specifies information about the operating system disk used by baremetal instance.
      */
     private List<Disk> osDisks;
 
@@ -43,7 +43,7 @@ public final class StorageProfile implements JsonSerializable<StorageProfile> {
     }
 
     /**
-     * Get the osDisks property: Specifies information about the operating system disk used by bare metal instance.
+     * Get the osDisks property: Specifies information about the operating system disk used by baremetal instance.
      * 
      * @return the osDisks value.
      */
@@ -52,7 +52,7 @@ public final class StorageProfile implements JsonSerializable<StorageProfile> {
     }
 
     /**
-     * Set the osDisks property: Specifies information about the operating system disk used by bare metal instance.
+     * Set the osDisks property: Specifies information about the operating system disk used by baremetal instance.
      * 
      * @param osDisks the osDisks value to set.
      * @return the StorageProfile object itself.

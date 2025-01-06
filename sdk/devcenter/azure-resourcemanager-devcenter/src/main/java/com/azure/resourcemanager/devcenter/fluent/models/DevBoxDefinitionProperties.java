@@ -5,6 +5,9 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devcenter.models.CatalogResourceValidationStatus;
 import com.azure.resourcemanager.devcenter.models.HibernateSupport;
 import com.azure.resourcemanager.devcenter.models.ImageReference;
@@ -12,7 +15,7 @@ import com.azure.resourcemanager.devcenter.models.ImageValidationErrorDetails;
 import com.azure.resourcemanager.devcenter.models.ImageValidationStatus;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.azure.resourcemanager.devcenter.models.Sku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Properties of a Dev Box definition.
@@ -22,31 +25,26 @@ public final class DevBoxDefinitionProperties extends DevBoxDefinitionUpdateProp
     /*
      * The provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Validation status of the configured image.
      */
-    @JsonProperty(value = "imageValidationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ImageValidationStatus imageValidationStatus;
 
     /*
      * Details for image validator error. Populated when the image validation is not successful.
      */
-    @JsonProperty(value = "imageValidationErrorDetails", access = JsonProperty.Access.WRITE_ONLY)
     private ImageValidationErrorDetails imageValidationErrorDetails;
 
     /*
      * Validation status for the Dev Box Definition.
      */
-    @JsonProperty(value = "validationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private CatalogResourceValidationStatus validationStatus;
 
     /*
      * Image reference information for the currently active image (only populated during updates).
      */
-    @JsonProperty(value = "activeImageReference", access = JsonProperty.Access.WRITE_ONLY)
     private ImageReference activeImageReference;
 
     /**
@@ -145,12 +143,78 @@ public final class DevBoxDefinitionProperties extends DevBoxDefinitionUpdateProp
      */
     @Override
     public void validate() {
-        super.validate();
         if (imageValidationErrorDetails() != null) {
             imageValidationErrorDetails().validate();
         }
         if (activeImageReference() != null) {
             activeImageReference().validate();
         }
+        if (imageReference() != null) {
+            imageReference().validate();
+        }
+        if (sku() != null) {
+            sku().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("imageReference", imageReference());
+        jsonWriter.writeJsonField("sku", sku());
+        jsonWriter.writeStringField("osStorageType", osStorageType());
+        jsonWriter.writeStringField("hibernateSupport",
+            hibernateSupport() == null ? null : hibernateSupport().toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DevBoxDefinitionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DevBoxDefinitionProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DevBoxDefinitionProperties.
+     */
+    public static DevBoxDefinitionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DevBoxDefinitionProperties deserializedDevBoxDefinitionProperties = new DevBoxDefinitionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("imageReference".equals(fieldName)) {
+                    deserializedDevBoxDefinitionProperties.withImageReference(ImageReference.fromJson(reader));
+                } else if ("sku".equals(fieldName)) {
+                    deserializedDevBoxDefinitionProperties.withSku(Sku.fromJson(reader));
+                } else if ("osStorageType".equals(fieldName)) {
+                    deserializedDevBoxDefinitionProperties.withOsStorageType(reader.getString());
+                } else if ("hibernateSupport".equals(fieldName)) {
+                    deserializedDevBoxDefinitionProperties
+                        .withHibernateSupport(HibernateSupport.fromString(reader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDevBoxDefinitionProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("imageValidationStatus".equals(fieldName)) {
+                    deserializedDevBoxDefinitionProperties.imageValidationStatus
+                        = ImageValidationStatus.fromString(reader.getString());
+                } else if ("imageValidationErrorDetails".equals(fieldName)) {
+                    deserializedDevBoxDefinitionProperties.imageValidationErrorDetails
+                        = ImageValidationErrorDetails.fromJson(reader);
+                } else if ("validationStatus".equals(fieldName)) {
+                    deserializedDevBoxDefinitionProperties.validationStatus
+                        = CatalogResourceValidationStatus.fromString(reader.getString());
+                } else if ("activeImageReference".equals(fieldName)) {
+                    deserializedDevBoxDefinitionProperties.activeImageReference = ImageReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDevBoxDefinitionProperties;
+        });
     }
 }

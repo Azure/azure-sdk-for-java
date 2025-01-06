@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,15 +12,19 @@ import java.util.Collection;
  * does not change the overall billing, only how it will be distributed. Default value is 'Cluster'.
  */
 public final class BillingType extends ExpandableStringEnum<BillingType> {
-    /** Static value Cluster for BillingType. */
+    /**
+     * Static value Cluster for BillingType.
+     */
     public static final BillingType CLUSTER = fromString("Cluster");
 
-    /** Static value Workspaces for BillingType. */
+    /**
+     * Static value Workspaces for BillingType.
+     */
     public static final BillingType WORKSPACES = fromString("Workspaces");
 
     /**
      * Creates a new instance of BillingType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +33,17 @@ public final class BillingType extends ExpandableStringEnum<BillingType> {
 
     /**
      * Creates or finds a BillingType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BillingType.
      */
-    @JsonCreator
     public static BillingType fromString(String name) {
         return fromString(name, BillingType.class);
     }
 
     /**
      * Gets known BillingType values.
-     *
+     * 
      * @return known BillingType values.
      */
     public static Collection<BillingType> values() {

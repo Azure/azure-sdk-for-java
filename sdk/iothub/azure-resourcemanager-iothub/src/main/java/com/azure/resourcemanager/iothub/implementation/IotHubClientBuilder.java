@@ -14,7 +14,9 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the IotHubClientImpl type. */
+/**
+ * A builder for creating a new instance of the IotHubClientImpl type.
+ */
 @ServiceClientBuilder(serviceClients = { IotHubClientImpl.class })
 public final class IotHubClientBuilder {
     /*
@@ -24,7 +26,7 @@ public final class IotHubClientBuilder {
 
     /**
      * Sets The subscription identifier.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the IotHubClientBuilder.
      */
@@ -40,7 +42,7 @@ public final class IotHubClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the IotHubClientBuilder.
      */
@@ -56,7 +58,7 @@ public final class IotHubClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the IotHubClientBuilder.
      */
@@ -72,7 +74,7 @@ public final class IotHubClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the IotHubClientBuilder.
      */
@@ -88,7 +90,7 @@ public final class IotHubClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the IotHubClientBuilder.
      */
@@ -104,7 +106,7 @@ public final class IotHubClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the IotHubClientBuilder.
      */
@@ -115,7 +117,7 @@ public final class IotHubClientBuilder {
 
     /**
      * Builds an instance of IotHubClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of IotHubClientImpl.
      */
     public IotHubClientImpl buildClient() {

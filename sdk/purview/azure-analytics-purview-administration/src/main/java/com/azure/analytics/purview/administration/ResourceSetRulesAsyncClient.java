@@ -19,7 +19,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous PurviewAccountClient type. */
+/**
+ * Initializes a new instance of the asynchronous PurviewAccountClient type.
+ */
 @ServiceClient(builder = ResourceSetRulesClientBuilder.class, isAsync = true)
 public final class ResourceSetRulesAsyncClient {
     @Generated
@@ -27,7 +29,7 @@ public final class ResourceSetRulesAsyncClient {
 
     /**
      * Initializes an instance of ResourceSetRulesAsyncClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -37,10 +39,10 @@ public final class ResourceSetRulesAsyncClient {
 
     /**
      * Get a resource set config service model.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     advancedResourceSet (Optional): {
      *         modifiedAt: OffsetDateTime (Optional)
@@ -137,8 +139,9 @@ public final class ResourceSetRulesAsyncClient {
      *         version: Integer (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -154,10 +157,10 @@ public final class ResourceSetRulesAsyncClient {
 
     /**
      * Creates or updates an resource set config.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     advancedResourceSet (Optional): {
      *         modifiedAt: OffsetDateTime (Optional)
@@ -254,11 +257,13 @@ public final class ResourceSetRulesAsyncClient {
      *         version: Integer (Optional)
      *     }
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     advancedResourceSet (Optional): {
      *         modifiedAt: OffsetDateTime (Optional)
@@ -355,16 +360,17 @@ public final class ResourceSetRulesAsyncClient {
      *         version: Integer (Optional)
      *     }
      * }
-     * }</pre>
-     *
-     * @param resourceSetRuleConfig ResourceSetRuleConfig implementation class.
+     * }
+     * </pre>
+     * 
+     * @param resourceSetRuleConfig The resourceSetRuleConfig parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return resourceSetRuleConfig implementation class along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return resourceSetRuleConfig implementation class along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -375,7 +381,7 @@ public final class ResourceSetRulesAsyncClient {
 
     /**
      * Deletes a ResourceSetRuleConfig resource.
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -391,20 +397,17 @@ public final class ResourceSetRulesAsyncClient {
 
     /**
      * Get a resource set config service model.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     advancedResourceSet (Optional): {
      *         modifiedAt: OffsetDateTime (Optional)
@@ -501,8 +504,9 @@ public final class ResourceSetRulesAsyncClient {
      *         version: Integer (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.

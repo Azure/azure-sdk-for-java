@@ -138,7 +138,10 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
      */
     Mono<Void> simulateEvictionAsync();
 
-    /** @return entry point to enabling, disabling and querying disk encryption */
+    /**
+     * Gets entry point to enabling, disabling and querying disk encryption.
+     *
+     * @return entry point to enabling, disabling and querying disk encryption */
     VirtualMachineEncryption diskEncryption();
 
     /** Converts (migrates) the virtual machine with un-managed disks to use managed disk. */
@@ -251,49 +254,116 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
     // Getters
     //
 
-    /** @return true if managed disks are used for the virtual machine's disks (OS, data) */
+    /**
+     * Checks whether managed disks are used for the virtual machine's disks (OS, data).
+     *
+     * @return true if managed disks are used for the virtual machine's disks (OS, data)
+     */
     boolean isManagedDiskEnabled();
 
-    /** @return name of this virtual machine */
+    /**
+     * Gets name of this virtual machine.
+     *
+     * @return name of this virtual machine
+     */
     String computerName();
 
-    /** @return the virtual machine size */
+    /**
+     * Gets the virtual machine size.
+     *
+     * @return the virtual machine size
+     */
     VirtualMachineSizeTypes size();
 
-    /** @return the operating system of this virtual machine */
+    /**
+     * Gets the operating system of this virtual machine.
+     *
+     * @return the operating system of this virtual machine
+     */
     OperatingSystemTypes osType();
 
-    /** @return the URI to the VHD file backing this virtual machine's operating system disk */
+    /**
+     * Gets the URI to the VHD file backing this virtual machine's operating system disk.
+     *
+     * @return the URI to the VHD file backing this virtual machine's operating system disk
+     */
     String osUnmanagedDiskVhdUri();
 
-    /** @return the operating system disk caching type */
+    /**
+     * Gets the operating system disk caching type.
+     *
+     * @return the operating system disk caching type
+     */
     CachingTypes osDiskCachingType();
 
-    /** @return the size of the operating system disk in GB */
+    /**
+     * Gets the size of the operating system disk in GB.
+     *
+     * @return the size of the operating system disk in GB
+     */
     int osDiskSize();
 
-    /** @return the storage account type of the managed disk backing OS disk */
+    /**
+     * Gets the storage account type of the managed disk backing OS disk.
+     *
+     * @return the storage account type of the managed disk backing OS disk
+     */
     StorageAccountTypes osDiskStorageAccountType();
 
-    /** @return resource ID of the managed disk backing the OS disk */
+    /**
+     * Gets resource ID of the managed disk backing the OS disk.
+     *
+     * @return resource ID of the managed disk backing the OS disk
+     */
     String osDiskId();
 
-    /** @return the delete options of the OS disk */
+    /**
+     * Gets the delete options of the OS disk.
+     *
+     * @return the delete options of the OS disk
+     */
     DeleteOptions osDiskDeleteOptions();
 
-    /** @return resource ID of the disk encryption set of the OS disk */
+    /**
+     * Gets resource ID of the disk encryption set of the OS disk.
+     *
+     * @return resource ID of the disk encryption set of the OS disk
+     */
     String osDiskDiskEncryptionSetId();
 
-    /** @return whether the os disk is ephemeral*/
+    /**
+     * Gets whether the write accelerator is enabled.
+     *
+     * @return whether the write accelerator is enabled
+     */
+    boolean isOsDiskWriteAcceleratorEnabled();
+
+    /**
+     * Checks whether the os disk is ephemeral.
+     *
+     * @return whether the os disk is ephemeral
+     */
     boolean isOSDiskEphemeral();
 
-    /** @return whether encryption at host*/
+    /**
+     * Checks whether encryption at host.
+     *
+     * @return whether encryption at host
+     */
     boolean isEncryptionAtHost();
 
-    /** @return the unmanaged data disks associated with this virtual machine, indexed by LUN number */
+    /**
+     * Gets the unmanaged data disks associated with this virtual machine, indexed by LUN number.
+     *
+     * @return the unmanaged data disks associated with this virtual machine, indexed by LUN number
+     */
     Map<Integer, VirtualMachineUnmanagedDataDisk> unmanagedDataDisks();
 
-    /** @return the managed data disks associated with this virtual machine, indexed by LUN */
+    /**
+     * Gets the managed data disks associated with this virtual machine, indexed by LUN.
+     *
+     * @return the managed data disks associated with this virtual machine, indexed by LUN
+     */
     Map<Integer, VirtualMachineDataDisk> dataDisks();
 
     /**
@@ -306,20 +376,38 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
     PublicIpAddress getPrimaryPublicIPAddress();
 
     /**
+     * Gets the resource ID of the public IP address associated with this virtual machine's primary network interface.
+     *
      * @return the resource ID of the public IP address associated with this virtual machine's primary network interface
      */
     String getPrimaryPublicIPAddressId();
 
-    /** @return the resource ID of the availability set associated with this virtual machine */
+    /**
+     * Gets the resource ID of the availability set associated with this virtual machine.
+     *
+     * @return the resource ID of the availability set associated with this virtual machine
+     */
     String availabilitySetId();
 
-    /** @return the resource ID of the virtual machine scale set associated with this virtual machine */
+    /**
+     * Gets the resource ID of the virtual machine scale set associated with this virtual machine.
+     *
+     * @return the resource ID of the virtual machine scale set associated with this virtual machine
+     */
     String virtualMachineScaleSetId();
 
-    /** @return the provisioningState value */
+    /**
+     * Gets the provisioningState value.
+     *
+     * @return the provisioningState value
+     */
     String provisioningState();
 
-    /** @return the licenseType value */
+    /**
+     * Gets the licenseType value.
+     *
+     * @return the licenseType value
+     */
     String licenseType();
 
     /**
@@ -331,15 +419,25 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
     ProximityPlacementGroup proximityPlacementGroup();
 
     /**
+     * Gets extensions attached to the virtual machine.
+     *
      * @return a representation of the deferred computation of this call, returning extensions attached to the virtual
      *     machine
      */
     Mono<List<VirtualMachineExtension>> listExtensionsAsync();
 
-    /** @return extensions attached to the virtual machine */
+    /**
+     * Gets extensions attached to the virtual machine.
+     *
+     * @return extensions attached to the virtual machine
+     */
     Map<String, VirtualMachineExtension> listExtensions();
 
-    /** @return the plan value */
+    /**
+     * Gets the plan value.
+     *
+     * @return the plan value
+     */
     Plan plan();
 
     /**
@@ -349,16 +447,32 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
      */
     StorageProfile storageProfile();
 
-    /** @return the operating system profile */
+    /**
+     * Gets the operating system profile.
+     *
+     * @return the operating system profile
+     */
     OSProfile osProfile();
 
-    /** @return the diagnostics profile */
+    /**
+     * Gets the diagnostics profile.
+     *
+     * @return the diagnostics profile
+     */
     DiagnosticsProfile diagnosticsProfile();
 
-    /** @return the virtual machine unique ID. */
+    /**
+     * Gets the virtual machine unique ID.
+     *
+     * @return the virtual machine unique ID.
+     */
     String vmId();
 
-    /** @return the power state of the virtual machine */
+    /**
+     * Gets the power state of the virtual machine.
+     *
+     * @return the power state of the virtual machine
+     */
     PowerState powerState();
 
     /**
@@ -370,67 +484,127 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
      */
     VirtualMachineInstanceView instanceView();
 
-    /** @return the availability zones assigned to the virtual machine */
+    /**
+     * Gets the availability zones assigned to the virtual machine.
+     *
+     * @return the availability zones assigned to the virtual machine
+     */
     Set<AvailabilityZoneId> availabilityZones();
 
-    /** @return true if boot diagnostics is enabled for the virtual machine */
+    /**
+     * Checks whether boot diagnostics is enabled for the virtual machine.
+     *
+     * @return true if boot diagnostics is enabled for the virtual machine
+     */
     boolean isBootDiagnosticsEnabled();
 
-    /** @return the storage blob endpoint uri if boot diagnostics is enabled for the virtual machine */
+    /**
+     * Gets the storage blob endpoint uri if boot diagnostics is enabled for the virtual machine.
+     *
+     * @return the storage blob endpoint uri if boot diagnostics is enabled for the virtual machine
+     */
     String bootDiagnosticsStorageUri();
 
-    /** @return true if Managed Service Identity is enabled for the virtual machine */
+    /**
+     * Checks whether Managed Service Identity is enabled for the virtual machine.
+     *
+     * @return true if Managed Service Identity is enabled for the virtual machine
+     */
     boolean isManagedServiceIdentityEnabled();
 
     /**
+     * Gets System Assigned (Local) Managed Service Identity specific Active Directory tenant ID assigned to the
+     *     virtual machine.
+     *
      * @return the System Assigned (Local) Managed Service Identity specific Active Directory tenant ID assigned to the
      *     virtual machine.
      */
     String systemAssignedManagedServiceIdentityTenantId();
 
     /**
+     * Gets the System Assigned (Local) Managed Service Identity specific Active Directory service principal ID
+     *     assigned to the virtual machine.
+     *
      * @return the System Assigned (Local) Managed Service Identity specific Active Directory service principal ID
      *     assigned to the virtual machine.
      */
     String systemAssignedManagedServiceIdentityPrincipalId();
 
-    /** @return the type of Managed Service Identity used for the virtual machine. */
+    /**
+     * Gets the type of Managed Service Identity used for the virtual machine.
+     *
+     * @return the type of Managed Service Identity used for the virtual machine.
+     */
     ResourceIdentityType managedServiceIdentityType();
 
-    /** @return the resource ids of User Assigned Managed Service Identities associated with the virtual machine. */
+    /**
+     * Gets the resource ids of User Assigned Managed Service Identities associated with the virtual machine.
+     *
+     * @return the resource ids of User Assigned Managed Service Identities associated with the virtual machine.
+     */
     Set<String> userAssignedManagedServiceIdentityIds();
 
-    /** @return the priority for the virtual machine. */
+    /**
+     * Gets the priority for the virtual machine.
+     *
+     * @return the priority for the virtual machine.
+     */
     VirtualMachinePriorityTypes priority();
 
-    /** @return the eviction policy for the virtual machine. */
+    /**
+     * Gets the eviction policy for the virtual machine.
+     *
+     * @return the eviction policy for the virtual machine.
+     */
     VirtualMachineEvictionPolicyTypes evictionPolicy();
 
-    /** @return the billing related details of a low priority virtual machine */
+    /**
+     * Gets the billing related details of a low priority virtual machine.
+     *
+     * @return the billing related details of a low priority virtual machine
+     */
     BillingProfile billingProfile();
 
     /**
+     * Checks whether hibernation feature is enabled on the virtual machine.
+     *
      * @return true if hibernation feature is enabled on the virtual machine.
      */
     boolean isHibernationEnabled();
 
     /**
-     * Whether ultra SSD feature is enabled.
+     * Checks whether ultra SSD feature is enabled.
      *
      * @return true if ultra SSD feature is enabled on the virtual machine.
      */
     boolean isUltraSsdEnabled();
 
-    /** @return the {@link SecurityTypes} of the virtual machine */
+    /**
+     * Gets the {@link SecurityTypes} of the virtual machine.
+     *
+     * @return the {@link SecurityTypes} of the virtual machine
+     */
     SecurityTypes securityType();
 
-    /** @return whether secure boot is enabled on the virtual machine */
+    /**
+     * Checks whether secure boot is enabled on the virtual machine
+     *
+     * @return whether secure boot is enabled on the virtual machine
+     */
     boolean isSecureBootEnabled();
 
-    /** @return whether vTPM is enabled on the virtual machine */
+    /**
+     * Checks whether vTPM is enabled on the virtual machine.
+     *
+     * @return whether vTPM is enabled on the virtual machine
+     */
     boolean isVTpmEnabled();
 
-    /** @return the time at which the Virtual Machine resource was created */
+    /**
+     * Gets the time at which the Virtual Machine resource was created.
+     *
+     * @return the time at which the Virtual Machine resource was created
+     */
     OffsetDateTime timeCreated();
 
     /**
@@ -1230,6 +1404,18 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
             WithCreate withOSDiskDeleteOptions(DeleteOptions deleteOptions);
 
             /**
+             * Specifies the write accelerator for the OS disks.
+             * <p>
+             * Write Accelerator is generally available for M-series VMs in the Public Cloud.
+             * Enabling write accelerator for the operating system disk of the VM will reboot the VM.
+             * The Premium disk caching must be set to 'None' or 'Read Only'. All other caching modes are not supported.
+             *
+             * @param writeAcceleratorEnabled whether to enable the write accelerator
+             * @return the next stage of the definition
+             */
+            WithCreate withOSDiskWriteAcceleratorEnabled(boolean writeAcceleratorEnabled);
+
+            /**
              * Specifies the disk encryption set for the managed OS disk.
              *
              * @param diskEncryptionSetId the ID of disk encryption set.
@@ -1847,6 +2033,14 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
              * @return the next stage of the definition
              */
             WithManagedCreate withDataDiskDefaultDeleteOptions(DeleteOptions deleteOptions);
+
+            /**
+             * Specifies the write accelerator for managed data disks.
+             *
+             * @param writeAcceleratorEnabled whether to enable the write accelerator
+             * @return the next stage of the definition
+             */
+            WithManagedCreate withDataDiskDefaultWriteAcceleratorEnabled(boolean writeAcceleratorEnabled);
 
             /**
              * Specifies the disk encryption set for the managed data disk.
@@ -2667,6 +2861,18 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
         Update withOSDiskEncryptionSettings(DiskEncryptionSettings settings);
 
         /**
+         * Specifies the write accelerator for the OS disks.
+         * <p>
+         * Write Accelerator is generally available for M-series VMs in the Public Cloud.
+         * Enabling write accelerator for the operating system disk of the VM will reboot the VM.
+         * The Premium disk caching must be set to 'None' or 'Read Only'. All other caching modes are not supported.
+         *
+         * @param writeAcceleratorEnabled whether to enable the write accelerator
+         * @return the next stage of the update
+         */
+        Update withOSDiskWriteAcceleratorEnabled(boolean writeAcceleratorEnabled);
+
+        /**
          * Specifies the default caching type for the managed data disks.
          *
          * @param cachingType a caching type
@@ -2689,6 +2895,14 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
          * @return the next stage of the definition
          */
         Update withDataDiskDefaultDeleteOptions(DeleteOptions deleteOptions);
+
+        /**
+         * Specifies the write accelerator for managed data disks.
+         *
+         * @param writeAcceleratorEnabled whether to enable the write accelerator
+         * @return the next stage of the definition
+         */
+        Update withDataDiskDefaultWriteAcceleratorEnabled(boolean writeAcceleratorEnabled);
 
         /**
          * Specifies the disk encryption set for the managed data disk.

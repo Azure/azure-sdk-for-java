@@ -5,62 +5,59 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of the topic spaces configuration info of a namespace.
  */
 @Fluent
-public final class UpdateTopicSpacesConfigurationInfo {
+public final class UpdateTopicSpacesConfigurationInfo implements JsonSerializable<UpdateTopicSpacesConfigurationInfo> {
     /*
      * Indicate if Topic Spaces Configuration is enabled for the namespace. Default is Disabled.
      */
-    @JsonProperty(value = "state")
     private TopicSpacesConfigurationState state;
 
     /*
-     * This property is used to specify custom topic to which events will be routed to from topic spaces configuration under namespace.
+     * This property is used to specify custom topic to which events will be routed to from topic spaces configuration
+     * under namespace.
      */
-    @JsonProperty(value = "routeTopicResourceId")
     private String routeTopicResourceId;
 
     /*
      * Routing enrichments for topic spaces configuration.
      */
-    @JsonProperty(value = "routingEnrichments")
     private RoutingEnrichments routingEnrichments;
 
     /*
      * Client authentication settings for topic spaces configuration.
      */
-    @JsonProperty(value = "clientAuthentication")
     private ClientAuthenticationSettings clientAuthentication;
 
     /*
      * The maximum session expiry in hours. The property default value is 1 hour.
      * Min allowed value is 1 hour and max allowed value is 8 hours.
      */
-    @JsonProperty(value = "maximumSessionExpiryInHours")
     private Integer maximumSessionExpiryInHours;
 
     /*
      * The maximum number of sessions per authentication name. The property default value is 1.
      * Min allowed value is 1 and max allowed value is 100.
      */
-    @JsonProperty(value = "maximumClientSessionsPerAuthenticationName")
     private Integer maximumClientSessionsPerAuthenticationName;
 
     /*
      * Routing identity info for topic spaces configuration.
      */
-    @JsonProperty(value = "routingIdentityInfo")
     private RoutingIdentityInfo routingIdentityInfo;
 
     /*
      * Custom domain info for topic spaces configuration.
      */
-    @JsonProperty(value = "customDomains")
     private List<CustomDomainConfiguration> customDomains;
 
     /**
@@ -259,5 +256,72 @@ public final class UpdateTopicSpacesConfigurationInfo {
         if (customDomains() != null) {
             customDomains().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeStringField("routeTopicResourceId", this.routeTopicResourceId);
+        jsonWriter.writeJsonField("routingEnrichments", this.routingEnrichments);
+        jsonWriter.writeJsonField("clientAuthentication", this.clientAuthentication);
+        jsonWriter.writeNumberField("maximumSessionExpiryInHours", this.maximumSessionExpiryInHours);
+        jsonWriter.writeNumberField("maximumClientSessionsPerAuthenticationName",
+            this.maximumClientSessionsPerAuthenticationName);
+        jsonWriter.writeJsonField("routingIdentityInfo", this.routingIdentityInfo);
+        jsonWriter.writeArrayField("customDomains", this.customDomains, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateTopicSpacesConfigurationInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateTopicSpacesConfigurationInfo if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateTopicSpacesConfigurationInfo.
+     */
+    public static UpdateTopicSpacesConfigurationInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateTopicSpacesConfigurationInfo deserializedUpdateTopicSpacesConfigurationInfo
+                = new UpdateTopicSpacesConfigurationInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedUpdateTopicSpacesConfigurationInfo.state
+                        = TopicSpacesConfigurationState.fromString(reader.getString());
+                } else if ("routeTopicResourceId".equals(fieldName)) {
+                    deserializedUpdateTopicSpacesConfigurationInfo.routeTopicResourceId = reader.getString();
+                } else if ("routingEnrichments".equals(fieldName)) {
+                    deserializedUpdateTopicSpacesConfigurationInfo.routingEnrichments
+                        = RoutingEnrichments.fromJson(reader);
+                } else if ("clientAuthentication".equals(fieldName)) {
+                    deserializedUpdateTopicSpacesConfigurationInfo.clientAuthentication
+                        = ClientAuthenticationSettings.fromJson(reader);
+                } else if ("maximumSessionExpiryInHours".equals(fieldName)) {
+                    deserializedUpdateTopicSpacesConfigurationInfo.maximumSessionExpiryInHours
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("maximumClientSessionsPerAuthenticationName".equals(fieldName)) {
+                    deserializedUpdateTopicSpacesConfigurationInfo.maximumClientSessionsPerAuthenticationName
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("routingIdentityInfo".equals(fieldName)) {
+                    deserializedUpdateTopicSpacesConfigurationInfo.routingIdentityInfo
+                        = RoutingIdentityInfo.fromJson(reader);
+                } else if ("customDomains".equals(fieldName)) {
+                    List<CustomDomainConfiguration> customDomains
+                        = reader.readArray(reader1 -> CustomDomainConfiguration.fromJson(reader1));
+                    deserializedUpdateTopicSpacesConfigurationInfo.customDomains = customDomains;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateTopicSpacesConfigurationInfo;
+        });
     }
 }

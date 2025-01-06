@@ -6,11 +6,13 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.resourcemanager.apimanagement.fluent.models.AuthorizationLoginResponseContractInner;
 
-/** An immutable client-side representation of AuthorizationLoginResponseContract. */
+/**
+ * An immutable client-side representation of AuthorizationLoginResponseContract.
+ */
 public interface AuthorizationLoginResponseContract {
     /**
      * Gets the loginLink property: The login link.
-     *
+     * 
      * @return the loginLink value.
      */
     String loginLink();
@@ -18,7 +20,7 @@ public interface AuthorizationLoginResponseContract {
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.AuthorizationLoginResponseContractInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     AuthorizationLoginResponseContractInner innerModel();

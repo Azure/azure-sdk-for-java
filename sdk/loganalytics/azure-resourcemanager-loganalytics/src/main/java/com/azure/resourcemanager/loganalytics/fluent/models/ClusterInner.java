@@ -6,65 +6,84 @@ package com.azure.resourcemanager.loganalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.loganalytics.models.AssociatedWorkspace;
 import com.azure.resourcemanager.loganalytics.models.BillingType;
 import com.azure.resourcemanager.loganalytics.models.CapacityReservationProperties;
 import com.azure.resourcemanager.loganalytics.models.ClusterEntityStatus;
 import com.azure.resourcemanager.loganalytics.models.ClusterSku;
-import com.azure.resourcemanager.loganalytics.models.Identity;
 import com.azure.resourcemanager.loganalytics.models.KeyVaultProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.loganalytics.models.ManagedServiceIdentity;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The top level Log Analytics cluster resource container. */
+/**
+ * The top level Log Analytics cluster resource container.
+ */
 @Fluent
 public final class ClusterInner extends Resource {
     /*
-     * The identity of the resource.
+     * Resource's identity.
      */
-    @JsonProperty(value = "identity")
-    private Identity identity;
+    private ManagedServiceIdentity identity;
 
     /*
      * The sku properties.
      */
-    @JsonProperty(value = "sku")
     private ClusterSku sku;
 
     /*
      * Log Analytics cluster properties.
      */
-    @JsonProperty(value = "properties")
     private ClusterProperties innerProperties;
 
-    /** Creates an instance of ClusterInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ClusterInner class.
+     */
     public ClusterInner() {
     }
 
     /**
-     * Get the identity property: The identity of the resource.
-     *
+     * Get the identity property: Resource's identity.
+     * 
      * @return the identity value.
      */
-    public Identity identity() {
+    public ManagedServiceIdentity identity() {
         return this.identity;
     }
 
     /**
-     * Set the identity property: The identity of the resource.
-     *
+     * Set the identity property: Resource's identity.
+     * 
      * @param identity the identity value to set.
      * @return the ClusterInner object itself.
      */
-    public ClusterInner withIdentity(Identity identity) {
+    public ClusterInner withIdentity(ManagedServiceIdentity identity) {
         this.identity = identity;
         return this;
     }
 
     /**
      * Get the sku property: The sku properties.
-     *
+     * 
      * @return the sku value.
      */
     public ClusterSku sku() {
@@ -73,7 +92,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the sku property: The sku properties.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ClusterInner object itself.
      */
@@ -84,21 +103,55 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the innerProperties property: Log Analytics cluster properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ClusterProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -107,7 +160,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the clusterId property: The ID associated with the cluster.
-     *
+     * 
      * @return the clusterId value.
      */
     public String clusterId() {
@@ -116,7 +169,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the cluster.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ClusterEntityStatus provisioningState() {
@@ -126,7 +179,7 @@ public final class ClusterInner extends Resource {
     /**
      * Get the isDoubleEncryptionEnabled property: Configures whether cluster will use double encryption. This Property
      * can not be modified after cluster creation. Default value is 'true'.
-     *
+     * 
      * @return the isDoubleEncryptionEnabled value.
      */
     public Boolean isDoubleEncryptionEnabled() {
@@ -136,7 +189,7 @@ public final class ClusterInner extends Resource {
     /**
      * Set the isDoubleEncryptionEnabled property: Configures whether cluster will use double encryption. This Property
      * can not be modified after cluster creation. Default value is 'true'.
-     *
+     * 
      * @param isDoubleEncryptionEnabled the isDoubleEncryptionEnabled value to set.
      * @return the ClusterInner object itself.
      */
@@ -152,7 +205,7 @@ public final class ClusterInner extends Resource {
      * Get the isAvailabilityZonesEnabled property: Sets whether the cluster will support availability zones. This can
      * be set as true only in regions where Azure Data Explorer support Availability Zones. This Property can not be
      * modified after cluster creation. Default value is 'true' if region supports Availability Zones.
-     *
+     * 
      * @return the isAvailabilityZonesEnabled value.
      */
     public Boolean isAvailabilityZonesEnabled() {
@@ -163,7 +216,7 @@ public final class ClusterInner extends Resource {
      * Set the isAvailabilityZonesEnabled property: Sets whether the cluster will support availability zones. This can
      * be set as true only in regions where Azure Data Explorer support Availability Zones. This Property can not be
      * modified after cluster creation. Default value is 'true' if region supports Availability Zones.
-     *
+     * 
      * @param isAvailabilityZonesEnabled the isAvailabilityZonesEnabled value to set.
      * @return the ClusterInner object itself.
      */
@@ -177,7 +230,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the billingType property: The cluster's billing type.
-     *
+     * 
      * @return the billingType value.
      */
     public BillingType billingType() {
@@ -186,7 +239,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the billingType property: The cluster's billing type.
-     *
+     * 
      * @param billingType the billingType value to set.
      * @return the ClusterInner object itself.
      */
@@ -200,7 +253,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the keyVaultProperties property: The associated key properties.
-     *
+     * 
      * @return the keyVaultProperties value.
      */
     public KeyVaultProperties keyVaultProperties() {
@@ -209,7 +262,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the keyVaultProperties property: The associated key properties.
-     *
+     * 
      * @param keyVaultProperties the keyVaultProperties value to set.
      * @return the ClusterInner object itself.
      */
@@ -223,7 +276,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the lastModifiedDate property: The last time the cluster was updated.
-     *
+     * 
      * @return the lastModifiedDate value.
      */
     public String lastModifiedDate() {
@@ -232,7 +285,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the createdDate property: The cluster creation time.
-     *
+     * 
      * @return the createdDate value.
      */
     public String createdDate() {
@@ -241,7 +294,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the associatedWorkspaces property: The list of Log Analytics workspaces associated with the cluster.
-     *
+     * 
      * @return the associatedWorkspaces value.
      */
     public List<AssociatedWorkspace> associatedWorkspaces() {
@@ -250,7 +303,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the associatedWorkspaces property: The list of Log Analytics workspaces associated with the cluster.
-     *
+     * 
      * @param associatedWorkspaces the associatedWorkspaces value to set.
      * @return the ClusterInner object itself.
      */
@@ -264,7 +317,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the capacityReservationProperties property: Additional properties for capacity reservation.
-     *
+     * 
      * @return the capacityReservationProperties value.
      */
     public CapacityReservationProperties capacityReservationProperties() {
@@ -273,7 +326,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the capacityReservationProperties property: Additional properties for capacity reservation.
-     *
+     * 
      * @param capacityReservationProperties the capacityReservationProperties value to set.
      * @return the ClusterInner object itself.
      */
@@ -287,7 +340,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -300,5 +353,61 @@ public final class ClusterInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClusterInner.
+     */
+    public static ClusterInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterInner deserializedClusterInner = new ClusterInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedClusterInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedClusterInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedClusterInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedClusterInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedClusterInner.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedClusterInner.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedClusterInner.sku = ClusterSku.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedClusterInner.innerProperties = ClusterProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterInner;
+        });
     }
 }

@@ -29,13 +29,15 @@ public final class CreationSupportedsImpl implements CreationSupporteds {
 
     public PagedIterable<CreateResourceSupportedResponse> list(String datadogOrganizationId) {
         PagedIterable<CreateResourceSupportedResponseInner> inner = this.serviceClient().list(datadogOrganizationId);
-        return Utils.mapPage(inner, inner1 -> new CreateResourceSupportedResponseImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new CreateResourceSupportedResponseImpl(inner1, this.manager()));
     }
 
     public PagedIterable<CreateResourceSupportedResponse> list(String datadogOrganizationId, Context context) {
         PagedIterable<CreateResourceSupportedResponseInner> inner
             = this.serviceClient().list(datadogOrganizationId, context);
-        return Utils.mapPage(inner, inner1 -> new CreateResourceSupportedResponseImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new CreateResourceSupportedResponseImpl(inner1, this.manager()));
     }
 
     public Response<CreateResourceSupportedResponse> getWithResponse(String datadogOrganizationId, Context context) {

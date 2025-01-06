@@ -5,6 +5,8 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.circuitBreaker.PartitionLevelCircuitBreakerConfig;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
+import io.netty.handler.ssl.ApplicationProtocolConfig;
+import io.netty.handler.ssl.ApplicationProtocolNames;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
@@ -31,8 +33,6 @@ public class Configs {
     public static final String SPECULATION_TYPE = "COSMOS_SPECULATION_TYPE";
     public static final String SPECULATION_THRESHOLD = "COSMOS_SPECULATION_THRESHOLD";
     public static final String SPECULATION_THRESHOLD_STEP = "COSMOS_SPECULATION_THRESHOLD_STEP";
-    private final SslContext sslContext;
-    private final SslContext sslContextWithCertValidationDisabled;
 
     // The names we use are consistent with the:
     // * Azure environment variable naming conventions documented at https://azure.github.io/azure-sdk/java_implementation.html and
@@ -208,6 +208,19 @@ public class Configs {
     public static final String PREVENT_INVALID_ID_CHARS_VARIABLE = "COSMOS_PREVENT_INVALID_ID_CHARS";
     public static final boolean DEFAULT_PREVENT_INVALID_ID_CHARS = false;
 
+    // Bulk default settings
+    public static final String MIN_TARGET_BULK_MICRO_BATCH_SIZE = "COSMOS.MIN_TARGET_BULK_MICRO_BATCH_SIZE";
+    public static final String MIN_TARGET_BULK_MICRO_BATCH_SIZE_VARIABLE = "COSMOS_MIN_TARGET_BULK_MICRO_BATCH_SIZE";
+    public static final int DEFAULT_MIN_TARGET_BULK_MICRO_BATCH_SIZE = 1;
+
+    public static final String MAX_BULK_MICRO_BATCH_CONCURRENCY = "COSMOS.MAX_BULK_MICRO_BATCH_CONCURRENCY";
+    public static final String MAX_BULK_MICRO_BATCH_CONCURRENCY_VARIABLE = "COSMOS_MAX_BULK_MICRO_BATCH_CONCURRENCY";
+    public static final int DEFAULT_MAX_BULK_MICRO_BATCH_CONCURRENCY = 1;
+
+    public static final String MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS = "COSMOS.MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS";
+    public static final String MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS_VARIABLE = "COSMOS_MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS";
+    public static final int DEFAULT_MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS = 1000;
+
     // Config of CodingErrorAction on charset decoder for malformed input
     public static final String CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT = "COSMOS.CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT";
     public static final String DEFAULT_CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT = StringUtils.EMPTY;
@@ -282,25 +295,53 @@ public class Configs {
     private static final String EMULATOR_HOST = "COSMOS.EMULATOR_HOST";
     private static final String EMULATOR_HOST_VARIABLE = "COSMOS_EMULATOR_HOST";
 
-    public Configs() {
-        this.sslContext = sslContextInit(false);
-        this.sslContextWithCertValidationDisabled = sslContextInit(true);
-    }
+    // Flag to indicate whether enabled http2 for gateway
+    private static final boolean DEFAULT_HTTP2_ENABLED = false;
+    private static final String HTTP2_ENABLED = "COSMOS.HTTP2_ENABLED";
+    private static final String HTTP2_ENABLED_VARIABLE = "COSMOS_HTTP2_ENABLED";
+
+    // Config to indicate the maximum number of live connections to keep in the pool for http2
+    private static final int DEFAULT_HTTP2_MAX_CONNECTION_POOL_SIZE = 1000;
+    private static final String HTTP2_MAX_CONNECTION_POOL_SIZE = "COSMOS.HTTP2_MAX_CONNECTION_POOL_SIZE";
+    private static final String HTTP2_MAX_CONNECTION_POOL_SIZE_VARIABLE = "COSMOS_HTTP2_MAX_CONNECTION_POOL_SIZE";
+
+    // Config to indicate the minimum number of live connections to keep in the pool for http2
+    private static final int DEFAULT_HTTP2_MIN_CONNECTION_POOL_SIZE = 1;
+    private static final String HTTP2_MIN_CONNECTION_POOL_SIZE = "COSMOS.HTTP2_MIN_CONNECTION_POOL_SIZE";
+    private static final String HTTP2_MIN_CONNECTION_POOL_SIZE_VARIABLE = "COSMOS_HTTP2_MIN_CONNECTION_POOL_SIZE";
+
+    // Config to indicate the maximum number of the concurrent streams that can be opened to the remote peer for http2
+    private static final int DEFAULT_HTTP2_MAX_CONCURRENT_STREAMS = 30;
+    private static final String HTTP2_MAX_CONCURRENT_STREAMS = "COSMOS.HTTP2_MAX_CONCURRENT_STREAMS";
+    private static final String HTTP2_MAX_CONCURRENT_STREAMS_VARIABLE = "COSMOS_HTTP2_MAX_CONCURRENT_STREAMS";
 
     public static int getCPUCnt() {
         return CPU_CNT;
     }
 
-    private SslContext sslContextInit(boolean serverCertVerificationDisabled) {
+    private SslContext sslContextInit(boolean serverCertVerificationDisabled, boolean http2Enabled) {
         try {
             SslContextBuilder sslContextBuilder =
                 SslContextBuilder
                     .forClient()
                     .sslProvider(SslContext.defaultClientProvider());
+
             if (serverCertVerificationDisabled) {
                 sslContextBuilder.trustManager(InsecureTrustManagerFactory.INSTANCE); // disable cert verification
             }
 
+            if (http2Enabled) {
+                sslContextBuilder
+                    .applicationProtocolConfig(
+                        new ApplicationProtocolConfig(
+                            ApplicationProtocolConfig.Protocol.ALPN,
+                            ApplicationProtocolConfig.SelectorFailureBehavior.NO_ADVERTISE,
+                            ApplicationProtocolConfig.SelectedListenerFailureBehavior.ACCEPT,
+                            ApplicationProtocolNames.HTTP_2,
+                            ApplicationProtocolNames.HTTP_1_1
+                        )
+                    );
+            }
             return sslContextBuilder.build();
         } catch (SSLException sslException) {
             logger.error("Fatal error cannot instantiate ssl context due to {}", sslException.getMessage(), sslException);
@@ -308,8 +349,8 @@ public class Configs {
         }
     }
 
-    public SslContext getSslContext(boolean serverCertValidationDisabled) {
-        return serverCertValidationDisabled ? this.sslContextWithCertValidationDisabled : this.sslContext;
+    public SslContext getSslContext(boolean serverCertValidationDisabled, boolean http2Enabled) {
+        return sslContextInit(serverCertValidationDisabled, http2Enabled);
     }
 
     public Protocol getProtocol() {
@@ -465,6 +506,48 @@ public class Configs {
         }
 
         return DEFAULT_PREVENT_INVALID_ID_CHARS;
+    }
+
+    public static int getMinTargetBulkMicroBatchSize() {
+        String valueFromSystemProperty = System.getProperty(MIN_TARGET_BULK_MICRO_BATCH_SIZE);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Integer.parseInt(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(MIN_TARGET_BULK_MICRO_BATCH_SIZE_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return Integer.parseInt(valueFromEnvVariable);
+        }
+
+        return DEFAULT_MIN_TARGET_BULK_MICRO_BATCH_SIZE;
+    }
+
+    public static int getMaxBulkMicroBatchConcurrency() {
+        String valueFromSystemProperty = System.getProperty(MAX_BULK_MICRO_BATCH_CONCURRENCY);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Integer.parseInt(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(MAX_BULK_MICRO_BATCH_CONCURRENCY_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return Integer.parseInt(valueFromEnvVariable);
+        }
+
+        return DEFAULT_MAX_BULK_MICRO_BATCH_CONCURRENCY;
+    }
+
+    public static int getMaxBulkMicroBatchFlushIntervalInMs() {
+        String valueFromSystemProperty = System.getProperty(MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Integer.parseInt(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return Integer.parseInt(valueFromEnvVariable);
+        }
+
+        return DEFAULT_MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS;
     }
 
     public static int getMaxHttpRequestTimeout() {
@@ -880,6 +963,46 @@ public class Configs {
                 String.valueOf(DEFAULT_HTTP_CONNECTION_WITHOUT_TLS_ALLOWED)));
 
         return Boolean.parseBoolean(httpForEmulatorAllowed);
+    }
+
+    public static boolean isHttp2Enabled() {
+        String httpEnabledConfig = System.getProperty(
+            HTTP2_ENABLED,
+            firstNonNull(
+                emptyToNull(System.getenv().get(HTTP2_ENABLED_VARIABLE)),
+                String.valueOf(DEFAULT_HTTP2_ENABLED)));
+
+        return Boolean.parseBoolean(httpEnabledConfig);
+    }
+
+    public static int getHttp2MaxConnectionPoolSize() {
+        String http2MaxConnectionPoolSize = System.getProperty(
+            HTTP2_MAX_CONNECTION_POOL_SIZE,
+            firstNonNull(
+                emptyToNull(System.getenv().get(HTTP2_MAX_CONNECTION_POOL_SIZE_VARIABLE)),
+                String.valueOf(DEFAULT_HTTP2_MAX_CONNECTION_POOL_SIZE)));
+
+        return Integer.parseInt(http2MaxConnectionPoolSize);
+    }
+
+    public static int getHttp2MinConnectionPoolSize() {
+        String http2MinConnectionPoolSize = System.getProperty(
+            HTTP2_MIN_CONNECTION_POOL_SIZE,
+            firstNonNull(
+                emptyToNull(System.getenv().get(HTTP2_MIN_CONNECTION_POOL_SIZE_VARIABLE)),
+                String.valueOf(DEFAULT_HTTP2_MIN_CONNECTION_POOL_SIZE)));
+
+        return Integer.parseInt(http2MinConnectionPoolSize);
+    }
+
+    public static int getHttp2MaxConcurrentStreams() {
+        String http2MaxConcurrentStreams = System.getProperty(
+            HTTP2_MAX_CONCURRENT_STREAMS,
+            firstNonNull(
+                emptyToNull(System.getenv().get(HTTP2_MAX_CONCURRENT_STREAMS_VARIABLE)),
+                String.valueOf(DEFAULT_HTTP2_MAX_CONCURRENT_STREAMS)));
+
+        return Integer.parseInt(http2MaxConcurrentStreams);
     }
 
     public static boolean isEmulatorServerCertValidationDisabled() {

@@ -19,7 +19,7 @@ public class JobSecrets implements JsonSerializable<JobSecrets> {
     /*
      * Used to indicate what type of job secrets object.
      */
-    private ClassDiscriminator jobSecretsType = ClassDiscriminator.fromString("JobSecrets");
+    private ClassDiscriminator jobSecretsType;
 
     /*
      * Dc Access Security Code for Customer Managed Shipping

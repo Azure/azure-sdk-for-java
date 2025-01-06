@@ -13,11 +13,13 @@ import com.azure.resourcemanager.devtestlabs.fluent.models.NotificationChannelIn
 import com.azure.resourcemanager.devtestlabs.models.NotificationChannelFragment;
 import com.azure.resourcemanager.devtestlabs.models.NotifyParameters;
 
-/** An instance of this class provides access to all the operations defined in NotificationChannelsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NotificationChannelsClient.
+ */
 public interface NotificationChannelsClient {
     /**
      * List notification channels in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +32,7 @@ public interface NotificationChannelsClient {
 
     /**
      * List notification channels in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=webHookUrl)'.
@@ -49,7 +51,7 @@ public interface NotificationChannelsClient {
 
     /**
      * Get notification channel.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the notification channel.
@@ -66,7 +68,7 @@ public interface NotificationChannelsClient {
 
     /**
      * Get notification channel.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the notification channel.
@@ -80,7 +82,7 @@ public interface NotificationChannelsClient {
 
     /**
      * Create or replace an existing notification channel.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the notification channel.
@@ -97,7 +99,7 @@ public interface NotificationChannelsClient {
 
     /**
      * Create or replace an existing notification channel.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the notification channel.
@@ -113,7 +115,7 @@ public interface NotificationChannelsClient {
 
     /**
      * Delete notification channel.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the notification channel.
@@ -128,7 +130,7 @@ public interface NotificationChannelsClient {
 
     /**
      * Delete notification channel.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the notification channel.
@@ -141,7 +143,7 @@ public interface NotificationChannelsClient {
 
     /**
      * Allows modifying tags of notification channels. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the notification channel.
@@ -158,7 +160,7 @@ public interface NotificationChannelsClient {
 
     /**
      * Allows modifying tags of notification channels. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the notification channel.
@@ -174,7 +176,7 @@ public interface NotificationChannelsClient {
 
     /**
      * Send notification to provided channel.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the notification channel.
@@ -191,7 +193,7 @@ public interface NotificationChannelsClient {
 
     /**
      * Send notification to provided channel.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the notification channel.

@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Users. */
+/**
+ * Resource collection API of Users.
+ */
 public interface Users {
     /**
      * List user profiles in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface Users {
 
     /**
      * List user profiles in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=identity)'.
@@ -42,7 +44,7 @@ public interface Users {
 
     /**
      * Get user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the user profile.
@@ -58,7 +60,7 @@ public interface Users {
 
     /**
      * Get user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the user profile.
@@ -71,7 +73,7 @@ public interface Users {
 
     /**
      * Delete user profile. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the user profile.
@@ -83,7 +85,7 @@ public interface Users {
 
     /**
      * Delete user profile. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the user profile.
@@ -96,7 +98,7 @@ public interface Users {
 
     /**
      * Get user profile.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -107,7 +109,7 @@ public interface Users {
 
     /**
      * Get user profile.
-     *
+     * 
      * @param id the resource ID.
      * @param expand Specify the $expand query. Example: 'properties($select=identity)'.
      * @param context The context to associate with this operation.
@@ -120,7 +122,7 @@ public interface Users {
 
     /**
      * Delete user profile. This operation can take a while to complete.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -130,7 +132,7 @@ public interface Users {
 
     /**
      * Delete user profile. This operation can take a while to complete.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -141,7 +143,7 @@ public interface Users {
 
     /**
      * Begins definition for a new User resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new User definition.
      */

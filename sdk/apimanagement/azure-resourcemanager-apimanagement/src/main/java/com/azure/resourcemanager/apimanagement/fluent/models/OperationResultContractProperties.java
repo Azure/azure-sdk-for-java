@@ -6,69 +6,70 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.AsyncOperationStatus;
 import com.azure.resourcemanager.apimanagement.models.OperationResultLogItemContract;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Operation Result. */
+/**
+ * Operation Result.
+ */
 @Fluent
-public final class OperationResultContractProperties {
+public final class OperationResultContractProperties implements JsonSerializable<OperationResultContractProperties> {
     /*
      * Operation result identifier.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Status of an async operation.
      */
-    @JsonProperty(value = "status")
     private AsyncOperationStatus status;
 
     /*
      * Start time of an async operation. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified
      * by the ISO 8601 standard.
-     *
      */
-    @JsonProperty(value = "started")
     private OffsetDateTime started;
 
     /*
      * Last update time of an async operation. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as
      * specified by the ISO 8601 standard.
-     *
      */
-    @JsonProperty(value = "updated")
     private OffsetDateTime updated;
 
     /*
      * Optional result info.
      */
-    @JsonProperty(value = "resultInfo")
     private String resultInfo;
 
     /*
      * Error Body Contract
      */
-    @JsonProperty(value = "error")
     private ManagementError error;
 
     /*
      * This property if only provided as part of the TenantConfiguration_Validate operation. It contains the log the
      * entities which will be updated/created/deleted as part of the TenantConfiguration_Deploy operation.
      */
-    @JsonProperty(value = "actionLog", access = JsonProperty.Access.WRITE_ONLY)
     private List<OperationResultLogItemContract> actionLog;
 
-    /** Creates an instance of OperationResultContractProperties class. */
+    /**
+     * Creates an instance of OperationResultContractProperties class.
+     */
     public OperationResultContractProperties() {
     }
 
     /**
      * Get the id property: Operation result identifier.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -77,7 +78,7 @@ public final class OperationResultContractProperties {
 
     /**
      * Set the id property: Operation result identifier.
-     *
+     * 
      * @param id the id value to set.
      * @return the OperationResultContractProperties object itself.
      */
@@ -88,7 +89,7 @@ public final class OperationResultContractProperties {
 
     /**
      * Get the status property: Status of an async operation.
-     *
+     * 
      * @return the status value.
      */
     public AsyncOperationStatus status() {
@@ -97,7 +98,7 @@ public final class OperationResultContractProperties {
 
     /**
      * Set the status property: Status of an async operation.
-     *
+     * 
      * @param status the status value to set.
      * @return the OperationResultContractProperties object itself.
      */
@@ -109,7 +110,7 @@ public final class OperationResultContractProperties {
     /**
      * Get the started property: Start time of an async operation. The date conforms to the following format:
      * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the started value.
      */
     public OffsetDateTime started() {
@@ -119,7 +120,7 @@ public final class OperationResultContractProperties {
     /**
      * Set the started property: Start time of an async operation. The date conforms to the following format:
      * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @param started the started value to set.
      * @return the OperationResultContractProperties object itself.
      */
@@ -131,7 +132,7 @@ public final class OperationResultContractProperties {
     /**
      * Get the updated property: Last update time of an async operation. The date conforms to the following format:
      * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the updated value.
      */
     public OffsetDateTime updated() {
@@ -141,7 +142,7 @@ public final class OperationResultContractProperties {
     /**
      * Set the updated property: Last update time of an async operation. The date conforms to the following format:
      * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @param updated the updated value to set.
      * @return the OperationResultContractProperties object itself.
      */
@@ -152,7 +153,7 @@ public final class OperationResultContractProperties {
 
     /**
      * Get the resultInfo property: Optional result info.
-     *
+     * 
      * @return the resultInfo value.
      */
     public String resultInfo() {
@@ -161,7 +162,7 @@ public final class OperationResultContractProperties {
 
     /**
      * Set the resultInfo property: Optional result info.
-     *
+     * 
      * @param resultInfo the resultInfo value to set.
      * @return the OperationResultContractProperties object itself.
      */
@@ -172,7 +173,7 @@ public final class OperationResultContractProperties {
 
     /**
      * Get the error property: Error Body Contract.
-     *
+     * 
      * @return the error value.
      */
     public ManagementError error() {
@@ -181,7 +182,7 @@ public final class OperationResultContractProperties {
 
     /**
      * Set the error property: Error Body Contract.
-     *
+     * 
      * @param error the error value to set.
      * @return the OperationResultContractProperties object itself.
      */
@@ -194,7 +195,7 @@ public final class OperationResultContractProperties {
      * Get the actionLog property: This property if only provided as part of the TenantConfiguration_Validate operation.
      * It contains the log the entities which will be updated/created/deleted as part of the TenantConfiguration_Deploy
      * operation.
-     *
+     * 
      * @return the actionLog value.
      */
     public List<OperationResultLogItemContract> actionLog() {
@@ -203,12 +204,73 @@ public final class OperationResultContractProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (actionLog() != null) {
             actionLog().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("started",
+            this.started == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.started));
+        jsonWriter.writeStringField("updated",
+            this.updated == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.updated));
+        jsonWriter.writeStringField("resultInfo", this.resultInfo);
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationResultContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationResultContractProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationResultContractProperties.
+     */
+    public static OperationResultContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationResultContractProperties deserializedOperationResultContractProperties
+                = new OperationResultContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedOperationResultContractProperties.id = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedOperationResultContractProperties.status
+                        = AsyncOperationStatus.fromString(reader.getString());
+                } else if ("started".equals(fieldName)) {
+                    deserializedOperationResultContractProperties.started = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("updated".equals(fieldName)) {
+                    deserializedOperationResultContractProperties.updated = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("resultInfo".equals(fieldName)) {
+                    deserializedOperationResultContractProperties.resultInfo = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedOperationResultContractProperties.error = ManagementError.fromJson(reader);
+                } else if ("actionLog".equals(fieldName)) {
+                    List<OperationResultLogItemContract> actionLog
+                        = reader.readArray(reader1 -> OperationResultLogItemContract.fromJson(reader1));
+                    deserializedOperationResultContractProperties.actionLog = actionLog;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationResultContractProperties;
+        });
     }
 }

@@ -15,17 +15,17 @@ public final class DataConnectorWithAlertsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataConnectorWithAlertsProperties model
-            = BinaryData.fromString("{\"dataTypes\":{\"alerts\":{\"state\":\"Disabled\"}}}")
+            = BinaryData.fromString("{\"dataTypes\":{\"alerts\":{\"state\":\"Enabled\"}}}")
                 .toObject(DataConnectorWithAlertsProperties.class);
-        Assertions.assertEquals(DataTypeState.DISABLED, model.dataTypes().alerts().state());
+        Assertions.assertEquals(DataTypeState.ENABLED, model.dataTypes().alerts().state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataConnectorWithAlertsProperties model
             = new DataConnectorWithAlertsProperties().withDataTypes(new AlertsDataTypeOfDataConnector()
-                .withAlerts(new DataConnectorDataTypeCommon().withState(DataTypeState.DISABLED)));
+                .withAlerts(new DataConnectorDataTypeCommon().withState(DataTypeState.ENABLED)));
         model = BinaryData.fromObject(model).toObject(DataConnectorWithAlertsProperties.class);
-        Assertions.assertEquals(DataTypeState.DISABLED, model.dataTypes().alerts().state());
+        Assertions.assertEquals(DataTypeState.ENABLED, model.dataTypes().alerts().state());
     }
 }

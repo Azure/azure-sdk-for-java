@@ -39,17 +39,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DefaultRolloutsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DefaultRolloutsClient.
+ */
 public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DefaultRolloutsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ProviderHubImpl client;
 
     /**
      * Initializes an instance of DefaultRolloutsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DefaultRolloutsClientImpl(ProviderHubImpl client) {
@@ -66,8 +72,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
     @ServiceInterface(name = "ProviderHubDefaultRo")
     public interface DefaultRolloutsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/defaultRollouts/{rolloutName}")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/defaultRollouts/{rolloutName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DefaultRolloutInner>> get(@HostParam("$host") String endpoint,
@@ -76,8 +81,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/defaultRollouts/{rolloutName}")
+        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/defaultRollouts/{rolloutName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
@@ -86,8 +90,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/defaultRollouts/{rolloutName}")
+        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/defaultRollouts/{rolloutName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
@@ -97,8 +100,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/defaultRollouts")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/defaultRollouts")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DefaultRolloutArrayResponseWithContinuation>> listByProviderRegistration(
@@ -107,8 +109,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/defaultRollouts/{rolloutName}/stop")
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/defaultRollouts/{rolloutName}/stop")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> stop(@HostParam("$host") String endpoint,
@@ -127,7 +128,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Gets the default rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -161,7 +162,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Gets the default rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param context The context to associate with this operation.
@@ -196,7 +197,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Gets the default rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -211,7 +212,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Gets the default rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param context The context to associate with this operation.
@@ -228,7 +229,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Gets the default rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -243,7 +244,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Deletes the rollout resource. Rollout must be in terminal state.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -277,7 +278,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Deletes the rollout resource. Rollout must be in terminal state.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param context The context to associate with this operation.
@@ -312,7 +313,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Deletes the rollout resource. Rollout must be in terminal state.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -327,7 +328,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Deletes the rollout resource. Rollout must be in terminal state.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param context The context to associate with this operation.
@@ -343,7 +344,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Deletes the rollout resource. Rollout must be in terminal state.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -357,7 +358,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Creates or updates the rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param properties The Default rollout properties supplied to the CreateOrUpdate operation.
@@ -398,7 +399,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Creates or updates the rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param properties The Default rollout properties supplied to the CreateOrUpdate operation.
@@ -439,7 +440,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Creates or updates the rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param properties The Default rollout properties supplied to the CreateOrUpdate operation.
@@ -459,7 +460,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Creates or updates the rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param properties The Default rollout properties supplied to the CreateOrUpdate operation.
@@ -481,7 +482,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Creates or updates the rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param properties The Default rollout properties supplied to the CreateOrUpdate operation.
@@ -498,7 +499,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Creates or updates the rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param properties The Default rollout properties supplied to the CreateOrUpdate operation.
@@ -516,7 +517,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Creates or updates the rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param properties The Default rollout properties supplied to the CreateOrUpdate operation.
@@ -534,7 +535,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Creates or updates the rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param properties The Default rollout properties supplied to the CreateOrUpdate operation.
@@ -553,7 +554,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Creates or updates the rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param properties The Default rollout properties supplied to the CreateOrUpdate operation.
@@ -570,7 +571,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Creates or updates the rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param properties The Default rollout properties supplied to the CreateOrUpdate operation.
@@ -588,13 +589,13 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Gets the list of the rollouts for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the rollouts for the given provider along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DefaultRolloutInner>>
@@ -622,14 +623,14 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Gets the list of the rollouts for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the rollouts for the given provider along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DefaultRolloutInner>> listByProviderRegistrationSinglePageAsync(String providerNamespace,
@@ -657,7 +658,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Gets the list of the rollouts for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -672,7 +673,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Gets the list of the rollouts for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -688,7 +689,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Gets the list of the rollouts for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -702,7 +703,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Gets the list of the rollouts for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -717,7 +718,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Stops or cancels the rollout, if in progress.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -751,7 +752,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Stops or cancels the rollout, if in progress.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param context The context to associate with this operation.
@@ -785,7 +786,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Stops or cancels the rollout, if in progress.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -800,7 +801,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Stops or cancels the rollout, if in progress.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param context The context to associate with this operation.
@@ -816,7 +817,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Stops or cancels the rollout, if in progress.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -830,9 +831,8 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -858,9 +858,8 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

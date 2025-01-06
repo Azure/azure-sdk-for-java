@@ -11,7 +11,7 @@ public final class ModernSingleScopeReservationRecommendationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ModernSingleScopeReservationRecommendationProperties model = BinaryData.fromString(
-            "{\"scope\":\"Single\",\"subscriptionId\":\"9ae65ab9-fb49-4006-bf2b-fd7afabbffb1\",\"location\":\"zkatb\",\"lookBackPeriod\":1903197758,\"instanceFlexibilityRatio\":54.313797,\"instanceFlexibilityGroup\":\"bsoqeqala\",\"normalizedSize\":\"lagun\",\"recommendedQuantityNormalized\":49.933304,\"meterId\":\"53b7fb33-edcc-48d3-b044-b36043f65bd4\",\"term\":\"bwln\",\"costWithNoReservedInstances\":{\"currency\":\"yreeudz\"},\"resourceType\":\"pdqmjxlyyzglgouw\",\"totalCostWithReservedInstances\":{\"currency\":\"jjyuojqtobax\"},\"netSavings\":{\"currency\":\"tu\"},\"firstUsageDate\":\"2021-07-22T08:57:15Z\",\"skuProperties\":[{\"name\":\"rusnk\",\"value\":\"hsyrqunj\"}],\"skuName\":\"denxau\"}")
+            "{\"scope\":\"Single\",\"subscriptionId\":\"c388806d-533f-41cf-b857-3c11e96f2405\",\"location\":\"zkatb\",\"lookBackPeriod\":1903197758,\"instanceFlexibilityRatio\":54.313797,\"instanceFlexibilityGroup\":\"bsoqeqala\",\"normalizedSize\":\"lagun\",\"recommendedQuantityNormalized\":49.933304,\"meterId\":\"8e42ca87-15bf-4809-b98b-c4daf9945756\",\"term\":\"bwln\",\"costWithNoReservedInstances\":{\"currency\":\"yreeudz\"},\"resourceType\":\"pdqmjxlyyzglgouw\",\"totalCostWithReservedInstances\":{\"currency\":\"jjyuojqtobax\"},\"netSavings\":{\"currency\":\"tu\"},\"firstUsageDate\":\"2021-07-22T08:57:15Z\",\"skuProperties\":[{\"name\":\"rusnk\",\"value\":\"hsyrqunj\"}],\"skuName\":\"denxau\"}")
             .toObject(ModernSingleScopeReservationRecommendationProperties.class);
     }
 

@@ -6,17 +6,20 @@ package com.azure.resourcemanager.nginx.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The request body for creating an analysis for an NGINX configuration.
  */
 @Fluent
-public final class AnalysisCreate {
+public final class AnalysisCreate implements JsonSerializable<AnalysisCreate> {
     /*
      * The config property.
      */
-    @JsonProperty(value = "config", required = true)
     private AnalysisCreateConfig config;
 
     /**
@@ -60,4 +63,41 @@ public final class AnalysisCreate {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AnalysisCreate.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("config", this.config);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AnalysisCreate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AnalysisCreate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AnalysisCreate.
+     */
+    public static AnalysisCreate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AnalysisCreate deserializedAnalysisCreate = new AnalysisCreate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("config".equals(fieldName)) {
+                    deserializedAnalysisCreate.config = AnalysisCreateConfig.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAnalysisCreate;
+        });
+    }
 }

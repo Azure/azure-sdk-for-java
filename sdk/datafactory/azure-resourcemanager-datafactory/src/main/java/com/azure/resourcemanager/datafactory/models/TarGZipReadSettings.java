@@ -72,7 +72,6 @@ public final class TarGZipReadSettings extends CompressionReadSettings {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

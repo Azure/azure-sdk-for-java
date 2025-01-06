@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Summary Collection. */
+/**
+ * Summary Collection.
+ */
 @Fluent
-public final class SummaryCollection {
+public final class SummaryCollection implements JsonSerializable<SummaryCollection> {
     /*
      * Gets or sets the field name on which summary is done.
      */
-    @JsonProperty(value = "fieldName")
     private String fieldName;
 
     /*
      * Gets or sets the list of summary items.
      */
-    @JsonProperty(value = "summary")
     private List<Summary> summary;
 
-    /** Creates an instance of SummaryCollection class. */
+    /**
+     * Creates an instance of SummaryCollection class.
+     */
     public SummaryCollection() {
     }
 
     /**
      * Get the fieldName property: Gets or sets the field name on which summary is done.
-     *
+     * 
      * @return the fieldName value.
      */
     public String fieldName() {
@@ -38,7 +44,7 @@ public final class SummaryCollection {
 
     /**
      * Set the fieldName property: Gets or sets the field name on which summary is done.
-     *
+     * 
      * @param fieldName the fieldName value to set.
      * @return the SummaryCollection object itself.
      */
@@ -49,7 +55,7 @@ public final class SummaryCollection {
 
     /**
      * Get the summary property: Gets or sets the list of summary items.
-     *
+     * 
      * @return the summary value.
      */
     public List<Summary> summary() {
@@ -58,7 +64,7 @@ public final class SummaryCollection {
 
     /**
      * Set the summary property: Gets or sets the list of summary items.
-     *
+     * 
      * @param summary the summary value to set.
      * @return the SummaryCollection object itself.
      */
@@ -69,12 +75,52 @@ public final class SummaryCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (summary() != null) {
             summary().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("fieldName", this.fieldName);
+        jsonWriter.writeArrayField("summary", this.summary, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SummaryCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SummaryCollection if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SummaryCollection.
+     */
+    public static SummaryCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SummaryCollection deserializedSummaryCollection = new SummaryCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String jsonFieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("fieldName".equals(jsonFieldName)) {
+                    deserializedSummaryCollection.fieldName = reader.getString();
+                } else if ("summary".equals(jsonFieldName)) {
+                    List<Summary> summary = reader.readArray(reader1 -> Summary.fromJson(reader1));
+                    deserializedSummaryCollection.summary = summary;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSummaryCollection;
+        });
     }
 }

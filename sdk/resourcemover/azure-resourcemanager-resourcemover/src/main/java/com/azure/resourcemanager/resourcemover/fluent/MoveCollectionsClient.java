@@ -21,14 +21,16 @@ import com.azure.resourcemanager.resourcemover.models.PrepareRequest;
 import com.azure.resourcemanager.resourcemover.models.ResourceMoveRequest;
 import com.azure.resourcemanager.resourcemover.models.UpdateMoveCollectionRequest;
 
-/** An instance of this class provides access to all the operations defined in MoveCollectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MoveCollectionsClient.
+ */
 public interface MoveCollectionsClient {
     /**
      * Creates or updates a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Define the move collection.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -41,7 +43,7 @@ public interface MoveCollectionsClient {
 
     /**
      * Creates or updates a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -54,10 +56,10 @@ public interface MoveCollectionsClient {
 
     /**
      * Updates a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for updating move collection.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -70,7 +72,7 @@ public interface MoveCollectionsClient {
 
     /**
      * Updates a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -83,7 +85,7 @@ public interface MoveCollectionsClient {
 
     /**
      * Deletes a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -97,7 +99,7 @@ public interface MoveCollectionsClient {
 
     /**
      * Deletes a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param context The context to associate with this operation.
@@ -112,7 +114,7 @@ public interface MoveCollectionsClient {
 
     /**
      * Deletes a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -125,7 +127,7 @@ public interface MoveCollectionsClient {
 
     /**
      * Deletes a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param context The context to associate with this operation.
@@ -139,7 +141,7 @@ public interface MoveCollectionsClient {
 
     /**
      * Gets the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param context The context to associate with this operation.
@@ -154,7 +156,7 @@ public interface MoveCollectionsClient {
 
     /**
      * Gets the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -170,7 +172,7 @@ public interface MoveCollectionsClient {
      * moveResources that are in the moveState 'PreparePending' or 'PrepareFailed', on a successful completion the
      * moveResource moveState do a transition to MovePending. To aid the user to prerequisite the operation the client
      * can call operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -187,10 +189,10 @@ public interface MoveCollectionsClient {
      * moveResources that are in the moveState 'PreparePending' or 'PrepareFailed', on a successful completion the
      * moveResource moveState do a transition to MovePending. To aid the user to prerequisite the operation the client
      * can call operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for initiate prepare operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -206,7 +208,7 @@ public interface MoveCollectionsClient {
      * moveResources that are in the moveState 'PreparePending' or 'PrepareFailed', on a successful completion the
      * moveResource moveState do a transition to MovePending. To aid the user to prerequisite the operation the client
      * can call operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -222,10 +224,10 @@ public interface MoveCollectionsClient {
      * moveResources that are in the moveState 'PreparePending' or 'PrepareFailed', on a successful completion the
      * moveResource moveState do a transition to MovePending. To aid the user to prerequisite the operation the client
      * can call operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for initiate prepare operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -241,7 +243,7 @@ public interface MoveCollectionsClient {
      * are in the moveState 'MovePending' or 'MoveFailed', on a successful completion the moveResource moveState do a
      * transition to CommitPending. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -258,10 +260,10 @@ public interface MoveCollectionsClient {
      * are in the moveState 'MovePending' or 'MoveFailed', on a successful completion the moveResource moveState do a
      * transition to CommitPending. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for resource move operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -277,7 +279,7 @@ public interface MoveCollectionsClient {
      * are in the moveState 'MovePending' or 'MoveFailed', on a successful completion the moveResource moveState do a
      * transition to CommitPending. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -293,10 +295,10 @@ public interface MoveCollectionsClient {
      * are in the moveState 'MovePending' or 'MoveFailed', on a successful completion the moveResource moveState do a
      * transition to CommitPending. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for resource move operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -312,7 +314,7 @@ public interface MoveCollectionsClient {
      * in the moveState 'CommitPending' or 'CommitFailed', on a successful completion the moveResource moveState do a
      * transition to Committed. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -329,10 +331,10 @@ public interface MoveCollectionsClient {
      * in the moveState 'CommitPending' or 'CommitFailed', on a successful completion the moveResource moveState do a
      * transition to Committed. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for commit operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -348,7 +350,7 @@ public interface MoveCollectionsClient {
      * in the moveState 'CommitPending' or 'CommitFailed', on a successful completion the moveResource moveState do a
      * transition to Committed. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -364,10 +366,10 @@ public interface MoveCollectionsClient {
      * in the moveState 'CommitPending' or 'CommitFailed', on a successful completion the moveResource moveState do a
      * transition to Committed. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for commit operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -383,7 +385,7 @@ public interface MoveCollectionsClient {
      * moveResources in the moveState 'CommitPending' or 'DiscardFailed', on a successful completion the moveResource
      * moveState do a transition to MovePending. To aid the user to prerequisite the operation the client can call
      * operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -400,10 +402,10 @@ public interface MoveCollectionsClient {
      * moveResources in the moveState 'CommitPending' or 'DiscardFailed', on a successful completion the moveResource
      * moveState do a transition to MovePending. To aid the user to prerequisite the operation the client can call
      * operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for discard operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -419,7 +421,7 @@ public interface MoveCollectionsClient {
      * moveResources in the moveState 'CommitPending' or 'DiscardFailed', on a successful completion the moveResource
      * moveState do a transition to MovePending. To aid the user to prerequisite the operation the client can call
      * operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -435,10 +437,10 @@ public interface MoveCollectionsClient {
      * moveResources in the moveState 'CommitPending' or 'DiscardFailed', on a successful completion the moveResource
      * moveState do a transition to MovePending. To aid the user to prerequisite the operation the client can call
      * operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for discard operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -451,7 +453,7 @@ public interface MoveCollectionsClient {
 
     /**
      * Computes, resolves and validate the dependencies of the moveResources in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -465,7 +467,7 @@ public interface MoveCollectionsClient {
 
     /**
      * Computes, resolves and validate the dependencies of the moveResources in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param context The context to associate with this operation.
@@ -480,7 +482,7 @@ public interface MoveCollectionsClient {
 
     /**
      * Computes, resolves and validate the dependencies of the moveResources in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -493,7 +495,7 @@ public interface MoveCollectionsClient {
 
     /**
      * Computes, resolves and validate the dependencies of the moveResources in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param context The context to associate with this operation.
@@ -509,7 +511,7 @@ public interface MoveCollectionsClient {
      * Removes the set of move resources included in the request body from move collection. The orchestration is done by
      * service. To aid the user to prerequisite the operation the client can call operation with validateOnly property
      * set to true.
-     *
+     * 
      * @param resourceGroupName The resourceGroupName parameter.
      * @param moveCollectionName The moveCollectionName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -525,10 +527,10 @@ public interface MoveCollectionsClient {
      * Removes the set of move resources included in the request body from move collection. The orchestration is done by
      * service. To aid the user to prerequisite the operation the client can call operation with validateOnly property
      * set to true.
-     *
+     * 
      * @param resourceGroupName The resourceGroupName parameter.
      * @param moveCollectionName The moveCollectionName parameter.
-     * @param body Defines the request body for bulk remove of move resources operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -543,7 +545,7 @@ public interface MoveCollectionsClient {
      * Removes the set of move resources included in the request body from move collection. The orchestration is done by
      * service. To aid the user to prerequisite the operation the client can call operation with validateOnly property
      * set to true.
-     *
+     * 
      * @param resourceGroupName The resourceGroupName parameter.
      * @param moveCollectionName The moveCollectionName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -558,10 +560,10 @@ public interface MoveCollectionsClient {
      * Removes the set of move resources included in the request body from move collection. The orchestration is done by
      * service. To aid the user to prerequisite the operation the client can call operation with validateOnly property
      * set to true.
-     *
+     * 
      * @param resourceGroupName The resourceGroupName parameter.
      * @param moveCollectionName The moveCollectionName parameter.
-     * @param body Defines the request body for bulk remove of move resources operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -574,9 +576,9 @@ public interface MoveCollectionsClient {
 
     /**
      * Get all Move Collections.
-     *
-     * <p>Get all the Move Collections in the subscription.
-     *
+     * 
+     * Get all the Move Collections in the subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Move Collections in the subscription as paginated response with {@link PagedIterable}.
@@ -586,9 +588,9 @@ public interface MoveCollectionsClient {
 
     /**
      * Get all Move Collections.
-     *
-     * <p>Get all the Move Collections in the subscription.
-     *
+     * 
+     * Get all the Move Collections in the subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -600,9 +602,9 @@ public interface MoveCollectionsClient {
 
     /**
      * Get all Move Collections.
-     *
-     * <p>Get all the Move Collections in the resource group.
-     *
+     * 
+     * Get all the Move Collections in the resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -614,9 +616,9 @@ public interface MoveCollectionsClient {
 
     /**
      * Get all Move Collections.
-     *
-     * <p>Get all the Move Collections in the resource group.
-     *
+     * 
+     * Get all the Move Collections in the resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -629,7 +631,7 @@ public interface MoveCollectionsClient {
 
     /**
      * List of the move resources for which an arm resource is required for.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param sourceId The sourceId for which the api is invoked.
@@ -645,7 +647,7 @@ public interface MoveCollectionsClient {
 
     /**
      * List of the move resources for which an arm resource is required for.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param sourceId The sourceId for which the api is invoked.

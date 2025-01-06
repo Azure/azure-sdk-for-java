@@ -12,15 +12,15 @@ public final class TargetTypeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TargetTypeInner model = BinaryData.fromString(
-            "{\"location\":\"fimrzrtuzqogse\",\"properties\":{\"displayName\":\"evfdnwnwm\",\"description\":\"zsyyceuzso\",\"propertiesSchema\":\"judpfrxt\",\"resourceTypes\":[\"zvaytdwkqbr\"]},\"id\":\"ubpaxhe\",\"name\":\"iilivpdtiirqtd\",\"type\":\"oaxoruzfgsqu\"}")
+            "{\"location\":\"dpfrxtrthzvaytdw\",\"properties\":{\"displayName\":\"brqubp\",\"description\":\"h\",\"propertiesSchema\":\"iilivpdtiirqtd\",\"resourceTypes\":[\"xoruzfgsquyfxrx\",\"l\",\"ptramxj\"]},\"id\":\"zwl\",\"name\":\"nwxuqlcvydyp\",\"type\":\"tdooaoj\"}")
             .toObject(TargetTypeInner.class);
-        Assertions.assertEquals("fimrzrtuzqogse", model.location());
+        Assertions.assertEquals("dpfrxtrthzvaytdw", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TargetTypeInner model = new TargetTypeInner().withLocation("fimrzrtuzqogse");
+        TargetTypeInner model = new TargetTypeInner().withLocation("dpfrxtrthzvaytdw");
         model = BinaryData.fromObject(model).toObject(TargetTypeInner.class);
-        Assertions.assertEquals("fimrzrtuzqogse", model.location());
+        Assertions.assertEquals("dpfrxtrthzvaytdw", model.location());
     }
 }

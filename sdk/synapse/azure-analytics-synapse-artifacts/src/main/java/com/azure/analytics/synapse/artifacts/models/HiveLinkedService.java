@@ -24,7 +24,8 @@ public class HiveLinkedService extends LinkedService {
     private String type = "Hive";
 
     /*
-     * IP address or host name of the Hive server, separated by ';' for multiple hosts (only when serviceDiscoveryMode is enable).
+     * IP address or host name of the Hive server, separated by ';' for multiple hosts (only when serviceDiscoveryMode
+     * is enable).
      */
     private Object host;
 
@@ -84,17 +85,21 @@ public class HiveLinkedService extends LinkedService {
     private Object enableSsl;
 
     /*
-     * The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default value is the cacerts.pem file installed with the IR.
+     * The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over
+     * SSL. This property can only be set when using SSL on self-hosted IR. The default value is the cacerts.pem file
+     * installed with the IR.
      */
     private Object trustedCertPath;
 
     /*
-     * Specifies whether to use a CA certificate from the system trust store or from a specified PEM file. The default value is false.
+     * Specifies whether to use a CA certificate from the system trust store or from a specified PEM file. The default
+     * value is false.
      */
     private Object useSystemTrustStore;
 
     /*
-     * Specifies whether to require a CA-issued SSL certificate name to match the host name of the server when connecting over SSL. The default value is false.
+     * Specifies whether to require a CA-issued SSL certificate name to match the host name of the server when
+     * connecting over SSL. The default value is false.
      */
     private Object allowHostNameCNMismatch;
 
@@ -104,7 +109,8 @@ public class HiveLinkedService extends LinkedService {
     private Object allowSelfSignedServerCert;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     private Object encryptedCredential;
 

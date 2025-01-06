@@ -5,64 +5,71 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * VMwareV2 fabric specific details.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("VMwareV2")
 @Immutable
 public final class VMwareV2FabricSpecificDetails extends FabricSpecificDetails {
     /*
+     * Gets the class type. Overridden in derived classes.
+     */
+    private String instanceType = "VMwareV2";
+
+    /*
      * The ARM Id of the VMware site.
      */
-    @JsonProperty(value = "vmwareSiteId", access = JsonProperty.Access.WRITE_ONLY)
     private String vmwareSiteId;
 
     /*
      * The ARM Id of the physical site.
      */
-    @JsonProperty(value = "physicalSiteId", access = JsonProperty.Access.WRITE_ONLY)
     private String physicalSiteId;
 
     /*
      * The Migration solution ARM Id.
      */
-    @JsonProperty(value = "migrationSolutionId", access = JsonProperty.Access.WRITE_ONLY)
     private String migrationSolutionId;
 
     /*
      * The service endpoint.
      */
-    @JsonProperty(value = "serviceEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceEndpoint;
 
     /*
      * The service resource Id.
      */
-    @JsonProperty(value = "serviceResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceResourceId;
 
     /*
      * The service container Id.
      */
-    @JsonProperty(value = "serviceContainerId", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceContainerId;
 
     /*
      * The list of process servers.
      */
-    @JsonProperty(value = "processServers", access = JsonProperty.Access.WRITE_ONLY)
     private List<ProcessServerDetails> processServers;
 
     /**
      * Creates an instance of VMwareV2FabricSpecificDetails class.
      */
     public VMwareV2FabricSpecificDetails() {
+    }
+
+    /**
+     * Get the instanceType property: Gets the class type. Overridden in derived classes.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -135,9 +142,61 @@ public final class VMwareV2FabricSpecificDetails extends FabricSpecificDetails {
      */
     @Override
     public void validate() {
-        super.validate();
         if (processServers() != null) {
             processServers().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VMwareV2FabricSpecificDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VMwareV2FabricSpecificDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VMwareV2FabricSpecificDetails.
+     */
+    public static VMwareV2FabricSpecificDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VMwareV2FabricSpecificDetails deserializedVMwareV2FabricSpecificDetails
+                = new VMwareV2FabricSpecificDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedVMwareV2FabricSpecificDetails.instanceType = reader.getString();
+                } else if ("vmwareSiteId".equals(fieldName)) {
+                    deserializedVMwareV2FabricSpecificDetails.vmwareSiteId = reader.getString();
+                } else if ("physicalSiteId".equals(fieldName)) {
+                    deserializedVMwareV2FabricSpecificDetails.physicalSiteId = reader.getString();
+                } else if ("migrationSolutionId".equals(fieldName)) {
+                    deserializedVMwareV2FabricSpecificDetails.migrationSolutionId = reader.getString();
+                } else if ("serviceEndpoint".equals(fieldName)) {
+                    deserializedVMwareV2FabricSpecificDetails.serviceEndpoint = reader.getString();
+                } else if ("serviceResourceId".equals(fieldName)) {
+                    deserializedVMwareV2FabricSpecificDetails.serviceResourceId = reader.getString();
+                } else if ("serviceContainerId".equals(fieldName)) {
+                    deserializedVMwareV2FabricSpecificDetails.serviceContainerId = reader.getString();
+                } else if ("processServers".equals(fieldName)) {
+                    List<ProcessServerDetails> processServers
+                        = reader.readArray(reader1 -> ProcessServerDetails.fromJson(reader1));
+                    deserializedVMwareV2FabricSpecificDetails.processServers = processServers;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVMwareV2FabricSpecificDetails;
+        });
     }
 }

@@ -28,7 +28,7 @@ public final class IntegrationRuntimesEnableInteractiveQueryMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.integrationRuntimes()
-            .enableInteractiveQuery("nfywtkq", "w", "dlkhczygpm", com.azure.core.util.Context.NONE);
+            .enableInteractiveQuery("n", "emehllizh", "eumoqod", com.azure.core.util.Context.NONE);
 
     }
 }

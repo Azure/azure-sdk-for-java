@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.devcenter.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * An individual conflict error.
  */
 @Immutable
-public final class CatalogConflictError {
+public final class CatalogConflictError implements JsonSerializable<CatalogConflictError> {
     /*
      * The path of the file that has a conflicting name.
      */
-    @JsonProperty(value = "path", access = JsonProperty.Access.WRITE_ONLY)
     private String path;
 
     /*
      * Name of the conflicting catalog item.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /**
@@ -54,5 +56,42 @@ public final class CatalogConflictError {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CatalogConflictError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CatalogConflictError if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CatalogConflictError.
+     */
+    public static CatalogConflictError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CatalogConflictError deserializedCatalogConflictError = new CatalogConflictError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("path".equals(fieldName)) {
+                    deserializedCatalogConflictError.path = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCatalogConflictError.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCatalogConflictError;
+        });
     }
 }

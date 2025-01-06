@@ -5,29 +5,56 @@
 package com.azure.resourcemanager.loganalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.loganalytics.models.AzureResourceProperties;
 import com.azure.resourcemanager.loganalytics.models.LogAnalyticsQueryPackQueryPropertiesRelated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** A Log Analytics QueryPack-Query definition. */
+/**
+ * A Log Analytics QueryPack-Query definition.
+ */
 @Fluent
 public final class LogAnalyticsQueryPackQueryInner extends AzureResourceProperties {
     /*
      * Properties that define an Log Analytics QueryPack-Query resource.
      */
-    @JsonProperty(value = "properties")
     private LogAnalyticsQueryPackQueryProperties innerProperties;
 
-    /** Creates an instance of LogAnalyticsQueryPackQueryInner class. */
+    /*
+     * Read only system data
+     */
+    private SystemData systemData;
+
+    /*
+     * Azure resource type
+     */
+    private String type;
+
+    /*
+     * Azure resource name
+     */
+    private String name;
+
+    /*
+     * Azure resource Id
+     */
+    private String id;
+
+    /**
+     * Creates an instance of LogAnalyticsQueryPackQueryInner class.
+     */
     public LogAnalyticsQueryPackQueryInner() {
     }
 
     /**
      * Get the innerProperties property: Properties that define an Log Analytics QueryPack-Query resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private LogAnalyticsQueryPackQueryProperties innerProperties() {
@@ -35,8 +62,48 @@ public final class LogAnalyticsQueryPackQueryInner extends AzureResourceProperti
     }
 
     /**
+     * Get the systemData property: Read only system data.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: Azure resource type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: Azure resource name.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Azure resource Id.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the id property: The unique ID of your application. This field cannot be changed.
-     *
+     * 
      * @return the id value.
      */
     public String idPropertiesId() {
@@ -45,7 +112,7 @@ public final class LogAnalyticsQueryPackQueryInner extends AzureResourceProperti
 
     /**
      * Get the displayName property: Unique display name for your query within the Query Pack.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -54,7 +121,7 @@ public final class LogAnalyticsQueryPackQueryInner extends AzureResourceProperti
 
     /**
      * Set the displayName property: Unique display name for your query within the Query Pack.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the LogAnalyticsQueryPackQueryInner object itself.
      */
@@ -68,7 +135,7 @@ public final class LogAnalyticsQueryPackQueryInner extends AzureResourceProperti
 
     /**
      * Get the timeCreated property: Creation Date for the Log Analytics Query, in ISO 8601 format.
-     *
+     * 
      * @return the timeCreated value.
      */
     public OffsetDateTime timeCreated() {
@@ -77,7 +144,7 @@ public final class LogAnalyticsQueryPackQueryInner extends AzureResourceProperti
 
     /**
      * Get the timeModified property: Last modified date of the Log Analytics Query, in ISO 8601 format.
-     *
+     * 
      * @return the timeModified value.
      */
     public OffsetDateTime timeModified() {
@@ -86,7 +153,7 @@ public final class LogAnalyticsQueryPackQueryInner extends AzureResourceProperti
 
     /**
      * Get the author property: Object Id of user creating the query.
-     *
+     * 
      * @return the author value.
      */
     public String author() {
@@ -95,7 +162,7 @@ public final class LogAnalyticsQueryPackQueryInner extends AzureResourceProperti
 
     /**
      * Get the description property: Description of the query.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -104,7 +171,7 @@ public final class LogAnalyticsQueryPackQueryInner extends AzureResourceProperti
 
     /**
      * Set the description property: Description of the query.
-     *
+     * 
      * @param description the description value to set.
      * @return the LogAnalyticsQueryPackQueryInner object itself.
      */
@@ -118,7 +185,7 @@ public final class LogAnalyticsQueryPackQueryInner extends AzureResourceProperti
 
     /**
      * Get the body property: Body of the query.
-     *
+     * 
      * @return the body value.
      */
     public String body() {
@@ -127,7 +194,7 @@ public final class LogAnalyticsQueryPackQueryInner extends AzureResourceProperti
 
     /**
      * Set the body property: Body of the query.
-     *
+     * 
      * @param body the body value to set.
      * @return the LogAnalyticsQueryPackQueryInner object itself.
      */
@@ -141,7 +208,7 @@ public final class LogAnalyticsQueryPackQueryInner extends AzureResourceProperti
 
     /**
      * Get the related property: The related metadata items for the function.
-     *
+     * 
      * @return the related value.
      */
     public LogAnalyticsQueryPackQueryPropertiesRelated related() {
@@ -150,7 +217,7 @@ public final class LogAnalyticsQueryPackQueryInner extends AzureResourceProperti
 
     /**
      * Set the related property: The related metadata items for the function.
-     *
+     * 
      * @param related the related value to set.
      * @return the LogAnalyticsQueryPackQueryInner object itself.
      */
@@ -164,7 +231,7 @@ public final class LogAnalyticsQueryPackQueryInner extends AzureResourceProperti
 
     /**
      * Get the tags property: Tags associated with the query.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, List<String>> tags() {
@@ -173,7 +240,7 @@ public final class LogAnalyticsQueryPackQueryInner extends AzureResourceProperti
 
     /**
      * Set the tags property: Tags associated with the query.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the LogAnalyticsQueryPackQueryInner object itself.
      */
@@ -187,7 +254,7 @@ public final class LogAnalyticsQueryPackQueryInner extends AzureResourceProperti
 
     /**
      * Get the properties property: Additional properties that can be set for the query.
-     *
+     * 
      * @return the properties value.
      */
     public Object properties() {
@@ -196,7 +263,7 @@ public final class LogAnalyticsQueryPackQueryInner extends AzureResourceProperti
 
     /**
      * Set the properties property: Additional properties that can be set for the query.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the LogAnalyticsQueryPackQueryInner object itself.
      */
@@ -210,14 +277,59 @@ public final class LogAnalyticsQueryPackQueryInner extends AzureResourceProperti
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LogAnalyticsQueryPackQueryInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LogAnalyticsQueryPackQueryInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LogAnalyticsQueryPackQueryInner.
+     */
+    public static LogAnalyticsQueryPackQueryInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LogAnalyticsQueryPackQueryInner deserializedLogAnalyticsQueryPackQueryInner
+                = new LogAnalyticsQueryPackQueryInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLogAnalyticsQueryPackQueryInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedLogAnalyticsQueryPackQueryInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedLogAnalyticsQueryPackQueryInner.type = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedLogAnalyticsQueryPackQueryInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedLogAnalyticsQueryPackQueryInner.innerProperties
+                        = LogAnalyticsQueryPackQueryProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLogAnalyticsQueryPackQueryInner;
+        });
     }
 }

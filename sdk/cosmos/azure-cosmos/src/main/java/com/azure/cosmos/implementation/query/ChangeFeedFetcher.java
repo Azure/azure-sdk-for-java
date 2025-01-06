@@ -43,6 +43,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
     private final Supplier<RxDocumentServiceRequest> createRequestFunc;
     private final Supplier<DocumentClientRetryPolicy> feedRangeContinuationRetryPolicySupplier;
     private final boolean completeAfterAllCurrentChangesRetrieved;
+    private final Long endLSN;
 
     public ChangeFeedFetcher(
         RxDocumentClientImpl client,
@@ -54,6 +55,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         int maxItemCount,
         boolean isSplitHandlingDisabled,
         boolean completeAfterAllCurrentChangesRetrieved,
+        Long endLSN,
         OperationContextAndListenerTuple operationContext,
         GlobalEndpointManager globalEndpointManager,
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker) {
@@ -79,6 +81,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                 isSplitHandlingDisabled);
         this.createRequestFunc = createRequestFunc;
         this.completeAfterAllCurrentChangesRetrieved = completeAfterAllCurrentChangesRetrieved;
+        this.endLSN = endLSN;
     }
 
     @Override
@@ -115,10 +118,11 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                        FeedRangeContinuation continuationSnapshot =
                            this.changeFeedState.getContinuation();
 
-                       if (this.completeAfterAllCurrentChangesRetrieved) {
+                       if (this.completeAfterAllCurrentChangesRetrieved || this.endLSN != null) {
                            if (continuationSnapshot != null) {
-                               //track the end-LSN available now for each sub-feedRange and then find the next sub-feedRange to fetch more changes
-                               boolean shouldComplete = continuationSnapshot.hasFetchedAllChangesAvailableNow(r);
+
+                               //track the end-LSN for each sub-feedRange and then find the next sub-feedRange to fetch more changes
+                               boolean shouldComplete = continuationSnapshot.hasFetchedAllChanges(r, endLSN);
                                if (shouldComplete) {
                                    this.disableShouldFetchMore();
                                    return Mono.just(r);
@@ -155,7 +159,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         FeedResponse<T> response) {
 
         boolean isNoChanges = feedResponseAccessor.getNoChanges(response);
-        boolean shouldMoveToNextTokenOnETagReplace = !isNoChanges && !this.completeAfterAllCurrentChangesRetrieved;
+        boolean shouldMoveToNextTokenOnETagReplace = !isNoChanges && !this.completeAfterAllCurrentChangesRetrieved && this.endLSN == null;
         return this.changeFeedState.applyServerResponseContinuation(
             serverContinuationToken, request, shouldMoveToNextTokenOnETagReplace);
     }

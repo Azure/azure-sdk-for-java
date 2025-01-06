@@ -6,47 +6,28 @@ package com.azure.resourcemanager.storageactions.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.storageactions.StorageActionsManager;
 import com.azure.resourcemanager.storageactions.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.storageactions.models.StorageTask;
 import com.azure.resourcemanager.storageactions.models.StorageTaskOperationName;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class StorageTasksListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"identity\":{\"principalId\":\"76672872-3d44-4893-86f6-ef537a834634\",\"tenantId\":\"f18d5da8-93b9-4af0-ac74-1eb1ce7bb4eb\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"nmefqsgzvahapj\":{\"principalId\":\"0fe8c224-0e78-465e-ba94-faac2d45d0b9\",\"clientId\":\"27bb0a8f-60c9-4e12-b3ac-c5326922e89e\"}}},\"properties\":{\"taskVersion\":7368048825846520103,\"enabled\":false,\"description\":\"qzcjrvxdj\",\"action\":{\"if\":{\"condition\":\"lmwlxkvugfhzo\",\"operations\":[{\"name\":\"UndeleteBlob\"},{\"name\":\"SetBlobLegalHold\"},{\"name\":\"SetBlobImmutabilityPolicy\"},{\"name\":\"SetBlobTags\"}]},\"else\":{\"operations\":[{\"name\":\"UndeleteBlob\"},{\"name\":\"SetBlobExpiry\"}]}},\"provisioningState\":\"Creating\",\"creationTimeInUtc\":\"2021-09-06T05:22:37Z\"},\"location\":\"rnxipei\",\"tags\":{\"ltskzbbtd\":\"zuaejxd\",\"bsjyofdx\":\"umveekgpwozuhkf\",\"oekqvk\":\"uusdttouwa\",\"vbxwyjsflhh\":\"lns\"},\"id\":\"aalnjixi\",\"name\":\"xyawj\",\"type\":\"yaqcslyjpkiidz\"}]}";
+            = "{\"value\":[{\"identity\":{\"principalId\":\"b4be81b0-30ea-4abb-9b1b-a95ba863f87b\",\"tenantId\":\"5653e8b4-0aa4-4c8a-83a2-ab0c7e790879\",\"type\":\"None\",\"userAssignedIdentities\":{\"ok\":{\"principalId\":\"41ce4222-6da7-4ee6-be14-0c5d99bdf6a1\",\"clientId\":\"61d7474c-2f29-4bae-9f91-f0d3eb85b9f8\"},\"jyoxgvclt\":{\"principalId\":\"4b1ca8cd-7eb8-49e0-a9a5-07fa4c82d123\",\"clientId\":\"19c94147-a13f-4402-9723-b5b6f87ef8f4\"},\"ncghkje\":{\"principalId\":\"fb8e79f2-de64-48ee-96f7-7b653e345bc3\",\"clientId\":\"510cd219-f0d4-46f3-af9f-52114f562f61\"},\"hbijhtxfvgxb\":{\"principalId\":\"789e2a49-3f91-4a84-8f72-72a9d81c1b21\",\"clientId\":\"8ca4febc-ddaa-451e-bc2d-5debbddd980d\"}}},\"properties\":{\"taskVersion\":7678271281177155084,\"enabled\":true,\"description\":\"eh\",\"action\":{\"if\":{\"condition\":\"pvecxgodeb\",\"operations\":[{\"name\":\"SetBlobTier\"},{\"name\":\"SetBlobLegalHold\"}]},\"else\":{\"operations\":[{\"name\":\"SetBlobTier\"},{\"name\":\"SetBlobExpiry\"},{\"name\":\"UndeleteBlob\"}]}},\"provisioningState\":\"Failed\",\"creationTimeInUtc\":\"2021-10-09T22:24:23Z\"},\"location\":\"flz\",\"tags\":{\"qzahmgkbrp\":\"xzpuzycisp\",\"hibnuqqkpika\":\"y\",\"buynhijggm\":\"rgvtqag\"},\"id\":\"bfs\",\"name\":\"arbu\",\"type\":\"rcvpnazzmhjrunmp\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         StorageActionsManager manager = StorageActionsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
@@ -54,16 +35,16 @@ public final class StorageTasksListMockTests {
 
         PagedIterable<StorageTask> response = manager.storageTasks().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("rnxipei", response.iterator().next().location());
-        Assertions.assertEquals("zuaejxd", response.iterator().next().tags().get("ltskzbbtd"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.iterator().next().identity().type());
-        Assertions.assertEquals(false, response.iterator().next().properties().enabled());
-        Assertions.assertEquals("qzcjrvxdj", response.iterator().next().properties().description());
-        Assertions.assertEquals("lmwlxkvugfhzo",
+        Assertions.assertEquals("flz", response.iterator().next().location());
+        Assertions.assertEquals("xzpuzycisp", response.iterator().next().tags().get("qzahmgkbrp"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.iterator().next().identity().type());
+        Assertions.assertEquals(true, response.iterator().next().properties().enabled());
+        Assertions.assertEquals("eh", response.iterator().next().properties().description());
+        Assertions.assertEquals("pvecxgodeb",
             response.iterator().next().properties().action().ifProperty().condition());
-        Assertions.assertEquals(StorageTaskOperationName.UNDELETE_BLOB,
+        Assertions.assertEquals(StorageTaskOperationName.SET_BLOB_TIER,
             response.iterator().next().properties().action().ifProperty().operations().get(0).name());
-        Assertions.assertEquals(StorageTaskOperationName.UNDELETE_BLOB,
+        Assertions.assertEquals(StorageTaskOperationName.SET_BLOB_TIER,
             response.iterator().next().properties().action().elseProperty().operations().get(0).name());
     }
 }

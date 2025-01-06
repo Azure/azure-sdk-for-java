@@ -30,14 +30,16 @@ public final class DigitalTwinsEndpointsImpl implements DigitalTwinsEndpoints {
     public PagedIterable<DigitalTwinsEndpointResource> list(String resourceGroupName, String resourceName) {
         PagedIterable<DigitalTwinsEndpointResourceInner> inner
             = this.serviceClient().list(resourceGroupName, resourceName);
-        return Utils.mapPage(inner, inner1 -> new DigitalTwinsEndpointResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new DigitalTwinsEndpointResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DigitalTwinsEndpointResource> list(String resourceGroupName, String resourceName,
         Context context) {
         PagedIterable<DigitalTwinsEndpointResourceInner> inner
             = this.serviceClient().list(resourceGroupName, resourceName, context);
-        return Utils.mapPage(inner, inner1 -> new DigitalTwinsEndpointResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new DigitalTwinsEndpointResourceImpl(inner1, this.manager()));
     }
 
     public Response<DigitalTwinsEndpointResource> getWithResponse(String resourceGroupName, String resourceName,
@@ -84,17 +86,17 @@ public final class DigitalTwinsEndpointsImpl implements DigitalTwinsEndpoints {
     }
 
     public DigitalTwinsEndpointResource getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "digitalTwinsInstances");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "digitalTwinsInstances");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'digitalTwinsInstances'.", id)));
         }
-        String endpointName = Utils.getValueFromIdByName(id, "endpoints");
+        String endpointName = ResourceManagerUtils.getValueFromIdByName(id, "endpoints");
         if (endpointName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'endpoints'.", id)));
@@ -103,17 +105,17 @@ public final class DigitalTwinsEndpointsImpl implements DigitalTwinsEndpoints {
     }
 
     public Response<DigitalTwinsEndpointResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "digitalTwinsInstances");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "digitalTwinsInstances");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'digitalTwinsInstances'.", id)));
         }
-        String endpointName = Utils.getValueFromIdByName(id, "endpoints");
+        String endpointName = ResourceManagerUtils.getValueFromIdByName(id, "endpoints");
         if (endpointName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'endpoints'.", id)));
@@ -122,17 +124,17 @@ public final class DigitalTwinsEndpointsImpl implements DigitalTwinsEndpoints {
     }
 
     public DigitalTwinsEndpointResource deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "digitalTwinsInstances");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "digitalTwinsInstances");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'digitalTwinsInstances'.", id)));
         }
-        String endpointName = Utils.getValueFromIdByName(id, "endpoints");
+        String endpointName = ResourceManagerUtils.getValueFromIdByName(id, "endpoints");
         if (endpointName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'endpoints'.", id)));
@@ -141,17 +143,17 @@ public final class DigitalTwinsEndpointsImpl implements DigitalTwinsEndpoints {
     }
 
     public DigitalTwinsEndpointResource deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "digitalTwinsInstances");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "digitalTwinsInstances");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'digitalTwinsInstances'.", id)));
         }
-        String endpointName = Utils.getValueFromIdByName(id, "endpoints");
+        String endpointName = ResourceManagerUtils.getValueFromIdByName(id, "endpoints");
         if (endpointName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'endpoints'.", id)));

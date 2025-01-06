@@ -30,17 +30,23 @@ import com.azure.resourcemanager.datadog.fluent.models.CreateResourceSupportedRe
 import com.azure.resourcemanager.datadog.models.CreateResourceSupportedResponseList;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CreationSupportedsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CreationSupportedsClient.
+ */
 public final class CreationSupportedsClientImpl implements CreationSupportedsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CreationSupportedsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MicrosoftDatadogClientImpl client;
 
     /**
      * Initializes an instance of CreationSupportedsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CreationSupportedsClientImpl(MicrosoftDatadogClientImpl client) {
@@ -77,7 +83,7 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
 
     /**
      * Informs if the current subscription is being already monitored for selected Datadog organization.
-     *
+     * 
      * @param datadogOrganizationId Datadog Organization Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -110,7 +116,7 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
 
     /**
      * Informs if the current subscription is being already monitored for selected Datadog organization.
-     *
+     * 
      * @param datadogOrganizationId Datadog Organization Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -144,7 +150,7 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
 
     /**
      * Informs if the current subscription is being already monitored for selected Datadog organization.
-     *
+     * 
      * @param datadogOrganizationId Datadog Organization Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -158,7 +164,7 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
 
     /**
      * Informs if the current subscription is being already monitored for selected Datadog organization.
-     *
+     * 
      * @param datadogOrganizationId Datadog Organization Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -173,7 +179,7 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
 
     /**
      * Informs if the current subscription is being already monitored for selected Datadog organization.
-     *
+     * 
      * @param datadogOrganizationId Datadog Organization Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -187,7 +193,7 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
 
     /**
      * Informs if the current subscription is being already monitored for selected Datadog organization.
-     *
+     * 
      * @param datadogOrganizationId Datadog Organization Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -202,13 +208,13 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
 
     /**
      * Informs if the current subscription is being already monitored for selected Datadog organization.
-     *
+     * 
      * @param datadogOrganizationId Datadog Organization Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return datadog resource can be created or not along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return datadog resource can be created or not along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CreateResourceSupportedResponseInner>> getWithResponseAsync(String datadogOrganizationId) {
@@ -233,14 +239,14 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
 
     /**
      * Informs if the current subscription is being already monitored for selected Datadog organization.
-     *
+     * 
      * @param datadogOrganizationId Datadog Organization Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return datadog resource can be created or not along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return datadog resource can be created or not along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CreateResourceSupportedResponseInner>> getWithResponseAsync(String datadogOrganizationId,
@@ -265,7 +271,7 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
 
     /**
      * Informs if the current subscription is being already monitored for selected Datadog organization.
-     *
+     * 
      * @param datadogOrganizationId Datadog Organization Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -279,7 +285,7 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
 
     /**
      * Informs if the current subscription is being already monitored for selected Datadog organization.
-     *
+     * 
      * @param datadogOrganizationId Datadog Organization Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -295,7 +301,7 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
 
     /**
      * Informs if the current subscription is being already monitored for selected Datadog organization.
-     *
+     * 
      * @param datadogOrganizationId Datadog Organization Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

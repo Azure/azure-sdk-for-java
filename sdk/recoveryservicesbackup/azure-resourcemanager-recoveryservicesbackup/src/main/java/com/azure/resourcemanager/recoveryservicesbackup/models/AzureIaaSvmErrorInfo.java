@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Azure IaaS VM workload-specific error information.
  */
 @Immutable
-public final class AzureIaaSvmErrorInfo {
+public final class AzureIaaSvmErrorInfo implements JsonSerializable<AzureIaaSvmErrorInfo> {
     /*
      * Error code.
      */
-    @JsonProperty(value = "errorCode", access = JsonProperty.Access.WRITE_ONLY)
     private Integer errorCode;
 
     /*
      * Title: Typically, the entity that the error pertains to.
      */
-    @JsonProperty(value = "errorTitle", access = JsonProperty.Access.WRITE_ONLY)
     private String errorTitle;
 
     /*
      * Localized error string.
      */
-    @JsonProperty(value = "errorString", access = JsonProperty.Access.WRITE_ONLY)
     private String errorString;
 
     /*
      * List of localized recommendations for above error code.
      */
-    @JsonProperty(value = "recommendations", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> recommendations;
 
     /**
@@ -85,5 +85,47 @@ public final class AzureIaaSvmErrorInfo {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureIaaSvmErrorInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureIaaSvmErrorInfo if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureIaaSvmErrorInfo.
+     */
+    public static AzureIaaSvmErrorInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureIaaSvmErrorInfo deserializedAzureIaaSvmErrorInfo = new AzureIaaSvmErrorInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("errorCode".equals(fieldName)) {
+                    deserializedAzureIaaSvmErrorInfo.errorCode = reader.getNullable(JsonReader::getInt);
+                } else if ("errorTitle".equals(fieldName)) {
+                    deserializedAzureIaaSvmErrorInfo.errorTitle = reader.getString();
+                } else if ("errorString".equals(fieldName)) {
+                    deserializedAzureIaaSvmErrorInfo.errorString = reader.getString();
+                } else if ("recommendations".equals(fieldName)) {
+                    List<String> recommendations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureIaaSvmErrorInfo.recommendations = recommendations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureIaaSvmErrorInfo;
+        });
     }
 }

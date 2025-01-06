@@ -4,17 +4,16 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-
 import java.util.Collection;
 
-/** Defines values for RecordingStorageType. */
+/** Defines the kind of external storage. */
 public final class RecordingStorageType extends ExpandableStringEnum<RecordingStorageType> {
 
-    /** Static value acs for RecordingStorageType. */
-    public static final RecordingStorageType ACS = fromString("acs");
+    /** Static value AzureCommunicationServices for RecordingStorageType. */
+    public static final RecordingStorageType ACS = fromString("AzureCommunicationServices");
 
-    /** Static value azureblobStorage for RecordingStorageType. */
-    public static final RecordingStorageType AZURE_BLOB_STORAGE = fromString("blobStorage");
+    /** Static value AzureBlobStorage for RecordingStorageType. */
+    public static final RecordingStorageType AZURE_BLOB_STORAGE = fromString("AzureBlobStorage");
 
     /**
      * Creates an instance of {@link RecordingStorageType} with no string value.

@@ -55,13 +55,13 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
 
     public PagedIterable<ManagedPrivateEndpoint> list(String resourceGroupName, String clusterName) {
         PagedIterable<ManagedPrivateEndpointInner> inner = this.serviceClient().list(resourceGroupName, clusterName);
-        return Utils.mapPage(inner, inner1 -> new ManagedPrivateEndpointImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ManagedPrivateEndpointImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ManagedPrivateEndpoint> list(String resourceGroupName, String clusterName, Context context) {
         PagedIterable<ManagedPrivateEndpointInner> inner
             = this.serviceClient().list(resourceGroupName, clusterName, context);
-        return Utils.mapPage(inner, inner1 -> new ManagedPrivateEndpointImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ManagedPrivateEndpointImpl(inner1, this.manager()));
     }
 
     public Response<ManagedPrivateEndpoint> getWithResponse(String resourceGroupName, String clusterName,
@@ -96,17 +96,17 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
     }
 
     public ManagedPrivateEndpoint getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String managedPrivateEndpointName = Utils.getValueFromIdByName(id, "managedPrivateEndpoints");
+        String managedPrivateEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "managedPrivateEndpoints");
         if (managedPrivateEndpointName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'managedPrivateEndpoints'.", id)));
@@ -116,17 +116,17 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
     }
 
     public Response<ManagedPrivateEndpoint> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String managedPrivateEndpointName = Utils.getValueFromIdByName(id, "managedPrivateEndpoints");
+        String managedPrivateEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "managedPrivateEndpoints");
         if (managedPrivateEndpointName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'managedPrivateEndpoints'.", id)));
@@ -135,17 +135,17 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String managedPrivateEndpointName = Utils.getValueFromIdByName(id, "managedPrivateEndpoints");
+        String managedPrivateEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "managedPrivateEndpoints");
         if (managedPrivateEndpointName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'managedPrivateEndpoints'.", id)));
@@ -154,17 +154,17 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String managedPrivateEndpointName = Utils.getValueFromIdByName(id, "managedPrivateEndpoints");
+        String managedPrivateEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "managedPrivateEndpoints");
         if (managedPrivateEndpointName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'managedPrivateEndpoints'.", id)));

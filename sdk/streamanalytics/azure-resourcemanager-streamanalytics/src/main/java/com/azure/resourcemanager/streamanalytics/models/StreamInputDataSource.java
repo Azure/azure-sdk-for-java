@@ -87,12 +87,8 @@ public class StreamInputDataSource implements JsonSerializable<StreamInputDataSo
                     return EventHubV2StreamInputDataSource.fromJson(readerToUse.reset());
                 } else if ("Microsoft.Devices/IotHubs".equals(discriminatorValue)) {
                     return IoTHubStreamInputDataSource.fromJson(readerToUse.reset());
-                } else if ("Raw".equals(discriminatorValue)) {
-                    return RawStreamInputDataSource.fromJson(readerToUse.reset());
                 } else if ("GatewayMessageBus".equals(discriminatorValue)) {
                     return GatewayMessageBusStreamInputDataSource.fromJson(readerToUse.reset());
-                } else if ("Microsoft.EventGrid/EventSubscriptions".equals(discriminatorValue)) {
-                    return EventGridStreamInputDataSource.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

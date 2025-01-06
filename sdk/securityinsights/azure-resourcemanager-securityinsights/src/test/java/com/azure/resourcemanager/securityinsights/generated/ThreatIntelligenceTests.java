@@ -11,7 +11,7 @@ public final class ThreatIntelligenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ThreatIntelligence model = BinaryData.fromString(
-            "{\"confidence\":4.907956391243317,\"providerName\":\"zstifgufyj\",\"reportLink\":\"kqiyvnd\",\"threatDescription\":\"kgwesy\",\"threatName\":\"qh\",\"threatType\":\"p\"}")
+            "{\"confidence\":55.75274065776033,\"providerName\":\"oyuelyetn\",\"reportLink\":\"bf\",\"threatDescription\":\"ggagfln\",\"threatName\":\"mtrwah\",\"threatType\":\"mu\"}")
             .toObject(ThreatIntelligence.class);
     }
 

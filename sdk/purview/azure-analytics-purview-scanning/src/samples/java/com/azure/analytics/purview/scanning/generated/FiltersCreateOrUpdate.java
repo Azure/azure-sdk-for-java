@@ -13,19 +13,15 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class FiltersCreateOrUpdate {
     public static void main(String[] args) {
-        FiltersClient filtersClient =
-                new PurviewScanningClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("{Endpoint}")
-                        .buildFiltersClient();
+        FiltersClient filtersClient
+            = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{Endpoint}")
+                .buildFiltersClient();
         // BEGIN:com.azure.analytics.purview.scanning.generated.filterscreateorupdate.filterscreateorupdate
-        RequestOptions requestOptions =
-                new RequestOptions()
-                        .setBody(
-                                BinaryData.fromString(
-                                        "{\"properties\":{\"excludeUriPrefixes\":[\"https://foo.file.core.windows.net/share1/user/temp\"],\"includeUriPrefixes\":[\"https://foo.file.core.windows.net/share1/user\",\"https://foo.file.core.windows.net/share1/aggregated\"]}}"));
-        Response<BinaryData> response =
-                filtersClient.createOrUpdateWithResponse("DataSource1", "Scan1", requestOptions);
+        RequestOptions requestOptions = new RequestOptions().setBody(BinaryData.fromString(
+            "{\"properties\":{\"excludeUriPrefixes\":[\"https://foo.file.core.windows.net/share1/user/temp\"],\"includeUriPrefixes\":[\"https://foo.file.core.windows.net/share1/user\",\"https://foo.file.core.windows.net/share1/aggregated\"]}}"));
+        Response<BinaryData> response
+            = filtersClient.createOrUpdateWithResponse("DataSource1", "Scan1", requestOptions);
         // END:com.azure.analytics.purview.scanning.generated.filterscreateorupdate.filterscreateorupdate
     }
 }

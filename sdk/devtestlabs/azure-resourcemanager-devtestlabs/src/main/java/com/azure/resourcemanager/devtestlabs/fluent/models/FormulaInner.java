@@ -7,42 +7,97 @@ package com.azure.resourcemanager.devtestlabs.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devtestlabs.models.FormulaPropertiesFromVm;
 import com.azure.resourcemanager.devtestlabs.models.LabVirtualMachineCreationParameter;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** A formula for creating a VM, specifying an image base and other parameters. */
+/**
+ * A formula for creating a VM, specifying an image base and other parameters.
+ */
 @Fluent
 public final class FormulaInner extends Resource {
     /*
      * The properties of the resource.
      */
-    @JsonProperty(value = "properties", required = true)
     private FormulaProperties innerProperties = new FormulaProperties();
 
-    /** Creates an instance of FormulaInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of FormulaInner class.
+     */
     public FormulaInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FormulaProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FormulaInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FormulaInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -51,7 +106,7 @@ public final class FormulaInner extends Resource {
 
     /**
      * Get the description property: The description of the formula.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -60,7 +115,7 @@ public final class FormulaInner extends Resource {
 
     /**
      * Set the description property: The description of the formula.
-     *
+     * 
      * @param description the description value to set.
      * @return the FormulaInner object itself.
      */
@@ -74,7 +129,7 @@ public final class FormulaInner extends Resource {
 
     /**
      * Get the author property: The author of the formula.
-     *
+     * 
      * @return the author value.
      */
     public String author() {
@@ -83,7 +138,7 @@ public final class FormulaInner extends Resource {
 
     /**
      * Get the osType property: The OS type of the formula.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -92,7 +147,7 @@ public final class FormulaInner extends Resource {
 
     /**
      * Set the osType property: The OS type of the formula.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the FormulaInner object itself.
      */
@@ -106,7 +161,7 @@ public final class FormulaInner extends Resource {
 
     /**
      * Get the creationDate property: The creation date of the formula.
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -115,7 +170,7 @@ public final class FormulaInner extends Resource {
 
     /**
      * Get the formulaContent property: The content of the formula.
-     *
+     * 
      * @return the formulaContent value.
      */
     public LabVirtualMachineCreationParameter formulaContent() {
@@ -124,7 +179,7 @@ public final class FormulaInner extends Resource {
 
     /**
      * Set the formulaContent property: The content of the formula.
-     *
+     * 
      * @param formulaContent the formulaContent value to set.
      * @return the FormulaInner object itself.
      */
@@ -138,7 +193,7 @@ public final class FormulaInner extends Resource {
 
     /**
      * Get the vm property: Information about a VM from which a formula is to be created.
-     *
+     * 
      * @return the vm value.
      */
     public FormulaPropertiesFromVm vm() {
@@ -147,7 +202,7 @@ public final class FormulaInner extends Resource {
 
     /**
      * Set the vm property: Information about a VM from which a formula is to be created.
-     *
+     * 
      * @param vm the vm value to set.
      * @return the FormulaInner object itself.
      */
@@ -161,7 +216,7 @@ public final class FormulaInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning status of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -170,7 +225,7 @@ public final class FormulaInner extends Resource {
 
     /**
      * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
+     * 
      * @return the uniqueIdentifier value.
      */
     public String uniqueIdentifier() {
@@ -179,17 +234,67 @@ public final class FormulaInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property innerProperties in model FormulaInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property innerProperties in model FormulaInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FormulaInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FormulaInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FormulaInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FormulaInner.
+     */
+    public static FormulaInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FormulaInner deserializedFormulaInner = new FormulaInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedFormulaInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedFormulaInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedFormulaInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedFormulaInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedFormulaInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedFormulaInner.innerProperties = FormulaProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFormulaInner;
+        });
+    }
 }

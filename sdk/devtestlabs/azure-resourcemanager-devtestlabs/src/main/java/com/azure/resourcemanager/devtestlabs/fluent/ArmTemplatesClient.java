@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.devtestlabs.fluent.models.ArmTemplateInner;
 
-/** An instance of this class provides access to all the operations defined in ArmTemplatesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ArmTemplatesClient.
+ */
 public interface ArmTemplatesClient {
     /**
      * List azure resource manager templates in a given artifact source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -29,7 +31,7 @@ public interface ArmTemplatesClient {
 
     /**
      * List azure resource manager templates in a given artifact source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -49,7 +51,7 @@ public interface ArmTemplatesClient {
 
     /**
      * Get azure resource manager template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -67,7 +69,7 @@ public interface ArmTemplatesClient {
 
     /**
      * Get azure resource manager template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.

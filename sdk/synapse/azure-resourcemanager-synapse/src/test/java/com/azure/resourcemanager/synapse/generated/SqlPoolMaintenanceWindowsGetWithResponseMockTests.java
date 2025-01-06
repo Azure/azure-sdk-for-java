@@ -22,7 +22,7 @@ public final class SqlPoolMaintenanceWindowsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"timeRanges\":[{\"dayOfWeek\":\"Saturday\",\"startTime\":\"x\",\"duration\":\"ba\"},{\"dayOfWeek\":\"Friday\",\"startTime\":\"tgirnb\",\"duration\":\"gm\"},{\"dayOfWeek\":\"Friday\",\"startTime\":\"gm\",\"duration\":\"ltwmpftmf\"},{\"dayOfWeek\":\"Saturday\",\"startTime\":\"og\",\"duration\":\"xwet\"}]},\"id\":\"mfd\",\"name\":\"rvlkpzwbhnrec\",\"type\":\"hdidrmuhkahmjedb\"}";
+            = "{\"properties\":{\"timeRanges\":[{\"dayOfWeek\":\"Sunday\",\"startTime\":\"rezsdsuxheq\",\"duration\":\"cruxspinym\"},{\"dayOfWeek\":\"Sunday\",\"startTime\":\"okmikpa\",\"duration\":\"bmjxuvjipf\"},{\"dayOfWeek\":\"Wednesday\",\"startTime\":\"xdvwz\",\"duration\":\"hpphthdklm\"}]},\"id\":\"etatlakf\",\"name\":\"oixwgiksb\",\"type\":\"vtooxrpo\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class SqlPoolMaintenanceWindowsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         MaintenanceWindows response = manager.sqlPoolMaintenanceWindows()
-            .getWithResponse("s", "hqhud", "musuaawja", "xwjnfcz", com.azure.core.util.Context.NONE)
+            .getWithResponse("qvn", "obfelhldiuhz", "gqlmfaewzgi", "djpxpqht", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(DayOfWeek.SATURDAY, response.timeRanges().get(0).dayOfWeek());
-        Assertions.assertEquals("x", response.timeRanges().get(0).startTime());
-        Assertions.assertEquals("ba", response.timeRanges().get(0).duration());
+        Assertions.assertEquals(DayOfWeek.SUNDAY, response.timeRanges().get(0).dayOfWeek());
+        Assertions.assertEquals("rezsdsuxheq", response.timeRanges().get(0).startTime());
+        Assertions.assertEquals("cruxspinym", response.timeRanges().get(0).duration());
     }
 }

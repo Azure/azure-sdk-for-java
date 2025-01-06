@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.kusto.generated;
 
-/** Samples for SandboxCustomImages Delete. */
+/**
+ * Samples for SandboxCustomImages Delete.
+ */
 public final class SandboxCustomImagesDeleteSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoSandboxCustomImageDelete.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/
+     * KustoSandboxCustomImageDelete.json
      */
     /**
      * Sample code: SandboxCustomImagesDelete.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void sandboxCustomImagesDelete(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .sandboxCustomImages()
+        manager.sandboxCustomImages()
             .delete("kustorptest", "kustoCluster", "customImage8", com.azure.core.util.Context.NONE);
     }
 }

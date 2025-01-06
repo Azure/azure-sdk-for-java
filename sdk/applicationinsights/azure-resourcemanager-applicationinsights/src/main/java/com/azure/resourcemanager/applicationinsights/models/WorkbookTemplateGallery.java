@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Gallery information for a workbook template. */
+/**
+ * Gallery information for a workbook template.
+ */
 @Fluent
-public final class WorkbookTemplateGallery {
+public final class WorkbookTemplateGallery implements JsonSerializable<WorkbookTemplateGallery> {
     /*
      * Name of the workbook template in the gallery.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Category for the gallery.
      */
-    @JsonProperty(value = "category")
     private String category;
 
     /*
      * Type of workbook supported by the workbook template.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * Order of the template within the gallery.
      */
-    @JsonProperty(value = "order")
     private Integer order;
 
     /*
      * Azure resource type supported by the gallery.
      */
-    @JsonProperty(value = "resourceType")
     private String resourceType;
 
-    /** Creates an instance of WorkbookTemplateGallery class. */
+    /**
+     * Creates an instance of WorkbookTemplateGallery class.
+     */
     public WorkbookTemplateGallery() {
     }
 
     /**
      * Get the name property: Name of the workbook template in the gallery.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -55,7 +58,7 @@ public final class WorkbookTemplateGallery {
 
     /**
      * Set the name property: Name of the workbook template in the gallery.
-     *
+     * 
      * @param name the name value to set.
      * @return the WorkbookTemplateGallery object itself.
      */
@@ -66,7 +69,7 @@ public final class WorkbookTemplateGallery {
 
     /**
      * Get the category property: Category for the gallery.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -75,7 +78,7 @@ public final class WorkbookTemplateGallery {
 
     /**
      * Set the category property: Category for the gallery.
-     *
+     * 
      * @param category the category value to set.
      * @return the WorkbookTemplateGallery object itself.
      */
@@ -86,7 +89,7 @@ public final class WorkbookTemplateGallery {
 
     /**
      * Get the type property: Type of workbook supported by the workbook template.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -95,7 +98,7 @@ public final class WorkbookTemplateGallery {
 
     /**
      * Set the type property: Type of workbook supported by the workbook template.
-     *
+     * 
      * @param type the type value to set.
      * @return the WorkbookTemplateGallery object itself.
      */
@@ -106,7 +109,7 @@ public final class WorkbookTemplateGallery {
 
     /**
      * Get the order property: Order of the template within the gallery.
-     *
+     * 
      * @return the order value.
      */
     public Integer order() {
@@ -115,7 +118,7 @@ public final class WorkbookTemplateGallery {
 
     /**
      * Set the order property: Order of the template within the gallery.
-     *
+     * 
      * @param order the order value to set.
      * @return the WorkbookTemplateGallery object itself.
      */
@@ -126,7 +129,7 @@ public final class WorkbookTemplateGallery {
 
     /**
      * Get the resourceType property: Azure resource type supported by the gallery.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -135,7 +138,7 @@ public final class WorkbookTemplateGallery {
 
     /**
      * Set the resourceType property: Azure resource type supported by the gallery.
-     *
+     * 
      * @param resourceType the resourceType value to set.
      * @return the WorkbookTemplateGallery object itself.
      */
@@ -146,9 +149,57 @@ public final class WorkbookTemplateGallery {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("category", this.category);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeNumberField("order", this.order);
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkbookTemplateGallery from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkbookTemplateGallery if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkbookTemplateGallery.
+     */
+    public static WorkbookTemplateGallery fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkbookTemplateGallery deserializedWorkbookTemplateGallery = new WorkbookTemplateGallery();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedWorkbookTemplateGallery.name = reader.getString();
+                } else if ("category".equals(fieldName)) {
+                    deserializedWorkbookTemplateGallery.category = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWorkbookTemplateGallery.type = reader.getString();
+                } else if ("order".equals(fieldName)) {
+                    deserializedWorkbookTemplateGallery.order = reader.getNullable(JsonReader::getInt);
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedWorkbookTemplateGallery.resourceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkbookTemplateGallery;
+        });
     }
 }

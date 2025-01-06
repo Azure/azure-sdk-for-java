@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.resourceconnector.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The SupportedVersionCatalogVersionData object for appliance. */
+/**
+ * The SupportedVersionCatalogVersionData object for appliance.
+ */
 @Immutable
-public final class SupportedVersionCatalogVersionData {
+public final class SupportedVersionCatalogVersionData implements JsonSerializable<SupportedVersionCatalogVersionData> {
     /*
      * The image audience name for the version available for upgrade.
      */
-    @JsonProperty(value = "audience", access = JsonProperty.Access.WRITE_ONLY)
     private String audience;
 
     /*
      * The image catalog name for the version available for upgrade.
      */
-    @JsonProperty(value = "catalog", access = JsonProperty.Access.WRITE_ONLY)
     private String catalog;
 
     /*
      * The image offer name for the version available for upgrade.
      */
-    @JsonProperty(value = "offer", access = JsonProperty.Access.WRITE_ONLY)
     private String offer;
 
     /*
      * The image version for the version available for upgrade.
      */
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
-    /** Creates an instance of SupportedVersionCatalogVersionData class. */
+    /**
+     * Creates an instance of SupportedVersionCatalogVersionData class.
+     */
     public SupportedVersionCatalogVersionData() {
     }
 
     /**
      * Get the audience property: The image audience name for the version available for upgrade.
-     *
+     * 
      * @return the audience value.
      */
     public String audience() {
@@ -49,7 +53,7 @@ public final class SupportedVersionCatalogVersionData {
 
     /**
      * Get the catalog property: The image catalog name for the version available for upgrade.
-     *
+     * 
      * @return the catalog value.
      */
     public String catalog() {
@@ -58,7 +62,7 @@ public final class SupportedVersionCatalogVersionData {
 
     /**
      * Get the offer property: The image offer name for the version available for upgrade.
-     *
+     * 
      * @return the offer value.
      */
     public String offer() {
@@ -67,7 +71,7 @@ public final class SupportedVersionCatalogVersionData {
 
     /**
      * Get the version property: The image version for the version available for upgrade.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -76,9 +80,51 @@ public final class SupportedVersionCatalogVersionData {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SupportedVersionCatalogVersionData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SupportedVersionCatalogVersionData if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SupportedVersionCatalogVersionData.
+     */
+    public static SupportedVersionCatalogVersionData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SupportedVersionCatalogVersionData deserializedSupportedVersionCatalogVersionData
+                = new SupportedVersionCatalogVersionData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("audience".equals(fieldName)) {
+                    deserializedSupportedVersionCatalogVersionData.audience = reader.getString();
+                } else if ("catalog".equals(fieldName)) {
+                    deserializedSupportedVersionCatalogVersionData.catalog = reader.getString();
+                } else if ("offer".equals(fieldName)) {
+                    deserializedSupportedVersionCatalogVersionData.offer = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedSupportedVersionCatalogVersionData.version = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSupportedVersionCatalogVersionData;
+        });
     }
 }

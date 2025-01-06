@@ -22,7 +22,7 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"ffofwan\",\"type\":\"k\",\"id\":\"auwazcgwd\",\"properties\":{\"privateEndpoint\":{\"id\":\"gyb\"},\"privateLinkServiceConnectionState\":{\"status\":\"zokscvg\",\"description\":\"ixdgbyfgwewqkj\",\"actionsRequired\":\"prwpxsoohu\"},\"provisioningState\":\"lcsklt\"}}]}";
+            = "{\"value\":[{\"name\":\"punytjl\",\"type\":\"smmpathubt\",\"id\":\"deani\",\"properties\":{\"privateEndpoint\":{\"id\":\"bvgwzsff\"},\"privateLinkServiceConnectionState\":{\"status\":\"ousnktjt\",\"description\":\"avaqogfkbebau\",\"actionsRequired\":\"qbtxxwpf\"},\"provisioningState\":\"jzudrtpzk\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,14 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsListMockTests {
 
         PagedIterable<PrivateEndpointConnectionForPrivateLinkHub> response
             = manager.privateEndpointConnectionsPrivateLinkHubs()
-                .list("ubjtvgjsxmtyjjv", "vdpwwobtdphti", com.azure.core.util.Context.NONE);
+                .list("h", "beivdlhydwbdbfg", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("auwazcgwd", response.iterator().next().id());
-        Assertions.assertEquals("zokscvg",
+        Assertions.assertEquals("deani", response.iterator().next().id());
+        Assertions.assertEquals("ousnktjt",
             response.iterator().next().properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("ixdgbyfgwewqkj",
+        Assertions.assertEquals("avaqogfkbebau",
             response.iterator().next().properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("ffofwan", response.iterator().next().name());
-        Assertions.assertEquals("k", response.iterator().next().type());
+        Assertions.assertEquals("punytjl", response.iterator().next().name());
+        Assertions.assertEquals("smmpathubt", response.iterator().next().type());
     }
 }

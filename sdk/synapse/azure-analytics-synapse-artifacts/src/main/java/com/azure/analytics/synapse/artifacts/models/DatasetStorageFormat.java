@@ -21,7 +21,7 @@ public class DatasetStorageFormat implements JsonSerializable<DatasetStorageForm
     /*
      * Type of dataset storage format.
      */
-    private String type;
+    private String type = "DatasetStorageFormat";
 
     /*
      * Serializer. Type: string (or Expression with resultType string).
@@ -42,7 +42,6 @@ public class DatasetStorageFormat implements JsonSerializable<DatasetStorageForm
      * Creates an instance of DatasetStorageFormat class.
      */
     public DatasetStorageFormat() {
-        this.type = "DatasetStorageFormat";
     }
 
     /**

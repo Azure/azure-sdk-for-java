@@ -6,118 +6,120 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** HyperV to AzStackHCI Replication extension model custom properties. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("HyperVToAzStackHCI")
+/**
+ * HyperV to AzStackHCI Replication extension model custom properties.
+ */
 @Fluent
 public final class HyperVToAzStackHciRepExtnCustomProps extends ReplicationExtensionModelCustomProperties {
     /*
+     * Gets or sets the instance type.
+     */
+    private String instanceType = "HyperVToAzStackHCI";
+
+    /*
      * Gets or sets the ARM Id of the source HyperV fabric.
      */
-    @JsonProperty(value = "hyperVFabricArmId", required = true)
     private String hyperVFabricArmId;
 
     /*
      * Gets or sets the ARM Id of the HyperV site.
      */
-    @JsonProperty(value = "hyperVSiteId", access = JsonProperty.Access.WRITE_ONLY)
     private String hyperVSiteId;
 
     /*
      * Gets or sets the ARM Id of the target AzStackHCI fabric.
      */
-    @JsonProperty(value = "azStackHciFabricArmId", required = true)
     private String azStackHciFabricArmId;
 
     /*
      * Gets or sets the ARM Id of the AzStackHCI site.
      */
-    @JsonProperty(value = "azStackHciSiteId", access = JsonProperty.Access.WRITE_ONLY)
     private String azStackHciSiteId;
 
     /*
      * Gets or sets the storage account Id.
      */
-    @JsonProperty(value = "storageAccountId")
     private String storageAccountId;
 
     /*
      * Gets or sets the Sas Secret of storage account.
      */
-    @JsonProperty(value = "storageAccountSasSecretName")
     private String storageAccountSasSecretName;
 
     /*
      * Gets or sets the Uri of ASR.
      */
-    @JsonProperty(value = "asrServiceUri", access = JsonProperty.Access.WRITE_ONLY)
     private String asrServiceUri;
 
     /*
      * Gets or sets the Uri of Rcm.
      */
-    @JsonProperty(value = "rcmServiceUri", access = JsonProperty.Access.WRITE_ONLY)
     private String rcmServiceUri;
 
     /*
      * Gets or sets the Uri of Gateway.
      */
-    @JsonProperty(value = "gatewayServiceUri", access = JsonProperty.Access.WRITE_ONLY)
     private String gatewayServiceUri;
 
     /*
      * Gets or sets the gateway service Id of source.
      */
-    @JsonProperty(value = "sourceGatewayServiceId", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceGatewayServiceId;
 
     /*
      * Gets or sets the gateway service Id of target.
      */
-    @JsonProperty(value = "targetGatewayServiceId", access = JsonProperty.Access.WRITE_ONLY)
     private String targetGatewayServiceId;
 
     /*
      * Gets or sets the source storage container name.
      */
-    @JsonProperty(value = "sourceStorageContainerName", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceStorageContainerName;
 
     /*
      * Gets or sets the target storage container name.
      */
-    @JsonProperty(value = "targetStorageContainerName", access = JsonProperty.Access.WRITE_ONLY)
     private String targetStorageContainerName;
 
     /*
      * Gets or sets the resource location.
      */
-    @JsonProperty(value = "resourceLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceLocation;
 
     /*
      * Gets or sets the subscription.
      */
-    @JsonProperty(value = "subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
     private String subscriptionId;
 
     /*
      * Gets or sets the resource group.
      */
-    @JsonProperty(value = "resourceGroup", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGroup;
 
-    /** Creates an instance of HyperVToAzStackHciRepExtnCustomProps class. */
+    /**
+     * Creates an instance of HyperVToAzStackHciRepExtnCustomProps class.
+     */
     public HyperVToAzStackHciRepExtnCustomProps() {
     }
 
     /**
+     * Get the instanceType property: Gets or sets the instance type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the hyperVFabricArmId property: Gets or sets the ARM Id of the source HyperV fabric.
-     *
+     * 
      * @return the hyperVFabricArmId value.
      */
     public String hyperVFabricArmId() {
@@ -126,7 +128,7 @@ public final class HyperVToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Set the hyperVFabricArmId property: Gets or sets the ARM Id of the source HyperV fabric.
-     *
+     * 
      * @param hyperVFabricArmId the hyperVFabricArmId value to set.
      * @return the HyperVToAzStackHciRepExtnCustomProps object itself.
      */
@@ -137,7 +139,7 @@ public final class HyperVToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Get the hyperVSiteId property: Gets or sets the ARM Id of the HyperV site.
-     *
+     * 
      * @return the hyperVSiteId value.
      */
     public String hyperVSiteId() {
@@ -146,7 +148,7 @@ public final class HyperVToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Get the azStackHciFabricArmId property: Gets or sets the ARM Id of the target AzStackHCI fabric.
-     *
+     * 
      * @return the azStackHciFabricArmId value.
      */
     public String azStackHciFabricArmId() {
@@ -155,7 +157,7 @@ public final class HyperVToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Set the azStackHciFabricArmId property: Gets or sets the ARM Id of the target AzStackHCI fabric.
-     *
+     * 
      * @param azStackHciFabricArmId the azStackHciFabricArmId value to set.
      * @return the HyperVToAzStackHciRepExtnCustomProps object itself.
      */
@@ -166,7 +168,7 @@ public final class HyperVToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Get the azStackHciSiteId property: Gets or sets the ARM Id of the AzStackHCI site.
-     *
+     * 
      * @return the azStackHciSiteId value.
      */
     public String azStackHciSiteId() {
@@ -175,7 +177,7 @@ public final class HyperVToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Get the storageAccountId property: Gets or sets the storage account Id.
-     *
+     * 
      * @return the storageAccountId value.
      */
     public String storageAccountId() {
@@ -184,7 +186,7 @@ public final class HyperVToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Set the storageAccountId property: Gets or sets the storage account Id.
-     *
+     * 
      * @param storageAccountId the storageAccountId value to set.
      * @return the HyperVToAzStackHciRepExtnCustomProps object itself.
      */
@@ -195,7 +197,7 @@ public final class HyperVToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Get the storageAccountSasSecretName property: Gets or sets the Sas Secret of storage account.
-     *
+     * 
      * @return the storageAccountSasSecretName value.
      */
     public String storageAccountSasSecretName() {
@@ -204,7 +206,7 @@ public final class HyperVToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Set the storageAccountSasSecretName property: Gets or sets the Sas Secret of storage account.
-     *
+     * 
      * @param storageAccountSasSecretName the storageAccountSasSecretName value to set.
      * @return the HyperVToAzStackHciRepExtnCustomProps object itself.
      */
@@ -215,7 +217,7 @@ public final class HyperVToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Get the asrServiceUri property: Gets or sets the Uri of ASR.
-     *
+     * 
      * @return the asrServiceUri value.
      */
     public String asrServiceUri() {
@@ -224,7 +226,7 @@ public final class HyperVToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Get the rcmServiceUri property: Gets or sets the Uri of Rcm.
-     *
+     * 
      * @return the rcmServiceUri value.
      */
     public String rcmServiceUri() {
@@ -233,7 +235,7 @@ public final class HyperVToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Get the gatewayServiceUri property: Gets or sets the Uri of Gateway.
-     *
+     * 
      * @return the gatewayServiceUri value.
      */
     public String gatewayServiceUri() {
@@ -242,7 +244,7 @@ public final class HyperVToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Get the sourceGatewayServiceId property: Gets or sets the gateway service Id of source.
-     *
+     * 
      * @return the sourceGatewayServiceId value.
      */
     public String sourceGatewayServiceId() {
@@ -251,7 +253,7 @@ public final class HyperVToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Get the targetGatewayServiceId property: Gets or sets the gateway service Id of target.
-     *
+     * 
      * @return the targetGatewayServiceId value.
      */
     public String targetGatewayServiceId() {
@@ -260,7 +262,7 @@ public final class HyperVToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Get the sourceStorageContainerName property: Gets or sets the source storage container name.
-     *
+     * 
      * @return the sourceStorageContainerName value.
      */
     public String sourceStorageContainerName() {
@@ -269,7 +271,7 @@ public final class HyperVToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Get the targetStorageContainerName property: Gets or sets the target storage container name.
-     *
+     * 
      * @return the targetStorageContainerName value.
      */
     public String targetStorageContainerName() {
@@ -278,7 +280,7 @@ public final class HyperVToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Get the resourceLocation property: Gets or sets the resource location.
-     *
+     * 
      * @return the resourceLocation value.
      */
     public String resourceLocation() {
@@ -287,7 +289,7 @@ public final class HyperVToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Get the subscriptionId property: Gets or sets the subscription.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -296,7 +298,7 @@ public final class HyperVToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Get the resourceGroup property: Gets or sets the resource group.
-     *
+     * 
      * @return the resourceGroup value.
      */
     public String resourceGroup() {
@@ -305,21 +307,96 @@ public final class HyperVToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (hyperVFabricArmId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property hyperVFabricArmId in model HyperVToAzStackHciRepExtnCustomProps"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property hyperVFabricArmId in model HyperVToAzStackHciRepExtnCustomProps"));
         }
         if (azStackHciFabricArmId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property azStackHciFabricArmId in model" + " HyperVToAzStackHciRepExtnCustomProps"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property azStackHciFabricArmId in model HyperVToAzStackHciRepExtnCustomProps"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(HyperVToAzStackHciRepExtnCustomProps.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("hyperVFabricArmId", this.hyperVFabricArmId);
+        jsonWriter.writeStringField("azStackHciFabricArmId", this.azStackHciFabricArmId);
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("storageAccountId", this.storageAccountId);
+        jsonWriter.writeStringField("storageAccountSasSecretName", this.storageAccountSasSecretName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HyperVToAzStackHciRepExtnCustomProps from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HyperVToAzStackHciRepExtnCustomProps if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HyperVToAzStackHciRepExtnCustomProps.
+     */
+    public static HyperVToAzStackHciRepExtnCustomProps fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HyperVToAzStackHciRepExtnCustomProps deserializedHyperVToAzStackHciRepExtnCustomProps
+                = new HyperVToAzStackHciRepExtnCustomProps();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hyperVFabricArmId".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciRepExtnCustomProps.hyperVFabricArmId = reader.getString();
+                } else if ("azStackHciFabricArmId".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciRepExtnCustomProps.azStackHciFabricArmId = reader.getString();
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciRepExtnCustomProps.instanceType = reader.getString();
+                } else if ("hyperVSiteId".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciRepExtnCustomProps.hyperVSiteId = reader.getString();
+                } else if ("azStackHciSiteId".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciRepExtnCustomProps.azStackHciSiteId = reader.getString();
+                } else if ("storageAccountId".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciRepExtnCustomProps.storageAccountId = reader.getString();
+                } else if ("storageAccountSasSecretName".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciRepExtnCustomProps.storageAccountSasSecretName = reader.getString();
+                } else if ("asrServiceUri".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciRepExtnCustomProps.asrServiceUri = reader.getString();
+                } else if ("rcmServiceUri".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciRepExtnCustomProps.rcmServiceUri = reader.getString();
+                } else if ("gatewayServiceUri".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciRepExtnCustomProps.gatewayServiceUri = reader.getString();
+                } else if ("sourceGatewayServiceId".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciRepExtnCustomProps.sourceGatewayServiceId = reader.getString();
+                } else if ("targetGatewayServiceId".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciRepExtnCustomProps.targetGatewayServiceId = reader.getString();
+                } else if ("sourceStorageContainerName".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciRepExtnCustomProps.sourceStorageContainerName = reader.getString();
+                } else if ("targetStorageContainerName".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciRepExtnCustomProps.targetStorageContainerName = reader.getString();
+                } else if ("resourceLocation".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciRepExtnCustomProps.resourceLocation = reader.getString();
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciRepExtnCustomProps.subscriptionId = reader.getString();
+                } else if ("resourceGroup".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciRepExtnCustomProps.resourceGroup = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHyperVToAzStackHciRepExtnCustomProps;
+        });
+    }
 }

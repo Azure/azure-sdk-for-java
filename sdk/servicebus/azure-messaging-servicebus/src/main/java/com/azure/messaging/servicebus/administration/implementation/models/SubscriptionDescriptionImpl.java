@@ -4,8 +4,6 @@
 
 package com.azure.messaging.servicebus.administration.implementation.models;
 
-import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
-
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.azure.messaging.servicebus.administration.models.EntityStatus;
@@ -660,15 +658,15 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
                 } else if ("CreatedAt".equals(elementName.getLocalPart())
                     && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
                     deserializedSubscriptionDescription.createdAt
-                        = reader.getNullableElement(dateString -> EntityHelper.parseOffsetDateTimeBest(dateString));
+                        = reader.getNullableElement(dateString -> CoreUtils.parseBestOffsetDateTime(dateString));
                 } else if ("UpdatedAt".equals(elementName.getLocalPart())
                     && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
                     deserializedSubscriptionDescription.updatedAt
-                        = reader.getNullableElement(dateString -> EntityHelper.parseOffsetDateTimeBest(dateString));
+                        = reader.getNullableElement(dateString -> CoreUtils.parseBestOffsetDateTime(dateString));
                 } else if ("AccessedAt".equals(elementName.getLocalPart())
                     && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
                     deserializedSubscriptionDescription.accessedAt
-                        = reader.getNullableElement(dateString -> EntityHelper.parseOffsetDateTimeBest(dateString));
+                        = reader.getNullableElement(dateString -> CoreUtils.parseBestOffsetDateTime(dateString));
                 } else if ("CountDetails".equals(elementName.getLocalPart())
                     && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
                     deserializedSubscriptionDescription.messageCountDetails

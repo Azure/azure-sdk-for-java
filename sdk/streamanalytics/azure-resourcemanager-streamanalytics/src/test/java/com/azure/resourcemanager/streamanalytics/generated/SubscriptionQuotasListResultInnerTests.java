@@ -11,7 +11,7 @@ public final class SubscriptionQuotasListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubscriptionQuotasListResultInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"maxCount\":1738162864,\"currentCount\":1440300304},\"name\":\"slazjdyg\",\"type\":\"tjixhbkuofqweyk\",\"id\":\"enevfyexfwhybci\"},{\"properties\":{\"maxCount\":153812125,\"currentCount\":68819251},\"name\":\"it\",\"type\":\"naamde\",\"id\":\"eh\"},{\"properties\":{\"maxCount\":1860942440,\"currentCount\":993666965},\"name\":\"ypvhezrkg\",\"type\":\"c\",\"id\":\"efovgmk\"}]}")
+            "{\"value\":[{\"properties\":{\"maxCount\":1365754949,\"currentCount\":1097907718},\"name\":\"xaqwoochcbonqv\",\"type\":\"vlrxnjeaseiph\",\"id\":\"f\"},{\"properties\":{\"maxCount\":762343473,\"currentCount\":117870217},\"name\":\"enjbdlwtgrhp\",\"type\":\"pj\",\"id\":\"asxazjpqyegualhb\"},{\"properties\":{\"maxCount\":15253955,\"currentCount\":1671923466},\"name\":\"zvdudgwdslfhotwm\",\"type\":\"npwlbjnpg\",\"id\":\"ftadehxnltyfs\"}]}")
             .toObject(SubscriptionQuotasListResultInner.class);
     }
 

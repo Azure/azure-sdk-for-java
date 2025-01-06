@@ -17,25 +17,25 @@ public final class UpdateSapVirtualInstanceRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateSapVirtualInstanceRequest model = BinaryData.fromString(
-            "{\"tags\":{\"vwryoqpso\":\"odjpslwejd\",\"yffdfdos\":\"cctazakljlahbc\"},\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{\"jakhmsbzjh\":{\"principalId\":\"9d604921-29ee-4ba8-be56-842b27d69af8\",\"clientId\":\"6e418b5f-eb54-41b3-9a83-9141b36ce003\"},\"evdphlxaol\":{\"principalId\":\"5f0b6d05-6f12-44c1-96a2-42b470fadbef\",\"clientId\":\"bd163123-e6d1-44cb-939d-44e990e51e71\"},\"trg\":{\"principalId\":\"5c599304-e05a-43d8-8a50-992a7e395cd7\",\"clientId\":\"895a0f27-8b2d-4117-86ef-445a4b08d29c\"},\"pfzfsinzgvfc\":{\"principalId\":\"538284bc-d318-4f26-ac3c-38862d9526a5\",\"clientId\":\"418dbaf5-7408-4964-a8a1-2e6b1de71ea8\"}}}}")
+            "{\"tags\":{\"vamih\":\"odepoogin\",\"vyevcciqi\":\"ognarxzxtheotus\"},\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"wjzrnfygxgisp\":{\"principalId\":\"3606b755-f5ab-4d34-85d3-8c02873daf8c\",\"clientId\":\"323fc209-0060-4050-b2d1-d0a942a4badc\"},\"tzfkufubl\":{\"principalId\":\"f450f02f-6588-471c-afaa-987e76f45b79\",\"clientId\":\"0abba7ee-d91e-4d0b-9d70-58e63ea89db7\"}}}}")
             .toObject(UpdateSapVirtualInstanceRequest.class);
-        Assertions.assertEquals("odjpslwejd", model.tags().get("vwryoqpso"));
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals("odepoogin", model.tags().get("vamih"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UpdateSapVirtualInstanceRequest model = new UpdateSapVirtualInstanceRequest()
-            .withTags(mapOf("vwryoqpso", "odjpslwejd", "yffdfdos", "cctazakljlahbc"))
-            .withIdentity(new UserAssignedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+            .withTags(mapOf("vamih", "odepoogin", "vyevcciqi", "ognarxzxtheotus"))
+            .withIdentity(new UserAssignedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(
-                    mapOf("jakhmsbzjh", new UserAssignedIdentity(), "evdphlxaol", new UserAssignedIdentity(), "trg",
-                        new UserAssignedIdentity(), "pfzfsinzgvfc", new UserAssignedIdentity())));
+                    mapOf("wjzrnfygxgisp", new UserAssignedIdentity(), "tzfkufubl", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(UpdateSapVirtualInstanceRequest.class);
-        Assertions.assertEquals("odjpslwejd", model.tags().get("vwryoqpso"));
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals("odepoogin", model.tags().get("vamih"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

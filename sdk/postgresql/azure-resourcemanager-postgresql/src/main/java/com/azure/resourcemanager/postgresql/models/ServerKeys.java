@@ -8,49 +8,38 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ServerKeys. */
+/**
+ * Resource collection API of ServerKeys.
+ */
 public interface ServerKeys {
     /**
      * Gets a list of Server keys.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Server keys.
+     * @return a list of Server keys as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ServerKey> list(String resourceGroupName, String serverName);
 
     /**
      * Gets a list of Server keys.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Server keys.
+     * @return a list of Server keys as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ServerKey> list(String resourceGroupName, String serverName, Context context);
 
     /**
      * Gets a PostgreSQL Server key.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param keyName The name of the PostgreSQL Server key to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a PostgreSQL Server key.
-     */
-    ServerKey get(String resourceGroupName, String serverName, String keyName);
-
-    /**
-     * Gets a PostgreSQL Server key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param keyName The name of the PostgreSQL Server key to be retrieved.
@@ -63,8 +52,21 @@ public interface ServerKeys {
     Response<ServerKey> getWithResponse(String resourceGroupName, String serverName, String keyName, Context context);
 
     /**
+     * Gets a PostgreSQL Server key.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param keyName The name of the PostgreSQL Server key to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a PostgreSQL Server key.
+     */
+    ServerKey get(String resourceGroupName, String serverName, String keyName);
+
+    /**
      * Deletes the PostgreSQL Server key with the given name.
-     *
+     * 
      * @param serverName The name of the server.
      * @param keyName The name of the PostgreSQL Server key to be deleted.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -76,7 +78,7 @@ public interface ServerKeys {
 
     /**
      * Deletes the PostgreSQL Server key with the given name.
-     *
+     * 
      * @param serverName The name of the server.
      * @param keyName The name of the PostgreSQL Server key to be deleted.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -89,7 +91,7 @@ public interface ServerKeys {
 
     /**
      * Gets a PostgreSQL Server key.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -100,7 +102,7 @@ public interface ServerKeys {
 
     /**
      * Gets a PostgreSQL Server key.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -112,7 +114,7 @@ public interface ServerKeys {
 
     /**
      * Deletes the PostgreSQL Server key with the given name.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -122,7 +124,7 @@ public interface ServerKeys {
 
     /**
      * Deletes the PostgreSQL Server key with the given name.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -133,7 +135,7 @@ public interface ServerKeys {
 
     /**
      * Begins definition for a new ServerKey resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ServerKey definition.
      */

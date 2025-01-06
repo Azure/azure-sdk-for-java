@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of TenantSettings. */
+/**
+ * Resource collection API of TenantSettings.
+ */
 public interface TenantSettings {
     /**
      * Public settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface TenantSettings {
 
     /**
      * Public settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter Not used.
@@ -39,7 +41,7 @@ public interface TenantSettings {
 
     /**
      * Get tenant settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param settingsType The identifier of the settings.
@@ -54,7 +56,7 @@ public interface TenantSettings {
 
     /**
      * Get tenant settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param settingsType The identifier of the settings.

@@ -27,7 +27,7 @@ public final class AccessConnectorsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"identity\":{\"principalId\":\"28bbe694-bfb2-4ed8-9e26-415f5e6a5f21\",\"tenantId\":\"794121f1-1e63-4979-91e5-2fa8dfa0de2d\",\"type\":\"None\",\"userAssignedIdentities\":{\"healmfmtda\":{\"principalId\":\"8cc5fbdc-bd5c-4570-979b-200af1b6abfa\",\"clientId\":\"580f91d8-ac00-453b-a09c-16185d59e72b\"}}},\"properties\":{\"provisioningState\":\"Succeeded\"},\"location\":\"wvgpiohg\",\"tags\":{\"yqagvrvm\":\"tfudxepx\",\"dblx\":\"pkukghi\",\"fnjhfjxwmszkkfo\":\"wi\"},\"id\":\"rey\",\"name\":\"kzikfjawneaivxwc\",\"type\":\"elpcirelsfeaenwa\"}";
+            = "{\"identity\":{\"principalId\":\"6d4f1e30-df02-4842-874e-2fc64049b994\",\"tenantId\":\"18569f88-2179-477f-818d-8e1465ea306b\",\"type\":\"None\",\"userAssignedIdentities\":{\"healmfmtda\":{\"principalId\":\"045623bd-f6ef-436f-9eff-af57813c5b74\",\"clientId\":\"9039b7f2-d689-4bd8-b853-414cc83ae41a\"}}},\"properties\":{\"provisioningState\":\"Succeeded\"},\"location\":\"wvgpiohg\",\"tags\":{\"yqagvrvm\":\"tfudxepx\",\"dblx\":\"pkukghi\",\"fnjhfjxwmszkkfo\":\"wi\"},\"id\":\"rey\",\"name\":\"kzikfjawneaivxwc\",\"type\":\"elpcirelsfeaenwa\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

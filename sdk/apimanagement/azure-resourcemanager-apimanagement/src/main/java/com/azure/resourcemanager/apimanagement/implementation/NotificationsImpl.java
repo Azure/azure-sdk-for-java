@@ -31,14 +31,14 @@ public final class NotificationsImpl implements Notifications {
     public PagedIterable<NotificationContract> listByService(String resourceGroupName, String serviceName) {
         PagedIterable<NotificationContractInner> inner
             = this.serviceClient().listByService(resourceGroupName, serviceName);
-        return Utils.mapPage(inner, inner1 -> new NotificationContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NotificationContractImpl(inner1, this.manager()));
     }
 
     public PagedIterable<NotificationContract> listByService(String resourceGroupName, String serviceName, Integer top,
         Integer skip, Context context) {
         PagedIterable<NotificationContractInner> inner
             = this.serviceClient().listByService(resourceGroupName, serviceName, top, skip, context);
-        return Utils.mapPage(inner, inner1 -> new NotificationContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NotificationContractImpl(inner1, this.manager()));
     }
 
     public Response<NotificationContract> getWithResponse(String resourceGroupName, String serviceName,
