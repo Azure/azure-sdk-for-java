@@ -29,11 +29,4 @@ public interface DatabaseAccountManagerInternal {
      * @return service endpoint
      */
     URI getServiceEndpoint();
-
-    /**
-     * Gets the thin client endpoint
-     *
-     * @return thin client endpoint
-     */
-    URI getThinclientEndpoint();
 }

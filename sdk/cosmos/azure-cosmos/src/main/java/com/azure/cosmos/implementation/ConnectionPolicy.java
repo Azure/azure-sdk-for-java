@@ -38,7 +38,6 @@ public final class ConnectionPolicy {
     private Duration httpNetworkRequestTimeout;
     private ProxyOptions proxy;
     private Duration idleHttpConnectionTimeout;
-    private boolean isThinclientEnabled;
 
     //  Direct connection config properties
     private Duration connectTimeout;
@@ -93,7 +92,6 @@ public final class ConnectionPolicy {
             .getDirectConnectionConfigAccessor()
             .getIoThreadPriority(directConnectionConfig);
         this.idleHttpConnectionTimeout = gatewayConnectionConfig.getIdleConnectionTimeout();
-        this.isThinclientEnabled = gatewayConnectionConfig.getThinClientEnabled();
         this.maxConnectionPoolSize = gatewayConnectionConfig.getMaxConnectionPoolSize();
         this.httpNetworkRequestTimeout = BridgeInternal.getNetworkRequestTimeoutFromGatewayConnectionConfig(gatewayConnectionConfig);
         this.proxy = gatewayConnectionConfig.getProxy();
@@ -270,13 +268,6 @@ public final class ConnectionPolicy {
         this.idleHttpConnectionTimeout = idleHttpConnectionTimeout;
         return this;
     }
-
-    /**
-     * Gets whether thin client has been enabled for gateway.
-     *
-     * @return true if enabled, false otherwise
-     */
-    public boolean getThinclientEnabled() { return this.isThinclientEnabled; }
 
     /**
      * Gets the idle tcp connection timeout for direct client

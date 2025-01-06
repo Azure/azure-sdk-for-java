@@ -78,33 +78,6 @@ public class ConnectionConfigTest extends TestSuiteBase {
     }
 
     @Test(groups = { "emulator" })
-    public void buildClient_withThinclientGatewayConnectionConfig() {
-        GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
-        gatewayConnectionConfig.setThinClientEnabled(true);
-        final List<String> preferredRegions = new ArrayList<>();
-        preferredRegions.add("West US");
-        CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .preferredRegions(preferredRegions)
-            .userAgentSuffix("custom-gateway-client")
-            .multipleWriteRegionsEnabled(false)
-            .endpointDiscoveryEnabled(false)
-            .readRequestsFallbackEnabled(true)
-            .gatewayMode(gatewayConnectionConfig);
-
-        CosmosClient cosmosClient = cosmosClientBuilder.buildClient();
-
-        AsyncDocumentClient asyncDocumentClient =
-            CosmosBridgeInternal.getAsyncDocumentClient(cosmosClient);
-        ConnectionPolicy connectionPolicy = asyncDocumentClient.getConnectionPolicy();
-        assertThat(connectionPolicy.getConnectionMode()).isEqualTo(ConnectionMode.GATEWAY);
-        assertThat(connectionPolicy.getThinclientEnabled()).isEqualTo(true);
-        validateGatewayConnectionConfig(connectionPolicy, cosmosClientBuilder, gatewayConnectionConfig);
-        safeCloseSyncClient(cosmosClient);
-    }
-
-    @Test(groups = { "emulator" })
     public void buildClient_withDefaultDirectConnectionConfig() {
         DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()

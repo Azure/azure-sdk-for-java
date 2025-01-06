@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import io.netty.handler.ssl.SslContext;
 import org.testng.annotations.Test;
 
+import java.net.URI;
 import java.util.EnumSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -113,5 +114,23 @@ public class ConfigsTests {
 
         sslContext = config.getSslContext(true);
         assertThat(sslContext).isEqualTo(ReflectionUtils.getSslContextWithCertValidationDisabled(config));
+    }
+
+    @Test(groups = { "emulator" })
+    public void thinClientEnabledTest() {
+        Configs config = new Configs();
+        assertThat(config.getThinclientEnabled()).isFalse();
+
+        System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+        assertThat(config.getThinclientEnabled()).isTrue();
+    }
+
+    @Test(groups = { "emulator" })
+    public void thinClientEndpointTest() {
+        Configs config = new Configs();
+        assertThat(config.getThinclientEndpoint()).isEqualTo(URI.create("COSMOS.DEFAULT_THINCLIENT_ENDPOINT"));
+
+        System.setProperty("COSMOS.THINCLIENT_ENDPOINT", "testThinClientEndpoint");
+        assertThat(config.getThinclientEndpoint()).isEqualTo(URI.create("testThinClientEndpoint"));
     }
 }

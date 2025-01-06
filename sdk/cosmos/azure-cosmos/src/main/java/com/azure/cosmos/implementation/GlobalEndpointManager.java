@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.implementation.routing.LocationHelper;
+import com.azure.cosmos.implementation.routing.RegionNameToRegionIdMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -18,7 +19,9 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Function;
@@ -41,7 +44,6 @@ public class GlobalEndpointManager implements AutoCloseable {
     private final AtomicBoolean isRefreshing;
     private final AtomicBoolean refreshInBackground;
     private final Scheduler scheduler = Schedulers.newSingle(theadFactory);
-    private final URI thinclientEndpoint;
     private final boolean isThinClientEnabled;
     private volatile boolean isClosed;
     private AtomicBoolean firstTimeDatabaseAccountInitialization = new AtomicBoolean(true);
@@ -72,8 +74,7 @@ public class GlobalEndpointManager implements AutoCloseable {
 
             this.owner = owner;
             this.defaultEndpoint = owner.getServiceEndpoint();
-            this.thinclientEndpoint = owner.getThinclientEndpoint();
-            this.isThinClientEnabled = connectionPolicy.getThinclientEnabled();
+            this.isThinClientEnabled = configs.getThinclientEnabled();
             this.connectionPolicy = connectionPolicy;
 
             this.isRefreshing = new AtomicBoolean(false);

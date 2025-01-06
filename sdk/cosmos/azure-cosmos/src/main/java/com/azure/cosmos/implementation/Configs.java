@@ -372,7 +372,7 @@ public class Configs {
         return getJVMConfigAsURI(THINCLIENT_ENDPOINT, DEFAULT_THINCLIENT_ENDPOINT);
     }
 
-    public boolean getThinclientEnabled() {
+    public static boolean getThinclientEnabled() {
         return getJVMConfigAsBoolean(THINCLIENT_ENABLED, false);
     }
 

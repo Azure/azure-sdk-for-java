@@ -640,12 +640,6 @@ public class LocationCacheTest {
                 throw new RuntimeException();
             }
         }
-
-        @Override
-        public URI getThinclientEndpoint() {
-            // From env var right now. Mock will be updated when thin client endpoint discovery is finalized
-            return URI.create("testThinclientEndpoint");
-        }
     }
 
     private static <T> Stream<T> toStream(Iterable<T> iterable) {
