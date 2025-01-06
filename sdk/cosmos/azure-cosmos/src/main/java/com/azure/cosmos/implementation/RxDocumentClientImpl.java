@@ -6919,6 +6919,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         int orderedApplicableRegionsCount = orderedApplicableRegionsForSpeculation.size();
 
         List<Mono<NonTransientPointOperationResult>> monoList = new ArrayList<>();
+        List<String> regionsToExcludeFromPpaf = new ArrayList<>();
 
         final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(innerDiagnosticsFactory, false);
 
@@ -6932,6 +6933,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             .doOnError(throwable -> {
                 if (!pointOperationContextForPpafForMainRequest.getOverriddenLocationForPrimaryRequest().isEmpty()) {
                     orderedApplicableRegionsForSpeculation.remove(pointOperationContextForPpafForMainRequest.getOverriddenLocationForPrimaryRequest());
+                    regionsToExcludeFromPpaf.add(pointOperationContextForPpafForMainRequest.getOverriddenLocationForPrimaryRequest());
                 }
             })
             .onErrorResume(
@@ -6963,14 +6965,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                 String region = orderedApplicableRegionsForSpeculation.get(orderedApplicableRegionsIndex.incrementAndGet());
 
-                getEffectiveExcludedRegionsForHedging(
-                    nonNullRequestOptions.getExcludedRegions(),
-                    orderedApplicableRegionsForSpeculation,
-                    region);
+                List<String> baselineExcludedRegions = new ArrayList<>();
+
+                baselineExcludedRegions.addAll(regionsToExcludeFromPpaf);
+                baselineExcludedRegions.addAll(nonNullRequestOptions.getExcludedRegions());
 
                 clonedOptions.setExcludedRegions(
                     getEffectiveExcludedRegionsForHedging(
-                        nonNullRequestOptions.getExcludedRegions(),
+                        baselineExcludedRegions,
                         orderedApplicableRegionsForSpeculation,
                         region)
                 );
@@ -6985,12 +6987,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     PointOperationContextForPerPartitionAutomaticFailover pointOperationContextForPpafForHedgedRequest = new PointOperationContextForPerPartitionAutomaticFailover(true, true);
 
                     return callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory, null, pointOperationContextForPpafForHedgedRequest)
-                        .map(NonTransientPointOperationResult::new)
+                        .map(res -> {
+                            return new NonTransientPointOperationResult(res);
+                        })
                         .onErrorResume(
                             RxDocumentClientImpl::isNonTransientCosmosException,
-                            t -> Mono.just(
-                                new NonTransientPointOperationResult(
-                                    Utils.as(Exceptions.unwrap(t), CosmosException.class))));
+                            t -> {
+                                return Mono.just(
+                                    new NonTransientPointOperationResult(
+                                        Utils.as(Exceptions.unwrap(t), CosmosException.class)));
+                            });
 
                 } else {
                     return Mono.error(throwable);
