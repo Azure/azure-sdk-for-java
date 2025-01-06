@@ -104,9 +104,9 @@ public class Validator {
             return false;
         } else if (telemetryType.equals(TelemetryType.METRIC)) {
             return false;
-        } else {
-            return true;
         }
+        return true;
+
     }
 
     private boolean isNotCustomMetricProjection(String projection) {

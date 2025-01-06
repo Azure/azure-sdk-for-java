@@ -45,7 +45,6 @@ public class DerivedMetricAggregation {
         synchronized (lock) {
             if (count == 0) {
                 return 0.0;
-
             }
             if (aggregationType.equals(AggregationType.AVG)) {
                 return aggregation / count;
