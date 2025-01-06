@@ -10,6 +10,7 @@ import com.azure.identity.extensions.implementation.credential.TokenCredentialPr
 import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -38,23 +39,27 @@ public class CachingTokenCredentialProvider implements TokenCredentialProvider {
 
     @Override
     public TokenCredential get() {
-        return get(defaultOptions);
+        return getOrCreate(CACHE, this.defaultOptions, this.delegate,
+            tokenCredentialProvider -> tokenCredentialProvider.get());
     }
 
     @Override
     public TokenCredential get(TokenCredentialProviderOptions options) {
-        return getOrCreate(CACHE, options, delegate);
+        return getOrCreate(CACHE, options, this.delegate,
+            tokenCredentialProvider -> tokenCredentialProvider.get(options));
     }
 
     private static TokenCredential getOrCreate(Map<String, TokenCredential> cache,
-        TokenCredentialProviderOptions options, TokenCredentialProvider tokenCredentialProvider) {
+                                               TokenCredentialProviderOptions options,
+                                               TokenCredentialProvider delegate,
+                                               Function<TokenCredentialProvider, TokenCredential> fn) {
         String tokenCredentialCacheKey = convertToTokenCredentialCacheKey(options);
 
         if (cache.containsKey(tokenCredentialCacheKey)) {
             LOGGER.verbose("Retrieving token credential from cache.");
         } else {
             LOGGER.verbose("Caching token credential.");
-            cache.put(tokenCredentialCacheKey, tokenCredentialProvider.get());
+            cache.put(tokenCredentialCacheKey, fn.apply(delegate));
         }
 
         return cache.get(tokenCredentialCacheKey);
