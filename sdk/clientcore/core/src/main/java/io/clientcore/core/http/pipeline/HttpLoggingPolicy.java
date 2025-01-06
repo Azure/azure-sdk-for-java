@@ -18,6 +18,8 @@ import io.clientcore.core.util.binarydata.BinaryData;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -32,7 +34,7 @@ import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
  */
 public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private static final HttpLogOptions DEFAULT_HTTP_LOG_OPTIONS = new HttpLogOptions();
-    private static final Set<HttpHeaderName> ALWAYS_ALLOWED_HEADERS = Set.of(TRACEPARENT);
+    private static final List<HttpHeaderName> ALWAYS_ALLOWED_HEADERS = Collections.singletonList(TRACEPARENT);
     private static final int MAX_BODY_LOG_SIZE = 1024 * 16;
     private static final String REDACTED_PLACEHOLDER = "REDACTED";
     private static final ClientLogger LOGGER = new ClientLogger(HttpLoggingPolicy.class);
