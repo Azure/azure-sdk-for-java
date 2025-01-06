@@ -132,9 +132,9 @@ class AzureAuthenticationTemplateTest {
         });
         // mock
         try (MockedConstruction<DefaultTokenCredentialProvider> defaultCredentialProviderMock
-                 = mockConstruction(DefaultTokenCredentialProvider.class, (defaultTokenCredentialProvider, context) -> {
-            when(defaultTokenCredentialProvider.get()).thenReturn(mockTokenCredential);
-        })) {
+            = mockConstruction(DefaultTokenCredentialProvider.class, (defaultTokenCredentialProvider, context) -> {
+                when(defaultTokenCredentialProvider.get()).thenReturn(mockTokenCredential);
+            })) {
             Properties properties = new Properties();
             properties.setProperty("azure.tokenCredentialCacheEnabled", "false");
 
