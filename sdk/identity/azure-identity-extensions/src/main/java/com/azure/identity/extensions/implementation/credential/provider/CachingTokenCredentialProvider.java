@@ -50,9 +50,8 @@ public class CachingTokenCredentialProvider implements TokenCredentialProvider {
     }
 
     private static TokenCredential getOrCreate(Map<String, TokenCredential> cache,
-                                               TokenCredentialProviderOptions options,
-                                               TokenCredentialProvider delegate,
-                                               Function<TokenCredentialProvider, TokenCredential> fn) {
+        TokenCredentialProviderOptions options, TokenCredentialProvider delegate,
+        Function<TokenCredentialProvider, TokenCredential> fn) {
         String tokenCredentialCacheKey = convertToTokenCredentialCacheKey(options);
 
         if (cache.containsKey(tokenCredentialCacheKey)) {
