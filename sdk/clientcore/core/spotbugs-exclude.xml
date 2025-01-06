@@ -245,7 +245,7 @@
     <Bug pattern="OS_OPEN_STREAM" />
     <Or>
       <Class name="io.clientcore.core.serialization.json.implementation.StringBuilderWriterTests" />
-      <Class name="io.clientcore.core.http.pipeline.HttpInstrumentationPolicyLoggingTests" />
+      <Class name="io.clientcore.core.http.pipeline.HttpInstrumentationLoggingTests" />
     </Or>
   </Match>
   <Match>

@@ -160,7 +160,7 @@ public final class AttributeKeys {
     public static final String RETRY_DELAY_KEY = "retry.delay";
 
     /**
-     * Key representing whether the retry just performed was the last attempt.
+     * Key representing whether the retry jor redirect ust performed was the last attempt.
      */
     public static final String RETRY_WAS_LAST_ATTEMPT_KEY = "retry.was_last_attempt";
 

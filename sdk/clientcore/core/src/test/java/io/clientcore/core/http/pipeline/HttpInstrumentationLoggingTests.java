@@ -53,7 +53,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Execution(ExecutionMode.SAME_THREAD)
-public class HttpInstrumentationPolicyLoggingTests {
+public class HttpInstrumentationLoggingTests {
     private static final String URI = "https://example.com?param=value&api-version=42";
     private static final String REDACTED_URI = "https://example.com?param=REDACTED&api-version=42";
     private static final Set<String> DEFAULT_ALLOWED_QUERY_PARAMS = new HttpLogOptions().getAllowedQueryParamNames();
@@ -63,7 +63,7 @@ public class HttpInstrumentationPolicyLoggingTests {
 
     private final AccessibleByteArrayOutputStream logCaptureStream;
 
-    public HttpInstrumentationPolicyLoggingTests() {
+    public HttpInstrumentationLoggingTests() {
         this.logCaptureStream = new AccessibleByteArrayOutputStream();
     }
 
@@ -512,7 +512,7 @@ public class HttpInstrumentationPolicyLoggingTests {
         assertRequestLog(logMessages.get(0), REDACTED_URI, request, firstTryContext.get(), 0);
         assertExceptionLog(logMessages.get(1), REDACTED_URI, request, expectedException, firstTryContext.get(), 0);
 
-        assertRetryLog(logMessages.get(2), 0, 3, parentContext, true);
+        assertRetryLog(logMessages.get(2), 0, 3, true, parentContext);
 
         assertRequestLog(logMessages.get(3), REDACTED_URI, request, null, 1);
         assertResponseLog(logMessages.get(4), REDACTED_URI, response, 1);
@@ -547,7 +547,7 @@ public class HttpInstrumentationPolicyLoggingTests {
         List<Map<String, Object>> logMessages = parseLogMessages(logCaptureStream);
         assertEquals(5, logMessages.size());
         assertResponseLog(logMessages.get(1), REDACTED_URI, 0, 500, firstTryContext.get());
-        assertRetryLog(logMessages.get(2), 0, 3, parentContext, true);
+        assertRetryLog(logMessages.get(2), 0, 3, true, parentContext);
         assertResponseLog(logMessages.get(4), REDACTED_URI, response, 1);
     }
 
@@ -580,14 +580,125 @@ public class HttpInstrumentationPolicyLoggingTests {
 
         if (expectRetryingLogs) {
             for (int i = 0; i < maxRetries; i++) {
-                assertRetryLog(logMessages.get(i), i, 3, parentContext, true);
+                assertRetryLog(logMessages.get(i), i, 3, true, parentContext);
             }
         }
 
         if (expectExhaustedLog) {
             Map<String, Object> lastLog = logMessages.get(logMessages.size() - 1);
-            assertRetryLog(lastLog, 3, 3, parentContext, false);
+            assertRetryLog(lastLog, 3, 3, false, parentContext);
         }
+    }
+
+    @Test
+    public void tracingWithRedirects() throws IOException {
+        AtomicInteger count = new AtomicInteger(0);
+        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
+        HttpLogOptions options = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.BASIC);
+
+        AtomicReference<InstrumentationContext> firstRedirectContext = new AtomicReference<>();
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new HttpRedirectPolicy(), new HttpInstrumentationPolicy(DEFAULT_INSTRUMENTATION_OPTIONS, options))
+            .httpClient(request -> {
+                if (count.getAndIncrement() == 0) {
+                    firstRedirectContext.set(request.getRequestOptions().getInstrumentationContext());
+                    HttpHeaders httpHeaders = new HttpHeaders().set(HttpHeaderName.LOCATION,
+                        "http://redirecthost/" + count.get() + "?param=value&api-version=42");
+                    return new MockHttpResponse(request, 302, httpHeaders);
+                } else {
+                    return new MockHttpResponse(request, 200);
+                }
+            })
+            .build();
+
+        InstrumentationContext parentContext = createRandomInstrumentationContext();
+        HttpRequest request = createRequest(HttpMethod.GET, URI, logger, parentContext);
+        Response<?> response = pipeline.send(request);
+        response.close();
+        assertEquals(2, count.get());
+
+        List<Map<String, Object>> logMessages = parseLogMessages(logCaptureStream);
+
+        assertEquals(5, logMessages.size());
+        assertResponseLog(logMessages.get(1), REDACTED_URI, 0, 302, firstRedirectContext.get());
+
+        assertRedirectLog(logMessages.get(2), 0, 3, true, "http://redirecthost/1?param=REDACTED&api-version=REDACTED",
+            HttpMethod.GET, "", parentContext);
+        assertResponseLog(logMessages.get(4), "http://redirecthost/1?param=REDACTED&api-version=42", response, 0);
+    }
+
+    @Test
+    public void redirectLoggingMethodNotSupported() throws IOException {
+        AtomicInteger count = new AtomicInteger(0);
+        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new HttpRedirectPolicy()).httpClient(request -> {
+            count.getAndIncrement();
+            HttpHeaders httpHeaders = new HttpHeaders().set(HttpHeaderName.LOCATION, "http://redirecthost/");
+            return new MockHttpResponse(request, 302, httpHeaders);
+        }).build();
+
+        InstrumentationContext parentContext = createRandomInstrumentationContext();
+        HttpRequest request = createRequest(HttpMethod.PUT, URI, logger, parentContext);
+        Response<?> response = pipeline.send(request);
+        response.close();
+        assertEquals(1, count.get());
+
+        List<Map<String, Object>> logMessages = parseLogMessages(logCaptureStream);
+
+        assertEquals(1, logMessages.size());
+        assertRedirectLog(logMessages.get(0), 0, 3, false, "http://redirecthost/", HttpMethod.PUT,
+            "Request redirection is not enabled for this HTTP method.", parentContext);
+    }
+
+    @Test
+    public void redirectToTheSameUri() throws IOException {
+        AtomicInteger count = new AtomicInteger(0);
+        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new HttpRedirectPolicy()).httpClient(request -> {
+            count.getAndIncrement();
+            HttpHeaders httpHeaders = new HttpHeaders().set(HttpHeaderName.LOCATION, "http://redirecthost/");
+            return new MockHttpResponse(request, 302, httpHeaders);
+        }).build();
+
+        InstrumentationContext parentContext = createRandomInstrumentationContext();
+        HttpRequest request = createRequest(HttpMethod.GET, URI, logger, parentContext);
+        Response<?> response = pipeline.send(request);
+        response.close();
+        assertEquals(2, count.get());
+
+        List<Map<String, Object>> logMessages = parseLogMessages(logCaptureStream);
+
+        assertEquals(2, logMessages.size());
+        assertRedirectLog(logMessages.get(0), 0, 3, true, "http://redirecthost/", HttpMethod.GET, "", parentContext);
+        assertRedirectLog(logMessages.get(1), 1, 3, false, "http://redirecthost/", HttpMethod.GET,
+            "Request was redirected more than once to the same URI.", parentContext);
+    }
+
+    @Test
+    public void redirectAttemptsExhausted() throws IOException {
+        AtomicInteger count = new AtomicInteger(0);
+        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new HttpRedirectPolicy()).httpClient(request -> {
+            count.getAndIncrement();
+            HttpHeaders httpHeaders
+                = new HttpHeaders().set(HttpHeaderName.LOCATION, "http://redirecthost/" + count.get());
+            return new MockHttpResponse(request, 302, httpHeaders);
+        }).build();
+
+        InstrumentationContext parentContext = createRandomInstrumentationContext();
+        HttpRequest request = createRequest(HttpMethod.GET, URI, logger, parentContext);
+        Response<?> response = pipeline.send(request);
+        response.close();
+        assertEquals(3, count.get());
+
+        List<Map<String, Object>> logMessages = parseLogMessages(logCaptureStream);
+
+        assertEquals(3, logMessages.size());
+        assertRedirectLog(logMessages.get(0), 0, 3, true, "http://redirecthost/1", HttpMethod.GET, "", parentContext);
+        assertRedirectLog(logMessages.get(1), 1, 3, true, "http://redirecthost/2", HttpMethod.GET, "", parentContext);
+        assertRedirectLog(logMessages.get(2), 2, 3, false, "http://redirecthost/3", HttpMethod.GET,
+            "Redirect attempts have been exhausted.", parentContext);
     }
 
     public static Stream<Arguments> logLevels() {
@@ -686,8 +797,8 @@ public class HttpInstrumentationPolicyLoggingTests {
         assertTraceContext(log, context);
     }
 
-    private void assertRetryLog(Map<String, Object> log, int tryCount, int maxAttempts, InstrumentationContext context,
-        boolean isRetrying) {
+    private void assertRetryLog(Map<String, Object> log, int tryCount, int maxAttempts, boolean isRetrying,
+        InstrumentationContext context) {
         assertEquals("http.retry", log.get("event.name"));
         assertEquals(tryCount, (int) log.get("http.request.resend_count"));
         if (isRetrying) {
@@ -699,6 +810,22 @@ public class HttpInstrumentationPolicyLoggingTests {
         }
         assertEquals(maxAttempts, log.get("retry.max_attempt_count"));
         assertEquals("", log.get("message"));
+        assertTraceContext(log, context);
+    }
+
+    private void assertRedirectLog(Map<String, Object> log, int tryCount, int maxAttempts, boolean shouldRedirect,
+        String redirectUri, HttpMethod method, String message, InstrumentationContext context) {
+        assertEquals("http.redirect", log.get("event.name"));
+        assertEquals(tryCount, (int) log.get("http.request.resend_count"));
+        assertEquals(method.toString(), log.get("http.request.method"));
+        assertEquals(redirectUri, log.get("http.response.header.location"));
+        if (shouldRedirect) {
+            assertFalse((boolean) log.get("retry.was_last_attempt"));
+        } else {
+            assertTrue((boolean) log.get("retry.was_last_attempt"));
+        }
+        assertEquals(maxAttempts, log.get("retry.max_attempt_count"));
+        assertEquals(message, log.get("message"));
         assertTraceContext(log, context);
     }
 
