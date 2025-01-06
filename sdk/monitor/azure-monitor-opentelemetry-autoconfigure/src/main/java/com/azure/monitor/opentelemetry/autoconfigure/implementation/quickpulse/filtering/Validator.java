@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering;
 
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.PredicateType;
@@ -30,6 +32,7 @@ public class Validator {
         asList(PredicateType.CONTAINS, PredicateType.DOES_NOT_CONTAIN, PredicateType.EQUAL, PredicateType.NOT_EQUAL));
 
     // TODO (harskaur): In ErrorTracker PR, track a list of configuration validation errors here
+    private final List<CollectionConfigurationError> errors = new ArrayList<>();
 
     public boolean isValidDerivedMetricInfo(DerivedMetricInfo derivedMetricInfo) {
         TelemetryType telemetryType = TelemetryType.fromString(derivedMetricInfo.getTelemetryType());
@@ -94,6 +97,7 @@ public class Validator {
         error.setData(data);
 
         // TODO (harskaur): For ErrorTracker PR, add this error to list of tracked errors
+        errors.add(error);
     }
 
     private boolean isValidTelemetryType(TelemetryType telemetryType) {

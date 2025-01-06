@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filteringTest;
 
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.DerivedMetricProjections;
@@ -8,13 +10,11 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.s
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -148,7 +148,8 @@ class ValidatorTests {
     }
 
     private static List<TelemetryType> validTelemetryTypes() {
-        return Arrays.asList(TelemetryType.DEPENDENCY, TelemetryType.EXCEPTION, TelemetryType.REQUEST, TelemetryType.TRACE);
+        return Arrays.asList(TelemetryType.DEPENDENCY, TelemetryType.EXCEPTION, TelemetryType.REQUEST,
+            TelemetryType.TRACE);
     }
 
     private static List<FilterInfo> invalidFilters() {
