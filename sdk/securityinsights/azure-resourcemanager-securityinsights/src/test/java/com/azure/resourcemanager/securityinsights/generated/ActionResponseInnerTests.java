@@ -12,20 +12,21 @@ public final class ActionResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ActionResponseInner model = BinaryData.fromString(
-            "{\"properties\":{\"workflowId\":\"vukxgau\",\"logicAppResourceId\":\"ccsnhsjc\"},\"etag\":\"ejhkry\",\"id\":\"napczwlokjy\",\"name\":\"mkkvnip\",\"type\":\"oxzjnchgejspod\"}")
+            "{\"etag\":\"nhsjcnyej\",\"properties\":{\"workflowId\":\"yhtnapczwlokjye\",\"logicAppResourceId\":\"kkvnipjox\"},\"id\":\"nchgej\",\"name\":\"podmailzydehojwy\",\"type\":\"huxinpmqnj\"}")
             .toObject(ActionResponseInner.class);
-        Assertions.assertEquals("ejhkry", model.etag());
-        Assertions.assertEquals("vukxgau", model.workflowId());
-        Assertions.assertEquals("ccsnhsjc", model.logicAppResourceId());
+        Assertions.assertEquals("nhsjcnyej", model.etag());
+        Assertions.assertEquals("yhtnapczwlokjye", model.workflowId());
+        Assertions.assertEquals("kkvnipjox", model.logicAppResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ActionResponseInner model
-            = new ActionResponseInner().withEtag("ejhkry").withWorkflowId("vukxgau").withLogicAppResourceId("ccsnhsjc");
+        ActionResponseInner model = new ActionResponseInner().withEtag("nhsjcnyej")
+            .withWorkflowId("yhtnapczwlokjye")
+            .withLogicAppResourceId("kkvnipjox");
         model = BinaryData.fromObject(model).toObject(ActionResponseInner.class);
-        Assertions.assertEquals("ejhkry", model.etag());
-        Assertions.assertEquals("vukxgau", model.workflowId());
-        Assertions.assertEquals("ccsnhsjc", model.logicAppResourceId());
+        Assertions.assertEquals("nhsjcnyej", model.etag());
+        Assertions.assertEquals("yhtnapczwlokjye", model.workflowId());
+        Assertions.assertEquals("kkvnipjox", model.logicAppResourceId());
     }
 }

@@ -10,8 +10,9 @@ import com.azure.resourcemanager.streamanalytics.fluent.models.SubscriptionQuota
 public final class SubscriptionQuotaPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SubscriptionQuotaProperties model = BinaryData.fromString("{\"maxCount\":97546857,\"currentCount\":1709538743}")
-            .toObject(SubscriptionQuotaProperties.class);
+        SubscriptionQuotaProperties model
+            = BinaryData.fromString("{\"maxCount\":624432997,\"currentCount\":1222672575}")
+                .toObject(SubscriptionQuotaProperties.class);
     }
 
     @org.junit.jupiter.api.Test

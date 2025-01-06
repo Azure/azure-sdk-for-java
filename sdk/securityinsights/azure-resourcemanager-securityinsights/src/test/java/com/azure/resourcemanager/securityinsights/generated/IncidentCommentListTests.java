@@ -14,21 +14,21 @@ public final class IncidentCommentListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IncidentCommentList model = BinaryData.fromString(
-            "{\"nextLink\":\"fuojrngif\",\"value\":[{\"properties\":{\"createdTimeUtc\":\"2021-02-15T12:01:43Z\",\"lastModifiedTimeUtc\":\"2021-10-23T00:15:22Z\",\"message\":\"cb\",\"author\":{\"email\":\"mzdlyjdfqwmkyo\",\"name\":\"fdvruz\",\"objectId\":\"9c890cd0-44e1-4ee9-a8e2-45f03d43397a\",\"userPrincipalName\":\"ojhp\"}},\"etag\":\"fnmdxotn\",\"id\":\"dgug\",\"name\":\"yzihgrkyuizabsn\",\"type\":\"fpphoj\"},{\"properties\":{\"createdTimeUtc\":\"2021-07-29T08:42:03Z\",\"lastModifiedTimeUtc\":\"2021-01-01T12:47:11Z\",\"message\":\"hsgz\",\"author\":{\"email\":\"bgomfgbegl\",\"name\":\"leohibetnluankr\",\"objectId\":\"56d6b6ec-4364-4de5-8197-bb5a489fc4c6\",\"userPrincipalName\":\"eeebtijvacv\"}},\"etag\":\"qzbqqxlajrnwxa\",\"id\":\"veh\",\"name\":\"kuyxoafg\",\"type\":\"oqltfae\"},{\"properties\":{\"createdTimeUtc\":\"2021-06-17T22:49:46Z\",\"lastModifiedTimeUtc\":\"2021-10-05T07:22:28Z\",\"message\":\"gv\",\"author\":{\"email\":\"pghriypoqeyhl\",\"name\":\"ykprlpyznu\",\"objectId\":\"9b88d113-037c-4a93-96c6-dfaf619ed084\",\"userPrincipalName\":\"dsmexiitdfux\"}},\"etag\":\"asiibmiybnnust\",\"id\":\"ljhnmgixhcmav\",\"name\":\"qfoudorhcgyy\",\"type\":\"rotwypundmbxhugc\"},{\"properties\":{\"createdTimeUtc\":\"2021-10-22T10:15:32Z\",\"lastModifiedTimeUtc\":\"2021-05-28T01:58:35Z\",\"message\":\"gorbmftpm\",\"author\":{\"email\":\"fjltfvnzcyjtotp\",\"name\":\"pvpbdbzqgqqiheds\",\"objectId\":\"0b03f975-6a6b-4378-b902-424ea50afa91\",\"userPrincipalName\":\"thmkyib\"}},\"etag\":\"sihsgqcwdhohsd\",\"id\":\"cdzsu\",\"name\":\"cohdx\",\"type\":\"zlmcmuapcvhdb\"}]}")
+            "{\"nextLink\":\"uwhhmhykojoxafn\",\"value\":[{\"properties\":{\"createdTimeUtc\":\"2021-05-25T15:58:59Z\",\"lastModifiedTimeUtc\":\"2021-08-06T21:47:38Z\",\"message\":\"koymkcd\",\"author\":{\"email\":\"pkkpw\",\"name\":\"eqnovvqfovl\",\"objectId\":\"7db8bd37-c439-4a18-bced-10302abe1c35\",\"userPrincipalName\":\"wsuwsyr\"}},\"etag\":\"dsytgadgvr\",\"id\":\"aeneqnzarrwl\",\"name\":\"uu\",\"type\":\"jfqka\"},{\"properties\":{\"createdTimeUtc\":\"2021-05-07T16:01:38Z\",\"lastModifiedTimeUtc\":\"2021-07-18T18:26:22Z\",\"message\":\"fpubjibwwi\",\"author\":{\"email\":\"hqkvpuvksgplsak\",\"name\":\"n\",\"objectId\":\"a31a605e-c79b-4da1-b622-ce27a6acdd74\",\"userPrincipalName\":\"n\"}},\"etag\":\"ph\",\"id\":\"pxodlqiyntorzih\",\"name\":\"eosjswsr\",\"type\":\"slyzrpzbchckqq\"},{\"properties\":{\"createdTimeUtc\":\"2021-07-29T22:35:12Z\",\"lastModifiedTimeUtc\":\"2021-05-24T05:08:39Z\",\"message\":\"ysuiizynkedya\",\"author\":{\"email\":\"yhqmibzyhwi\",\"name\":\"mypyynpcdpu\",\"objectId\":\"2c168ef5-4595-41a6-8103-489a2cd8c1fd\",\"userPrincipalName\":\"g\"}},\"etag\":\"z\",\"id\":\"abikns\",\"name\":\"rgjhxb\",\"type\":\"dtlwwrlkd\"},{\"properties\":{\"createdTimeUtc\":\"2021-10-25T17:02:07Z\",\"lastModifiedTimeUtc\":\"2021-05-19T09:18:43Z\",\"message\":\"kotl\",\"author\":{\"email\":\"yhgsy\",\"name\":\"ogjltdtbnnhad\",\"objectId\":\"0f967ea4-5e96-433e-8a36-37e163fc0c6b\",\"userPrincipalName\":\"rkvcikhnvpa\"}},\"etag\":\"gxqquezik\",\"id\":\"ggxkallatmelwuip\",\"name\":\"ccjzkzivgvv\",\"type\":\"nayrhyrnxxmueedn\"}]}")
             .toObject(IncidentCommentList.class);
-        Assertions.assertEquals("fnmdxotn", model.value().get(0).etag());
-        Assertions.assertEquals("cb", model.value().get(0).message());
+        Assertions.assertEquals("dsytgadgvr", model.value().get(0).etag());
+        Assertions.assertEquals("koymkcd", model.value().get(0).message());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IncidentCommentList model = new IncidentCommentList()
-            .withValue(Arrays.asList(new IncidentCommentInner().withEtag("fnmdxotn").withMessage("cb"),
-                new IncidentCommentInner().withEtag("qzbqqxlajrnwxa").withMessage("hsgz"),
-                new IncidentCommentInner().withEtag("asiibmiybnnust").withMessage("gv"),
-                new IncidentCommentInner().withEtag("sihsgqcwdhohsd").withMessage("gorbmftpm")));
+            .withValue(Arrays.asList(new IncidentCommentInner().withEtag("dsytgadgvr").withMessage("koymkcd"),
+                new IncidentCommentInner().withEtag("ph").withMessage("fpubjibwwi"),
+                new IncidentCommentInner().withEtag("z").withMessage("ysuiizynkedya"),
+                new IncidentCommentInner().withEtag("gxqquezik").withMessage("kotl")));
         model = BinaryData.fromObject(model).toObject(IncidentCommentList.class);
-        Assertions.assertEquals("fnmdxotn", model.value().get(0).etag());
-        Assertions.assertEquals("cb", model.value().get(0).message());
+        Assertions.assertEquals("dsytgadgvr", model.value().get(0).etag());
+        Assertions.assertEquals("koymkcd", model.value().get(0).message());
     }
 }

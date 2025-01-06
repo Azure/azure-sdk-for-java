@@ -9,7 +9,6 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.securityinsights.fluent.models.EntityInner;
 import com.azure.resourcemanager.securityinsights.fluent.models.HostEntityProperties;
 import java.io.IOException;
 import java.util.Map;
@@ -18,11 +17,11 @@ import java.util.Map;
  * Represents a host entity.
  */
 @Fluent
-public final class HostEntity extends EntityInner {
+public final class HostEntity extends Entity {
     /*
      * The kind of the entity.
      */
-    private EntityKind kind = EntityKind.HOST;
+    private EntityKindEnum kind = EntityKindEnum.HOST;
 
     /*
      * Host entity properties
@@ -61,7 +60,7 @@ public final class HostEntity extends EntityInner {
      * @return the kind value.
      */
     @Override
-    public EntityKind kind() {
+    public EntityKindEnum kind() {
         return this.kind;
     }
 
@@ -279,7 +278,7 @@ public final class HostEntity extends EntityInner {
                 } else if ("systemData".equals(fieldName)) {
                     deserializedHostEntity.systemData = SystemData.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
-                    deserializedHostEntity.kind = EntityKind.fromString(reader.getString());
+                    deserializedHostEntity.kind = EntityKindEnum.fromString(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedHostEntity.innerProperties = HostEntityProperties.fromJson(reader);
                 } else {

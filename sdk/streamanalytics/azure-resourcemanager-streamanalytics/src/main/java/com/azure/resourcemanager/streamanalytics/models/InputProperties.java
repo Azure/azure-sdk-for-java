@@ -50,11 +50,6 @@ public class InputProperties implements JsonSerializable<InputProperties> {
      */
     private String partitionKey;
 
-    /*
-     * Settings which determine whether to read watermark events.
-     */
-    private InputWatermarkProperties watermarkSettings;
-
     /**
      * Creates an instance of InputProperties class.
      */
@@ -182,26 +177,6 @@ public class InputProperties implements JsonSerializable<InputProperties> {
     }
 
     /**
-     * Get the watermarkSettings property: Settings which determine whether to read watermark events.
-     * 
-     * @return the watermarkSettings value.
-     */
-    public InputWatermarkProperties watermarkSettings() {
-        return this.watermarkSettings;
-    }
-
-    /**
-     * Set the watermarkSettings property: Settings which determine whether to read watermark events.
-     * 
-     * @param watermarkSettings the watermarkSettings value to set.
-     * @return the InputProperties object itself.
-     */
-    public InputProperties withWatermarkSettings(InputWatermarkProperties watermarkSettings) {
-        this.watermarkSettings = watermarkSettings;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -216,9 +191,6 @@ public class InputProperties implements JsonSerializable<InputProperties> {
         if (compression() != null) {
             compression().validate();
         }
-        if (watermarkSettings() != null) {
-            watermarkSettings().validate();
-        }
     }
 
     /**
@@ -231,7 +203,6 @@ public class InputProperties implements JsonSerializable<InputProperties> {
         jsonWriter.writeJsonField("serialization", this.serialization);
         jsonWriter.writeJsonField("compression", this.compression);
         jsonWriter.writeStringField("partitionKey", this.partitionKey);
-        jsonWriter.writeJsonField("watermarkSettings", this.watermarkSettings);
         return jsonWriter.writeEndObject();
     }
 
@@ -289,8 +260,6 @@ public class InputProperties implements JsonSerializable<InputProperties> {
                     deserializedInputProperties.compression = Compression.fromJson(reader);
                 } else if ("partitionKey".equals(fieldName)) {
                     deserializedInputProperties.partitionKey = reader.getString();
-                } else if ("watermarkSettings".equals(fieldName)) {
-                    deserializedInputProperties.watermarkSettings = InputWatermarkProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

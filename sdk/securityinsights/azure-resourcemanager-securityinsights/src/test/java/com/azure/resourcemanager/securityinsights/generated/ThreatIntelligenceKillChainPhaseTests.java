@@ -12,18 +12,18 @@ public final class ThreatIntelligenceKillChainPhaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ThreatIntelligenceKillChainPhase model
-            = BinaryData.fromString("{\"killChainName\":\"gh\",\"phaseName\":\"oqqtl\"}")
+            = BinaryData.fromString("{\"killChainName\":\"rfdwoyu\",\"phaseName\":\"ziuiefozbhdm\"}")
                 .toObject(ThreatIntelligenceKillChainPhase.class);
-        Assertions.assertEquals("gh", model.killChainName());
-        Assertions.assertEquals("oqqtl", model.phaseName());
+        Assertions.assertEquals("rfdwoyu", model.killChainName());
+        Assertions.assertEquals("ziuiefozbhdm", model.phaseName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ThreatIntelligenceKillChainPhase model
-            = new ThreatIntelligenceKillChainPhase().withKillChainName("gh").withPhaseName("oqqtl");
+            = new ThreatIntelligenceKillChainPhase().withKillChainName("rfdwoyu").withPhaseName("ziuiefozbhdm");
         model = BinaryData.fromObject(model).toObject(ThreatIntelligenceKillChainPhase.class);
-        Assertions.assertEquals("gh", model.killChainName());
-        Assertions.assertEquals("oqqtl", model.phaseName());
+        Assertions.assertEquals("rfdwoyu", model.killChainName());
+        Assertions.assertEquals("ziuiefozbhdm", model.phaseName());
     }
 }

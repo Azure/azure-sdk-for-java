@@ -11,7 +11,7 @@ public final class SecurityAlertPropertiesConfidenceReasonsItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecurityAlertPropertiesConfidenceReasonsItem model
-            = BinaryData.fromString("{\"reason\":\"wnhhtqlgehgppip\",\"reasonType\":\"hpfeoajvgcxtxjc\"}")
+            = BinaryData.fromString("{\"reason\":\"cwzzhxgktr\",\"reasonType\":\"ucnapkteoellwp\"}")
                 .toObject(SecurityAlertPropertiesConfidenceReasonsItem.class);
     }
 

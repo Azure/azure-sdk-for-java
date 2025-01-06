@@ -22,7 +22,7 @@ public final class ActionsListByAlertRuleMockTests {
     @Test
     public void testListByAlertRule() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"workflowId\":\"ebxxopyic\",\"logicAppResourceId\":\"vspeslhwyykgvr\"},\"etag\":\"pumdd\",\"id\":\"ajk\",\"name\":\"dyd\",\"type\":\"tpfcudvafnbfbqv\"}]}";
+            = "{\"value\":[{\"etag\":\"sksrfhfvolmknbn\",\"properties\":{\"workflowId\":\"dommpvfqawzfg\",\"logicAppResourceId\":\"rttuiaclkiexha\"},\"id\":\"fnth\",\"name\":\"qfyuttd\",\"type\":\"ygbpvnwswmt\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class ActionsListByAlertRuleMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ActionResponse> response
-            = manager.actions().listByAlertRule("ka", "bpyhssrlvkpkp", "ocm", com.azure.core.util.Context.NONE);
+        PagedIterable<ActionResponse> response = manager.actions()
+            .listByAlertRule("wvqsgny", "uuzivensrpmeyyvp", "patlbijp", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pumdd", response.iterator().next().etag());
-        Assertions.assertEquals("ebxxopyic", response.iterator().next().workflowId());
-        Assertions.assertEquals("vspeslhwyykgvr", response.iterator().next().logicAppResourceId());
+        Assertions.assertEquals("sksrfhfvolmknbn", response.iterator().next().etag());
+        Assertions.assertEquals("dommpvfqawzfg", response.iterator().next().workflowId());
+        Assertions.assertEquals("rttuiaclkiexha", response.iterator().next().logicAppResourceId());
     }
 }
