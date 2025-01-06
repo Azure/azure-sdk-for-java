@@ -6,23 +6,23 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.QuotaUsage;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.Origin;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerBackup;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class QuotaUsagesListMockTests {
+public final class BackupsCreateMockTests {
     @Test
-    public void testList() throws Exception {
+    public void testCreate() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":{\"value\":\"iqxf\",\"localizedValue\":\"j\"},\"limit\":3974939603346143154,\"unit\":\"kpqhjpenuygbq\",\"currentValue\":3439448263345992300,\"id\":\"ewvnqvcdlgu\"}]}";
+            = "{\"properties\":{\"backupType\":\"Customer On-Demand\",\"completedTime\":\"2021-09-10T03:49:52Z\",\"source\":\"cv\"},\"id\":\"uwrbehwagoh\",\"name\":\"uffkmrqemvvh\",\"type\":\"xtdr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +31,11 @@ public final class QuotaUsagesListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<QuotaUsage> response = manager.quotaUsages().list("haru", com.azure.core.util.Context.NONE);
+        ServerBackup response
+            = manager.backups().create("yvnqqybaryeuay", "kq", "bqgzslesjcbhern", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("iqxf", response.iterator().next().name().value());
-        Assertions.assertEquals("j", response.iterator().next().name().localizedValue());
-        Assertions.assertEquals(3974939603346143154L, response.iterator().next().limit());
-        Assertions.assertEquals("kpqhjpenuygbq", response.iterator().next().unit());
-        Assertions.assertEquals(3439448263345992300L, response.iterator().next().currentValue());
-        Assertions.assertEquals("ewvnqvcdlgu", response.iterator().next().id());
+        Assertions.assertEquals(Origin.CUSTOMER_ON_DEMAND, response.backupType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-10T03:49:52Z"), response.completedTime());
+        Assertions.assertEquals("cv", response.source());
     }
 }
