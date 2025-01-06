@@ -37,6 +37,13 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
 
     private static final Logger logger = LoggerFactory.getLogger(RntbdClientChannelHealthChecker.class);
 
+    // We need to keep a reference to client telemetry to reference the VM ID of the SDK
+    // client instance. We have this property in client diagnostics, but it can only be
+    // obtained if an operation fails or succeeds. If an operation hangs, the diagnostics
+    // will not be available. Floating this value to the health check logs will give us access
+    // to the client VM ID in scenarios where the operation hangs.
+    private static ClientTelemetry clientTelemetry;
+
     // A channel will be declared healthy if a read succeeded recently as defined by this value.
     private static final long recentReadWindowInNanos = 1_000_000_000L;
 
@@ -79,13 +86,6 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
     private final long nonRespondingChannelReadDelayTimeLimitInNanos;
     @JsonProperty
     private final int cancellationCountSinceLastReadThreshold;
-    // VM ID of the SDK client instance.
-    // We have this property in client diagnostics, but they can only be obtained if
-    // an operation fails or succeeds. If an operation hangs, the diagnostics will not
-    // be available. Floating this value to the health check logs will give us access to
-    // the client VM ID in scenarios where the operation hangs.
-    @JsonProperty
-    private final String clientVmId;
 
     // endregion
 
@@ -115,7 +115,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         this.timeoutOnWriteTimeLimitInNanos = config.timeoutDetectionOnWriteTimeLimitInNanos();
         this.nonRespondingChannelReadDelayTimeLimitInNanos = config.nonRespondingChannelReadDelayTimeLimitInNanos();
         this.cancellationCountSinceLastReadThreshold = config.cancellationCountSinceLastReadThreshold();
-        this.clientVmId = clientTelemetry.getClientTelemetryInfo().getMachineId();
+        this.clientTelemetry = clientTelemetry;
     }
 
     // endregion
@@ -289,7 +289,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
                     this.writeDelayLimitInNanos,
                     rntbdContext,
                     pendingRequestCount,
-                    this.clientVmId,
+                    clientTelemetry.getClientTelemetryInfo().getMachineId(),
                     systemInfo.getUsedMemory(),
                     systemInfo.getAvailableMemory(),
                     systemInfo.getSystemCpuLoad(),
@@ -329,7 +329,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
                     this.readDelayLimitInNanos,
                     rntbdContext,
                     pendingRequestCount,
-                    this.clientVmId,
+                    clientTelemetry.getClientTelemetryInfo().getMachineId(),
                     systemInfo.getUsedMemory(),
                     systemInfo.getAvailableMemory(),
                     systemInfo.getSystemCpuLoad(),
