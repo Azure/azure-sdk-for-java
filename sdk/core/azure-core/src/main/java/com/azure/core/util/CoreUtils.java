@@ -3,10 +3,12 @@
 
 package com.azure.core.util;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.implementation.ImplUtils;
+import com.azure.core.implementation.http.AuthenticateChallengeParser;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import org.reactivestreams.Publisher;
@@ -797,5 +799,35 @@ public final class CoreUtils {
         } else {
             return OffsetDateTime.from(temporal);
         }
+    }
+
+    /**
+     * Processes an authenticate header, such as {@link HttpHeaderName#WWW_AUTHENTICATE} or
+     * {@link HttpHeaderName#PROXY_AUTHENTICATE}, into a list of {@link AuthenticateChallenge}.
+     * <p>
+     * If the {@code authenticateHeader} is null or empty an empty list will be returned.
+     * <p>
+     * This method will parse the authenticate header as plainly as possible, meaning no casing will be changed on the
+     * scheme and no decoding will be done on the parameters. The only processing done is removal of quotes around
+     * parameter values and backslashes escaping values. Ex, {@code "va\"lue"} will be parsed as {@code va"lue}.
+     * <p>
+     * In addition to processing as plainly as possible, this method will not validate the authenticate header, it will
+     * only parse it. Though, if the authenticate header has syntax errors an {@link IllegalStateException} will be
+     * thrown.
+     * <p>
+     * A list of {@link AuthenticateChallenge} will be returned as it is valid for multiple authenticate challenges to
+     * use the same scheme, therefore a map cannot be used as the scheme would be the key and only one challenge would
+     * be stored.
+     *
+     * @param authenticateHeader The authenticate header to be parsed.
+     * @return A list of authenticate challenges.
+     * @throws IllegalArgumentException If the authenticate header has syntax errors.
+     */
+    public static List<AuthenticateChallenge> parseAuthenticateHeader(String authenticateHeader) {
+        if (isNullOrEmpty(authenticateHeader)) {
+            return Collections.emptyList();
+        }
+
+        return new AuthenticateChallengeParser(authenticateHeader).parse();
     }
 }
