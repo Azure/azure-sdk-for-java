@@ -91,10 +91,11 @@ class AzureAuthenticationTemplateTest {
 
         TokenCredentialProviderOptions providerOptions = new TokenCredentialProviderOptions(properties);
 
-        assertNotNull(template.getTokenCredentialProvider().get(providerOptions));
-        assertNotNull(template2.getTokenCredentialProvider().get(providerOptions));
-        assertEquals(template.getTokenCredentialProvider().get(providerOptions),
-            template2.getTokenCredentialProvider().get(providerOptions));
+        TokenCredential tokenCredential = template.getTokenCredentialProvider().get(providerOptions);
+        TokenCredential tokenCredential2 = template2.getTokenCredentialProvider().get(providerOptions);
+        assertNotNull(tokenCredential);
+        assertNotNull(tokenCredential2);
+        assertTrue(tokenCredential == tokenCredential2);
     }
 
     @Test
