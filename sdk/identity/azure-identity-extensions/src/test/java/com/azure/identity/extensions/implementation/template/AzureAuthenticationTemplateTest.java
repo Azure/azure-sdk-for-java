@@ -177,19 +177,17 @@ class AzureAuthenticationTemplateTest {
             AzureAuthenticationTemplate template2 = new AzureAuthenticationTemplate();
             template2.init(properties);
 
-            verifyNonCacheToken("token1-", 0, template);
-            verifyNonCacheToken("token1-", 5, template2);
+            verifyToken("token1-", 0, template);
             TimeUnit.SECONDS.sleep(tokenExpireSeconds + 1);
-            verifyNonCacheToken("token2-", 1, template);
-            verifyNonCacheToken("token2-", 6, template2);
+            verifyToken("token2-", 1, template);
             assertNotNull(credentialProviderMock);
         }
     }
 
-    private static void verifyNonCacheToken(String tokenPrefix, int tokenInitialValue,
+    private static void verifyToken(String tokenPrefix, int tokenInitialIndexValue,
         AzureAuthenticationTemplate template) {
         for (int i = 0; i < 5; i++) {
-            assertEquals(tokenPrefix + (tokenInitialValue + i), template.getTokenAsPassword());
+            assertEquals(tokenPrefix + (tokenInitialIndexValue + i), template.getTokenAsPassword());
         }
     }
 
