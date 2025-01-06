@@ -102,7 +102,7 @@ input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/fb64eaa0dfc7ee8abc8e10369495729d5b3c1cc5/specification/eventgrid/data-plane/Microsoft.MachineLearningServices/stable/2018-01-01/MachineLearningServices.json
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/fb64eaa0dfc7ee8abc8e10369495729d5b3c1cc5/specification/eventgrid/data-plane/Microsoft.Cache/stable/2018-01-01/RedisCache.json
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/fb64eaa0dfc7ee8abc8e10369495729d5b3c1cc5/specification/eventgrid/data-plane/Microsoft.Web/stable/2018-01-01/Web.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/fb64eaa0dfc7ee8abc8e10369495729d5b3c1cc5/specification/eventgrid/data-plane/Microsoft.Communication/stable/2018-01-01/AzureCommunicationServices.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8e10d65d0c92871abf9b0e6f044ceae9c7965aee/specification/eventgrid/data-plane/Microsoft.Communication/stable/2018-01-01/AzureCommunicationServices.json
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/fb64eaa0dfc7ee8abc8e10369495729d5b3c1cc5/specification/eventgrid/data-plane/Microsoft.PolicyInsights/stable/2018-01-01/PolicyInsights.json
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/fb64eaa0dfc7ee8abc8e10369495729d5b3c1cc5/specification/eventgrid/data-plane/Microsoft.ContainerService/stable/2018-01-01/ContainerService.json
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/fb64eaa0dfc7ee8abc8e10369495729d5b3c1cc5/specification/eventgrid/data-plane/Microsoft.ApiManagement/stable/2018-01-01/APIManagement.json
