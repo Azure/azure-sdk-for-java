@@ -42,7 +42,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
     // obtained if an operation fails or succeeds. If an operation hangs, the diagnostics
     // will not be available. Floating this value to the health check logs will give us access
     // to the client VM ID in scenarios where the operation hangs.
-    private static ClientTelemetry clientTelemetry;
+    private final ClientTelemetry clientTelemetry;
 
     // A channel will be declared healthy if a read succeeded recently as defined by this value.
     private static final long recentReadWindowInNanos = 1_000_000_000L;
