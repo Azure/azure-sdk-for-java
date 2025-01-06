@@ -3,8 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.monitor.implementation;
 
-import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporter;
-import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterOptions;
+import com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorAutoConfigure;
+import com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorAutoConfigureOptions;
 import io.opentelemetry.instrumentation.spring.autoconfigure.OpenTelemetryAutoConfiguration;
 import io.opentelemetry.sdk.autoconfigure.spi.AutoConfigurationCustomizerProvider;
 import org.slf4j.Logger;
@@ -56,7 +56,7 @@ class AzureSpringMonitorAutoConfiguration {
     }
 
     @Bean
-    AutoConfigurationCustomizerProvider autoConfigurationCustomizerProvider(@Value("${applicationinsights.connection.string:#{null}}") String connectionString, ObjectProvider<AzureMonitorExporterOptions> azureMonitorExporterOptions) {
+    AutoConfigurationCustomizerProvider autoConfigurationCustomizerProvider(@Value("${applicationinsights.connection.string:#{null}}") String connectionString, ObjectProvider<AzureMonitorAutoConfigureOptions> azureMonitorAutoConfigureOptions) {
 
         if (!isNativeRuntimeExecution() && applicationInsightsAgentIsAttached()) {
             LOG.warn("The spring-cloud-azure-starter-monitor Spring starter is disabled because the Application Insights Java agent is enabled."
@@ -64,14 +64,14 @@ class AzureSpringMonitorAutoConfiguration {
             return DISABLE_OTEL_CUSTOMER_PROVIDER;
         }
 
-        AzureMonitorExporterOptions providedAzureMonitorExporterOptions = azureMonitorExporterOptions.getIfAvailable();
-        if (providedAzureMonitorExporterOptions != null) {
+        AzureMonitorAutoConfigureOptions providedAzureMonitorAutoConfigureOptions = azureMonitorAutoConfigureOptions.getIfAvailable();
+        if (providedAzureMonitorAutoConfigureOptions != null) {
             if (System.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING") == null && System.getProperty("applicationinsights.connection.string") == null && (connectionString != null && !connectionString.isEmpty())) {
                 LOG.warn("You have created an AzureMonitorExporterBuilder bean and set the applicationinsights.connection.string property in a .properties or .yml file."
                     + " This property is ignored.");
             }
             // The AzureMonitor class (OpenTelemetry exporter library) is able to use the APPLICATIONINSIGHTS_CONNECTION_STRING environment variable or the applicationinsights.connection.string JVM property
-            return autoConfigurationCustomizer -> AzureMonitorExporter.customize(autoConfigurationCustomizer, providedAzureMonitorExporterOptions);
+            return autoConfigurationCustomizer -> AzureMonitorAutoConfigure.customize(autoConfigurationCustomizer, providedAzureMonitorAutoConfigureOptions);
         }
 
         if (connectionString == null || connectionString.isEmpty()) {
@@ -83,10 +83,10 @@ class AzureSpringMonitorAutoConfiguration {
         }
 
         if (!connectionString.contains("InstrumentationKey=")) {
-            throw new WrongConnectionStringException(); // To fail fast, before the OpenTelemetry exporter
+            throw new WrongConnectionStringException(); // To fail fast, before Azure Monitor AutoConfigure
         }
 
-        return autoConfigurationCustomizer -> AzureMonitorExporter.customize(autoConfigurationCustomizer, connectionString);
+        return autoConfigurationCustomizer -> AzureMonitorAutoConfigure.customize(autoConfigurationCustomizer, connectionString);
     }
 
     @Bean
