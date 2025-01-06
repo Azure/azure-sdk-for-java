@@ -49,7 +49,7 @@ public final class AzureSqlDatabaseOutputDataSource extends OutputDataSource {
      * 
      * @return the innerProperties value.
      */
-    private AzureSqlDatabaseOutputDataSourceProperties innerProperties() {
+    AzureSqlDatabaseOutputDataSourceProperties innerProperties() {
         return this.innerProperties;
     }
 

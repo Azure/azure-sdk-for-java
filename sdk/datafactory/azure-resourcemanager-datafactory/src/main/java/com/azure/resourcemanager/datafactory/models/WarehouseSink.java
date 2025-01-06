@@ -233,7 +233,6 @@ public final class WarehouseSink extends CopySink {
      */
     @Override
     public void validate() {
-        super.validate();
         if (copyCommandSettings() != null) {
             copyCommandSettings().validate();
         }

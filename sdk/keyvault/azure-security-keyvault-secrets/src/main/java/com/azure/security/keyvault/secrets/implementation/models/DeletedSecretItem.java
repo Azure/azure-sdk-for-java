@@ -34,6 +34,12 @@ public final class DeletedSecretItem extends SecretItem {
      */
     private Long deletedDate;
 
+    /*
+     * True if the secret's lifetime is managed by key vault. If this is a key backing a certificate, then managed will
+     * be true.
+     */
+    private Boolean managed;
+
     /**
      * Creates an instance of DeletedSecretItem class.
      */
@@ -82,6 +88,17 @@ public final class DeletedSecretItem extends SecretItem {
             return null;
         }
         return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.deletedDate), ZoneOffset.UTC);
+    }
+
+    /**
+     * Get the managed property: True if the secret's lifetime is managed by key vault. If this is a key backing a
+     * certificate, then managed will be true.
+     * 
+     * @return the managed value.
+     */
+    @Override
+    public Boolean isManaged() {
+        return this.managed;
     }
 
     /**
@@ -159,7 +176,7 @@ public final class DeletedSecretItem extends SecretItem {
                 } else if ("contentType".equals(fieldName)) {
                     deserializedDeletedSecretItem.setContentType(reader.getString());
                 } else if ("managed".equals(fieldName)) {
-                    deserializedDeletedSecretItem.setManaged(reader.getNullable(JsonReader::getBoolean));
+                    deserializedDeletedSecretItem.managed = reader.getNullable(JsonReader::getBoolean);
                 } else if ("recoveryId".equals(fieldName)) {
                     deserializedDeletedSecretItem.recoveryId = reader.getString();
                 } else if ("scheduledPurgeDate".equals(fieldName)) {

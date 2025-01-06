@@ -27,17 +27,23 @@ import com.azure.resourcemanager.kusto.fluent.models.DatabaseInviteFollowerResul
 import com.azure.resourcemanager.kusto.models.DatabaseInviteFollowerRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DatabaseOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DatabaseOperationsClient.
+ */
 public final class DatabaseOperationsClientImpl implements DatabaseOperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DatabaseOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final KustoManagementClientImpl client;
 
     /**
      * Initializes an instance of DatabaseOperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DatabaseOperationsClientImpl(KustoManagementClientImpl client) {
@@ -67,7 +73,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
 
     /**
      * Generates an invitation token that allows attaching a follower database to this database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -76,7 +82,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a follower invitation generation request along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DatabaseInviteFollowerResultInner>> inviteFollowerWithResponseAsync(String resourceGroupName,
@@ -113,7 +119,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
 
     /**
      * Generates an invitation token that allows attaching a follower database to this database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -123,7 +129,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a follower invitation generation request along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DatabaseInviteFollowerResultInner>> inviteFollowerWithResponseAsync(String resourceGroupName,
@@ -159,7 +165,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
 
     /**
      * Generates an invitation token that allows attaching a follower database to this database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -167,8 +173,8 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a follower invitation generation request on successful completion of {@link
-     *     Mono}.
+     * @return the result returned from a follower invitation generation request on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DatabaseInviteFollowerResultInner> inviteFollowerAsync(String resourceGroupName, String clusterName,
@@ -179,7 +185,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
 
     /**
      * Generates an invitation token that allows attaching a follower database to this database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -199,7 +205,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
 
     /**
      * Generates an invitation token that allows attaching a follower database to this database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.

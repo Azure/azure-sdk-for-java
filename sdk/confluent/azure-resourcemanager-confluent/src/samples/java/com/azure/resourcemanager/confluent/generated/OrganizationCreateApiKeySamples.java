@@ -20,9 +20,10 @@ public final class OrganizationCreateApiKeySamples {
      * @param manager Entry point to ConfluentManager.
      */
     public static void organizationCreateAPIKey(com.azure.resourcemanager.confluent.ConfluentManager manager) {
-        manager.organizations().createApiKeyWithResponse(
-            "myResourceGroup", "myOrganization", "env-12132", "clusterId-123", new CreateApiKeyModel()
-                .withName("CI kafka access key").withDescription("This API key provides kafka access to cluster x"),
-            com.azure.core.util.Context.NONE);
+        manager.organizations()
+            .createApiKeyWithResponse("myResourceGroup", "myOrganization", "env-12132", "clusterId-123",
+                new CreateApiKeyModel().withName("CI kafka access key")
+                    .withDescription("This API key provides kafka access to cluster x"),
+                com.azure.core.util.Context.NONE);
     }
 }

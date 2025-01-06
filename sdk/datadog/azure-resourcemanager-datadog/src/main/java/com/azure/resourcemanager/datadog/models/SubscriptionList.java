@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.datadog.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The request to update subscriptions needed to be monitored by the Datadog monitor resource. */
+/**
+ * The request to update subscriptions needed to be monitored by the Datadog monitor resource.
+ */
 @Fluent
-public final class SubscriptionList {
+public final class SubscriptionList implements JsonSerializable<SubscriptionList> {
     /*
      * The operation for the patch on the resource.
      */
-    @JsonProperty(value = "operation")
     private Operation operation;
 
     /*
      * List of subscriptions and the state of the monitoring.
      */
-    @JsonProperty(value = "monitoredSubscriptionList")
     private List<MonitoredSubscription> monitoredSubscriptionList;
 
-    /** Creates an instance of SubscriptionList class. */
+    /**
+     * Creates an instance of SubscriptionList class.
+     */
     public SubscriptionList() {
     }
 
     /**
      * Get the operation property: The operation for the patch on the resource.
-     *
+     * 
      * @return the operation value.
      */
     public Operation operation() {
@@ -38,7 +44,7 @@ public final class SubscriptionList {
 
     /**
      * Set the operation property: The operation for the patch on the resource.
-     *
+     * 
      * @param operation the operation value to set.
      * @return the SubscriptionList object itself.
      */
@@ -49,7 +55,7 @@ public final class SubscriptionList {
 
     /**
      * Get the monitoredSubscriptionList property: List of subscriptions and the state of the monitoring.
-     *
+     * 
      * @return the monitoredSubscriptionList value.
      */
     public List<MonitoredSubscription> monitoredSubscriptionList() {
@@ -58,7 +64,7 @@ public final class SubscriptionList {
 
     /**
      * Set the monitoredSubscriptionList property: List of subscriptions and the state of the monitoring.
-     *
+     * 
      * @param monitoredSubscriptionList the monitoredSubscriptionList value to set.
      * @return the SubscriptionList object itself.
      */
@@ -69,12 +75,54 @@ public final class SubscriptionList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (monitoredSubscriptionList() != null) {
             monitoredSubscriptionList().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("operation", this.operation == null ? null : this.operation.toString());
+        jsonWriter.writeArrayField("monitoredSubscriptionList", this.monitoredSubscriptionList,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubscriptionList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubscriptionList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubscriptionList.
+     */
+    public static SubscriptionList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubscriptionList deserializedSubscriptionList = new SubscriptionList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("operation".equals(fieldName)) {
+                    deserializedSubscriptionList.operation = Operation.fromString(reader.getString());
+                } else if ("monitoredSubscriptionList".equals(fieldName)) {
+                    List<MonitoredSubscription> monitoredSubscriptionList
+                        = reader.readArray(reader1 -> MonitoredSubscription.fromJson(reader1));
+                    deserializedSubscriptionList.monitoredSubscriptionList = monitoredSubscriptionList;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubscriptionList;
+        });
     }
 }

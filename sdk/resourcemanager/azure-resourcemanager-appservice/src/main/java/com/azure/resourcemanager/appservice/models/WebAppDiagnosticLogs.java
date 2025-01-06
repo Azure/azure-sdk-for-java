@@ -14,34 +14,74 @@ import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 /** A web app diagnostic log configuration in a web app. */
 @Fluent
 public interface WebAppDiagnosticLogs extends HasInnerModel<SiteLogsConfigInner>, Indexable, HasParent<WebAppBase> {
-    /** @return application log level on file system */
+    /**
+     * Gets application log level on file system.
+     *
+     * @return application log level on file system
+     */
     LogLevel applicationLoggingFileSystemLogLevel();
 
-    /** @return Azure Storage Blob container URL for storing application logs */
+    /**
+     * Gets Azure Storage Blob container URL for storing application logs.
+     *
+     * @return Azure Storage Blob container URL for storing application logs
+     */
     String applicationLoggingStorageBlobContainer();
 
-    /** @return application log level on Azure Storage Blob */
+    /**
+     * Gets application log level on Azure Storage Blob.
+     *
+     * @return application log level on Azure Storage Blob
+     */
     LogLevel applicationLoggingStorageBlobLogLevel();
 
-    /** @return application log retention days on Azure Storage Blob */
+    /**
+     * Gets application log retention days on Azure Storage Blob.
+     *
+     * @return application log retention days on Azure Storage Blob
+     */
     int applicationLoggingStorageBlobRetentionDays();
 
-    /** @return web server quota in MB on file system */
+    /**
+     * Gets web server quota in MB on file system.
+     *
+     * @return web server quota in MB on file system
+     */
     int webServerLoggingFileSystemQuotaInMB();
 
-    /** @return web server log retention days on file system */
+    /**
+     * Gets web server log retention days on file system.
+     *
+     * @return web server log retention days on file system
+     */
     int webServerLoggingFileSystemRetentionDays();
 
-    /** @return web server log retention days on Azure Storage Blob */
+    /**
+     * Gets web server log retention days on Azure Storage Blob.
+     *
+     * @return web server log retention days on Azure Storage Blob
+     */
     int webServerLoggingStorageBlobRetentionDays();
 
-    /** @return Azure Storage Blob container URL for storing web server logs */
+    /**
+     * Gets Azure Storage Blob container URL for storing web server logs.
+     *
+     * @return Azure Storage Blob container URL for storing web server logs
+     */
     String webServerLoggingStorageBlobContainer();
 
-    /** @return if diagnostic information on failed requests should be gathered */
+    /**
+     * Check whether diagnostic information on failed requests should be gathered.
+     *
+     * @return if diagnostic information on failed requests should be gathered
+     */
     boolean failedRequestsTracing();
 
-    /** @return if detailed error messages should be gathered */
+    /**
+     * Check whether detailed error messages should be gathered.
+     *
+     * @return if detailed error messages should be gathered
+     */
     boolean detailedErrorMessages();
 
     /**

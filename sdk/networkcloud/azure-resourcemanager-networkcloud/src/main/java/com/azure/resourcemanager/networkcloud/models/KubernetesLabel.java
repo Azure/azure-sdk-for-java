@@ -6,30 +6,36 @@ package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** KubernetesLabel represents a single entry for a Kubernetes label or taint such as those used on a node or pod. */
+/**
+ * KubernetesLabel represents a single entry for a Kubernetes label or taint such as those used on a node or pod.
+ */
 @Fluent
-public final class KubernetesLabel {
+public final class KubernetesLabel implements JsonSerializable<KubernetesLabel> {
     /*
      * The name of the label or taint.
      */
-    @JsonProperty(value = "key", required = true)
     private String key;
 
     /*
      * The value of the label or taint.
      */
-    @JsonProperty(value = "value", required = true)
     private String value;
 
-    /** Creates an instance of KubernetesLabel class. */
+    /**
+     * Creates an instance of KubernetesLabel class.
+     */
     public KubernetesLabel() {
     }
 
     /**
      * Get the key property: The name of the label or taint.
-     *
+     * 
      * @return the key value.
      */
     public String key() {
@@ -38,7 +44,7 @@ public final class KubernetesLabel {
 
     /**
      * Set the key property: The name of the label or taint.
-     *
+     * 
      * @param key the key value to set.
      * @return the KubernetesLabel object itself.
      */
@@ -49,7 +55,7 @@ public final class KubernetesLabel {
 
     /**
      * Get the value property: The value of the label or taint.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -58,7 +64,7 @@ public final class KubernetesLabel {
 
     /**
      * Set the value property: The value of the label or taint.
-     *
+     * 
      * @param value the value value to set.
      * @return the KubernetesLabel object itself.
      */
@@ -69,19 +75,59 @@ public final class KubernetesLabel {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (key() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property key in model KubernetesLabel"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property key in model KubernetesLabel"));
         }
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model KubernetesLabel"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model KubernetesLabel"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(KubernetesLabel.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("key", this.key);
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KubernetesLabel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KubernetesLabel if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the KubernetesLabel.
+     */
+    public static KubernetesLabel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KubernetesLabel deserializedKubernetesLabel = new KubernetesLabel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("key".equals(fieldName)) {
+                    deserializedKubernetesLabel.key = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedKubernetesLabel.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKubernetesLabel;
+        });
+    }
 }

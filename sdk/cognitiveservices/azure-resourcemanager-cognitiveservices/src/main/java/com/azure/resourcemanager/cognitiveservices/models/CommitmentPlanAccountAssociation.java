@@ -7,6 +7,7 @@ package com.azure.resourcemanager.cognitiveservices.models;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.CommitmentPlanAccountAssociationInner;
+import java.util.Map;
 
 /**
  * An immutable client-side representation of CommitmentPlanAccountAssociation.
@@ -46,6 +47,13 @@ public interface CommitmentPlanAccountAssociation {
      * @return the etag value.
      */
     String etag();
+
+    /**
+     * Gets the tags property: Resource tags.
+     * 
+     * @return the tags value.
+     */
+    Map<String, String> tags();
 
     /**
      * Gets the accountId property: The Azure resource id of the account.
@@ -104,7 +112,7 @@ public interface CommitmentPlanAccountAssociation {
          * The stage of the CommitmentPlanAccountAssociation definition which contains all the minimum required
          * properties for the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithAccountId {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithAccountId {
             /**
              * Executes the create request.
              * 
@@ -119,6 +127,19 @@ public interface CommitmentPlanAccountAssociation {
              * @return the created resource.
              */
             CommitmentPlanAccountAssociation create(Context context);
+        }
+
+        /**
+         * The stage of the CommitmentPlanAccountAssociation definition allowing to specify tags.
+         */
+        interface WithTags {
+            /**
+             * Specifies the tags property: Resource tags..
+             * 
+             * @param tags Resource tags.
+             * @return the next definition stage.
+             */
+            WithCreate withTags(Map<String, String> tags);
         }
 
         /**
@@ -145,7 +166,7 @@ public interface CommitmentPlanAccountAssociation {
     /**
      * The template for CommitmentPlanAccountAssociation update.
      */
-    interface Update extends UpdateStages.WithAccountId {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithAccountId {
         /**
          * Executes the update request.
          * 
@@ -166,6 +187,19 @@ public interface CommitmentPlanAccountAssociation {
      * The CommitmentPlanAccountAssociation update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the CommitmentPlanAccountAssociation update allowing to specify tags.
+         */
+        interface WithTags {
+            /**
+             * Specifies the tags property: Resource tags..
+             * 
+             * @param tags Resource tags.
+             * @return the next definition stage.
+             */
+            Update withTags(Map<String, String> tags);
+        }
+
         /**
          * The stage of the CommitmentPlanAccountAssociation update allowing to specify accountId.
          */

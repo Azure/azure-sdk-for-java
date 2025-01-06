@@ -10,8 +10,8 @@ package com.azure.resourcemanager.servicelinker.generated;
 public final class LinkerListConfigurationsSamples {
     /*
      * x-ms-original-file:
-     * specification/servicelinker/resource-manager/Microsoft.ServiceLinker/preview/2024-07-01-preview/examples/
-     * GetConfigurations.json
+     * specification/servicelinker/resource-manager/Microsoft.ServiceLinker/stable/2022-05-01/examples/GetConfigurations
+     * .json
      */
     /**
      * Sample code: GetConfiguration.
@@ -21,7 +21,7 @@ public final class LinkerListConfigurationsSamples {
     public static void getConfiguration(com.azure.resourcemanager.servicelinker.ServiceLinkerManager manager) {
         manager.linkers()
             .listConfigurationsWithResponse(
-                "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.App/containerApps/test-app",
+                "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Web/sites/test-app",
                 "linkName", com.azure.core.util.Context.NONE);
     }
 }

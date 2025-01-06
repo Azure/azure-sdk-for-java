@@ -38,17 +38,23 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in MyWorkbooksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MyWorkbooksClient.
+ */
 public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final MyWorkbooksService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApplicationInsightsManagementClientImpl client;
 
     /**
      * Initializes an instance of MyWorkbooksClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     MyWorkbooksClientImpl(ApplicationInsightsManagementClientImpl client) {
@@ -143,18 +149,18 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Get all private workbooks defined within a specified resource group and category.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param category Category of workbook to return.
      * @param tags Tags presents on each workbook returned.
      * @param sourceId Azure Resource Id that will fetch all linked workbooks.
      * @param canFetchContent Flag indicating whether or not to return the full content for each applicable workbook. If
-     *     false, only return summary content for workbooks.
+     * false, only return summary content for workbooks.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private workbooks defined within a specified resource group and category along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return all private workbooks defined within a specified resource group and category along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MyWorkbookInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -192,19 +198,19 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Get all private workbooks defined within a specified resource group and category.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param category Category of workbook to return.
      * @param tags Tags presents on each workbook returned.
      * @param sourceId Azure Resource Id that will fetch all linked workbooks.
      * @param canFetchContent Flag indicating whether or not to return the full content for each applicable workbook. If
-     *     false, only return summary content for workbooks.
+     * false, only return summary content for workbooks.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private workbooks defined within a specified resource group and category along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return all private workbooks defined within a specified resource group and category along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MyWorkbookInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -241,18 +247,18 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Get all private workbooks defined within a specified resource group and category.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param category Category of workbook to return.
      * @param tags Tags presents on each workbook returned.
      * @param sourceId Azure Resource Id that will fetch all linked workbooks.
      * @param canFetchContent Flag indicating whether or not to return the full content for each applicable workbook. If
-     *     false, only return summary content for workbooks.
+     * false, only return summary content for workbooks.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private workbooks defined within a specified resource group and category as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MyWorkbookInner> listByResourceGroupAsync(String resourceGroupName, CategoryType category,
@@ -264,14 +270,14 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Get all private workbooks defined within a specified resource group and category.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param category Category of workbook to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private workbooks defined within a specified resource group and category as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MyWorkbookInner> listByResourceGroupAsync(String resourceGroupName, CategoryType category) {
@@ -285,19 +291,19 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Get all private workbooks defined within a specified resource group and category.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param category Category of workbook to return.
      * @param tags Tags presents on each workbook returned.
      * @param sourceId Azure Resource Id that will fetch all linked workbooks.
      * @param canFetchContent Flag indicating whether or not to return the full content for each applicable workbook. If
-     *     false, only return summary content for workbooks.
+     * false, only return summary content for workbooks.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private workbooks defined within a specified resource group and category as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MyWorkbookInner> listByResourceGroupAsync(String resourceGroupName, CategoryType category,
@@ -308,14 +314,14 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Get all private workbooks defined within a specified resource group and category.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param category Category of workbook to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private workbooks defined within a specified resource group and category as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MyWorkbookInner> listByResourceGroup(String resourceGroupName, CategoryType category) {
@@ -328,19 +334,19 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Get all private workbooks defined within a specified resource group and category.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param category Category of workbook to return.
      * @param tags Tags presents on each workbook returned.
      * @param sourceId Azure Resource Id that will fetch all linked workbooks.
      * @param canFetchContent Flag indicating whether or not to return the full content for each applicable workbook. If
-     *     false, only return summary content for workbooks.
+     * false, only return summary content for workbooks.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private workbooks defined within a specified resource group and category as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MyWorkbookInner> listByResourceGroup(String resourceGroupName, CategoryType category,
@@ -351,16 +357,16 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Get all private workbooks defined within a specified subscription and category.
-     *
+     * 
      * @param category Category of workbook to return.
      * @param tags Tags presents on each workbook returned.
      * @param canFetchContent Flag indicating whether or not to return the full content for each applicable workbook. If
-     *     false, only return summary content for workbooks.
+     * false, only return summary content for workbooks.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private workbooks defined within a specified subscription and category along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return all private workbooks defined within a specified subscription and category along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MyWorkbookInner>> listSinglePageAsync(CategoryType category, List<String> tags,
@@ -393,17 +399,17 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Get all private workbooks defined within a specified subscription and category.
-     *
+     * 
      * @param category Category of workbook to return.
      * @param tags Tags presents on each workbook returned.
      * @param canFetchContent Flag indicating whether or not to return the full content for each applicable workbook. If
-     *     false, only return summary content for workbooks.
+     * false, only return summary content for workbooks.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private workbooks defined within a specified subscription and category along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return all private workbooks defined within a specified subscription and category along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MyWorkbookInner>> listSinglePageAsync(CategoryType category, List<String> tags,
@@ -436,16 +442,16 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Get all private workbooks defined within a specified subscription and category.
-     *
+     * 
      * @param category Category of workbook to return.
      * @param tags Tags presents on each workbook returned.
      * @param canFetchContent Flag indicating whether or not to return the full content for each applicable workbook. If
-     *     false, only return summary content for workbooks.
+     * false, only return summary content for workbooks.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private workbooks defined within a specified subscription and category as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MyWorkbookInner> listAsync(CategoryType category, List<String> tags, Boolean canFetchContent) {
@@ -455,13 +461,13 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Get all private workbooks defined within a specified subscription and category.
-     *
+     * 
      * @param category Category of workbook to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private workbooks defined within a specified subscription and category as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MyWorkbookInner> listAsync(CategoryType category) {
@@ -473,17 +479,17 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Get all private workbooks defined within a specified subscription and category.
-     *
+     * 
      * @param category Category of workbook to return.
      * @param tags Tags presents on each workbook returned.
      * @param canFetchContent Flag indicating whether or not to return the full content for each applicable workbook. If
-     *     false, only return summary content for workbooks.
+     * false, only return summary content for workbooks.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private workbooks defined within a specified subscription and category as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MyWorkbookInner> listAsync(CategoryType category, List<String> tags, Boolean canFetchContent,
@@ -494,13 +500,13 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Get all private workbooks defined within a specified subscription and category.
-     *
+     * 
      * @param category Category of workbook to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private workbooks defined within a specified subscription and category as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MyWorkbookInner> list(CategoryType category) {
@@ -511,17 +517,17 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Get all private workbooks defined within a specified subscription and category.
-     *
+     * 
      * @param category Category of workbook to return.
      * @param tags Tags presents on each workbook returned.
      * @param canFetchContent Flag indicating whether or not to return the full content for each applicable workbook. If
-     *     false, only return summary content for workbooks.
+     * false, only return summary content for workbooks.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private workbooks defined within a specified subscription and category as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MyWorkbookInner> list(CategoryType category, List<String> tags, Boolean canFetchContent,
@@ -531,14 +537,14 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Get a single private workbook by its resourceName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single private workbook by its resourceName along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MyWorkbookInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -568,7 +574,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Get a single private workbook by its resourceName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param context The context to associate with this operation.
@@ -576,7 +582,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      * @throws ErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single private workbook by its resourceName along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MyWorkbookInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -605,7 +611,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Get a single private workbook by its resourceName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -621,7 +627,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Get a single private workbook by its resourceName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param context The context to associate with this operation.
@@ -638,7 +644,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Get a single private workbook by its resourceName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -653,7 +659,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Delete a private workbook.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -688,7 +694,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Delete a private workbook.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param context The context to associate with this operation.
@@ -724,7 +730,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Delete a private workbook.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -739,7 +745,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Delete a private workbook.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param context The context to associate with this operation.
@@ -755,7 +761,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Delete a private workbook.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -769,7 +775,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Create a new private workbook.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workbookProperties Properties that need to be specified to create a new private workbook.
@@ -778,7 +784,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      * @throws ErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Application Insights private workbook definition along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MyWorkbookInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -814,7 +820,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Create a new private workbook.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workbookProperties Properties that need to be specified to create a new private workbook.
@@ -824,7 +830,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      * @throws ErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Application Insights private workbook definition along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MyWorkbookInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -859,7 +865,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Create a new private workbook.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workbookProperties Properties that need to be specified to create a new private workbook.
@@ -878,7 +884,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Create a new private workbook.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workbookProperties Properties that need to be specified to create a new private workbook.
@@ -898,7 +904,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Create a new private workbook.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workbookProperties Properties that need to be specified to create a new private workbook.
@@ -917,7 +923,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Updates a private workbook that has already been added.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workbookProperties Properties that need to be specified to create a new private workbook.
@@ -926,7 +932,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      * @throws ErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Application Insights private workbook definition along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MyWorkbookInner>> updateWithResponseAsync(String resourceGroupName, String resourceName,
@@ -962,7 +968,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Updates a private workbook that has already been added.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workbookProperties Properties that need to be specified to create a new private workbook.
@@ -972,7 +978,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      * @throws ErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Application Insights private workbook definition along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MyWorkbookInner>> updateWithResponseAsync(String resourceGroupName, String resourceName,
@@ -1007,7 +1013,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Updates a private workbook that has already been added.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workbookProperties Properties that need to be specified to create a new private workbook.
@@ -1026,7 +1032,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Updates a private workbook that has already been added.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workbookProperties Properties that need to be specified to create a new private workbook.
@@ -1045,7 +1051,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Updates a private workbook that has already been added.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workbookProperties Properties that need to be specified to create a new private workbook.
@@ -1063,9 +1069,8 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1091,9 +1096,8 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDefinitionException thrown if the request is rejected by server.
@@ -1119,9 +1123,8 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1147,9 +1150,8 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDefinitionException thrown if the request is rejected by server.

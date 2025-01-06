@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The DataMasking model. */
+/**
+ * The DataMasking model.
+ */
 @Fluent
-public final class DataMasking {
+public final class DataMasking implements JsonSerializable<DataMasking> {
     /*
      * Masking settings for Url query parameters
      */
-    @JsonProperty(value = "queryParams")
     private List<DataMaskingEntity> queryParams;
 
     /*
      * Masking settings for headers
      */
-    @JsonProperty(value = "headers")
     private List<DataMaskingEntity> headers;
 
-    /** Creates an instance of DataMasking class. */
+    /**
+     * Creates an instance of DataMasking class.
+     */
     public DataMasking() {
     }
 
     /**
      * Get the queryParams property: Masking settings for Url query parameters.
-     *
+     * 
      * @return the queryParams value.
      */
     public List<DataMaskingEntity> queryParams() {
@@ -38,7 +44,7 @@ public final class DataMasking {
 
     /**
      * Set the queryParams property: Masking settings for Url query parameters.
-     *
+     * 
      * @param queryParams the queryParams value to set.
      * @return the DataMasking object itself.
      */
@@ -49,7 +55,7 @@ public final class DataMasking {
 
     /**
      * Get the headers property: Masking settings for headers.
-     *
+     * 
      * @return the headers value.
      */
     public List<DataMaskingEntity> headers() {
@@ -58,7 +64,7 @@ public final class DataMasking {
 
     /**
      * Set the headers property: Masking settings for headers.
-     *
+     * 
      * @param headers the headers value to set.
      * @return the DataMasking object itself.
      */
@@ -69,7 +75,7 @@ public final class DataMasking {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -79,5 +85,47 @@ public final class DataMasking {
         if (headers() != null) {
             headers().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("queryParams", this.queryParams, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("headers", this.headers, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataMasking from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataMasking if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataMasking.
+     */
+    public static DataMasking fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataMasking deserializedDataMasking = new DataMasking();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("queryParams".equals(fieldName)) {
+                    List<DataMaskingEntity> queryParams
+                        = reader.readArray(reader1 -> DataMaskingEntity.fromJson(reader1));
+                    deserializedDataMasking.queryParams = queryParams;
+                } else if ("headers".equals(fieldName)) {
+                    List<DataMaskingEntity> headers = reader.readArray(reader1 -> DataMaskingEntity.fromJson(reader1));
+                    deserializedDataMasking.headers = headers;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataMasking;
+        });
     }
 }

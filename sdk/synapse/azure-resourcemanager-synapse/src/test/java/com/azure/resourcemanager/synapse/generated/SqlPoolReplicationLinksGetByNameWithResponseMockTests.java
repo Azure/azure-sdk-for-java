@@ -20,7 +20,7 @@ public final class SqlPoolReplicationLinksGetByNameWithResponseMockTests {
     @Test
     public void testGetByNameWithResponse() throws Exception {
         String responseStr
-            = "{\"location\":\"fb\",\"properties\":{\"isTerminationAllowed\":true,\"replicationMode\":\"mlnfyz\",\"partnerServer\":\"frbypi\",\"partnerDatabase\":\"bkpdjtaqhsmq\",\"partnerLocation\":\"pdgonjhxs\",\"role\":\"Source\",\"partnerRole\":\"Source\",\"startTime\":\"2021-10-01T18:48:21Z\",\"percentComplete\":1082014127,\"replicationState\":\"SEEDING\"},\"id\":\"ptkbvcpxtzhi\",\"name\":\"q\",\"type\":\"btimpkjblor\"}";
+            = "{\"location\":\"lzmijajwolxfsv\",\"properties\":{\"isTerminationAllowed\":true,\"replicationMode\":\"ynwlslrcigtzjcv\",\"partnerServer\":\"qlapsnsso\",\"partnerDatabase\":\"xpavid\",\"partnerLocation\":\"ev\",\"role\":\"Secondary\",\"partnerRole\":\"Copy\",\"startTime\":\"2021-01-18T14:39:45Z\",\"percentComplete\":841631916,\"replicationState\":\"SUSPENDED\"},\"id\":\"puxgcbdsvalpnpt\",\"name\":\"trkxgpazwu\",\"type\":\"x\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class SqlPoolReplicationLinksGetByNameWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ReplicationLink response = manager.sqlPoolReplicationLinks()
-            .getByNameWithResponse("apr", "ojxrjnbsconxavi", "neychbjizq", "sgnwdxzedpq",
+            .getByNameWithResponse("lpolwzrghsrle", "nkfscjfn", "jwvuag", "qwtltngvmreupt",
                 com.azure.core.util.Context.NONE)
             .getValue();
 

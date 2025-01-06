@@ -13,18 +13,19 @@ public final class PrivateLinkServiceConnectionStateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkServiceConnectionState model = BinaryData
-            .fromString("{\"status\":\"Pending\",\"description\":\"yqkgfg\",\"actionsRequired\":\"Recreate\"}")
+            .fromString("{\"status\":\"Pending\",\"description\":\"sprozvcput\",\"actionsRequired\":\"None\"}")
             .toObject(PrivateLinkServiceConnectionState.class);
         Assertions.assertEquals(ConnectionStatus.PENDING, model.status());
-        Assertions.assertEquals("yqkgfg", model.description());
+        Assertions.assertEquals("sprozvcput", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateLinkServiceConnectionState model
-            = new PrivateLinkServiceConnectionState().withStatus(ConnectionStatus.PENDING).withDescription("yqkgfg");
+            = new PrivateLinkServiceConnectionState().withStatus(ConnectionStatus.PENDING)
+                .withDescription("sprozvcput");
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnectionState.class);
         Assertions.assertEquals(ConnectionStatus.PENDING, model.status());
-        Assertions.assertEquals("yqkgfg", model.description());
+        Assertions.assertEquals("sprozvcput", model.description());
     }
 }

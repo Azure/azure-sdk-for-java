@@ -28,7 +28,7 @@ public final class ThreatIntelligenceIndicatorsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.threatIntelligenceIndicators()
-            .deleteWithResponse("yxnsbubwh", "qqgugwluxahtq", "mkdhwqcqweba", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("dr", "bfcmkrfts", "cwjjxsgmbawvif", com.azure.core.util.Context.NONE);
 
     }
 }

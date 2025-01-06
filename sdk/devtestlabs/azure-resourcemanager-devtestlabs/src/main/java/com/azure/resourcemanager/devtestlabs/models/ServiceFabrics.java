@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ServiceFabrics. */
+/**
+ * Resource collection API of ServiceFabrics.
+ */
 public interface ServiceFabrics {
     /**
      * List service fabrics in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -25,7 +27,7 @@ public interface ServiceFabrics {
 
     /**
      * List service fabrics in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -44,7 +46,7 @@ public interface ServiceFabrics {
 
     /**
      * Get service fabric.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -61,7 +63,7 @@ public interface ServiceFabrics {
 
     /**
      * Get service fabric.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -75,7 +77,7 @@ public interface ServiceFabrics {
 
     /**
      * Delete service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -88,7 +90,7 @@ public interface ServiceFabrics {
 
     /**
      * Delete service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -102,7 +104,7 @@ public interface ServiceFabrics {
 
     /**
      * Lists the applicable start/stop schedules, if any.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -118,7 +120,7 @@ public interface ServiceFabrics {
 
     /**
      * Lists the applicable start/stop schedules, if any.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -132,7 +134,7 @@ public interface ServiceFabrics {
 
     /**
      * Start a service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -145,7 +147,7 @@ public interface ServiceFabrics {
 
     /**
      * Start a service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -159,7 +161,7 @@ public interface ServiceFabrics {
 
     /**
      * Stop a service fabric This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -172,7 +174,7 @@ public interface ServiceFabrics {
 
     /**
      * Stop a service fabric This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -186,7 +188,7 @@ public interface ServiceFabrics {
 
     /**
      * Get service fabric.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -197,7 +199,7 @@ public interface ServiceFabrics {
 
     /**
      * Get service fabric.
-     *
+     * 
      * @param id the resource ID.
      * @param expand Specify the $expand query. Example: 'properties($expand=applicableSchedule)'.
      * @param context The context to associate with this operation.
@@ -210,7 +212,7 @@ public interface ServiceFabrics {
 
     /**
      * Delete service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -220,7 +222,7 @@ public interface ServiceFabrics {
 
     /**
      * Delete service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -231,7 +233,7 @@ public interface ServiceFabrics {
 
     /**
      * Begins definition for a new ServiceFabric resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ServiceFabric definition.
      */

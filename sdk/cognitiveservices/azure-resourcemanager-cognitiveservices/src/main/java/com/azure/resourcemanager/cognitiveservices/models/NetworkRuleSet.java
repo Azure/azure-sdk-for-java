@@ -24,6 +24,11 @@ public final class NetworkRuleSet implements JsonSerializable<NetworkRuleSet> {
     private NetworkRuleAction defaultAction;
 
     /*
+     * Setting for trusted services.
+     */
+    private ByPassSelection bypass;
+
+    /*
      * The list of IP address rules.
      */
     private List<IpRule> ipRules;
@@ -58,6 +63,26 @@ public final class NetworkRuleSet implements JsonSerializable<NetworkRuleSet> {
      */
     public NetworkRuleSet withDefaultAction(NetworkRuleAction defaultAction) {
         this.defaultAction = defaultAction;
+        return this;
+    }
+
+    /**
+     * Get the bypass property: Setting for trusted services.
+     * 
+     * @return the bypass value.
+     */
+    public ByPassSelection bypass() {
+        return this.bypass;
+    }
+
+    /**
+     * Set the bypass property: Setting for trusted services.
+     * 
+     * @param bypass the bypass value to set.
+     * @return the NetworkRuleSet object itself.
+     */
+    public NetworkRuleSet withBypass(ByPassSelection bypass) {
+        this.bypass = bypass;
         return this;
     }
 
@@ -122,6 +147,7 @@ public final class NetworkRuleSet implements JsonSerializable<NetworkRuleSet> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("defaultAction", this.defaultAction == null ? null : this.defaultAction.toString());
+        jsonWriter.writeStringField("bypass", this.bypass == null ? null : this.bypass.toString());
         jsonWriter.writeArrayField("ipRules", this.ipRules, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("virtualNetworkRules", this.virtualNetworkRules,
             (writer, element) -> writer.writeJson(element));
@@ -145,6 +171,8 @@ public final class NetworkRuleSet implements JsonSerializable<NetworkRuleSet> {
 
                 if ("defaultAction".equals(fieldName)) {
                     deserializedNetworkRuleSet.defaultAction = NetworkRuleAction.fromString(reader.getString());
+                } else if ("bypass".equals(fieldName)) {
+                    deserializedNetworkRuleSet.bypass = ByPassSelection.fromString(reader.getString());
                 } else if ("ipRules".equals(fieldName)) {
                     List<IpRule> ipRules = reader.readArray(reader1 -> IpRule.fromJson(reader1));
                     deserializedNetworkRuleSet.ipRules = ipRules;

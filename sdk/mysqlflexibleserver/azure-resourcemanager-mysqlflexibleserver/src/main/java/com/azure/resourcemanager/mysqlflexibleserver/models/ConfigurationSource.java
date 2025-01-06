@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class ConfigurationSource extends ExpandableStringEnum<Configuratio
      * @param name a name to look for.
      * @return the corresponding ConfigurationSource.
      */
-    @JsonCreator
     public static ConfigurationSource fromString(String name) {
         return fromString(name, ConfigurationSource.class);
     }

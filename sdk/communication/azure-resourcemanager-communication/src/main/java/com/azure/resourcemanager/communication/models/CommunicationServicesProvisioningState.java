@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.communication.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -73,7 +72,6 @@ public final class CommunicationServicesProvisioningState
      * @param name a name to look for.
      * @return the corresponding CommunicationServicesProvisioningState.
      */
-    @JsonCreator
     public static CommunicationServicesProvisioningState fromString(String name) {
         return fromString(name, CommunicationServicesProvisioningState.class);
     }

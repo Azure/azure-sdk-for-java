@@ -25,7 +25,7 @@ public final class DnsForwardingRulesetsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"etag\":\"vpsvuoymgcce\",\"properties\":{\"dnsResolverOutboundEndpoints\":[{\"id\":\"zrypqlmfeokerqw\"},{\"id\":\"hkobopgxedk\"},{\"id\":\"epbqpcrfkbw\"}],\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"jvcdwxlpqekf\"},\"location\":\"khtj\",\"tags\":{\"dhtmdvypgikd\":\"ngwfqatm\"},\"id\":\"szywkbirryu\",\"name\":\"hlhkjoqrvqqaatj\",\"type\":\"nrvgoupmfiibfgg\"}";
+            = "{\"etag\":\"jhemms\",\"properties\":{\"dnsResolverOutboundEndpoints\":[{\"id\":\"kcrodtjinfw\"},{\"id\":\"fltkacjv\"},{\"id\":\"kdlfoa\"}],\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"fpagaowpulp\"},\"location\":\"lyls\",\"tags\":{\"xsdszuempsb\":\"qjnsjervtia\"},\"id\":\"kfzbeyvpnqicvi\",\"name\":\"v\",\"type\":\"jjxd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,18 +35,19 @@ public final class DnsForwardingRulesetsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DnsForwardingRuleset response = manager.dnsForwardingRulesets()
-            .define("qhhahhxvrhmzkwpj")
-            .withRegion("hbotzingamvppho")
-            .withExistingResourceGroup("hfkvtvsexsowuel")
-            .withDnsResolverOutboundEndpoints(Arrays.asList(new SubResource().withId("ukndxdigrjgu")))
-            .withTags(mapOf("nwcvtbvkayhmtnv", "zudphqamvdkfw", "zcjaesgvvsccy", "qiatkzwpcnp"))
-            .withIfMatch("semdwzrmu")
-            .withIfNoneMatch("apfcqdpsq")
+            .define("gsexne")
+            .withRegion("axhexiilivp")
+            .withExistingResourceGroup("zrtuzq")
+            .withDnsResolverOutboundEndpoints(
+                Arrays.asList(new SubResource().withId("ewzsyyceuzsoib"), new SubResource().withId("dpfrxtrthzvaytdw")))
+            .withTags(mapOf("oruzfgsquyfxrxx", "irqtdqoa", "xje", "eptra"))
+            .withIfMatch("oo")
+            .withIfNoneMatch("bw")
             .create();
 
-        Assertions.assertEquals("khtj", response.location());
-        Assertions.assertEquals("ngwfqatm", response.tags().get("dhtmdvypgikd"));
-        Assertions.assertEquals("zrypqlmfeokerqw", response.dnsResolverOutboundEndpoints().get(0).id());
+        Assertions.assertEquals("lyls", response.location());
+        Assertions.assertEquals("qjnsjervtia", response.tags().get("xsdszuempsb"));
+        Assertions.assertEquals("kcrodtjinfw", response.dnsResolverOutboundEndpoints().get(0).id());
     }
 
     // Use "Map.of" if available

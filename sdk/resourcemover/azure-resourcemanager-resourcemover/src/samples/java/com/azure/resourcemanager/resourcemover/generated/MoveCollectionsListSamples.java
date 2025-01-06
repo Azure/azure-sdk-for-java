@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.resourcemover.generated;
 
-/** Samples for MoveCollections List. */
+/**
+ * Samples for MoveCollections List.
+ */
 public final class MoveCollectionsListSamples {
     /*
-     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2023-08-01/examples/MoveCollections_ListMoveCollectionsBySubscription.json
+     * x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2023-08-01/examples/
+     * MoveCollections_ListMoveCollectionsBySubscription.json
      */
     /**
      * Sample code: MoveCollections_ListMoveCollectionsBySubscription.
-     *
+     * 
      * @param manager Entry point to ResourceMoverManager.
      */
     public static void moveCollectionsListMoveCollectionsBySubscription(

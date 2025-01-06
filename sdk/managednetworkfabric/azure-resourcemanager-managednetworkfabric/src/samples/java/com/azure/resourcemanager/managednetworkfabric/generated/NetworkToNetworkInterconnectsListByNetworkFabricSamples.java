@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
-/** Samples for NetworkToNetworkInterconnects ListByNetworkFabric. */
+/**
+ * Samples for NetworkToNetworkInterconnects ListByNetworkFabric.
+ */
 public final class NetworkToNetworkInterconnectsListByNetworkFabricSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkToNetworkInterconnects_ListByNetworkFabric_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
+     * NetworkToNetworkInterconnects_ListByNetworkFabric_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkToNetworkInterconnects_ListByNetworkFabric_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void networkToNetworkInterconnectsListByNetworkFabricMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        manager
-            .networkToNetworkInterconnects()
+        manager.networkToNetworkInterconnects()
             .listByNetworkFabric("example-rg", "example-fabric", com.azure.core.util.Context.NONE);
     }
 }

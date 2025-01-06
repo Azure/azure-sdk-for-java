@@ -24,7 +24,7 @@ public final class CustomLocationsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"identity\":{\"principalId\":\"bzoggigrx\",\"tenantId\":\"ur\",\"type\":\"None\"},\"properties\":{\"authentication\":{\"type\":\"spyd\",\"value\":\"koen\"},\"clusterExtensionIds\":[\"knvudwtiukb\",\"dng\",\"pocipazyxoegu\"],\"displayName\":\"jnpiucgyg\",\"hostResourceId\":\"qzntypm\",\"hostType\":\"Kubernetes\",\"namespace\":\"zcdrqjsdpydnfyhx\",\"provisioningState\":\"oejzi\"},\"location\":\"ifsjttgzfbishcb\",\"tags\":{\"alpbuxwgipwhon\":\"jdeyeamdpha\",\"kix\":\"wkgshwa\",\"eputtmrywnuzoqf\":\"bin\",\"qvyxlwhzlsicoho\":\"iyqzrnk\"},\"id\":\"qnwvlrya\",\"name\":\"w\",\"type\":\"heun\"}]}";
+            = "{\"value\":[{\"identity\":{\"principalId\":\"asxazjpqyegualhb\",\"tenantId\":\"hejjz\",\"type\":\"None\"},\"properties\":{\"authentication\":{\"type\":\"wdslfhotwmcy\",\"value\":\"wlbjnpgacftade\"},\"clusterExtensionIds\":[\"ltyfsop\",\"usue\",\"nzwdejba\",\"orxzdmohctbqvud\"],\"displayName\":\"dndnvow\",\"hostResourceId\":\"jjugwdkcglhslaz\",\"hostType\":\"Kubernetes\",\"namespace\":\"gdtjixhbkuofqwey\",\"provisioningState\":\"menevfyexfwh\"},\"location\":\"cibvyvdcsitynn\",\"tags\":{\"eypvhezrkg\":\"dectehfiqsc\",\"sle\":\"hcjrefovgmk\",\"cattpngjcrcczsq\":\"yvxyqjp\",\"mdajv\":\"jh\"},\"id\":\"ysou\",\"name\":\"q\",\"type\":\"canoaeupf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,18 +34,18 @@ public final class CustomLocationsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<CustomLocation> response
-            = manager.customLocations().listByResourceGroup("ithlvmezyvshxm", com.azure.core.util.Context.NONE);
+            = manager.customLocations().listByResourceGroup("jp", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ifsjttgzfbishcb", response.iterator().next().location());
-        Assertions.assertEquals("jdeyeamdpha", response.iterator().next().tags().get("alpbuxwgipwhon"));
+        Assertions.assertEquals("cibvyvdcsitynn", response.iterator().next().location());
+        Assertions.assertEquals("dectehfiqsc", response.iterator().next().tags().get("eypvhezrkg"));
         Assertions.assertEquals(ResourceIdentityType.NONE, response.iterator().next().identity().type());
-        Assertions.assertEquals("spyd", response.iterator().next().authentication().type());
-        Assertions.assertEquals("koen", response.iterator().next().authentication().value());
-        Assertions.assertEquals("knvudwtiukb", response.iterator().next().clusterExtensionIds().get(0));
-        Assertions.assertEquals("jnpiucgyg", response.iterator().next().displayName());
-        Assertions.assertEquals("qzntypm", response.iterator().next().hostResourceId());
+        Assertions.assertEquals("wdslfhotwmcy", response.iterator().next().authentication().type());
+        Assertions.assertEquals("wlbjnpgacftade", response.iterator().next().authentication().value());
+        Assertions.assertEquals("ltyfsop", response.iterator().next().clusterExtensionIds().get(0));
+        Assertions.assertEquals("dndnvow", response.iterator().next().displayName());
+        Assertions.assertEquals("jjugwdkcglhslaz", response.iterator().next().hostResourceId());
         Assertions.assertEquals(HostType.KUBERNETES, response.iterator().next().hostType());
-        Assertions.assertEquals("zcdrqjsdpydnfyhx", response.iterator().next().namespace());
-        Assertions.assertEquals("oejzi", response.iterator().next().provisioningState());
+        Assertions.assertEquals("gdtjixhbkuofqwey", response.iterator().next().namespace());
+        Assertions.assertEquals("menevfyexfwh", response.iterator().next().provisioningState());
     }
 }

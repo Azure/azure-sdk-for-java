@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The component properties of the network function.
  */
 @Immutable
-public final class ComponentProperties {
+public final class ComponentProperties implements JsonSerializable<ComponentProperties> {
     /*
      * The provisioning state of the component resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The JSON-serialized deployment profile of the component resource.
      */
-    @JsonProperty(value = "deploymentProfile", access = JsonProperty.Access.WRITE_ONLY)
     private String deploymentProfile;
 
     /*
      * The deployment status of the component resource.
      */
-    @JsonProperty(value = "deploymentStatus", access = JsonProperty.Access.WRITE_ONLY)
     private DeploymentStatusProperties deploymentStatus;
 
     /**
@@ -72,5 +73,45 @@ public final class ComponentProperties {
         if (deploymentStatus() != null) {
             deploymentStatus().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ComponentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ComponentProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ComponentProperties.
+     */
+    public static ComponentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ComponentProperties deserializedComponentProperties = new ComponentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedComponentProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("deploymentProfile".equals(fieldName)) {
+                    deserializedComponentProperties.deploymentProfile = reader.getString();
+                } else if ("deploymentStatus".equals(fieldName)) {
+                    deserializedComponentProperties.deploymentStatus = DeploymentStatusProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedComponentProperties;
+        });
     }
 }

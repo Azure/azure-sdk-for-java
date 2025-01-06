@@ -11,7 +11,7 @@ public final class DeletedConfigurationStoreInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeletedConfigurationStoreInner model = BinaryData.fromString(
-            "{\"id\":\"uko\",\"name\":\"yaxuconuqszfkb\",\"type\":\"pewr\",\"properties\":{\"configurationStoreId\":\"wv\",\"location\":\"ektcxsen\",\"deletionDate\":\"2021-11-28T07:09:02Z\",\"scheduledPurgeDate\":\"2021-08-04T00:26:01Z\",\"tags\":{\"lihkaetcktvfc\":\"rzpwvlqdqgbiq\",\"nkymuctqhjfbebrj\":\"vf\",\"wutttxfvjrbi\":\"xerf\"},\"purgeProtectionEnabled\":true}}")
+            "{\"id\":\"uzgwyzmhtx\",\"name\":\"gmtsavjcbpwxqpsr\",\"type\":\"ftguv\",\"properties\":{\"configurationStoreId\":\"hprwmdyv\",\"location\":\"tayriwwroyqbex\",\"deletionDate\":\"2021-05-05T17:55:38Z\",\"scheduledPurgeDate\":\"2021-02-15T11:45:28Z\",\"tags\":{\"vah\":\"cnojvknmefqsg\",\"qzcjrvxdj\":\"pjyzhpv\",\"awjvzunluthnnp\":\"lmwlxkvugfhzo\",\"jzuaejxdultskzbb\":\"nxipeil\"},\"purgeProtectionEnabled\":true}}")
             .toObject(DeletedConfigurationStoreInner.class);
     }
 

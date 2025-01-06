@@ -21,7 +21,7 @@ public class FormatReadSettings implements JsonSerializable<FormatReadSettings> 
     /*
      * The read setting type.
      */
-    private String type;
+    private String type = "FormatReadSettings";
 
     /*
      * Format read settings.
@@ -32,7 +32,6 @@ public class FormatReadSettings implements JsonSerializable<FormatReadSettings> 
      * Creates an instance of FormatReadSettings class.
      */
     public FormatReadSettings() {
-        this.type = "FormatReadSettings";
     }
 
     /**

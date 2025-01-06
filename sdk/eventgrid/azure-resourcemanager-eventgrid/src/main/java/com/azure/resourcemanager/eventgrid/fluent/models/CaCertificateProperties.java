@@ -5,43 +5,43 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.models.CaCertificateProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * The properties of CA certificate.
  */
 @Fluent
-public final class CaCertificateProperties {
+public final class CaCertificateProperties implements JsonSerializable<CaCertificateProperties> {
     /*
      * Description for the CA Certificate resource.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Base64 encoded PEM (Privacy Enhanced Mail) format certificate data.
      */
-    @JsonProperty(value = "encodedCertificate")
     private String encodedCertificate;
 
     /*
      * Certificate issue time in UTC. This is a read-only field.
      */
-    @JsonProperty(value = "issueTimeInUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime issueTimeInUtc;
 
     /*
      * Certificate expiry time in UTC. This is a read-only field.
      */
-    @JsonProperty(value = "expiryTimeInUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime expiryTimeInUtc;
 
     /*
      * Provisioning state of the CA Certificate resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private CaCertificateProvisioningState provisioningState;
 
     /**
@@ -123,5 +123,53 @@ public final class CaCertificateProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("encodedCertificate", this.encodedCertificate);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CaCertificateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CaCertificateProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CaCertificateProperties.
+     */
+    public static CaCertificateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CaCertificateProperties deserializedCaCertificateProperties = new CaCertificateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedCaCertificateProperties.description = reader.getString();
+                } else if ("encodedCertificate".equals(fieldName)) {
+                    deserializedCaCertificateProperties.encodedCertificate = reader.getString();
+                } else if ("issueTimeInUtc".equals(fieldName)) {
+                    deserializedCaCertificateProperties.issueTimeInUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("expiryTimeInUtc".equals(fieldName)) {
+                    deserializedCaCertificateProperties.expiryTimeInUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedCaCertificateProperties.provisioningState
+                        = CaCertificateProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCaCertificateProperties;
+        });
     }
 }

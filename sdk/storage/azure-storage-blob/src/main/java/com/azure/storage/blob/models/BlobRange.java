@@ -70,7 +70,9 @@ public final class BlobRange {
     }
 
     /**
-     * @return A {@code String} compliant with the format of the Azure Storage x-ms-range and Range headers.
+     * Gets a string compliant the format of the Azure Storage x-ms-range and Range headers.
+     *
+     * @return A string compliant with the format of the Azure Storage x-ms-range and Range headers.
      */
     @Override
     public String toString() {
@@ -83,6 +85,9 @@ public final class BlobRange {
     }
 
     /**
+     * Gets a string compliant with the format of the Azure Storage x-ms-range and Range headers if {@code count} isn't
+     * {@code null} or {@code offset} isn't 0, otherwise null.
+     *
      * @return {@link BlobRange#toString()} if {@code count} isn't {@code null} or {@code offset} isn't 0, otherwise
      * null.
      */

@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.MockHttpResponse;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.NoopTracer;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.ConnectionString;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.FilteringConfiguration;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKs;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKsBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.IsSubscribedHeaders;
@@ -17,6 +18,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,9 +26,10 @@ class QuickPulsePingSenderTests {
 
     @Test
     void endpointIsFormattedCorrectlyWhenUsingConnectionString() {
+        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration());
         ConnectionString connectionString = ConnectionString.parse("InstrumentationKey=testing-123");
         QuickPulsePingSender quickPulsePingSender = new QuickPulsePingSender(null, connectionString::getLiveEndpoint,
-            connectionString::getInstrumentationKey, null, null, null, null, null);
+            connectionString::getInstrumentationKey, null, null, null, null, null, configuration);
         String quickPulseEndpoint = quickPulsePingSender.getQuickPulseEndpoint();
         String instrumentationKey = quickPulsePingSender.getInstrumentationKey();
         assertThat(quickPulseEndpoint).isEqualTo("https://rt.services.visualstudio.com/");
@@ -35,9 +38,10 @@ class QuickPulsePingSenderTests {
 
     @Test
     void endpointIsFormattedCorrectlyWhenUsingInstrumentationKey() {
+        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration());
         ConnectionString connectionString = ConnectionString.parse("InstrumentationKey=A-test-instrumentation-key");
         QuickPulsePingSender quickPulsePingSender = new QuickPulsePingSender(null, connectionString::getLiveEndpoint,
-            connectionString::getInstrumentationKey, null, null, null, null, null);
+            connectionString::getInstrumentationKey, null, null, null, null, null, configuration);
         String quickPulseEndpoint = quickPulsePingSender.getQuickPulseEndpoint();
         String instrumentationKey = quickPulsePingSender.getInstrumentationKey();
         assertThat(quickPulseEndpoint).isEqualTo("https://rt.services.visualstudio.com/");
@@ -46,6 +50,7 @@ class QuickPulsePingSenderTests {
 
     @Test
     void endpointChangesWithRedirectHeaderAndGetNewPingInterval() {
+        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration());
         Map<String, String> headers = new HashMap<>();
         headers.put("x-ms-qps-service-polling-interval-hint", "1000");
         headers.put("x-ms-qps-service-endpoint-redirect-v2", "https://new.endpoint.com");
@@ -59,9 +64,9 @@ class QuickPulsePingSenderTests {
         LiveMetricsRestAPIsForClientSDKsBuilder builder = new LiveMetricsRestAPIsForClientSDKsBuilder();
         LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs
             = builder.pipeline(httpPipeline).buildClient();
-        QuickPulsePingSender quickPulsePingSender
-            = new QuickPulsePingSender(liveMetricsRestAPIsForClientSDKs, connectionString::getLiveEndpoint,
-                connectionString::getInstrumentationKey, null, "instance1", "machine1", "qpid123", "testSdkVersion");
+        QuickPulsePingSender quickPulsePingSender = new QuickPulsePingSender(liveMetricsRestAPIsForClientSDKs,
+            connectionString::getLiveEndpoint, connectionString::getInstrumentationKey, null, "instance1", "machine1",
+            "qpid123", "testSdkVersion", configuration);
         IsSubscribedHeaders pingHeaders = quickPulsePingSender.ping(null);
         assertThat("true").isEqualTo(pingHeaders.getXMsQpsSubscribed());
         assertThat("1000").isEqualTo(pingHeaders.getXMsQpsServicePollingIntervalHint());

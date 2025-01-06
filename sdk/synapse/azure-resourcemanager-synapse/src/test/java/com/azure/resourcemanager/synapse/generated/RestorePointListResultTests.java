@@ -11,7 +11,7 @@ public final class RestorePointListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestorePointListResult model = BinaryData.fromString(
-            "{\"value\":[{\"location\":\"orppxebmnzbtb\",\"properties\":{\"restorePointType\":\"CONTINUOUS\",\"earliestRestoreDate\":\"2021-02-10T22:55:47Z\",\"restorePointCreationDate\":\"2021-06-12T04:27:19Z\",\"restorePointLabel\":\"hdneuelfph\"},\"id\":\"dyhtozfikdowwquu\",\"name\":\"xzxcl\",\"type\":\"ithhqzon\"}],\"nextLink\":\"ggbhcohfwds\"}")
+            "{\"value\":[{\"location\":\"jeknizshq\",\"properties\":{\"restorePointType\":\"CONTINUOUS\",\"earliestRestoreDate\":\"2021-06-06T18:17:05Z\",\"restorePointCreationDate\":\"2020-12-31T19:03:55Z\",\"restorePointLabel\":\"mblrrilbywd\"},\"id\":\"smiccwrwfscj\",\"name\":\"n\",\"type\":\"nszqujiz\"},{\"location\":\"oqytibyowbblgy\",\"properties\":{\"restorePointType\":\"CONTINUOUS\",\"earliestRestoreDate\":\"2021-11-26T06:56:03Z\",\"restorePointCreationDate\":\"2021-08-30T13:25:29Z\",\"restorePointLabel\":\"xoi\"},\"id\":\"msksbp\",\"name\":\"mlqoljx\",\"type\":\"cgxxlxs\"}],\"nextLink\":\"gcvizqzdwlvwlyou\"}")
             .toObject(RestorePointListResult.class);
     }
 

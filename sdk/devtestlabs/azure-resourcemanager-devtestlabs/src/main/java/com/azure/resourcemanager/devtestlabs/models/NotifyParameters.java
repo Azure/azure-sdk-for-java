@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties for generating a Notification. */
+/**
+ * Properties for generating a Notification.
+ */
 @Fluent
-public final class NotifyParameters {
+public final class NotifyParameters implements JsonSerializable<NotifyParameters> {
     /*
      * The type of event (i.e. AutoShutdown, Cost)
      */
-    @JsonProperty(value = "eventName")
     private NotificationChannelEventType eventName;
 
     /*
      * Properties for the notification in json format.
      */
-    @JsonProperty(value = "jsonPayload")
     private String jsonPayload;
 
-    /** Creates an instance of NotifyParameters class. */
+    /**
+     * Creates an instance of NotifyParameters class.
+     */
     public NotifyParameters() {
     }
 
     /**
      * Get the eventName property: The type of event (i.e. AutoShutdown, Cost).
-     *
+     * 
      * @return the eventName value.
      */
     public NotificationChannelEventType eventName() {
@@ -37,7 +43,7 @@ public final class NotifyParameters {
 
     /**
      * Set the eventName property: The type of event (i.e. AutoShutdown, Cost).
-     *
+     * 
      * @param eventName the eventName value to set.
      * @return the NotifyParameters object itself.
      */
@@ -48,7 +54,7 @@ public final class NotifyParameters {
 
     /**
      * Get the jsonPayload property: Properties for the notification in json format.
-     *
+     * 
      * @return the jsonPayload value.
      */
     public String jsonPayload() {
@@ -57,7 +63,7 @@ public final class NotifyParameters {
 
     /**
      * Set the jsonPayload property: Properties for the notification in json format.
-     *
+     * 
      * @param jsonPayload the jsonPayload value to set.
      * @return the NotifyParameters object itself.
      */
@@ -68,9 +74,49 @@ public final class NotifyParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("eventName", this.eventName == null ? null : this.eventName.toString());
+        jsonWriter.writeStringField("jsonPayload", this.jsonPayload);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NotifyParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NotifyParameters if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NotifyParameters.
+     */
+    public static NotifyParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NotifyParameters deserializedNotifyParameters = new NotifyParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("eventName".equals(fieldName)) {
+                    deserializedNotifyParameters.eventName
+                        = NotificationChannelEventType.fromString(reader.getString());
+                } else if ("jsonPayload".equals(fieldName)) {
+                    deserializedNotifyParameters.jsonPayload = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNotifyParameters;
+        });
     }
 }

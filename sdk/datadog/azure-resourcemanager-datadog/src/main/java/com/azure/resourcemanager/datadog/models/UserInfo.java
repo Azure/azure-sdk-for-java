@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.datadog.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Includes name, email and optionally, phone number. User Information can't be null. */
+/**
+ * Includes name, email and optionally, phone number. User Information can't be null.
+ */
 @Fluent
-public final class UserInfo {
+public final class UserInfo implements JsonSerializable<UserInfo> {
     /*
      * Name of the user
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Email of the user used by Datadog for contacting them if needed
      */
-    @JsonProperty(value = "emailAddress")
     private String emailAddress;
 
     /*
      * Phone number of the user used by Datadog for contacting them if needed
      */
-    @JsonProperty(value = "phoneNumber")
     private String phoneNumber;
 
-    /** Creates an instance of UserInfo class. */
+    /**
+     * Creates an instance of UserInfo class.
+     */
     public UserInfo() {
     }
 
     /**
      * Get the name property: Name of the user.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -43,7 +48,7 @@ public final class UserInfo {
 
     /**
      * Set the name property: Name of the user.
-     *
+     * 
      * @param name the name value to set.
      * @return the UserInfo object itself.
      */
@@ -54,7 +59,7 @@ public final class UserInfo {
 
     /**
      * Get the emailAddress property: Email of the user used by Datadog for contacting them if needed.
-     *
+     * 
      * @return the emailAddress value.
      */
     public String emailAddress() {
@@ -63,7 +68,7 @@ public final class UserInfo {
 
     /**
      * Set the emailAddress property: Email of the user used by Datadog for contacting them if needed.
-     *
+     * 
      * @param emailAddress the emailAddress value to set.
      * @return the UserInfo object itself.
      */
@@ -74,7 +79,7 @@ public final class UserInfo {
 
     /**
      * Get the phoneNumber property: Phone number of the user used by Datadog for contacting them if needed.
-     *
+     * 
      * @return the phoneNumber value.
      */
     public String phoneNumber() {
@@ -83,7 +88,7 @@ public final class UserInfo {
 
     /**
      * Set the phoneNumber property: Phone number of the user used by Datadog for contacting them if needed.
-     *
+     * 
      * @param phoneNumber the phoneNumber value to set.
      * @return the UserInfo object itself.
      */
@@ -94,9 +99,51 @@ public final class UserInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("emailAddress", this.emailAddress);
+        jsonWriter.writeStringField("phoneNumber", this.phoneNumber);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserInfo if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the UserInfo.
+     */
+    public static UserInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserInfo deserializedUserInfo = new UserInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedUserInfo.name = reader.getString();
+                } else if ("emailAddress".equals(fieldName)) {
+                    deserializedUserInfo.emailAddress = reader.getString();
+                } else if ("phoneNumber".equals(fieldName)) {
+                    deserializedUserInfo.phoneNumber = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserInfo;
+        });
     }
 }

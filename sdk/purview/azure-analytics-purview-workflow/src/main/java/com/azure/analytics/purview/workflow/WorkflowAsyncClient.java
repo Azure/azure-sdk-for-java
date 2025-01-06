@@ -18,7 +18,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous PurviewWorkflowClient type. */
+/**
+ * Initializes a new instance of the asynchronous PurviewWorkflowClient type.
+ */
 @ServiceClient(builder = WorkflowClientBuilder.class, isAsync = true)
 public final class WorkflowAsyncClient {
     @Generated
@@ -26,7 +28,7 @@ public final class WorkflowAsyncClient {
 
     /**
      * Initializes an instance of WorkflowAsyncClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -36,10 +38,10 @@ public final class WorkflowAsyncClient {
 
     /**
      * Get a specific workflow.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     triggers (Required): [
@@ -59,8 +61,9 @@ public final class WorkflowAsyncClient {
      *     description: String (Required)
      *     actionDag: Object (Required)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param workflowId The workflow id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -77,10 +80,10 @@ public final class WorkflowAsyncClient {
 
     /**
      * Create or replace a workflow.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     triggers (Required): [
      *          (Required){
@@ -95,11 +98,13 @@ public final class WorkflowAsyncClient {
      *     description: String (Required)
      *     actionDag: Object (Optional)
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     triggers (Required): [
@@ -119,8 +124,9 @@ public final class WorkflowAsyncClient {
      *     description: String (Required)
      *     actionDag: Object (Required)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param workflowId The workflow id.
      * @param workflowCreateOrUpdateCommand Create or update workflow payload.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -140,7 +146,7 @@ public final class WorkflowAsyncClient {
 
     /**
      * Delete a workflow.
-     *
+     * 
      * @param workflowId The workflow id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -157,10 +163,10 @@ public final class WorkflowAsyncClient {
 
     /**
      * Validate a workflow.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     triggers (Required): [
      *          (Required){
@@ -175,11 +181,13 @@ public final class WorkflowAsyncClient {
      *     description: String (Required)
      *     actionDag: Object (Optional)
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     value (Required): [
      *          (Required){
@@ -193,8 +201,9 @@ public final class WorkflowAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param workflowId The workflow id.
      * @param workflowValidateQuery Check workflow payload.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

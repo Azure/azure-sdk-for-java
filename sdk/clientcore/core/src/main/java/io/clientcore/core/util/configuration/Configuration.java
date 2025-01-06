@@ -23,7 +23,7 @@ import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
  * <!-- src_embed io.clientcore.core.util.Configuration -->
  * <pre>
  * Configuration configuration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
- *     .root&#40;&quot;azure.sdk&quot;&#41;
+ *     .root&#40;&quot;my.sdk&quot;&#41;
  *     .buildSection&#40;&quot;client-name&quot;&#41;;
  *
  * ConfigurationProperty&lt;String&gt; proxyHostnameProperty = ConfigurationPropertyBuilder.ofString&#40;&quot;http.proxy.hostname&quot;&#41;
@@ -287,8 +287,8 @@ public class Configuration {
      *     .systemPropertyName&#40;&quot;http.proxyHost&quot;&#41;
      *     .build&#40;&#41;;
      *
-     * &#47;&#47; attempts to get local `azure.sdk.&lt;client-name&gt;.http.proxy.host` property and falls back to
-     * &#47;&#47; shared azure.sdk.http.proxy.port
+     * &#47;&#47; attempts to get local `my.sdk.&lt;client-name&gt;.http.proxy.host` property and falls back to
+     * &#47;&#47; shared my.sdk.http.proxy.port
      * System.out.println&#40;configuration.get&#40;property&#41;&#41;;
      * </pre>
      * <!-- end io.clientcore.core.util.Configuration.get#ConfigurationProperty -->

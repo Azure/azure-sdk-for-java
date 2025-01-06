@@ -20,7 +20,7 @@ public final class ConfigurationGroupValuesGetByResourceGroupSamples {
      */
     public static void
         getHybridConfigurationGroup(com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.configurationGroupValues().getByResourceGroupWithResponse("rg1", "testConfigurationGroupValue",
-            com.azure.core.util.Context.NONE);
+        manager.configurationGroupValues()
+            .getByResourceGroupWithResponse("rg1", "testConfigurationGroupValue", com.azure.core.util.Context.NONE);
     }
 }

@@ -36,17 +36,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in TenantConfigurationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TenantConfigurationsClient.
+ */
 public final class TenantConfigurationsClientImpl implements TenantConfigurationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final TenantConfigurationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of TenantConfigurationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     TenantConfigurationsClientImpl(ApiManagementClientImpl client) {
@@ -109,7 +115,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
     /**
      * This operation applies changes from the specified Git branch to the configuration database. This is a long
      * running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -157,7 +163,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
     /**
      * This operation applies changes from the specified Git branch to the configuration database. This is a long
      * running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -204,7 +210,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
     /**
      * This operation applies changes from the specified Git branch to the configuration database. This is a long
      * running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -228,7 +234,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
     /**
      * This operation applies changes from the specified Git branch to the configuration database. This is a long
      * running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -254,7 +260,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
     /**
      * This operation applies changes from the specified Git branch to the configuration database. This is a long
      * running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -274,7 +280,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
     /**
      * This operation applies changes from the specified Git branch to the configuration database. This is a long
      * running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -296,7 +302,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
     /**
      * This operation applies changes from the specified Git branch to the configuration database. This is a long
      * running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -316,7 +322,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
     /**
      * This operation applies changes from the specified Git branch to the configuration database. This is a long
      * running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -337,7 +343,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
     /**
      * This operation applies changes from the specified Git branch to the configuration database. This is a long
      * running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -356,7 +362,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
     /**
      * This operation applies changes from the specified Git branch to the configuration database. This is a long
      * running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -376,7 +382,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
     /**
      * This operation creates a commit with the current configuration snapshot to the specified branch in the
      * repository. This is a long running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -424,7 +430,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
     /**
      * This operation creates a commit with the current configuration snapshot to the specified branch in the
      * repository. This is a long running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -471,7 +477,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
     /**
      * This operation creates a commit with the current configuration snapshot to the specified branch in the
      * repository. This is a long running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -495,7 +501,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
     /**
      * This operation creates a commit with the current configuration snapshot to the specified branch in the
      * repository. This is a long running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -521,7 +527,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
     /**
      * This operation creates a commit with the current configuration snapshot to the specified branch in the
      * repository. This is a long running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -541,7 +547,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
     /**
      * This operation creates a commit with the current configuration snapshot to the specified branch in the
      * repository. This is a long running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -563,7 +569,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
     /**
      * This operation creates a commit with the current configuration snapshot to the specified branch in the
      * repository. This is a long running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -583,7 +589,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
     /**
      * This operation creates a commit with the current configuration snapshot to the specified branch in the
      * repository. This is a long running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -604,7 +610,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
     /**
      * This operation creates a commit with the current configuration snapshot to the specified branch in the
      * repository. This is a long running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -623,7 +629,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
     /**
      * This operation creates a commit with the current configuration snapshot to the specified branch in the
      * repository. This is a long running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -643,7 +649,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
     /**
      * This operation validates the changes in the specified Git branch. This is a long running operation and could take
      * several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -691,7 +697,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
     /**
      * This operation validates the changes in the specified Git branch. This is a long running operation and could take
      * several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -738,7 +744,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
     /**
      * This operation validates the changes in the specified Git branch. This is a long running operation and could take
      * several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -762,7 +768,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
     /**
      * This operation validates the changes in the specified Git branch. This is a long running operation and could take
      * several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -788,7 +794,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
     /**
      * This operation validates the changes in the specified Git branch. This is a long running operation and could take
      * several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -808,7 +814,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
     /**
      * This operation validates the changes in the specified Git branch. This is a long running operation and could take
      * several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -830,7 +836,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
     /**
      * This operation validates the changes in the specified Git branch. This is a long running operation and could take
      * several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -850,7 +856,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
     /**
      * This operation validates the changes in the specified Git branch. This is a long running operation and could take
      * several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -871,7 +877,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
     /**
      * This operation validates the changes in the specified Git branch. This is a long running operation and could take
      * several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -890,7 +896,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
     /**
      * This operation validates the changes in the specified Git branch. This is a long running operation and could take
      * several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -909,7 +915,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
 
     /**
      * Gets the status of the most recent synchronization between the configuration database and the Git repository.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -917,7 +923,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of the most recent synchronization between the configuration database and the Git repository
-     *     along with {@link Response} on successful completion of {@link Mono}.
+     * along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TenantConfigurationSyncStateContractInner>> getSyncStateWithResponseAsync(
@@ -950,7 +956,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
 
     /**
      * Gets the status of the most recent synchronization between the configuration database and the Git repository.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -959,7 +965,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of the most recent synchronization between the configuration database and the Git repository
-     *     along with {@link Response} on successful completion of {@link Mono}.
+     * along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TenantConfigurationSyncStateContractInner>> getSyncStateWithResponseAsync(
@@ -991,7 +997,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
 
     /**
      * Gets the status of the most recent synchronization between the configuration database and the Git repository.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -999,7 +1005,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of the most recent synchronization between the configuration database and the Git repository
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TenantConfigurationSyncStateContractInner> getSyncStateAsync(String resourceGroupName,
@@ -1010,7 +1016,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
 
     /**
      * Gets the status of the most recent synchronization between the configuration database and the Git repository.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -1019,7 +1025,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of the most recent synchronization between the configuration database and the Git repository
-     *     along with {@link Response}.
+     * along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TenantConfigurationSyncStateContractInner> getSyncStateWithResponse(String resourceGroupName,
@@ -1029,7 +1035,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
 
     /**
      * Gets the status of the most recent synchronization between the configuration database and the Git repository.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.

@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.mysqlflexibleserver.generated;
 
-import com.azure.resourcemanager.mysqlflexibleserver.models.Configuration;
+import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.ConfigurationInner;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationSource;
 
 /**
@@ -12,7 +12,9 @@ import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationSource;
  */
 public final class ConfigurationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Configurations/preview/2023-06-01-preview/examples/ConfigurationUpdate.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/ConfigurationUpdate.
+     * json
      */
     /**
      * Sample code: Update a user configuration.
@@ -20,9 +22,9 @@ public final class ConfigurationsUpdateSamples {
      * @param manager Entry point to MySqlManager.
      */
     public static void updateAUserConfiguration(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        Configuration resource = manager.configurations()
-            .getWithResponse("testrg", "testserver", "event_scheduler", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update().withValue("on").withSource(ConfigurationSource.USER_OVERRIDE).apply();
+        manager.configurations()
+            .update("testrg", "testserver", "event_scheduler",
+                new ConfigurationInner().withValue("on").withSource(ConfigurationSource.USER_OVERRIDE),
+                com.azure.core.util.Context.NONE);
     }
 }

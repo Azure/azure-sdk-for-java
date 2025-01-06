@@ -34,23 +34,30 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.networkcloud.fluent.L2NetworksClient;
 import com.azure.resourcemanager.networkcloud.fluent.models.L2NetworkInner;
+import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.networkcloud.models.L2NetworkList;
 import com.azure.resourcemanager.networkcloud.models.L2NetworkPatchParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in L2NetworksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in L2NetworksClient.
+ */
 public final class L2NetworksClientImpl implements L2NetworksClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final L2NetworksService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkCloudImpl client;
 
     /**
      * Initializes an instance of L2NetworksClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     L2NetworksClientImpl(NetworkCloudImpl client) {
@@ -140,13 +147,13 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * List layer 2 (L2) networks in the subscription.
-     *
-     * <p>Get a list of layer 2 (L2) networks in the provided subscription.
-     *
+     * 
+     * Get a list of layer 2 (L2) networks in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of layer 2 (L2) networks in the provided subscription along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<L2NetworkInner>> listSinglePageAsync() {
@@ -169,15 +176,15 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * List layer 2 (L2) networks in the subscription.
-     *
-     * <p>Get a list of layer 2 (L2) networks in the provided subscription.
-     *
+     * 
+     * Get a list of layer 2 (L2) networks in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of layer 2 (L2) networks in the provided subscription along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<L2NetworkInner>> listSinglePageAsync(Context context) {
@@ -200,13 +207,13 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * List layer 2 (L2) networks in the subscription.
-     *
-     * <p>Get a list of layer 2 (L2) networks in the provided subscription.
-     *
+     * 
+     * Get a list of layer 2 (L2) networks in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of layer 2 (L2) networks in the provided subscription as paginated response with {@link
-     *     PagedFlux}.
+     * @return a list of layer 2 (L2) networks in the provided subscription as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<L2NetworkInner> listAsync() {
@@ -216,15 +223,15 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * List layer 2 (L2) networks in the subscription.
-     *
-     * <p>Get a list of layer 2 (L2) networks in the provided subscription.
-     *
+     * 
+     * Get a list of layer 2 (L2) networks in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of layer 2 (L2) networks in the provided subscription as paginated response with {@link
-     *     PagedFlux}.
+     * @return a list of layer 2 (L2) networks in the provided subscription as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<L2NetworkInner> listAsync(Context context) {
@@ -234,13 +241,13 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * List layer 2 (L2) networks in the subscription.
-     *
-     * <p>Get a list of layer 2 (L2) networks in the provided subscription.
-     *
+     * 
+     * Get a list of layer 2 (L2) networks in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of layer 2 (L2) networks in the provided subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of layer 2 (L2) networks in the provided subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<L2NetworkInner> list() {
@@ -249,15 +256,15 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * List layer 2 (L2) networks in the subscription.
-     *
-     * <p>Get a list of layer 2 (L2) networks in the provided subscription.
-     *
+     * 
+     * Get a list of layer 2 (L2) networks in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of layer 2 (L2) networks in the provided subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of layer 2 (L2) networks in the provided subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<L2NetworkInner> list(Context context) {
@@ -266,15 +273,15 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * List layer 2 (L2) networks in the resource group.
-     *
-     * <p>Get a list of layer 2 (L2) networks in the provided resource group.
-     *
+     * 
+     * Get a list of layer 2 (L2) networks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of layer 2 (L2) networks in the provided resource group along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<L2NetworkInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -301,16 +308,16 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * List layer 2 (L2) networks in the resource group.
-     *
-     * <p>Get a list of layer 2 (L2) networks in the provided resource group.
-     *
+     * 
+     * Get a list of layer 2 (L2) networks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of layer 2 (L2) networks in the provided resource group along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<L2NetworkInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -338,15 +345,15 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * List layer 2 (L2) networks in the resource group.
-     *
-     * <p>Get a list of layer 2 (L2) networks in the provided resource group.
-     *
+     * 
+     * Get a list of layer 2 (L2) networks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of layer 2 (L2) networks in the provided resource group as paginated response with {@link
-     *     PagedFlux}.
+     * @return a list of layer 2 (L2) networks in the provided resource group as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<L2NetworkInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -356,16 +363,16 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * List layer 2 (L2) networks in the resource group.
-     *
-     * <p>Get a list of layer 2 (L2) networks in the provided resource group.
-     *
+     * 
+     * Get a list of layer 2 (L2) networks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of layer 2 (L2) networks in the provided resource group as paginated response with {@link
-     *     PagedFlux}.
+     * @return a list of layer 2 (L2) networks in the provided resource group as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<L2NetworkInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -375,15 +382,15 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * List layer 2 (L2) networks in the resource group.
-     *
-     * <p>Get a list of layer 2 (L2) networks in the provided resource group.
-     *
+     * 
+     * Get a list of layer 2 (L2) networks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of layer 2 (L2) networks in the provided resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of layer 2 (L2) networks in the provided resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<L2NetworkInner> listByResourceGroup(String resourceGroupName) {
@@ -392,16 +399,16 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * List layer 2 (L2) networks in the resource group.
-     *
-     * <p>Get a list of layer 2 (L2) networks in the provided resource group.
-     *
+     * 
+     * Get a list of layer 2 (L2) networks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of layer 2 (L2) networks in the provided resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of layer 2 (L2) networks in the provided resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<L2NetworkInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -410,16 +417,16 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * Retrieve the layer 2 (L2) network.
-     *
-     * <p>Get properties of the provided layer 2 (L2) network.
-     *
+     * 
+     * Get properties of the provided layer 2 (L2) network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of the provided layer 2 (L2) network along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<L2NetworkInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -448,9 +455,9 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * Retrieve the layer 2 (L2) network.
-     *
-     * <p>Get properties of the provided layer 2 (L2) network.
-     *
+     * 
+     * Get properties of the provided layer 2 (L2) network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @param context The context to associate with this operation.
@@ -458,7 +465,7 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of the provided layer 2 (L2) network along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<L2NetworkInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -486,9 +493,9 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * Retrieve the layer 2 (L2) network.
-     *
-     * <p>Get properties of the provided layer 2 (L2) network.
-     *
+     * 
+     * Get properties of the provided layer 2 (L2) network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -504,9 +511,9 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * Retrieve the layer 2 (L2) network.
-     *
-     * <p>Get properties of the provided layer 2 (L2) network.
-     *
+     * 
+     * Get properties of the provided layer 2 (L2) network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @param context The context to associate with this operation.
@@ -523,9 +530,9 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * Retrieve the layer 2 (L2) network.
-     *
-     * <p>Get properties of the provided layer 2 (L2) network.
-     *
+     * 
+     * Get properties of the provided layer 2 (L2) network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -540,9 +547,9 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * Create or update the layer 2 (L2) network.
-     *
-     * <p>Create a new layer 2 (L2) network or update the properties of the existing network.
-     *
+     * 
+     * Create a new layer 2 (L2) network or update the properties of the existing network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @param l2NetworkParameters The request body.
@@ -550,7 +557,7 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return l2Network represents a network that utilizes a single isolation domain set up for layer-2 resources along
-     *     with {@link Response} on successful completion of {@link Mono}.
+     * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -586,9 +593,9 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * Create or update the layer 2 (L2) network.
-     *
-     * <p>Create a new layer 2 (L2) network or update the properties of the existing network.
-     *
+     * 
+     * Create a new layer 2 (L2) network or update the properties of the existing network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @param l2NetworkParameters The request body.
@@ -597,7 +604,7 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return l2Network represents a network that utilizes a single isolation domain set up for layer-2 resources along
-     *     with {@link Response} on successful completion of {@link Mono}.
+     * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -631,9 +638,9 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * Create or update the layer 2 (L2) network.
-     *
-     * <p>Create a new layer 2 (L2) network or update the properties of the existing network.
-     *
+     * 
+     * Create a new layer 2 (L2) network or update the properties of the existing network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @param l2NetworkParameters The request body.
@@ -641,7 +648,7 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of l2Network represents a network that utilizes a single isolation
-     *     domain set up for layer-2 resources.
+     * domain set up for layer-2 resources.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<L2NetworkInner>, L2NetworkInner> beginCreateOrUpdateAsync(String resourceGroupName,
@@ -654,9 +661,9 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * Create or update the layer 2 (L2) network.
-     *
-     * <p>Create a new layer 2 (L2) network or update the properties of the existing network.
-     *
+     * 
+     * Create a new layer 2 (L2) network or update the properties of the existing network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @param l2NetworkParameters The request body.
@@ -665,7 +672,7 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of l2Network represents a network that utilizes a single isolation
-     *     domain set up for layer-2 resources.
+     * domain set up for layer-2 resources.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<L2NetworkInner>, L2NetworkInner> beginCreateOrUpdateAsync(String resourceGroupName,
@@ -679,9 +686,9 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * Create or update the layer 2 (L2) network.
-     *
-     * <p>Create a new layer 2 (L2) network or update the properties of the existing network.
-     *
+     * 
+     * Create a new layer 2 (L2) network or update the properties of the existing network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @param l2NetworkParameters The request body.
@@ -689,7 +696,7 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of l2Network represents a network that utilizes a single isolation
-     *     domain set up for layer-2 resources.
+     * domain set up for layer-2 resources.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<L2NetworkInner>, L2NetworkInner> beginCreateOrUpdate(String resourceGroupName,
@@ -699,9 +706,9 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * Create or update the layer 2 (L2) network.
-     *
-     * <p>Create a new layer 2 (L2) network or update the properties of the existing network.
-     *
+     * 
+     * Create a new layer 2 (L2) network or update the properties of the existing network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @param l2NetworkParameters The request body.
@@ -710,7 +717,7 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of l2Network represents a network that utilizes a single isolation
-     *     domain set up for layer-2 resources.
+     * domain set up for layer-2 resources.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<L2NetworkInner>, L2NetworkInner> beginCreateOrUpdate(String resourceGroupName,
@@ -721,9 +728,9 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * Create or update the layer 2 (L2) network.
-     *
-     * <p>Create a new layer 2 (L2) network or update the properties of the existing network.
-     *
+     * 
+     * Create a new layer 2 (L2) network or update the properties of the existing network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @param l2NetworkParameters The request body.
@@ -731,7 +738,7 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return l2Network represents a network that utilizes a single isolation domain set up for layer-2 resources on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<L2NetworkInner> createOrUpdateAsync(String resourceGroupName, String l2NetworkName,
@@ -742,9 +749,9 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * Create or update the layer 2 (L2) network.
-     *
-     * <p>Create a new layer 2 (L2) network or update the properties of the existing network.
-     *
+     * 
+     * Create a new layer 2 (L2) network or update the properties of the existing network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @param l2NetworkParameters The request body.
@@ -753,7 +760,7 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return l2Network represents a network that utilizes a single isolation domain set up for layer-2 resources on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<L2NetworkInner> createOrUpdateAsync(String resourceGroupName, String l2NetworkName,
@@ -764,9 +771,9 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * Create or update the layer 2 (L2) network.
-     *
-     * <p>Create a new layer 2 (L2) network or update the properties of the existing network.
-     *
+     * 
+     * Create a new layer 2 (L2) network or update the properties of the existing network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @param l2NetworkParameters The request body.
@@ -783,9 +790,9 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * Create or update the layer 2 (L2) network.
-     *
-     * <p>Create a new layer 2 (L2) network or update the properties of the existing network.
-     *
+     * 
+     * Create a new layer 2 (L2) network or update the properties of the existing network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @param l2NetworkParameters The request body.
@@ -803,15 +810,16 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * Delete the layer 2 (L2) network.
-     *
-     * <p>Delete the provided layer 2 (L2) network.
-     *
+     * 
+     * Delete the provided layer 2 (L2) network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String l2NetworkName) {
@@ -839,16 +847,17 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * Delete the layer 2 (L2) network.
-     *
-     * <p>Delete the provided layer 2 (L2) network.
-     *
+     * 
+     * Delete the provided layer 2 (L2) network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String l2NetworkName,
@@ -876,155 +885,161 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * Delete the layer 2 (L2) network.
-     *
-     * <p>Delete the provided layer 2 (L2) network.
-     *
+     * 
+     * Delete the provided layer 2 (L2) network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String l2NetworkName) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDeleteAsync(String resourceGroupName, String l2NetworkName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, l2NetworkName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
             this.client.getContext());
     }
 
     /**
      * Delete the layer 2 (L2) network.
-     *
-     * <p>Delete the provided layer 2 (L2) network.
-     *
+     * 
+     * Delete the provided layer 2 (L2) network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String l2NetworkName,
-        Context context) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDeleteAsync(String resourceGroupName, String l2NetworkName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, l2NetworkName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class, context);
     }
 
     /**
      * Delete the layer 2 (L2) network.
-     *
-     * <p>Delete the provided layer 2 (L2) network.
-     *
+     * 
+     * Delete the provided layer 2 (L2) network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String l2NetworkName) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDelete(String resourceGroupName, String l2NetworkName) {
         return this.beginDeleteAsync(resourceGroupName, l2NetworkName).getSyncPoller();
     }
 
     /**
      * Delete the layer 2 (L2) network.
-     *
-     * <p>Delete the provided layer 2 (L2) network.
-     *
+     * 
+     * Delete the provided layer 2 (L2) network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String l2NetworkName,
-        Context context) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDelete(String resourceGroupName, String l2NetworkName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, l2NetworkName, context).getSyncPoller();
     }
 
     /**
      * Delete the layer 2 (L2) network.
-     *
-     * <p>Delete the provided layer 2 (L2) network.
-     *
+     * 
+     * Delete the provided layer 2 (L2) network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String l2NetworkName) {
+    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String l2NetworkName) {
         return beginDeleteAsync(resourceGroupName, l2NetworkName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the layer 2 (L2) network.
-     *
-     * <p>Delete the provided layer 2 (L2) network.
-     *
+     * 
+     * Delete the provided layer 2 (L2) network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String l2NetworkName, Context context) {
+    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String l2NetworkName,
+        Context context) {
         return beginDeleteAsync(resourceGroupName, l2NetworkName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the layer 2 (L2) network.
-     *
-     * <p>Delete the provided layer 2 (L2) network.
-     *
+     * 
+     * Delete the provided layer 2 (L2) network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String l2NetworkName) {
-        deleteAsync(resourceGroupName, l2NetworkName).block();
+    public OperationStatusResultInner delete(String resourceGroupName, String l2NetworkName) {
+        return deleteAsync(resourceGroupName, l2NetworkName).block();
     }
 
     /**
      * Delete the layer 2 (L2) network.
-     *
-     * <p>Delete the provided layer 2 (L2) network.
-     *
+     * 
+     * Delete the provided layer 2 (L2) network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String l2NetworkName, Context context) {
-        deleteAsync(resourceGroupName, l2NetworkName, context).block();
+    public OperationStatusResultInner delete(String resourceGroupName, String l2NetworkName, Context context) {
+        return deleteAsync(resourceGroupName, l2NetworkName, context).block();
     }
 
     /**
      * Patch the layer 2 (L2) network.
-     *
-     * <p>Update tags associated with the provided layer 2 (L2) network.
-     *
+     * 
+     * Update tags associated with the provided layer 2 (L2) network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @param l2NetworkUpdateParameters The request body.
@@ -1032,7 +1047,7 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return l2Network represents a network that utilizes a single isolation domain set up for layer-2 resources along
-     *     with {@link Response} on successful completion of {@link Mono}.
+     * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<L2NetworkInner>> updateWithResponseAsync(String resourceGroupName, String l2NetworkName,
@@ -1065,9 +1080,9 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * Patch the layer 2 (L2) network.
-     *
-     * <p>Update tags associated with the provided layer 2 (L2) network.
-     *
+     * 
+     * Update tags associated with the provided layer 2 (L2) network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @param l2NetworkUpdateParameters The request body.
@@ -1076,7 +1091,7 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return l2Network represents a network that utilizes a single isolation domain set up for layer-2 resources along
-     *     with {@link Response} on successful completion of {@link Mono}.
+     * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<L2NetworkInner>> updateWithResponseAsync(String resourceGroupName, String l2NetworkName,
@@ -1107,16 +1122,16 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * Patch the layer 2 (L2) network.
-     *
-     * <p>Update tags associated with the provided layer 2 (L2) network.
-     *
+     * 
+     * Update tags associated with the provided layer 2 (L2) network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return l2Network represents a network that utilizes a single isolation domain set up for layer-2 resources on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<L2NetworkInner> updateAsync(String resourceGroupName, String l2NetworkName) {
@@ -1127,9 +1142,9 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * Patch the layer 2 (L2) network.
-     *
-     * <p>Update tags associated with the provided layer 2 (L2) network.
-     *
+     * 
+     * Update tags associated with the provided layer 2 (L2) network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @param l2NetworkUpdateParameters The request body.
@@ -1138,7 +1153,7 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return l2Network represents a network that utilizes a single isolation domain set up for layer-2 resources along
-     *     with {@link Response}.
+     * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<L2NetworkInner> updateWithResponse(String resourceGroupName, String l2NetworkName,
@@ -1148,9 +1163,9 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * Patch the layer 2 (L2) network.
-     *
-     * <p>Update tags associated with the provided layer 2 (L2) network.
-     *
+     * 
+     * Update tags associated with the provided layer 2 (L2) network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1166,14 +1181,13 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return l2NetworkList represents a list of L2 networks along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<L2NetworkInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1195,15 +1209,14 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return l2NetworkList represents a list of L2 networks along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<L2NetworkInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
@@ -1224,14 +1237,13 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return l2NetworkList represents a list of L2 networks along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<L2NetworkInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1253,15 +1265,14 @@ public final class L2NetworksClientImpl implements L2NetworksClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return l2NetworkList represents a list of L2 networks along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<L2NetworkInner>> listByResourceGroupNextSinglePageAsync(String nextLink,

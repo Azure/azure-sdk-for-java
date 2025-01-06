@@ -21,14 +21,14 @@ import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.TypeUtil;
-import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
+import io.clientcore.core.implementation.http.serializer.CompositeSerializer;
 import io.clientcore.core.implementation.util.Base64Uri;
 import io.clientcore.core.implementation.util.DateTimeRfc1123;
 import io.clientcore.core.implementation.util.UriBuilder;
 import io.clientcore.core.models.SimpleClass;
 import io.clientcore.core.util.Context;
 import io.clientcore.core.util.binarydata.BinaryData;
-import io.clientcore.core.util.serializer.ObjectSerializer;
+import io.clientcore.core.implementation.util.JsonSerializer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -57,7 +57,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SwaggerMethodParserTests {
-    private static final ObjectSerializer DEFAULT_SERIALIZER = new DefaultJsonSerializer();
+    private static final CompositeSerializer DEFAULT_SERIALIZER
+        = new CompositeSerializer(Arrays.asList(new JsonSerializer()));
 
     @ServiceInterface(name = "OperationMethods", host = "https://raw.host.com")
     interface OperationMethods {

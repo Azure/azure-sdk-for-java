@@ -154,3 +154,7 @@ if (-not (Test-Path "$StagingDirectory/troubleshooting")) {
 
 Compress-Archive -Path $OutputDirectory -DestinationPath "$StagingDirectory/troubleshooting/linting-report.zip"
 Write-Host "##vso[task.setvariable variable=HAS_TROUBLESHOOTING]true"
+
+# Fail the build if any of the reports contain errors.
+Write-Host "Linting errors have been found. Navigate to https://dev.azure.com/azure-sdk/$env:SYSTEM_TEAMPROJECT/_build/results?buildId=$env:BUILD_BUILDID&view=artifacts&pathAsName=false&type=publishedArtifacts and download the 'linting-report.zip' artifact to see what was found."
+exit 1

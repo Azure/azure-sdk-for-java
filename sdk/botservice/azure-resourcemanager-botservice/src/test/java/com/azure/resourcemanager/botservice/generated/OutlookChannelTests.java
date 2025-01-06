@@ -12,17 +12,17 @@ public final class OutlookChannelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OutlookChannel model = BinaryData.fromString(
-            "{\"channelName\":\"OutlookChannel\",\"etag\":\"xy\",\"provisioningState\":\"moyrxvwfudwpz\",\"location\":\"xhdzhlrqjbhckf\"}")
+            "{\"channelName\":\"OutlookChannel\",\"etag\":\"afkuwb\",\"provisioningState\":\"nwbmeh\",\"location\":\"eyvjusrtslhspkde\"}")
             .toObject(OutlookChannel.class);
-        Assertions.assertEquals("xy", model.etag());
-        Assertions.assertEquals("xhdzhlrqjbhckf", model.location());
+        Assertions.assertEquals("afkuwb", model.etag());
+        Assertions.assertEquals("eyvjusrtslhspkde", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OutlookChannel model = new OutlookChannel().withEtag("xy").withLocation("xhdzhlrqjbhckf");
+        OutlookChannel model = new OutlookChannel().withEtag("afkuwb").withLocation("eyvjusrtslhspkde");
         model = BinaryData.fromObject(model).toObject(OutlookChannel.class);
-        Assertions.assertEquals("xy", model.etag());
-        Assertions.assertEquals("xhdzhlrqjbhckf", model.location());
+        Assertions.assertEquals("afkuwb", model.etag());
+        Assertions.assertEquals("eyvjusrtslhspkde", model.location());
     }
 }

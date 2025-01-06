@@ -13,19 +13,19 @@ public final class UpdateIntegrationRuntimeRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateIntegrationRuntimeRequest model
-            = BinaryData.fromString("{\"autoUpdate\":\"On\",\"updateDelayOffset\":\"vcopex\"}")
+            = BinaryData.fromString("{\"autoUpdate\":\"On\",\"updateDelayOffset\":\"zrkgqhcjrefovg\"}")
                 .toObject(UpdateIntegrationRuntimeRequest.class);
         Assertions.assertEquals(IntegrationRuntimeAutoUpdate.ON, model.autoUpdate());
-        Assertions.assertEquals("vcopex", model.updateDelayOffset());
+        Assertions.assertEquals("zrkgqhcjrefovg", model.updateDelayOffset());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UpdateIntegrationRuntimeRequest model
             = new UpdateIntegrationRuntimeRequest().withAutoUpdate(IntegrationRuntimeAutoUpdate.ON)
-                .withUpdateDelayOffset("vcopex");
+                .withUpdateDelayOffset("zrkgqhcjrefovg");
         model = BinaryData.fromObject(model).toObject(UpdateIntegrationRuntimeRequest.class);
         Assertions.assertEquals(IntegrationRuntimeAutoUpdate.ON, model.autoUpdate());
-        Assertions.assertEquals("vcopex", model.updateDelayOffset());
+        Assertions.assertEquals("zrkgqhcjrefovg", model.updateDelayOffset());
     }
 }

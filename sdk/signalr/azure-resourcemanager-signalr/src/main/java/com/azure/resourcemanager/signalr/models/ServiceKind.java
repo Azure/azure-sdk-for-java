@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The kind of the service.
+ * The kind of the service, it can be SignalR or RawWebSockets.
  */
 public final class ServiceKind extends ExpandableStringEnum<ServiceKind> {
     /**

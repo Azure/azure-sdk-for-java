@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The ListCredentialResponseProperties model.
  */
 @Immutable
-public final class ListCredentialResponseProperties {
+public final class ListCredentialResponseProperties implements JsonSerializable<ListCredentialResponseProperties> {
     /*
      * Base64-encoded Kubernetes configuration file.
      */
-    @JsonProperty(value = "kubeconfigs", access = JsonProperty.Access.WRITE_ONLY)
     private List<CredentialResult> kubeconfigs;
 
     /**
@@ -43,5 +46,43 @@ public final class ListCredentialResponseProperties {
         if (kubeconfigs() != null) {
             kubeconfigs().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ListCredentialResponseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListCredentialResponseProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ListCredentialResponseProperties.
+     */
+    public static ListCredentialResponseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ListCredentialResponseProperties deserializedListCredentialResponseProperties
+                = new ListCredentialResponseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kubeconfigs".equals(fieldName)) {
+                    List<CredentialResult> kubeconfigs
+                        = reader.readArray(reader1 -> CredentialResult.fromJson(reader1));
+                    deserializedListCredentialResponseProperties.kubeconfigs = kubeconfigs;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedListCredentialResponseProperties;
+        });
     }
 }

@@ -10,8 +10,7 @@ package com.azure.resourcemanager.synapse.generated;
 public final class BigDataPoolsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/DeleteBigDataPool.
-     * json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/DeleteBigDataPool.json
      */
     /**
      * Sample code: Delete a Big Data pool.

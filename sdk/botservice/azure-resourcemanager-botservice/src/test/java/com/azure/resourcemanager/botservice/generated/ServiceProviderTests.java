@@ -15,16 +15,17 @@ public final class ServiceProviderTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceProvider model = BinaryData.fromString(
-            "{\"properties\":{\"id\":\"zevgb\",\"displayName\":\"jqabcypmivkwlzuv\",\"serviceProviderName\":\"fwnfnb\",\"devPortalUrl\":\"fionl\",\"iconUrl\":\"x\",\"parameters\":[{\"name\":\"tzxdpnqbqqwx\",\"type\":\"feallnwsu\",\"displayName\":\"snjampmng\",\"description\":\"scxaq\",\"helpUrl\":\"ochcbonqvpkvl\",\"default\":\"njeaseipheofloke\",\"metadata\":{\"constraints\":{\"required\":false}}}]}}")
+            "{\"properties\":{\"id\":\"uxwgipwho\",\"displayName\":\"wkgshwa\",\"serviceProviderName\":\"ixzbinjeputtmryw\",\"devPortalUrl\":\"zoqftiyqzrnkcqvy\",\"iconUrl\":\"whzlsicohoq\",\"parameters\":[{\"name\":\"lryav\",\"type\":\"heun\",\"displayName\":\"qhgyxzkonocukok\",\"description\":\"axuconuq\",\"helpUrl\":\"fkbey\",\"default\":\"wrmjmwvvjektc\",\"metadata\":{\"constraints\":{\"required\":false}}}]}}")
             .toObject(ServiceProvider.class);
-        Assertions.assertEquals("x", model.properties().iconUrl());
+        Assertions.assertEquals("whzlsicohoq", model.properties().iconUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceProvider model = new ServiceProvider().withProperties(new ServiceProviderProperties().withIconUrl("x")
-            .withParameters(Arrays.asList(new ServiceProviderParameter())));
+        ServiceProvider model
+            = new ServiceProvider().withProperties(new ServiceProviderProperties().withIconUrl("whzlsicohoq")
+                .withParameters(Arrays.asList(new ServiceProviderParameter())));
         model = BinaryData.fromObject(model).toObject(ServiceProvider.class);
-        Assertions.assertEquals("x", model.properties().iconUrl());
+        Assertions.assertEquals("whzlsicohoq", model.properties().iconUrl());
     }
 }

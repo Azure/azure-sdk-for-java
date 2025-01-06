@@ -384,7 +384,7 @@ public class JsonSerializable {
      * @param propertyName the property to get.
      * @return the long value
      */
-    protected Long getLong(String propertyName) {
+    public Long getLong(String propertyName) {
         return getWithMapping(propertyName, JsonNode::asLong);
     }
 

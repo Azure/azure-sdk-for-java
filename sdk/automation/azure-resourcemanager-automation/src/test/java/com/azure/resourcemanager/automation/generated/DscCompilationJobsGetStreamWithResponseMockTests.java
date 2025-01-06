@@ -34,7 +34,7 @@ public final class DscCompilationJobsGetStreamWithResponseMockTests {
 
         JobStream response = manager.dscCompilationJobs()
             .getStreamWithResponse("dveksbuhoduch", "lscrdpibfdyjduss",
-                UUID.fromString("8dc54ea5-549d-49fa-a301-d42605c4a3a6"), "yszekbhwlka",
+                UUID.fromString("a4e3d6d0-4057-4660-be1a-bd1df6e08386"), "yszekbhwlka",
                 com.azure.core.util.Context.NONE)
             .getValue();
 

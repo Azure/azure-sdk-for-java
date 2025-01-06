@@ -30,17 +30,23 @@ import com.azure.resourcemanager.maps.fluent.models.OperationDetailInner;
 import com.azure.resourcemanager.maps.models.MapsOperations;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in MapsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MapsClient.
+ */
 public final class MapsClientImpl implements MapsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final MapsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureMapsManagementClientImpl client;
 
     /**
      * Initializes an instance of MapsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     MapsClientImpl(AzureMapsManagementClientImpl client) {
@@ -89,11 +95,11 @@ public final class MapsClientImpl implements MapsClient {
 
     /**
      * List operations available for the Maps Resource Provider.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the set of operations available for Maps along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationDetailInner>> listOperationsSinglePageAsync() {
@@ -111,13 +117,13 @@ public final class MapsClientImpl implements MapsClient {
 
     /**
      * List operations available for the Maps Resource Provider.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the set of operations available for Maps along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationDetailInner>> listOperationsSinglePageAsync(Context context) {
@@ -134,7 +140,7 @@ public final class MapsClientImpl implements MapsClient {
 
     /**
      * List operations available for the Maps Resource Provider.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the set of operations available for Maps as paginated response with {@link PagedFlux}.
@@ -147,7 +153,7 @@ public final class MapsClientImpl implements MapsClient {
 
     /**
      * List operations available for the Maps Resource Provider.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -162,7 +168,7 @@ public final class MapsClientImpl implements MapsClient {
 
     /**
      * List operations available for the Maps Resource Provider.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the set of operations available for Maps as paginated response with {@link PagedIterable}.
@@ -174,7 +180,7 @@ public final class MapsClientImpl implements MapsClient {
 
     /**
      * List operations available for the Maps Resource Provider.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -188,11 +194,11 @@ public final class MapsClientImpl implements MapsClient {
 
     /**
      * List operations available for the Maps Resource Provider.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the set of operations available for Maps along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationDetailInner>> listSinglePageAsync() {
@@ -215,13 +221,13 @@ public final class MapsClientImpl implements MapsClient {
 
     /**
      * List operations available for the Maps Resource Provider.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the set of operations available for Maps along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationDetailInner>> listSinglePageAsync(Context context) {
@@ -244,7 +250,7 @@ public final class MapsClientImpl implements MapsClient {
 
     /**
      * List operations available for the Maps Resource Provider.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the set of operations available for Maps as paginated response with {@link PagedFlux}.
@@ -257,7 +263,7 @@ public final class MapsClientImpl implements MapsClient {
 
     /**
      * List operations available for the Maps Resource Provider.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -272,7 +278,7 @@ public final class MapsClientImpl implements MapsClient {
 
     /**
      * List operations available for the Maps Resource Provider.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the set of operations available for Maps as paginated response with {@link PagedIterable}.
@@ -284,7 +290,7 @@ public final class MapsClientImpl implements MapsClient {
 
     /**
      * List operations available for the Maps Resource Provider.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -298,14 +304,13 @@ public final class MapsClientImpl implements MapsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the set of operations available for Maps along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationDetailInner>> listOperationsNextSinglePageAsync(String nextLink) {
@@ -326,15 +331,14 @@ public final class MapsClientImpl implements MapsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the set of operations available for Maps along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationDetailInner>> listOperationsNextSinglePageAsync(String nextLink,
@@ -355,14 +359,13 @@ public final class MapsClientImpl implements MapsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the set of operations available for Maps along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationDetailInner>> listSubscriptionOperationsNextSinglePageAsync(String nextLink) {
@@ -384,15 +387,14 @@ public final class MapsClientImpl implements MapsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the set of operations available for Maps along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationDetailInner>> listSubscriptionOperationsNextSinglePageAsync(String nextLink,

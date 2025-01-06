@@ -29,11 +29,11 @@ public interface ThreatIntelligenceIndicatorsOperations {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param filter Filters the results, based on a Boolean condition. Optional.
-     * @param orderby Sorts the results. Optional.
      * @param top Returns only the first n results. Optional.
      * @param skipToken Skiptoken is only used if a previous operation returned a partial result. If a previous response
      * contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies
      * a starting point to use for subsequent calls. Optional.
+     * @param orderby Sorts the results. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -41,5 +41,5 @@ public interface ThreatIntelligenceIndicatorsOperations {
      * @return all threat intelligence indicators as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ThreatIntelligenceInformation> list(String resourceGroupName, String workspaceName, String filter,
-        String orderby, Integer top, String skipToken, Context context);
+        Integer top, String skipToken, String orderby, Context context);
 }

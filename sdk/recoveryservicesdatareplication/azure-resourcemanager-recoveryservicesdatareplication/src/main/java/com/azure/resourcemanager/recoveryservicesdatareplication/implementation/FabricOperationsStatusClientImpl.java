@@ -25,17 +25,23 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.FabricOp
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.OperationStatusInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in FabricOperationsStatusClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FabricOperationsStatusClient.
+ */
 public final class FabricOperationsStatusClientImpl implements FabricOperationsStatusClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final FabricOperationsStatusService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of FabricOperationsStatusClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     FabricOperationsStatusClientImpl(DataReplicationMgmtClientImpl client) {
@@ -64,9 +70,9 @@ public final class FabricOperationsStatusClientImpl implements FabricOperationsS
 
     /**
      * Gets the fabric operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the fabric.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param operationId The ID of an ongoing async operation.
@@ -105,9 +111,9 @@ public final class FabricOperationsStatusClientImpl implements FabricOperationsS
 
     /**
      * Gets the fabric operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the fabric.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param operationId The ID of an ongoing async operation.
@@ -146,9 +152,9 @@ public final class FabricOperationsStatusClientImpl implements FabricOperationsS
 
     /**
      * Gets the fabric operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the fabric.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param operationId The ID of an ongoing async operation.
@@ -165,9 +171,9 @@ public final class FabricOperationsStatusClientImpl implements FabricOperationsS
 
     /**
      * Gets the fabric operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the fabric.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param operationId The ID of an ongoing async operation.
@@ -185,9 +191,9 @@ public final class FabricOperationsStatusClientImpl implements FabricOperationsS
 
     /**
      * Gets the fabric operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the fabric.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param operationId The ID of an ongoing async operation.

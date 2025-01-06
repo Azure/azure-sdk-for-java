@@ -6,61 +6,42 @@ package com.azure.resourcemanager.networkcloud.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.networkcloud.NetworkCloudManager;
 import com.azure.resourcemanager.networkcloud.models.HybridAksPluginType;
 import com.azure.resourcemanager.networkcloud.models.TrunkedNetwork;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class TrunkedNetworksListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"extendedLocation\":{\"name\":\"pffmnoii\",\"type\":\"sudyh\"},\"properties\":{\"associatedResourceIds\":[\"jtalxrdsjr\",\"oluqwgusxxhdo\",\"pjwyblvtbdmvs\"],\"clusterId\":\"idaelqpvekmkwjfb\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"ggdusxu\",\"hybridAksClustersAssociatedIds\":[\"ivuxcjkcoqwczs\"],\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"izfwihvaangqt\",\"isolationDomainIds\":[\"jr\",\"dmfdvbbaexxjfwtg\",\"fkkauigvmua\",\"mczfedyuepsvplt\"],\"provisioningState\":\"Succeeded\",\"virtualMachinesAssociatedIds\":[\"vy\",\"eocfkumcfjxok\"],\"vlans\":[6427718059276347798]},\"location\":\"asvfnkwmy\",\"tags\":{\"txkrdtulcrcjdk\":\"ekrknfdrugjqyck\",\"mzoonsvobchkxfpw\":\"otcsu\"},\"id\":\"dyslbklglmnn\",\"name\":\"kwayqshwy\",\"type\":\"xrid\"}]}";
+            = "{\"value\":[{\"extendedLocation\":{\"name\":\"qhnmhk\",\"type\":\"ezsdsuxheq\"},\"properties\":{\"associatedResourceIds\":[\"ruxspinymmqgwok\",\"ikpazf\",\"mjxuvjipfdvhaxd\"],\"clusterId\":\"zaehpphthd\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"etatlakf\",\"hybridAksClustersAssociatedIds\":[\"xwgiks\",\"bvtooxrpogwp\",\"chgjtnhtukfacih\",\"bfntumeezbxvq\"],\"hybridAksPluginType\":\"SRIOV\",\"interfaceName\":\"vwcga\",\"isolationDomainIds\":[\"omtmjzwxuqgov\",\"xpwwzt\"],\"provisioningState\":\"Canceled\",\"virtualMachinesAssociatedIds\":[\"htgfred\",\"ls\",\"grllcc\",\"aovjow\"],\"vlans\":[2662581133111301135,6125335634113559684]},\"location\":\"comlyotgkwsx\",\"tags\":{\"genmvceb\":\"qor\",\"dcqjkedwqurc\":\"eetqujxcxxq\"},\"id\":\"ojmrvvxwjongzse\",\"name\":\"qqrsil\",\"type\":\"chskxxka\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetworkCloudManager manager = NetworkCloudManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<TrunkedNetwork> response
-            = manager.trunkedNetworks().listByResourceGroup("lpbyxroiduyq", com.azure.core.util.Context.NONE);
+            = manager.trunkedNetworks().listByResourceGroup("pqht", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("asvfnkwmy", response.iterator().next().location());
-        Assertions.assertEquals("ekrknfdrugjqyck", response.iterator().next().tags().get("txkrdtulcrcjdk"));
-        Assertions.assertEquals("pffmnoii", response.iterator().next().extendedLocation().name());
-        Assertions.assertEquals("sudyh", response.iterator().next().extendedLocation().type());
-        Assertions.assertEquals(HybridAksPluginType.OSDEVICE, response.iterator().next().hybridAksPluginType());
-        Assertions.assertEquals("izfwihvaangqt", response.iterator().next().interfaceName());
-        Assertions.assertEquals("jr", response.iterator().next().isolationDomainIds().get(0));
-        Assertions.assertEquals(6427718059276347798L, response.iterator().next().vlans().get(0));
+        Assertions.assertEquals("comlyotgkwsx", response.iterator().next().location());
+        Assertions.assertEquals("qor", response.iterator().next().tags().get("genmvceb"));
+        Assertions.assertEquals("qhnmhk", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("ezsdsuxheq", response.iterator().next().extendedLocation().type());
+        Assertions.assertEquals(HybridAksPluginType.SRIOV, response.iterator().next().hybridAksPluginType());
+        Assertions.assertEquals("vwcga", response.iterator().next().interfaceName());
+        Assertions.assertEquals("omtmjzwxuqgov", response.iterator().next().isolationDomainIds().get(0));
+        Assertions.assertEquals(2662581133111301135L, response.iterator().next().vlans().get(0));
     }
 }

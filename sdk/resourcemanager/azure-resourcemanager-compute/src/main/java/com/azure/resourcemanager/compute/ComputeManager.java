@@ -70,17 +70,29 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
     private GalleryImageVersions galleryImageVersions;
     private DiskEncryptionSets diskEncryptionSets;
 
-    /** @return the storage manager */
+    /**
+     * Gets the storage manager.
+     *
+     * @return the storage manager
+     */
     public StorageManager storageManager() {
         return storageManager;
     }
 
-    /** @return the network manager */
+    /**
+     * Gets the network manager.
+     *
+     * @return the network manager
+     */
     public NetworkManager networkManager() {
         return networkManager;
     }
 
-    /** @return the authorization manager */
+    /**
+     * Gets the authorization manager.
+     *
+     * @return the authorization manager
+     */
     public AuthorizationManager authorizationManager() {
         return authorizationManager;
     }
@@ -151,7 +163,11 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
         authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile);
     }
 
-    /** @return the availability set resource management API entry point */
+    /**
+     * Gets the availability set resource management API entry point.
+     *
+     * @return the availability set resource management API entry point
+     */
     public AvailabilitySets availabilitySets() {
         if (availabilitySets == null) {
             availabilitySets = new AvailabilitySetsImpl(this);
@@ -159,7 +175,11 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
         return availabilitySets;
     }
 
-    /** @return the virtual machine resource management API entry point */
+    /**
+     * Gets the virtual machine resource management API entry point.
+     *
+     * @return the virtual machine resource management API entry point
+     */
     public VirtualMachines virtualMachines() {
         if (virtualMachines == null) {
             virtualMachines = new VirtualMachinesImpl(this, storageManager, networkManager, authorizationManager);
@@ -167,7 +187,11 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
         return virtualMachines;
     }
 
-    /** @return the virtual machine image resource management API entry point */
+    /**
+     * Gets the virtual machine image resource management API entry point.
+     *
+     * @return the virtual machine image resource management API entry point
+     */
     public VirtualMachineImages virtualMachineImages() {
         if (virtualMachineImages == null) {
             virtualMachineImages = new VirtualMachineImagesImpl(
@@ -178,7 +202,11 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
         return virtualMachineImages;
     }
 
-    /** @return the virtual machine extension image resource management API entry point */
+    /**
+     * Gets the virtual machine extension image resource management API entry point.
+     *
+     * @return the virtual machine extension image resource management API entry point
+     */
     public VirtualMachineExtensionImages virtualMachineExtensionImages() {
         if (virtualMachineExtensionImages == null) {
             virtualMachineExtensionImages = new VirtualMachineExtensionImagesImpl(
@@ -188,7 +216,11 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
         return virtualMachineExtensionImages;
     }
 
-    /** @return the virtual machine scale set resource management API entry point */
+    /**
+     * Gets the virtual machine scale set resource management API entry point.
+     *
+     * @return the virtual machine scale set resource management API entry point
+     */
     public VirtualMachineScaleSets virtualMachineScaleSets() {
         if (virtualMachineScaleSets == null) {
             virtualMachineScaleSets
@@ -197,7 +229,11 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
         return virtualMachineScaleSets;
     }
 
-    /** @return the compute resource usage management API entry point */
+    /**
+     * Gets the compute resource usage management API entry point.
+     *
+     * @return the compute resource usage management API entry point
+     */
     public ComputeUsages usages() {
         if (computeUsages == null) {
             computeUsages = new ComputeUsagesImpl(this.serviceClient());
@@ -205,7 +241,11 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
         return computeUsages;
     }
 
-    /** @return the virtual machine custom image management API entry point */
+    /**
+     * Gets the virtual machine custom image management API entry point.
+     *
+     * @return the virtual machine custom image management API entry point
+     */
     public VirtualMachineCustomImages virtualMachineCustomImages() {
         if (virtualMachineCustomImages == null) {
             virtualMachineCustomImages = new VirtualMachineCustomImagesImpl(this);
@@ -213,7 +253,11 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
         return virtualMachineCustomImages;
     }
 
-    /** @return the managed disk management API entry point */
+    /**
+     * Gets the managed disk management API entry point.
+     *
+     * @return the managed disk management API entry point
+     */
     public Disks disks() {
         if (disks == null) {
             disks = new DisksImpl(this);
@@ -221,7 +265,11 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
         return disks;
     }
 
-    /** @return the managed snapshot management API entry point */
+    /**
+     * Gets the managed snapshot management API entry point.
+     *
+     * @return the managed snapshot management API entry point
+     */
     public Snapshots snapshots() {
         if (snapshots == null) {
             snapshots = new SnapshotsImpl(this);
@@ -229,7 +277,11 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
         return snapshots;
     }
 
-    /** @return the compute service SKU management API entry point */
+    /**
+     * Gets the compute service SKU management API entry point.
+     *
+     * @return the compute service SKU management API entry point
+     */
     public ComputeSkus computeSkus() {
         if (computeSkus == null) {
             computeSkus = new ComputeSkusImpl(this);
@@ -237,7 +289,11 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
         return computeSkus;
     }
 
-    /** @return the compute service gallery management entry point */
+    /**
+     * Gets the compute service gallery management entry point.
+     *
+     * @return the compute service gallery management entry point
+     */
     public Galleries galleries() {
         if (galleries == null) {
             galleries = new GalleriesImpl(this);
@@ -245,7 +301,11 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
         return galleries;
     }
 
-    /** @return the compute service gallery image management entry point */
+    /**
+     * Gets the compute service gallery image management entry point.
+     *
+     * @return the compute service gallery image management entry point
+     */
     public GalleryImages galleryImages() {
         if (galleryImages == null) {
             galleryImages = new GalleryImagesImpl(this);
@@ -253,7 +313,11 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
         return galleryImages;
     }
 
-    /** @return the compute service gallery image version management entry point */
+    /**
+     * Gets the compute service gallery image version management entry point.
+     *
+     * @return the compute service gallery image version management entry point
+     */
     public GalleryImageVersions galleryImageVersions() {
         if (galleryImageVersions == null) {
             galleryImageVersions = new GalleryImageVersionsImpl(this);
@@ -261,7 +325,11 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
         return galleryImageVersions;
     }
 
-    /** @return the disk encryption set management entry point */
+    /**
+     * Gets the disk encryption set management entry point.
+     *
+     * @return the disk encryption set management entry point
+     */
     public DiskEncryptionSets diskEncryptionSets() {
         if (diskEncryptionSets == null) {
             diskEncryptionSets = new DiskEncryptionSetsImpl(this);

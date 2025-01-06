@@ -21,7 +21,7 @@ public class IntegrationRuntime implements JsonSerializable<IntegrationRuntime> 
     /*
      * Type of integration runtime.
      */
-    private IntegrationRuntimeType type;
+    private IntegrationRuntimeType type = IntegrationRuntimeType.fromString("IntegrationRuntime");
 
     /*
      * Integration runtime description.
@@ -37,7 +37,6 @@ public class IntegrationRuntime implements JsonSerializable<IntegrationRuntime> 
      * Creates an instance of IntegrationRuntime class.
      */
     public IntegrationRuntime() {
-        this.type = IntegrationRuntimeType.fromString("IntegrationRuntime");
     }
 
     /**

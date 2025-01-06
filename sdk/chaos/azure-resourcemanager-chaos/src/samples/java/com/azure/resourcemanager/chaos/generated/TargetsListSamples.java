@@ -19,7 +19,8 @@ public final class TargetsListSamples {
      */
     public static void
         listAllTargetsThatExtendAVirtualMachineResource(com.azure.resourcemanager.chaos.ChaosManager manager) {
-        manager.targets().list("exampleRG", "Microsoft.Compute", "virtualMachines", "exampleVM", null,
-            com.azure.core.util.Context.NONE);
+        manager.targets()
+            .list("exampleRG", "Microsoft.Compute", "virtualMachines", "exampleVM", null,
+                com.azure.core.util.Context.NONE);
     }
 }

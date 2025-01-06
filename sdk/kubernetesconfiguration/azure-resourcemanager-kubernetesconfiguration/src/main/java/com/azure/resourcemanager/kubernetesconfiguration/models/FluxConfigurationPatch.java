@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.kubernetesconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.kubernetesconfiguration.fluent.models.FluxConfigurationPatchProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The Flux Configuration Patch Request object. */
+/**
+ * The Flux Configuration Patch Request object.
+ */
 @Fluent
-public final class FluxConfigurationPatch {
+public final class FluxConfigurationPatch implements JsonSerializable<FluxConfigurationPatch> {
     /*
      * Updatable properties of an Flux Configuration Patch Request
      */
-    @JsonProperty(value = "properties")
     private FluxConfigurationPatchProperties innerProperties;
 
-    /** Creates an instance of FluxConfigurationPatch class. */
+    /**
+     * Creates an instance of FluxConfigurationPatch class.
+     */
     public FluxConfigurationPatch() {
     }
 
     /**
      * Get the innerProperties property: Updatable properties of an Flux Configuration Patch Request.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FluxConfigurationPatchProperties innerProperties() {
@@ -33,7 +40,7 @@ public final class FluxConfigurationPatch {
 
     /**
      * Get the sourceKind property: Source Kind to pull the configuration data from.
-     *
+     * 
      * @return the sourceKind value.
      */
     public SourceKindType sourceKind() {
@@ -42,7 +49,7 @@ public final class FluxConfigurationPatch {
 
     /**
      * Set the sourceKind property: Source Kind to pull the configuration data from.
-     *
+     * 
      * @param sourceKind the sourceKind value to set.
      * @return the FluxConfigurationPatch object itself.
      */
@@ -57,7 +64,7 @@ public final class FluxConfigurationPatch {
     /**
      * Get the suspend property: Whether this configuration should suspend its reconciliation of its kustomizations and
      * sources.
-     *
+     * 
      * @return the suspend value.
      */
     public Boolean suspend() {
@@ -67,7 +74,7 @@ public final class FluxConfigurationPatch {
     /**
      * Set the suspend property: Whether this configuration should suspend its reconciliation of its kustomizations and
      * sources.
-     *
+     * 
      * @param suspend the suspend value to set.
      * @return the FluxConfigurationPatch object itself.
      */
@@ -81,7 +88,7 @@ public final class FluxConfigurationPatch {
 
     /**
      * Get the gitRepository property: Parameters to reconcile to the GitRepository source kind type.
-     *
+     * 
      * @return the gitRepository value.
      */
     public GitRepositoryPatchDefinition gitRepository() {
@@ -90,7 +97,7 @@ public final class FluxConfigurationPatch {
 
     /**
      * Set the gitRepository property: Parameters to reconcile to the GitRepository source kind type.
-     *
+     * 
      * @param gitRepository the gitRepository value to set.
      * @return the FluxConfigurationPatch object itself.
      */
@@ -104,7 +111,7 @@ public final class FluxConfigurationPatch {
 
     /**
      * Get the bucket property: Parameters to reconcile to the Bucket source kind type.
-     *
+     * 
      * @return the bucket value.
      */
     public BucketPatchDefinition bucket() {
@@ -113,7 +120,7 @@ public final class FluxConfigurationPatch {
 
     /**
      * Set the bucket property: Parameters to reconcile to the Bucket source kind type.
-     *
+     * 
      * @param bucket the bucket value to set.
      * @return the FluxConfigurationPatch object itself.
      */
@@ -127,7 +134,7 @@ public final class FluxConfigurationPatch {
 
     /**
      * Get the azureBlob property: Parameters to reconcile to the AzureBlob source kind type.
-     *
+     * 
      * @return the azureBlob value.
      */
     public AzureBlobPatchDefinition azureBlob() {
@@ -136,7 +143,7 @@ public final class FluxConfigurationPatch {
 
     /**
      * Set the azureBlob property: Parameters to reconcile to the AzureBlob source kind type.
-     *
+     * 
      * @param azureBlob the azureBlob value to set.
      * @return the FluxConfigurationPatch object itself.
      */
@@ -151,7 +158,7 @@ public final class FluxConfigurationPatch {
     /**
      * Get the kustomizations property: Array of kustomizations used to reconcile the artifact pulled by the source type
      * on the cluster.
-     *
+     * 
      * @return the kustomizations value.
      */
     public Map<String, KustomizationPatchDefinition> kustomizations() {
@@ -161,7 +168,7 @@ public final class FluxConfigurationPatch {
     /**
      * Set the kustomizations property: Array of kustomizations used to reconcile the artifact pulled by the source type
      * on the cluster.
-     *
+     * 
      * @param kustomizations the kustomizations value to set.
      * @return the FluxConfigurationPatch object itself.
      */
@@ -176,7 +183,7 @@ public final class FluxConfigurationPatch {
     /**
      * Get the configurationProtectedSettings property: Key-value pairs of protected configuration settings for the
      * configuration.
-     *
+     * 
      * @return the configurationProtectedSettings value.
      */
     public Map<String, String> configurationProtectedSettings() {
@@ -186,7 +193,7 @@ public final class FluxConfigurationPatch {
     /**
      * Set the configurationProtectedSettings property: Key-value pairs of protected configuration settings for the
      * configuration.
-     *
+     * 
      * @param configurationProtectedSettings the configurationProtectedSettings value to set.
      * @return the FluxConfigurationPatch object itself.
      */
@@ -201,12 +208,49 @@ public final class FluxConfigurationPatch {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FluxConfigurationPatch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FluxConfigurationPatch if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FluxConfigurationPatch.
+     */
+    public static FluxConfigurationPatch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FluxConfigurationPatch deserializedFluxConfigurationPatch = new FluxConfigurationPatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedFluxConfigurationPatch.innerProperties
+                        = FluxConfigurationPatchProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFluxConfigurationPatch;
+        });
     }
 }

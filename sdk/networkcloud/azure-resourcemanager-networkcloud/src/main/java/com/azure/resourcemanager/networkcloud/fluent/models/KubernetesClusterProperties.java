@@ -6,6 +6,10 @@ package com.azure.resourcemanager.networkcloud.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.models.AadConfiguration;
 import com.azure.resourcemanager.networkcloud.models.AdministratorConfiguration;
 import com.azure.resourcemanager.networkcloud.models.AvailableUpgrade;
@@ -17,142 +21,113 @@ import com.azure.resourcemanager.networkcloud.models.KubernetesClusterNode;
 import com.azure.resourcemanager.networkcloud.models.KubernetesClusterProvisioningState;
 import com.azure.resourcemanager.networkcloud.models.ManagedResourceGroupConfiguration;
 import com.azure.resourcemanager.networkcloud.models.NetworkConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** KubernetesClusterProperties represents the properties of Kubernetes cluster resource. */
+/**
+ * KubernetesClusterProperties represents the properties of Kubernetes cluster resource.
+ */
 @Fluent
-public final class KubernetesClusterProperties {
+public final class KubernetesClusterProperties implements JsonSerializable<KubernetesClusterProperties> {
     /*
-     * AadConfiguration represents the Azure Active Directory Integration properties.
-     *
      * The Azure Active Directory Integration properties.
      */
-    @JsonProperty(value = "aadConfiguration")
     private AadConfiguration aadConfiguration;
 
     /*
-     * AdministratorConfiguration represents the administrative credentials that will be applied to the control plane
-     * and agent pool nodes in Kubernetes clusters.
-     *
-     * The administrative credentials that will be applied to the control plane and agent pool nodes that do not
-     * specify their own values.
+     * The administrative credentials that will be applied to the control plane and agent pool nodes that do not specify
+     * their own values.
      */
-    @JsonProperty(value = "administratorConfiguration")
     private AdministratorConfiguration administratorConfiguration;
 
     /*
      * The full list of network resource IDs that are attached to this cluster, including those attached only to
      * specific agent pools.
      */
-    @JsonProperty(value = "attachedNetworkIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> attachedNetworkIds;
 
     /*
      * The list of versions that this Kubernetes cluster can be upgraded to.
      */
-    @JsonProperty(value = "availableUpgrades", access = JsonProperty.Access.WRITE_ONLY)
     private List<AvailableUpgrade> availableUpgrades;
 
     /*
      * The resource ID of the Network Cloud cluster.
      */
-    @JsonProperty(value = "clusterId", access = JsonProperty.Access.WRITE_ONLY)
     private String clusterId;
 
     /*
      * The resource ID of the connected cluster set up when this Kubernetes cluster is created.
      */
-    @JsonProperty(value = "connectedClusterId", access = JsonProperty.Access.WRITE_ONLY)
     private String connectedClusterId;
 
     /*
      * The current running version of Kubernetes on the control plane.
      */
-    @JsonProperty(value = "controlPlaneKubernetesVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String controlPlaneKubernetesVersion;
 
     /*
-     * ControlPlaneNodeConfiguration represents the selection of virtual machines and size of the control plane for a
-     * Kubernetes cluster.
-     *
      * The defining characteristics of the control plane for this Kubernetes Cluster.
      */
-    @JsonProperty(value = "controlPlaneNodeConfiguration", required = true)
     private ControlPlaneNodeConfiguration controlPlaneNodeConfiguration;
 
     /*
      * The current status of the Kubernetes cluster.
      */
-    @JsonProperty(value = "detailedStatus", access = JsonProperty.Access.WRITE_ONLY)
     private KubernetesClusterDetailedStatus detailedStatus;
 
     /*
      * The descriptive message about the current detailed status.
      */
-    @JsonProperty(value = "detailedStatusMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String detailedStatusMessage;
 
     /*
      * The current feature settings.
      */
-    @JsonProperty(value = "featureStatuses", access = JsonProperty.Access.WRITE_ONLY)
     private List<FeatureStatus> featureStatuses;
 
     /*
-     * The agent pools that are created with this Kubernetes cluster for running critical system services and
-     * workloads. This data in this field is only used during creation, and the field will be empty following the
-     * creation of the Kubernetes Cluster. After creation, the management of agent pools is done using the agentPools
-     * sub-resource.
+     * The agent pools that are created with this Kubernetes cluster for running critical system services and workloads.
+     * This data in this field is only used during creation, and the field will be empty following the creation of the
+     * Kubernetes Cluster. After creation, the management of agent pools is done using the agentPools sub-resource.
      */
-    @JsonProperty(value = "initialAgentPoolConfigurations", required = true)
     private List<InitialAgentPoolConfiguration> initialAgentPoolConfigurations;
 
     /*
-     * The Kubernetes version for this cluster. Accepts n.n, n.n.n, and n.n.n-n format. The interpreted version used
-     * will be resolved into this field after creation or update.
+     * The Kubernetes version for this cluster.
      */
-    @JsonProperty(value = "kubernetesVersion", required = true)
     private String kubernetesVersion;
 
     /*
-     * ManagedResourceGroupConfiguration represents the configuration of the resource group managed by Azure.
-     *
      * The configuration of the managed resource group associated with the resource.
      */
-    @JsonProperty(value = "managedResourceGroupConfiguration")
     private ManagedResourceGroupConfiguration managedResourceGroupConfiguration;
 
     /*
-     * NetworkConfiguration specifies the Kubernetes cluster network related configuration.
-     *
      * The configuration of the Kubernetes cluster networking, including the attachment of networks that span the
      * cluster.
      */
-    @JsonProperty(value = "networkConfiguration", required = true)
     private NetworkConfiguration networkConfiguration;
 
     /*
      * The details of the nodes in this cluster.
      */
-    @JsonProperty(value = "nodes", access = JsonProperty.Access.WRITE_ONLY)
     private List<KubernetesClusterNode> nodes;
 
     /*
      * The provisioning state of the Kubernetes cluster resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private KubernetesClusterProvisioningState provisioningState;
 
-    /** Creates an instance of KubernetesClusterProperties class. */
+    /**
+     * Creates an instance of KubernetesClusterProperties class.
+     */
     public KubernetesClusterProperties() {
     }
 
     /**
-     * Get the aadConfiguration property: AadConfiguration represents the Azure Active Directory Integration properties.
-     *
-     * <p>The Azure Active Directory Integration properties.
-     *
+     * Get the aadConfiguration property: The Azure Active Directory Integration properties.
+     * 
      * @return the aadConfiguration value.
      */
     public AadConfiguration aadConfiguration() {
@@ -160,10 +135,8 @@ public final class KubernetesClusterProperties {
     }
 
     /**
-     * Set the aadConfiguration property: AadConfiguration represents the Azure Active Directory Integration properties.
-     *
-     * <p>The Azure Active Directory Integration properties.
-     *
+     * Set the aadConfiguration property: The Azure Active Directory Integration properties.
+     * 
      * @param aadConfiguration the aadConfiguration value to set.
      * @return the KubernetesClusterProperties object itself.
      */
@@ -173,12 +146,9 @@ public final class KubernetesClusterProperties {
     }
 
     /**
-     * Get the administratorConfiguration property: AdministratorConfiguration represents the administrative credentials
-     * that will be applied to the control plane and agent pool nodes in Kubernetes clusters.
-     *
-     * <p>The administrative credentials that will be applied to the control plane and agent pool nodes that do not
-     * specify their own values.
-     *
+     * Get the administratorConfiguration property: The administrative credentials that will be applied to the control
+     * plane and agent pool nodes that do not specify their own values.
+     * 
      * @return the administratorConfiguration value.
      */
     public AdministratorConfiguration administratorConfiguration() {
@@ -186,12 +156,9 @@ public final class KubernetesClusterProperties {
     }
 
     /**
-     * Set the administratorConfiguration property: AdministratorConfiguration represents the administrative credentials
-     * that will be applied to the control plane and agent pool nodes in Kubernetes clusters.
-     *
-     * <p>The administrative credentials that will be applied to the control plane and agent pool nodes that do not
-     * specify their own values.
-     *
+     * Set the administratorConfiguration property: The administrative credentials that will be applied to the control
+     * plane and agent pool nodes that do not specify their own values.
+     * 
      * @param administratorConfiguration the administratorConfiguration value to set.
      * @return the KubernetesClusterProperties object itself.
      */
@@ -204,7 +171,7 @@ public final class KubernetesClusterProperties {
     /**
      * Get the attachedNetworkIds property: The full list of network resource IDs that are attached to this cluster,
      * including those attached only to specific agent pools.
-     *
+     * 
      * @return the attachedNetworkIds value.
      */
     public List<String> attachedNetworkIds() {
@@ -213,7 +180,7 @@ public final class KubernetesClusterProperties {
 
     /**
      * Get the availableUpgrades property: The list of versions that this Kubernetes cluster can be upgraded to.
-     *
+     * 
      * @return the availableUpgrades value.
      */
     public List<AvailableUpgrade> availableUpgrades() {
@@ -222,7 +189,7 @@ public final class KubernetesClusterProperties {
 
     /**
      * Get the clusterId property: The resource ID of the Network Cloud cluster.
-     *
+     * 
      * @return the clusterId value.
      */
     public String clusterId() {
@@ -232,7 +199,7 @@ public final class KubernetesClusterProperties {
     /**
      * Get the connectedClusterId property: The resource ID of the connected cluster set up when this Kubernetes cluster
      * is created.
-     *
+     * 
      * @return the connectedClusterId value.
      */
     public String connectedClusterId() {
@@ -241,7 +208,7 @@ public final class KubernetesClusterProperties {
 
     /**
      * Get the controlPlaneKubernetesVersion property: The current running version of Kubernetes on the control plane.
-     *
+     * 
      * @return the controlPlaneKubernetesVersion value.
      */
     public String controlPlaneKubernetesVersion() {
@@ -249,11 +216,9 @@ public final class KubernetesClusterProperties {
     }
 
     /**
-     * Get the controlPlaneNodeConfiguration property: ControlPlaneNodeConfiguration represents the selection of virtual
-     * machines and size of the control plane for a Kubernetes cluster.
-     *
-     * <p>The defining characteristics of the control plane for this Kubernetes Cluster.
-     *
+     * Get the controlPlaneNodeConfiguration property: The defining characteristics of the control plane for this
+     * Kubernetes Cluster.
+     * 
      * @return the controlPlaneNodeConfiguration value.
      */
     public ControlPlaneNodeConfiguration controlPlaneNodeConfiguration() {
@@ -261,11 +226,9 @@ public final class KubernetesClusterProperties {
     }
 
     /**
-     * Set the controlPlaneNodeConfiguration property: ControlPlaneNodeConfiguration represents the selection of virtual
-     * machines and size of the control plane for a Kubernetes cluster.
-     *
-     * <p>The defining characteristics of the control plane for this Kubernetes Cluster.
-     *
+     * Set the controlPlaneNodeConfiguration property: The defining characteristics of the control plane for this
+     * Kubernetes Cluster.
+     * 
      * @param controlPlaneNodeConfiguration the controlPlaneNodeConfiguration value to set.
      * @return the KubernetesClusterProperties object itself.
      */
@@ -277,7 +240,7 @@ public final class KubernetesClusterProperties {
 
     /**
      * Get the detailedStatus property: The current status of the Kubernetes cluster.
-     *
+     * 
      * @return the detailedStatus value.
      */
     public KubernetesClusterDetailedStatus detailedStatus() {
@@ -286,7 +249,7 @@ public final class KubernetesClusterProperties {
 
     /**
      * Get the detailedStatusMessage property: The descriptive message about the current detailed status.
-     *
+     * 
      * @return the detailedStatusMessage value.
      */
     public String detailedStatusMessage() {
@@ -295,7 +258,7 @@ public final class KubernetesClusterProperties {
 
     /**
      * Get the featureStatuses property: The current feature settings.
-     *
+     * 
      * @return the featureStatuses value.
      */
     public List<FeatureStatus> featureStatuses() {
@@ -307,7 +270,7 @@ public final class KubernetesClusterProperties {
      * for running critical system services and workloads. This data in this field is only used during creation, and the
      * field will be empty following the creation of the Kubernetes Cluster. After creation, the management of agent
      * pools is done using the agentPools sub-resource.
-     *
+     * 
      * @return the initialAgentPoolConfigurations value.
      */
     public List<InitialAgentPoolConfiguration> initialAgentPoolConfigurations() {
@@ -319,7 +282,7 @@ public final class KubernetesClusterProperties {
      * for running critical system services and workloads. This data in this field is only used during creation, and the
      * field will be empty following the creation of the Kubernetes Cluster. After creation, the management of agent
      * pools is done using the agentPools sub-resource.
-     *
+     * 
      * @param initialAgentPoolConfigurations the initialAgentPoolConfigurations value to set.
      * @return the KubernetesClusterProperties object itself.
      */
@@ -330,9 +293,8 @@ public final class KubernetesClusterProperties {
     }
 
     /**
-     * Get the kubernetesVersion property: The Kubernetes version for this cluster. Accepts n.n, n.n.n, and n.n.n-n
-     * format. The interpreted version used will be resolved into this field after creation or update.
-     *
+     * Get the kubernetesVersion property: The Kubernetes version for this cluster.
+     * 
      * @return the kubernetesVersion value.
      */
     public String kubernetesVersion() {
@@ -340,9 +302,8 @@ public final class KubernetesClusterProperties {
     }
 
     /**
-     * Set the kubernetesVersion property: The Kubernetes version for this cluster. Accepts n.n, n.n.n, and n.n.n-n
-     * format. The interpreted version used will be resolved into this field after creation or update.
-     *
+     * Set the kubernetesVersion property: The Kubernetes version for this cluster.
+     * 
      * @param kubernetesVersion the kubernetesVersion value to set.
      * @return the KubernetesClusterProperties object itself.
      */
@@ -352,11 +313,9 @@ public final class KubernetesClusterProperties {
     }
 
     /**
-     * Get the managedResourceGroupConfiguration property: ManagedResourceGroupConfiguration represents the
-     * configuration of the resource group managed by Azure.
-     *
-     * <p>The configuration of the managed resource group associated with the resource.
-     *
+     * Get the managedResourceGroupConfiguration property: The configuration of the managed resource group associated
+     * with the resource.
+     * 
      * @return the managedResourceGroupConfiguration value.
      */
     public ManagedResourceGroupConfiguration managedResourceGroupConfiguration() {
@@ -364,11 +323,9 @@ public final class KubernetesClusterProperties {
     }
 
     /**
-     * Set the managedResourceGroupConfiguration property: ManagedResourceGroupConfiguration represents the
-     * configuration of the resource group managed by Azure.
-     *
-     * <p>The configuration of the managed resource group associated with the resource.
-     *
+     * Set the managedResourceGroupConfiguration property: The configuration of the managed resource group associated
+     * with the resource.
+     * 
      * @param managedResourceGroupConfiguration the managedResourceGroupConfiguration value to set.
      * @return the KubernetesClusterProperties object itself.
      */
@@ -379,12 +336,9 @@ public final class KubernetesClusterProperties {
     }
 
     /**
-     * Get the networkConfiguration property: NetworkConfiguration specifies the Kubernetes cluster network related
-     * configuration.
-     *
-     * <p>The configuration of the Kubernetes cluster networking, including the attachment of networks that span the
-     * cluster.
-     *
+     * Get the networkConfiguration property: The configuration of the Kubernetes cluster networking, including the
+     * attachment of networks that span the cluster.
+     * 
      * @return the networkConfiguration value.
      */
     public NetworkConfiguration networkConfiguration() {
@@ -392,12 +346,9 @@ public final class KubernetesClusterProperties {
     }
 
     /**
-     * Set the networkConfiguration property: NetworkConfiguration specifies the Kubernetes cluster network related
-     * configuration.
-     *
-     * <p>The configuration of the Kubernetes cluster networking, including the attachment of networks that span the
-     * cluster.
-     *
+     * Set the networkConfiguration property: The configuration of the Kubernetes cluster networking, including the
+     * attachment of networks that span the cluster.
+     * 
      * @param networkConfiguration the networkConfiguration value to set.
      * @return the KubernetesClusterProperties object itself.
      */
@@ -408,7 +359,7 @@ public final class KubernetesClusterProperties {
 
     /**
      * Get the nodes property: The details of the nodes in this cluster.
-     *
+     * 
      * @return the nodes value.
      */
     public List<KubernetesClusterNode> nodes() {
@@ -417,7 +368,7 @@ public final class KubernetesClusterProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the Kubernetes cluster resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public KubernetesClusterProvisioningState provisioningState() {
@@ -426,7 +377,7 @@ public final class KubernetesClusterProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -440,8 +391,9 @@ public final class KubernetesClusterProperties {
             availableUpgrades().forEach(e -> e.validate());
         }
         if (controlPlaneNodeConfiguration() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property controlPlaneNodeConfiguration in model" + " KubernetesClusterProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property controlPlaneNodeConfiguration in model KubernetesClusterProperties"));
         } else {
             controlPlaneNodeConfiguration().validate();
         }
@@ -449,21 +401,24 @@ public final class KubernetesClusterProperties {
             featureStatuses().forEach(e -> e.validate());
         }
         if (initialAgentPoolConfigurations() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property initialAgentPoolConfigurations in model" + " KubernetesClusterProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property initialAgentPoolConfigurations in model KubernetesClusterProperties"));
         } else {
             initialAgentPoolConfigurations().forEach(e -> e.validate());
         }
         if (kubernetesVersion() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property kubernetesVersion in model KubernetesClusterProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property kubernetesVersion in model KubernetesClusterProperties"));
         }
         if (managedResourceGroupConfiguration() != null) {
             managedResourceGroupConfiguration().validate();
         }
         if (networkConfiguration() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property networkConfiguration in model KubernetesClusterProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property networkConfiguration in model KubernetesClusterProperties"));
         } else {
             networkConfiguration().validate();
         }
@@ -473,4 +428,95 @@ public final class KubernetesClusterProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(KubernetesClusterProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("controlPlaneNodeConfiguration", this.controlPlaneNodeConfiguration);
+        jsonWriter.writeArrayField("initialAgentPoolConfigurations", this.initialAgentPoolConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("kubernetesVersion", this.kubernetesVersion);
+        jsonWriter.writeJsonField("networkConfiguration", this.networkConfiguration);
+        jsonWriter.writeJsonField("aadConfiguration", this.aadConfiguration);
+        jsonWriter.writeJsonField("administratorConfiguration", this.administratorConfiguration);
+        jsonWriter.writeJsonField("managedResourceGroupConfiguration", this.managedResourceGroupConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KubernetesClusterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KubernetesClusterProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the KubernetesClusterProperties.
+     */
+    public static KubernetesClusterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KubernetesClusterProperties deserializedKubernetesClusterProperties = new KubernetesClusterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("controlPlaneNodeConfiguration".equals(fieldName)) {
+                    deserializedKubernetesClusterProperties.controlPlaneNodeConfiguration
+                        = ControlPlaneNodeConfiguration.fromJson(reader);
+                } else if ("initialAgentPoolConfigurations".equals(fieldName)) {
+                    List<InitialAgentPoolConfiguration> initialAgentPoolConfigurations
+                        = reader.readArray(reader1 -> InitialAgentPoolConfiguration.fromJson(reader1));
+                    deserializedKubernetesClusterProperties.initialAgentPoolConfigurations
+                        = initialAgentPoolConfigurations;
+                } else if ("kubernetesVersion".equals(fieldName)) {
+                    deserializedKubernetesClusterProperties.kubernetesVersion = reader.getString();
+                } else if ("networkConfiguration".equals(fieldName)) {
+                    deserializedKubernetesClusterProperties.networkConfiguration
+                        = NetworkConfiguration.fromJson(reader);
+                } else if ("aadConfiguration".equals(fieldName)) {
+                    deserializedKubernetesClusterProperties.aadConfiguration = AadConfiguration.fromJson(reader);
+                } else if ("administratorConfiguration".equals(fieldName)) {
+                    deserializedKubernetesClusterProperties.administratorConfiguration
+                        = AdministratorConfiguration.fromJson(reader);
+                } else if ("attachedNetworkIds".equals(fieldName)) {
+                    List<String> attachedNetworkIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedKubernetesClusterProperties.attachedNetworkIds = attachedNetworkIds;
+                } else if ("availableUpgrades".equals(fieldName)) {
+                    List<AvailableUpgrade> availableUpgrades
+                        = reader.readArray(reader1 -> AvailableUpgrade.fromJson(reader1));
+                    deserializedKubernetesClusterProperties.availableUpgrades = availableUpgrades;
+                } else if ("clusterId".equals(fieldName)) {
+                    deserializedKubernetesClusterProperties.clusterId = reader.getString();
+                } else if ("connectedClusterId".equals(fieldName)) {
+                    deserializedKubernetesClusterProperties.connectedClusterId = reader.getString();
+                } else if ("controlPlaneKubernetesVersion".equals(fieldName)) {
+                    deserializedKubernetesClusterProperties.controlPlaneKubernetesVersion = reader.getString();
+                } else if ("detailedStatus".equals(fieldName)) {
+                    deserializedKubernetesClusterProperties.detailedStatus
+                        = KubernetesClusterDetailedStatus.fromString(reader.getString());
+                } else if ("detailedStatusMessage".equals(fieldName)) {
+                    deserializedKubernetesClusterProperties.detailedStatusMessage = reader.getString();
+                } else if ("featureStatuses".equals(fieldName)) {
+                    List<FeatureStatus> featureStatuses = reader.readArray(reader1 -> FeatureStatus.fromJson(reader1));
+                    deserializedKubernetesClusterProperties.featureStatuses = featureStatuses;
+                } else if ("managedResourceGroupConfiguration".equals(fieldName)) {
+                    deserializedKubernetesClusterProperties.managedResourceGroupConfiguration
+                        = ManagedResourceGroupConfiguration.fromJson(reader);
+                } else if ("nodes".equals(fieldName)) {
+                    List<KubernetesClusterNode> nodes
+                        = reader.readArray(reader1 -> KubernetesClusterNode.fromJson(reader1));
+                    deserializedKubernetesClusterProperties.nodes = nodes;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedKubernetesClusterProperties.provisioningState
+                        = KubernetesClusterProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKubernetesClusterProperties;
+        });
+    }
 }

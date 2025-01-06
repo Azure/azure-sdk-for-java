@@ -17,6 +17,12 @@ public final class CallIntelligenceOptions {
     private String cognitiveServicesEndpoint;
 
     /**
+     * Creates an instance of {@link CallIntelligenceOptions}.
+     */
+    public CallIntelligenceOptions() {
+    }
+
+    /**
      * Get the cognitiveServicesEndpoint property: The endpoint URL of the Azure Cognitive Services resource
      * attached.
      *

@@ -93,6 +93,36 @@ public interface Deployments {
     void delete(String resourceGroupName, String accountName, String deploymentName, Context context);
 
     /**
+     * Lists the specified deployments skus associated with the Cognitive Services account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of cognitive services accounts operation response as paginated response with
+     * {@link PagedIterable}.
+     */
+    PagedIterable<SkuResource> listSkus(String resourceGroupName, String accountName, String deploymentName);
+
+    /**
+     * Lists the specified deployments skus associated with the Cognitive Services account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of cognitive services accounts operation response as paginated response with
+     * {@link PagedIterable}.
+     */
+    PagedIterable<SkuResource> listSkus(String resourceGroupName, String accountName, String deploymentName,
+        Context context);
+
+    /**
      * Gets the specified deployments associated with the Cognitive Services account.
      * 
      * @param id the resource ID.

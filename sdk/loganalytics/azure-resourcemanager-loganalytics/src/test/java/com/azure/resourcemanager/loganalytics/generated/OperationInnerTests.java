@@ -13,27 +13,27 @@ public final class OperationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationInner model = BinaryData.fromString(
-            "{\"name\":\"aivwitqscywu\",\"display\":{\"provider\":\"oluhczbwemh\",\"resource\":\"rsbrgzdwm\",\"operation\":\"eypqwdxggicccn\",\"description\":\"huexmk\"}}")
+            "{\"name\":\"vxb\",\"display\":{\"provider\":\"udutnco\",\"resource\":\"r\",\"operation\":\"qtvcofudflvkgj\",\"description\":\"gdknnqv\"}}")
             .toObject(OperationInner.class);
-        Assertions.assertEquals("aivwitqscywu", model.name());
-        Assertions.assertEquals("oluhczbwemh", model.display().provider());
-        Assertions.assertEquals("rsbrgzdwm", model.display().resource());
-        Assertions.assertEquals("eypqwdxggicccn", model.display().operation());
-        Assertions.assertEquals("huexmk", model.display().description());
+        Assertions.assertEquals("vxb", model.name());
+        Assertions.assertEquals("udutnco", model.display().provider());
+        Assertions.assertEquals("r", model.display().resource());
+        Assertions.assertEquals("qtvcofudflvkgj", model.display().operation());
+        Assertions.assertEquals("gdknnqv", model.display().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationInner model = new OperationInner().withName("aivwitqscywu")
-            .withDisplay(new OperationDisplay().withProvider("oluhczbwemh")
-                .withResource("rsbrgzdwm")
-                .withOperation("eypqwdxggicccn")
-                .withDescription("huexmk"));
+        OperationInner model = new OperationInner().withName("vxb")
+            .withDisplay(new OperationDisplay().withProvider("udutnco")
+                .withResource("r")
+                .withOperation("qtvcofudflvkgj")
+                .withDescription("gdknnqv"));
         model = BinaryData.fromObject(model).toObject(OperationInner.class);
-        Assertions.assertEquals("aivwitqscywu", model.name());
-        Assertions.assertEquals("oluhczbwemh", model.display().provider());
-        Assertions.assertEquals("rsbrgzdwm", model.display().resource());
-        Assertions.assertEquals("eypqwdxggicccn", model.display().operation());
-        Assertions.assertEquals("huexmk", model.display().description());
+        Assertions.assertEquals("vxb", model.name());
+        Assertions.assertEquals("udutnco", model.display().provider());
+        Assertions.assertEquals("r", model.display().resource());
+        Assertions.assertEquals("qtvcofudflvkgj", model.display().operation());
+        Assertions.assertEquals("gdknnqv", model.display().description());
     }
 }

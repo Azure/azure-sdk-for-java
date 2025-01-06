@@ -96,22 +96,38 @@ public final class ContainerInstanceManager extends Manager<ContainerInstanceMan
         this.networkManager = NetworkManager.authenticate(httpPipeline, profile);
     }
 
-    /** @return the storage manager in container instance manager */
+    /**
+     * Gets the storage manager in container instance manager.
+     *
+     * @return the storage manager in container instance manager
+     */
     public StorageManager storageManager() {
         return storageManager;
     }
 
-    /** @return the authorization manager in container instance manager */
+    /**
+     * Gets the authorization manager in container instance manager.
+     *
+     * @return the authorization manager in container instance manager
+     */
     public AuthorizationManager authorizationManager() {
         return authorizationManager;
     }
 
-    /** @return the network manager in container instance manager */
+    /**
+     * Gets the network manager in container instance manager.
+     *
+     * @return the network manager in container instance manager
+     */
     public NetworkManager networkManager() {
         return networkManager;
     }
 
-    /** @return the resource management API entry point */
+    /**
+     * Gets the resource management API entry point.
+     *
+     * @return the resource management API entry point
+     */
     public ContainerGroups containerGroups() {
         if (this.containerGroups == null) {
             this.containerGroups = new ContainerGroupsImpl(this);

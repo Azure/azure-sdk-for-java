@@ -81,6 +81,12 @@ public final class ChatMessage implements JsonSerializable<ChatMessage> {
     private Map<String, String> metadata;
 
     /**
+     * Creates a new instance of {@link ChatMessage}.
+     */
+    public ChatMessage() {
+    }
+
+    /**
      * Get the id property: The id of the chat message. This id is server generated.
      *
      * @return the id value.

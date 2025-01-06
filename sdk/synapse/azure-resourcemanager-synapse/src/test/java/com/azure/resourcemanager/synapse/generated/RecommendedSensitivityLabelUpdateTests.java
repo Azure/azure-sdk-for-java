@@ -13,25 +13,25 @@ public final class RecommendedSensitivityLabelUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecommendedSensitivityLabelUpdate model = BinaryData.fromString(
-            "{\"properties\":{\"op\":\"enable\",\"schema\":\"jsvfycxzbfvoowv\",\"table\":\"vmtgjqppy\",\"column\":\"s\"},\"id\":\"ronzmyhgfip\",\"name\":\"sxkm\",\"type\":\"waekrrjreafxtsgu\"}")
+            "{\"properties\":{\"op\":\"enable\",\"schema\":\"heafidlt\",\"table\":\"gsresmkssj\",\"column\":\"oiftxfkfwegprh\"},\"id\":\"tillucbiqtg\",\"name\":\"q\",\"type\":\"hm\"}")
             .toObject(RecommendedSensitivityLabelUpdate.class);
         Assertions.assertEquals(RecommendedSensitivityLabelUpdateKind.ENABLE, model.op());
-        Assertions.assertEquals("jsvfycxzbfvoowv", model.schema());
-        Assertions.assertEquals("vmtgjqppy", model.table());
-        Assertions.assertEquals("s", model.column());
+        Assertions.assertEquals("heafidlt", model.schema());
+        Assertions.assertEquals("gsresmkssj", model.table());
+        Assertions.assertEquals("oiftxfkfwegprh", model.column());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RecommendedSensitivityLabelUpdate model
             = new RecommendedSensitivityLabelUpdate().withOp(RecommendedSensitivityLabelUpdateKind.ENABLE)
-                .withSchema("jsvfycxzbfvoowv")
-                .withTable("vmtgjqppy")
-                .withColumn("s");
+                .withSchema("heafidlt")
+                .withTable("gsresmkssj")
+                .withColumn("oiftxfkfwegprh");
         model = BinaryData.fromObject(model).toObject(RecommendedSensitivityLabelUpdate.class);
         Assertions.assertEquals(RecommendedSensitivityLabelUpdateKind.ENABLE, model.op());
-        Assertions.assertEquals("jsvfycxzbfvoowv", model.schema());
-        Assertions.assertEquals("vmtgjqppy", model.table());
-        Assertions.assertEquals("s", model.column());
+        Assertions.assertEquals("heafidlt", model.schema());
+        Assertions.assertEquals("gsresmkssj", model.table());
+        Assertions.assertEquals("oiftxfkfwegprh", model.column());
     }
 }

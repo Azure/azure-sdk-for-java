@@ -6,11 +6,9 @@ package com.azure.resourcemanager.hybridnetwork.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridnetwork.HybridNetworkManager;
 import com.azure.resourcemanager.hybridnetwork.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.hybridnetwork.models.ManagedServiceIdentityType;
@@ -18,39 +16,22 @@ import com.azure.resourcemanager.hybridnetwork.models.Publisher;
 import com.azure.resourcemanager.hybridnetwork.models.PublisherPropertiesFormat;
 import com.azure.resourcemanager.hybridnetwork.models.PublisherScope;
 import com.azure.resourcemanager.hybridnetwork.models.UserAssignedIdentity;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PublishersCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"scope\":\"Unknown\"},\"identity\":{\"principalId\":\"8e24e8d2-cfe0-4a86-94be-c856fb684190\",\"tenantId\":\"592b52bd-0967-49c6-beed-5fa18d00e189\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"bb\":{\"principalId\":\"23e9b5cc-27e4-43e8-b340-d1c248c04e99\",\"clientId\":\"eb99eb8d-4740-430b-989a-fc8952f4f6f5\"},\"tabenbbk\":{\"principalId\":\"18051649-a205-4978-b5af-0a08b337ab9b\",\"clientId\":\"e6984e9a-05d4-490f-9e3e-0454616283ef\"},\"xzu\":{\"principalId\":\"dbe82618-d365-4f57-830b-5903b750f082\",\"clientId\":\"f23e737b-abb0-407e-a559-c5ef06ec5355\"}}},\"location\":\"feddwwnlza\",\"tags\":{\"gnhgook\":\"u\"},\"id\":\"talvnbwgp\",\"name\":\"emeluclv\",\"type\":\"jjukyrdnqodxah\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"scope\":\"Unknown\"},\"identity\":{\"principalId\":\"582a6eff-3f4c-4795-987e-39f50875d883\",\"tenantId\":\"9a808891-0962-4820-a97d-330eef7eba17\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"bb\":{\"principalId\":\"85614d0c-7265-4ceb-823b-b0a5cf516881\",\"clientId\":\"1b8701b8-6bdc-4c56-ae30-a81068883fcb\"},\"tabenbbk\":{\"principalId\":\"ddadc329-afe9-4c06-bb32-e530b3af2fa7\",\"clientId\":\"6241f357-53b7-490e-b78d-5c39932818e5\"},\"xzu\":{\"principalId\":\"8aa00151-12e4-4fbb-92de-0c9f0ac64d19\",\"clientId\":\"50935cb1-814a-484e-b353-784a1f931c89\"}}},\"location\":\"feddwwnlza\",\"tags\":{\"gnhgook\":\"u\"},\"id\":\"talvnbwgp\",\"name\":\"emeluclv\",\"type\":\"jjukyrdnqodxah\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HybridNetworkManager manager = HybridNetworkManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),

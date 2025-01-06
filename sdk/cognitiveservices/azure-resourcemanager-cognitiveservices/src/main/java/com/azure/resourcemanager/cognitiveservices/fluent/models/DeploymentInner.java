@@ -13,6 +13,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cognitiveservices.models.DeploymentProperties;
 import com.azure.resourcemanager.cognitiveservices.models.Sku;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Cognitive Services account deployment.
@@ -33,6 +34,11 @@ public final class DeploymentInner extends ProxyResource {
      * Resource Etag.
      */
     private String etag;
+
+    /*
+     * Resource tags.
+     */
+    private Map<String, String> tags;
 
     /*
      * Properties of Cognitive Services account deployment.
@@ -96,6 +102,26 @@ public final class DeploymentInner extends ProxyResource {
      */
     public String etag() {
         return this.etag;
+    }
+
+    /**
+     * Get the tags property: Resource tags.
+     * 
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Resource tags.
+     * 
+     * @param tags the tags value to set.
+     * @return the DeploymentInner object itself.
+     */
+    public DeploymentInner withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
     }
 
     /**
@@ -169,6 +195,7 @@ public final class DeploymentInner extends ProxyResource {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.properties);
         return jsonWriter.writeEndObject();
     }
@@ -201,6 +228,9 @@ public final class DeploymentInner extends ProxyResource {
                     deserializedDeploymentInner.systemData = SystemData.fromJson(reader);
                 } else if ("etag".equals(fieldName)) {
                     deserializedDeploymentInner.etag = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDeploymentInner.tags = tags;
                 } else if ("properties".equals(fieldName)) {
                     deserializedDeploymentInner.properties = DeploymentProperties.fromJson(reader);
                 } else {

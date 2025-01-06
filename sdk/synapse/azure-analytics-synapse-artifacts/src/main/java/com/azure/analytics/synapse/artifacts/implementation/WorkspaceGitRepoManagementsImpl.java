@@ -78,10 +78,8 @@ public final class WorkspaceGitRepoManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GitHubAccessTokenResponse>> getGitHubAccessTokenWithResponseAsync(
         GitHubAccessTokenRequest gitHubAccessTokenRequest, String clientRequestId) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getGitHubAccessToken(this.client.getEndpoint(), clientRequestId,
-            apiVersion, gitHubAccessTokenRequest, accept, context));
+        return FluxUtil.withContext(
+            context -> getGitHubAccessTokenWithResponseAsync(gitHubAccessTokenRequest, clientRequestId, context));
     }
 
     /**

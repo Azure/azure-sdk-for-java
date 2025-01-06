@@ -6,30 +6,34 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.models.CapacityConfig;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class CapacityConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CapacityConfig model = BinaryData
-            .fromString("{\"minimum\":2065726481,\"maximum\":528662531,\"step\":441208972,\"default\":792619615}")
+        CapacityConfig model = BinaryData.fromString(
+            "{\"minimum\":18555434,\"maximum\":480744947,\"step\":1333512274,\"default\":826548714,\"allowedValues\":[1771770705,307935551,1373205517,1850668583]}")
             .toObject(CapacityConfig.class);
-        Assertions.assertEquals(2065726481, model.minimum());
-        Assertions.assertEquals(528662531, model.maximum());
-        Assertions.assertEquals(441208972, model.step());
-        Assertions.assertEquals(792619615, model.defaultProperty());
+        Assertions.assertEquals(18555434, model.minimum());
+        Assertions.assertEquals(480744947, model.maximum());
+        Assertions.assertEquals(1333512274, model.step());
+        Assertions.assertEquals(826548714, model.defaultProperty());
+        Assertions.assertEquals(1771770705, model.allowedValues().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CapacityConfig model = new CapacityConfig().withMinimum(2065726481)
-            .withMaximum(528662531)
-            .withStep(441208972)
-            .withDefaultProperty(792619615);
+        CapacityConfig model = new CapacityConfig().withMinimum(18555434)
+            .withMaximum(480744947)
+            .withStep(1333512274)
+            .withDefaultProperty(826548714)
+            .withAllowedValues(Arrays.asList(1771770705, 307935551, 1373205517, 1850668583));
         model = BinaryData.fromObject(model).toObject(CapacityConfig.class);
-        Assertions.assertEquals(2065726481, model.minimum());
-        Assertions.assertEquals(528662531, model.maximum());
-        Assertions.assertEquals(441208972, model.step());
-        Assertions.assertEquals(792619615, model.defaultProperty());
+        Assertions.assertEquals(18555434, model.minimum());
+        Assertions.assertEquals(480744947, model.maximum());
+        Assertions.assertEquals(1333512274, model.step());
+        Assertions.assertEquals(826548714, model.defaultProperty());
+        Assertions.assertEquals(1771770705, model.allowedValues().get(0));
     }
 }

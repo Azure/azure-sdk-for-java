@@ -30,7 +30,7 @@ public final class ManagedMaintenanceWindowStatusesGetWithRMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ManagedMaintenanceWindowStatus response = manager.managedMaintenanceWindowStatuses()
-            .getWithResponse("amwabzxrvxcushsp", "aivmxyasflvgs", com.azure.core.util.Context.NONE)
+            .getWithResponse("ushsp", "aivmxyasflvgs", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

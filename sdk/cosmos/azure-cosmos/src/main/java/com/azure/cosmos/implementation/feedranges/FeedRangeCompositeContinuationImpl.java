@@ -269,11 +269,13 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
     }
 
     @Override
-    public <T> boolean hasFetchedAllChangesAvailableNow(FeedResponse<T> response) {
+    public <T> boolean hasFetchedAllChanges(FeedResponse<T> responseMessage, Long endLSN) {
+        long lastestLSNFromSessionToken = this.getLatestLsnFromSessionToken(responseMessage.getSessionToken());
+        long lsn = endLSN != null ? endLSN  : lastestLSNFromSessionToken;
         FeedRangeLSNContext feedRangeLSNContext =
             this.updateFeedRangeEndLSNIfAbsent(
                 this.currentToken.getRange(),
-                response.getSessionToken());
+                lsn);
         feedRangeLSNContext.handleLSNFromContinuation(this.currentToken);
 
         // find next token which can fetch more
@@ -282,9 +284,9 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
             this.moveToNextToken();
         } while (
             !this.currentToken.getRange().equals(initialToken) &&
-                this.hasFetchAllChangesAvailableNowForFeedRange(this.currentToken.getRange()));
+                this.hasFetchedAllChangesForFeedRange(this.currentToken.getRange()));
 
-        return this.hasFetchAllChangesAvailableNowForFeedRange(this.currentToken.getRange());
+        return this.hasFetchedAllChangesForFeedRange(this.currentToken.getRange());
     }
 
     @Override
@@ -340,18 +342,18 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
 
     private FeedRangeLSNContext updateFeedRangeEndLSNIfAbsent(
         Range<String> targetedRange,
-        String sessionToken) {
+        long endLSN) {
         return this.feedRangeLSNContextMap.computeIfAbsent(
             targetedRange,
             (range) -> {
                 return new FeedRangeLSNContext(
                     targetedRange,
-                    this.getLatestLsnFromSessionToken(sessionToken)
+                    endLSN
                 );
             });
     }
 
-    private boolean hasFetchAllChangesAvailableNowForFeedRange(Range<String> range) {
+    private boolean hasFetchedAllChangesForFeedRange(Range<String> range) {
         return this.feedRangeLSNContextMap.containsKey(range) &&
             this.feedRangeLSNContextMap.get(range).hasCompleted;
     }
@@ -597,7 +599,7 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         public void handleLSNFromContinuation(CompositeContinuationToken compositeContinuationToken) {
             if (!compositeContinuationToken.getRange().equals(this.range)) {
                 throw new IllegalStateException(
-                    "Range in FeedRangeAvailableNowContext is different than the range in the continuationToken");
+                    "Range in FeedRangeLSNContext is different than the range in the continuationToken");
             }
 
             String lsnFromContinuationToken = compositeContinuationToken.getToken();

@@ -17,39 +17,44 @@ public final class CommonDynamicMatchConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommonDynamicMatchConfiguration model = BinaryData.fromString(
-            "{\"ipGroups\":[{\"name\":\"cblembnkbwv\",\"ipAddressType\":\"IPv4\",\"ipPrefixes\":[\"ivqiheb\",\"tswbzuwfmd\"]}],\"vlanGroups\":[{\"name\":\"egizv\",\"vlans\":[\"elisdjub\",\"gbqi\",\"kxkbsazgakgacyr\"]},{\"name\":\"jdmspofapvuhryln\",\"vlans\":[\"rz\",\"bzjedmstk\",\"nlvxbcuii\"]}],\"portGroups\":[{\"name\":\"wfansnvpdi\",\"ports\":[\"kostbzbki\",\"buqny\",\"phzfylsgcrp\",\"bcunezzceze\"]},{\"name\":\"w\",\"ports\":[\"lwxjwetn\"]}]}")
+            "{\"ipGroups\":[{\"name\":\"qxepnylbfuaj\",\"ipAddressType\":\"IPv6\",\"ipPrefixes\":[\"vofqzhvfc\",\"byfmowuxr\",\"jpvd\",\"xfzwi\"]},{\"name\":\"wzjbh\",\"ipAddressType\":\"IPv4\",\"ipPrefixes\":[\"rkambt\",\"negvmnvuqe\",\"vldspa\",\"tjb\"]}],\"vlanGroups\":[{\"name\":\"flvestmjlxrrilo\",\"vlans\":[\"eewchpxlktw\",\"uziycsl\",\"vu\"]},{\"name\":\"ztcktyh\",\"vlans\":[\"edcg\",\"ulwm\",\"rqzz\"]}],\"portGroups\":[{\"name\":\"pglydz\",\"ports\":[\"vqeevtoep\",\"yutnwytpzdmov\",\"vf\",\"aawzqadfl\"]},{\"name\":\"ur\",\"ports\":[\"aecxndtic\",\"kpvzmlq\",\"mldgxobfirc\"]},{\"name\":\"pkc\",\"ports\":[\"zriykhy\",\"wf\"]}]}")
             .toObject(CommonDynamicMatchConfiguration.class);
-        Assertions.assertEquals("cblembnkbwv", model.ipGroups().get(0).name());
-        Assertions.assertEquals(IpAddressType.IPV4, model.ipGroups().get(0).ipAddressType());
-        Assertions.assertEquals("ivqiheb", model.ipGroups().get(0).ipPrefixes().get(0));
-        Assertions.assertEquals("egizv", model.vlanGroups().get(0).name());
-        Assertions.assertEquals("elisdjub", model.vlanGroups().get(0).vlans().get(0));
-        Assertions.assertEquals("wfansnvpdi", model.portGroups().get(0).name());
-        Assertions.assertEquals("kostbzbki", model.portGroups().get(0).ports().get(0));
+        Assertions.assertEquals("qxepnylbfuaj", model.ipGroups().get(0).name());
+        Assertions.assertEquals(IpAddressType.IPV6, model.ipGroups().get(0).ipAddressType());
+        Assertions.assertEquals("vofqzhvfc", model.ipGroups().get(0).ipPrefixes().get(0));
+        Assertions.assertEquals("flvestmjlxrrilo", model.vlanGroups().get(0).name());
+        Assertions.assertEquals("eewchpxlktw", model.vlanGroups().get(0).vlans().get(0));
+        Assertions.assertEquals("pglydz", model.portGroups().get(0).name());
+        Assertions.assertEquals("vqeevtoep", model.portGroups().get(0).ports().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CommonDynamicMatchConfiguration model = new CommonDynamicMatchConfiguration()
-            .withIpGroups(Arrays.asList(new IpGroupProperties().withName("cblembnkbwv")
-                .withIpAddressType(IpAddressType.IPV4)
-                .withIpPrefixes(Arrays.asList("ivqiheb", "tswbzuwfmd"))))
+            .withIpGroups(Arrays.asList(
+                new IpGroupProperties().withName("qxepnylbfuaj")
+                    .withIpAddressType(IpAddressType.IPV6)
+                    .withIpPrefixes(Arrays.asList("vofqzhvfc", "byfmowuxr", "jpvd", "xfzwi")),
+                new IpGroupProperties().withName("wzjbh")
+                    .withIpAddressType(IpAddressType.IPV4)
+                    .withIpPrefixes(Arrays.asList("rkambt", "negvmnvuqe", "vldspa", "tjb"))))
             .withVlanGroups(Arrays.asList(
-                new VlanGroupProperties().withName("egizv")
-                    .withVlans(Arrays.asList("elisdjub", "gbqi", "kxkbsazgakgacyr")),
-                new VlanGroupProperties().withName("jdmspofapvuhryln")
-                    .withVlans(Arrays.asList("rz", "bzjedmstk", "nlvxbcuii"))))
+                new VlanGroupProperties().withName("flvestmjlxrrilo")
+                    .withVlans(Arrays.asList("eewchpxlktw", "uziycsl", "vu")),
+                new VlanGroupProperties().withName("ztcktyh").withVlans(Arrays.asList("edcg", "ulwm", "rqzz"))))
             .withPortGroups(Arrays.asList(
-                new PortGroupProperties().withName("wfansnvpdi")
-                    .withPorts(Arrays.asList("kostbzbki", "buqny", "phzfylsgcrp", "bcunezzceze")),
-                new PortGroupProperties().withName("w").withPorts(Arrays.asList("lwxjwetn"))));
+                new PortGroupProperties().withName("pglydz")
+                    .withPorts(Arrays.asList("vqeevtoep", "yutnwytpzdmov", "vf", "aawzqadfl")),
+                new PortGroupProperties().withName("ur")
+                    .withPorts(Arrays.asList("aecxndtic", "kpvzmlq", "mldgxobfirc")),
+                new PortGroupProperties().withName("pkc").withPorts(Arrays.asList("zriykhy", "wf"))));
         model = BinaryData.fromObject(model).toObject(CommonDynamicMatchConfiguration.class);
-        Assertions.assertEquals("cblembnkbwv", model.ipGroups().get(0).name());
-        Assertions.assertEquals(IpAddressType.IPV4, model.ipGroups().get(0).ipAddressType());
-        Assertions.assertEquals("ivqiheb", model.ipGroups().get(0).ipPrefixes().get(0));
-        Assertions.assertEquals("egizv", model.vlanGroups().get(0).name());
-        Assertions.assertEquals("elisdjub", model.vlanGroups().get(0).vlans().get(0));
-        Assertions.assertEquals("wfansnvpdi", model.portGroups().get(0).name());
-        Assertions.assertEquals("kostbzbki", model.portGroups().get(0).ports().get(0));
+        Assertions.assertEquals("qxepnylbfuaj", model.ipGroups().get(0).name());
+        Assertions.assertEquals(IpAddressType.IPV6, model.ipGroups().get(0).ipAddressType());
+        Assertions.assertEquals("vofqzhvfc", model.ipGroups().get(0).ipPrefixes().get(0));
+        Assertions.assertEquals("flvestmjlxrrilo", model.vlanGroups().get(0).name());
+        Assertions.assertEquals("eewchpxlktw", model.vlanGroups().get(0).vlans().get(0));
+        Assertions.assertEquals("pglydz", model.portGroups().get(0).name());
+        Assertions.assertEquals("vqeevtoep", model.portGroups().get(0).ports().get(0));
     }
 }

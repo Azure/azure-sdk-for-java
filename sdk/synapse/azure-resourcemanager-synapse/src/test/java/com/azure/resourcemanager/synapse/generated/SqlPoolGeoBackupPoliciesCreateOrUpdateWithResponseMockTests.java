@@ -23,7 +23,7 @@ public final class SqlPoolGeoBackupPoliciesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"state\":\"Disabled\",\"storageType\":\"xvgjbfi\"},\"kind\":\"pn\",\"location\":\"dfcbjqqwmtqs\",\"id\":\"oxsazuxejgwe\",\"name\":\"ywnfyszzaczs\",\"type\":\"nqbdnddbboz\"}";
+            = "{\"properties\":{\"state\":\"Disabled\",\"storageType\":\"hg\"},\"kind\":\"djuxdbdljzgd\",\"location\":\"cvuq\",\"id\":\"sgzlrqhb\",\"name\":\"nq\",\"type\":\"gdxwbsfpyxx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,8 +34,8 @@ public final class SqlPoolGeoBackupPoliciesCreateOrUpdateWithResponseMockTests {
 
         GeoBackupPolicy response = manager.sqlPoolGeoBackupPolicies()
             .define(GeoBackupPolicyName.DEFAULT)
-            .withExistingSqlPool("rncclabv", "yngsuxxcz", "myqjog")
-            .withState(GeoBackupPolicyState.DISABLED)
+            .withExistingSqlPool("xbzrpejplssanb", "ttkgsux", "nrswgkpjhboyik")
+            .withState(GeoBackupPolicyState.ENABLED)
             .create();
 
         Assertions.assertEquals(GeoBackupPolicyState.DISABLED, response.state());

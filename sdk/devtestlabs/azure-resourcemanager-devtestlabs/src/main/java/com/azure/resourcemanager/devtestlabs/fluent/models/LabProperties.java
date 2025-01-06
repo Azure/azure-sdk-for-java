@@ -5,74 +5,71 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devtestlabs.models.EnvironmentPermission;
 import com.azure.resourcemanager.devtestlabs.models.LabAnnouncementProperties;
 import com.azure.resourcemanager.devtestlabs.models.LabSupportProperties;
 import com.azure.resourcemanager.devtestlabs.models.PremiumDataDisk;
 import com.azure.resourcemanager.devtestlabs.models.StorageType;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** Properties of a lab. */
+/**
+ * Properties of a lab.
+ */
 @Fluent
-public final class LabProperties {
+public final class LabProperties implements JsonSerializable<LabProperties> {
     /*
      * The lab's default storage account.
      */
-    @JsonProperty(value = "defaultStorageAccount", access = JsonProperty.Access.WRITE_ONLY)
     private String defaultStorageAccount;
 
     /*
      * The lab's default premium storage account.
      */
-    @JsonProperty(value = "defaultPremiumStorageAccount", access = JsonProperty.Access.WRITE_ONLY)
     private String defaultPremiumStorageAccount;
 
     /*
      * The lab's artifact storage account.
      */
-    @JsonProperty(value = "artifactsStorageAccount", access = JsonProperty.Access.WRITE_ONLY)
     private String artifactsStorageAccount;
 
     /*
      * The lab's premium data disk storage account.
      */
-    @JsonProperty(value = "premiumDataDiskStorageAccount", access = JsonProperty.Access.WRITE_ONLY)
     private String premiumDataDiskStorageAccount;
 
     /*
      * The lab's Key vault.
      */
-    @JsonProperty(value = "vaultName", access = JsonProperty.Access.WRITE_ONLY)
     private String vaultName;
 
     /*
      * Type of storage used by the lab. It can be either Premium or Standard. Default is Premium.
      */
-    @JsonProperty(value = "labStorageType")
     private StorageType labStorageType;
 
     /*
      * The ordered list of artifact resource IDs that should be applied on all Linux VM creations by default, prior to
      * the artifacts specified by the user.
      */
-    @JsonProperty(value = "mandatoryArtifactsResourceIdsLinux")
     private List<String> mandatoryArtifactsResourceIdsLinux;
 
     /*
-     * The ordered list of artifact resource IDs that should be applied on all Windows VM creations by default, prior
-     * to the artifacts specified by the user.
+     * The ordered list of artifact resource IDs that should be applied on all Windows VM creations by default, prior to
+     * the artifacts specified by the user.
      */
-    @JsonProperty(value = "mandatoryArtifactsResourceIdsWindows")
     private List<String> mandatoryArtifactsResourceIdsWindows;
 
     /*
      * The creation date of the lab.
      */
-    @JsonProperty(value = "createdDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdDate;
 
     /*
@@ -80,78 +77,68 @@ public final class LabProperties {
      * When its value is 'Enabled', creation of standard or premium data disks is allowed.
      * When its value is 'Disabled', only creation of standard data disks is allowed.
      */
-    @JsonProperty(value = "premiumDataDisks")
     private PremiumDataDisk premiumDataDisks;
 
     /*
      * The access rights to be granted to the user when provisioning an environment
      */
-    @JsonProperty(value = "environmentPermission")
     private EnvironmentPermission environmentPermission;
 
     /*
      * The properties of any lab announcement associated with this lab
      */
-    @JsonProperty(value = "announcement")
     private LabAnnouncementProperties announcement;
 
     /*
      * The properties of any lab support message associated with this lab
      */
-    @JsonProperty(value = "support")
     private LabSupportProperties support;
 
     /*
      * The resource group in which all new lab virtual machines will be created. To let DevTest Labs manage resource
      * group creation, set this value to null.
      */
-    @JsonProperty(value = "vmCreationResourceGroup", access = JsonProperty.Access.WRITE_ONLY)
     private String vmCreationResourceGroup;
 
     /*
      * The public IP address for the lab's load balancer.
      */
-    @JsonProperty(value = "publicIpId", access = JsonProperty.Access.WRITE_ONLY)
     private String publicIpId;
 
     /*
      * The load balancer used to for lab VMs that use shared IP address.
      */
-    @JsonProperty(value = "loadBalancerId", access = JsonProperty.Access.WRITE_ONLY)
     private String loadBalancerId;
 
     /*
      * The Network Security Group attached to the lab VMs Network interfaces to restrict open ports.
      */
-    @JsonProperty(value = "networkSecurityGroupId", access = JsonProperty.Access.WRITE_ONLY)
     private String networkSecurityGroupId;
 
     /*
      * Extended properties of the lab used for experimental features
      */
-    @JsonProperty(value = "extendedProperties")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> extendedProperties;
 
     /*
      * The provisioning status of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The unique immutable identifier of a resource (Guid).
      */
-    @JsonProperty(value = "uniqueIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String uniqueIdentifier;
 
-    /** Creates an instance of LabProperties class. */
+    /**
+     * Creates an instance of LabProperties class.
+     */
     public LabProperties() {
     }
 
     /**
      * Get the defaultStorageAccount property: The lab's default storage account.
-     *
+     * 
      * @return the defaultStorageAccount value.
      */
     public String defaultStorageAccount() {
@@ -160,7 +147,7 @@ public final class LabProperties {
 
     /**
      * Get the defaultPremiumStorageAccount property: The lab's default premium storage account.
-     *
+     * 
      * @return the defaultPremiumStorageAccount value.
      */
     public String defaultPremiumStorageAccount() {
@@ -169,7 +156,7 @@ public final class LabProperties {
 
     /**
      * Get the artifactsStorageAccount property: The lab's artifact storage account.
-     *
+     * 
      * @return the artifactsStorageAccount value.
      */
     public String artifactsStorageAccount() {
@@ -178,7 +165,7 @@ public final class LabProperties {
 
     /**
      * Get the premiumDataDiskStorageAccount property: The lab's premium data disk storage account.
-     *
+     * 
      * @return the premiumDataDiskStorageAccount value.
      */
     public String premiumDataDiskStorageAccount() {
@@ -187,7 +174,7 @@ public final class LabProperties {
 
     /**
      * Get the vaultName property: The lab's Key vault.
-     *
+     * 
      * @return the vaultName value.
      */
     public String vaultName() {
@@ -197,7 +184,7 @@ public final class LabProperties {
     /**
      * Get the labStorageType property: Type of storage used by the lab. It can be either Premium or Standard. Default
      * is Premium.
-     *
+     * 
      * @return the labStorageType value.
      */
     public StorageType labStorageType() {
@@ -207,7 +194,7 @@ public final class LabProperties {
     /**
      * Set the labStorageType property: Type of storage used by the lab. It can be either Premium or Standard. Default
      * is Premium.
-     *
+     * 
      * @param labStorageType the labStorageType value to set.
      * @return the LabProperties object itself.
      */
@@ -219,7 +206,7 @@ public final class LabProperties {
     /**
      * Get the mandatoryArtifactsResourceIdsLinux property: The ordered list of artifact resource IDs that should be
      * applied on all Linux VM creations by default, prior to the artifacts specified by the user.
-     *
+     * 
      * @return the mandatoryArtifactsResourceIdsLinux value.
      */
     public List<String> mandatoryArtifactsResourceIdsLinux() {
@@ -229,7 +216,7 @@ public final class LabProperties {
     /**
      * Set the mandatoryArtifactsResourceIdsLinux property: The ordered list of artifact resource IDs that should be
      * applied on all Linux VM creations by default, prior to the artifacts specified by the user.
-     *
+     * 
      * @param mandatoryArtifactsResourceIdsLinux the mandatoryArtifactsResourceIdsLinux value to set.
      * @return the LabProperties object itself.
      */
@@ -241,7 +228,7 @@ public final class LabProperties {
     /**
      * Get the mandatoryArtifactsResourceIdsWindows property: The ordered list of artifact resource IDs that should be
      * applied on all Windows VM creations by default, prior to the artifacts specified by the user.
-     *
+     * 
      * @return the mandatoryArtifactsResourceIdsWindows value.
      */
     public List<String> mandatoryArtifactsResourceIdsWindows() {
@@ -251,7 +238,7 @@ public final class LabProperties {
     /**
      * Set the mandatoryArtifactsResourceIdsWindows property: The ordered list of artifact resource IDs that should be
      * applied on all Windows VM creations by default, prior to the artifacts specified by the user.
-     *
+     * 
      * @param mandatoryArtifactsResourceIdsWindows the mandatoryArtifactsResourceIdsWindows value to set.
      * @return the LabProperties object itself.
      */
@@ -262,7 +249,7 @@ public final class LabProperties {
 
     /**
      * Get the createdDate property: The creation date of the lab.
-     *
+     * 
      * @return the createdDate value.
      */
     public OffsetDateTime createdDate() {
@@ -270,10 +257,10 @@ public final class LabProperties {
     }
 
     /**
-     * Get the premiumDataDisks property: The setting to enable usage of premium data disks. When its value is
-     * 'Enabled', creation of standard or premium data disks is allowed. When its value is 'Disabled', only creation of
-     * standard data disks is allowed.
-     *
+     * Get the premiumDataDisks property: The setting to enable usage of premium data disks.
+     * When its value is 'Enabled', creation of standard or premium data disks is allowed.
+     * When its value is 'Disabled', only creation of standard data disks is allowed.
+     * 
      * @return the premiumDataDisks value.
      */
     public PremiumDataDisk premiumDataDisks() {
@@ -281,10 +268,10 @@ public final class LabProperties {
     }
 
     /**
-     * Set the premiumDataDisks property: The setting to enable usage of premium data disks. When its value is
-     * 'Enabled', creation of standard or premium data disks is allowed. When its value is 'Disabled', only creation of
-     * standard data disks is allowed.
-     *
+     * Set the premiumDataDisks property: The setting to enable usage of premium data disks.
+     * When its value is 'Enabled', creation of standard or premium data disks is allowed.
+     * When its value is 'Disabled', only creation of standard data disks is allowed.
+     * 
      * @param premiumDataDisks the premiumDataDisks value to set.
      * @return the LabProperties object itself.
      */
@@ -296,7 +283,7 @@ public final class LabProperties {
     /**
      * Get the environmentPermission property: The access rights to be granted to the user when provisioning an
      * environment.
-     *
+     * 
      * @return the environmentPermission value.
      */
     public EnvironmentPermission environmentPermission() {
@@ -306,7 +293,7 @@ public final class LabProperties {
     /**
      * Set the environmentPermission property: The access rights to be granted to the user when provisioning an
      * environment.
-     *
+     * 
      * @param environmentPermission the environmentPermission value to set.
      * @return the LabProperties object itself.
      */
@@ -317,7 +304,7 @@ public final class LabProperties {
 
     /**
      * Get the announcement property: The properties of any lab announcement associated with this lab.
-     *
+     * 
      * @return the announcement value.
      */
     public LabAnnouncementProperties announcement() {
@@ -326,7 +313,7 @@ public final class LabProperties {
 
     /**
      * Set the announcement property: The properties of any lab announcement associated with this lab.
-     *
+     * 
      * @param announcement the announcement value to set.
      * @return the LabProperties object itself.
      */
@@ -337,7 +324,7 @@ public final class LabProperties {
 
     /**
      * Get the support property: The properties of any lab support message associated with this lab.
-     *
+     * 
      * @return the support value.
      */
     public LabSupportProperties support() {
@@ -346,7 +333,7 @@ public final class LabProperties {
 
     /**
      * Set the support property: The properties of any lab support message associated with this lab.
-     *
+     * 
      * @param support the support value to set.
      * @return the LabProperties object itself.
      */
@@ -358,7 +345,7 @@ public final class LabProperties {
     /**
      * Get the vmCreationResourceGroup property: The resource group in which all new lab virtual machines will be
      * created. To let DevTest Labs manage resource group creation, set this value to null.
-     *
+     * 
      * @return the vmCreationResourceGroup value.
      */
     public String vmCreationResourceGroup() {
@@ -367,7 +354,7 @@ public final class LabProperties {
 
     /**
      * Get the publicIpId property: The public IP address for the lab's load balancer.
-     *
+     * 
      * @return the publicIpId value.
      */
     public String publicIpId() {
@@ -376,7 +363,7 @@ public final class LabProperties {
 
     /**
      * Get the loadBalancerId property: The load balancer used to for lab VMs that use shared IP address.
-     *
+     * 
      * @return the loadBalancerId value.
      */
     public String loadBalancerId() {
@@ -386,7 +373,7 @@ public final class LabProperties {
     /**
      * Get the networkSecurityGroupId property: The Network Security Group attached to the lab VMs Network interfaces to
      * restrict open ports.
-     *
+     * 
      * @return the networkSecurityGroupId value.
      */
     public String networkSecurityGroupId() {
@@ -395,7 +382,7 @@ public final class LabProperties {
 
     /**
      * Get the extendedProperties property: Extended properties of the lab used for experimental features.
-     *
+     * 
      * @return the extendedProperties value.
      */
     public Map<String, String> extendedProperties() {
@@ -404,7 +391,7 @@ public final class LabProperties {
 
     /**
      * Set the extendedProperties property: Extended properties of the lab used for experimental features.
-     *
+     * 
      * @param extendedProperties the extendedProperties value to set.
      * @return the LabProperties object itself.
      */
@@ -415,7 +402,7 @@ public final class LabProperties {
 
     /**
      * Get the provisioningState property: The provisioning status of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -424,7 +411,7 @@ public final class LabProperties {
 
     /**
      * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
+     * 
      * @return the uniqueIdentifier value.
      */
     public String uniqueIdentifier() {
@@ -433,7 +420,7 @@ public final class LabProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -443,5 +430,99 @@ public final class LabProperties {
         if (support() != null) {
             support().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("labStorageType",
+            this.labStorageType == null ? null : this.labStorageType.toString());
+        jsonWriter.writeArrayField("mandatoryArtifactsResourceIdsLinux", this.mandatoryArtifactsResourceIdsLinux,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("mandatoryArtifactsResourceIdsWindows", this.mandatoryArtifactsResourceIdsWindows,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("premiumDataDisks",
+            this.premiumDataDisks == null ? null : this.premiumDataDisks.toString());
+        jsonWriter.writeStringField("environmentPermission",
+            this.environmentPermission == null ? null : this.environmentPermission.toString());
+        jsonWriter.writeJsonField("announcement", this.announcement);
+        jsonWriter.writeJsonField("support", this.support);
+        jsonWriter.writeMapField("extendedProperties", this.extendedProperties,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LabProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LabProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LabProperties.
+     */
+    public static LabProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LabProperties deserializedLabProperties = new LabProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("defaultStorageAccount".equals(fieldName)) {
+                    deserializedLabProperties.defaultStorageAccount = reader.getString();
+                } else if ("defaultPremiumStorageAccount".equals(fieldName)) {
+                    deserializedLabProperties.defaultPremiumStorageAccount = reader.getString();
+                } else if ("artifactsStorageAccount".equals(fieldName)) {
+                    deserializedLabProperties.artifactsStorageAccount = reader.getString();
+                } else if ("premiumDataDiskStorageAccount".equals(fieldName)) {
+                    deserializedLabProperties.premiumDataDiskStorageAccount = reader.getString();
+                } else if ("vaultName".equals(fieldName)) {
+                    deserializedLabProperties.vaultName = reader.getString();
+                } else if ("labStorageType".equals(fieldName)) {
+                    deserializedLabProperties.labStorageType = StorageType.fromString(reader.getString());
+                } else if ("mandatoryArtifactsResourceIdsLinux".equals(fieldName)) {
+                    List<String> mandatoryArtifactsResourceIdsLinux = reader.readArray(reader1 -> reader1.getString());
+                    deserializedLabProperties.mandatoryArtifactsResourceIdsLinux = mandatoryArtifactsResourceIdsLinux;
+                } else if ("mandatoryArtifactsResourceIdsWindows".equals(fieldName)) {
+                    List<String> mandatoryArtifactsResourceIdsWindows
+                        = reader.readArray(reader1 -> reader1.getString());
+                    deserializedLabProperties.mandatoryArtifactsResourceIdsWindows
+                        = mandatoryArtifactsResourceIdsWindows;
+                } else if ("createdDate".equals(fieldName)) {
+                    deserializedLabProperties.createdDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("premiumDataDisks".equals(fieldName)) {
+                    deserializedLabProperties.premiumDataDisks = PremiumDataDisk.fromString(reader.getString());
+                } else if ("environmentPermission".equals(fieldName)) {
+                    deserializedLabProperties.environmentPermission
+                        = EnvironmentPermission.fromString(reader.getString());
+                } else if ("announcement".equals(fieldName)) {
+                    deserializedLabProperties.announcement = LabAnnouncementProperties.fromJson(reader);
+                } else if ("support".equals(fieldName)) {
+                    deserializedLabProperties.support = LabSupportProperties.fromJson(reader);
+                } else if ("vmCreationResourceGroup".equals(fieldName)) {
+                    deserializedLabProperties.vmCreationResourceGroup = reader.getString();
+                } else if ("publicIpId".equals(fieldName)) {
+                    deserializedLabProperties.publicIpId = reader.getString();
+                } else if ("loadBalancerId".equals(fieldName)) {
+                    deserializedLabProperties.loadBalancerId = reader.getString();
+                } else if ("networkSecurityGroupId".equals(fieldName)) {
+                    deserializedLabProperties.networkSecurityGroupId = reader.getString();
+                } else if ("extendedProperties".equals(fieldName)) {
+                    Map<String, String> extendedProperties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedLabProperties.extendedProperties = extendedProperties;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedLabProperties.provisioningState = reader.getString();
+                } else if ("uniqueIdentifier".equals(fieldName)) {
+                    deserializedLabProperties.uniqueIdentifier = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLabProperties;
+        });
     }
 }

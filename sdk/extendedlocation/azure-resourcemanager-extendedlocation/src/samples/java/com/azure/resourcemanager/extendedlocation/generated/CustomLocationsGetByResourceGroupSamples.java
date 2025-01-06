@@ -10,7 +10,7 @@ package com.azure.resourcemanager.extendedlocation.generated;
 public final class CustomLocationsGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/preview/2021-08-31-preview/examples/
+     * specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/stable/2021-08-15/examples/
      * CustomLocationsGet.json
      */
     /**

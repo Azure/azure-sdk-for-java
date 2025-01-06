@@ -54,12 +54,12 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager</artifactId>
-      <version>2.45.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;current} -->
+      <version>2.47.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-resourcegraph</artifactId>
-      <version>1.0.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resourcegraph;dependency} -->
+      <version>1.1.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resourcegraph;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -114,17 +114,17 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.64.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.65.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-certificates</artifactId>
-      <version>4.7.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
+      <version>4.7.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.17.6</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
+      <version>7.17.7</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
@@ -144,7 +144,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-administration</artifactId>
-      <version>4.6.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-administration;dependency} -->
+      <version>4.6.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-administration;dependency} -->
       <scope>test</scope>
       <exclusions>
         <exclusion>

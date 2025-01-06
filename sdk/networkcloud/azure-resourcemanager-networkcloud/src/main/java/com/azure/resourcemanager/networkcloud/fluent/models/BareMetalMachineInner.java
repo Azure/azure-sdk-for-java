@@ -8,6 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.models.AdministrativeCredentials;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineCordonStatus;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineDetailedStatus;
@@ -17,45 +20,56 @@ import com.azure.resourcemanager.networkcloud.models.BareMetalMachineReadyState;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
 import com.azure.resourcemanager.networkcloud.models.HardwareInventory;
 import com.azure.resourcemanager.networkcloud.models.HardwareValidationStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.networkcloud.models.RuntimeProtectionStatus;
+import com.azure.resourcemanager.networkcloud.models.SecretRotationStatus;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** BareMetalMachine represents the physical machine in the rack. */
+/**
+ * BareMetalMachine represents the physical machine in the rack.
+ */
 @Fluent
 public final class BareMetalMachineInner extends Resource {
     /*
-     * ExtendedLocation represents the Azure custom location where the resource will be created.
-     *
      * The extended location of the cluster associated with the resource.
      */
-    @JsonProperty(value = "extendedLocation", required = true)
     private ExtendedLocation extendedLocation;
 
     /*
-     * BareMetalMachineProperties represents the properties of a bare metal machine.
-     *
      * The list of the resource properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private BareMetalMachineProperties innerProperties = new BareMetalMachineProperties();
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of BareMetalMachineInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of BareMetalMachineInner class.
+     */
     public BareMetalMachineInner() {
     }
 
     /**
-     * Get the extendedLocation property: ExtendedLocation represents the Azure custom location where the resource will
-     * be created.
-     *
-     * <p>The extended location of the cluster associated with the resource.
-     *
+     * Get the extendedLocation property: The extended location of the cluster associated with the resource.
+     * 
      * @return the extendedLocation value.
      */
     public ExtendedLocation extendedLocation() {
@@ -63,11 +77,8 @@ public final class BareMetalMachineInner extends Resource {
     }
 
     /**
-     * Set the extendedLocation property: ExtendedLocation represents the Azure custom location where the resource will
-     * be created.
-     *
-     * <p>The extended location of the cluster associated with the resource.
-     *
+     * Set the extendedLocation property: The extended location of the cluster associated with the resource.
+     * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the BareMetalMachineInner object itself.
      */
@@ -77,10 +88,8 @@ public final class BareMetalMachineInner extends Resource {
     }
 
     /**
-     * Get the innerProperties property: BareMetalMachineProperties represents the properties of a bare metal machine.
-     *
-     * <p>The list of the resource properties.
-     *
+     * Get the innerProperties property: The list of the resource properties.
+     * 
      * @return the innerProperties value.
      */
     private BareMetalMachineProperties innerProperties() {
@@ -89,21 +98,55 @@ public final class BareMetalMachineInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BareMetalMachineInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BareMetalMachineInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -113,7 +156,7 @@ public final class BareMetalMachineInner extends Resource {
     /**
      * Get the associatedResourceIds property: The list of resource IDs for the other Microsoft.NetworkCloud resources
      * that have attached this network.
-     *
+     * 
      * @return the associatedResourceIds value.
      */
     public List<String> associatedResourceIds() {
@@ -123,7 +166,7 @@ public final class BareMetalMachineInner extends Resource {
     /**
      * Get the bmcConnectionString property: The connection string for the baseboard management controller including IP
      * address and protocol.
-     *
+     * 
      * @return the bmcConnectionString value.
      */
     public String bmcConnectionString() {
@@ -133,7 +176,7 @@ public final class BareMetalMachineInner extends Resource {
     /**
      * Set the bmcConnectionString property: The connection string for the baseboard management controller including IP
      * address and protocol.
-     *
+     * 
      * @param bmcConnectionString the bmcConnectionString value to set.
      * @return the BareMetalMachineInner object itself.
      */
@@ -146,11 +189,9 @@ public final class BareMetalMachineInner extends Resource {
     }
 
     /**
-     * Get the bmcCredentials property: AdministrativeCredentials represents the admin credentials for the device
-     * requiring password-based authentication.
-     *
-     * <p>The credentials of the baseboard management controller on this bare metal machine.
-     *
+     * Get the bmcCredentials property: The credentials of the baseboard management controller on this bare metal
+     * machine.
+     * 
      * @return the bmcCredentials value.
      */
     public AdministrativeCredentials bmcCredentials() {
@@ -158,11 +199,9 @@ public final class BareMetalMachineInner extends Resource {
     }
 
     /**
-     * Set the bmcCredentials property: AdministrativeCredentials represents the admin credentials for the device
-     * requiring password-based authentication.
-     *
-     * <p>The credentials of the baseboard management controller on this bare metal machine.
-     *
+     * Set the bmcCredentials property: The credentials of the baseboard management controller on this bare metal
+     * machine.
+     * 
      * @param bmcCredentials the bmcCredentials value to set.
      * @return the BareMetalMachineInner object itself.
      */
@@ -176,7 +215,7 @@ public final class BareMetalMachineInner extends Resource {
 
     /**
      * Get the bmcMacAddress property: The MAC address of the BMC device.
-     *
+     * 
      * @return the bmcMacAddress value.
      */
     public String bmcMacAddress() {
@@ -185,7 +224,7 @@ public final class BareMetalMachineInner extends Resource {
 
     /**
      * Set the bmcMacAddress property: The MAC address of the BMC device.
-     *
+     * 
      * @param bmcMacAddress the bmcMacAddress value to set.
      * @return the BareMetalMachineInner object itself.
      */
@@ -199,7 +238,7 @@ public final class BareMetalMachineInner extends Resource {
 
     /**
      * Get the bootMacAddress property: The MAC address of a NIC connected to the PXE network.
-     *
+     * 
      * @return the bootMacAddress value.
      */
     public String bootMacAddress() {
@@ -208,7 +247,7 @@ public final class BareMetalMachineInner extends Resource {
 
     /**
      * Set the bootMacAddress property: The MAC address of a NIC connected to the PXE network.
-     *
+     * 
      * @param bootMacAddress the bootMacAddress value to set.
      * @return the BareMetalMachineInner object itself.
      */
@@ -222,7 +261,7 @@ public final class BareMetalMachineInner extends Resource {
 
     /**
      * Get the clusterId property: The resource ID of the cluster this bare metal machine is associated with.
-     *
+     * 
      * @return the clusterId value.
      */
     public String clusterId() {
@@ -231,7 +270,7 @@ public final class BareMetalMachineInner extends Resource {
 
     /**
      * Get the cordonStatus property: The cordon status of the bare metal machine.
-     *
+     * 
      * @return the cordonStatus value.
      */
     public BareMetalMachineCordonStatus cordonStatus() {
@@ -240,7 +279,7 @@ public final class BareMetalMachineInner extends Resource {
 
     /**
      * Get the detailedStatus property: The more detailed status of the bare metal machine.
-     *
+     * 
      * @return the detailedStatus value.
      */
     public BareMetalMachineDetailedStatus detailedStatus() {
@@ -249,7 +288,7 @@ public final class BareMetalMachineInner extends Resource {
 
     /**
      * Get the detailedStatusMessage property: The descriptive message about the current detailed status.
-     *
+     * 
      * @return the detailedStatusMessage value.
      */
     public String detailedStatusMessage() {
@@ -257,13 +296,9 @@ public final class BareMetalMachineInner extends Resource {
     }
 
     /**
-     * Get the hardwareInventory property: HardwareInventory represents the hardware configuration of this machine as
-     * exposed to the customer, including information acquired from the model/sku information and from the ironic
-     * inspector.
-     *
-     * <p>The hardware inventory, including information acquired from the model/sku information and from the ironic
-     * inspector.
-     *
+     * Get the hardwareInventory property: The hardware inventory, including information acquired from the model/sku
+     * information and from the ironic inspector.
+     * 
      * @return the hardwareInventory value.
      */
     public HardwareInventory hardwareInventory() {
@@ -271,11 +306,9 @@ public final class BareMetalMachineInner extends Resource {
     }
 
     /**
-     * Get the hardwareValidationStatus property: HardwareValidationStatus represents the latest hardware validation
-     * details performed for this bare metal machine.
-     *
-     * <p>The details of the latest hardware validation performed for this bare metal machine.
-     *
+     * Get the hardwareValidationStatus property: The details of the latest hardware validation performed for this bare
+     * metal machine.
+     * 
      * @return the hardwareValidationStatus value.
      */
     public HardwareValidationStatus hardwareValidationStatus() {
@@ -285,7 +318,7 @@ public final class BareMetalMachineInner extends Resource {
     /**
      * Get the hybridAksClustersAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list
      * of the resource IDs for the HybridAksClusters that have nodes hosted on this bare metal machine.
-     *
+     * 
      * @return the hybridAksClustersAssociatedIds value.
      */
     public List<String> hybridAksClustersAssociatedIds() {
@@ -295,7 +328,7 @@ public final class BareMetalMachineInner extends Resource {
     /**
      * Get the kubernetesNodeName property: The name of this machine represented by the host object in the Cluster's
      * Kubernetes control plane.
-     *
+     * 
      * @return the kubernetesNodeName value.
      */
     public String kubernetesNodeName() {
@@ -304,7 +337,7 @@ public final class BareMetalMachineInner extends Resource {
 
     /**
      * Get the kubernetesVersion property: The version of Kubernetes running on this machine.
-     *
+     * 
      * @return the kubernetesVersion value.
      */
     public String kubernetesVersion() {
@@ -312,8 +345,33 @@ public final class BareMetalMachineInner extends Resource {
     }
 
     /**
+     * Get the machineClusterVersion property: The cluster version that has been applied to this machine during
+     * deployment or a version update.
+     * 
+     * @return the machineClusterVersion value.
+     */
+    public String machineClusterVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().machineClusterVersion();
+    }
+
+    /**
+     * Set the machineClusterVersion property: The cluster version that has been applied to this machine during
+     * deployment or a version update.
+     * 
+     * @param machineClusterVersion the machineClusterVersion value to set.
+     * @return the BareMetalMachineInner object itself.
+     */
+    public BareMetalMachineInner withMachineClusterVersion(String machineClusterVersion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BareMetalMachineProperties();
+        }
+        this.innerProperties().withMachineClusterVersion(machineClusterVersion);
+        return this;
+    }
+
+    /**
      * Get the machineDetails property: The custom details provided by the customer.
-     *
+     * 
      * @return the machineDetails value.
      */
     public String machineDetails() {
@@ -322,7 +380,7 @@ public final class BareMetalMachineInner extends Resource {
 
     /**
      * Set the machineDetails property: The custom details provided by the customer.
-     *
+     * 
      * @param machineDetails the machineDetails value to set.
      * @return the BareMetalMachineInner object itself.
      */
@@ -336,7 +394,7 @@ public final class BareMetalMachineInner extends Resource {
 
     /**
      * Get the machineName property: The OS-level hostname assigned to this machine.
-     *
+     * 
      * @return the machineName value.
      */
     public String machineName() {
@@ -345,7 +403,7 @@ public final class BareMetalMachineInner extends Resource {
 
     /**
      * Set the machineName property: The OS-level hostname assigned to this machine.
-     *
+     * 
      * @param machineName the machineName value to set.
      * @return the BareMetalMachineInner object itself.
      */
@@ -358,8 +416,17 @@ public final class BareMetalMachineInner extends Resource {
     }
 
     /**
+     * Get the machineRoles property: The list of roles that are assigned to the cluster node running on this machine.
+     * 
+     * @return the machineRoles value.
+     */
+    public List<String> machineRoles() {
+        return this.innerProperties() == null ? null : this.innerProperties().machineRoles();
+    }
+
+    /**
      * Get the machineSkuId property: The unique internal identifier of the bare metal machine SKU.
-     *
+     * 
      * @return the machineSkuId value.
      */
     public String machineSkuId() {
@@ -368,7 +435,7 @@ public final class BareMetalMachineInner extends Resource {
 
     /**
      * Set the machineSkuId property: The unique internal identifier of the bare metal machine SKU.
-     *
+     * 
      * @param machineSkuId the machineSkuId value to set.
      * @return the BareMetalMachineInner object itself.
      */
@@ -383,7 +450,7 @@ public final class BareMetalMachineInner extends Resource {
     /**
      * Get the oamIpv4Address property: The IPv4 address that is assigned to the bare metal machine during the cluster
      * deployment.
-     *
+     * 
      * @return the oamIpv4Address value.
      */
     public String oamIpv4Address() {
@@ -393,7 +460,7 @@ public final class BareMetalMachineInner extends Resource {
     /**
      * Get the oamIpv6Address property: The IPv6 address that is assigned to the bare metal machine during the cluster
      * deployment.
-     *
+     * 
      * @return the oamIpv6Address value.
      */
     public String oamIpv6Address() {
@@ -402,7 +469,7 @@ public final class BareMetalMachineInner extends Resource {
 
     /**
      * Get the osImage property: The image that is currently provisioned to the OS disk.
-     *
+     * 
      * @return the osImage value.
      */
     public String osImage() {
@@ -411,7 +478,7 @@ public final class BareMetalMachineInner extends Resource {
 
     /**
      * Get the powerState property: The power state derived from the baseboard management controller.
-     *
+     * 
      * @return the powerState value.
      */
     public BareMetalMachinePowerState powerState() {
@@ -420,7 +487,7 @@ public final class BareMetalMachineInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the bare metal machine.
-     *
+     * 
      * @return the provisioningState value.
      */
     public BareMetalMachineProvisioningState provisioningState() {
@@ -429,7 +496,7 @@ public final class BareMetalMachineInner extends Resource {
 
     /**
      * Get the rackId property: The resource ID of the rack where this bare metal machine resides.
-     *
+     * 
      * @return the rackId value.
      */
     public String rackId() {
@@ -438,7 +505,7 @@ public final class BareMetalMachineInner extends Resource {
 
     /**
      * Set the rackId property: The resource ID of the rack where this bare metal machine resides.
-     *
+     * 
      * @param rackId the rackId value to set.
      * @return the BareMetalMachineInner object itself.
      */
@@ -453,7 +520,7 @@ public final class BareMetalMachineInner extends Resource {
     /**
      * Get the rackSlot property: The rack slot in which this bare metal machine is located, ordered from the bottom up
      * i.e. the lowest slot is 1.
-     *
+     * 
      * @return the rackSlot value.
      */
     public long rackSlot() {
@@ -463,7 +530,7 @@ public final class BareMetalMachineInner extends Resource {
     /**
      * Set the rackSlot property: The rack slot in which this bare metal machine is located, ordered from the bottom up
      * i.e. the lowest slot is 1.
-     *
+     * 
      * @param rackSlot the rackSlot value to set.
      * @return the BareMetalMachineInner object itself.
      */
@@ -477,7 +544,7 @@ public final class BareMetalMachineInner extends Resource {
 
     /**
      * Get the readyState property: The indicator of whether the bare metal machine is ready to receive workloads.
-     *
+     * 
      * @return the readyState value.
      */
     public BareMetalMachineReadyState readyState() {
@@ -485,8 +552,26 @@ public final class BareMetalMachineInner extends Resource {
     }
 
     /**
+     * Get the runtimeProtectionStatus property: The runtime protection status of the bare metal machine.
+     * 
+     * @return the runtimeProtectionStatus value.
+     */
+    public RuntimeProtectionStatus runtimeProtectionStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().runtimeProtectionStatus();
+    }
+
+    /**
+     * Get the secretRotationStatus property: The list of statuses that represent secret rotation activity.
+     * 
+     * @return the secretRotationStatus value.
+     */
+    public List<SecretRotationStatus> secretRotationStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().secretRotationStatus();
+    }
+
+    /**
      * Get the serialNumber property: The serial number of the bare metal machine.
-     *
+     * 
      * @return the serialNumber value.
      */
     public String serialNumber() {
@@ -495,7 +580,7 @@ public final class BareMetalMachineInner extends Resource {
 
     /**
      * Set the serialNumber property: The serial number of the bare metal machine.
-     *
+     * 
      * @param serialNumber the serialNumber value to set.
      * @return the BareMetalMachineInner object itself.
      */
@@ -509,7 +594,7 @@ public final class BareMetalMachineInner extends Resource {
 
     /**
      * Get the serviceTag property: The discovered value of the machine's service tag.
-     *
+     * 
      * @return the serviceTag value.
      */
     public String serviceTag() {
@@ -519,7 +604,7 @@ public final class BareMetalMachineInner extends Resource {
     /**
      * Get the virtualMachinesAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list of
      * the resource IDs for the VirtualMachines that are hosted on this bare metal machine.
-     *
+     * 
      * @return the virtualMachinesAssociatedIds value.
      */
     public List<String> virtualMachinesAssociatedIds() {
@@ -528,23 +613,80 @@ public final class BareMetalMachineInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (extendedLocation() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property extendedLocation in model BareMetalMachineInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property extendedLocation in model BareMetalMachineInner"));
         } else {
             extendedLocation().validate();
         }
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model BareMetalMachineInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model BareMetalMachineInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BareMetalMachineInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BareMetalMachineInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BareMetalMachineInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BareMetalMachineInner.
+     */
+    public static BareMetalMachineInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BareMetalMachineInner deserializedBareMetalMachineInner = new BareMetalMachineInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedBareMetalMachineInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedBareMetalMachineInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedBareMetalMachineInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedBareMetalMachineInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedBareMetalMachineInner.withTags(tags);
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedBareMetalMachineInner.extendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBareMetalMachineInner.innerProperties = BareMetalMachineProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedBareMetalMachineInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBareMetalMachineInner;
+        });
+    }
 }

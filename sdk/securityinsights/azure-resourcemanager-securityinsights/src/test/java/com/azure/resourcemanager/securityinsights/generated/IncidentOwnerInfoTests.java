@@ -14,27 +14,27 @@ public final class IncidentOwnerInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IncidentOwnerInfo model = BinaryData.fromString(
-            "{\"email\":\"esmi\",\"assignedTo\":\"nlrariaawiuagy\",\"objectId\":\"a84417d6-fa80-4b8b-89f1-7e3de4a33de0\",\"userPrincipalName\":\"fbylyrfg\",\"ownerType\":\"Unknown\"}")
+            "{\"email\":\"jwbhqwalmuz\",\"assignedTo\":\"xaepdkzjancuxr\",\"objectId\":\"bc6041b3-3f8c-4431-ad35-c5a51cd3ae8a\",\"userPrincipalName\":\"bavxbniwdjswzt\",\"ownerType\":\"Unknown\"}")
             .toObject(IncidentOwnerInfo.class);
-        Assertions.assertEquals("esmi", model.email());
-        Assertions.assertEquals("nlrariaawiuagy", model.assignedTo());
-        Assertions.assertEquals(UUID.fromString("a84417d6-fa80-4b8b-89f1-7e3de4a33de0"), model.objectId());
-        Assertions.assertEquals("fbylyrfg", model.userPrincipalName());
+        Assertions.assertEquals("jwbhqwalmuz", model.email());
+        Assertions.assertEquals("xaepdkzjancuxr", model.assignedTo());
+        Assertions.assertEquals(UUID.fromString("bc6041b3-3f8c-4431-ad35-c5a51cd3ae8a"), model.objectId());
+        Assertions.assertEquals("bavxbniwdjswzt", model.userPrincipalName());
         Assertions.assertEquals(OwnerType.UNKNOWN, model.ownerType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IncidentOwnerInfo model = new IncidentOwnerInfo().withEmail("esmi")
-            .withAssignedTo("nlrariaawiuagy")
-            .withObjectId(UUID.fromString("a84417d6-fa80-4b8b-89f1-7e3de4a33de0"))
-            .withUserPrincipalName("fbylyrfg")
+        IncidentOwnerInfo model = new IncidentOwnerInfo().withEmail("jwbhqwalmuz")
+            .withAssignedTo("xaepdkzjancuxr")
+            .withObjectId(UUID.fromString("bc6041b3-3f8c-4431-ad35-c5a51cd3ae8a"))
+            .withUserPrincipalName("bavxbniwdjswzt")
             .withOwnerType(OwnerType.UNKNOWN);
         model = BinaryData.fromObject(model).toObject(IncidentOwnerInfo.class);
-        Assertions.assertEquals("esmi", model.email());
-        Assertions.assertEquals("nlrariaawiuagy", model.assignedTo());
-        Assertions.assertEquals(UUID.fromString("a84417d6-fa80-4b8b-89f1-7e3de4a33de0"), model.objectId());
-        Assertions.assertEquals("fbylyrfg", model.userPrincipalName());
+        Assertions.assertEquals("jwbhqwalmuz", model.email());
+        Assertions.assertEquals("xaepdkzjancuxr", model.assignedTo());
+        Assertions.assertEquals(UUID.fromString("bc6041b3-3f8c-4431-ad35-c5a51cd3ae8a"), model.objectId());
+        Assertions.assertEquals("bavxbniwdjswzt", model.userPrincipalName());
         Assertions.assertEquals(OwnerType.UNKNOWN, model.ownerType());
     }
 }

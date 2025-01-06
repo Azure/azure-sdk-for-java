@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class ArtifactReplicationStrategy extends ExpandableStringEnum<Arti
      * @param name a name to look for.
      * @return the corresponding ArtifactReplicationStrategy.
      */
-    @JsonCreator
     public static ArtifactReplicationStrategy fromString(String name) {
         return fromString(name, ArtifactReplicationStrategy.class);
     }

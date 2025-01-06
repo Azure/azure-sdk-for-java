@@ -21,10 +21,11 @@ public class StoreReadSettings implements JsonSerializable<StoreReadSettings> {
     /*
      * The read setting type.
      */
-    private String type;
+    private String type = "StoreReadSettings";
 
     /*
-     * The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
+     * The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType
+     * integer).
      */
     private Object maxConcurrentConnections;
 
@@ -37,7 +38,6 @@ public class StoreReadSettings implements JsonSerializable<StoreReadSettings> {
      * Creates an instance of StoreReadSettings class.
      */
     public StoreReadSettings() {
-        this.type = "StoreReadSettings";
     }
 
     /**

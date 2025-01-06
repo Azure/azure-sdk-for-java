@@ -7,16 +7,18 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of UserConfirmationPasswords. */
+/**
+ * Resource collection API of UserConfirmationPasswords.
+ */
 public interface UserConfirmationPasswords {
     /**
      * Sends confirmation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
      * @param appType Determines the type of application which send the create user request. Default is legacy publisher
-     *     portal.
+     * portal.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -28,7 +30,7 @@ public interface UserConfirmationPasswords {
 
     /**
      * Sends confirmation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.

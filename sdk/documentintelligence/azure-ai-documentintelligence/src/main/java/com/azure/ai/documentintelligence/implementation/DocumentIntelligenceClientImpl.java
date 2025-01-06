@@ -5,11 +5,12 @@
 package com.azure.ai.documentintelligence.implementation;
 
 import com.azure.ai.documentintelligence.DocumentIntelligenceServiceVersion;
+import com.azure.ai.documentintelligence.models.AnalyzeBatchOperationDetails;
 import com.azure.ai.documentintelligence.models.AnalyzeBatchResult;
-import com.azure.ai.documentintelligence.models.AnalyzeBatchResultOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
 import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
@@ -26,11 +27,14 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
@@ -44,6 +48,9 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
 import java.time.Duration;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
@@ -167,7 +174,8 @@ public final class DocumentIntelligenceClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> analyzeDocument(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData analyzeRequest, RequestOptions requestOptions, Context context);
 
         @Post("/documentModels/{modelId}:analyze")
         @ExpectedResponses({ 202 })
@@ -177,27 +185,8 @@ public final class DocumentIntelligenceClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> analyzeDocumentSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Post("/documentModels/{modelId}:analyzeBatch")
-        @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> analyzeBatchDocuments(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Post("/documentModels/{modelId}:analyzeBatch")
-        @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> analyzeBatchDocumentsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData analyzeRequest, RequestOptions requestOptions, Context context);
 
         @Get("/documentModels/{modelId}/analyzeResults/{resultId}/pdf")
         @ExpectedResponses({ 200 })
@@ -243,6 +232,116 @@ public final class DocumentIntelligenceClientImpl {
             @PathParam("resultId") String resultId, @PathParam("figureId") String figureId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
+        @Delete("/documentModels/{modelId}/analyzeResults/{resultId}")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> deleteAnalyzeResult(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
+            @PathParam("resultId") String resultId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Delete("/documentModels/{modelId}/analyzeResults/{resultId}")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deleteAnalyzeResultSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
+            @PathParam("resultId") String resultId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Post("/documentModels/{modelId}:analyzeBatch")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> analyzeBatchDocuments(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData analyzeBatchRequest, RequestOptions requestOptions,
+            Context context);
+
+        @Post("/documentModels/{modelId}:analyzeBatch")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> analyzeBatchDocumentsSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData analyzeBatchRequest, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/documentModels/{modelId}/analyzeBatchResults")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listAnalyzeBatchResults(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/documentModels/{modelId}/analyzeBatchResults")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listAnalyzeBatchResultsSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Delete("/documentModels/{modelId}/analyzeBatchResults/{resultId}")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> deleteAnalyzeBatchResult(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
+            @PathParam("resultId") String resultId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Delete("/documentModels/{modelId}/analyzeBatchResults/{resultId}")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deleteAnalyzeBatchResultSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
+            @PathParam("resultId") String resultId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/documentModels/{modelId}/analyzeBatchResults/{resultId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getAnalyzeBatchResult(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
+            @PathParam("resultId") String resultId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/documentModels/{modelId}/analyzeBatchResults/{resultId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getAnalyzeBatchResultSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
+            @PathParam("resultId") String resultId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
         @Post("/documentClassifiers/{classifierId}:analyze")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -264,6 +363,26 @@ public final class DocumentIntelligenceClientImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("classifierId") String classifierId,
             @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData classifyRequest, RequestOptions requestOptions, Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listAnalyzeBatchResultsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listAnalyzeBatchResultsNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -272,8 +391,7 @@ public final class DocumentIntelligenceClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
      * may contain only
      * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
@@ -289,14 +407,6 @@ public final class DocumentIntelligenceClientImpl {
      * the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -309,6 +419,7 @@ public final class DocumentIntelligenceClientImpl {
      * </pre>
      * 
      * @param modelId Unique document model name.
+     * @param analyzeRequest Analyze request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -317,16 +428,13 @@ public final class DocumentIntelligenceClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> analyzeDocumentWithResponseAsync(String modelId, RequestOptions requestOptions) {
+    private Mono<Response<Void>> analyzeDocumentWithResponseAsync(String modelId, BinaryData analyzeRequest,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-        requestOptionsLocal.addRequestCallback(requestLocal -> {
-            if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
-                requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
-            }
-        });
-        return FluxUtil.withContext(context -> service.analyzeDocument(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), modelId, accept, requestOptionsLocal, context));
+        return FluxUtil
+            .withContext(context -> service.analyzeDocument(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                modelId, contentType, accept, analyzeRequest, requestOptions, context));
     }
 
     /**
@@ -335,8 +443,7 @@ public final class DocumentIntelligenceClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
      * may contain only
      * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
@@ -352,14 +459,6 @@ public final class DocumentIntelligenceClientImpl {
      * the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -372,6 +471,7 @@ public final class DocumentIntelligenceClientImpl {
      * </pre>
      * 
      * @param modelId Unique document model name.
+     * @param analyzeRequest Analyze request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -380,16 +480,12 @@ public final class DocumentIntelligenceClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<Void> analyzeDocumentWithResponse(String modelId, RequestOptions requestOptions) {
+    private Response<Void> analyzeDocumentWithResponse(String modelId, BinaryData analyzeRequest,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-        requestOptionsLocal.addRequestCallback(requestLocal -> {
-            if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
-                requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
-            }
-        });
-        return service.analyzeDocumentSync(this.getEndpoint(), this.getServiceVersion().getVersion(), modelId, accept,
-            requestOptionsLocal, Context.NONE);
+        return service.analyzeDocumentSync(this.getEndpoint(), this.getServiceVersion().getVersion(), modelId,
+            contentType, accept, analyzeRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -398,8 +494,7 @@ public final class DocumentIntelligenceClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
      * may contain only
      * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
@@ -415,14 +510,6 @@ public final class DocumentIntelligenceClientImpl {
      * the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -435,6 +522,7 @@ public final class DocumentIntelligenceClientImpl {
      * </pre>
      * 
      * @param modelId Unique document model name.
+     * @param analyzeRequest Analyze request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -443,9 +531,10 @@ public final class DocumentIntelligenceClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginAnalyzeDocumentAsync(String modelId, RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeDocumentAsync(String modelId, BinaryData analyzeRequest,
+        RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.analyzeDocumentWithResponseAsync(modelId, requestOptions),
+            () -> this.analyzeDocumentWithResponseAsync(modelId, analyzeRequest, requestOptions),
             new com.azure.ai.documentintelligence.implementation.OperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.getHttpPipeline())
                     .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
@@ -463,8 +552,7 @@ public final class DocumentIntelligenceClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
      * may contain only
      * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
@@ -480,14 +568,6 @@ public final class DocumentIntelligenceClientImpl {
      * the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -500,6 +580,7 @@ public final class DocumentIntelligenceClientImpl {
      * </pre>
      * 
      * @param modelId Unique document model name.
+     * @param analyzeRequest Analyze request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -508,9 +589,10 @@ public final class DocumentIntelligenceClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginAnalyzeDocument(String modelId, RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeDocument(String modelId, BinaryData analyzeRequest,
+        RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.analyzeDocumentWithResponse(modelId, requestOptions),
+            () -> this.analyzeDocumentWithResponse(modelId, analyzeRequest, requestOptions),
             new com.azure.ai.documentintelligence.implementation.SyncOperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.getHttpPipeline())
                     .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
@@ -528,8 +610,7 @@ public final class DocumentIntelligenceClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
      * may contain only
      * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
@@ -545,14 +626,6 @@ public final class DocumentIntelligenceClientImpl {
      * the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -565,6 +638,7 @@ public final class DocumentIntelligenceClientImpl {
      * </pre>
      * 
      * @param modelId Unique document model name.
+     * @param analyzeRequest Analyze request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -573,10 +647,10 @@ public final class DocumentIntelligenceClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AnalyzeResultOperation, AnalyzeResult> beginAnalyzeDocumentWithModelAsync(String modelId,
-        RequestOptions requestOptions) {
+    public PollerFlux<AnalyzeOperationDetails, AnalyzeResult> beginAnalyzeDocumentWithModelAsync(String modelId,
+        BinaryData analyzeRequest, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.analyzeDocumentWithResponseAsync(modelId, requestOptions),
+            () -> this.analyzeDocumentWithResponseAsync(modelId, analyzeRequest, requestOptions),
             new com.azure.ai.documentintelligence.implementation.OperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.getHttpPipeline())
                     .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
@@ -585,7 +659,7 @@ public final class DocumentIntelligenceClientImpl {
                         : Context.NONE)
                     .setServiceVersion(this.getServiceVersion().getVersion()),
                 "analyzeResult"),
-            TypeReference.createInstance(AnalyzeResultOperation.class),
+            TypeReference.createInstance(AnalyzeOperationDetails.class),
             TypeReference.createInstance(AnalyzeResult.class));
     }
 
@@ -595,8 +669,7 @@ public final class DocumentIntelligenceClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
      * may contain only
      * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
@@ -612,14 +685,6 @@ public final class DocumentIntelligenceClientImpl {
      * the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -632,6 +697,7 @@ public final class DocumentIntelligenceClientImpl {
      * </pre>
      * 
      * @param modelId Unique document model name.
+     * @param analyzeRequest Analyze request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -640,10 +706,10 @@ public final class DocumentIntelligenceClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<AnalyzeResultOperation, AnalyzeResult> beginAnalyzeDocumentWithModel(String modelId,
-        RequestOptions requestOptions) {
+    public SyncPoller<AnalyzeOperationDetails, AnalyzeResult> beginAnalyzeDocumentWithModel(String modelId,
+        BinaryData analyzeRequest, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.analyzeDocumentWithResponse(modelId, requestOptions),
+            () -> this.analyzeDocumentWithResponse(modelId, analyzeRequest, requestOptions),
             new com.azure.ai.documentintelligence.implementation.SyncOperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.getHttpPipeline())
                     .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
@@ -652,454 +718,8 @@ public final class DocumentIntelligenceClientImpl {
                         : Context.NONE)
                     .setServiceVersion(this.getServiceVersion().getVersion()),
                 "analyzeResult"),
-            TypeReference.createInstance(AnalyzeResultOperation.class),
+            TypeReference.createInstance(AnalyzeOperationDetails.class),
             TypeReference.createInstance(AnalyzeResult.class));
-    }
-
-    /**
-     * Analyzes batch documents with document model.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
-     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
-     * may contain only
-     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
-     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
-     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
-     * "," separated string.</td></tr>
-     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
-     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
-     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
-     * Allowed values: "text", "markdown".</td></tr>
-     * <tr><td>output</td><td>List&lt;String&gt;</td><td>No</td><td>Additional outputs to generate during analysis. In
-     * the form of "," separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     azureBlobSource (Optional): {
-     *         containerUrl: String (Required)
-     *         prefix: String (Optional)
-     *     }
-     *     azureBlobFileListSource (Optional): {
-     *         containerUrl: String (Required)
-     *         fileList: String (Required)
-     *     }
-     *     resultContainerUrl: String (Required)
-     *     resultPrefix: String (Optional)
-     *     overwriteExisting: Boolean (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param modelId Unique document model name.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> analyzeBatchDocumentsWithResponseAsync(String modelId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-        requestOptionsLocal.addRequestCallback(requestLocal -> {
-            if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
-                requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
-            }
-        });
-        return FluxUtil.withContext(context -> service.analyzeBatchDocuments(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), modelId, accept, requestOptionsLocal, context));
-    }
-
-    /**
-     * Analyzes batch documents with document model.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
-     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
-     * may contain only
-     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
-     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
-     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
-     * "," separated string.</td></tr>
-     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
-     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
-     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
-     * Allowed values: "text", "markdown".</td></tr>
-     * <tr><td>output</td><td>List&lt;String&gt;</td><td>No</td><td>Additional outputs to generate during analysis. In
-     * the form of "," separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     azureBlobSource (Optional): {
-     *         containerUrl: String (Required)
-     *         prefix: String (Optional)
-     *     }
-     *     azureBlobFileListSource (Optional): {
-     *         containerUrl: String (Required)
-     *         fileList: String (Required)
-     *     }
-     *     resultContainerUrl: String (Required)
-     *     resultPrefix: String (Optional)
-     *     overwriteExisting: Boolean (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param modelId Unique document model name.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<Void> analyzeBatchDocumentsWithResponse(String modelId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-        requestOptionsLocal.addRequestCallback(requestLocal -> {
-            if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
-                requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
-            }
-        });
-        return service.analyzeBatchDocumentsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), modelId,
-            accept, requestOptionsLocal, Context.NONE);
-    }
-
-    /**
-     * Analyzes batch documents with document model.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
-     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
-     * may contain only
-     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
-     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
-     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
-     * "," separated string.</td></tr>
-     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
-     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
-     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
-     * Allowed values: "text", "markdown".</td></tr>
-     * <tr><td>output</td><td>List&lt;String&gt;</td><td>No</td><td>Additional outputs to generate during analysis. In
-     * the form of "," separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     azureBlobSource (Optional): {
-     *         containerUrl: String (Required)
-     *         prefix: String (Optional)
-     *     }
-     *     azureBlobFileListSource (Optional): {
-     *         containerUrl: String (Required)
-     *         fileList: String (Required)
-     *     }
-     *     resultContainerUrl: String (Required)
-     *     resultPrefix: String (Optional)
-     *     overwriteExisting: Boolean (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param modelId Unique document model name.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginAnalyzeBatchDocumentsAsync(String modelId,
-        RequestOptions requestOptions) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.analyzeBatchDocumentsWithResponseAsync(modelId, requestOptions),
-            new com.azure.ai.documentintelligence.implementation.OperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(this.getHttpPipeline())
-                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                    .setContext(requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE)
-                    .setServiceVersion(this.getServiceVersion().getVersion()),
-                "result"),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Analyzes batch documents with document model.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
-     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
-     * may contain only
-     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
-     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
-     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
-     * "," separated string.</td></tr>
-     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
-     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
-     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
-     * Allowed values: "text", "markdown".</td></tr>
-     * <tr><td>output</td><td>List&lt;String&gt;</td><td>No</td><td>Additional outputs to generate during analysis. In
-     * the form of "," separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     azureBlobSource (Optional): {
-     *         containerUrl: String (Required)
-     *         prefix: String (Optional)
-     *     }
-     *     azureBlobFileListSource (Optional): {
-     *         containerUrl: String (Required)
-     *         fileList: String (Required)
-     *     }
-     *     resultContainerUrl: String (Required)
-     *     resultPrefix: String (Optional)
-     *     overwriteExisting: Boolean (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param modelId Unique document model name.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginAnalyzeBatchDocuments(String modelId,
-        RequestOptions requestOptions) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.analyzeBatchDocumentsWithResponse(modelId, requestOptions),
-            new com.azure.ai.documentintelligence.implementation.SyncOperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(this.getHttpPipeline())
-                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                    .setContext(requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE)
-                    .setServiceVersion(this.getServiceVersion().getVersion()),
-                "result"),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Analyzes batch documents with document model.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
-     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
-     * may contain only
-     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
-     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
-     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
-     * "," separated string.</td></tr>
-     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
-     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
-     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
-     * Allowed values: "text", "markdown".</td></tr>
-     * <tr><td>output</td><td>List&lt;String&gt;</td><td>No</td><td>Additional outputs to generate during analysis. In
-     * the form of "," separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     azureBlobSource (Optional): {
-     *         containerUrl: String (Required)
-     *         prefix: String (Optional)
-     *     }
-     *     azureBlobFileListSource (Optional): {
-     *         containerUrl: String (Required)
-     *         fileList: String (Required)
-     *     }
-     *     resultContainerUrl: String (Required)
-     *     resultPrefix: String (Optional)
-     *     overwriteExisting: Boolean (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param modelId Unique document model name.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AnalyzeBatchResultOperation, AnalyzeBatchResult>
-        beginAnalyzeBatchDocumentsWithModelAsync(String modelId, RequestOptions requestOptions) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.analyzeBatchDocumentsWithResponseAsync(modelId, requestOptions),
-            new com.azure.ai.documentintelligence.implementation.OperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(this.getHttpPipeline())
-                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                    .setContext(requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE)
-                    .setServiceVersion(this.getServiceVersion().getVersion()),
-                "result"),
-            TypeReference.createInstance(AnalyzeBatchResultOperation.class),
-            TypeReference.createInstance(AnalyzeBatchResult.class));
-    }
-
-    /**
-     * Analyzes batch documents with document model.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
-     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
-     * may contain only
-     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
-     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
-     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
-     * "," separated string.</td></tr>
-     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
-     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
-     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
-     * Allowed values: "text", "markdown".</td></tr>
-     * <tr><td>output</td><td>List&lt;String&gt;</td><td>No</td><td>Additional outputs to generate during analysis. In
-     * the form of "," separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     azureBlobSource (Optional): {
-     *         containerUrl: String (Required)
-     *         prefix: String (Optional)
-     *     }
-     *     azureBlobFileListSource (Optional): {
-     *         containerUrl: String (Required)
-     *         fileList: String (Required)
-     *     }
-     *     resultContainerUrl: String (Required)
-     *     resultPrefix: String (Optional)
-     *     overwriteExisting: Boolean (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param modelId Unique document model name.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<AnalyzeBatchResultOperation, AnalyzeBatchResult>
-        beginAnalyzeBatchDocumentsWithModel(String modelId, RequestOptions requestOptions) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.analyzeBatchDocumentsWithResponse(modelId, requestOptions),
-            new com.azure.ai.documentintelligence.implementation.SyncOperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(this.getHttpPipeline())
-                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                    .setContext(requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE)
-                    .setServiceVersion(this.getServiceVersion().getVersion()),
-                "result"),
-            TypeReference.createInstance(AnalyzeBatchResultOperation.class),
-            TypeReference.createInstance(AnalyzeBatchResult.class));
     }
 
     /**
@@ -1215,6 +835,835 @@ public final class DocumentIntelligenceClientImpl {
     }
 
     /**
+     * Mark the result of document analysis for deletion.
+     * 
+     * @param modelId Unique document model name.
+     * @param resultId Analyze operation result ID.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteAnalyzeResultWithResponseAsync(String modelId, String resultId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.deleteAnalyzeResult(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), modelId, resultId, accept, requestOptions, context));
+    }
+
+    /**
+     * Mark the result of document analysis for deletion.
+     * 
+     * @param modelId Unique document model name.
+     * @param resultId Analyze operation result ID.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteAnalyzeResultWithResponse(String modelId, String resultId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.deleteAnalyzeResultSync(this.getEndpoint(), this.getServiceVersion().getVersion(), modelId,
+            resultId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Analyzes batch documents with document model.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
+     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
+     * may contain only
+     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
+     * "," separated string.</td></tr>
+     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
+     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
+     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
+     * Allowed values: "text", "markdown".</td></tr>
+     * <tr><td>output</td><td>List&lt;String&gt;</td><td>No</td><td>Additional outputs to generate during analysis. In
+     * the form of "," separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     azureBlobSource (Optional): {
+     *         containerUrl: String (Required)
+     *         prefix: String (Optional)
+     *     }
+     *     azureBlobFileListSource (Optional): {
+     *         containerUrl: String (Required)
+     *         fileList: String (Required)
+     *     }
+     *     resultContainerUrl: String (Required)
+     *     resultPrefix: String (Optional)
+     *     overwriteExisting: Boolean (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param modelId Unique document model name.
+     * @param analyzeBatchRequest Analyze batch request parameters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> analyzeBatchDocumentsWithResponseAsync(String modelId, BinaryData analyzeBatchRequest,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.analyzeBatchDocuments(this.getEndpoint(), this.getServiceVersion().getVersion(), modelId,
+                contentType, accept, analyzeBatchRequest, requestOptions, context));
+    }
+
+    /**
+     * Analyzes batch documents with document model.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
+     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
+     * may contain only
+     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
+     * "," separated string.</td></tr>
+     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
+     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
+     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
+     * Allowed values: "text", "markdown".</td></tr>
+     * <tr><td>output</td><td>List&lt;String&gt;</td><td>No</td><td>Additional outputs to generate during analysis. In
+     * the form of "," separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     azureBlobSource (Optional): {
+     *         containerUrl: String (Required)
+     *         prefix: String (Optional)
+     *     }
+     *     azureBlobFileListSource (Optional): {
+     *         containerUrl: String (Required)
+     *         fileList: String (Required)
+     *     }
+     *     resultContainerUrl: String (Required)
+     *     resultPrefix: String (Optional)
+     *     overwriteExisting: Boolean (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param modelId Unique document model name.
+     * @param analyzeBatchRequest Analyze batch request parameters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<Void> analyzeBatchDocumentsWithResponse(String modelId, BinaryData analyzeBatchRequest,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.analyzeBatchDocumentsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), modelId,
+            contentType, accept, analyzeBatchRequest, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Analyzes batch documents with document model.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
+     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
+     * may contain only
+     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
+     * "," separated string.</td></tr>
+     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
+     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
+     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
+     * Allowed values: "text", "markdown".</td></tr>
+     * <tr><td>output</td><td>List&lt;String&gt;</td><td>No</td><td>Additional outputs to generate during analysis. In
+     * the form of "," separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     azureBlobSource (Optional): {
+     *         containerUrl: String (Required)
+     *         prefix: String (Optional)
+     *     }
+     *     azureBlobFileListSource (Optional): {
+     *         containerUrl: String (Required)
+     *         fileList: String (Required)
+     *     }
+     *     resultContainerUrl: String (Required)
+     *     resultPrefix: String (Optional)
+     *     overwriteExisting: Boolean (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param modelId Unique document model name.
+     * @param analyzeBatchRequest Analyze batch request parameters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeBatchDocumentsAsync(String modelId,
+        BinaryData analyzeBatchRequest, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.analyzeBatchDocumentsWithResponseAsync(modelId, analyzeBatchRequest, requestOptions),
+            new com.azure.ai.documentintelligence.implementation.OperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "result"),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyzes batch documents with document model.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
+     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
+     * may contain only
+     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
+     * "," separated string.</td></tr>
+     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
+     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
+     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
+     * Allowed values: "text", "markdown".</td></tr>
+     * <tr><td>output</td><td>List&lt;String&gt;</td><td>No</td><td>Additional outputs to generate during analysis. In
+     * the form of "," separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     azureBlobSource (Optional): {
+     *         containerUrl: String (Required)
+     *         prefix: String (Optional)
+     *     }
+     *     azureBlobFileListSource (Optional): {
+     *         containerUrl: String (Required)
+     *         fileList: String (Required)
+     *     }
+     *     resultContainerUrl: String (Required)
+     *     resultPrefix: String (Optional)
+     *     overwriteExisting: Boolean (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param modelId Unique document model name.
+     * @param analyzeBatchRequest Analyze batch request parameters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeBatchDocuments(String modelId, BinaryData analyzeBatchRequest,
+        RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.analyzeBatchDocumentsWithResponse(modelId, analyzeBatchRequest, requestOptions),
+            new com.azure.ai.documentintelligence.implementation.SyncOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "result"),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyzes batch documents with document model.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
+     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
+     * may contain only
+     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
+     * "," separated string.</td></tr>
+     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
+     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
+     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
+     * Allowed values: "text", "markdown".</td></tr>
+     * <tr><td>output</td><td>List&lt;String&gt;</td><td>No</td><td>Additional outputs to generate during analysis. In
+     * the form of "," separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     azureBlobSource (Optional): {
+     *         containerUrl: String (Required)
+     *         prefix: String (Optional)
+     *     }
+     *     azureBlobFileListSource (Optional): {
+     *         containerUrl: String (Required)
+     *         fileList: String (Required)
+     *     }
+     *     resultContainerUrl: String (Required)
+     *     resultPrefix: String (Optional)
+     *     overwriteExisting: Boolean (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param modelId Unique document model name.
+     * @param analyzeBatchRequest Analyze batch request parameters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<AnalyzeBatchOperationDetails, AnalyzeBatchResult> beginAnalyzeBatchDocumentsWithModelAsync(
+        String modelId, BinaryData analyzeBatchRequest, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.analyzeBatchDocumentsWithResponseAsync(modelId, analyzeBatchRequest, requestOptions),
+            new com.azure.ai.documentintelligence.implementation.OperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "result"),
+            TypeReference.createInstance(AnalyzeBatchOperationDetails.class),
+            TypeReference.createInstance(AnalyzeBatchResult.class));
+    }
+
+    /**
+     * Analyzes batch documents with document model.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
+     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
+     * may contain only
+     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
+     * "," separated string.</td></tr>
+     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
+     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
+     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
+     * Allowed values: "text", "markdown".</td></tr>
+     * <tr><td>output</td><td>List&lt;String&gt;</td><td>No</td><td>Additional outputs to generate during analysis. In
+     * the form of "," separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     azureBlobSource (Optional): {
+     *         containerUrl: String (Required)
+     *         prefix: String (Optional)
+     *     }
+     *     azureBlobFileListSource (Optional): {
+     *         containerUrl: String (Required)
+     *         fileList: String (Required)
+     *     }
+     *     resultContainerUrl: String (Required)
+     *     resultPrefix: String (Optional)
+     *     overwriteExisting: Boolean (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param modelId Unique document model name.
+     * @param analyzeBatchRequest Analyze batch request parameters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<AnalyzeBatchOperationDetails, AnalyzeBatchResult> beginAnalyzeBatchDocumentsWithModel(
+        String modelId, BinaryData analyzeBatchRequest, RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.analyzeBatchDocumentsWithResponse(modelId, analyzeBatchRequest, requestOptions),
+            new com.azure.ai.documentintelligence.implementation.SyncOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "result"),
+            TypeReference.createInstance(AnalyzeBatchOperationDetails.class),
+            TypeReference.createInstance(AnalyzeBatchResult.class));
+    }
+
+    /**
+     * List batch document analysis results.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     resultId: String (Optional)
+     *     status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
+     *     createdDateTime: OffsetDateTime (Required)
+     *     lastUpdatedDateTime: OffsetDateTime (Required)
+     *     percentCompleted: Integer (Optional)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     *     result (Optional): {
+     *         succeededCount: int (Required)
+     *         failedCount: int (Required)
+     *         skippedCount: int (Required)
+     *         details (Optional): [
+     *              (Optional){
+     *                 status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
+     *                 sourceUrl: String (Required)
+     *                 resultUrl: String (Optional)
+     *                 error (Optional): (recursive schema, see error above)
+     *             }
+     *         ]
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param modelId Unique document model name.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of AnalyzeBatchOperation items along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listAnalyzeBatchResultsSinglePageAsync(String modelId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listAnalyzeBatchResults(this.getEndpoint(),
+                this.getServiceVersion().getVersion(), modelId, accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
+    }
+
+    /**
+     * List batch document analysis results.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     resultId: String (Optional)
+     *     status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
+     *     createdDateTime: OffsetDateTime (Required)
+     *     lastUpdatedDateTime: OffsetDateTime (Required)
+     *     percentCompleted: Integer (Optional)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     *     result (Optional): {
+     *         succeededCount: int (Required)
+     *         failedCount: int (Required)
+     *         skippedCount: int (Required)
+     *         details (Optional): [
+     *              (Optional){
+     *                 status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
+     *                 sourceUrl: String (Required)
+     *                 resultUrl: String (Optional)
+     *                 error (Optional): (recursive schema, see error above)
+     *             }
+     *         ]
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param modelId Unique document model name.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of AnalyzeBatchOperation items as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listAnalyzeBatchResultsAsync(String modelId, RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listAnalyzeBatchResultsSinglePageAsync(modelId, requestOptions),
+            nextLink -> listAnalyzeBatchResultsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+    }
+
+    /**
+     * List batch document analysis results.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     resultId: String (Optional)
+     *     status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
+     *     createdDateTime: OffsetDateTime (Required)
+     *     lastUpdatedDateTime: OffsetDateTime (Required)
+     *     percentCompleted: Integer (Optional)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     *     result (Optional): {
+     *         succeededCount: int (Required)
+     *         failedCount: int (Required)
+     *         skippedCount: int (Required)
+     *         details (Optional): [
+     *              (Optional){
+     *                 status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
+     *                 sourceUrl: String (Required)
+     *                 resultUrl: String (Optional)
+     *                 error (Optional): (recursive schema, see error above)
+     *             }
+     *         ]
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param modelId Unique document model name.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of AnalyzeBatchOperation items along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listAnalyzeBatchResultsSinglePage(String modelId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res = service.listAnalyzeBatchResultsSync(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), modelId, accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
+    }
+
+    /**
+     * List batch document analysis results.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     resultId: String (Optional)
+     *     status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
+     *     createdDateTime: OffsetDateTime (Required)
+     *     lastUpdatedDateTime: OffsetDateTime (Required)
+     *     percentCompleted: Integer (Optional)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     *     result (Optional): {
+     *         succeededCount: int (Required)
+     *         failedCount: int (Required)
+     *         skippedCount: int (Required)
+     *         details (Optional): [
+     *              (Optional){
+     *                 status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
+     *                 sourceUrl: String (Required)
+     *                 resultUrl: String (Optional)
+     *                 error (Optional): (recursive schema, see error above)
+     *             }
+     *         ]
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param modelId Unique document model name.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of AnalyzeBatchOperation items as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listAnalyzeBatchResults(String modelId, RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>(() -> listAnalyzeBatchResultsSinglePage(modelId, requestOptions),
+            nextLink -> listAnalyzeBatchResultsNextSinglePage(nextLink, requestOptionsForNextPage));
+    }
+
+    /**
+     * Mark the batch document analysis result for deletion.
+     * 
+     * @param modelId Unique document model name.
+     * @param resultId Analyze batch operation result ID.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteAnalyzeBatchResultWithResponseAsync(String modelId, String resultId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.deleteAnalyzeBatchResult(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), modelId, resultId, accept, requestOptions, context));
+    }
+
+    /**
+     * Mark the batch document analysis result for deletion.
+     * 
+     * @param modelId Unique document model name.
+     * @param resultId Analyze batch operation result ID.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteAnalyzeBatchResultWithResponse(String modelId, String resultId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.deleteAnalyzeBatchResultSync(this.getEndpoint(), this.getServiceVersion().getVersion(), modelId,
+            resultId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Gets the result of batch document analysis.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     resultId: String (Optional)
+     *     status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
+     *     createdDateTime: OffsetDateTime (Required)
+     *     lastUpdatedDateTime: OffsetDateTime (Required)
+     *     percentCompleted: Integer (Optional)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     *     result (Optional): {
+     *         succeededCount: int (Required)
+     *         failedCount: int (Required)
+     *         skippedCount: int (Required)
+     *         details (Optional): [
+     *              (Optional){
+     *                 status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
+     *                 sourceUrl: String (Required)
+     *                 resultUrl: String (Optional)
+     *                 error (Optional): (recursive schema, see error above)
+     *             }
+     *         ]
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param modelId Unique document model name.
+     * @param resultId Analyze batch operation result ID.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of batch document analysis along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getAnalyzeBatchResultWithResponseAsync(String modelId, String resultId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getAnalyzeBatchResult(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), modelId, resultId, accept, requestOptions, context));
+    }
+
+    /**
+     * Gets the result of batch document analysis.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     resultId: String (Optional)
+     *     status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
+     *     createdDateTime: OffsetDateTime (Required)
+     *     lastUpdatedDateTime: OffsetDateTime (Required)
+     *     percentCompleted: Integer (Optional)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     *     result (Optional): {
+     *         succeededCount: int (Required)
+     *         failedCount: int (Required)
+     *         skippedCount: int (Required)
+     *         details (Optional): [
+     *              (Optional){
+     *                 status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
+     *                 sourceUrl: String (Required)
+     *                 resultUrl: String (Optional)
+     *                 error (Optional): (recursive schema, see error above)
+     *             }
+     *         ]
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param modelId Unique document model name.
+     * @param resultId Analyze batch operation result ID.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of batch document analysis along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getAnalyzeBatchResultWithResponse(String modelId, String resultId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getAnalyzeBatchResultSync(this.getEndpoint(), this.getServiceVersion().getVersion(), modelId,
+            resultId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
      * Classifies document with document classifier.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -1224,8 +1673,7 @@ public final class DocumentIntelligenceClientImpl {
      * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
      * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
      * "perPage".</td></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
@@ -1268,8 +1716,7 @@ public final class DocumentIntelligenceClientImpl {
      * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
      * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
      * "perPage".</td></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
@@ -1311,8 +1758,7 @@ public final class DocumentIntelligenceClientImpl {
      * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
      * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
      * "perPage".</td></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
@@ -1361,8 +1807,7 @@ public final class DocumentIntelligenceClientImpl {
      * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
      * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
      * "perPage".</td></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
@@ -1411,8 +1856,7 @@ public final class DocumentIntelligenceClientImpl {
      * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
      * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
      * "perPage".</td></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
@@ -1436,7 +1880,7 @@ public final class DocumentIntelligenceClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AnalyzeResultOperation, AnalyzeResult> beginClassifyDocumentWithModelAsync(String classifierId,
+    public PollerFlux<AnalyzeOperationDetails, AnalyzeResult> beginClassifyDocumentWithModelAsync(String classifierId,
         BinaryData classifyRequest, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.classifyDocumentWithResponseAsync(classifierId, classifyRequest, requestOptions),
@@ -1448,7 +1892,7 @@ public final class DocumentIntelligenceClientImpl {
                         : Context.NONE)
                     .setServiceVersion(this.getServiceVersion().getVersion()),
                 "analyzeResult"),
-            TypeReference.createInstance(AnalyzeResultOperation.class),
+            TypeReference.createInstance(AnalyzeOperationDetails.class),
             TypeReference.createInstance(AnalyzeResult.class));
     }
 
@@ -1462,8 +1906,7 @@ public final class DocumentIntelligenceClientImpl {
      * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
      * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
      * "perPage".</td></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
@@ -1487,7 +1930,7 @@ public final class DocumentIntelligenceClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<AnalyzeResultOperation, AnalyzeResult> beginClassifyDocumentWithModel(String classifierId,
+    public SyncPoller<AnalyzeOperationDetails, AnalyzeResult> beginClassifyDocumentWithModel(String classifierId,
         BinaryData classifyRequest, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.classifyDocumentWithResponse(classifierId, classifyRequest, requestOptions),
@@ -1499,7 +1942,148 @@ public final class DocumentIntelligenceClientImpl {
                         : Context.NONE)
                     .setServiceVersion(this.getServiceVersion().getVersion()),
                 "analyzeResult"),
-            TypeReference.createInstance(AnalyzeResultOperation.class),
+            TypeReference.createInstance(AnalyzeOperationDetails.class),
             TypeReference.createInstance(AnalyzeResult.class));
+    }
+
+    /**
+     * Get the next page of items.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     resultId: String (Optional)
+     *     status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
+     *     createdDateTime: OffsetDateTime (Required)
+     *     lastUpdatedDateTime: OffsetDateTime (Required)
+     *     percentCompleted: Integer (Optional)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     *     result (Optional): {
+     *         succeededCount: int (Required)
+     *         failedCount: int (Required)
+     *         skippedCount: int (Required)
+     *         details (Optional): [
+     *              (Optional){
+     *                 status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
+     *                 sourceUrl: String (Required)
+     *                 resultUrl: String (Optional)
+     *                 error (Optional): (recursive schema, see error above)
+     *             }
+     *         ]
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of AnalyzeBatchOperation items along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listAnalyzeBatchResultsNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listAnalyzeBatchResultsNext(nextLink, this.getEndpoint(), accept,
+                requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
+    }
+
+    /**
+     * Get the next page of items.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     resultId: String (Optional)
+     *     status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
+     *     createdDateTime: OffsetDateTime (Required)
+     *     lastUpdatedDateTime: OffsetDateTime (Required)
+     *     percentCompleted: Integer (Optional)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     *     result (Optional): {
+     *         succeededCount: int (Required)
+     *         failedCount: int (Required)
+     *         skippedCount: int (Required)
+     *         details (Optional): [
+     *              (Optional){
+     *                 status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
+     *                 sourceUrl: String (Required)
+     *                 resultUrl: String (Optional)
+     *                 error (Optional): (recursive schema, see error above)
+     *             }
+     *         ]
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of AnalyzeBatchOperation items along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listAnalyzeBatchResultsNextSinglePage(String nextLink,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res = service.listAnalyzeBatchResultsNextSync(nextLink, this.getEndpoint(), accept,
+            requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
+    }
+
+    private List<BinaryData> getValues(BinaryData binaryData, String path) {
+        try {
+            Map<?, ?> obj = binaryData.toObject(Map.class);
+            List<?> values = (List<?>) obj.get(path);
+            return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
+        } catch (RuntimeException e) {
+            return null;
+        }
+    }
+
+    private String getNextLink(BinaryData binaryData, String path) {
+        try {
+            Map<?, ?> obj = binaryData.toObject(Map.class);
+            return (String) obj.get(path);
+        } catch (RuntimeException e) {
+            return null;
+        }
     }
 }

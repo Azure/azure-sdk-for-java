@@ -43,17 +43,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in NetworkInterfacesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NetworkInterfacesClient.
+ */
 public final class NetworkInterfacesClientImpl implements NetworkInterfacesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final NetworkInterfacesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureNetworkFabricManagementServiceApiImpl client;
 
     /**
      * Initializes an instance of NetworkInterfacesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     NetworkInterfacesClientImpl(AzureNetworkFabricManagementServiceApiImpl client) {
@@ -148,9 +154,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Create NetworkInterface.
-     *
-     * <p>Create a Network Interface resource.
-     *
+     * 
+     * Create a Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -158,8 +164,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the NetworkInterface resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return defines the NetworkInterface resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String networkDeviceName,
@@ -199,9 +205,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Create NetworkInterface.
-     *
-     * <p>Create a Network Interface resource.
-     *
+     * 
+     * Create a Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -210,8 +216,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the NetworkInterface resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return defines the NetworkInterface resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String networkDeviceName,
@@ -249,9 +255,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Create NetworkInterface.
-     *
-     * <p>Create a Network Interface resource.
-     *
+     * 
+     * Create a Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -273,9 +279,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Create NetworkInterface.
-     *
-     * <p>Create a Network Interface resource.
-     *
+     * 
+     * Create a Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -299,9 +305,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Create NetworkInterface.
-     *
-     * <p>Create a Network Interface resource.
-     *
+     * 
+     * Create a Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -319,9 +325,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Create NetworkInterface.
-     *
-     * <p>Create a Network Interface resource.
-     *
+     * 
+     * Create a Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -341,9 +347,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Create NetworkInterface.
-     *
-     * <p>Create a Network Interface resource.
-     *
+     * 
+     * Create a Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -362,9 +368,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Create NetworkInterface.
-     *
-     * <p>Create a Network Interface resource.
-     *
+     * 
+     * Create a Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -384,9 +390,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Create NetworkInterface.
-     *
-     * <p>Create a Network Interface resource.
-     *
+     * 
+     * Create a Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -404,9 +410,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Create NetworkInterface.
-     *
-     * <p>Create a Network Interface resource.
-     *
+     * 
+     * Create a Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -425,17 +431,17 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Gets a NetworkInterface.
-     *
-     * <p>Get the Network Interface resource details.
-     *
+     * 
+     * Get the Network Interface resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Interface resource details along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Network Interface resource details along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NetworkInterfaceInner>> getWithResponseAsync(String resourceGroupName,
@@ -470,9 +476,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Gets a NetworkInterface.
-     *
-     * <p>Get the Network Interface resource details.
-     *
+     * 
+     * Get the Network Interface resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -480,8 +486,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Interface resource details along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Network Interface resource details along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NetworkInterfaceInner>> getWithResponseAsync(String resourceGroupName,
@@ -514,9 +520,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Gets a NetworkInterface.
-     *
-     * <p>Get the Network Interface resource details.
-     *
+     * 
+     * Get the Network Interface resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -534,9 +540,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Gets a NetworkInterface.
-     *
-     * <p>Get the Network Interface resource details.
-     *
+     * 
+     * Get the Network Interface resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -554,9 +560,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Gets a NetworkInterface.
-     *
-     * <p>Get the Network Interface resource details.
-     *
+     * 
+     * Get the Network Interface resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -572,9 +578,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Updates a NetworkInterface.
-     *
-     * <p>Update certain properties of the Network Interface resource.
-     *
+     * 
+     * Update certain properties of the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -582,8 +588,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the NetworkInterface resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return defines the NetworkInterface resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String networkDeviceName,
@@ -623,9 +629,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Updates a NetworkInterface.
-     *
-     * <p>Update certain properties of the Network Interface resource.
-     *
+     * 
+     * Update certain properties of the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -634,8 +640,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the NetworkInterface resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return defines the NetworkInterface resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String networkDeviceName,
@@ -673,9 +679,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Updates a NetworkInterface.
-     *
-     * <p>Update certain properties of the Network Interface resource.
-     *
+     * 
+     * Update certain properties of the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -697,9 +703,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Updates a NetworkInterface.
-     *
-     * <p>Update certain properties of the Network Interface resource.
-     *
+     * 
+     * Update certain properties of the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -723,9 +729,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Updates a NetworkInterface.
-     *
-     * <p>Update certain properties of the Network Interface resource.
-     *
+     * 
+     * Update certain properties of the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -743,9 +749,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Updates a NetworkInterface.
-     *
-     * <p>Update certain properties of the Network Interface resource.
-     *
+     * 
+     * Update certain properties of the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -765,9 +771,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Updates a NetworkInterface.
-     *
-     * <p>Update certain properties of the Network Interface resource.
-     *
+     * 
+     * Update certain properties of the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -786,9 +792,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Updates a NetworkInterface.
-     *
-     * <p>Update certain properties of the Network Interface resource.
-     *
+     * 
+     * Update certain properties of the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -808,9 +814,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Updates a NetworkInterface.
-     *
-     * <p>Update certain properties of the Network Interface resource.
-     *
+     * 
+     * Update certain properties of the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -828,9 +834,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Updates a NetworkInterface.
-     *
-     * <p>Update certain properties of the Network Interface resource.
-     *
+     * 
+     * Update certain properties of the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -849,9 +855,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Deletes a NetworkInterface.
-     *
-     * <p>Delete the Network Interface resource.
-     *
+     * 
+     * Delete the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -893,9 +899,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Deletes a NetworkInterface.
-     *
-     * <p>Delete the Network Interface resource.
-     *
+     * 
+     * Delete the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -936,9 +942,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Deletes a NetworkInterface.
-     *
-     * <p>Delete the Network Interface resource.
-     *
+     * 
+     * Delete the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -958,9 +964,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Deletes a NetworkInterface.
-     *
-     * <p>Delete the Network Interface resource.
-     *
+     * 
+     * Delete the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -982,9 +988,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Deletes a NetworkInterface.
-     *
-     * <p>Delete the Network Interface resource.
-     *
+     * 
+     * Delete the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -1001,9 +1007,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Deletes a NetworkInterface.
-     *
-     * <p>Delete the Network Interface resource.
-     *
+     * 
+     * Delete the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -1022,9 +1028,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Deletes a NetworkInterface.
-     *
-     * <p>Delete the Network Interface resource.
-     *
+     * 
+     * Delete the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -1041,9 +1047,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Deletes a NetworkInterface.
-     *
-     * <p>Delete the Network Interface resource.
-     *
+     * 
+     * Delete the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -1062,9 +1068,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Deletes a NetworkInterface.
-     *
-     * <p>Delete the Network Interface resource.
-     *
+     * 
+     * Delete the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -1079,9 +1085,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Deletes a NetworkInterface.
-     *
-     * <p>Delete the Network Interface resource.
-     *
+     * 
+     * Delete the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -1098,9 +1104,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * List all Network Interfaces that are available using an Network Device.
-     *
-     * <p>List all the Network Interface resources in a given resource group.
-     *
+     * 
+     * List all the Network Interface resources in a given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1139,9 +1145,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * List all Network Interfaces that are available using an Network Device.
-     *
-     * <p>List all the Network Interface resources in a given resource group.
-     *
+     * 
+     * List all the Network Interface resources in a given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param context The context to associate with this operation.
@@ -1180,9 +1186,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * List all Network Interfaces that are available using an Network Device.
-     *
-     * <p>List all the Network Interface resources in a given resource group.
-     *
+     * 
+     * List all the Network Interface resources in a given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1199,9 +1205,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * List all Network Interfaces that are available using an Network Device.
-     *
-     * <p>List all the Network Interface resources in a given resource group.
-     *
+     * 
+     * List all the Network Interface resources in a given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param context The context to associate with this operation.
@@ -1219,9 +1225,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * List all Network Interfaces that are available using an Network Device.
-     *
-     * <p>List all the Network Interface resources in a given resource group.
-     *
+     * 
+     * List all the Network Interface resources in a given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1237,9 +1243,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * List all Network Interfaces that are available using an Network Device.
-     *
-     * <p>List all the Network Interface resources in a given resource group.
-     *
+     * 
+     * List all the Network Interface resources in a given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param context The context to associate with this operation.
@@ -1256,9 +1262,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Updates the admin state of the network interface.
-     *
-     * <p>Update the admin state of the Network Interface.
-     *
+     * 
+     * Update the admin state of the Network Interface.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -1266,8 +1272,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(String resourceGroupName,
@@ -1307,9 +1313,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Updates the admin state of the network interface.
-     *
-     * <p>Update the admin state of the Network Interface.
-     *
+     * 
+     * Update the admin state of the Network Interface.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -1318,8 +1324,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(String resourceGroupName,
@@ -1358,9 +1364,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Updates the admin state of the network interface.
-     *
-     * <p>Update the admin state of the Network Interface.
-     *
+     * 
+     * Update the admin state of the Network Interface.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -1385,9 +1391,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Updates the admin state of the network interface.
-     *
-     * <p>Update the admin state of the Network Interface.
-     *
+     * 
+     * Update the admin state of the Network Interface.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -1414,9 +1420,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Updates the admin state of the network interface.
-     *
-     * <p>Update the admin state of the Network Interface.
-     *
+     * 
+     * Update the admin state of the Network Interface.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -1438,9 +1444,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Updates the admin state of the network interface.
-     *
-     * <p>Update the admin state of the Network Interface.
-     *
+     * 
+     * Update the admin state of the Network Interface.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -1464,9 +1470,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Updates the admin state of the network interface.
-     *
-     * <p>Update the admin state of the Network Interface.
-     *
+     * 
+     * Update the admin state of the Network Interface.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -1486,9 +1492,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Updates the admin state of the network interface.
-     *
-     * <p>Update the admin state of the Network Interface.
-     *
+     * 
+     * Update the admin state of the Network Interface.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -1508,9 +1514,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Updates the admin state of the network interface.
-     *
-     * <p>Update the admin state of the Network Interface.
-     *
+     * 
+     * Update the admin state of the Network Interface.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -1528,9 +1534,9 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Updates the admin state of the network interface.
-     *
-     * <p>Update the admin state of the Network Interface.
-     *
+     * 
+     * Update the admin state of the Network Interface.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -1550,9 +1556,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1578,9 +1583,8 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

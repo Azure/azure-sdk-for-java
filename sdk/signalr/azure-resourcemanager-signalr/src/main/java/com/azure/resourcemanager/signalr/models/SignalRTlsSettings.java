@@ -17,8 +17,7 @@ import java.io.IOException;
 @Fluent
 public final class SignalRTlsSettings implements JsonSerializable<SignalRTlsSettings> {
     /*
-     * Request client certificate during TLS handshake if enabled. Not supported for free tier. Any input will be
-     * ignored for free tier.
+     * Request client certificate during TLS handshake if enabled
      */
     private Boolean clientCertEnabled;
 
@@ -29,8 +28,7 @@ public final class SignalRTlsSettings implements JsonSerializable<SignalRTlsSett
     }
 
     /**
-     * Get the clientCertEnabled property: Request client certificate during TLS handshake if enabled. Not supported for
-     * free tier. Any input will be ignored for free tier.
+     * Get the clientCertEnabled property: Request client certificate during TLS handshake if enabled.
      * 
      * @return the clientCertEnabled value.
      */
@@ -39,8 +37,7 @@ public final class SignalRTlsSettings implements JsonSerializable<SignalRTlsSett
     }
 
     /**
-     * Set the clientCertEnabled property: Request client certificate during TLS handshake if enabled. Not supported for
-     * free tier. Any input will be ignored for free tier.
+     * Set the clientCertEnabled property: Request client certificate during TLS handshake if enabled.
      * 
      * @param clientCertEnabled the clientCertEnabled value to set.
      * @return the SignalRTlsSettings object itself.

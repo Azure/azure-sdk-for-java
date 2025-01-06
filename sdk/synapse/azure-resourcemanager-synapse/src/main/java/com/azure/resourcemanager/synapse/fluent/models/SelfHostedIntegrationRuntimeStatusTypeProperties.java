@@ -110,26 +110,6 @@ public final class SelfHostedIntegrationRuntimeStatusTypeProperties
      */
     private OffsetDateTime autoUpdateEta;
 
-    /*
-     * The service region of the integration runtime
-     */
-    private String serviceRegion;
-
-    /*
-     * The newer versions on download center.
-     */
-    private List<String> newerVersions;
-
-    /*
-     * The osType property.
-     */
-    private Integer osType;
-
-    /*
-     * The targetFramework property.
-     */
-    private Integer targetFramework;
-
     /**
      * Creates an instance of SelfHostedIntegrationRuntimeStatusTypeProperties class.
      */
@@ -318,64 +298,6 @@ public final class SelfHostedIntegrationRuntimeStatusTypeProperties
     }
 
     /**
-     * Get the serviceRegion property: The service region of the integration runtime.
-     * 
-     * @return the serviceRegion value.
-     */
-    public String serviceRegion() {
-        return this.serviceRegion;
-    }
-
-    /**
-     * Set the serviceRegion property: The service region of the integration runtime.
-     * 
-     * @param serviceRegion the serviceRegion value to set.
-     * @return the SelfHostedIntegrationRuntimeStatusTypeProperties object itself.
-     */
-    public SelfHostedIntegrationRuntimeStatusTypeProperties withServiceRegion(String serviceRegion) {
-        this.serviceRegion = serviceRegion;
-        return this;
-    }
-
-    /**
-     * Get the newerVersions property: The newer versions on download center.
-     * 
-     * @return the newerVersions value.
-     */
-    public List<String> newerVersions() {
-        return this.newerVersions;
-    }
-
-    /**
-     * Set the newerVersions property: The newer versions on download center.
-     * 
-     * @param newerVersions the newerVersions value to set.
-     * @return the SelfHostedIntegrationRuntimeStatusTypeProperties object itself.
-     */
-    public SelfHostedIntegrationRuntimeStatusTypeProperties withNewerVersions(List<String> newerVersions) {
-        this.newerVersions = newerVersions;
-        return this;
-    }
-
-    /**
-     * Get the osType property: The osType property.
-     * 
-     * @return the osType value.
-     */
-    public Integer osType() {
-        return this.osType;
-    }
-
-    /**
-     * Get the targetFramework property: The targetFramework property.
-     * 
-     * @return the targetFramework value.
-     */
-    public Integer targetFramework() {
-        return this.targetFramework;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -397,9 +319,6 @@ public final class SelfHostedIntegrationRuntimeStatusTypeProperties
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("nodes", this.nodes, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("links", this.links, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("serviceRegion", this.serviceRegion);
-        jsonWriter.writeArrayField("newerVersions", this.newerVersions,
-            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -466,17 +385,6 @@ public final class SelfHostedIntegrationRuntimeStatusTypeProperties
                 } else if ("autoUpdateETA".equals(fieldName)) {
                     deserializedSelfHostedIntegrationRuntimeStatusTypeProperties.autoUpdateEta = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("serviceRegion".equals(fieldName)) {
-                    deserializedSelfHostedIntegrationRuntimeStatusTypeProperties.serviceRegion = reader.getString();
-                } else if ("newerVersions".equals(fieldName)) {
-                    List<String> newerVersions = reader.readArray(reader1 -> reader1.getString());
-                    deserializedSelfHostedIntegrationRuntimeStatusTypeProperties.newerVersions = newerVersions;
-                } else if ("osType".equals(fieldName)) {
-                    deserializedSelfHostedIntegrationRuntimeStatusTypeProperties.osType
-                        = reader.getNullable(JsonReader::getInt);
-                } else if ("targetFramework".equals(fieldName)) {
-                    deserializedSelfHostedIntegrationRuntimeStatusTypeProperties.targetFramework
-                        = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }

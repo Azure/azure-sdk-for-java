@@ -23,8 +23,7 @@ import java.util.Arrays;
 public final class ChannelsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/
-     * UpdateAlexaChannel.json
+     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/UpdateAlexaChannel.json
      */
     /**
      * Sample code: Update Alexa Channel.
@@ -41,8 +40,7 @@ public final class ChannelsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/
+     * x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/
      * UpdateDirectLineSpeechChannel.json
      */
     /**
@@ -63,8 +61,7 @@ public final class ChannelsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/
-     * UpdateLineChannel.json
+     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/UpdateLineChannel.json
      */
     /**
      * Sample code: Update Line Channel.
@@ -83,8 +80,7 @@ public final class ChannelsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/UpdateChannel.
-     * json
+     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/UpdateChannel.json
      */
     /**
      * Sample code: Update Channel.

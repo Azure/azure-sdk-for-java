@@ -9,8 +9,9 @@ package com.azure.resourcemanager.synapse.generated;
  */
 public final class BigDataPoolsListByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * ListBigDataPoolsInWorkspace.json
+     * x-ms-original-file:
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/ListBigDataPoolsInWorkspace.
+     * json
      */
     /**
      * Sample code: List Big Data pools in a workspace.

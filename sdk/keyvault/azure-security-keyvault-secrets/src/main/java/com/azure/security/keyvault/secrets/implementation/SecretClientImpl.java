@@ -49,41 +49,51 @@ import com.azure.security.keyvault.secrets.implementation.models.SecretUpdatePar
 import java.util.Map;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the SecretClient type. */
+/**
+ * Initializes a new instance of the SecretClient type.
+ */
 public final class SecretClientImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SecretClientService service;
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -92,7 +102,7 @@ public final class SecretClientImpl {
 
     /**
      * Initializes an instance of SecretClient client.
-     *
+     * 
      * @param apiVersion Api Version.
      */
     public SecretClientImpl(String apiVersion) {
@@ -102,7 +112,7 @@ public final class SecretClientImpl {
 
     /**
      * Initializes an instance of SecretClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param apiVersion Api Version.
      */
@@ -112,7 +122,7 @@ public final class SecretClientImpl {
 
     /**
      * Initializes an instance of SecretClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param apiVersion Api Version.
@@ -136,7 +146,7 @@ public final class SecretClientImpl {
         Mono<Response<SecretBundle>> setSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @PathParam("secret-name") String secretName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") SecretSetParameters parameters, @HeaderParam("Accept") String accept,
-            @HeaderParam("Content-Type") String contentType, Context context);
+            Context context);
 
         @Put("/secrets/{secret-name}")
         @ExpectedResponses({ 200 })
@@ -144,7 +154,7 @@ public final class SecretClientImpl {
         Response<SecretBundle> setSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @PathParam("secret-name") String secretName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") SecretSetParameters parameters, @HeaderParam("Accept") String accept,
-            @HeaderParam("Content-Type") String contentType, Context context);
+            Context context);
 
         @Delete("/secrets/{secret-name}")
         @ExpectedResponses({ 200 })
@@ -167,7 +177,7 @@ public final class SecretClientImpl {
             @PathParam("secret-name") String secretName, @PathParam("secret-version") String secretVersion,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") SecretUpdateParameters parameters, @HeaderParam("Accept") String accept,
-            @HeaderParam("Content-Type") String contentType, Context context);
+            Context context);
 
         @Patch("/secrets/{secret-name}/{secret-version}")
         @ExpectedResponses({ 200 })
@@ -176,7 +186,7 @@ public final class SecretClientImpl {
             @PathParam("secret-name") String secretName, @PathParam("secret-version") String secretVersion,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") SecretUpdateParameters parameters, @HeaderParam("Accept") String accept,
-            @HeaderParam("Content-Type") String contentType, Context context);
+            Context context);
 
         @Get("/secrets/{secret-name}/{secret-version}")
         @ExpectedResponses({ 200 })
@@ -349,13 +359,13 @@ public final class SecretClientImpl {
 
     /**
      * Sets a secret in a specified key vault.
-     *
-     * <p>The SET operation adds a secret to the Azure Key Vault. If the named secret already exists, Azure Key Vault
+     * 
+     * The SET operation adds a secret to the Azure Key Vault. If the named secret already exists, Azure Key Vault
      * creates a new version of that secret. This operation requires the secrets/set permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret. The value you provide may be copied globally for the purpose of running
-     *     the service. The value provided should not include personally identifiable or sensitive information.
+     * the service. The value provided should not include personally identifiable or sensitive information.
      * @param value The value of the secret.
      * @param tags Application specific metadata in the form of key-value pairs.
      * @param secretContentType Type of the secret value such as a password.
@@ -364,31 +374,24 @@ public final class SecretClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a secret consisting of a value, id and its attributes along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SecretBundle>> setSecretWithResponseAsync(String vaultBaseUrl, String secretName, String value,
         Map<String, String> tags, String secretContentType, SecretAttributes secretAttributes) {
-        final String accept = "application/json";
-        final String contentType = "application/json";
-        SecretSetParameters parameters = new SecretSetParameters();
-        parameters.setValue(value);
-        parameters.setTags(tags);
-        parameters.setContentType(secretContentType);
-        parameters.setSecretAttributes(secretAttributes);
-        return FluxUtil.withContext(context -> service.setSecret(vaultBaseUrl, secretName, this.getApiVersion(),
-            parameters, accept, contentType, context));
+        return FluxUtil.withContext(context -> setSecretWithResponseAsync(vaultBaseUrl, secretName, value, tags,
+            secretContentType, secretAttributes, context));
     }
 
     /**
      * Sets a secret in a specified key vault.
-     *
-     * <p>The SET operation adds a secret to the Azure Key Vault. If the named secret already exists, Azure Key Vault
+     * 
+     * The SET operation adds a secret to the Azure Key Vault. If the named secret already exists, Azure Key Vault
      * creates a new version of that secret. This operation requires the secrets/set permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret. The value you provide may be copied globally for the purpose of running
-     *     the service. The value provided should not include personally identifiable or sensitive information.
+     * the service. The value provided should not include personally identifiable or sensitive information.
      * @param value The value of the secret.
      * @param tags Application specific metadata in the form of key-value pairs.
      * @param secretContentType Type of the secret value such as a password.
@@ -398,31 +401,29 @@ public final class SecretClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a secret consisting of a value, id and its attributes along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SecretBundle>> setSecretWithResponseAsync(String vaultBaseUrl, String secretName, String value,
         Map<String, String> tags, String secretContentType, SecretAttributes secretAttributes, Context context) {
         final String accept = "application/json";
-        final String contentType = "application/json";
         SecretSetParameters parameters = new SecretSetParameters();
         parameters.setValue(value);
         parameters.setTags(tags);
-        parameters.setContentType(secretContentType);
+        parameters.setSecretContentType(secretContentType);
         parameters.setSecretAttributes(secretAttributes);
-        return service.setSecret(vaultBaseUrl, secretName, this.getApiVersion(), parameters, accept, contentType,
-            context);
+        return service.setSecret(vaultBaseUrl, secretName, this.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Sets a secret in a specified key vault.
-     *
-     * <p>The SET operation adds a secret to the Azure Key Vault. If the named secret already exists, Azure Key Vault
+     * 
+     * The SET operation adds a secret to the Azure Key Vault. If the named secret already exists, Azure Key Vault
      * creates a new version of that secret. This operation requires the secrets/set permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret. The value you provide may be copied globally for the purpose of running
-     *     the service. The value provided should not include personally identifiable or sensitive information.
+     * the service. The value provided should not include personally identifiable or sensitive information.
      * @param value The value of the secret.
      * @param tags Application specific metadata in the form of key-value pairs.
      * @param secretContentType Type of the secret value such as a password.
@@ -441,13 +442,13 @@ public final class SecretClientImpl {
 
     /**
      * Sets a secret in a specified key vault.
-     *
-     * <p>The SET operation adds a secret to the Azure Key Vault. If the named secret already exists, Azure Key Vault
+     * 
+     * The SET operation adds a secret to the Azure Key Vault. If the named secret already exists, Azure Key Vault
      * creates a new version of that secret. This operation requires the secrets/set permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret. The value you provide may be copied globally for the purpose of running
-     *     the service. The value provided should not include personally identifiable or sensitive information.
+     * the service. The value provided should not include personally identifiable or sensitive information.
      * @param value The value of the secret.
      * @param tags Application specific metadata in the form of key-value pairs.
      * @param secretContentType Type of the secret value such as a password.
@@ -467,13 +468,13 @@ public final class SecretClientImpl {
 
     /**
      * Sets a secret in a specified key vault.
-     *
-     * <p>The SET operation adds a secret to the Azure Key Vault. If the named secret already exists, Azure Key Vault
+     * 
+     * The SET operation adds a secret to the Azure Key Vault. If the named secret already exists, Azure Key Vault
      * creates a new version of that secret. This operation requires the secrets/set permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret. The value you provide may be copied globally for the purpose of running
-     *     the service. The value provided should not include personally identifiable or sensitive information.
+     * the service. The value provided should not include personally identifiable or sensitive information.
      * @param value The value of the secret.
      * @param tags Application specific metadata in the form of key-value pairs.
      * @param secretContentType Type of the secret value such as a password.
@@ -488,25 +489,23 @@ public final class SecretClientImpl {
     public Response<SecretBundle> setSecretWithResponse(String vaultBaseUrl, String secretName, String value,
         Map<String, String> tags, String secretContentType, SecretAttributes secretAttributes, Context context) {
         final String accept = "application/json";
-        final String contentType = "application/json";
         SecretSetParameters parameters = new SecretSetParameters();
         parameters.setValue(value);
         parameters.setTags(tags);
-        parameters.setContentType(secretContentType);
+        parameters.setSecretContentType(secretContentType);
         parameters.setSecretAttributes(secretAttributes);
-        return service.setSecretSync(vaultBaseUrl, secretName, this.getApiVersion(), parameters, accept, contentType,
-            context);
+        return service.setSecretSync(vaultBaseUrl, secretName, this.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Sets a secret in a specified key vault.
-     *
-     * <p>The SET operation adds a secret to the Azure Key Vault. If the named secret already exists, Azure Key Vault
+     * 
+     * The SET operation adds a secret to the Azure Key Vault. If the named secret already exists, Azure Key Vault
      * creates a new version of that secret. This operation requires the secrets/set permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret. The value you provide may be copied globally for the purpose of running
-     *     the service. The value provided should not include personally identifiable or sensitive information.
+     * the service. The value provided should not include personally identifiable or sensitive information.
      * @param value The value of the secret.
      * @param tags Application specific metadata in the form of key-value pairs.
      * @param secretContentType Type of the secret value such as a password.
@@ -525,31 +524,29 @@ public final class SecretClientImpl {
 
     /**
      * Deletes a secret from a specified key vault.
-     *
-     * <p>The DELETE operation applies to any secret stored in Azure Key Vault. DELETE cannot be applied to an
-     * individual version of a secret. This operation requires the secrets/delete permission.
-     *
+     * 
+     * The DELETE operation applies to any secret stored in Azure Key Vault. DELETE cannot be applied to an individual
+     * version of a secret. This operation requires the secrets/delete permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Deleted Secret consisting of its previous id, attributes and its tags, as well as information on when
-     *     it will be purged along with {@link Response} on successful completion of {@link Mono}.
+     * it will be purged along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedSecretBundle>> deleteSecretWithResponseAsync(String vaultBaseUrl, String secretName) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.deleteSecret(vaultBaseUrl, secretName, this.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> deleteSecretWithResponseAsync(vaultBaseUrl, secretName, context));
     }
 
     /**
      * Deletes a secret from a specified key vault.
-     *
-     * <p>The DELETE operation applies to any secret stored in Azure Key Vault. DELETE cannot be applied to an
-     * individual version of a secret. This operation requires the secrets/delete permission.
-     *
+     * 
+     * The DELETE operation applies to any secret stored in Azure Key Vault. DELETE cannot be applied to an individual
+     * version of a secret. This operation requires the secrets/delete permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param context The context to associate with this operation.
@@ -557,7 +554,7 @@ public final class SecretClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Deleted Secret consisting of its previous id, attributes and its tags, as well as information on when
-     *     it will be purged along with {@link Response} on successful completion of {@link Mono}.
+     * it will be purged along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedSecretBundle>> deleteSecretWithResponseAsync(String vaultBaseUrl, String secretName,
@@ -568,17 +565,17 @@ public final class SecretClientImpl {
 
     /**
      * Deletes a secret from a specified key vault.
-     *
-     * <p>The DELETE operation applies to any secret stored in Azure Key Vault. DELETE cannot be applied to an
-     * individual version of a secret. This operation requires the secrets/delete permission.
-     *
+     * 
+     * The DELETE operation applies to any secret stored in Azure Key Vault. DELETE cannot be applied to an individual
+     * version of a secret. This operation requires the secrets/delete permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Deleted Secret consisting of its previous id, attributes and its tags, as well as information on when
-     *     it will be purged on successful completion of {@link Mono}.
+     * it will be purged on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedSecretBundle> deleteSecretAsync(String vaultBaseUrl, String secretName) {
@@ -587,10 +584,10 @@ public final class SecretClientImpl {
 
     /**
      * Deletes a secret from a specified key vault.
-     *
-     * <p>The DELETE operation applies to any secret stored in Azure Key Vault. DELETE cannot be applied to an
-     * individual version of a secret. This operation requires the secrets/delete permission.
-     *
+     * 
+     * The DELETE operation applies to any secret stored in Azure Key Vault. DELETE cannot be applied to an individual
+     * version of a secret. This operation requires the secrets/delete permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param context The context to associate with this operation.
@@ -598,7 +595,7 @@ public final class SecretClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Deleted Secret consisting of its previous id, attributes and its tags, as well as information on when
-     *     it will be purged on successful completion of {@link Mono}.
+     * it will be purged on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedSecretBundle> deleteSecretAsync(String vaultBaseUrl, String secretName, Context context) {
@@ -608,10 +605,10 @@ public final class SecretClientImpl {
 
     /**
      * Deletes a secret from a specified key vault.
-     *
-     * <p>The DELETE operation applies to any secret stored in Azure Key Vault. DELETE cannot be applied to an
-     * individual version of a secret. This operation requires the secrets/delete permission.
-     *
+     * 
+     * The DELETE operation applies to any secret stored in Azure Key Vault. DELETE cannot be applied to an individual
+     * version of a secret. This operation requires the secrets/delete permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param context The context to associate with this operation.
@@ -619,7 +616,7 @@ public final class SecretClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Deleted Secret consisting of its previous id, attributes and its tags, as well as information on when
-     *     it will be purged along with {@link Response}.
+     * it will be purged along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedSecretBundle> deleteSecretWithResponse(String vaultBaseUrl, String secretName,
@@ -630,17 +627,17 @@ public final class SecretClientImpl {
 
     /**
      * Deletes a secret from a specified key vault.
-     *
-     * <p>The DELETE operation applies to any secret stored in Azure Key Vault. DELETE cannot be applied to an
-     * individual version of a secret. This operation requires the secrets/delete permission.
-     *
+     * 
+     * The DELETE operation applies to any secret stored in Azure Key Vault. DELETE cannot be applied to an individual
+     * version of a secret. This operation requires the secrets/delete permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Deleted Secret consisting of its previous id, attributes and its tags, as well as information on when
-     *     it will be purged.
+     * it will be purged.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeletedSecretBundle deleteSecret(String vaultBaseUrl, String secretName) {
@@ -649,11 +646,11 @@ public final class SecretClientImpl {
 
     /**
      * Updates the attributes associated with a specified secret in a given key vault.
-     *
-     * <p>The UPDATE operation changes specified attributes of an existing stored secret. Attributes that are not
-     * specified in the request are left unchanged. The value of a secret itself cannot be changed. This operation
-     * requires the secrets/set permission.
-     *
+     * 
+     * The UPDATE operation changes specified attributes of an existing stored secret. Attributes that are not specified
+     * in the request are left unchanged. The value of a secret itself cannot be changed. This operation requires the
+     * secrets/set permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param secretVersion The version of the secret.
@@ -664,28 +661,22 @@ public final class SecretClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a secret consisting of a value, id and its attributes along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SecretBundle>> updateSecretWithResponseAsync(String vaultBaseUrl, String secretName,
         String secretVersion, String secretContentType, SecretAttributes secretAttributes, Map<String, String> tags) {
-        final String accept = "application/json";
-        final String contentType = "application/json";
-        SecretUpdateParameters parameters = new SecretUpdateParameters();
-        parameters.setContentType(secretContentType);
-        parameters.setSecretAttributes(secretAttributes);
-        parameters.setTags(tags);
-        return FluxUtil.withContext(context -> service.updateSecret(vaultBaseUrl, secretName, secretVersion,
-            this.getApiVersion(), parameters, accept, contentType, context));
+        return FluxUtil.withContext(context -> updateSecretWithResponseAsync(vaultBaseUrl, secretName, secretVersion,
+            secretContentType, secretAttributes, tags, context));
     }
 
     /**
      * Updates the attributes associated with a specified secret in a given key vault.
-     *
-     * <p>The UPDATE operation changes specified attributes of an existing stored secret. Attributes that are not
-     * specified in the request are left unchanged. The value of a secret itself cannot be changed. This operation
-     * requires the secrets/set permission.
-     *
+     * 
+     * The UPDATE operation changes specified attributes of an existing stored secret. Attributes that are not specified
+     * in the request are left unchanged. The value of a secret itself cannot be changed. This operation requires the
+     * secrets/set permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param secretVersion The version of the secret.
@@ -697,29 +688,28 @@ public final class SecretClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a secret consisting of a value, id and its attributes along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SecretBundle>> updateSecretWithResponseAsync(String vaultBaseUrl, String secretName,
         String secretVersion, String secretContentType, SecretAttributes secretAttributes, Map<String, String> tags,
         Context context) {
         final String accept = "application/json";
-        final String contentType = "application/json";
         SecretUpdateParameters parameters = new SecretUpdateParameters();
-        parameters.setContentType(secretContentType);
+        parameters.setSecretContentType(secretContentType);
         parameters.setSecretAttributes(secretAttributes);
         parameters.setTags(tags);
         return service.updateSecret(vaultBaseUrl, secretName, secretVersion, this.getApiVersion(), parameters, accept,
-            contentType, context);
+            context);
     }
 
     /**
      * Updates the attributes associated with a specified secret in a given key vault.
-     *
-     * <p>The UPDATE operation changes specified attributes of an existing stored secret. Attributes that are not
-     * specified in the request are left unchanged. The value of a secret itself cannot be changed. This operation
-     * requires the secrets/set permission.
-     *
+     * 
+     * The UPDATE operation changes specified attributes of an existing stored secret. Attributes that are not specified
+     * in the request are left unchanged. The value of a secret itself cannot be changed. This operation requires the
+     * secrets/set permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param secretVersion The version of the secret.
@@ -740,11 +730,11 @@ public final class SecretClientImpl {
 
     /**
      * Updates the attributes associated with a specified secret in a given key vault.
-     *
-     * <p>The UPDATE operation changes specified attributes of an existing stored secret. Attributes that are not
-     * specified in the request are left unchanged. The value of a secret itself cannot be changed. This operation
-     * requires the secrets/set permission.
-     *
+     * 
+     * The UPDATE operation changes specified attributes of an existing stored secret. Attributes that are not specified
+     * in the request are left unchanged. The value of a secret itself cannot be changed. This operation requires the
+     * secrets/set permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param secretVersion The version of the secret.
@@ -766,11 +756,11 @@ public final class SecretClientImpl {
 
     /**
      * Updates the attributes associated with a specified secret in a given key vault.
-     *
-     * <p>The UPDATE operation changes specified attributes of an existing stored secret. Attributes that are not
-     * specified in the request are left unchanged. The value of a secret itself cannot be changed. This operation
-     * requires the secrets/set permission.
-     *
+     * 
+     * The UPDATE operation changes specified attributes of an existing stored secret. Attributes that are not specified
+     * in the request are left unchanged. The value of a secret itself cannot be changed. This operation requires the
+     * secrets/set permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param secretVersion The version of the secret.
@@ -787,22 +777,21 @@ public final class SecretClientImpl {
     public Response<SecretBundle> updateSecretWithResponse(String vaultBaseUrl, String secretName, String secretVersion,
         String secretContentType, SecretAttributes secretAttributes, Map<String, String> tags, Context context) {
         final String accept = "application/json";
-        final String contentType = "application/json";
         SecretUpdateParameters parameters = new SecretUpdateParameters();
-        parameters.setContentType(secretContentType);
+        parameters.setSecretContentType(secretContentType);
         parameters.setSecretAttributes(secretAttributes);
         parameters.setTags(tags);
         return service.updateSecretSync(vaultBaseUrl, secretName, secretVersion, this.getApiVersion(), parameters,
-            accept, contentType, context);
+            accept, context);
     }
 
     /**
      * Updates the attributes associated with a specified secret in a given key vault.
-     *
-     * <p>The UPDATE operation changes specified attributes of an existing stored secret. Attributes that are not
-     * specified in the request are left unchanged. The value of a secret itself cannot be changed. This operation
-     * requires the secrets/set permission.
-     *
+     * 
+     * The UPDATE operation changes specified attributes of an existing stored secret. Attributes that are not specified
+     * in the request are left unchanged. The value of a secret itself cannot be changed. This operation requires the
+     * secrets/set permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param secretVersion The version of the secret.
@@ -823,44 +812,43 @@ public final class SecretClientImpl {
 
     /**
      * Get a specified secret from a given key vault.
-     *
-     * <p>The GET operation is applicable to any secret stored in Azure Key Vault. This operation requires the
-     * secrets/get permission.
-     *
+     * 
+     * The GET operation is applicable to any secret stored in Azure Key Vault. This operation requires the secrets/get
+     * permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param secretVersion The version of the secret. This URI fragment is optional. If not specified, the latest
-     *     version of the secret is returned.
+     * version of the secret is returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a secret consisting of a value, id and its attributes along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SecretBundle>> getSecretWithResponseAsync(String vaultBaseUrl, String secretName,
         String secretVersion) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getSecret(vaultBaseUrl, secretName, secretVersion,
-            this.getApiVersion(), accept, context));
+        return FluxUtil
+            .withContext(context -> getSecretWithResponseAsync(vaultBaseUrl, secretName, secretVersion, context));
     }
 
     /**
      * Get a specified secret from a given key vault.
-     *
-     * <p>The GET operation is applicable to any secret stored in Azure Key Vault. This operation requires the
-     * secrets/get permission.
-     *
+     * 
+     * The GET operation is applicable to any secret stored in Azure Key Vault. This operation requires the secrets/get
+     * permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param secretVersion The version of the secret. This URI fragment is optional. If not specified, the latest
-     *     version of the secret is returned.
+     * version of the secret is returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a secret consisting of a value, id and its attributes along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SecretBundle>> getSecretWithResponseAsync(String vaultBaseUrl, String secretName,
@@ -871,14 +859,14 @@ public final class SecretClientImpl {
 
     /**
      * Get a specified secret from a given key vault.
-     *
-     * <p>The GET operation is applicable to any secret stored in Azure Key Vault. This operation requires the
-     * secrets/get permission.
-     *
+     * 
+     * The GET operation is applicable to any secret stored in Azure Key Vault. This operation requires the secrets/get
+     * permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param secretVersion The version of the secret. This URI fragment is optional. If not specified, the latest
-     *     version of the secret is returned.
+     * version of the secret is returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -892,14 +880,14 @@ public final class SecretClientImpl {
 
     /**
      * Get a specified secret from a given key vault.
-     *
-     * <p>The GET operation is applicable to any secret stored in Azure Key Vault. This operation requires the
-     * secrets/get permission.
-     *
+     * 
+     * The GET operation is applicable to any secret stored in Azure Key Vault. This operation requires the secrets/get
+     * permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param secretVersion The version of the secret. This URI fragment is optional. If not specified, the latest
-     *     version of the secret is returned.
+     * version of the secret is returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -915,14 +903,14 @@ public final class SecretClientImpl {
 
     /**
      * Get a specified secret from a given key vault.
-     *
-     * <p>The GET operation is applicable to any secret stored in Azure Key Vault. This operation requires the
-     * secrets/get permission.
-     *
+     * 
+     * The GET operation is applicable to any secret stored in Azure Key Vault. This operation requires the secrets/get
+     * permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param secretVersion The version of the secret. This URI fragment is optional. If not specified, the latest
-     *     version of the secret is returned.
+     * version of the secret is returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -938,14 +926,14 @@ public final class SecretClientImpl {
 
     /**
      * Get a specified secret from a given key vault.
-     *
-     * <p>The GET operation is applicable to any secret stored in Azure Key Vault. This operation requires the
-     * secrets/get permission.
-     *
+     * 
+     * The GET operation is applicable to any secret stored in Azure Key Vault. This operation requires the secrets/get
+     * permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param secretVersion The version of the secret. This URI fragment is optional. If not specified, the latest
-     *     version of the secret is returned.
+     * version of the secret is returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -958,14 +946,14 @@ public final class SecretClientImpl {
 
     /**
      * List secrets in a specified key vault.
-     *
-     * <p>The Get Secrets operation is applicable to the entire vault. However, only the base secret identifier and its
+     * 
+     * The Get Secrets operation is applicable to the entire vault. However, only the base secret identifier and its
      * attributes are provided in the response. Individual secret versions are not listed in the response. This
      * operation requires the secrets/list permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified, the service will return up to
-     *     25 results.
+     * 25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -982,14 +970,14 @@ public final class SecretClientImpl {
 
     /**
      * List secrets in a specified key vault.
-     *
-     * <p>The Get Secrets operation is applicable to the entire vault. However, only the base secret identifier and its
+     * 
+     * The Get Secrets operation is applicable to the entire vault. However, only the base secret identifier and its
      * attributes are provided in the response. Individual secret versions are not listed in the response. This
      * operation requires the secrets/list permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified, the service will return up to
-     *     25 results.
+     * 25 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -1007,14 +995,14 @@ public final class SecretClientImpl {
 
     /**
      * List secrets in a specified key vault.
-     *
-     * <p>The Get Secrets operation is applicable to the entire vault. However, only the base secret identifier and its
+     * 
+     * The Get Secrets operation is applicable to the entire vault. However, only the base secret identifier and its
      * attributes are provided in the response. Individual secret versions are not listed in the response. This
      * operation requires the secrets/list permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified, the service will return up to
-     *     25 results.
+     * 25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1028,14 +1016,14 @@ public final class SecretClientImpl {
 
     /**
      * List secrets in a specified key vault.
-     *
-     * <p>The Get Secrets operation is applicable to the entire vault. However, only the base secret identifier and its
+     * 
+     * The Get Secrets operation is applicable to the entire vault. However, only the base secret identifier and its
      * attributes are provided in the response. Individual secret versions are not listed in the response. This
      * operation requires the secrets/list permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified, the service will return up to
-     *     25 results.
+     * 25 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -1050,14 +1038,14 @@ public final class SecretClientImpl {
 
     /**
      * List secrets in a specified key vault.
-     *
-     * <p>The Get Secrets operation is applicable to the entire vault. However, only the base secret identifier and its
+     * 
+     * The Get Secrets operation is applicable to the entire vault. However, only the base secret identifier and its
      * attributes are provided in the response. Individual secret versions are not listed in the response. This
      * operation requires the secrets/list permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified, the service will return up to
-     *     25 results.
+     * 25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1074,14 +1062,14 @@ public final class SecretClientImpl {
 
     /**
      * List secrets in a specified key vault.
-     *
-     * <p>The Get Secrets operation is applicable to the entire vault. However, only the base secret identifier and its
+     * 
+     * The Get Secrets operation is applicable to the entire vault. However, only the base secret identifier and its
      * attributes are provided in the response. Individual secret versions are not listed in the response. This
      * operation requires the secrets/list permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified, the service will return up to
-     *     25 results.
+     * 25 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -1099,14 +1087,14 @@ public final class SecretClientImpl {
 
     /**
      * List secrets in a specified key vault.
-     *
-     * <p>The Get Secrets operation is applicable to the entire vault. However, only the base secret identifier and its
+     * 
+     * The Get Secrets operation is applicable to the entire vault. However, only the base secret identifier and its
      * attributes are provided in the response. Individual secret versions are not listed in the response. This
      * operation requires the secrets/list permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified, the service will return up to
-     *     25 results.
+     * 25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1120,14 +1108,14 @@ public final class SecretClientImpl {
 
     /**
      * List secrets in a specified key vault.
-     *
-     * <p>The Get Secrets operation is applicable to the entire vault. However, only the base secret identifier and its
+     * 
+     * The Get Secrets operation is applicable to the entire vault. However, only the base secret identifier and its
      * attributes are provided in the response. Individual secret versions are not listed in the response. This
      * operation requires the secrets/list permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified, the service will return up to
-     *     25 results.
+     * 25 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -1142,14 +1130,14 @@ public final class SecretClientImpl {
 
     /**
      * List all versions of the specified secret.
-     *
-     * <p>The full secret identifier and attributes are provided in the response. No values are returned for the
-     * secrets. This operations requires the secrets/list permission.
-     *
+     * 
+     * The full secret identifier and attributes are provided in the response. No values are returned for the secrets.
+     * This operations requires the secrets/list permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param maxresults Maximum number of results to return in a page. If not specified, the service will return up to
-     *     25 results.
+     * 25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1168,14 +1156,14 @@ public final class SecretClientImpl {
 
     /**
      * List all versions of the specified secret.
-     *
-     * <p>The full secret identifier and attributes are provided in the response. No values are returned for the
-     * secrets. This operations requires the secrets/list permission.
-     *
+     * 
+     * The full secret identifier and attributes are provided in the response. No values are returned for the secrets.
+     * This operations requires the secrets/list permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param maxresults Maximum number of results to return in a page. If not specified, the service will return up to
-     *     25 results.
+     * 25 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -1193,14 +1181,14 @@ public final class SecretClientImpl {
 
     /**
      * List all versions of the specified secret.
-     *
-     * <p>The full secret identifier and attributes are provided in the response. No values are returned for the
-     * secrets. This operations requires the secrets/list permission.
-     *
+     * 
+     * The full secret identifier and attributes are provided in the response. No values are returned for the secrets.
+     * This operations requires the secrets/list permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param maxresults Maximum number of results to return in a page. If not specified, the service will return up to
-     *     25 results.
+     * 25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1214,14 +1202,14 @@ public final class SecretClientImpl {
 
     /**
      * List all versions of the specified secret.
-     *
-     * <p>The full secret identifier and attributes are provided in the response. No values are returned for the
-     * secrets. This operations requires the secrets/list permission.
-     *
+     * 
+     * The full secret identifier and attributes are provided in the response. No values are returned for the secrets.
+     * This operations requires the secrets/list permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param maxresults Maximum number of results to return in a page. If not specified, the service will return up to
-     *     25 results.
+     * 25 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -1237,14 +1225,14 @@ public final class SecretClientImpl {
 
     /**
      * List all versions of the specified secret.
-     *
-     * <p>The full secret identifier and attributes are provided in the response. No values are returned for the
-     * secrets. This operations requires the secrets/list permission.
-     *
+     * 
+     * The full secret identifier and attributes are provided in the response. No values are returned for the secrets.
+     * This operations requires the secrets/list permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param maxresults Maximum number of results to return in a page. If not specified, the service will return up to
-     *     25 results.
+     * 25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1262,14 +1250,14 @@ public final class SecretClientImpl {
 
     /**
      * List all versions of the specified secret.
-     *
-     * <p>The full secret identifier and attributes are provided in the response. No values are returned for the
-     * secrets. This operations requires the secrets/list permission.
-     *
+     * 
+     * The full secret identifier and attributes are provided in the response. No values are returned for the secrets.
+     * This operations requires the secrets/list permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param maxresults Maximum number of results to return in a page. If not specified, the service will return up to
-     *     25 results.
+     * 25 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -1288,14 +1276,14 @@ public final class SecretClientImpl {
 
     /**
      * List all versions of the specified secret.
-     *
-     * <p>The full secret identifier and attributes are provided in the response. No values are returned for the
-     * secrets. This operations requires the secrets/list permission.
-     *
+     * 
+     * The full secret identifier and attributes are provided in the response. No values are returned for the secrets.
+     * This operations requires the secrets/list permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param maxresults Maximum number of results to return in a page. If not specified, the service will return up to
-     *     25 results.
+     * 25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1310,14 +1298,14 @@ public final class SecretClientImpl {
 
     /**
      * List all versions of the specified secret.
-     *
-     * <p>The full secret identifier and attributes are provided in the response. No values are returned for the
-     * secrets. This operations requires the secrets/list permission.
-     *
+     * 
+     * The full secret identifier and attributes are provided in the response. No values are returned for the secrets.
+     * This operations requires the secrets/list permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param maxresults Maximum number of results to return in a page. If not specified, the service will return up to
-     *     25 results.
+     * 25 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -1333,13 +1321,13 @@ public final class SecretClientImpl {
 
     /**
      * Lists deleted secrets for the specified vault.
-     *
-     * <p>The Get Deleted Secrets operation returns the secrets that have been deleted for a vault enabled for
-     * soft-delete. This operation requires the secrets/list permission.
-     *
+     * 
+     * The Get Deleted Secrets operation returns the secrets that have been deleted for a vault enabled for soft-delete.
+     * This operation requires the secrets/list permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1358,13 +1346,13 @@ public final class SecretClientImpl {
 
     /**
      * Lists deleted secrets for the specified vault.
-     *
-     * <p>The Get Deleted Secrets operation returns the secrets that have been deleted for a vault enabled for
-     * soft-delete. This operation requires the secrets/list permission.
-     *
+     * 
+     * The Get Deleted Secrets operation returns the secrets that have been deleted for a vault enabled for soft-delete.
+     * This operation requires the secrets/list permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -1382,13 +1370,13 @@ public final class SecretClientImpl {
 
     /**
      * Lists deleted secrets for the specified vault.
-     *
-     * <p>The Get Deleted Secrets operation returns the secrets that have been deleted for a vault enabled for
-     * soft-delete. This operation requires the secrets/list permission.
-     *
+     * 
+     * The Get Deleted Secrets operation returns the secrets that have been deleted for a vault enabled for soft-delete.
+     * This operation requires the secrets/list permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1402,13 +1390,13 @@ public final class SecretClientImpl {
 
     /**
      * Lists deleted secrets for the specified vault.
-     *
-     * <p>The Get Deleted Secrets operation returns the secrets that have been deleted for a vault enabled for
-     * soft-delete. This operation requires the secrets/list permission.
-     *
+     * 
+     * The Get Deleted Secrets operation returns the secrets that have been deleted for a vault enabled for soft-delete.
+     * This operation requires the secrets/list permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -1424,13 +1412,13 @@ public final class SecretClientImpl {
 
     /**
      * Lists deleted secrets for the specified vault.
-     *
-     * <p>The Get Deleted Secrets operation returns the secrets that have been deleted for a vault enabled for
-     * soft-delete. This operation requires the secrets/list permission.
-     *
+     * 
+     * The Get Deleted Secrets operation returns the secrets that have been deleted for a vault enabled for soft-delete.
+     * This operation requires the secrets/list permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1447,13 +1435,13 @@ public final class SecretClientImpl {
 
     /**
      * Lists deleted secrets for the specified vault.
-     *
-     * <p>The Get Deleted Secrets operation returns the secrets that have been deleted for a vault enabled for
-     * soft-delete. This operation requires the secrets/list permission.
-     *
+     * 
+     * The Get Deleted Secrets operation returns the secrets that have been deleted for a vault enabled for soft-delete.
+     * This operation requires the secrets/list permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -1472,13 +1460,13 @@ public final class SecretClientImpl {
 
     /**
      * Lists deleted secrets for the specified vault.
-     *
-     * <p>The Get Deleted Secrets operation returns the secrets that have been deleted for a vault enabled for
-     * soft-delete. This operation requires the secrets/list permission.
-     *
+     * 
+     * The Get Deleted Secrets operation returns the secrets that have been deleted for a vault enabled for soft-delete.
+     * This operation requires the secrets/list permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1492,13 +1480,13 @@ public final class SecretClientImpl {
 
     /**
      * Lists deleted secrets for the specified vault.
-     *
-     * <p>The Get Deleted Secrets operation returns the secrets that have been deleted for a vault enabled for
-     * soft-delete. This operation requires the secrets/list permission.
-     *
+     * 
+     * The Get Deleted Secrets operation returns the secrets that have been deleted for a vault enabled for soft-delete.
+     * This operation requires the secrets/list permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
-     *     25 results.
+     * 25 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -1514,32 +1502,30 @@ public final class SecretClientImpl {
 
     /**
      * Gets the specified deleted secret.
-     *
-     * <p>The Get Deleted Secret operation returns the specified deleted secret along with its attributes. This
-     * operation requires the secrets/get permission.
-     *
+     * 
+     * The Get Deleted Secret operation returns the specified deleted secret along with its attributes. This operation
+     * requires the secrets/get permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Deleted Secret consisting of its previous id, attributes and its tags, as well as information on when
-     *     it will be purged along with {@link Response} on successful completion of {@link Mono}.
+     * it will be purged along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedSecretBundle>> getDeletedSecretWithResponseAsync(String vaultBaseUrl,
         String secretName) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.getDeletedSecret(vaultBaseUrl, secretName, this.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> getDeletedSecretWithResponseAsync(vaultBaseUrl, secretName, context));
     }
 
     /**
      * Gets the specified deleted secret.
-     *
-     * <p>The Get Deleted Secret operation returns the specified deleted secret along with its attributes. This
-     * operation requires the secrets/get permission.
-     *
+     * 
+     * The Get Deleted Secret operation returns the specified deleted secret along with its attributes. This operation
+     * requires the secrets/get permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param context The context to associate with this operation.
@@ -1547,7 +1533,7 @@ public final class SecretClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Deleted Secret consisting of its previous id, attributes and its tags, as well as information on when
-     *     it will be purged along with {@link Response} on successful completion of {@link Mono}.
+     * it will be purged along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedSecretBundle>> getDeletedSecretWithResponseAsync(String vaultBaseUrl, String secretName,
@@ -1558,17 +1544,17 @@ public final class SecretClientImpl {
 
     /**
      * Gets the specified deleted secret.
-     *
-     * <p>The Get Deleted Secret operation returns the specified deleted secret along with its attributes. This
-     * operation requires the secrets/get permission.
-     *
+     * 
+     * The Get Deleted Secret operation returns the specified deleted secret along with its attributes. This operation
+     * requires the secrets/get permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Deleted Secret consisting of its previous id, attributes and its tags, as well as information on when
-     *     it will be purged on successful completion of {@link Mono}.
+     * it will be purged on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedSecretBundle> getDeletedSecretAsync(String vaultBaseUrl, String secretName) {
@@ -1578,10 +1564,10 @@ public final class SecretClientImpl {
 
     /**
      * Gets the specified deleted secret.
-     *
-     * <p>The Get Deleted Secret operation returns the specified deleted secret along with its attributes. This
-     * operation requires the secrets/get permission.
-     *
+     * 
+     * The Get Deleted Secret operation returns the specified deleted secret along with its attributes. This operation
+     * requires the secrets/get permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param context The context to associate with this operation.
@@ -1589,7 +1575,7 @@ public final class SecretClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Deleted Secret consisting of its previous id, attributes and its tags, as well as information on when
-     *     it will be purged on successful completion of {@link Mono}.
+     * it will be purged on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedSecretBundle> getDeletedSecretAsync(String vaultBaseUrl, String secretName, Context context) {
@@ -1599,10 +1585,10 @@ public final class SecretClientImpl {
 
     /**
      * Gets the specified deleted secret.
-     *
-     * <p>The Get Deleted Secret operation returns the specified deleted secret along with its attributes. This
-     * operation requires the secrets/get permission.
-     *
+     * 
+     * The Get Deleted Secret operation returns the specified deleted secret along with its attributes. This operation
+     * requires the secrets/get permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param context The context to associate with this operation.
@@ -1610,7 +1596,7 @@ public final class SecretClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Deleted Secret consisting of its previous id, attributes and its tags, as well as information on when
-     *     it will be purged along with {@link Response}.
+     * it will be purged along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedSecretBundle> getDeletedSecretWithResponse(String vaultBaseUrl, String secretName,
@@ -1621,17 +1607,17 @@ public final class SecretClientImpl {
 
     /**
      * Gets the specified deleted secret.
-     *
-     * <p>The Get Deleted Secret operation returns the specified deleted secret along with its attributes. This
-     * operation requires the secrets/get permission.
-     *
+     * 
+     * The Get Deleted Secret operation returns the specified deleted secret along with its attributes. This operation
+     * requires the secrets/get permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Deleted Secret consisting of its previous id, attributes and its tags, as well as information on when
-     *     it will be purged.
+     * it will be purged.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeletedSecretBundle getDeletedSecret(String vaultBaseUrl, String secretName) {
@@ -1640,11 +1626,11 @@ public final class SecretClientImpl {
 
     /**
      * Permanently deletes the specified secret.
-     *
-     * <p>The purge deleted secret operation removes the secret permanently, without the possibility of recovery. This
+     * 
+     * The purge deleted secret operation removes the secret permanently, without the possibility of recovery. This
      * operation can only be enabled on a soft-delete enabled vault. This operation requires the secrets/purge
      * permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1654,18 +1640,16 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> purgeDeletedSecretWithResponseAsync(String vaultBaseUrl, String secretName) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.purgeDeletedSecret(vaultBaseUrl, secretName, this.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> purgeDeletedSecretWithResponseAsync(vaultBaseUrl, secretName, context));
     }
 
     /**
      * Permanently deletes the specified secret.
-     *
-     * <p>The purge deleted secret operation removes the secret permanently, without the possibility of recovery. This
+     * 
+     * The purge deleted secret operation removes the secret permanently, without the possibility of recovery. This
      * operation can only be enabled on a soft-delete enabled vault. This operation requires the secrets/purge
      * permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param context The context to associate with this operation.
@@ -1683,11 +1667,11 @@ public final class SecretClientImpl {
 
     /**
      * Permanently deletes the specified secret.
-     *
-     * <p>The purge deleted secret operation removes the secret permanently, without the possibility of recovery. This
+     * 
+     * The purge deleted secret operation removes the secret permanently, without the possibility of recovery. This
      * operation can only be enabled on a soft-delete enabled vault. This operation requires the secrets/purge
      * permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1702,11 +1686,11 @@ public final class SecretClientImpl {
 
     /**
      * Permanently deletes the specified secret.
-     *
-     * <p>The purge deleted secret operation removes the secret permanently, without the possibility of recovery. This
+     * 
+     * The purge deleted secret operation removes the secret permanently, without the possibility of recovery. This
      * operation can only be enabled on a soft-delete enabled vault. This operation requires the secrets/purge
      * permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param context The context to associate with this operation.
@@ -1722,11 +1706,11 @@ public final class SecretClientImpl {
 
     /**
      * Permanently deletes the specified secret.
-     *
-     * <p>The purge deleted secret operation removes the secret permanently, without the possibility of recovery. This
+     * 
+     * The purge deleted secret operation removes the secret permanently, without the possibility of recovery. This
      * operation can only be enabled on a soft-delete enabled vault. This operation requires the secrets/purge
      * permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param context The context to associate with this operation.
@@ -1743,11 +1727,11 @@ public final class SecretClientImpl {
 
     /**
      * Permanently deletes the specified secret.
-     *
-     * <p>The purge deleted secret operation removes the secret permanently, without the possibility of recovery. This
+     * 
+     * The purge deleted secret operation removes the secret permanently, without the possibility of recovery. This
      * operation can only be enabled on a soft-delete enabled vault. This operation requires the secrets/purge
      * permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1761,31 +1745,30 @@ public final class SecretClientImpl {
 
     /**
      * Recovers the deleted secret to the latest version.
-     *
-     * <p>Recovers the deleted secret in the specified vault. This operation can only be performed on a soft-delete
-     * enabled vault. This operation requires the secrets/recover permission.
-     *
+     * 
+     * Recovers the deleted secret in the specified vault. This operation can only be performed on a soft-delete enabled
+     * vault. This operation requires the secrets/recover permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the deleted secret.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a secret consisting of a value, id and its attributes along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SecretBundle>> recoverDeletedSecretWithResponseAsync(String vaultBaseUrl, String secretName) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.recoverDeletedSecret(vaultBaseUrl, secretName, this.getApiVersion(), accept, context));
+        return FluxUtil
+            .withContext(context -> recoverDeletedSecretWithResponseAsync(vaultBaseUrl, secretName, context));
     }
 
     /**
      * Recovers the deleted secret to the latest version.
-     *
-     * <p>Recovers the deleted secret in the specified vault. This operation can only be performed on a soft-delete
-     * enabled vault. This operation requires the secrets/recover permission.
-     *
+     * 
+     * Recovers the deleted secret in the specified vault. This operation can only be performed on a soft-delete enabled
+     * vault. This operation requires the secrets/recover permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the deleted secret.
      * @param context The context to associate with this operation.
@@ -1793,7 +1776,7 @@ public final class SecretClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a secret consisting of a value, id and its attributes along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SecretBundle>> recoverDeletedSecretWithResponseAsync(String vaultBaseUrl, String secretName,
@@ -1804,10 +1787,10 @@ public final class SecretClientImpl {
 
     /**
      * Recovers the deleted secret to the latest version.
-     *
-     * <p>Recovers the deleted secret in the specified vault. This operation can only be performed on a soft-delete
-     * enabled vault. This operation requires the secrets/recover permission.
-     *
+     * 
+     * Recovers the deleted secret in the specified vault. This operation can only be performed on a soft-delete enabled
+     * vault. This operation requires the secrets/recover permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the deleted secret.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1823,10 +1806,10 @@ public final class SecretClientImpl {
 
     /**
      * Recovers the deleted secret to the latest version.
-     *
-     * <p>Recovers the deleted secret in the specified vault. This operation can only be performed on a soft-delete
-     * enabled vault. This operation requires the secrets/recover permission.
-     *
+     * 
+     * Recovers the deleted secret in the specified vault. This operation can only be performed on a soft-delete enabled
+     * vault. This operation requires the secrets/recover permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the deleted secret.
      * @param context The context to associate with this operation.
@@ -1843,10 +1826,10 @@ public final class SecretClientImpl {
 
     /**
      * Recovers the deleted secret to the latest version.
-     *
-     * <p>Recovers the deleted secret in the specified vault. This operation can only be performed on a soft-delete
-     * enabled vault. This operation requires the secrets/recover permission.
-     *
+     * 
+     * Recovers the deleted secret in the specified vault. This operation can only be performed on a soft-delete enabled
+     * vault. This operation requires the secrets/recover permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the deleted secret.
      * @param context The context to associate with this operation.
@@ -1864,10 +1847,10 @@ public final class SecretClientImpl {
 
     /**
      * Recovers the deleted secret to the latest version.
-     *
-     * <p>Recovers the deleted secret in the specified vault. This operation can only be performed on a soft-delete
-     * enabled vault. This operation requires the secrets/recover permission.
-     *
+     * 
+     * Recovers the deleted secret in the specified vault. This operation can only be performed on a soft-delete enabled
+     * vault. This operation requires the secrets/recover permission.
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the deleted secret.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1882,31 +1865,29 @@ public final class SecretClientImpl {
 
     /**
      * Backs up the specified secret.
-     *
-     * <p>Requests that a backup of the specified secret be downloaded to the client. All versions of the secret will be
+     * 
+     * Requests that a backup of the specified secret be downloaded to the client. All versions of the secret will be
      * downloaded. This operation requires the secrets/backup permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the backup secret result, containing the backup blob along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BackupSecretResult>> backupSecretWithResponseAsync(String vaultBaseUrl, String secretName) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.backupSecret(vaultBaseUrl, secretName, this.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> backupSecretWithResponseAsync(vaultBaseUrl, secretName, context));
     }
 
     /**
      * Backs up the specified secret.
-     *
-     * <p>Requests that a backup of the specified secret be downloaded to the client. All versions of the secret will be
+     * 
+     * Requests that a backup of the specified secret be downloaded to the client. All versions of the secret will be
      * downloaded. This operation requires the secrets/backup permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param context The context to associate with this operation.
@@ -1914,7 +1895,7 @@ public final class SecretClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the backup secret result, containing the backup blob along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BackupSecretResult>> backupSecretWithResponseAsync(String vaultBaseUrl, String secretName,
@@ -1925,10 +1906,10 @@ public final class SecretClientImpl {
 
     /**
      * Backs up the specified secret.
-     *
-     * <p>Requests that a backup of the specified secret be downloaded to the client. All versions of the secret will be
+     * 
+     * Requests that a backup of the specified secret be downloaded to the client. All versions of the secret will be
      * downloaded. This operation requires the secrets/backup permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1943,10 +1924,10 @@ public final class SecretClientImpl {
 
     /**
      * Backs up the specified secret.
-     *
-     * <p>Requests that a backup of the specified secret be downloaded to the client. All versions of the secret will be
+     * 
+     * Requests that a backup of the specified secret be downloaded to the client. All versions of the secret will be
      * downloaded. This operation requires the secrets/backup permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param context The context to associate with this operation.
@@ -1963,10 +1944,10 @@ public final class SecretClientImpl {
 
     /**
      * Backs up the specified secret.
-     *
-     * <p>Requests that a backup of the specified secret be downloaded to the client. All versions of the secret will be
+     * 
+     * Requests that a backup of the specified secret be downloaded to the client. All versions of the secret will be
      * downloaded. This operation requires the secrets/backup permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @param context The context to associate with this operation.
@@ -1984,10 +1965,10 @@ public final class SecretClientImpl {
 
     /**
      * Backs up the specified secret.
-     *
-     * <p>Requests that a backup of the specified secret be downloaded to the client. All versions of the secret will be
+     * 
+     * Requests that a backup of the specified secret be downloaded to the client. All versions of the secret will be
      * downloaded. This operation requires the secrets/backup permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretName The name of the secret.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2002,33 +1983,30 @@ public final class SecretClientImpl {
 
     /**
      * Restores a backed up secret to a vault.
-     *
-     * <p>Restores a backed up secret, and all its versions, to a vault. This operation requires the secrets/restore
+     * 
+     * Restores a backed up secret, and all its versions, to a vault. This operation requires the secrets/restore
      * permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretBundleBackup The backup blob associated with a secret bundle.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a secret consisting of a value, id and its attributes along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SecretBundle>> restoreSecretWithResponseAsync(String vaultBaseUrl, byte[] secretBundleBackup) {
-        final String accept = "application/json";
-        SecretRestoreParameters parameters = new SecretRestoreParameters();
-        parameters.setSecretBundleBackup(secretBundleBackup);
-        return FluxUtil.withContext(
-            context -> service.restoreSecret(vaultBaseUrl, this.getApiVersion(), parameters, accept, context));
+        return FluxUtil
+            .withContext(context -> restoreSecretWithResponseAsync(vaultBaseUrl, secretBundleBackup, context));
     }
 
     /**
      * Restores a backed up secret to a vault.
-     *
-     * <p>Restores a backed up secret, and all its versions, to a vault. This operation requires the secrets/restore
+     * 
+     * Restores a backed up secret, and all its versions, to a vault. This operation requires the secrets/restore
      * permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretBundleBackup The backup blob associated with a secret bundle.
      * @param context The context to associate with this operation.
@@ -2036,7 +2014,7 @@ public final class SecretClientImpl {
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a secret consisting of a value, id and its attributes along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SecretBundle>> restoreSecretWithResponseAsync(String vaultBaseUrl, byte[] secretBundleBackup,
@@ -2049,10 +2027,10 @@ public final class SecretClientImpl {
 
     /**
      * Restores a backed up secret to a vault.
-     *
-     * <p>Restores a backed up secret, and all its versions, to a vault. This operation requires the secrets/restore
+     * 
+     * Restores a backed up secret, and all its versions, to a vault. This operation requires the secrets/restore
      * permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretBundleBackup The backup blob associated with a secret bundle.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2068,10 +2046,10 @@ public final class SecretClientImpl {
 
     /**
      * Restores a backed up secret to a vault.
-     *
-     * <p>Restores a backed up secret, and all its versions, to a vault. This operation requires the secrets/restore
+     * 
+     * Restores a backed up secret, and all its versions, to a vault. This operation requires the secrets/restore
      * permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretBundleBackup The backup blob associated with a secret bundle.
      * @param context The context to associate with this operation.
@@ -2088,10 +2066,10 @@ public final class SecretClientImpl {
 
     /**
      * Restores a backed up secret to a vault.
-     *
-     * <p>Restores a backed up secret, and all its versions, to a vault. This operation requires the secrets/restore
+     * 
+     * Restores a backed up secret, and all its versions, to a vault. This operation requires the secrets/restore
      * permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretBundleBackup The backup blob associated with a secret bundle.
      * @param context The context to associate with this operation.
@@ -2111,10 +2089,10 @@ public final class SecretClientImpl {
 
     /**
      * Restores a backed up secret to a vault.
-     *
-     * <p>Restores a backed up secret, and all its versions, to a vault. This operation requires the secrets/restore
+     * 
+     * Restores a backed up secret, and all its versions, to a vault. This operation requires the secrets/restore
      * permission.
-     *
+     * 
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param secretBundleBackup The backup blob associated with a secret bundle.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2129,9 +2107,8 @@ public final class SecretClientImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -2148,9 +2125,8 @@ public final class SecretClientImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2169,9 +2145,8 @@ public final class SecretClientImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -2188,9 +2163,8 @@ public final class SecretClientImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2208,9 +2182,8 @@ public final class SecretClientImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -2227,9 +2200,8 @@ public final class SecretClientImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2248,9 +2220,8 @@ public final class SecretClientImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -2268,9 +2239,8 @@ public final class SecretClientImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2289,9 +2259,8 @@ public final class SecretClientImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -2309,9 +2278,8 @@ public final class SecretClientImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2330,9 +2298,8 @@ public final class SecretClientImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -2350,9 +2317,8 @@ public final class SecretClientImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

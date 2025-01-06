@@ -30,17 +30,23 @@ import com.azure.resourcemanager.resourcehealth.fluent.models.EventImpactedResou
 import com.azure.resourcemanager.resourcehealth.models.EventImpactedResourceListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ImpactedResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ImpactedResourcesClient.
+ */
 public final class ImpactedResourcesClientImpl implements ImpactedResourcesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ImpactedResourcesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MicrosoftResourceHealthImpl client;
 
     /**
      * Initializes an instance of ImpactedResourcesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ImpactedResourcesClientImpl(MicrosoftResourceHealthImpl client) {
@@ -110,15 +116,15 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
 
     /**
      * Lists impacted resources in the subscription by an event.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List of eventImpactedResources operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventImpactedResourceInner>>
@@ -146,16 +152,16 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
 
     /**
      * Lists impacted resources in the subscription by an event.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List of eventImpactedResources operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventImpactedResourceInner>>
@@ -183,10 +189,10 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
 
     /**
      * Lists impacted resources in the subscription by an event.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -201,7 +207,7 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
 
     /**
      * Lists impacted resources in the subscription by an event.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -217,10 +223,10 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
 
     /**
      * Lists impacted resources in the subscription by an event.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -236,7 +242,7 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
 
     /**
      * Lists impacted resources in the subscription by an event.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -251,10 +257,10 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
 
     /**
      * Lists impacted resources in the subscription by an event.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -269,14 +275,14 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
 
     /**
      * Gets the specific impacted resource in the subscription by an event.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param impactedResourceName Name of the Impacted Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specific impacted resource in the subscription by an event along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EventImpactedResourceInner>> getWithResponseAsync(String eventTrackingId,
@@ -306,7 +312,7 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
 
     /**
      * Gets the specific impacted resource in the subscription by an event.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param impactedResourceName Name of the Impacted Resource.
      * @param context The context to associate with this operation.
@@ -314,7 +320,7 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specific impacted resource in the subscription by an event along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EventImpactedResourceInner>> getWithResponseAsync(String eventTrackingId,
@@ -343,7 +349,7 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
 
     /**
      * Gets the specific impacted resource in the subscription by an event.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param impactedResourceName Name of the Impacted Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -359,7 +365,7 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
 
     /**
      * Gets the specific impacted resource in the subscription by an event.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param impactedResourceName Name of the Impacted Resource.
      * @param context The context to associate with this operation.
@@ -376,7 +382,7 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
 
     /**
      * Gets the specific impacted resource in the subscription by an event.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param impactedResourceName Name of the Impacted Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -391,15 +397,15 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
 
     /**
      * Lists impacted resources in the tenant by an event.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List of eventImpactedResources operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventImpactedResourceInner>>
@@ -423,16 +429,16 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
 
     /**
      * Lists impacted resources in the tenant by an event.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List of eventImpactedResources operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventImpactedResourceInner>>
@@ -456,10 +462,10 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
 
     /**
      * Lists impacted resources in the tenant by an event.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -473,7 +479,7 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
 
     /**
      * Lists impacted resources in the tenant by an event.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -489,10 +495,10 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
 
     /**
      * Lists impacted resources in the tenant by an event.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -508,7 +514,7 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
 
     /**
      * Lists impacted resources in the tenant by an event.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -523,10 +529,10 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
 
     /**
      * Lists impacted resources in the tenant by an event.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -541,14 +547,14 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
 
     /**
      * Gets the specific impacted resource in the tenant by an event.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param impactedResourceName Name of the Impacted Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specific impacted resource in the tenant by an event along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EventImpactedResourceInner>> getByTenantIdWithResponseAsync(String eventTrackingId,
@@ -574,7 +580,7 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
 
     /**
      * Gets the specific impacted resource in the tenant by an event.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param impactedResourceName Name of the Impacted Resource.
      * @param context The context to associate with this operation.
@@ -582,7 +588,7 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specific impacted resource in the tenant by an event along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EventImpactedResourceInner>> getByTenantIdWithResponseAsync(String eventTrackingId,
@@ -607,7 +613,7 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
 
     /**
      * Gets the specific impacted resource in the tenant by an event.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param impactedResourceName Name of the Impacted Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -623,7 +629,7 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
 
     /**
      * Gets the specific impacted resource in the tenant by an event.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param impactedResourceName Name of the Impacted Resource.
      * @param context The context to associate with this operation.
@@ -640,7 +646,7 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
 
     /**
      * Gets the specific impacted resource in the tenant by an event.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param impactedResourceName Name of the Impacted Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -655,14 +661,13 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List of eventImpactedResources operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventImpactedResourceInner>>
@@ -684,15 +689,14 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List of eventImpactedResources operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventImpactedResourceInner>>
@@ -713,14 +717,13 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List of eventImpactedResources operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventImpactedResourceInner>>
@@ -743,15 +746,14 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List of eventImpactedResources operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventImpactedResourceInner>> listByTenantIdAndEventIdNextSinglePageAsync(String nextLink,

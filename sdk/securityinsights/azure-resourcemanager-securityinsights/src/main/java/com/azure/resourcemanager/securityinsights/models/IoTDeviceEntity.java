@@ -4,12 +4,11 @@
 
 package com.azure.resourcemanager.securityinsights.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.securityinsights.fluent.models.EntityInner;
 import com.azure.resourcemanager.securityinsights.fluent.models.IoTDeviceEntityProperties;
 import java.io.IOException;
 import java.util.List;
@@ -19,12 +18,12 @@ import java.util.UUID;
 /**
  * Represents an IoT device entity.
  */
-@Fluent
-public final class IoTDeviceEntity extends EntityInner {
+@Immutable
+public final class IoTDeviceEntity extends Entity {
     /*
      * The kind of the entity.
      */
-    private EntityKind kind = EntityKind.IO_TDEVICE;
+    private EntityKindEnum kind = EntityKindEnum.IO_TDEVICE;
 
     /*
      * IoTDevice entity properties
@@ -63,7 +62,7 @@ public final class IoTDeviceEntity extends EntityInner {
      * @return the kind value.
      */
     @Override
-    public EntityKind kind() {
+    public EntityKindEnum kind() {
         return this.kind;
     }
 
@@ -270,119 +269,6 @@ public final class IoTDeviceEntity extends EntityInner {
     }
 
     /**
-     * Get the owners property: A list of owners of the IoTDevice entity.
-     * 
-     * @return the owners value.
-     */
-    public List<String> owners() {
-        return this.innerProperties() == null ? null : this.innerProperties().owners();
-    }
-
-    /**
-     * Get the nicEntityIds property: A list of Nic entity ids of the IoTDevice entity.
-     * 
-     * @return the nicEntityIds value.
-     */
-    public List<String> nicEntityIds() {
-        return this.innerProperties() == null ? null : this.innerProperties().nicEntityIds();
-    }
-
-    /**
-     * Get the site property: The site of the device.
-     * 
-     * @return the site value.
-     */
-    public String site() {
-        return this.innerProperties() == null ? null : this.innerProperties().site();
-    }
-
-    /**
-     * Get the zone property: The zone location of the device within a site.
-     * 
-     * @return the zone value.
-     */
-    public String zone() {
-        return this.innerProperties() == null ? null : this.innerProperties().zone();
-    }
-
-    /**
-     * Get the sensor property: The sensor the device is monitored by.
-     * 
-     * @return the sensor value.
-     */
-    public String sensor() {
-        return this.innerProperties() == null ? null : this.innerProperties().sensor();
-    }
-
-    /**
-     * Get the deviceSubType property: The subType of the device ('PLC', 'HMI', 'EWS', etc.).
-     * 
-     * @return the deviceSubType value.
-     */
-    public String deviceSubType() {
-        return this.innerProperties() == null ? null : this.innerProperties().deviceSubType();
-    }
-
-    /**
-     * Get the importance property: Device importance, determines if the device classified as 'crown jewel'.
-     * 
-     * @return the importance value.
-     */
-    public DeviceImportance importance() {
-        return this.innerProperties() == null ? null : this.innerProperties().importance();
-    }
-
-    /**
-     * Set the importance property: Device importance, determines if the device classified as 'crown jewel'.
-     * 
-     * @param importance the importance value to set.
-     * @return the IoTDeviceEntity object itself.
-     */
-    public IoTDeviceEntity withImportance(DeviceImportance importance) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new IoTDeviceEntityProperties();
-        }
-        this.innerProperties().withImportance(importance);
-        return this;
-    }
-
-    /**
-     * Get the purdueLayer property: The Purdue Layer of the device.
-     * 
-     * @return the purdueLayer value.
-     */
-    public String purdueLayer() {
-        return this.innerProperties() == null ? null : this.innerProperties().purdueLayer();
-    }
-
-    /**
-     * Get the isAuthorized property: Determines whether the device classified as authorized device.
-     * 
-     * @return the isAuthorized value.
-     */
-    public Boolean isAuthorized() {
-        return this.innerProperties() == null ? null : this.innerProperties().isAuthorized();
-    }
-
-    /**
-     * Get the isProgramming property: Determines whether the device classified as programming device.
-     * 
-     * @return the isProgramming value.
-     */
-    public Boolean isProgramming() {
-        return this.innerProperties() == null ? null : this.innerProperties().isProgramming();
-    }
-
-    /**
-     * Get the isScanner property: Is the device classified as a scanner device.
-     * 
-     * @return the isScanner value.
-     */
-    public Boolean isScanner() {
-        return this.innerProperties() == null ? null : this.innerProperties().isScanner();
-    }
-
-    /**
      * Get the additionalData property: A bag of custom fields that should be part of the entity and will be presented
      * to the user.
      * 
@@ -450,7 +336,7 @@ public final class IoTDeviceEntity extends EntityInner {
                 } else if ("systemData".equals(fieldName)) {
                     deserializedIoTDeviceEntity.systemData = SystemData.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
-                    deserializedIoTDeviceEntity.kind = EntityKind.fromString(reader.getString());
+                    deserializedIoTDeviceEntity.kind = EntityKindEnum.fromString(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedIoTDeviceEntity.innerProperties = IoTDeviceEntityProperties.fromJson(reader);
                 } else {

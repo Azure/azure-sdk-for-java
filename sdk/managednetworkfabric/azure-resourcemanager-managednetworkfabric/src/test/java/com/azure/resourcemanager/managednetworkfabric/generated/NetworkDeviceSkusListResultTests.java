@@ -19,90 +19,45 @@ public final class NetworkDeviceSkusListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkDeviceSkusListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"model\":\"jnhj\",\"manufacturer\":\"tif\",\"supportedVersions\":[{\"version\":\"ngkegxcypxbbfe\",\"vendorOsVersion\":\"ilyrzoxp\",\"vendorFirmwareVersion\":\"qlf\",\"isDefault\":\"False\"},{\"version\":\"ow\",\"vendorOsVersion\":\"iu\",\"vendorFirmwareVersion\":\"ewnahwkxjjmzt\",\"isDefault\":\"True\"},{\"version\":\"oodtm\",\"vendorOsVersion\":\"cdhdyswcrpt\",\"vendorFirmwareVersion\":\"ajczxvl\",\"isDefault\":\"True\"}],\"supportedRoleTypes\":[\"NPB\",\"TS\",\"ToR\"],\"interfaces\":[{\"identifier\":\"ywlptyuqh\",\"interfaceType\":\"mc\",\"supportedConnectorTypes\":[{},{}]},{\"identifier\":\"pfuofixcnpcfykkp\",\"interfaceType\":\"cpawmp\",\"supportedConnectorTypes\":[{},{}]},{\"identifier\":\"pwr\",\"interfaceType\":\"fpcfjf\",\"supportedConnectorTypes\":[{},{},{},{}]}],\"provisioningState\":\"Failed\"},\"id\":\"awkgy\",\"name\":\"peyamnnidmdiaw\",\"type\":\"zxkzrntmkct\"},{\"properties\":{\"model\":\"huosgwqpsqaz\",\"manufacturer\":\"qodvqgcnbhcbmj\",\"supportedVersions\":[{\"version\":\"bn\",\"vendorOsVersion\":\"ntsxjmfmeftvh\",\"vendorFirmwareVersion\":\"o\",\"isDefault\":\"False\"}],\"supportedRoleTypes\":[\"NPB\"],\"interfaces\":[{\"identifier\":\"gmjgrul\",\"interfaceType\":\"ogxhcxn\",\"supportedConnectorTypes\":[{},{},{},{}]},{\"identifier\":\"fdz\",\"interfaceType\":\"ouzfwofwakuk\",\"supportedConnectorTypes\":[{},{}]},{\"identifier\":\"zxsoednl\",\"interfaceType\":\"li\",\"supportedConnectorTypes\":[{},{},{},{}]}],\"provisioningState\":\"Accepted\"},\"id\":\"ucmqgisnione\",\"name\":\"bzdrdpuenxkgt\",\"type\":\"zlm\"}],\"nextLink\":\"lxcznn\"}")
+            "{\"value\":[{\"properties\":{\"model\":\"mtmesrfsv\",\"manufacturer\":\"nkzpatqtdiswxsp\",\"supportedVersions\":[{\"version\":\"jazbbgspftesu\",\"vendorOsVersion\":\"pvpvd\",\"vendorFirmwareVersion\":\"ytcovqs\",\"isDefault\":\"False\"}],\"supportedRoleTypes\":[\"TS\"],\"interfaces\":[{\"identifier\":\"zfxnxmlbmuos\",\"interfaceType\":\"jmdihdcyyyzlw\",\"supportedConnectorTypes\":[{},{}]}],\"provisioningState\":\"Deleting\"},\"id\":\"ufzrfgmdqgnnbzrt\",\"name\":\"tedzu\",\"type\":\"bjtvgjsxmtyjj\"}],\"nextLink\":\"vdpwwobtdphti\"}")
             .toObject(NetworkDeviceSkusListResult.class);
-        Assertions.assertEquals("jnhj", model.value().get(0).model());
-        Assertions.assertEquals("tif", model.value().get(0).manufacturer());
-        Assertions.assertEquals("ngkegxcypxbbfe", model.value().get(0).supportedVersions().get(0).version());
-        Assertions.assertEquals("ilyrzoxp", model.value().get(0).supportedVersions().get(0).vendorOsVersion());
-        Assertions.assertEquals("qlf", model.value().get(0).supportedVersions().get(0).vendorFirmwareVersion());
+        Assertions.assertEquals("mtmesrfsv", model.value().get(0).model());
+        Assertions.assertEquals("nkzpatqtdiswxsp", model.value().get(0).manufacturer());
+        Assertions.assertEquals("jazbbgspftesu", model.value().get(0).supportedVersions().get(0).version());
+        Assertions.assertEquals("pvpvd", model.value().get(0).supportedVersions().get(0).vendorOsVersion());
+        Assertions.assertEquals("ytcovqs", model.value().get(0).supportedVersions().get(0).vendorFirmwareVersion());
         Assertions.assertEquals(BooleanEnumProperty.FALSE, model.value().get(0).supportedVersions().get(0).isDefault());
-        Assertions.assertEquals(NetworkDeviceRoleName.NPB, model.value().get(0).supportedRoleTypes().get(0));
-        Assertions.assertEquals("ywlptyuqh", model.value().get(0).interfaces().get(0).identifier());
-        Assertions.assertEquals("mc", model.value().get(0).interfaces().get(0).interfaceType());
-        Assertions.assertEquals("lxcznn", model.nextLink());
+        Assertions.assertEquals(NetworkDeviceRoleName.TS, model.value().get(0).supportedRoleTypes().get(0));
+        Assertions.assertEquals("zfxnxmlbmuos", model.value().get(0).interfaces().get(0).identifier());
+        Assertions.assertEquals("jmdihdcyyyzlw", model.value().get(0).interfaces().get(0).interfaceType());
+        Assertions.assertEquals("vdpwwobtdphti", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkDeviceSkusListResult model
-            = new NetworkDeviceSkusListResult().withValue(Arrays.asList(
-                new NetworkDeviceSkuInner()
-                    .withModel("jnhj")
-                    .withManufacturer("tif")
-                    .withSupportedVersions(Arrays.asList(
-                        new SupportedVersionProperties().withVersion("ngkegxcypxbbfe")
-                            .withVendorOsVersion("ilyrzoxp")
-                            .withVendorFirmwareVersion("qlf")
-                            .withIsDefault(BooleanEnumProperty.FALSE),
-                        new SupportedVersionProperties().withVersion("ow")
-                            .withVendorOsVersion("iu")
-                            .withVendorFirmwareVersion("ewnahwkxjjmzt")
-                            .withIsDefault(BooleanEnumProperty.TRUE),
-                        new SupportedVersionProperties().withVersion("oodtm")
-                            .withVendorOsVersion("cdhdyswcrpt")
-                            .withVendorFirmwareVersion("ajczxvl")
-                            .withIsDefault(BooleanEnumProperty.TRUE)))
-                    .withSupportedRoleTypes(
-                        Arrays.asList(NetworkDeviceRoleName.NPB, NetworkDeviceRoleName.TS, NetworkDeviceRoleName.TOR))
-                    .withInterfaces(
-                        Arrays.asList(
-                            new DeviceInterfaceProperties().withIdentifier("ywlptyuqh")
-                                .withInterfaceType("mc")
-                                .withSupportedConnectorTypes(Arrays.asList(new SupportedConnectorProperties(),
-                                    new SupportedConnectorProperties())),
-                            new DeviceInterfaceProperties().withIdentifier("pfuofixcnpcfykkp")
-                                .withInterfaceType("cpawmp")
-                                .withSupportedConnectorTypes(Arrays.asList(new SupportedConnectorProperties(),
-                                    new SupportedConnectorProperties())),
-                            new DeviceInterfaceProperties().withIdentifier("pwr")
-                                .withInterfaceType("fpcfjf")
-                                .withSupportedConnectorTypes(Arrays.asList(new SupportedConnectorProperties(),
-                                    new SupportedConnectorProperties(), new SupportedConnectorProperties(),
-                                    new SupportedConnectorProperties())))),
-                new NetworkDeviceSkuInner().withModel("huosgwqpsqaz")
-                    .withManufacturer("qodvqgcnbhcbmj")
-                    .withSupportedVersions(Arrays.asList(new SupportedVersionProperties().withVersion("bn")
-                        .withVendorOsVersion("ntsxjmfmeftvh")
-                        .withVendorFirmwareVersion("o")
-                        .withIsDefault(BooleanEnumProperty.FALSE)))
-                    .withSupportedRoleTypes(Arrays.asList(NetworkDeviceRoleName.NPB))
-                    .withInterfaces(Arrays.asList(
-                        new DeviceInterfaceProperties().withIdentifier("gmjgrul")
-                            .withInterfaceType("ogxhcxn")
-                            .withSupportedConnectorTypes(
-                                Arrays.asList(new SupportedConnectorProperties(), new SupportedConnectorProperties(),
-                                    new SupportedConnectorProperties(), new SupportedConnectorProperties())),
-                        new DeviceInterfaceProperties().withIdentifier("fdz")
-                            .withInterfaceType("ouzfwofwakuk")
-                            .withSupportedConnectorTypes(
-                                Arrays.asList(new SupportedConnectorProperties(), new SupportedConnectorProperties())),
-                        new DeviceInterfaceProperties().withIdentifier("zxsoednl")
-                            .withInterfaceType("li")
-                            .withSupportedConnectorTypes(
-                                Arrays.asList(new SupportedConnectorProperties(), new SupportedConnectorProperties(),
-                                    new SupportedConnectorProperties(), new SupportedConnectorProperties()))))))
-                .withNextLink("lxcznn");
+        NetworkDeviceSkusListResult model = new NetworkDeviceSkusListResult()
+            .withValue(Arrays.asList(new NetworkDeviceSkuInner().withModel("mtmesrfsv")
+                .withManufacturer("nkzpatqtdiswxsp")
+                .withSupportedVersions(Arrays.asList(new SupportedVersionProperties().withVersion("jazbbgspftesu")
+                    .withVendorOsVersion("pvpvd")
+                    .withVendorFirmwareVersion("ytcovqs")
+                    .withIsDefault(BooleanEnumProperty.FALSE)))
+                .withSupportedRoleTypes(Arrays.asList(NetworkDeviceRoleName.TS))
+                .withInterfaces(Arrays.asList(new DeviceInterfaceProperties().withIdentifier("zfxnxmlbmuos")
+                    .withInterfaceType("jmdihdcyyyzlw")
+                    .withSupportedConnectorTypes(
+                        Arrays.asList(new SupportedConnectorProperties(), new SupportedConnectorProperties()))))))
+            .withNextLink("vdpwwobtdphti");
         model = BinaryData.fromObject(model).toObject(NetworkDeviceSkusListResult.class);
-        Assertions.assertEquals("jnhj", model.value().get(0).model());
-        Assertions.assertEquals("tif", model.value().get(0).manufacturer());
-        Assertions.assertEquals("ngkegxcypxbbfe", model.value().get(0).supportedVersions().get(0).version());
-        Assertions.assertEquals("ilyrzoxp", model.value().get(0).supportedVersions().get(0).vendorOsVersion());
-        Assertions.assertEquals("qlf", model.value().get(0).supportedVersions().get(0).vendorFirmwareVersion());
+        Assertions.assertEquals("mtmesrfsv", model.value().get(0).model());
+        Assertions.assertEquals("nkzpatqtdiswxsp", model.value().get(0).manufacturer());
+        Assertions.assertEquals("jazbbgspftesu", model.value().get(0).supportedVersions().get(0).version());
+        Assertions.assertEquals("pvpvd", model.value().get(0).supportedVersions().get(0).vendorOsVersion());
+        Assertions.assertEquals("ytcovqs", model.value().get(0).supportedVersions().get(0).vendorFirmwareVersion());
         Assertions.assertEquals(BooleanEnumProperty.FALSE, model.value().get(0).supportedVersions().get(0).isDefault());
-        Assertions.assertEquals(NetworkDeviceRoleName.NPB, model.value().get(0).supportedRoleTypes().get(0));
-        Assertions.assertEquals("ywlptyuqh", model.value().get(0).interfaces().get(0).identifier());
-        Assertions.assertEquals("mc", model.value().get(0).interfaces().get(0).interfaceType());
-        Assertions.assertEquals("lxcznn", model.nextLink());
+        Assertions.assertEquals(NetworkDeviceRoleName.TS, model.value().get(0).supportedRoleTypes().get(0));
+        Assertions.assertEquals("zfxnxmlbmuos", model.value().get(0).interfaces().get(0).identifier());
+        Assertions.assertEquals("jmdihdcyyyzlw", model.value().get(0).interfaces().get(0).interfaceType());
+        Assertions.assertEquals("vdpwwobtdphti", model.nextLink());
     }
 }

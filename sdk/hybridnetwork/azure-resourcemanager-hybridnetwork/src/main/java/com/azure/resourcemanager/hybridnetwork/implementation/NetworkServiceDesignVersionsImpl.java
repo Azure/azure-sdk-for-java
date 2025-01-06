@@ -70,14 +70,16 @@ public final class NetworkServiceDesignVersionsImpl implements NetworkServiceDes
         String publisherName, String networkServiceDesignGroupName) {
         PagedIterable<NetworkServiceDesignVersionInner> inner = this.serviceClient()
             .listByNetworkServiceDesignGroup(resourceGroupName, publisherName, networkServiceDesignGroupName);
-        return Utils.mapPage(inner, inner1 -> new NetworkServiceDesignVersionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new NetworkServiceDesignVersionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<NetworkServiceDesignVersion> listByNetworkServiceDesignGroup(String resourceGroupName,
         String publisherName, String networkServiceDesignGroupName, Context context) {
         PagedIterable<NetworkServiceDesignVersionInner> inner = this.serviceClient()
             .listByNetworkServiceDesignGroup(resourceGroupName, publisherName, networkServiceDesignGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new NetworkServiceDesignVersionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new NetworkServiceDesignVersionImpl(inner1, this.manager()));
     }
 
     public NetworkServiceDesignVersionUpdateState updateState(String resourceGroupName, String publisherName,
@@ -107,22 +109,24 @@ public final class NetworkServiceDesignVersionsImpl implements NetworkServiceDes
     }
 
     public NetworkServiceDesignVersion getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String publisherName = Utils.getValueFromIdByName(id, "publishers");
+        String publisherName = ResourceManagerUtils.getValueFromIdByName(id, "publishers");
         if (publisherName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'publishers'.", id)));
         }
-        String networkServiceDesignGroupName = Utils.getValueFromIdByName(id, "networkServiceDesignGroups");
+        String networkServiceDesignGroupName
+            = ResourceManagerUtils.getValueFromIdByName(id, "networkServiceDesignGroups");
         if (networkServiceDesignGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'networkServiceDesignGroups'.", id)));
         }
-        String networkServiceDesignVersionName = Utils.getValueFromIdByName(id, "networkServiceDesignVersions");
+        String networkServiceDesignVersionName
+            = ResourceManagerUtils.getValueFromIdByName(id, "networkServiceDesignVersions");
         if (networkServiceDesignVersionName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'networkServiceDesignVersions'.", id)));
@@ -134,22 +138,24 @@ public final class NetworkServiceDesignVersionsImpl implements NetworkServiceDes
     }
 
     public Response<NetworkServiceDesignVersion> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String publisherName = Utils.getValueFromIdByName(id, "publishers");
+        String publisherName = ResourceManagerUtils.getValueFromIdByName(id, "publishers");
         if (publisherName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'publishers'.", id)));
         }
-        String networkServiceDesignGroupName = Utils.getValueFromIdByName(id, "networkServiceDesignGroups");
+        String networkServiceDesignGroupName
+            = ResourceManagerUtils.getValueFromIdByName(id, "networkServiceDesignGroups");
         if (networkServiceDesignGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'networkServiceDesignGroups'.", id)));
         }
-        String networkServiceDesignVersionName = Utils.getValueFromIdByName(id, "networkServiceDesignVersions");
+        String networkServiceDesignVersionName
+            = ResourceManagerUtils.getValueFromIdByName(id, "networkServiceDesignVersions");
         if (networkServiceDesignVersionName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'networkServiceDesignVersions'.", id)));
@@ -159,22 +165,24 @@ public final class NetworkServiceDesignVersionsImpl implements NetworkServiceDes
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String publisherName = Utils.getValueFromIdByName(id, "publishers");
+        String publisherName = ResourceManagerUtils.getValueFromIdByName(id, "publishers");
         if (publisherName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'publishers'.", id)));
         }
-        String networkServiceDesignGroupName = Utils.getValueFromIdByName(id, "networkServiceDesignGroups");
+        String networkServiceDesignGroupName
+            = ResourceManagerUtils.getValueFromIdByName(id, "networkServiceDesignGroups");
         if (networkServiceDesignGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'networkServiceDesignGroups'.", id)));
         }
-        String networkServiceDesignVersionName = Utils.getValueFromIdByName(id, "networkServiceDesignVersions");
+        String networkServiceDesignVersionName
+            = ResourceManagerUtils.getValueFromIdByName(id, "networkServiceDesignVersions");
         if (networkServiceDesignVersionName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'networkServiceDesignVersions'.", id)));
@@ -184,22 +192,24 @@ public final class NetworkServiceDesignVersionsImpl implements NetworkServiceDes
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String publisherName = Utils.getValueFromIdByName(id, "publishers");
+        String publisherName = ResourceManagerUtils.getValueFromIdByName(id, "publishers");
         if (publisherName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'publishers'.", id)));
         }
-        String networkServiceDesignGroupName = Utils.getValueFromIdByName(id, "networkServiceDesignGroups");
+        String networkServiceDesignGroupName
+            = ResourceManagerUtils.getValueFromIdByName(id, "networkServiceDesignGroups");
         if (networkServiceDesignGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'networkServiceDesignGroups'.", id)));
         }
-        String networkServiceDesignVersionName = Utils.getValueFromIdByName(id, "networkServiceDesignVersions");
+        String networkServiceDesignVersionName
+            = ResourceManagerUtils.getValueFromIdByName(id, "networkServiceDesignVersions");
         if (networkServiceDesignVersionName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'networkServiceDesignVersions'.", id)));

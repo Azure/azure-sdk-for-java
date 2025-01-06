@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class SettingKind extends ExpandableStringEnum<SettingKind> {
      * @param name a name to look for.
      * @return the corresponding SettingKind.
      */
-    @JsonCreator
     public static SettingKind fromString(String name) {
         return fromString(name, SettingKind.class);
     }

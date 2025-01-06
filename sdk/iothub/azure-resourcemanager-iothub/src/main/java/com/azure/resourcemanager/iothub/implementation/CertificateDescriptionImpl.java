@@ -115,9 +115,9 @@ public final class CertificateDescriptionImpl
         com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "IotHubs");
-        this.certificateName = Utils.getValueFromIdByName(innerObject.id(), "certificates");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "IotHubs");
+        this.certificateName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "certificates");
     }
 
     public CertificateDescription refresh() {

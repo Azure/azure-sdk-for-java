@@ -22,7 +22,7 @@ public final class SqlPoolSensitivityLabelsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"schemaName\":\"ik\",\"tableName\":\"hzixyqhfnkvy\",\"columnName\":\"qqdseipnquwzxhrp\",\"labelName\":\"odlhkfktl\",\"labelId\":\"dsobjopnouhbq\",\"informationType\":\"kqxs\",\"informationTypeId\":\"uzyigfcvcewbwqhd\",\"isDisabled\":false,\"rank\":\"High\"},\"managedBy\":\"mrncmaz\",\"id\":\"fsq\",\"name\":\"hyqmrejparnpv\",\"type\":\"rsz\"}";
+            = "{\"properties\":{\"schemaName\":\"jozfym\",\"tableName\":\"m\",\"columnName\":\"pyvqy\",\"labelName\":\"i\",\"labelId\":\"ipsejbsvsia\",\"informationType\":\"swhddzydisnuep\",\"informationTypeId\":\"yjln\",\"isDisabled\":false,\"rank\":\"High\"},\"managedBy\":\"td\",\"id\":\"i\",\"name\":\"ocqibz\",\"type\":\"ihweeb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,18 +33,18 @@ public final class SqlPoolSensitivityLabelsCreateOrUpdateWithResponseMockTests {
 
         SensitivityLabel response = manager.sqlPoolSensitivityLabels()
             .define()
-            .withExistingColumn("kfqbriqulwwt", "jmeqkvy", "zokpoy", "ohuen", "na", "jphmpoejnglpws")
-            .withLabelName("wxf")
-            .withLabelId("kvemyzdpczaqpqi")
-            .withInformationType("bmptrwtxzu")
-            .withInformationTypeId("amonatnizex")
+            .withExistingColumn("gquxweysland", "dcdjhunh", "hcgawn", "rnquoxso", "ireimseobf", "xstcyilbvzm")
+            .withLabelName("bwmvogljsvl")
+            .withLabelId("idnwceha")
+            .withInformationType("do")
+            .withInformationTypeId("l")
             .withRank(SensitivityLabelRank.NONE)
             .create();
 
-        Assertions.assertEquals("odlhkfktl", response.labelName());
-        Assertions.assertEquals("dsobjopnouhbq", response.labelId());
-        Assertions.assertEquals("kqxs", response.informationType());
-        Assertions.assertEquals("uzyigfcvcewbwqhd", response.informationTypeId());
+        Assertions.assertEquals("i", response.labelName());
+        Assertions.assertEquals("ipsejbsvsia", response.labelId());
+        Assertions.assertEquals("swhddzydisnuep", response.informationType());
+        Assertions.assertEquals("yjln", response.informationTypeId());
         Assertions.assertEquals(SensitivityLabelRank.HIGH, response.rank());
     }
 }

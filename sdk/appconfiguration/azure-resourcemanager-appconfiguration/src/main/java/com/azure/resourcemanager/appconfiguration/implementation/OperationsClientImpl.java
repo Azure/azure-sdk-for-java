@@ -34,17 +34,23 @@ import com.azure.resourcemanager.appconfiguration.models.CheckNameAvailabilityPa
 import com.azure.resourcemanager.appconfiguration.models.OperationDefinitionListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in OperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OperationsClient.
+ */
 public final class OperationsClientImpl implements OperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final OperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AppConfigurationManagementClientImpl client;
 
     /**
      * Initializes an instance of OperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     OperationsClientImpl(AppConfigurationManagementClientImpl client) {
@@ -98,13 +104,13 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Checks whether the configuration store name is available for use.
-     *
+     * 
      * @param checkNameAvailabilityParameters The object containing information for the availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to check the availability of a resource name along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NameAvailabilityStatusInner>>
@@ -133,14 +139,14 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Checks whether the configuration store name is available for use.
-     *
+     * 
      * @param checkNameAvailabilityParameters The object containing information for the availability request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to check the availability of a resource name along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NameAvailabilityStatusInner>> checkNameAvailabilityWithResponseAsync(
@@ -167,13 +173,13 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Checks whether the configuration store name is available for use.
-     *
+     * 
      * @param checkNameAvailabilityParameters The object containing information for the availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to check the availability of a resource name on successful completion of {@link
-     *     Mono}.
+     * @return the result of a request to check the availability of a resource name on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NameAvailabilityStatusInner>
@@ -184,7 +190,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Checks whether the configuration store name is available for use.
-     *
+     * 
      * @param checkNameAvailabilityParameters The object containing information for the availability request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -200,7 +206,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Checks whether the configuration store name is available for use.
-     *
+     * 
      * @param checkNameAvailabilityParameters The object containing information for the availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -215,15 +221,15 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Lists the operations available from this provider.
-     *
+     * 
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list configuration store operations along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationDefinitionInner>> listSinglePageAsync(String skipToken) {
@@ -241,16 +247,16 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Lists the operations available from this provider.
-     *
+     * 
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list configuration store operations along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationDefinitionInner>> listSinglePageAsync(String skipToken, Context context) {
@@ -267,15 +273,15 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Lists the operations available from this provider.
-     *
+     * 
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list configuration store operations as paginated response with {@link
-     *     PagedFlux}.
+     * @return the result of a request to list configuration store operations as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OperationDefinitionInner> listAsync(String skipToken) {
@@ -284,11 +290,11 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Lists the operations available from this provider.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list configuration store operations as paginated response with {@link
-     *     PagedFlux}.
+     * @return the result of a request to list configuration store operations as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OperationDefinitionInner> listAsync() {
@@ -298,16 +304,16 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Lists the operations available from this provider.
-     *
+     * 
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list configuration store operations as paginated response with {@link
-     *     PagedFlux}.
+     * @return the result of a request to list configuration store operations as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OperationDefinitionInner> listAsync(String skipToken, Context context) {
@@ -317,11 +323,11 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Lists the operations available from this provider.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list configuration store operations as paginated response with {@link
-     *     PagedIterable}.
+     * @return the result of a request to list configuration store operations as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationDefinitionInner> list() {
@@ -331,16 +337,16 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Lists the operations available from this provider.
-     *
+     * 
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list configuration store operations as paginated response with {@link
-     *     PagedIterable}.
+     * @return the result of a request to list configuration store operations as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationDefinitionInner> list(String skipToken, Context context) {
@@ -349,14 +355,14 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Checks whether the configuration store name is available for use.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param checkNameAvailabilityParameters The object containing information for the availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to check the availability of a resource name along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NameAvailabilityStatusInner>> regionalCheckNameAvailabilityWithResponseAsync(String location,
@@ -388,7 +394,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Checks whether the configuration store name is available for use.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param checkNameAvailabilityParameters The object containing information for the availability request.
      * @param context The context to associate with this operation.
@@ -396,7 +402,7 @@ public final class OperationsClientImpl implements OperationsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to check the availability of a resource name along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NameAvailabilityStatusInner>> regionalCheckNameAvailabilityWithResponseAsync(String location,
@@ -426,14 +432,14 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Checks whether the configuration store name is available for use.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param checkNameAvailabilityParameters The object containing information for the availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to check the availability of a resource name on successful completion of {@link
-     *     Mono}.
+     * @return the result of a request to check the availability of a resource name on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NameAvailabilityStatusInner> regionalCheckNameAvailabilityAsync(String location,
@@ -444,7 +450,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Checks whether the configuration store name is available for use.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param checkNameAvailabilityParameters The object containing information for the availability request.
      * @param context The context to associate with this operation.
@@ -462,7 +468,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Checks whether the configuration store name is available for use.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param checkNameAvailabilityParameters The object containing information for the availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -479,14 +485,13 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list configuration store operations along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationDefinitionInner>> listNextSinglePageAsync(String nextLink) {
@@ -506,15 +511,14 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list configuration store operations along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationDefinitionInner>> listNextSinglePageAsync(String nextLink, Context context) {

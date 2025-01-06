@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Shared access keys of the partner namespace.
  */
 @Fluent
-public final class PartnerNamespaceSharedAccessKeysInner {
+public final class PartnerNamespaceSharedAccessKeysInner
+    implements JsonSerializable<PartnerNamespaceSharedAccessKeysInner> {
     /*
      * Shared access key1 for the partner namespace.
      */
-    @JsonProperty(value = "key1")
     private String key1;
 
     /*
      * Shared access key2 for the partner namespace.
      */
-    @JsonProperty(value = "key2")
     private String key2;
 
     /**
@@ -76,5 +79,45 @@ public final class PartnerNamespaceSharedAccessKeysInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("key1", this.key1);
+        jsonWriter.writeStringField("key2", this.key2);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PartnerNamespaceSharedAccessKeysInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PartnerNamespaceSharedAccessKeysInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PartnerNamespaceSharedAccessKeysInner.
+     */
+    public static PartnerNamespaceSharedAccessKeysInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PartnerNamespaceSharedAccessKeysInner deserializedPartnerNamespaceSharedAccessKeysInner
+                = new PartnerNamespaceSharedAccessKeysInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("key1".equals(fieldName)) {
+                    deserializedPartnerNamespaceSharedAccessKeysInner.key1 = reader.getString();
+                } else if ("key2".equals(fieldName)) {
+                    deserializedPartnerNamespaceSharedAccessKeysInner.key2 = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPartnerNamespaceSharedAccessKeysInner;
+        });
     }
 }

@@ -5,99 +5,89 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 /**
  * Additional information of DPM Protected item.
  */
 @Fluent
-public final class DpmProtectedItemExtendedInfo {
+public final class DpmProtectedItemExtendedInfo implements JsonSerializable<DpmProtectedItemExtendedInfo> {
     /*
      * Attribute to provide information on various DBs.
      */
-    @JsonProperty(value = "protectableObjectLoadPath")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> protectableObjectLoadPath;
 
     /*
      * To check if backup item is disk protected.
      */
-    @JsonProperty(value = "protected")
     private Boolean protectedProperty;
 
     /*
      * To check if backup item is cloud protected.
      */
-    @JsonProperty(value = "isPresentOnCloud")
     private Boolean isPresentOnCloud;
 
     /*
      * Last backup status information on backup item.
      */
-    @JsonProperty(value = "lastBackupStatus")
     private String lastBackupStatus;
 
     /*
      * Last refresh time on backup item.
      */
-    @JsonProperty(value = "lastRefreshedAt")
     private OffsetDateTime lastRefreshedAt;
 
     /*
      * Oldest cloud recovery point time.
      */
-    @JsonProperty(value = "oldestRecoveryPoint")
     private OffsetDateTime oldestRecoveryPoint;
 
     /*
      * cloud recovery point count.
      */
-    @JsonProperty(value = "recoveryPointCount")
     private Integer recoveryPointCount;
 
     /*
      * Oldest disk recovery point time.
      */
-    @JsonProperty(value = "onPremiseOldestRecoveryPoint")
     private OffsetDateTime onPremiseOldestRecoveryPoint;
 
     /*
      * latest disk recovery point time.
      */
-    @JsonProperty(value = "onPremiseLatestRecoveryPoint")
     private OffsetDateTime onPremiseLatestRecoveryPoint;
 
     /*
      * disk recovery point count.
      */
-    @JsonProperty(value = "onPremiseRecoveryPointCount")
     private Integer onPremiseRecoveryPointCount;
 
     /*
      * To check if backup item is collocated.
      */
-    @JsonProperty(value = "isCollocated")
     private Boolean isCollocated;
 
     /*
      * Protection group name of the backup item.
      */
-    @JsonProperty(value = "protectionGroupName")
     private String protectionGroupName;
 
     /*
      * Used Disk storage in bytes.
      */
-    @JsonProperty(value = "diskStorageUsedInBytes")
     private String diskStorageUsedInBytes;
 
     /*
      * total Disk storage in bytes.
      */
-    @JsonProperty(value = "totalDiskStorageSizeInBytes")
     private String totalDiskStorageSizeInBytes;
 
     /**
@@ -392,5 +382,100 @@ public final class DpmProtectedItemExtendedInfo {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("protectableObjectLoadPath", this.protectableObjectLoadPath,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("protected", this.protectedProperty);
+        jsonWriter.writeBooleanField("isPresentOnCloud", this.isPresentOnCloud);
+        jsonWriter.writeStringField("lastBackupStatus", this.lastBackupStatus);
+        jsonWriter.writeStringField("lastRefreshedAt",
+            this.lastRefreshedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastRefreshedAt));
+        jsonWriter.writeStringField("oldestRecoveryPoint",
+            this.oldestRecoveryPoint == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.oldestRecoveryPoint));
+        jsonWriter.writeNumberField("recoveryPointCount", this.recoveryPointCount);
+        jsonWriter.writeStringField("onPremiseOldestRecoveryPoint",
+            this.onPremiseOldestRecoveryPoint == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.onPremiseOldestRecoveryPoint));
+        jsonWriter.writeStringField("onPremiseLatestRecoveryPoint",
+            this.onPremiseLatestRecoveryPoint == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.onPremiseLatestRecoveryPoint));
+        jsonWriter.writeNumberField("onPremiseRecoveryPointCount", this.onPremiseRecoveryPointCount);
+        jsonWriter.writeBooleanField("isCollocated", this.isCollocated);
+        jsonWriter.writeStringField("protectionGroupName", this.protectionGroupName);
+        jsonWriter.writeStringField("diskStorageUsedInBytes", this.diskStorageUsedInBytes);
+        jsonWriter.writeStringField("totalDiskStorageSizeInBytes", this.totalDiskStorageSizeInBytes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DpmProtectedItemExtendedInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DpmProtectedItemExtendedInfo if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DpmProtectedItemExtendedInfo.
+     */
+    public static DpmProtectedItemExtendedInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DpmProtectedItemExtendedInfo deserializedDpmProtectedItemExtendedInfo = new DpmProtectedItemExtendedInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("protectableObjectLoadPath".equals(fieldName)) {
+                    Map<String, String> protectableObjectLoadPath = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDpmProtectedItemExtendedInfo.protectableObjectLoadPath = protectableObjectLoadPath;
+                } else if ("protected".equals(fieldName)) {
+                    deserializedDpmProtectedItemExtendedInfo.protectedProperty
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isPresentOnCloud".equals(fieldName)) {
+                    deserializedDpmProtectedItemExtendedInfo.isPresentOnCloud
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("lastBackupStatus".equals(fieldName)) {
+                    deserializedDpmProtectedItemExtendedInfo.lastBackupStatus = reader.getString();
+                } else if ("lastRefreshedAt".equals(fieldName)) {
+                    deserializedDpmProtectedItemExtendedInfo.lastRefreshedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("oldestRecoveryPoint".equals(fieldName)) {
+                    deserializedDpmProtectedItemExtendedInfo.oldestRecoveryPoint = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("recoveryPointCount".equals(fieldName)) {
+                    deserializedDpmProtectedItemExtendedInfo.recoveryPointCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("onPremiseOldestRecoveryPoint".equals(fieldName)) {
+                    deserializedDpmProtectedItemExtendedInfo.onPremiseOldestRecoveryPoint = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("onPremiseLatestRecoveryPoint".equals(fieldName)) {
+                    deserializedDpmProtectedItemExtendedInfo.onPremiseLatestRecoveryPoint = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("onPremiseRecoveryPointCount".equals(fieldName)) {
+                    deserializedDpmProtectedItemExtendedInfo.onPremiseRecoveryPointCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("isCollocated".equals(fieldName)) {
+                    deserializedDpmProtectedItemExtendedInfo.isCollocated = reader.getNullable(JsonReader::getBoolean);
+                } else if ("protectionGroupName".equals(fieldName)) {
+                    deserializedDpmProtectedItemExtendedInfo.protectionGroupName = reader.getString();
+                } else if ("diskStorageUsedInBytes".equals(fieldName)) {
+                    deserializedDpmProtectedItemExtendedInfo.diskStorageUsedInBytes = reader.getString();
+                } else if ("totalDiskStorageSizeInBytes".equals(fieldName)) {
+                    deserializedDpmProtectedItemExtendedInfo.totalDiskStorageSizeInBytes = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDpmProtectedItemExtendedInfo;
+        });
     }
 }

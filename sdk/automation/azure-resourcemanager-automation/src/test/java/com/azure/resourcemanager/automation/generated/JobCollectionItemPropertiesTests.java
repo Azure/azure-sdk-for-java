@@ -12,7 +12,7 @@ public final class JobCollectionItemPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JobCollectionItemProperties model = BinaryData.fromString(
-            "{\"runbook\":{\"name\":\"pbswvefloccsrm\"},\"jobId\":\"d9f4647c-7117-4308-9323-2b5a369cb510\",\"creationTime\":\"2021-04-08T20:14:46Z\",\"status\":\"Removing\",\"startTime\":\"2021-06-17T22:27:31Z\",\"endTime\":\"2021-04-14T23:51:02Z\",\"lastModifiedTime\":\"2021-11-19T09:15:01Z\",\"provisioningState\":\"pkyjcxcjxgrytfm\",\"runOn\":\"ycilrmcaykggnox\"}")
+            "{\"runbook\":{\"name\":\"pbswvefloccsrm\"},\"jobId\":\"743b9727-569f-490e-9cd0-fcca3081aa44\",\"creationTime\":\"2021-04-08T20:14:46Z\",\"status\":\"Removing\",\"startTime\":\"2021-06-17T22:27:31Z\",\"endTime\":\"2021-04-14T23:51:02Z\",\"lastModifiedTime\":\"2021-11-19T09:15:01Z\",\"provisioningState\":\"pkyjcxcjxgrytfm\",\"runOn\":\"ycilrmcaykggnox\"}")
             .toObject(JobCollectionItemProperties.class);
         Assertions.assertEquals("ycilrmcaykggnox", model.runOn());
     }

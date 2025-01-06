@@ -8,46 +8,48 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.kubernetesconfiguration.fluent.models.OperationStatusResultInner;
 import java.util.Map;
 
-/** An immutable client-side representation of OperationStatusResult. */
+/**
+ * An immutable client-side representation of OperationStatusResult.
+ */
 public interface OperationStatusResult {
     /**
      * Gets the id property: Fully qualified ID for the async operation.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: Name of the async operation.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the status property: Operation status.
-     *
+     * 
      * @return the status value.
      */
     String status();
 
     /**
      * Gets the properties property: Additional information, if available.
-     *
+     * 
      * @return the properties value.
      */
     Map<String, String> properties();
 
     /**
      * Gets the error property: If present, details of the operation error.
-     *
+     * 
      * @return the error value.
      */
     ManagementError error();
 
     /**
      * Gets the inner com.azure.resourcemanager.kubernetesconfiguration.fluent.models.OperationStatusResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     OperationStatusResultInner innerModel();

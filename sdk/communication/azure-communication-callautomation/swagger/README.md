@@ -1,11 +1,13 @@
 # Azure Communication Call Automation client library for Java
 
 > see https://aka.ms/autorest
+
 ## Getting Started
 
 To build the SDK for Call Automation Client, simply Install AutoRest and in this folder, run:
 
 ### Setup
+
 ```ps
 Fork and clone https://github.com/Azure/autorest.java
 git checkout main
@@ -25,11 +27,12 @@ autorest README.md --java --v4
 ```
 
 ### Code generation settings
+
 ``` yaml
-tag: package-2023-10-03-preview
+tag: package-2024-09-01-preview
 use: '@autorest/java@4.1.29'
 require:
-    - https://github.com/Azure/azure-rest-api-specs/blob/be2a0fa68829fcb15c4e6b47aa6bc4bdd566c1cf/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/Azure/azure-rest-api-specs/blob/691fea3efb9ff22b20904e92d5116223f452a3b1/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -42,6 +45,8 @@ models-subpackage: implementation.models
 sync-methods: all
 add-context-parameter: true
 context-client-method-parameter: true
+customization-class: src/main/java/CallautomationCustomizations.java
+stream-style-serialization: true
 title: Azure Communication Call Automation Service
 directive:
 - rename-model:
@@ -56,6 +61,9 @@ directive:
 - rename-model:
     from: CallConnectionProperties
     to: CallConnectionPropertiesInternal
+- rename-model:
+    from: ConnectRequest
+    to: ConnectRequestInternal
 - rename-model:
     from: CallingOperationResultDetails
     to: CallingOperationResultDetailsInternal
@@ -147,8 +155,14 @@ directive:
     from: RecognizeConfigurations
     to: RecognizeConfigurationsInternal
 - rename-model:
-    from: MediaStreamingConfiguration
-    to: MediaStreamingConfigurationInternal
+    from: MediaStreamingOptions
+    to: MediaStreamingOptionsInternal
+- rename-model:
+    from: MediaStreamingSubscription
+    to: MediaStreamingSubscriptionInternal
+- rename-model:
+    from: TranscriptionSubscription
+    to: TranscriptionSubscriptionInternal
 - rename-model:
     from: DtmfOptions
     to: DtmfOptionsInternal
@@ -174,12 +188,6 @@ directive:
     from: UnmuteParticipantsResponse
     to: UnmuteParticipantsResponseInternal
 - rename-model:
-    from: StartHoldMusicRequest
-    to: StartHoldMusicRequestInternal
-- rename-model:
-    from: StopHoldMusicRequest
-    to: StopHoldMusicRequestInternal
-- rename-model:
     from: CollectTonesResult
     to: CollectTonesResultInternal
 - rename-model:
@@ -192,14 +200,11 @@ directive:
     from: ExternalStorage
     to: RecordingStorageInternal
 - rename-model:
-    from: BlobStorage
-    to: BlobStorageInternal
-- rename-model:
     from: ContinuousDtmfRecognitionRequest
     to: ContinuousDtmfRecognitionRequestInternal
 - rename-model:
-    from: TranscriptionConfiguration
-    to: TranscriptionConfigurationInternal
+    from: TranscriptionOptions
+    to: TranscriptionOptionsInternal
 - rename-model:
     from: StartTranscriptionRequest
     to: StartTranscriptionRequestInternal
@@ -212,6 +217,9 @@ directive:
 - rename-model:
     from: StartDialogRequest
     to: StartDialogRequestInternal
+- rename-model:
+    from: RecordingStorageKind
+    to: RecordingStorageType
 
 # Remove models
 - remove-model: AddParticipantFailed
@@ -224,6 +232,7 @@ directive:
 - remove-model: RecordingStateChanged
 - remove-model: PlayCompleted
 - remove-model: PlayFailed
+- remove-model: PlayStarted
 - remove-model: PlayCanceled
 - remove-model: ResultInfo
 - remove-model: RecognizeCompleted
@@ -258,11 +267,21 @@ directive:
 - remove-model: MediaStreamingStarted
 - remove-model: MediaStreamingStopped
 - remove-model: MediaStreamingFailed
-
+- remove-model: ConnectFailed
+- remove-model: CreateCallFailed
+- remove-model: AnswerFailed
+- remove-model: HoldFailed
+- remove-model: HoldAudioStarted
+- remove-model: HoldAudioComplteted
+- remove-model: HoldAudioResumed
+- remove-model: HoldAudioPaused
+- remove-model: PlayPaused
+- remove-model: PlayResumed
 
 ```
 
 ### Rename RecordingChannelType to RecordingChannelInternal
+
 ``` yaml
 directive:
   - from: swagger-document
@@ -272,6 +291,7 @@ directive:
 ```
 
 ### Rename RecordingContentType to RecordingContentInternal
+
 ``` yaml
 directive:
   - from: swagger-document
@@ -281,6 +301,7 @@ directive:
 ```
 
 ### Rename RecordingFormatType to RecordingFormatInternal
+
 ``` yaml
 directive:
 - from: swagger-document
@@ -290,6 +311,7 @@ directive:
 ```
 
 ### Rename RecordingState to RecordingStateInternal
+
 ``` yaml
 directive:
 - from: swagger-document
@@ -299,6 +321,7 @@ directive:
 ```
 
 ### Rename PlaySourceType to PlaySourceTypeInternal
+
 ``` yaml
 directive:
 - from: swagger-document
@@ -308,6 +331,7 @@ directive:
 ```
 
 ### Rename CallLocatorKind to CallLocatorKindInternal
+
 ``` yaml
 directive:
 - from: swagger-document
@@ -317,6 +341,7 @@ directive:
 ```
 
 ### Rename CallConnectionStateModel to CallConnectionStateModelInternal
+
 ``` yaml
 directive:
 - from: swagger-document
@@ -326,6 +351,7 @@ directive:
 ```
 
 ### Rename AcsEventType to AcsEventTypeInternal
+
 ``` yaml
 directive:
 - from: swagger-document
@@ -335,6 +361,7 @@ directive:
 ```
 
 ### Rename CallRejectReason to CallRejectReasonInternal
+
 ``` yaml
 directive:
 - from: swagger-document
@@ -344,6 +371,7 @@ directive:
 ```
 
 ### Rename StopTones to StopTonesInternal
+
 ``` yaml
 directive:
 - from: swagger-document
@@ -352,8 +380,8 @@ directive:
     $.name = "StopTonesInternal";
 ```
 
-
 ### Rename RecognizeInputType to RecognizeInputTypeInternal
+
 ``` yaml
 directive:
 - from: swagger-document
@@ -363,6 +391,7 @@ directive:
 ```
 
 ### Rename MediaStreamingAudioChannelType to MediaStreamingAudioChannelTypeInternal
+
 ``` yaml
 directive:
 - from: swagger-document
@@ -372,6 +401,7 @@ directive:
 ```
 
 ### Rename MediaStreamingContentType to MediaStreamingContentTypeInternal
+
 ``` yaml
 directive:
 - from: swagger-document
@@ -381,6 +411,7 @@ directive:
 ```
 
 ### Rename MediaStreamingTransportType to MediaStreamingTransportTypeInternal
+
 ``` yaml
 directive:
 - from: swagger-document
@@ -390,6 +421,7 @@ directive:
 ```
 
 ### Rename TranscriptionTransportType to TranscriptionTransportTypeInternal
+
 ``` yaml
 directive:
 - from: swagger-document
@@ -399,6 +431,7 @@ directive:
 ```
 
 ### Rename RecognitionType to RecognitionTypeInternal
+
 ``` yaml
 directive:
 - from: swagger-document
@@ -408,6 +441,7 @@ directive:
 ```
 
 ### Rename Tone to DtmfTone
+
 ``` yaml
 directive:
 - from: swagger-document
@@ -417,6 +451,7 @@ directive:
 ```
 
 ### Rename DtmfOptions to DtmfOptionsInternal
+
 ``` yaml
 directive:
 - from: swagger-document
@@ -426,6 +461,7 @@ directive:
 ```
 
 ### Rename CallIntelligenceOptions to CallIntelligenceOptionsInternal
+
 ``` yaml
 directive:
 - from: swagger-document
@@ -435,6 +471,7 @@ directive:
 ```
 
 ### Rename VoiceKind to VoiceKindInternal
+
 ``` yaml
 directive:
 - from: swagger-document
@@ -444,10 +481,81 @@ directive:
 ```
 
 ### Rename RecordingStorageType to RecordingStorageTypeInternal
+
 ``` yaml
 directive:
 - from: swagger-document
   where: $.definitions.RecordingStorageType["x-ms-enum"]
   transform: >
     $.name = "RecordingStorageTypeInternal";
+```
+
+### Rename RecordingKind to RecordingKindInternal
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.RecordingKind["x-ms-enum"]
+  transform: >
+    $.name = "RecordingKindInternal";
+```
+
+### Rename RecordingStorageKind to RecordingStorageType
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.RecordingStorageKind["x-ms-enum"]
+  transform: >
+    $.name = "RecordingStorageType";
+```
+
+### Rename ExternalStorage to RecordingStorageInternal
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.ExternalStorage["x-ms-enum"]
+  transform: >
+    $.name = "RecordingStorageInternal";
+```
+
+### Rename TranscriptionSubscriptionState to TranscriptionSubscriptionStateInternal
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.TranscriptionSubscriptionState["x-ms-enum"]
+  transform: >
+    $.name = "TranscriptionSubscriptionStateInternal";
+```
+
+### Rename TranscriptionResultType to TranscriptionResultTypeInternal
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.TranscriptionResultType["x-ms-enum"]
+  transform: >
+    $.name = "TranscriptionResultTypeInternal";
+```
+
+### Rename MediaStreamingSubscriptionState to MediaStreamingSubscriptionStateInternal
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.MediaStreamingSubscriptionState["x-ms-enum"]
+  transform: >
+    $.name = "MediaStreamingSubscriptionStateInternal";
+```
+
+### Rename AudioFormat to AudioFormatInternal
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.AudioFormat["x-ms-enum"]
+  transform: >
+    $.name = "AudioFormatInternal";
 ```

@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class EndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Endpoint model
-            = BinaryData.fromString("{\"name\":\"lwigdivbkbx\",\"endpoint\":\"mf\"}").toObject(Endpoint.class);
-        Assertions.assertEquals("lwigdivbkbx", model.name());
-        Assertions.assertEquals("mf", model.endpoint());
+        Endpoint model = BinaryData.fromString("{\"name\":\"lihrraiouaubr\",\"endpoint\":\"loqxfuojrngif\"}")
+            .toObject(Endpoint.class);
+        Assertions.assertEquals("lihrraiouaubr", model.name());
+        Assertions.assertEquals("loqxfuojrngif", model.endpoint());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Endpoint model = new Endpoint().withName("lwigdivbkbx").withEndpoint("mf");
+        Endpoint model = new Endpoint().withName("lihrraiouaubr").withEndpoint("loqxfuojrngif");
         model = BinaryData.fromObject(model).toObject(Endpoint.class);
-        Assertions.assertEquals("lwigdivbkbx", model.name());
-        Assertions.assertEquals("mf", model.endpoint());
+        Assertions.assertEquals("lihrraiouaubr", model.name());
+        Assertions.assertEquals("loqxfuojrngif", model.endpoint());
     }
 }

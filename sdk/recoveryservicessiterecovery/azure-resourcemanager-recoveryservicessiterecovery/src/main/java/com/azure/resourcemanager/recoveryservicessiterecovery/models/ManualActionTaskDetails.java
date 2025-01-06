@@ -5,39 +5,50 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * This class represents the manual action task details.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("ManualActionTaskDetails")
 @Fluent
 public final class ManualActionTaskDetails extends TaskTypeDetails {
     /*
+     * The type of task details.
+     */
+    private String instanceType = "ManualActionTaskDetails";
+
+    /*
      * The name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The instructions.
      */
-    @JsonProperty(value = "instructions")
     private String instructions;
 
     /*
      * The observation.
      */
-    @JsonProperty(value = "observation")
     private String observation;
 
     /**
      * Creates an instance of ManualActionTaskDetails class.
      */
     public ManualActionTaskDetails() {
+    }
+
+    /**
+     * Get the instanceType property: The type of task details.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -107,6 +118,50 @@ public final class ManualActionTaskDetails extends TaskTypeDetails {
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("instructions", this.instructions);
+        jsonWriter.writeStringField("observation", this.observation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManualActionTaskDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManualActionTaskDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManualActionTaskDetails.
+     */
+    public static ManualActionTaskDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManualActionTaskDetails deserializedManualActionTaskDetails = new ManualActionTaskDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedManualActionTaskDetails.instanceType = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedManualActionTaskDetails.name = reader.getString();
+                } else if ("instructions".equals(fieldName)) {
+                    deserializedManualActionTaskDetails.instructions = reader.getString();
+                } else if ("observation".equals(fieldName)) {
+                    deserializedManualActionTaskDetails.observation = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManualActionTaskDetails;
+        });
     }
 }

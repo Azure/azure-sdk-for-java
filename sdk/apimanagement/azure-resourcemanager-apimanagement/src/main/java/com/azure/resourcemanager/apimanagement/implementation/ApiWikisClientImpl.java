@@ -35,17 +35,23 @@ import com.azure.resourcemanager.apimanagement.models.ApiWikisUpdateResponse;
 import com.azure.resourcemanager.apimanagement.models.WikiUpdateContract;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ApiWikisClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ApiWikisClient.
+ */
 public final class ApiWikisClientImpl implements ApiWikisClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ApiWikisService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of ApiWikisClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ApiWikisClientImpl(ApiManagementClientImpl client) {
@@ -113,7 +119,7 @@ public final class ApiWikisClientImpl implements ApiWikisClient {
 
     /**
      * Gets the entity state (Etag) version of the Wiki for an API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -121,7 +127,7 @@ public final class ApiWikisClientImpl implements ApiWikisClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the Wiki for an API specified by its identifier on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiWikisGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
@@ -153,7 +159,7 @@ public final class ApiWikisClientImpl implements ApiWikisClient {
 
     /**
      * Gets the entity state (Etag) version of the Wiki for an API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -162,7 +168,7 @@ public final class ApiWikisClientImpl implements ApiWikisClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the Wiki for an API specified by its identifier on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiWikisGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
@@ -193,7 +199,7 @@ public final class ApiWikisClientImpl implements ApiWikisClient {
 
     /**
      * Gets the entity state (Etag) version of the Wiki for an API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -201,7 +207,7 @@ public final class ApiWikisClientImpl implements ApiWikisClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the Wiki for an API specified by its identifier on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getEntityTagAsync(String resourceGroupName, String serviceName, String apiId) {
@@ -210,7 +216,7 @@ public final class ApiWikisClientImpl implements ApiWikisClient {
 
     /**
      * Gets the entity state (Etag) version of the Wiki for an API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -228,7 +234,7 @@ public final class ApiWikisClientImpl implements ApiWikisClient {
 
     /**
      * Gets the entity state (Etag) version of the Wiki for an API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -243,7 +249,7 @@ public final class ApiWikisClientImpl implements ApiWikisClient {
 
     /**
      * Gets the details of the Wiki for an API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -281,7 +287,7 @@ public final class ApiWikisClientImpl implements ApiWikisClient {
 
     /**
      * Gets the details of the Wiki for an API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -320,7 +326,7 @@ public final class ApiWikisClientImpl implements ApiWikisClient {
 
     /**
      * Gets the details of the Wiki for an API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -337,7 +343,7 @@ public final class ApiWikisClientImpl implements ApiWikisClient {
 
     /**
      * Gets the details of the Wiki for an API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -355,7 +361,7 @@ public final class ApiWikisClientImpl implements ApiWikisClient {
 
     /**
      * Gets the details of the Wiki for an API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -371,7 +377,7 @@ public final class ApiWikisClientImpl implements ApiWikisClient {
 
     /**
      * Creates a new Wiki for an API or updates an existing one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -418,7 +424,7 @@ public final class ApiWikisClientImpl implements ApiWikisClient {
 
     /**
      * Creates a new Wiki for an API or updates an existing one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -464,7 +470,7 @@ public final class ApiWikisClientImpl implements ApiWikisClient {
 
     /**
      * Creates a new Wiki for an API or updates an existing one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -484,7 +490,7 @@ public final class ApiWikisClientImpl implements ApiWikisClient {
 
     /**
      * Creates a new Wiki for an API or updates an existing one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -505,7 +511,7 @@ public final class ApiWikisClientImpl implements ApiWikisClient {
 
     /**
      * Creates a new Wiki for an API or updates an existing one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -525,12 +531,12 @@ public final class ApiWikisClientImpl implements ApiWikisClient {
 
     /**
      * Updates the details of the Wiki for an API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Wiki Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -575,12 +581,12 @@ public final class ApiWikisClientImpl implements ApiWikisClient {
 
     /**
      * Updates the details of the Wiki for an API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Wiki Update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -625,12 +631,12 @@ public final class ApiWikisClientImpl implements ApiWikisClient {
 
     /**
      * Updates the details of the Wiki for an API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Wiki Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -646,12 +652,12 @@ public final class ApiWikisClientImpl implements ApiWikisClient {
 
     /**
      * Updates the details of the Wiki for an API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Wiki Update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -667,12 +673,12 @@ public final class ApiWikisClientImpl implements ApiWikisClient {
 
     /**
      * Updates the details of the Wiki for an API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Wiki Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -687,12 +693,12 @@ public final class ApiWikisClientImpl implements ApiWikisClient {
 
     /**
      * Deletes the specified Wiki from an API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -731,12 +737,12 @@ public final class ApiWikisClientImpl implements ApiWikisClient {
 
     /**
      * Deletes the specified Wiki from an API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -775,12 +781,12 @@ public final class ApiWikisClientImpl implements ApiWikisClient {
 
     /**
      * Deletes the specified Wiki from an API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -793,12 +799,12 @@ public final class ApiWikisClientImpl implements ApiWikisClient {
 
     /**
      * Deletes the specified Wiki from an API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -813,12 +819,12 @@ public final class ApiWikisClientImpl implements ApiWikisClient {
 
     /**
      * Deletes the specified Wiki from an API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

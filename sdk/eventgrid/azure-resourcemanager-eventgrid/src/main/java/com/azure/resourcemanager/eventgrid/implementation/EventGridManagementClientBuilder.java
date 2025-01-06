@@ -20,7 +20,8 @@ import java.time.Duration;
 @ServiceClientBuilder(serviceClients = { EventGridManagementClientImpl.class })
 public final class EventGridManagementClientBuilder {
     /*
-     * Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+     * Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms part of
+     * the URI for every service call.
      */
     private String subscriptionId;
 

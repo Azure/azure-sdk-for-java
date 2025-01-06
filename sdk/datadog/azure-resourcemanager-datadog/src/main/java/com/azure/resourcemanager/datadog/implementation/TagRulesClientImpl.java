@@ -32,17 +32,23 @@ import com.azure.resourcemanager.datadog.fluent.models.MonitoringTagRulesInner;
 import com.azure.resourcemanager.datadog.models.MonitoringTagRulesListResponse;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in TagRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TagRulesClient.
+ */
 public final class TagRulesClientImpl implements TagRulesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final TagRulesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MicrosoftDatadogClientImpl client;
 
     /**
      * Initializes an instance of TagRulesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     TagRulesClientImpl(MicrosoftDatadogClientImpl client) {
@@ -98,7 +104,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * List the tag rules for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -135,7 +141,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * List the tag rules for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -173,7 +179,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * List the tag rules for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -189,7 +195,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * List the tag rules for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -207,7 +213,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * List the tag rules for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -222,7 +228,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * List the tag rules for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -238,16 +244,16 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Create or update a tag rule set for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Rule set name.
-     * @param body Capture logs and metrics of Azure resources based on ARM tags.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return capture logs and metrics of Azure resources based on ARM tags along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MonitoringTagRulesInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -282,17 +288,17 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Create or update a tag rule set for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Rule set name.
-     * @param body Capture logs and metrics of Azure resources based on ARM tags.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return capture logs and metrics of Azure resources based on ARM tags along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MonitoringTagRulesInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -326,7 +332,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Create or update a tag rule set for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Rule set name.
@@ -345,11 +351,11 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Create or update a tag rule set for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Rule set name.
-     * @param body Capture logs and metrics of Azure resources based on ARM tags.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -364,7 +370,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Create or update a tag rule set for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Rule set name.
@@ -381,7 +387,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Get a tag rule set for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Rule set name.
@@ -389,7 +395,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a tag rule set for a given monitor resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MonitoringTagRulesInner>> getWithResponseAsync(String resourceGroupName, String monitorName,
@@ -421,7 +427,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Get a tag rule set for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Rule set name.
@@ -430,7 +436,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a tag rule set for a given monitor resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MonitoringTagRulesInner>> getWithResponseAsync(String resourceGroupName, String monitorName,
@@ -461,7 +467,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Get a tag rule set for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Rule set name.
@@ -478,7 +484,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Get a tag rule set for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Rule set name.
@@ -496,7 +502,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Get a tag rule set for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Rule set name.
@@ -512,9 +518,8 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -538,9 +543,8 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

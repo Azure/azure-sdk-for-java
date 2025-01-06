@@ -24,16 +24,32 @@ public interface FunctionApp
     extends FunctionAppBasic, WebAppBase, Updatable<FunctionApp.Update>, SupportsListingPrivateLinkResource,
     SupportsListingPrivateEndpointConnection, SupportsUpdatingPrivateEndpointConnection, SupportsOneDeploy {
 
-    /** @return the entry point to deployment slot management API under the function app */
+    /**
+     * Gets the entry point to deployment slot management API under the function app.
+     *
+     * @return the entry point to deployment slot management API under the function app
+     */
     FunctionDeploymentSlots deploymentSlots();
 
-    /** @return the storage account associated with the function app */
+    /**
+     * Gets the storage account associated with the function app.
+     *
+     * @return the storage account associated with the function app
+     */
     StorageAccount storageAccount();
 
-    /** @return the master key for the function app */
+    /**
+     * Gets the master key for the function app.
+     *
+     * @return the master key for the function app
+     */
     String getMasterKey();
 
-    /** @return the master key for the function app */
+    /**
+     * Gets the master key for the function app.
+     *
+     * @return the master key for the function app
+     */
     Mono<String> getMasterKeyAsync();
 
     /**

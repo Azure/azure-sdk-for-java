@@ -6,6 +6,10 @@ package com.azure.resourcemanager.networkcloud.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.models.ImageRepositoryCredentials;
 import com.azure.resourcemanager.networkcloud.models.NetworkAttachment;
 import com.azure.resourcemanager.networkcloud.models.SshPublicKey;
@@ -18,173 +22,147 @@ import com.azure.resourcemanager.networkcloud.models.VirtualMachinePlacementHint
 import com.azure.resourcemanager.networkcloud.models.VirtualMachinePowerState;
 import com.azure.resourcemanager.networkcloud.models.VirtualMachineProvisioningState;
 import com.azure.resourcemanager.networkcloud.models.VirtualMachineVirtioInterfaceType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** VirtualMachineProperties represents the properties of the virtual machine. */
+/**
+ * VirtualMachineProperties represents the properties of the virtual machine.
+ */
 @Fluent
-public final class VirtualMachineProperties {
+public final class VirtualMachineProperties implements JsonSerializable<VirtualMachineProperties> {
     /*
      * The name of the administrator to which the ssh public keys will be added into the authorized keys.
      */
-    @JsonProperty(value = "adminUsername", required = true)
     private String adminUsername;
 
     /*
      * The cluster availability zone containing this virtual machine.
      */
-    @JsonProperty(value = "availabilityZone", access = JsonProperty.Access.WRITE_ONLY)
     private String availabilityZone;
 
     /*
-     * The resource ID of the bare metal machine the virtual machine has landed to.
+     * The resource ID of the bare metal machine that hosts the virtual machine.
      */
-    @JsonProperty(value = "bareMetalMachineId", access = JsonProperty.Access.WRITE_ONLY)
     private String bareMetalMachineId;
 
     /*
      * Selects the boot method for the virtual machine.
      */
-    @JsonProperty(value = "bootMethod")
     private VirtualMachineBootMethod bootMethod;
 
     /*
-     * NetworkAttachment represents the single network attachment.
-     *
      * The cloud service network that provides platform-level services for the virtual machine.
      */
-    @JsonProperty(value = "cloudServicesNetworkAttachment", required = true)
     private NetworkAttachment cloudServicesNetworkAttachment;
 
     /*
      * The resource ID of the cluster the virtual machine is created for.
      */
-    @JsonProperty(value = "clusterId", access = JsonProperty.Access.WRITE_ONLY)
     private String clusterId;
 
     /*
      * The number of CPU cores in the virtual machine.
      */
-    @JsonProperty(value = "cpuCores", required = true)
     private long cpuCores;
 
     /*
      * The more detailed status of the virtual machine.
      */
-    @JsonProperty(value = "detailedStatus", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualMachineDetailedStatus detailedStatus;
 
     /*
      * The descriptive message about the current detailed status.
      */
-    @JsonProperty(value = "detailedStatusMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String detailedStatusMessage;
 
     /*
      * Field Deprecated, the value will be ignored if provided. The indicator of whether one of the specified CPU cores
      * is isolated to run the emulator thread for this virtual machine.
      */
-    @JsonProperty(value = "isolateEmulatorThread")
     private VirtualMachineIsolateEmulatorThread isolateEmulatorThread;
 
     /*
-     * The memory size of the virtual machine in GB.
+     * The memory size of the virtual machine. Allocations are measured in gibibytes.
      */
-    @JsonProperty(value = "memorySizeGB", required = true)
     private long memorySizeGB;
 
     /*
      * The list of network attachments to the virtual machine.
      */
-    @JsonProperty(value = "networkAttachments")
     private List<NetworkAttachment> networkAttachments;
 
     /*
      * The Base64 encoded cloud-init network data.
      */
-    @JsonProperty(value = "networkData")
     private String networkData;
 
     /*
      * The scheduling hints for the virtual machine.
      */
-    @JsonProperty(value = "placementHints")
     private List<VirtualMachinePlacementHint> placementHints;
 
     /*
      * The power state of the virtual machine.
      */
-    @JsonProperty(value = "powerState", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualMachinePowerState powerState;
 
     /*
      * The provisioning state of the virtual machine.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualMachineProvisioningState provisioningState;
 
     /*
      * The list of ssh public keys. Each key will be added to the virtual machine using the cloud-init
      * ssh_authorized_keys mechanism for the adminUsername.
      */
-    @JsonProperty(value = "sshPublicKeys")
     private List<SshPublicKey> sshPublicKeys;
 
     /*
-     * StorageProfile represents information about a disk.
-     *
      * The storage profile that specifies size and other parameters about the disks related to the virtual machine.
      */
-    @JsonProperty(value = "storageProfile", required = true)
     private StorageProfile storageProfile;
 
     /*
      * The Base64 encoded cloud-init user data.
      */
-    @JsonProperty(value = "userData")
     private String userData;
 
     /*
      * Field Deprecated, use virtualizationModel instead. The type of the virtio interface.
      */
-    @JsonProperty(value = "virtioInterface")
     private VirtualMachineVirtioInterfaceType virtioInterface;
 
     /*
      * The type of the device model to use.
      */
-    @JsonProperty(value = "vmDeviceModel")
     private VirtualMachineDeviceModelType vmDeviceModel;
 
     /*
      * The virtual machine image that is currently provisioned to the OS disk, using the full url and tag notation used
      * to pull the image.
      */
-    @JsonProperty(value = "vmImage", required = true)
     private String vmImage;
 
     /*
-     * ImageRepositoryCredentials represents the credentials used to login to the image repository.
-     *
      * The credentials used to login to the image repository that has access to the specified image.
      */
-    @JsonProperty(value = "vmImageRepositoryCredentials")
     private ImageRepositoryCredentials vmImageRepositoryCredentials;
 
     /*
      * The resource IDs of volumes that are attached to the virtual machine.
      */
-    @JsonProperty(value = "volumes", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> volumes;
 
-    /** Creates an instance of VirtualMachineProperties class. */
+    /**
+     * Creates an instance of VirtualMachineProperties class.
+     */
     public VirtualMachineProperties() {
     }
 
     /**
      * Get the adminUsername property: The name of the administrator to which the ssh public keys will be added into the
      * authorized keys.
-     *
+     * 
      * @return the adminUsername value.
      */
     public String adminUsername() {
@@ -194,7 +172,7 @@ public final class VirtualMachineProperties {
     /**
      * Set the adminUsername property: The name of the administrator to which the ssh public keys will be added into the
      * authorized keys.
-     *
+     * 
      * @param adminUsername the adminUsername value to set.
      * @return the VirtualMachineProperties object itself.
      */
@@ -205,7 +183,7 @@ public final class VirtualMachineProperties {
 
     /**
      * Get the availabilityZone property: The cluster availability zone containing this virtual machine.
-     *
+     * 
      * @return the availabilityZone value.
      */
     public String availabilityZone() {
@@ -213,8 +191,8 @@ public final class VirtualMachineProperties {
     }
 
     /**
-     * Get the bareMetalMachineId property: The resource ID of the bare metal machine the virtual machine has landed to.
-     *
+     * Get the bareMetalMachineId property: The resource ID of the bare metal machine that hosts the virtual machine.
+     * 
      * @return the bareMetalMachineId value.
      */
     public String bareMetalMachineId() {
@@ -223,7 +201,7 @@ public final class VirtualMachineProperties {
 
     /**
      * Get the bootMethod property: Selects the boot method for the virtual machine.
-     *
+     * 
      * @return the bootMethod value.
      */
     public VirtualMachineBootMethod bootMethod() {
@@ -232,7 +210,7 @@ public final class VirtualMachineProperties {
 
     /**
      * Set the bootMethod property: Selects the boot method for the virtual machine.
-     *
+     * 
      * @param bootMethod the bootMethod value to set.
      * @return the VirtualMachineProperties object itself.
      */
@@ -242,10 +220,9 @@ public final class VirtualMachineProperties {
     }
 
     /**
-     * Get the cloudServicesNetworkAttachment property: NetworkAttachment represents the single network attachment.
-     *
-     * <p>The cloud service network that provides platform-level services for the virtual machine.
-     *
+     * Get the cloudServicesNetworkAttachment property: The cloud service network that provides platform-level services
+     * for the virtual machine.
+     * 
      * @return the cloudServicesNetworkAttachment value.
      */
     public NetworkAttachment cloudServicesNetworkAttachment() {
@@ -253,10 +230,9 @@ public final class VirtualMachineProperties {
     }
 
     /**
-     * Set the cloudServicesNetworkAttachment property: NetworkAttachment represents the single network attachment.
-     *
-     * <p>The cloud service network that provides platform-level services for the virtual machine.
-     *
+     * Set the cloudServicesNetworkAttachment property: The cloud service network that provides platform-level services
+     * for the virtual machine.
+     * 
      * @param cloudServicesNetworkAttachment the cloudServicesNetworkAttachment value to set.
      * @return the VirtualMachineProperties object itself.
      */
@@ -268,7 +244,7 @@ public final class VirtualMachineProperties {
 
     /**
      * Get the clusterId property: The resource ID of the cluster the virtual machine is created for.
-     *
+     * 
      * @return the clusterId value.
      */
     public String clusterId() {
@@ -277,7 +253,7 @@ public final class VirtualMachineProperties {
 
     /**
      * Get the cpuCores property: The number of CPU cores in the virtual machine.
-     *
+     * 
      * @return the cpuCores value.
      */
     public long cpuCores() {
@@ -286,7 +262,7 @@ public final class VirtualMachineProperties {
 
     /**
      * Set the cpuCores property: The number of CPU cores in the virtual machine.
-     *
+     * 
      * @param cpuCores the cpuCores value to set.
      * @return the VirtualMachineProperties object itself.
      */
@@ -297,7 +273,7 @@ public final class VirtualMachineProperties {
 
     /**
      * Get the detailedStatus property: The more detailed status of the virtual machine.
-     *
+     * 
      * @return the detailedStatus value.
      */
     public VirtualMachineDetailedStatus detailedStatus() {
@@ -306,7 +282,7 @@ public final class VirtualMachineProperties {
 
     /**
      * Get the detailedStatusMessage property: The descriptive message about the current detailed status.
-     *
+     * 
      * @return the detailedStatusMessage value.
      */
     public String detailedStatusMessage() {
@@ -316,7 +292,7 @@ public final class VirtualMachineProperties {
     /**
      * Get the isolateEmulatorThread property: Field Deprecated, the value will be ignored if provided. The indicator of
      * whether one of the specified CPU cores is isolated to run the emulator thread for this virtual machine.
-     *
+     * 
      * @return the isolateEmulatorThread value.
      */
     public VirtualMachineIsolateEmulatorThread isolateEmulatorThread() {
@@ -326,7 +302,7 @@ public final class VirtualMachineProperties {
     /**
      * Set the isolateEmulatorThread property: Field Deprecated, the value will be ignored if provided. The indicator of
      * whether one of the specified CPU cores is isolated to run the emulator thread for this virtual machine.
-     *
+     * 
      * @param isolateEmulatorThread the isolateEmulatorThread value to set.
      * @return the VirtualMachineProperties object itself.
      */
@@ -337,8 +313,8 @@ public final class VirtualMachineProperties {
     }
 
     /**
-     * Get the memorySizeGB property: The memory size of the virtual machine in GB.
-     *
+     * Get the memorySizeGB property: The memory size of the virtual machine. Allocations are measured in gibibytes.
+     * 
      * @return the memorySizeGB value.
      */
     public long memorySizeGB() {
@@ -346,8 +322,8 @@ public final class VirtualMachineProperties {
     }
 
     /**
-     * Set the memorySizeGB property: The memory size of the virtual machine in GB.
-     *
+     * Set the memorySizeGB property: The memory size of the virtual machine. Allocations are measured in gibibytes.
+     * 
      * @param memorySizeGB the memorySizeGB value to set.
      * @return the VirtualMachineProperties object itself.
      */
@@ -358,7 +334,7 @@ public final class VirtualMachineProperties {
 
     /**
      * Get the networkAttachments property: The list of network attachments to the virtual machine.
-     *
+     * 
      * @return the networkAttachments value.
      */
     public List<NetworkAttachment> networkAttachments() {
@@ -367,7 +343,7 @@ public final class VirtualMachineProperties {
 
     /**
      * Set the networkAttachments property: The list of network attachments to the virtual machine.
-     *
+     * 
      * @param networkAttachments the networkAttachments value to set.
      * @return the VirtualMachineProperties object itself.
      */
@@ -378,7 +354,7 @@ public final class VirtualMachineProperties {
 
     /**
      * Get the networkData property: The Base64 encoded cloud-init network data.
-     *
+     * 
      * @return the networkData value.
      */
     public String networkData() {
@@ -387,7 +363,7 @@ public final class VirtualMachineProperties {
 
     /**
      * Set the networkData property: The Base64 encoded cloud-init network data.
-     *
+     * 
      * @param networkData the networkData value to set.
      * @return the VirtualMachineProperties object itself.
      */
@@ -398,7 +374,7 @@ public final class VirtualMachineProperties {
 
     /**
      * Get the placementHints property: The scheduling hints for the virtual machine.
-     *
+     * 
      * @return the placementHints value.
      */
     public List<VirtualMachinePlacementHint> placementHints() {
@@ -407,7 +383,7 @@ public final class VirtualMachineProperties {
 
     /**
      * Set the placementHints property: The scheduling hints for the virtual machine.
-     *
+     * 
      * @param placementHints the placementHints value to set.
      * @return the VirtualMachineProperties object itself.
      */
@@ -418,7 +394,7 @@ public final class VirtualMachineProperties {
 
     /**
      * Get the powerState property: The power state of the virtual machine.
-     *
+     * 
      * @return the powerState value.
      */
     public VirtualMachinePowerState powerState() {
@@ -427,7 +403,7 @@ public final class VirtualMachineProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the virtual machine.
-     *
+     * 
      * @return the provisioningState value.
      */
     public VirtualMachineProvisioningState provisioningState() {
@@ -437,7 +413,7 @@ public final class VirtualMachineProperties {
     /**
      * Get the sshPublicKeys property: The list of ssh public keys. Each key will be added to the virtual machine using
      * the cloud-init ssh_authorized_keys mechanism for the adminUsername.
-     *
+     * 
      * @return the sshPublicKeys value.
      */
     public List<SshPublicKey> sshPublicKeys() {
@@ -447,7 +423,7 @@ public final class VirtualMachineProperties {
     /**
      * Set the sshPublicKeys property: The list of ssh public keys. Each key will be added to the virtual machine using
      * the cloud-init ssh_authorized_keys mechanism for the adminUsername.
-     *
+     * 
      * @param sshPublicKeys the sshPublicKeys value to set.
      * @return the VirtualMachineProperties object itself.
      */
@@ -457,10 +433,9 @@ public final class VirtualMachineProperties {
     }
 
     /**
-     * Get the storageProfile property: StorageProfile represents information about a disk.
-     *
-     * <p>The storage profile that specifies size and other parameters about the disks related to the virtual machine.
-     *
+     * Get the storageProfile property: The storage profile that specifies size and other parameters about the disks
+     * related to the virtual machine.
+     * 
      * @return the storageProfile value.
      */
     public StorageProfile storageProfile() {
@@ -468,10 +443,9 @@ public final class VirtualMachineProperties {
     }
 
     /**
-     * Set the storageProfile property: StorageProfile represents information about a disk.
-     *
-     * <p>The storage profile that specifies size and other parameters about the disks related to the virtual machine.
-     *
+     * Set the storageProfile property: The storage profile that specifies size and other parameters about the disks
+     * related to the virtual machine.
+     * 
      * @param storageProfile the storageProfile value to set.
      * @return the VirtualMachineProperties object itself.
      */
@@ -482,7 +456,7 @@ public final class VirtualMachineProperties {
 
     /**
      * Get the userData property: The Base64 encoded cloud-init user data.
-     *
+     * 
      * @return the userData value.
      */
     public String userData() {
@@ -491,7 +465,7 @@ public final class VirtualMachineProperties {
 
     /**
      * Set the userData property: The Base64 encoded cloud-init user data.
-     *
+     * 
      * @param userData the userData value to set.
      * @return the VirtualMachineProperties object itself.
      */
@@ -503,7 +477,7 @@ public final class VirtualMachineProperties {
     /**
      * Get the virtioInterface property: Field Deprecated, use virtualizationModel instead. The type of the virtio
      * interface.
-     *
+     * 
      * @return the virtioInterface value.
      */
     public VirtualMachineVirtioInterfaceType virtioInterface() {
@@ -513,7 +487,7 @@ public final class VirtualMachineProperties {
     /**
      * Set the virtioInterface property: Field Deprecated, use virtualizationModel instead. The type of the virtio
      * interface.
-     *
+     * 
      * @param virtioInterface the virtioInterface value to set.
      * @return the VirtualMachineProperties object itself.
      */
@@ -524,7 +498,7 @@ public final class VirtualMachineProperties {
 
     /**
      * Get the vmDeviceModel property: The type of the device model to use.
-     *
+     * 
      * @return the vmDeviceModel value.
      */
     public VirtualMachineDeviceModelType vmDeviceModel() {
@@ -533,7 +507,7 @@ public final class VirtualMachineProperties {
 
     /**
      * Set the vmDeviceModel property: The type of the device model to use.
-     *
+     * 
      * @param vmDeviceModel the vmDeviceModel value to set.
      * @return the VirtualMachineProperties object itself.
      */
@@ -545,7 +519,7 @@ public final class VirtualMachineProperties {
     /**
      * Get the vmImage property: The virtual machine image that is currently provisioned to the OS disk, using the full
      * url and tag notation used to pull the image.
-     *
+     * 
      * @return the vmImage value.
      */
     public String vmImage() {
@@ -555,7 +529,7 @@ public final class VirtualMachineProperties {
     /**
      * Set the vmImage property: The virtual machine image that is currently provisioned to the OS disk, using the full
      * url and tag notation used to pull the image.
-     *
+     * 
      * @param vmImage the vmImage value to set.
      * @return the VirtualMachineProperties object itself.
      */
@@ -565,11 +539,9 @@ public final class VirtualMachineProperties {
     }
 
     /**
-     * Get the vmImageRepositoryCredentials property: ImageRepositoryCredentials represents the credentials used to
-     * login to the image repository.
-     *
-     * <p>The credentials used to login to the image repository that has access to the specified image.
-     *
+     * Get the vmImageRepositoryCredentials property: The credentials used to login to the image repository that has
+     * access to the specified image.
+     * 
      * @return the vmImageRepositoryCredentials value.
      */
     public ImageRepositoryCredentials vmImageRepositoryCredentials() {
@@ -577,11 +549,9 @@ public final class VirtualMachineProperties {
     }
 
     /**
-     * Set the vmImageRepositoryCredentials property: ImageRepositoryCredentials represents the credentials used to
-     * login to the image repository.
-     *
-     * <p>The credentials used to login to the image repository that has access to the specified image.
-     *
+     * Set the vmImageRepositoryCredentials property: The credentials used to login to the image repository that has
+     * access to the specified image.
+     * 
      * @param vmImageRepositoryCredentials the vmImageRepositoryCredentials value to set.
      * @return the VirtualMachineProperties object itself.
      */
@@ -593,7 +563,7 @@ public final class VirtualMachineProperties {
 
     /**
      * Get the volumes property: The resource IDs of volumes that are attached to the virtual machine.
-     *
+     * 
      * @return the volumes value.
      */
     public List<String> volumes() {
@@ -602,17 +572,19 @@ public final class VirtualMachineProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (adminUsername() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property adminUsername in model VirtualMachineProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property adminUsername in model VirtualMachineProperties"));
         }
         if (cloudServicesNetworkAttachment() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property cloudServicesNetworkAttachment in model VirtualMachineProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property cloudServicesNetworkAttachment in model VirtualMachineProperties"));
         } else {
             cloudServicesNetworkAttachment().validate();
         }
@@ -626,14 +598,16 @@ public final class VirtualMachineProperties {
             sshPublicKeys().forEach(e -> e.validate());
         }
         if (storageProfile() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property storageProfile in model VirtualMachineProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageProfile in model VirtualMachineProperties"));
         } else {
             storageProfile().validate();
         }
         if (vmImage() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property vmImage in model VirtualMachineProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property vmImage in model VirtualMachineProperties"));
         }
         if (vmImageRepositoryCredentials() != null) {
             vmImageRepositoryCredentials().validate();
@@ -641,4 +615,121 @@ public final class VirtualMachineProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("adminUsername", this.adminUsername);
+        jsonWriter.writeJsonField("cloudServicesNetworkAttachment", this.cloudServicesNetworkAttachment);
+        jsonWriter.writeLongField("cpuCores", this.cpuCores);
+        jsonWriter.writeLongField("memorySizeGB", this.memorySizeGB);
+        jsonWriter.writeJsonField("storageProfile", this.storageProfile);
+        jsonWriter.writeStringField("vmImage", this.vmImage);
+        jsonWriter.writeStringField("bootMethod", this.bootMethod == null ? null : this.bootMethod.toString());
+        jsonWriter.writeStringField("isolateEmulatorThread",
+            this.isolateEmulatorThread == null ? null : this.isolateEmulatorThread.toString());
+        jsonWriter.writeArrayField("networkAttachments", this.networkAttachments,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("networkData", this.networkData);
+        jsonWriter.writeArrayField("placementHints", this.placementHints,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("sshPublicKeys", this.sshPublicKeys, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("userData", this.userData);
+        jsonWriter.writeStringField("virtioInterface",
+            this.virtioInterface == null ? null : this.virtioInterface.toString());
+        jsonWriter.writeStringField("vmDeviceModel", this.vmDeviceModel == null ? null : this.vmDeviceModel.toString());
+        jsonWriter.writeJsonField("vmImageRepositoryCredentials", this.vmImageRepositoryCredentials);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachineProperties.
+     */
+    public static VirtualMachineProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineProperties deserializedVirtualMachineProperties = new VirtualMachineProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("adminUsername".equals(fieldName)) {
+                    deserializedVirtualMachineProperties.adminUsername = reader.getString();
+                } else if ("cloudServicesNetworkAttachment".equals(fieldName)) {
+                    deserializedVirtualMachineProperties.cloudServicesNetworkAttachment
+                        = NetworkAttachment.fromJson(reader);
+                } else if ("cpuCores".equals(fieldName)) {
+                    deserializedVirtualMachineProperties.cpuCores = reader.getLong();
+                } else if ("memorySizeGB".equals(fieldName)) {
+                    deserializedVirtualMachineProperties.memorySizeGB = reader.getLong();
+                } else if ("storageProfile".equals(fieldName)) {
+                    deserializedVirtualMachineProperties.storageProfile = StorageProfile.fromJson(reader);
+                } else if ("vmImage".equals(fieldName)) {
+                    deserializedVirtualMachineProperties.vmImage = reader.getString();
+                } else if ("availabilityZone".equals(fieldName)) {
+                    deserializedVirtualMachineProperties.availabilityZone = reader.getString();
+                } else if ("bareMetalMachineId".equals(fieldName)) {
+                    deserializedVirtualMachineProperties.bareMetalMachineId = reader.getString();
+                } else if ("bootMethod".equals(fieldName)) {
+                    deserializedVirtualMachineProperties.bootMethod
+                        = VirtualMachineBootMethod.fromString(reader.getString());
+                } else if ("clusterId".equals(fieldName)) {
+                    deserializedVirtualMachineProperties.clusterId = reader.getString();
+                } else if ("detailedStatus".equals(fieldName)) {
+                    deserializedVirtualMachineProperties.detailedStatus
+                        = VirtualMachineDetailedStatus.fromString(reader.getString());
+                } else if ("detailedStatusMessage".equals(fieldName)) {
+                    deserializedVirtualMachineProperties.detailedStatusMessage = reader.getString();
+                } else if ("isolateEmulatorThread".equals(fieldName)) {
+                    deserializedVirtualMachineProperties.isolateEmulatorThread
+                        = VirtualMachineIsolateEmulatorThread.fromString(reader.getString());
+                } else if ("networkAttachments".equals(fieldName)) {
+                    List<NetworkAttachment> networkAttachments
+                        = reader.readArray(reader1 -> NetworkAttachment.fromJson(reader1));
+                    deserializedVirtualMachineProperties.networkAttachments = networkAttachments;
+                } else if ("networkData".equals(fieldName)) {
+                    deserializedVirtualMachineProperties.networkData = reader.getString();
+                } else if ("placementHints".equals(fieldName)) {
+                    List<VirtualMachinePlacementHint> placementHints
+                        = reader.readArray(reader1 -> VirtualMachinePlacementHint.fromJson(reader1));
+                    deserializedVirtualMachineProperties.placementHints = placementHints;
+                } else if ("powerState".equals(fieldName)) {
+                    deserializedVirtualMachineProperties.powerState
+                        = VirtualMachinePowerState.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVirtualMachineProperties.provisioningState
+                        = VirtualMachineProvisioningState.fromString(reader.getString());
+                } else if ("sshPublicKeys".equals(fieldName)) {
+                    List<SshPublicKey> sshPublicKeys = reader.readArray(reader1 -> SshPublicKey.fromJson(reader1));
+                    deserializedVirtualMachineProperties.sshPublicKeys = sshPublicKeys;
+                } else if ("userData".equals(fieldName)) {
+                    deserializedVirtualMachineProperties.userData = reader.getString();
+                } else if ("virtioInterface".equals(fieldName)) {
+                    deserializedVirtualMachineProperties.virtioInterface
+                        = VirtualMachineVirtioInterfaceType.fromString(reader.getString());
+                } else if ("vmDeviceModel".equals(fieldName)) {
+                    deserializedVirtualMachineProperties.vmDeviceModel
+                        = VirtualMachineDeviceModelType.fromString(reader.getString());
+                } else if ("vmImageRepositoryCredentials".equals(fieldName)) {
+                    deserializedVirtualMachineProperties.vmImageRepositoryCredentials
+                        = ImageRepositoryCredentials.fromJson(reader);
+                } else if ("volumes".equals(fieldName)) {
+                    List<String> volumes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualMachineProperties.volumes = volumes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineProperties;
+        });
+    }
 }

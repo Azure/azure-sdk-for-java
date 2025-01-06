@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.healthcareapis.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The kind of the service.
  */
@@ -41,7 +38,6 @@ public enum Kind {
      * @param value the serialized value to parse.
      * @return the parsed Kind object, or null if unable to parse.
      */
-    @JsonCreator
     public static Kind fromString(String value) {
         if (value == null) {
             return null;
@@ -58,7 +54,6 @@ public enum Kind {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

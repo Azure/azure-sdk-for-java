@@ -6,32 +6,34 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.resourcemanager.apimanagement.fluent.models.ResourceSkuResultInner;
 
-/** An immutable client-side representation of ResourceSkuResult. */
+/**
+ * An immutable client-side representation of ResourceSkuResult.
+ */
 public interface ResourceSkuResult {
     /**
      * Gets the resourceType property: The type of resource the SKU applies to.
-     *
+     * 
      * @return the resourceType value.
      */
     String resourceType();
 
     /**
      * Gets the sku property: Specifies API Management SKU.
-     *
+     * 
      * @return the sku value.
      */
     ResourceSku sku();
 
     /**
      * Gets the capacity property: Specifies the number of API Management units.
-     *
+     * 
      * @return the capacity value.
      */
     ResourceSkuCapacity capacity();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.ResourceSkuResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     ResourceSkuResultInner innerModel();
