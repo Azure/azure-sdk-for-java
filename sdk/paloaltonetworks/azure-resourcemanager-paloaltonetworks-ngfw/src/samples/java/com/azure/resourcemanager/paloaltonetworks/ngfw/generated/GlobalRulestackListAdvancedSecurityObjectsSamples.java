@@ -22,8 +22,9 @@ public final class GlobalRulestackListAdvancedSecurityObjectsSamples {
      */
     public static void globalRulestackListAdvancedSecurityObjectsMaximumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.globalRulestacks().listAdvancedSecurityObjectsWithResponse("praval",
-            AdvSecurityObjectTypeEnum.fromString("globalRulestacks"), "a6a321", 20, com.azure.core.util.Context.NONE);
+        manager.globalRulestacks()
+            .listAdvancedSecurityObjectsWithResponse("praval", AdvSecurityObjectTypeEnum.fromString("globalRulestacks"),
+                "a6a321", 20, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -38,7 +39,8 @@ public final class GlobalRulestackListAdvancedSecurityObjectsSamples {
      */
     public static void globalRulestackListAdvancedSecurityObjectsMinimumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.globalRulestacks().listAdvancedSecurityObjectsWithResponse("praval",
-            AdvSecurityObjectTypeEnum.fromString("globalRulestacks"), null, null, com.azure.core.util.Context.NONE);
+        manager.globalRulestacks()
+            .listAdvancedSecurityObjectsWithResponse("praval", AdvSecurityObjectTypeEnum.fromString("globalRulestacks"),
+                null, null, com.azure.core.util.Context.NONE);
     }
 }
