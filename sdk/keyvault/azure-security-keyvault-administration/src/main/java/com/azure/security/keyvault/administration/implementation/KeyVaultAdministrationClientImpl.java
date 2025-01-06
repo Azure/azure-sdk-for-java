@@ -44,6 +44,7 @@ import com.azure.core.util.serializer.TypeReference;
 import com.azure.security.keyvault.administration.KeyVaultAdministrationServiceVersion;
 import com.azure.security.keyvault.administration.implementation.models.FullBackupOperation;
 import com.azure.security.keyvault.administration.implementation.models.RestoreOperation;
+import com.azure.security.keyvault.administration.implementation.models.SelectiveKeyRestoreOperation;
 import java.time.Duration;
 import reactor.core.publisher.Mono;
 
@@ -322,6 +323,26 @@ public final class KeyVaultAdministrationClientImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData restoreBlobDetails,
             RequestOptions requestOptions, Context context);
+
+        @Get("/restore/{jobId}/pending")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> selectiveKeyRestoreStatus(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/restore/{jobId}/pending")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> selectiveKeyRestoreStatusSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("/keys/{keyName}/restore")
         @ExpectedResponses({ 202 })
@@ -1916,6 +1937,79 @@ public final class KeyVaultAdministrationClientImpl {
     }
 
     /**
+     * Returns the status of the selective key restore operation.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
+     *     statusDetails: String (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         innererror (Optional): (recursive schema, see innererror above)
+     *     }
+     *     jobId: String (Optional)
+     *     startTime: Long (Optional)
+     *     endTime: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param jobId The Job Id returned part of the restore operation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return selective Key Restore operation along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> selectiveKeyRestoreStatusWithResponseAsync(String jobId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.selectiveKeyRestoreStatus(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), jobId, accept, requestOptions, context));
+    }
+
+    /**
+     * Returns the status of the selective key restore operation.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
+     *     statusDetails: String (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         innererror (Optional): (recursive schema, see innererror above)
+     *     }
+     *     jobId: String (Optional)
+     *     startTime: Long (Optional)
+     *     endTime: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param jobId The Job Id returned part of the restore operation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return selective Key Restore operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> selectiveKeyRestoreStatusWithResponse(String jobId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.selectiveKeyRestoreStatusSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+            jobId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
      * Restores all key versions of a given key using user supplied SAS token pointing to a previously stored Azure Blob
      * storage backup folder.
      * <p><strong>Request Body Schema</strong></p>
@@ -2198,8 +2292,9 @@ public final class KeyVaultAdministrationClientImpl {
      * @return the {@link PollerFlux} for polling of selective Key Restore operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<RestoreOperation, RestoreOperation> beginSelectiveKeyRestoreOperationWithModelAsync(
-        String keyName, BinaryData restoreBlobDetails, RequestOptions requestOptions) {
+    public PollerFlux<SelectiveKeyRestoreOperation, SelectiveKeyRestoreOperation>
+        beginSelectiveKeyRestoreOperationWithModelAsync(String keyName, BinaryData restoreBlobDetails,
+            RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.selectiveKeyRestoreOperationWithResponseAsync(keyName, restoreBlobDetails, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
@@ -2208,7 +2303,8 @@ public final class KeyVaultAdministrationClientImpl {
                     ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(RestoreOperation.class), TypeReference.createInstance(RestoreOperation.class));
+            TypeReference.createInstance(SelectiveKeyRestoreOperation.class),
+            TypeReference.createInstance(SelectiveKeyRestoreOperation.class));
     }
 
     /**
@@ -2259,8 +2355,9 @@ public final class KeyVaultAdministrationClientImpl {
      * @return the {@link SyncPoller} for polling of selective Key Restore operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<RestoreOperation, RestoreOperation> beginSelectiveKeyRestoreOperationWithModel(String keyName,
-        BinaryData restoreBlobDetails, RequestOptions requestOptions) {
+    public SyncPoller<SelectiveKeyRestoreOperation, SelectiveKeyRestoreOperation>
+        beginSelectiveKeyRestoreOperationWithModel(String keyName, BinaryData restoreBlobDetails,
+            RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.selectiveKeyRestoreOperationWithResponse(keyName, restoreBlobDetails, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
@@ -2269,7 +2366,8 @@ public final class KeyVaultAdministrationClientImpl {
                     ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(RestoreOperation.class), TypeReference.createInstance(RestoreOperation.class));
+            TypeReference.createInstance(SelectiveKeyRestoreOperation.class),
+            TypeReference.createInstance(SelectiveKeyRestoreOperation.class));
     }
 
     /**

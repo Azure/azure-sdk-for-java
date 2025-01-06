@@ -42,7 +42,6 @@ import java.util.function.Function;
 
 import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.toLongRunningOperationStatus;
 import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.transformToLongRunningOperation;
-import static com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient.restoreOperationToSelectiveKeyRestoreOperation;
 
 /**
  * The {@link KeyVaultBackupClient} provides synchronous methods to perform full a backup and restore of a key vault,
@@ -536,8 +535,8 @@ public final class KeyVaultBackupClient {
         }
 
         return SyncPoller.createPoller(getDefaultPollingInterval(),
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
-                restoreActivationOperation(folderUrl, sasToken, Context.NONE).apply(cxt)),
+            context -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                restoreActivationOperation(folderUrl, sasToken, Context.NONE).apply(context)),
             restorePollOperation(Context.NONE), (pollingContext, firstResponse) -> {
                 throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
             }, (pollingContext) -> new KeyVaultRestoreResult());
@@ -582,6 +581,7 @@ public final class KeyVaultBackupClient {
 
     private Function<PollingContext<KeyVaultRestoreOperation>, KeyVaultRestoreOperation>
         restoreActivationOperation(String folderUrl, String sasToken, Context context) {
+
         return (pollingContext) -> {
             try {
                 return restoreWithResponse(folderUrl, sasToken, context).getValue();
@@ -593,6 +593,7 @@ public final class KeyVaultBackupClient {
 
     private Function<PollingContext<KeyVaultRestoreOperation>, PollResponse<KeyVaultRestoreOperation>>
         restorePollOperation(Context context) {
+
         return (pollingContext) -> {
             try {
                 PollResponse<KeyVaultRestoreOperation> pollResponse = pollingContext.getLatestResponse();
@@ -619,7 +620,6 @@ public final class KeyVaultBackupClient {
                 return processRestoreOperationResponse(
                     new SimpleResponse<>(response, (KeyVaultRestoreOperation) transformToLongRunningOperation(
                         response.getValue().toObject(RestoreOperation.class))));
-
             } catch (HttpResponseException e) {
                 //noinspection ThrowableNotThrown
                 LOGGER.logExceptionAsError(e);
@@ -809,12 +809,10 @@ public final class KeyVaultBackupClient {
                 new NullPointerException(String.format(KeyVaultAdministrationUtil.PARAMETER_REQUIRED, "'folderUrl'")));
         }
 
-        Context context = Context.NONE;
-
         return SyncPoller.createPoller(getDefaultPollingInterval(),
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
-                selectiveKeyRestoreActivationOperation(keyName, folderUrl, sasToken, context).apply(cxt)),
-            selectiveKeyRestorePollOperation(context), (pollingContext, firstResponse) -> {
+            context -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                selectiveKeyRestoreActivationOperation(keyName, folderUrl, sasToken, Context.NONE).apply(context)),
+            selectiveKeyRestorePollOperation(Context.NONE), (pollingContext, firstResponse) -> {
                 throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
             }, (pollingContext) -> new KeyVaultSelectiveKeyRestoreResult());
     }
@@ -847,14 +845,15 @@ public final class KeyVaultBackupClient {
             = new SelectiveKeyRestoreOperationParameters(sasTokenParameter, folderName);
 
         try {
-            Response<BinaryData> restoreOperationResponse = clientImpl.selectiveKeyRestoreOperationWithResponse(keyName,
-                BinaryData.fromObject(selectiveKeyRestoreOperationParameters),
-                new RequestOptions().setContext(context));
+            Response<BinaryData> selectiveKeyRestoreOperationResponse
+                = clientImpl.selectiveKeyRestoreOperationWithResponse(keyName,
+                    BinaryData.fromObject(selectiveKeyRestoreOperationParameters),
+                    new RequestOptions().setContext(context));
 
-            return new SimpleResponse<>(restoreOperationResponse.getRequest(), restoreOperationResponse.getStatusCode(),
-                restoreOperationResponse.getHeaders(),
+            return new SimpleResponse<>(selectiveKeyRestoreOperationResponse.getRequest(),
+                selectiveKeyRestoreOperationResponse.getStatusCode(), selectiveKeyRestoreOperationResponse.getHeaders(),
                 (KeyVaultSelectiveKeyRestoreOperation) transformToLongRunningOperation(
-                    restoreOperationResponse.getValue().toObject(SelectiveKeyRestoreOperation.class)));
+                    selectiveKeyRestoreOperationResponse.getValue().toObject(SelectiveKeyRestoreOperation.class)));
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);
         }
@@ -899,11 +898,11 @@ public final class KeyVaultBackupClient {
                 final String jobId = keyVaultSelectiveKeyRestoreOperation.getOperationId();
 
                 Response<BinaryData> response
-                    = clientImpl.restoreStatusWithResponse(jobId, new RequestOptions().setContext(context));
+                    = clientImpl.selectiveKeyRestoreStatusWithResponse(jobId, new RequestOptions().setContext(context));
 
                 return processSelectiveKeyRestoreOperationResponse(new SimpleResponse<>(response,
-                    (KeyVaultSelectiveKeyRestoreOperation) restoreOperationToSelectiveKeyRestoreOperation(
-                        response.getValue().toObject(RestoreOperation.class))));
+                    (KeyVaultSelectiveKeyRestoreOperation) transformToLongRunningOperation(
+                        response.getValue().toObject(SelectiveKeyRestoreOperation.class))));
             } catch (HttpResponseException e) {
                 //noinspection ThrowableNotThrown
                 LOGGER.logExceptionAsError(e);

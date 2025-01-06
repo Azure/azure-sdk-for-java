@@ -115,11 +115,11 @@ import static com.azure.security.keyvault.administration.implementation.KeyVault
  * <hr/>
  *
  * <h2>Restore a Collection of Keys</h2>
- * The {@link KeyVaultBackupClient} can be used to restore an entire collection of keys from a backup.
+ * The {@link KeyVaultBackupAsyncClient} can be used to restore an entire collection of keys from a backup.
  *
  * <p><strong>Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to asynchronously restore an entire collection of keys from a backup,
- * using the {@link KeyVaultBackupClient#beginRestore(String, String)} API.</p>
+ * using the {@link KeyVaultBackupAsyncClient#beginRestore(String, String)} API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient.beginRestore#String-String -->
  * <pre>
@@ -819,6 +819,7 @@ public final class KeyVaultBackupAsyncClient {
      */
     Mono<Response<KeyVaultSelectiveKeyRestoreOperation>> selectiveKeyRestoreWithResponse(String keyName,
         String folderUrl, String sasToken, Context context) {
+
         String[] segments = folderUrl.split("/");
         String folderName = segments[segments.length - 1];
         String containerUrl = folderUrl.substring(0, folderUrl.length() - folderName.length());
@@ -831,10 +832,12 @@ public final class KeyVaultBackupAsyncClient {
         try {
             return clientImpl.selectiveKeyRestoreOperationWithResponseAsync(keyName,
                 BinaryData.fromObject(selectiveKeyRestoreOperationParameters), new RequestOptions().setContext(context))
-                .map(restoreOperationResponse -> new SimpleResponse<>(restoreOperationResponse.getRequest(),
-                    restoreOperationResponse.getStatusCode(), restoreOperationResponse.getHeaders(),
+                .map(selectiveKeyRestoreOperationResponse -> new SimpleResponse<>(
+                    selectiveKeyRestoreOperationResponse.getRequest(),
+                    selectiveKeyRestoreOperationResponse.getStatusCode(),
+                    selectiveKeyRestoreOperationResponse.getHeaders(),
                     (KeyVaultSelectiveKeyRestoreOperation) transformToLongRunningOperation(
-                        restoreOperationResponse.getValue().toObject(SelectiveKeyRestoreOperation.class))));
+                        selectiveKeyRestoreOperationResponse.getValue().toObject(SelectiveKeyRestoreOperation.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -880,10 +883,10 @@ public final class KeyVaultBackupAsyncClient {
                 final String jobId = keyVaultSelectiveKeyRestoreOperation.getOperationId();
 
                 return withContext(context -> clientImpl
-                    .restoreStatusWithResponseAsync(jobId, new RequestOptions().setContext(context))
+                    .selectiveKeyRestoreStatusWithResponseAsync(jobId, new RequestOptions().setContext(context))
                     .map(response -> new SimpleResponse<>(response,
-                        (KeyVaultSelectiveKeyRestoreOperation) restoreOperationToSelectiveKeyRestoreOperation(
-                            response.getValue().toObject(RestoreOperation.class))))
+                        (KeyVaultSelectiveKeyRestoreOperation) transformToLongRunningOperation(
+                            response.getValue().toObject(SelectiveKeyRestoreOperation.class))))
                     .flatMap(KeyVaultBackupAsyncClient::processSelectiveKeyRestoreOperationResponse));
             } catch (HttpResponseException e) {
                 //noinspection ThrowableNotThrown
@@ -903,11 +906,5 @@ public final class KeyVaultBackupAsyncClient {
 
         return Mono.just(new PollResponse<>(toLongRunningOperationStatus(operationStatus.toLowerCase(Locale.US)),
             response.getValue()));
-    }
-
-    static KeyVaultLongRunningOperation restoreOperationToSelectiveKeyRestoreOperation(RestoreOperation operation) {
-        return new KeyVaultSelectiveKeyRestoreOperation(operation.getStatus().getValue(), operation.getStatusDetails(),
-            toKeyVaultAdministrationError(operation.getError()), operation.getJobId(), operation.getStartTime(),
-            operation.getEndTime());
     }
 }
