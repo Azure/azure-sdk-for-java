@@ -3,8 +3,6 @@
 
 package io.clientcore.core.http.models;
 
-import io.clientcore.core.http.pipeline.HttpRequestLogger;
-import io.clientcore.core.http.pipeline.HttpResponseLogger;
 import io.clientcore.core.util.configuration.Configuration;
 
 import java.util.Arrays;
@@ -23,15 +21,13 @@ public final class HttpLogOptions {
     private HttpLogDetailLevel logLevel;
     private Set<HttpHeaderName> allowedHeaderNames;
     private Set<String> allowedQueryParamNames;
-    private HttpRequestLogger requestLogger;
-    private HttpResponseLogger responseLogger;
     private static final List<HttpHeaderName> DEFAULT_HEADERS_ALLOWLIST
         = Arrays.asList(HttpHeaderName.TRACEPARENT, HttpHeaderName.ACCEPT, HttpHeaderName.CACHE_CONTROL,
             HttpHeaderName.CONNECTION, HttpHeaderName.CONTENT_LENGTH, HttpHeaderName.CONTENT_TYPE, HttpHeaderName.DATE,
             HttpHeaderName.ETAG, HttpHeaderName.EXPIRES, HttpHeaderName.IF_MATCH, HttpHeaderName.IF_MODIFIED_SINCE,
             HttpHeaderName.IF_NONE_MATCH, HttpHeaderName.IF_UNMODIFIED_SINCE, HttpHeaderName.LAST_MODIFIED,
-            HttpHeaderName.PRAGMA, HttpHeaderName.CLIENT_REQUEST_ID, HttpHeaderName.RETRY_AFTER, HttpHeaderName.SERVER,
-            HttpHeaderName.TRANSFER_ENCODING, HttpHeaderName.USER_AGENT, HttpHeaderName.WWW_AUTHENTICATE);
+            HttpHeaderName.PRAGMA, HttpHeaderName.RETRY_AFTER, HttpHeaderName.SERVER, HttpHeaderName.TRANSFER_ENCODING,
+            HttpHeaderName.USER_AGENT, HttpHeaderName.WWW_AUTHENTICATE);
 
     private static final List<String> DEFAULT_QUERY_PARAMS_ALLOWLIST = Collections.singletonList("api-version");
 
@@ -146,58 +142,6 @@ public final class HttpLogOptions {
      */
     public HttpLogOptions addAllowedQueryParamName(final String allowedQueryParamName) {
         this.allowedQueryParamNames.add(allowedQueryParamName);
-        return this;
-    }
-
-    /**
-     * Gets the {@link HttpRequestLogger} that will be used to log HTTP requests.
-     *
-     * <p>A default {@link HttpRequestLogger} will be used if one isn't supplied.
-     *
-     * @return The {@link HttpRequestLogger} that will be used to log HTTP requests.
-     */
-    public HttpRequestLogger getRequestLogger() {
-        return requestLogger;
-    }
-
-    /**
-     * Sets the {@link HttpRequestLogger} that will be used to log HTTP requests.
-     *
-     * <p>A default {@link HttpRequestLogger} will be used if one isn't supplied.
-     *
-     * @param requestLogger The {@link HttpRequestLogger} that will be used to log HTTP requests.
-     *
-     * @return The updated HttpLogOptions object.
-     */
-    public HttpLogOptions setRequestLogger(HttpRequestLogger requestLogger) {
-        this.requestLogger = requestLogger;
-
-        return this;
-    }
-
-    /**
-     * Gets the {@link HttpResponseLogger} that will be used to log HTTP responses.
-     *
-     * <p>A default {@link HttpResponseLogger} will be used if one isn't supplied.
-     *
-     * @return The {@link HttpResponseLogger} that will be used to log HTTP responses.
-     */
-    public HttpResponseLogger getResponseLogger() {
-        return responseLogger;
-    }
-
-    /**
-     * Sets the {@link HttpResponseLogger} that will be used to log HTTP responses.
-     *
-     * <p>A default {@link HttpResponseLogger} will be used if one isn't supplied.
-     *
-     * @param responseLogger The {@link HttpResponseLogger} that will be used to log HTTP responses.
-     *
-     * @return The updated HttpLogOptions object.
-     */
-    public HttpLogOptions setResponseLogger(HttpResponseLogger responseLogger) {
-        this.responseLogger = responseLogger;
-
         return this;
     }
 
