@@ -29,4 +29,5 @@ public interface DatabaseAccountManagerInternal {
      * @return service endpoint
      */
     URI getServiceEndpoint();
+
 }

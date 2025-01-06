@@ -208,8 +208,6 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
         logger.info("beforeSuite Started");
 
-        // thin client endpoint discovery will not be controlled by env var long term, this is a temp solution
-        System.setProperty("COSMOS.THINCLIENT_ENDPOINT", "testThinclientEndpoint");
         try (CosmosAsyncClient houseKeepingClient = createGatewayHouseKeepingDocumentClient(true).buildAsyncClient()) {
             CosmosDatabaseForTest dbForTest = CosmosDatabaseForTest.create(DatabaseManagerImpl.getInstance(houseKeepingClient));
             SHARED_DATABASE = dbForTest.createdDatabase;

@@ -192,8 +192,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final static Logger logger = LoggerFactory.getLogger(RxDocumentClientImpl.class);
     private final String masterKeyOrResourceToken;
     private final URI serviceEndpoint;
-    private final URI thinclientEndpoint;
-    private final boolean thinclientEnabled;
     private final ConnectionPolicy connectionPolicy;
     private final ConsistencyLevel consistencyLevel;
     private final BaseAuthorizationTokenProvider authorizationTokenProvider;
@@ -490,8 +488,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.configs = configs;
             this.masterKeyOrResourceToken = masterKeyOrResourceToken;
             this.serviceEndpoint = serviceEndpoint;
-            this.thinclientEnabled = configs.getThinclientEnabled();
-            this.thinclientEndpoint = configs.getThinclientEndpoint();
             this.credential = credential;
             this.tokenCredential = tokenCredential;
             this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
