@@ -18,7 +18,6 @@ import io.netty.channel.SingleThreadEventLoop;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.ssl.SslContext;
 import io.netty.util.concurrent.Future;
-import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
@@ -81,12 +80,12 @@ public class RntbdClientChannelHealthCheckerTests {
             Future<String> healthyResult = healthChecker.isHealthyWithFailureReason(channelMock).sync();
             assertThat(healthyResult.isSuccess()).isTrue();
             assertThat(healthyResult.getNow()).isNotEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
-            assertThat(healthyResult.getNow().contains("health check failed due to non-responding write"));
-            assertThat(healthyResult.getNow().contains("clientVmId: testClientVmId"));
-            assertThat(healthyResult.getNow().contains("clientUsedMemory"));
-            assertThat(healthyResult.getNow().contains("clientAvailableMemory"));
-            assertThat(healthyResult.getNow().contains("clientSystemCpuLoad"));
-            assertThat(healthyResult.getNow().contains("clientAvailableProcessors"));
+            assertThat(healthyResult.getNow().contains("health check failed due to non-responding write")).isTrue();
+            assertThat(healthyResult.getNow().contains("clientVmId: testClientVmId")).isTrue();
+            assertThat(healthyResult.getNow().contains("clientUsedMemory")).isTrue();
+            assertThat(healthyResult.getNow().contains("clientAvailableMemory")).isTrue();
+            assertThat(healthyResult.getNow().contains("clientSystemCpuLoad")).isTrue();
+            assertThat(healthyResult.getNow().contains("clientAvailableProcessors")).isTrue();
         } else {
             Future<Boolean> healthyResult = healthChecker.isHealthy(channelMock).sync();
             assertThat(healthyResult.isSuccess()).isTrue();
@@ -132,12 +131,12 @@ public class RntbdClientChannelHealthCheckerTests {
             Future<String> healthyResult = healthChecker.isHealthyWithFailureReason(channelMock).sync();
             assertThat(healthyResult.isSuccess()).isTrue();
             assertThat(healthyResult.getNow()).isNotEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
-            assertThat(healthyResult.getNow().contains("health check failed due to non-responding read"));
-            assertThat(healthyResult.getNow().contains("clientVmId: testClientVmId"));
-            assertThat(healthyResult.getNow().contains("clientUsedMemory"));
-            assertThat(healthyResult.getNow().contains("clientAvailableMemory"));
-            assertThat(healthyResult.getNow().contains("clientSystemCpuLoad"));
-            assertThat(healthyResult.getNow().contains("clientAvailableProcessors"));
+            assertThat(healthyResult.getNow().contains("health check failed due to non-responding read")).isTrue();
+            assertThat(healthyResult.getNow().contains("clientVmId: testClientVmId")).isTrue();
+            assertThat(healthyResult.getNow().contains("clientUsedMemory")).isTrue();
+            assertThat(healthyResult.getNow().contains("clientAvailableMemory")).isTrue();
+            assertThat(healthyResult.getNow().contains("clientSystemCpuLoad")).isTrue();
+            assertThat(healthyResult.getNow().contains("clientAvailableProcessors")).isTrue();
         } else {
             Future<Boolean> healthyResult = healthChecker.isHealthy(channelMock).sync();
             assertThat(healthyResult.isSuccess()).isTrue();
