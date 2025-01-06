@@ -6,24 +6,26 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.SecurityServicesTypeList;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Security services list response.
  */
 @Fluent
-public final class SecurityServicesResponseInner {
+public final class SecurityServicesResponseInner implements JsonSerializable<SecurityServicesResponseInner> {
     /*
      * response value
      */
-    @JsonProperty(value = "value", required = true)
     private SecurityServicesTypeList value;
 
     /*
      * next link
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -79,12 +81,54 @@ public final class SecurityServicesResponseInner {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model SecurityServicesResponseInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model SecurityServicesResponseInner"));
         } else {
             value().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SecurityServicesResponseInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("value", this.value);
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityServicesResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityServicesResponseInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SecurityServicesResponseInner.
+     */
+    public static SecurityServicesResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityServicesResponseInner deserializedSecurityServicesResponseInner
+                = new SecurityServicesResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedSecurityServicesResponseInner.value = SecurityServicesTypeList.fromJson(reader);
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSecurityServicesResponseInner.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityServicesResponseInner;
+        });
+    }
 }
