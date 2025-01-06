@@ -21,75 +21,102 @@ import java.util.Set;
  * Type representing an Azure EventHub.
  */
 @Fluent
-public interface EventHub extends
-    NestedResource,
-    HasManager<EventHubsManager>,
-    Refreshable<EventHub>,
-    Updatable<EventHub.Update>,
-        HasInnerModel<EventhubInner> {
+public interface EventHub extends NestedResource, HasManager<EventHubsManager>, Refreshable<EventHub>,
+    Updatable<EventHub.Update>, HasInnerModel<EventhubInner> {
     /**
+     * Gets the resource group of the parent namespace.
+     *
      * @return the resource group of the parent namespace
      */
     String namespaceResourceGroupName();
 
     /**
+     * Gets name of the parent namespace.
+     *
      * @return name of the parent namespace
      */
     String namespaceName();
 
     /**
+     * Checks whether the data capture enabled for the event hub events.
+     *
      * @return true if the data capture enabled for the event hub events, false otherwise
      */
     boolean isDataCaptureEnabled();
 
     /**
+     * Gets configured window in seconds to be used for event capturing when capturing is enabled.
+     *
      * @return configured window in seconds to be used for event capturing when capturing is enabled
      */
     int dataCaptureWindowSizeInSeconds();
 
     /**
+     * Gets configured window in MB to be used for event capturing when capturing is enabled.
+     *
      * @return configured window in MB to be used for event capturing when capturing is enabled
      */
     int dataCaptureWindowSizeInMB();
 
     /**
+     * Checks whether to skip empty archives when capturing is enabled.
+     *
      * @return whether to skip empty archives when capturing is enabled
      */
     boolean dataCaptureSkipEmptyArchives();
 
     /**
+     * Gets the format file name that stores captured data when capturing is enabled.
+     *
      * @return the format file name that stores captured data when capturing is enabled
      */
     String dataCaptureFileNameFormat();
 
     /**
+     * Gets description of the destination where captured data will be stored.
+     *
      * @return description of the destination where captured data will be stored
      */
     Destination captureDestination();
 
     /**
+     * Gets the partition identifiers.
+     *
      * @return the partition identifiers
      */
     Set<String> partitionIds();
 
     /**
+     * Gets retention period of events in days.
+     *
      * @return retention period of events in days
      */
     int messageRetentionPeriodInDays();
 
     /**
+     * Gets consumer group in the event hub.
+     *
      * @return consumer group in the event hub
      */
     PagedFlux<EventHubConsumerGroup> listConsumerGroupsAsync();
+
     /**
+     * Gets authorization rules enabled for the event hub.
+     *
      * @return authorization rules enabled for the event hub
      */
     PagedFlux<EventHubAuthorizationRule> listAuthorizationRulesAsync();
+
     /**
+     * Gets consumer group in the event hub.
+     *
      * @return consumer group in the event hub
      */
     PagedIterable<EventHubConsumerGroup> listConsumerGroups();
+
     /**
+     * Gets authorization rules enabled for the event hub.
+     *
      * @return authorization rules enabled for the event hub
      */
     PagedIterable<EventHubAuthorizationRule> listAuthorizationRules();
@@ -97,13 +124,9 @@ public interface EventHub extends
     /**
      * The entirety of the event hub definition.
      */
-    interface Definition extends
-            DefinitionStages.Blank,
-            DefinitionStages.WithNamespace,
-            DefinitionStages.WithCaptureProviderOrCreate,
-            DefinitionStages.WithCaptureEnabledDisabled,
-            DefinitionStages.WithCaptureOptionalSettingsOrCreate,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithNamespace,
+        DefinitionStages.WithCaptureProviderOrCreate, DefinitionStages.WithCaptureEnabledDisabled,
+        DefinitionStages.WithCaptureOptionalSettingsOrCreate, DefinitionStages.WithCreate {
     }
 
     /**
@@ -177,8 +200,8 @@ public interface EventHub extends
              * @param containerName an existing or new container to store the files containing captured data
              * @return next stage of the event hub definition
              */
-            WithCaptureEnabledDisabled withExistingStorageAccountForCapturedData(
-                StorageAccount storageAccount, String containerName);
+            WithCaptureEnabledDisabled withExistingStorageAccountForCapturedData(StorageAccount storageAccount,
+                String containerName);
 
             /**
              * Specifies an existing storage account to store the captured data when data capturing is enabled.
@@ -187,8 +210,8 @@ public interface EventHub extends
              * @param containerName an existing or new container to store the files containing captured data
              * @return next stage of the event hub definition
              */
-            WithCaptureEnabledDisabled withExistingStorageAccountForCapturedData(
-                String storageAccountId, String containerName);
+            WithCaptureEnabledDisabled withExistingStorageAccountForCapturedData(String storageAccountId,
+                String containerName);
         }
 
         /**
@@ -289,7 +312,7 @@ public interface EventHub extends
         /**
          * The stage of the event hub definition allowing to add consumer group for the event hub.
          */
-        interface  WithConsumerGroup {
+        interface WithConsumerGroup {
             /**
              * Specifies that a new consumer group should be created for the event hub.
              *
@@ -339,12 +362,9 @@ public interface EventHub extends
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends
-                Creatable<EventHub>,
-                DefinitionStages.WithAuthorizationRule,
-                DefinitionStages.WithConsumerGroup,
-                DefinitionStages.WithPartitionCount,
-                DefinitionStages.WithRetentionPeriod {
+        interface WithCreate
+            extends Creatable<EventHub>, DefinitionStages.WithAuthorizationRule, DefinitionStages.WithConsumerGroup,
+            DefinitionStages.WithPartitionCount, DefinitionStages.WithRetentionPeriod {
         }
     }
 
@@ -402,7 +422,7 @@ public interface EventHub extends
         /**
          * The stage of the event hub update allowing to add consumer group for event hub.
          */
-        interface  WithConsumerGroup {
+        interface WithConsumerGroup {
             /**
              * Specifies that a new consumer group should be created for the event hub.
              *
@@ -440,8 +460,8 @@ public interface EventHub extends
              * @param containerName container to store the files containing captured data
              * @return next stage of the event hub update
              */
-            Update withNewStorageAccountForCapturedData(
-                Creatable<StorageAccount> storageAccountCreatable, String containerName);
+            Update withNewStorageAccountForCapturedData(Creatable<StorageAccount> storageAccountCreatable,
+                String containerName);
 
             /**
              * Specifies an existing storage account to store the captured data when data capturing is enabled.
@@ -483,7 +503,7 @@ public interface EventHub extends
              */
             Update withDataCaptureWindowSizeInSeconds(int sizeInSeconds);
 
-           /**
+            /**
              * Specified the capture whether to Skip Empty Archives.
              *
              * @param skipEmptyArchives the skipEmptyArchives value to set
@@ -498,6 +518,7 @@ public interface EventHub extends
              * @return next stage of the event hub update
              */
             Update withDataCaptureWindowSizeInMB(int sizeInMB);
+
             /**
              * Specifies the format of the file containing captured data.
              *
@@ -537,12 +558,7 @@ public interface EventHub extends
     /**
      * The template for a event hub update operation, containing all the settings that can be modified.
      */
-    interface Update extends
-        Appliable<EventHub>,
-        UpdateStages.WithConsumerGroup,
-        UpdateStages.WithAuthorizationRule,
-        UpdateStages.WithCapture,
-        UpdateStages.WithPartitionCount,
-        UpdateStages.WithRetentionPeriod {
+    interface Update extends Appliable<EventHub>, UpdateStages.WithConsumerGroup, UpdateStages.WithAuthorizationRule,
+        UpdateStages.WithCapture, UpdateStages.WithPartitionCount, UpdateStages.WithRetentionPeriod {
     }
 }

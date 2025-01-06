@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** A user that can be assigned to a compute instance. */
 @Fluent
 public final class AssignedUser {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AssignedUser.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AssignedUser.class);
 
     /*
      * User’s AAD Object Id.
@@ -73,14 +74,12 @@ public final class AssignedUser {
      */
     public void validate() {
         if (objectId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property objectId in model AssignedUser"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property objectId in model AssignedUser"));
         }
         if (tenantId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property tenantId in model AssignedUser"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property tenantId in model AssignedUser"));
         }
     }
 }

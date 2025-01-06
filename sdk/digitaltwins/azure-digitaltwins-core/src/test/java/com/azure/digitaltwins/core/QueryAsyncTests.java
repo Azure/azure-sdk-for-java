@@ -48,7 +48,8 @@ public class QueryAsyncTests extends QueryTestBase {
                 String roomTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX,
                     asyncClient, getRandomIntegerStringGenerator());
                 roomTwinIds.add(roomTwinId);
-                StepVerifier.create(
+                StepVerifier
+                    .create(
                         asyncClient.createOrReplaceDigitalTwinWithResponse(roomTwinId, roomTwin, String.class, null))
                     .assertNext(response -> assertEquals(HttpURLConnection.HTTP_OK, response.getStatusCode()))
                     .verifyComplete();

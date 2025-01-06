@@ -15,8 +15,7 @@ public final class SqlVmTroubleshootingImpl implements SqlVmTroubleshooting {
 
     private final com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager serviceManager;
 
-    SqlVmTroubleshootingImpl(
-        SqlVmTroubleshootingInner innerObject,
+    SqlVmTroubleshootingImpl(SqlVmTroubleshootingInner innerObject,
         com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

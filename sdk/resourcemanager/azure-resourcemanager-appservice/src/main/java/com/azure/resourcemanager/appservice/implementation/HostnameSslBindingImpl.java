@@ -34,9 +34,8 @@ import java.security.cert.X509Certificate;
  */
 class HostnameSslBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>
     extends IndexableWrapperImpl<HostnameSslState>
-    implements HostnameSslBinding,
-        HostnameSslBinding.Definition<WebAppBase.DefinitionStages.WithCreate<FluentT>>,
-        HostnameSslBinding.UpdateDefinition<WebAppBase.Update<FluentT>> {
+    implements HostnameSslBinding, HostnameSslBinding.Definition<WebAppBase.DefinitionStages.WithCreate<FluentT>>,
+    HostnameSslBinding.UpdateDefinition<WebAppBase.Update<FluentT>> {
 
     private final ClientLogger logger = new ClientLogger(getClass());
 
@@ -77,82 +76,72 @@ class HostnameSslBindingImpl<FluentT extends WebAppBase, FluentImplT extends Web
     }
 
     @Override
-    public HostnameSslBindingImpl<FluentT, FluentImplT> withPfxCertificateToUpload(
-        final File pfxFile, final String password) {
+    public HostnameSslBindingImpl<FluentT, FluentImplT> withPfxCertificateToUpload(final File pfxFile,
+        final String password) {
         String thumbprint = getCertificateThumbprint(pfxFile.getPath(), password);
-        newCertificate =
-            this
-                .parent()
-                .manager()
-                .certificates()
-                .define(getCertificateUniqueName(thumbprint, parent().region()))
-                .withRegion(parent().region())
-                .withExistingResourceGroup(parent().resourceGroupName())
-                .withPfxFile(pfxFile)
-                .withPfxPassword(password)
-                .createAsync();
+        newCertificate = this.parent()
+            .manager()
+            .certificates()
+            .define(getCertificateUniqueName(thumbprint, parent().region()))
+            .withRegion(parent().region())
+            .withExistingResourceGroup(parent().resourceGroupName())
+            .withPfxFile(pfxFile)
+            .withPfxPassword(password)
+            .createAsync();
         return this;
     }
 
     @Override
-    public HostnameSslBindingImpl<FluentT, FluentImplT> withExistingCertificate(
-        final String certificateNameOrThumbprint) {
-        newCertificate =
-            this
-                .parent()
-                .manager()
-                .certificates()
-                .listByResourceGroupAsync(parent().resourceGroupName())
-                .collectList()
-                .map(
-                    appServiceCertificates -> {
-                        for (AppServiceCertificate certificate : appServiceCertificates) {
-                            if (certificate.name().equals(certificateNameOrThumbprint)
-                                || certificate.thumbprint().equalsIgnoreCase(certificateNameOrThumbprint)) {
-                                return certificate;
-                            }
-                        }
-                        return null;
-                    })
-                .map(
-                    appServiceCertificate -> {
-                        if (appServiceCertificate != null) {
-                            withCertificateThumbprint(certificateNameOrThumbprint);
-                        }
-                        return appServiceCertificate;
-                    });
+    public HostnameSslBindingImpl<FluentT, FluentImplT>
+        withExistingCertificate(final String certificateNameOrThumbprint) {
+        newCertificate = this.parent()
+            .manager()
+            .certificates()
+            .listByResourceGroupAsync(parent().resourceGroupName())
+            .collectList()
+            .map(appServiceCertificates -> {
+                for (AppServiceCertificate certificate : appServiceCertificates) {
+                    if (certificate.name().equals(certificateNameOrThumbprint)
+                        || certificate.thumbprint().equalsIgnoreCase(certificateNameOrThumbprint)) {
+                        return certificate;
+                    }
+                }
+                return null;
+            })
+            .map(appServiceCertificate -> {
+                if (appServiceCertificate != null) {
+                    withCertificateThumbprint(certificateNameOrThumbprint);
+                }
+                return appServiceCertificate;
+            });
         return this;
     }
 
     @Override
-    public HostnameSslBindingImpl<FluentT, FluentImplT> withNewStandardSslCertificateOrder(
-        final String certificateOrderName) {
-        this.certificateInDefinition =
-            this
-                .parent()
-                .manager()
-                .certificateOrders()
-                .define(certificateOrderName)
-                .withExistingResourceGroup(parent().resourceGroupName())
-                .withHostName(name())
-                .withStandardSku()
-                .withWebAppVerification(parent());
+    public HostnameSslBindingImpl<FluentT, FluentImplT>
+        withNewStandardSslCertificateOrder(final String certificateOrderName) {
+        this.certificateInDefinition = this.parent()
+            .manager()
+            .certificateOrders()
+            .define(certificateOrderName)
+            .withExistingResourceGroup(parent().resourceGroupName())
+            .withHostName(name())
+            .withStandardSku()
+            .withWebAppVerification(parent());
         return this;
     }
 
     @Override
-    public HostnameSslBindingImpl<FluentT, FluentImplT> withExistingAppServiceCertificateOrder(
-        final AppServiceCertificateOrder certificateOrder) {
-        newCertificate =
-            this
-                .parent()
-                .manager()
-                .certificates()
-                .define(getCertificateUniqueName(certificateOrder.signedCertificate().thumbprint(), parent().region()))
-                .withRegion(parent().region())
-                .withExistingResourceGroup(parent().resourceGroupName())
-                .withExistingCertificateOrder(certificateOrder)
-                .createAsync();
+    public HostnameSslBindingImpl<FluentT, FluentImplT>
+        withExistingAppServiceCertificateOrder(final AppServiceCertificateOrder certificateOrder) {
+        newCertificate = this.parent()
+            .manager()
+            .certificates()
+            .define(getCertificateUniqueName(certificateOrder.signedCertificate().thumbprint(), parent().region()))
+            .withRegion(parent().region())
+            .withExistingResourceGroup(parent().resourceGroupName())
+            .withExistingCertificateOrder(certificateOrder)
+            .createAsync();
         return this;
     }
 
@@ -174,13 +163,11 @@ class HostnameSslBindingImpl<FluentT extends WebAppBase, FluentImplT extends Web
     }
 
     Mono<AppServiceCertificate> newCertificate() {
-        return newCertificate
-            .doOnNext(
-                appServiceCertificate -> {
-                    if (appServiceCertificate != null) {
-                        withCertificateThumbprint(appServiceCertificate.thumbprint());
-                    }
-                });
+        return newCertificate.doOnNext(appServiceCertificate -> {
+            if (appServiceCertificate != null) {
+                withCertificateThumbprint(appServiceCertificate.thumbprint());
+            }
+        });
     }
 
     @Override
@@ -196,39 +183,31 @@ class HostnameSslBindingImpl<FluentT extends WebAppBase, FluentImplT extends Web
 
     @Override
     public HostnameSslBindingImpl<FluentT, FluentImplT> withExistingKeyVault(final Vault vault) {
-        Mono<AppServiceCertificateOrder> appServiceCertificateOrderObservable =
-            certificateInDefinition.withExistingKeyVault(vault).createAsync();
+        Mono<AppServiceCertificateOrder> appServiceCertificateOrderObservable
+            = certificateInDefinition.withExistingKeyVault(vault).createAsync();
         final AppServiceManager manager = this.parent().manager();
-        this.newCertificate =
-            appServiceCertificateOrderObservable
-                .flatMap(
-                    appServiceCertificateOrder ->
-                        manager
-                            .certificates()
-                            .define(appServiceCertificateOrder.name())
-                            .withRegion(parent().regionName())
-                            .withExistingResourceGroup(parent().resourceGroupName())
-                            .withExistingCertificateOrder(appServiceCertificateOrder)
-                            .createAsync());
+        this.newCertificate
+            = appServiceCertificateOrderObservable.flatMap(appServiceCertificateOrder -> manager.certificates()
+                .define(appServiceCertificateOrder.name())
+                .withRegion(parent().regionName())
+                .withExistingResourceGroup(parent().resourceGroupName())
+                .withExistingCertificateOrder(appServiceCertificateOrder)
+                .createAsync());
         return this;
     }
 
     @Override
     public HostnameSslBindingImpl<FluentT, FluentImplT> withNewKeyVault(String vaultName) {
-        Mono<AppServiceCertificateOrder> appServiceCertificateOrderObservable =
-            certificateInDefinition.withNewKeyVault(vaultName, parent().region()).createAsync();
+        Mono<AppServiceCertificateOrder> appServiceCertificateOrderObservable
+            = certificateInDefinition.withNewKeyVault(vaultName, parent().region()).createAsync();
         final AppServiceManager manager = this.parent().manager();
-        this.newCertificate =
-            appServiceCertificateOrderObservable
-                .flatMap(
-                    appServiceCertificateOrder ->
-                        manager
-                            .certificates()
-                            .define(appServiceCertificateOrder.name())
-                            .withRegion(parent().regionName())
-                            .withExistingResourceGroup(parent().resourceGroupName())
-                            .withExistingCertificateOrder(appServiceCertificateOrder)
-                            .createAsync());
+        this.newCertificate
+            = appServiceCertificateOrderObservable.flatMap(appServiceCertificateOrder -> manager.certificates()
+                .define(appServiceCertificateOrder.name())
+                .withRegion(parent().regionName())
+                .withExistingResourceGroup(parent().resourceGroupName())
+                .withExistingCertificateOrder(appServiceCertificateOrder)
+                .createAsync());
         return this;
     }
 
@@ -243,12 +222,7 @@ class HostnameSslBindingImpl<FluentT extends WebAppBase, FluentImplT extends Web
             X509Certificate certificate = (X509Certificate) ks.getCertificate(alias);
             inStream.close();
             MessageDigest sha = MessageDigest.getInstance("SHA-1");
-            return com
-                .azure
-                .resourcemanager
-                .appservice
-                .implementation
-                .Utils
+            return com.azure.resourcemanager.appservice.implementation.Utils
                 .base16Encode(sha.digest(certificate.getEncoded()));
         } catch (KeyStoreException | CertificateException | NoSuchAlgorithmException | IOException ex) {
             throw logger.logExceptionAsError(new RuntimeException(ex));

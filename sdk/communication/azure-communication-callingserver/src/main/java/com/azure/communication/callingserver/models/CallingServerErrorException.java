@@ -78,20 +78,14 @@ public final class CallingServerErrorException extends HttpResponseException {
         List<CallingServerError> details = new ArrayList<>();
 
         if (communicationError.getDetails() != null) {
-            details = communicationError
-                .getDetails()
+            details = communicationError.getDetails()
                 .stream()
                 .map(CallingServerErrorException::convert)
                 .collect(Collectors.toList());
         }
 
-        return new CallingServerError(
-            communicationError.getMessage(),
-            communicationError.getCode(),
-            communicationError.getTarget(),
-            details,
-            convert(communicationError.getInnererror())
-        );
+        return new CallingServerError(communicationError.getMessage(), communicationError.getCode(),
+            communicationError.getTarget(), details, convert(communicationError.getInnererror()));
     }
 
     @Override

@@ -3,7 +3,6 @@
 
 package com.azure.communication.callingserver.models;
 
-
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.Fluent;
@@ -61,7 +60,7 @@ public final class AddParticipantsOptions {
      *
      * @return the operationContext
      */
-    public String  getOperationContext() {
+    public String getOperationContext() {
         return operationContext;
     }
 

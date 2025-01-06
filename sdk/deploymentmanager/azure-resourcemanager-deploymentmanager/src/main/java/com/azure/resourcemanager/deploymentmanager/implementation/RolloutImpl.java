@@ -19,8 +19,8 @@ public final class RolloutImpl implements Rollout {
 
     private final com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager;
 
-    RolloutImpl(
-        RolloutInner innerObject, com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager) {
+    RolloutImpl(RolloutInner innerObject,
+        com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

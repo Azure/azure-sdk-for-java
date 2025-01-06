@@ -15,8 +15,7 @@ public final class SkuAvailabilityListResultImpl implements SkuAvailabilityListR
 
     private final com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager;
 
-    SkuAvailabilityListResultImpl(
-        SkuAvailabilityListResultInner innerObject,
+    SkuAvailabilityListResultImpl(SkuAvailabilityListResultInner innerObject,
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

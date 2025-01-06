@@ -16,14 +16,15 @@ import com.azure.resourcemanager.batchai.models.FileServers;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class FileServersImpl implements FileServers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FileServersImpl.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(FileServersImpl.class);
 
     private final FileServersClient innerClient;
 
     private final com.azure.resourcemanager.batchai.BatchAIManager serviceManager;
 
-    public FileServersImpl(
-        FileServersClient innerClient, com.azure.resourcemanager.batchai.BatchAIManager serviceManager) {
+    public FileServersImpl(FileServersClient innerClient,
+        com.azure.resourcemanager.batchai.BatchAIManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -45,15 +46,12 @@ public final class FileServersImpl implements FileServers {
         }
     }
 
-    public Response<FileServer> getWithResponse(
-        String resourceGroupName, String workspaceName, String fileServerName, Context context) {
-        Response<FileServerInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, fileServerName, context);
+    public Response<FileServer> getWithResponse(String resourceGroupName, String workspaceName, String fileServerName,
+        Context context) {
+        Response<FileServerInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, fileServerName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new FileServerImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -65,35 +63,28 @@ public final class FileServersImpl implements FileServers {
         return Utils.mapPage(inner, inner1 -> new FileServerImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<FileServer> listByWorkspace(
-        String resourceGroupName, String workspaceName, Integer maxResults, Context context) {
-        PagedIterable<FileServerInner> inner =
-            this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, maxResults, context);
+    public PagedIterable<FileServer> listByWorkspace(String resourceGroupName, String workspaceName, Integer maxResults,
+        Context context) {
+        PagedIterable<FileServerInner> inner
+            = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, maxResults, context);
         return Utils.mapPage(inner, inner1 -> new FileServerImpl(inner1, this.manager()));
     }
 
     public FileServer getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String fileServerName = Utils.getValueFromIdByName(id, "fileServers");
         if (fileServerName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'fileServers'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'fileServers'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, fileServerName, Context.NONE).getValue();
     }
@@ -101,25 +92,18 @@ public final class FileServersImpl implements FileServers {
     public Response<FileServer> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String fileServerName = Utils.getValueFromIdByName(id, "fileServers");
         if (fileServerName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'fileServers'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'fileServers'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, fileServerName, context);
     }
@@ -127,25 +111,18 @@ public final class FileServersImpl implements FileServers {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String fileServerName = Utils.getValueFromIdByName(id, "fileServers");
         if (fileServerName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'fileServers'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'fileServers'.", id)));
         }
         this.delete(resourceGroupName, workspaceName, fileServerName, Context.NONE);
     }
@@ -153,25 +130,18 @@ public final class FileServersImpl implements FileServers {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String fileServerName = Utils.getValueFromIdByName(id, "fileServers");
         if (fileServerName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'fileServers'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'fileServers'.", id)));
         }
         this.delete(resourceGroupName, workspaceName, fileServerName, context);
     }

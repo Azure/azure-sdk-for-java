@@ -11,53 +11,55 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.RoutePolicyI
 import java.util.List;
 import java.util.Map;
 
-/** An immutable client-side representation of RoutePolicy. */
+/**
+ * An immutable client-side representation of RoutePolicy.
+ */
 public interface RoutePolicy {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the networkFabricId property: Arm Resource ID of Network Fabric.
-     *
+     * 
      * @return the networkFabricId value.
      */
     String networkFabricId();
@@ -65,94 +67,106 @@ public interface RoutePolicy {
     /**
      * Gets the addressFamilyType property: AddressFamilyType. This parameter decides whether the given ipv4 or ipv6
      * route policy.
-     *
+     * 
      * @return the addressFamilyType value.
      */
     AddressFamilyType addressFamilyType();
 
     /**
      * Gets the configurationState property: Configuration state of the resource.
-     *
+     * 
      * @return the configurationState value.
      */
     ConfigurationState configurationState();
 
     /**
      * Gets the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
 
     /**
      * Gets the administrativeState property: Administrative state of the resource.
-     *
+     * 
      * @return the administrativeState value.
      */
     AdministrativeState administrativeState();
 
     /**
+     * Gets the defaultAction property: Default action that needs to be applied when no condition is matched. Example:
+     * Permit | Deny.
+     * 
+     * @return the defaultAction value.
+     */
+    CommunityActionTypes defaultAction();
+
+    /**
      * Gets the statements property: Route Policy statements.
-     *
+     * 
      * @return the statements value.
      */
     List<RoutePolicyStatementProperties> statements();
 
     /**
      * Gets the annotation property: Switch configuration description.
-     *
+     * 
      * @return the annotation value.
      */
     String annotation();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.managednetworkfabric.fluent.models.RoutePolicyInner object.
-     *
+     * 
      * @return the inner object.
      */
     RoutePolicyInner innerModel();
 
-    /** The entirety of the RoutePolicy definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithNetworkFabricId,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the RoutePolicy definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithNetworkFabricId, DefinitionStages.WithCreate {
     }
 
-    /** The RoutePolicy definition stages. */
+    /**
+     * The RoutePolicy definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the RoutePolicy definition. */
+        /**
+         * The first stage of the RoutePolicy definition.
+         */
         interface Blank extends WithLocation {
         }
 
-        /** The stage of the RoutePolicy definition allowing to specify location. */
+        /**
+         * The stage of the RoutePolicy definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -160,29 +174,33 @@ public interface RoutePolicy {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
             WithResourceGroup withRegion(String location);
         }
 
-        /** The stage of the RoutePolicy definition allowing to specify parent resource. */
+        /**
+         * The stage of the RoutePolicy definition allowing to specify parent resource.
+         */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
             WithNetworkFabricId withExistingResourceGroup(String resourceGroupName);
         }
 
-        /** The stage of the RoutePolicy definition allowing to specify networkFabricId. */
+        /**
+         * The stage of the RoutePolicy definition allowing to specify networkFabricId.
+         */
         interface WithNetworkFabricId {
             /**
              * Specifies the networkFabricId property: Arm Resource ID of Network Fabric..
-             *
+             * 
              * @param networkFabricId Arm Resource ID of Network Fabric.
              * @return the next definition stage.
              */
@@ -193,67 +211,87 @@ public interface RoutePolicy {
          * The stage of the RoutePolicy definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithAddressFamilyType,
-                DefinitionStages.WithStatements,
-                DefinitionStages.WithAnnotation {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithAddressFamilyType,
+            DefinitionStages.WithDefaultAction, DefinitionStages.WithStatements, DefinitionStages.WithAnnotation {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             RoutePolicy create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             RoutePolicy create(Context context);
         }
 
-        /** The stage of the RoutePolicy definition allowing to specify tags. */
+        /**
+         * The stage of the RoutePolicy definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
 
-        /** The stage of the RoutePolicy definition allowing to specify addressFamilyType. */
+        /**
+         * The stage of the RoutePolicy definition allowing to specify addressFamilyType.
+         */
         interface WithAddressFamilyType {
             /**
              * Specifies the addressFamilyType property: AddressFamilyType. This parameter decides whether the given
              * ipv4 or ipv6 route policy..
-             *
+             * 
              * @param addressFamilyType AddressFamilyType. This parameter decides whether the given ipv4 or ipv6 route
-             *     policy.
+             * policy.
              * @return the next definition stage.
              */
             WithCreate withAddressFamilyType(AddressFamilyType addressFamilyType);
         }
 
-        /** The stage of the RoutePolicy definition allowing to specify statements. */
+        /**
+         * The stage of the RoutePolicy definition allowing to specify defaultAction.
+         */
+        interface WithDefaultAction {
+            /**
+             * Specifies the defaultAction property: Default action that needs to be applied when no condition is
+             * matched. Example: Permit | Deny..
+             * 
+             * @param defaultAction Default action that needs to be applied when no condition is matched. Example:
+             * Permit | Deny.
+             * @return the next definition stage.
+             */
+            WithCreate withDefaultAction(CommunityActionTypes defaultAction);
+        }
+
+        /**
+         * The stage of the RoutePolicy definition allowing to specify statements.
+         */
         interface WithStatements {
             /**
              * Specifies the statements property: Route Policy statements..
-             *
+             * 
              * @param statements Route Policy statements.
              * @return the next definition stage.
              */
             WithCreate withStatements(List<RoutePolicyStatementProperties> statements);
         }
 
-        /** The stage of the RoutePolicy definition allowing to specify annotation. */
+        /**
+         * The stage of the RoutePolicy definition allowing to specify annotation.
+         */
         interface WithAnnotation {
             /**
              * Specifies the annotation property: Switch configuration description..
-             *
+             * 
              * @param annotation Switch configuration description.
              * @return the next definition stage.
              */
@@ -263,47 +301,70 @@ public interface RoutePolicy {
 
     /**
      * Begins update for the RoutePolicy resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     RoutePolicy.Update update();
 
-    /** The template for RoutePolicy update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithStatements {
+    /**
+     * The template for RoutePolicy update.
+     */
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithDefaultAction, UpdateStages.WithStatements {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         RoutePolicy apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         RoutePolicy apply(Context context);
     }
 
-    /** The RoutePolicy update stages. */
+    /**
+     * The RoutePolicy update stages.
+     */
     interface UpdateStages {
-        /** The stage of the RoutePolicy update allowing to specify tags. */
+        /**
+         * The stage of the RoutePolicy update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags.
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
         }
 
-        /** The stage of the RoutePolicy update allowing to specify statements. */
+        /**
+         * The stage of the RoutePolicy update allowing to specify defaultAction.
+         */
+        interface WithDefaultAction {
+            /**
+             * Specifies the defaultAction property: Default action that needs to be applied when no condition is
+             * matched. Example: Permit | Deny..
+             * 
+             * @param defaultAction Default action that needs to be applied when no condition is matched. Example:
+             * Permit | Deny.
+             * @return the next definition stage.
+             */
+            Update withDefaultAction(CommunityActionTypes defaultAction);
+        }
+
+        /**
+         * The stage of the RoutePolicy update allowing to specify statements.
+         */
         interface WithStatements {
             /**
              * Specifies the statements property: Route Policy statements..
-             *
+             * 
              * @param statements Route Policy statements.
              * @return the next definition stage.
              */
@@ -313,14 +374,14 @@ public interface RoutePolicy {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     RoutePolicy refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
@@ -328,9 +389,9 @@ public interface RoutePolicy {
 
     /**
      * Executes enable operation to the underlying resources.
-     *
-     * <p>Updated the admin state for this Route Policy.
-     *
+     * 
+     * Updated the admin state for this Route Policy.
+     * 
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -341,9 +402,9 @@ public interface RoutePolicy {
 
     /**
      * Executes enable operation to the underlying resources.
-     *
-     * <p>Updated the admin state for this Route Policy.
-     *
+     * 
+     * Updated the admin state for this Route Policy.
+     * 
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -355,7 +416,7 @@ public interface RoutePolicy {
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration.
@@ -364,7 +425,7 @@ public interface RoutePolicy {
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -375,9 +436,9 @@ public interface RoutePolicy {
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
@@ -386,9 +447,9 @@ public interface RoutePolicy {
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

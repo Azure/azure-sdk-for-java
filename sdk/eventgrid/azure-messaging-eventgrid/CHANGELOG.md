@@ -1,6 +1,6 @@
 # Release History
 
-## 4.27.0-beta.1 (Unreleased)
+## 4.28.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,18 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.27.0 (2024-11-18)
+
+### Features Added
+- New `ResourceNotificationsContainerServiceEventResourcesScheduledEventData` event, new `StorageLifecyclePolicyrunSummary` field on `StorageLifecyclePolicyCompletedEventData`. [#42966](https://github.com/Azure/azure-sdk-for-java/pull/42966)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.7`.
+- Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
 
 ## 4.26.0 (2024-10-10)
 

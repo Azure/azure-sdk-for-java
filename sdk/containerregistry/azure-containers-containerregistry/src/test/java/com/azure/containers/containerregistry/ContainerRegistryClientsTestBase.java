@@ -46,53 +46,55 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Execution(ExecutionMode.SAME_THREAD)
 public class ContainerRegistryClientsTestBase extends TestProxyTestBase {
 
-    protected static ArtifactTagProperties tagWriteableProperties = new ArtifactTagProperties()
-        .setDeleteEnabled(false)
+    protected static ArtifactTagProperties tagWriteableProperties = new ArtifactTagProperties().setDeleteEnabled(false)
         .setListEnabled(true)
         .setReadEnabled(true)
         .setWriteEnabled(true);
 
-    protected static ArtifactTagProperties defaultTagProperties = new ArtifactTagProperties()
-        .setDeleteEnabled(true)
+    protected static ArtifactTagProperties defaultTagProperties = new ArtifactTagProperties().setDeleteEnabled(true)
         .setListEnabled(true)
         .setReadEnabled(true)
         .setWriteEnabled(true);
 
-    protected static ArtifactManifestProperties manifestWriteableProperties = new ArtifactManifestProperties()
-        .setDeleteEnabled(false)
-        .setListEnabled(true)
-        .setReadEnabled(true)
-        .setWriteEnabled(true);
+    protected static ArtifactManifestProperties manifestWriteableProperties
+        = new ArtifactManifestProperties().setDeleteEnabled(false)
+            .setListEnabled(true)
+            .setReadEnabled(true)
+            .setWriteEnabled(true);
 
-    protected static ArtifactManifestProperties defaultManifestProperties = new ArtifactManifestProperties()
-        .setDeleteEnabled(true)
-        .setListEnabled(true)
-        .setReadEnabled(true)
-        .setWriteEnabled(true);
+    protected static ArtifactManifestProperties defaultManifestProperties
+        = new ArtifactManifestProperties().setDeleteEnabled(true)
+            .setListEnabled(true)
+            .setReadEnabled(true)
+            .setWriteEnabled(true);
 
+    protected static ContainerRepositoryProperties repoWriteableProperties
+        = new ContainerRepositoryProperties().setDeleteEnabled(false)
+            .setListEnabled(true)
+            .setReadEnabled(true)
+            .setWriteEnabled(true);
+    //.setTeleportEnabled(false);
 
-    protected static ContainerRepositoryProperties repoWriteableProperties = new ContainerRepositoryProperties()
-        .setDeleteEnabled(false)
-        .setListEnabled(true)
-        .setReadEnabled(true)
-        .setWriteEnabled(true);
-        //.setTeleportEnabled(false);
-
-    protected static ContainerRepositoryProperties defaultRepoWriteableProperties = new ContainerRepositoryProperties()
-        .setDeleteEnabled(true)
-        .setListEnabled(true)
-        .setReadEnabled(true)
-        .setWriteEnabled(true);
-        //.setTeleportEnabled(false);
+    protected static ContainerRepositoryProperties defaultRepoWriteableProperties
+        = new ContainerRepositoryProperties().setDeleteEnabled(true)
+            .setListEnabled(true)
+            .setReadEnabled(true)
+            .setWriteEnabled(true);
+    //.setTeleportEnabled(false);
 
     @Override
     protected void beforeTest() {
         if (!interceptorManager.isLiveMode()) {
             List<TestProxySanitizer> sanitizers = new ArrayList<>();
-            sanitizers.add(new TestProxySanitizer("token=(?<token>[^\\u0026]+)($|\\u0026)", "REDACTED", TestProxySanitizerType.BODY_REGEX).setGroupForReplace("token"));
-            sanitizers.add(new TestProxySanitizer("service=(?<service>[^\\u0026]+)\\u0026", "REDACTED", TestProxySanitizerType.BODY_REGEX).setGroupForReplace("service"));
-            sanitizers.add(new TestProxySanitizer("WWW-Authenticate", "realm=\\u0022https://(?<realm>[^\\u0022]+)\\u0022", "REDACTED", TestProxySanitizerType.HEADER).setGroupForReplace("realm"));
-            sanitizers.add(new TestProxySanitizer("WWW-Authenticate", "service=\\u0022(?<service>[^\\u0022]+)\\u0022", "REDACTED", TestProxySanitizerType.HEADER).setGroupForReplace("service"));
+            sanitizers.add(new TestProxySanitizer("token=(?<token>[^\\u0026]+)($|\\u0026)", "REDACTED",
+                TestProxySanitizerType.BODY_REGEX).setGroupForReplace("token"));
+            sanitizers.add(new TestProxySanitizer("service=(?<service>[^\\u0026]+)\\u0026", "REDACTED",
+                TestProxySanitizerType.BODY_REGEX).setGroupForReplace("service"));
+            sanitizers
+                .add(new TestProxySanitizer("WWW-Authenticate", "realm=\\u0022https://(?<realm>[^\\u0022]+)\\u0022",
+                    "REDACTED", TestProxySanitizerType.HEADER).setGroupForReplace("realm"));
+            sanitizers.add(new TestProxySanitizer("WWW-Authenticate", "service=\\u0022(?<service>[^\\u0022]+)\\u0022",
+                "REDACTED", TestProxySanitizerType.HEADER).setGroupForReplace("service"));
 
             interceptorManager.addSanitizers(sanitizers);
             interceptorManager.removeSanitizers("AZSDK3493", "AZSDK2003");
@@ -104,9 +106,9 @@ public class ContainerRegistryClientsTestBase extends TestProxyTestBase {
         return getContainerRegistryBuilder(httpClient, credential);
     }
 
-    ContainerRegistryClientBuilder getContainerRegistryBuilder(HttpClient httpClient, TokenCredential credential, String endpoint) {
-        ContainerRegistryClientBuilder builder = new ContainerRegistryClientBuilder()
-            .endpoint(getEndpoint(endpoint))
+    ContainerRegistryClientBuilder getContainerRegistryBuilder(HttpClient httpClient, TokenCredential credential,
+        String endpoint) {
+        ContainerRegistryClientBuilder builder = new ContainerRegistryClientBuilder().endpoint(getEndpoint(endpoint))
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .credential(credential);
@@ -134,18 +136,18 @@ public class ContainerRegistryClientsTestBase extends TestProxyTestBase {
 
     ContainerRegistryContentClientBuilder getContentClientBuilder(String repositoryName, HttpClient httpClient,
         TokenCredential credential, String endpoint) {
-        ContainerRegistryContentClientBuilder builder = new ContainerRegistryContentClientBuilder()
-            .endpoint(getEndpoint(endpoint))
-            .repositoryName(repositoryName)
-            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS)
-                .addAllowedHeaderName("Docker-Content-Digest")
-                .addAllowedHeaderName("Range")
-                .addAllowedHeaderName("Location")
-                .addAllowedHeaderName("x-recording-id")
-                .addAllowedHeaderName("x-recording-upstream-base-uri")
-                .addAllowedHeaderName("Content-Range"))
-            .credential(credential);
+        ContainerRegistryContentClientBuilder builder
+            = new ContainerRegistryContentClientBuilder().endpoint(getEndpoint(endpoint))
+                .repositoryName(repositoryName)
+                .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS)
+                    .addAllowedHeaderName("Docker-Content-Digest")
+                    .addAllowedHeaderName("Range")
+                    .addAllowedHeaderName("Location")
+                    .addAllowedHeaderName("x-recording-id")
+                    .addAllowedHeaderName("x-recording-upstream-base-uri")
+                    .addAllowedHeaderName("Content-Range"))
+                .credential(credential);
 
         if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -198,21 +200,24 @@ public class ContainerRegistryClientsTestBase extends TestProxyTestBase {
 
         assertTrue(artifacts.stream().anyMatch(prop -> prop.getTags() != null));
 
-        assertTrue(artifacts.stream().anyMatch(a -> ArtifactArchitecture.AMD64.equals(a.getArchitecture())
-            && ArtifactOperatingSystem.WINDOWS.equals(a.getOperatingSystem())));
-        assertTrue(artifacts.stream().anyMatch(a -> ArtifactArchitecture.ARM.equals(a.getArchitecture())
-            && ArtifactOperatingSystem.LINUX.equals(a.getOperatingSystem())));
+        assertTrue(artifacts.stream()
+            .anyMatch(a -> ArtifactArchitecture.AMD64.equals(a.getArchitecture())
+                && ArtifactOperatingSystem.WINDOWS.equals(a.getOperatingSystem())));
+        assertTrue(artifacts.stream()
+            .anyMatch(a -> ArtifactArchitecture.ARM.equals(a.getArchitecture())
+                && ArtifactOperatingSystem.LINUX.equals(a.getOperatingSystem())));
     }
 
     boolean validateListArtifactsByPage(Collection<PagedResponse<ArtifactManifestProperties>> pagedResList) {
         return validateListArtifactsByPage(pagedResList, false);
     }
 
-    boolean validateListArtifactsByPage(Collection<PagedResponse<ArtifactManifestProperties>> pagedResList, boolean isOrdered) {
+    boolean validateListArtifactsByPage(Collection<PagedResponse<ArtifactManifestProperties>> pagedResList,
+        boolean isOrdered) {
         List<ArtifactManifestProperties> props = new ArrayList<>();
         pagedResList.forEach(res -> props.addAll(res.getValue()));
-        List<OffsetDateTime> lastUpdatedOn = props.stream().map(ArtifactManifestProperties::getLastUpdatedOn)
-            .collect(Collectors.toList());
+        List<OffsetDateTime> lastUpdatedOn
+            = props.stream().map(ArtifactManifestProperties::getLastUpdatedOn).collect(Collectors.toList());
 
         validateListArtifacts(props);
         return pagedResList.stream().allMatch(res -> res.getValue().size() <= PAGESIZE_2)
@@ -222,8 +227,8 @@ public class ContainerRegistryClientsTestBase extends TestProxyTestBase {
     boolean validateListTags(Collection<PagedResponse<ArtifactTagProperties>> pagedResList, boolean isOrdered) {
         List<ArtifactTagProperties> props = new ArrayList<>();
         pagedResList.forEach(res -> props.addAll(res.getValue()));
-        List<OffsetDateTime> lastUpdatedOn = props.stream().map(ArtifactTagProperties::getLastUpdatedOn)
-            .collect(Collectors.toList());
+        List<OffsetDateTime> lastUpdatedOn
+            = props.stream().map(ArtifactTagProperties::getLastUpdatedOn).collect(Collectors.toList());
 
         return validateListTags(props)
             && pagedResList.stream().allMatch(res -> res.getValue().size() <= PAGESIZE_2)
@@ -346,7 +351,6 @@ public class ContainerRegistryClientsTestBase extends TestProxyTestBase {
     }
 
     protected String getEndpoint(String endpoint) {
-        return interceptorManager.isPlaybackMode() ? REGISTRY_ENDPOINT_PLAYBACK
-            : endpoint;
+        return interceptorManager.isPlaybackMode() ? REGISTRY_ENDPOINT_PLAYBACK : endpoint;
     }
 }

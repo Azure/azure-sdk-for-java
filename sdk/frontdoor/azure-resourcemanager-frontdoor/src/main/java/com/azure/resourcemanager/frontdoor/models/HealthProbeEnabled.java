@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -38,7 +37,6 @@ public final class HealthProbeEnabled extends ExpandableStringEnum<HealthProbeEn
      * @param name a name to look for.
      * @return the corresponding HealthProbeEnabled.
      */
-    @JsonCreator
     public static HealthProbeEnabled fromString(String name) {
         return fromString(name, HealthProbeEnabled.class);
     }

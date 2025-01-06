@@ -22,8 +22,8 @@ public final class FaceAdministrationClient {
     private final String endpoint;
     private final FaceServiceVersion serviceVersion;
 
-    FaceAdministrationClient(HttpPipeline pipeline, SerializerAdapter serializerAdapter,
-                             String endpoint, FaceServiceVersion serviceVersion) {
+    FaceAdministrationClient(HttpPipeline pipeline, SerializerAdapter serializerAdapter, String endpoint,
+        FaceServiceVersion serviceVersion) {
         this.pipeline = pipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
@@ -39,9 +39,8 @@ public final class FaceAdministrationClient {
     public LargeFaceListClient getLargeFaceListClient(String largeFaceListId) {
         Objects.requireNonNull(largeFaceListId, "'largeFaceListId' cannot be null.");
 
-        FaceAdministrationClientImpl client
-                = new FaceAdministrationClientImpl(this.pipeline, this.serializerAdapter,
-                this.endpoint, largeFaceListId, null, serviceVersion);
+        FaceAdministrationClientImpl client = new FaceAdministrationClientImpl(this.pipeline, this.serializerAdapter,
+            this.endpoint, largeFaceListId, null, serviceVersion);
         return new LargeFaceListClient(client.getLargeFaceLists());
     }
 
@@ -54,9 +53,8 @@ public final class FaceAdministrationClient {
     public LargePersonGroupClient getLargePersonGroupClient(String largePersonGroupId) {
         Objects.requireNonNull(largePersonGroupId, "'largePersonGroupId' cannot be null.");
 
-        FaceAdministrationClientImpl client
-                = new FaceAdministrationClientImpl(this.pipeline, this.serializerAdapter,
-                this.endpoint, null, largePersonGroupId, serviceVersion);
+        FaceAdministrationClientImpl client = new FaceAdministrationClientImpl(this.pipeline, this.serializerAdapter,
+            this.endpoint, null, largePersonGroupId, serviceVersion);
         return new LargePersonGroupClient(client.getLargePersonGroups());
     }
 }

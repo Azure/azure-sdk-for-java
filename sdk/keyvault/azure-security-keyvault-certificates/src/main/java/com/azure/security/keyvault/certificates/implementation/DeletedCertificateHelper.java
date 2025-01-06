@@ -11,6 +11,7 @@ public final class DeletedCertificateHelper {
 
     public interface DeletedCertificateAccessor {
         DeletedCertificate createDeletedCertificate(DeletedCertificateItem item);
+
         DeletedCertificate createDeletedCertificate(DeletedCertificateBundle bundle);
     }
 
@@ -36,5 +37,6 @@ public final class DeletedCertificateHelper {
         DeletedCertificateHelper.accessor = accessor;
     }
 
-    private DeletedCertificateHelper() { }
+    private DeletedCertificateHelper() {
+    }
 }

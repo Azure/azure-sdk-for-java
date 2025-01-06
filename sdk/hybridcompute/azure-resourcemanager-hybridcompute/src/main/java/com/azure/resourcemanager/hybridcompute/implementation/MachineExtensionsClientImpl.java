@@ -388,7 +388,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
     }
 
     /**
-     * The operation to update the extension.
+     * The operation to create or update the extension.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.
@@ -435,7 +435,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
     }
 
     /**
-     * The operation to update the extension.
+     * The operation to create or update the extension.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.
@@ -481,7 +481,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
     }
 
     /**
-     * The operation to update the extension.
+     * The operation to create or update the extension.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.
@@ -504,7 +504,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
     }
 
     /**
-     * The operation to update the extension.
+     * The operation to create or update the extension.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.
@@ -528,7 +528,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
     }
 
     /**
-     * The operation to update the extension.
+     * The operation to create or update the extension.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.
@@ -547,7 +547,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
     }
 
     /**
-     * The operation to update the extension.
+     * The operation to create or update the extension.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.
@@ -567,7 +567,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
     }
 
     /**
-     * The operation to update the extension.
+     * The operation to create or update the extension.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.
@@ -586,7 +586,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
     }
 
     /**
-     * The operation to update the extension.
+     * The operation to create or update the extension.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.
@@ -606,7 +606,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
     }
 
     /**
-     * The operation to update the extension.
+     * The operation to create or update the extension.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.
@@ -624,7 +624,7 @@ public final class MachineExtensionsClientImpl implements MachineExtensionsClien
     }
 
     /**
-     * The operation to update the extension.
+     * The operation to create or update the extension.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.

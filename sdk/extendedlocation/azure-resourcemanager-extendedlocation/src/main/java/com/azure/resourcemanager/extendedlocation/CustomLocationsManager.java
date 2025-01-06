@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -19,16 +20,13 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.extendedlocation.fluent.CustomLocationsManagementClient;
 import com.azure.resourcemanager.extendedlocation.implementation.CustomLocationsImpl;
 import com.azure.resourcemanager.extendedlocation.implementation.CustomLocationsManagementClientBuilder;
-import com.azure.resourcemanager.extendedlocation.implementation.ResourceSyncRulesImpl;
 import com.azure.resourcemanager.extendedlocation.models.CustomLocations;
-import com.azure.resourcemanager.extendedlocation.models.ResourceSyncRules;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -42,8 +40,6 @@ import java.util.stream.Collectors;
  */
 public final class CustomLocationsManager {
     private CustomLocations customLocations;
-
-    private ResourceSyncRules resourceSyncRules;
 
     private final CustomLocationsManagementClient clientObject;
 
@@ -209,7 +205,7 @@ public final class CustomLocationsManager {
                 .append("-")
                 .append("com.azure.resourcemanager.extendedlocation")
                 .append("/")
-                .append("1.0.0-beta.3");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -242,7 +238,7 @@ public final class CustomLocationsManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
                 .collect(Collectors.toList()));
@@ -265,18 +261,6 @@ public final class CustomLocationsManager {
             this.customLocations = new CustomLocationsImpl(clientObject.getCustomLocations(), this);
         }
         return customLocations;
-    }
-
-    /**
-     * Gets the resource collection API of ResourceSyncRules. It manages ResourceSyncRule.
-     * 
-     * @return Resource collection API of ResourceSyncRules.
-     */
-    public ResourceSyncRules resourceSyncRules() {
-        if (this.resourceSyncRules == null) {
-            this.resourceSyncRules = new ResourceSyncRulesImpl(clientObject.getResourceSyncRules(), this);
-        }
-        return resourceSyncRules;
     }
 
     /**

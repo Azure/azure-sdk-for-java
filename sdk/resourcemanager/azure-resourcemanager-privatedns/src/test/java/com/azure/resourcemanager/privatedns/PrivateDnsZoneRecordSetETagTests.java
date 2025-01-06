@@ -39,21 +39,10 @@ public class PrivateDnsZoneRecordSetETagTests extends ResourceManagerTestProxyTe
     protected PrivateDnsZoneManager privateZoneManager;
 
     @Override
-    protected HttpPipeline buildHttpPipeline(
-        TokenCredential credential,
-        AzureProfile profile,
-        HttpLogOptions httpLogOptions,
-        List<HttpPipelinePolicy> policies,
-        HttpClient httpClient) {
-        return HttpPipelineProvider.buildHttpPipeline(
-            credential,
-            profile,
-            null,
-            httpLogOptions,
-            null,
-            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
-            policies,
-            httpClient);
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile,
+        HttpLogOptions httpLogOptions, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(credential, profile, null, httpLogOptions, null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, httpClient);
     }
 
     @Override
@@ -74,17 +63,13 @@ public class PrivateDnsZoneRecordSetETagTests extends ResourceManagerTestProxyTe
         final Region region = Region.US_EAST;
         final String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
 
-        PrivateDnsZone privateDnsZone =
-            privateZoneManager.privateZones().define(topLevelDomain)
-                .withNewResourceGroup(rgName, region)
-                .withTag("key1", "value1")
-                .create();
+        PrivateDnsZone privateDnsZone = privateZoneManager.privateZones()
+            .define(topLevelDomain)
+            .withNewResourceGroup(rgName, region)
+            .withTag("key1", "value1")
+            .create();
 
-        privateDnsZone.update()
-            .withoutTag("key1")
-            .withTag("key2", "value2")
-            .withTag("key3", "value3")
-            .apply();
+        privateDnsZone.update().withoutTag("key1").withTag("key2", "value2").withTag("key3", "value3").apply();
 
         privateDnsZone.refresh();
         Assertions.assertEquals(2, privateDnsZone.tags().size());
@@ -93,11 +78,11 @@ public class PrivateDnsZoneRecordSetETagTests extends ResourceManagerTestProxyTe
 
         privateDnsZone.update()
             .defineARecordSet("www")
-                .withIPv4Address("23.96.104.40")
-                .withIPv4Address("24.97.105.41")
-                .withTimeToLive(7200)
-                .withETagCheck()
-                .attach()
+            .withIPv4Address("23.96.104.40")
+            .withIPv4Address("24.97.105.41")
+            .withTimeToLive(7200)
+            .withETagCheck()
+            .attach()
             .apply();
         Assertions.assertEquals(1, TestUtilities.getSize(privateDnsZone.aRecordSets().list()));
     }
@@ -107,18 +92,18 @@ public class PrivateDnsZoneRecordSetETagTests extends ResourceManagerTestProxyTe
         final Region region = Region.US_EAST;
         final String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
 
-        PrivateDnsZone privateDnsZone =
-            privateZoneManager.privateZones().define(topLevelDomain).withNewResourceGroup(rgName, region).withETagCheck().create();
+        PrivateDnsZone privateDnsZone = privateZoneManager.privateZones()
+            .define(topLevelDomain)
+            .withNewResourceGroup(rgName, region)
+            .withETagCheck()
+            .create();
         Assertions.assertNotNull(privateDnsZone.etag());
 
-        Runnable runnable =
-            () ->
-                privateZoneManager
-                    .privateZones()
-                    .define(topLevelDomain)
-                        .withNewResourceGroup(rgName, region)
-                        .withETagCheck()
-                    .create();
+        Runnable runnable = () -> privateZoneManager.privateZones()
+            .define(topLevelDomain)
+            .withNewResourceGroup(rgName, region)
+            .withETagCheck()
+            .create();
         ensureETagExceptionIsThrown(runnable);
     }
 
@@ -127,14 +112,15 @@ public class PrivateDnsZoneRecordSetETagTests extends ResourceManagerTestProxyTe
         final Region region = Region.US_EAST;
         final String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
 
-        final PrivateDnsZone privateDnsZone =
-            privateZoneManager.privateZones().define(topLevelDomain).withNewResourceGroup(rgName, region).withETagCheck().create();
+        final PrivateDnsZone privateDnsZone = privateZoneManager.privateZones()
+            .define(topLevelDomain)
+            .withNewResourceGroup(rgName, region)
+            .withETagCheck()
+            .create();
         Assertions.assertNotNull(privateDnsZone.etag());
 
-        Runnable runnable = () -> privateDnsZone.update()
-            .withTag("k1", "v1")
-            .withETagCheck(privateDnsZone.etag() + "-foo")
-            .apply();
+        Runnable runnable
+            = () -> privateDnsZone.update().withTag("k1", "v1").withETagCheck(privateDnsZone.etag() + "-foo").apply();
         ensureETagExceptionIsThrown(runnable);
         privateDnsZone.update().withETagCheck(privateDnsZone.etag()).apply();
     }
@@ -144,8 +130,11 @@ public class PrivateDnsZoneRecordSetETagTests extends ResourceManagerTestProxyTe
         final Region region = Region.US_EAST;
         final String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
 
-        final PrivateDnsZone dnsZone =
-            privateZoneManager.privateZones().define(topLevelDomain).withNewResourceGroup(rgName, region).withETagCheck().create();
+        final PrivateDnsZone dnsZone = privateZoneManager.privateZones()
+            .define(topLevelDomain)
+            .withNewResourceGroup(rgName, region)
+            .withETagCheck()
+            .create();
         Assertions.assertNotNull(dnsZone.etag());
 
         Runnable runnable = () -> privateZoneManager.privateZones().deleteById(dnsZone.id(), dnsZone.etag() + "-foo");
@@ -158,31 +147,29 @@ public class PrivateDnsZoneRecordSetETagTests extends ResourceManagerTestProxyTe
         final Region region = Region.US_EAST;
         final String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
 
-        PrivateDnsZone dnsZone =
-            privateZoneManager
-                .privateZones()
-                .define(topLevelDomain)
-                    .withNewResourceGroup(rgName, region)
-                    .defineARecordSet("www")
-                        .withIPv4Address("23.96.104.40")
-                        .withIPv4Address("24.97.105.41")
-                        .withTimeToLive(7200)
-                        .withETagCheck()
-                        .attach()
-                    .defineAaaaRecordSet("www")
-                        .withIPv6Address("2001:0db8:85a3:0000:0000:8a2e:0370:7334")
-                        .withIPv6Address("2002:0db9:85a4:0000:0000:8a2e:0371:7335")
-                        .withETagCheck()
-                        .attach()
-                    .defineCnameRecordSet("documents")
-                        .withAlias("doc.contoso.com")
-                        .withETagCheck()
-                        .attach()
-                    .defineCnameRecordSet("userguide")
-                        .withAlias("doc.contoso.com")
-                        .withETagCheck()
-                        .attach()
-                    .create();
+        PrivateDnsZone dnsZone = privateZoneManager.privateZones()
+            .define(topLevelDomain)
+            .withNewResourceGroup(rgName, region)
+            .defineARecordSet("www")
+            .withIPv4Address("23.96.104.40")
+            .withIPv4Address("24.97.105.41")
+            .withTimeToLive(7200)
+            .withETagCheck()
+            .attach()
+            .defineAaaaRecordSet("www")
+            .withIPv6Address("2001:0db8:85a3:0000:0000:8a2e:0370:7334")
+            .withIPv6Address("2002:0db9:85a4:0000:0000:8a2e:0371:7335")
+            .withETagCheck()
+            .attach()
+            .defineCnameRecordSet("documents")
+            .withAlias("doc.contoso.com")
+            .withETagCheck()
+            .attach()
+            .defineCnameRecordSet("userguide")
+            .withAlias("doc.contoso.com")
+            .withETagCheck()
+            .attach()
+            .create();
 
         // Check A records
         PagedIterable<ARecordSet> aRecordSets = dnsZone.aRecordSets().list();
@@ -203,30 +190,29 @@ public class PrivateDnsZoneRecordSetETagTests extends ResourceManagerTestProxyTe
 
         Exception compositeException = null;
         try {
-            privateZoneManager
-                .privateZones()
+            privateZoneManager.privateZones()
                 .define(topLevelDomain)
-                    .withNewResourceGroup(rgName, region)
-                    .defineARecordSet("www")
-                        .withIPv4Address("23.96.104.40")
-                        .withIPv4Address("24.97.105.41")
-                        .withTimeToLive(7200)
-                        .withETagCheck()
-                        .attach()
-                    .defineAaaaRecordSet("www")
-                        .withIPv6Address("2001:0db8:85a3:0000:0000:8a2e:0370:7334")
-                        .withIPv6Address("2002:0db9:85a4:0000:0000:8a2e:0371:7335")
-                        .withETagCheck()
-                    .attach()
-                    .defineCnameRecordSet("documents")
-                        .withAlias("doc.contoso.com")
-                        .withETagCheck()
-                        .attach()
-                    .defineCnameRecordSet("userguide")
-                        .withAlias("doc.contoso.com")
-                        .withETagCheck()
-                        .attach()
-                    .create();
+                .withNewResourceGroup(rgName, region)
+                .defineARecordSet("www")
+                .withIPv4Address("23.96.104.40")
+                .withIPv4Address("24.97.105.41")
+                .withTimeToLive(7200)
+                .withETagCheck()
+                .attach()
+                .defineAaaaRecordSet("www")
+                .withIPv6Address("2001:0db8:85a3:0000:0000:8a2e:0370:7334")
+                .withIPv6Address("2002:0db9:85a4:0000:0000:8a2e:0371:7335")
+                .withETagCheck()
+                .attach()
+                .defineCnameRecordSet("documents")
+                .withAlias("doc.contoso.com")
+                .withETagCheck()
+                .attach()
+                .defineCnameRecordSet("userguide")
+                .withAlias("doc.contoso.com")
+                .withETagCheck()
+                .attach()
+                .create();
         } catch (ManagementException exception) {
             compositeException = exception;
         }
@@ -249,23 +235,21 @@ public class PrivateDnsZoneRecordSetETagTests extends ResourceManagerTestProxyTe
         final Region region = Region.US_EAST;
         final String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
 
-        PrivateDnsZone dnsZone =
-            privateZoneManager
-                .privateZones()
-                .define(topLevelDomain)
-                .withNewResourceGroup(rgName, region)
-                .defineARecordSet("www")
-                    .withIPv4Address("23.96.104.40")
-                    .withIPv4Address("24.97.105.41")
-                    .withTimeToLive(7200)
-                    .withETagCheck()
-                    .attach()
-                .defineAaaaRecordSet("www")
-                    .withIPv6Address("2001:0db8:85a3:0000:0000:8a2e:0370:7334")
-                    .withIPv6Address("2002:0db9:85a4:0000:0000:8a2e:0371:7335")
-                    .withETagCheck()
-                    .attach()
-                .create();
+        PrivateDnsZone dnsZone = privateZoneManager.privateZones()
+            .define(topLevelDomain)
+            .withNewResourceGroup(rgName, region)
+            .defineARecordSet("www")
+            .withIPv4Address("23.96.104.40")
+            .withIPv4Address("24.97.105.41")
+            .withTimeToLive(7200)
+            .withETagCheck()
+            .attach()
+            .defineAaaaRecordSet("www")
+            .withIPv6Address("2001:0db8:85a3:0000:0000:8a2e:0370:7334")
+            .withIPv6Address("2002:0db9:85a4:0000:0000:8a2e:0371:7335")
+            .withETagCheck()
+            .attach()
+            .create();
 
         // Check A records
         PagedIterable<ARecordSet> aRecordSets = dnsZone.aRecordSets().list();
@@ -283,8 +267,7 @@ public class PrivateDnsZoneRecordSetETagTests extends ResourceManagerTestProxyTe
         //
         Exception compositeException = null;
         try {
-            dnsZone
-                .update()
+            dnsZone.update()
                 .updateARecordSet("www")
                 .withETagCheck(aRecordSet.etag() + "-foo")
                 .parent()
@@ -307,15 +290,14 @@ public class PrivateDnsZoneRecordSetETagTests extends ResourceManagerTestProxyTe
             }
         }
         // Try update with correct etags
-        dnsZone
-            .update()
+        dnsZone.update()
             .updateARecordSet("www")
-                .withIPv4Address("24.97.105.45")
-                .withETagCheck(aRecordSet.etag())
-                .parent()
+            .withIPv4Address("24.97.105.45")
+            .withETagCheck(aRecordSet.etag())
+            .parent()
             .updateAaaaRecordSet("www")
-                .withETagCheck(aaaaRecordSet.etag())
-                .parent()
+            .withETagCheck(aaaaRecordSet.etag())
+            .parent()
             .apply();
 
         // Check A records
@@ -337,23 +319,21 @@ public class PrivateDnsZoneRecordSetETagTests extends ResourceManagerTestProxyTe
         final Region region = Region.US_EAST;
         final String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
 
-        PrivateDnsZone dnsZone =
-            privateZoneManager
-                .privateZones()
-                .define(topLevelDomain)
-                    .withNewResourceGroup(rgName, region)
-                    .defineARecordSet("www")
-                        .withIPv4Address("23.96.104.40")
-                        .withIPv4Address("24.97.105.41")
-                        .withTimeToLive(7200)
-                        .withETagCheck()
-                        .attach()
-                    .defineAaaaRecordSet("www")
-                        .withIPv6Address("2001:0db8:85a3:0000:0000:8a2e:0370:7334")
-                        .withIPv6Address("2002:0db9:85a4:0000:0000:8a2e:0371:7335")
-                        .withETagCheck()
-                        .attach()
-                    .create();
+        PrivateDnsZone dnsZone = privateZoneManager.privateZones()
+            .define(topLevelDomain)
+            .withNewResourceGroup(rgName, region)
+            .defineARecordSet("www")
+            .withIPv4Address("23.96.104.40")
+            .withIPv4Address("24.97.105.41")
+            .withTimeToLive(7200)
+            .withETagCheck()
+            .attach()
+            .defineAaaaRecordSet("www")
+            .withIPv6Address("2001:0db8:85a3:0000:0000:8a2e:0370:7334")
+            .withIPv6Address("2002:0db9:85a4:0000:0000:8a2e:0371:7335")
+            .withETagCheck()
+            .attach()
+            .create();
 
         // Check A records
         PagedIterable<ARecordSet> aRecordSets = dnsZone.aRecordSets().list();
@@ -371,8 +351,7 @@ public class PrivateDnsZoneRecordSetETagTests extends ResourceManagerTestProxyTe
         //
         Exception compositeException = null;
         try {
-            dnsZone
-                .update()
+            dnsZone.update()
                 .withoutARecordSet("www", aRecordSet.etag() + "-foo")
                 .withoutAaaaRecordSet("www", aaaaRecordSet.etag() + "-foo")
                 .apply();
@@ -391,8 +370,7 @@ public class PrivateDnsZoneRecordSetETagTests extends ResourceManagerTestProxyTe
             }
         }
         // Try delete with correct etags
-        dnsZone
-            .update()
+        dnsZone.update()
             .withoutARecordSet("www", aRecordSet.etag())
             .withoutAaaaRecordSet("www", aaaaRecordSet.etag())
             .apply();
@@ -428,9 +406,7 @@ public class PrivateDnsZoneRecordSetETagTests extends ResourceManagerTestProxyTe
         }
         Assertions.assertTrue(isManagementExceptionThrown, "Expected ManagementException is not thrown");
         Assertions.assertTrue(isCloudErrorSet, "Expected CloudError property is not set in ManagementException");
-        Assertions
-            .assertTrue(
-                isPreconditionFailedCodeSet,
-                "Expected PreconditionFailed code is not set indicating ETag concurrency check failure");
+        Assertions.assertTrue(isPreconditionFailedCodeSet,
+            "Expected PreconditionFailed code is not set indicating ETag concurrency check failure");
     }
 }

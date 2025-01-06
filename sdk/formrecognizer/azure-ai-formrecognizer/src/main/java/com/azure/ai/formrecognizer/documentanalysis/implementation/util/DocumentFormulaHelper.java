@@ -28,7 +28,9 @@ public final class DocumentFormulaHelper {
         void setKind(DocumentFormula documentFormula, DocumentFormulaKind kind);
 
         void setValue(DocumentFormula documentFormula, String value);
+
         void setPolygon(DocumentFormula documentFormula, List<Point> polygon);
+
         void setConfidence(DocumentFormula documentFormula, float confidence);
     }
 
@@ -56,6 +58,7 @@ public final class DocumentFormulaHelper {
     static void setBoundingPolygon(DocumentFormula documentFormula, List<Point> polygon) {
         accessor.setPolygon(documentFormula, polygon);
     }
+
     static void setValue(DocumentFormula documentFormula, String value) {
         accessor.setValue(documentFormula, value);
     }

@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** An environment variable with secret value definition. */
 @Fluent
 public final class EnvironmentVariableWithSecretValue {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnvironmentVariableWithSecretValue.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(EnvironmentVariableWithSecretValue.class);
 
     /*
      * The name of the environment variable to store the secret value.
@@ -105,10 +106,8 @@ public final class EnvironmentVariableWithSecretValue {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model EnvironmentVariableWithSecretValue"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property name in model EnvironmentVariableWithSecretValue"));
         }
         if (valueSecretReference() != null) {
             valueSecretReference().validate();

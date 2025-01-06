@@ -11,6 +11,7 @@ import com.azure.resourcemanager.sql.fluent.models.CheckNameAvailabilityResponse
 public interface CheckNameAvailabilityResult extends HasInnerModel<CheckNameAvailabilityResponseInner> {
     /** @return true if the specified name is valid and available for use, otherwise false */
     boolean isAvailable();
+
     /** @return the reason why the user-provided name for the SQL server could not be used */
     String unavailabilityReason();
 

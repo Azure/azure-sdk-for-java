@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Key properties. */
+/**
+ * Key properties.
+ */
 @Fluent
-public final class KeyProperties {
+public final class KeyProperties implements JsonSerializable<KeyProperties> {
     /*
      * Used to activate the workspace after a customer managed key is provided.
      */
-    @JsonProperty(value = "isActiveCMK")
     private Boolean isActiveCmk;
 
     /*
      * The Key Vault Url of the workspace key.
      */
-    @JsonProperty(value = "keyVaultUrl")
     private String keyVaultUrl;
 
-    /** Creates an instance of KeyProperties class. */
+    /**
+     * Creates an instance of KeyProperties class.
+     */
     public KeyProperties() {
     }
 
     /**
      * Get the isActiveCmk property: Used to activate the workspace after a customer managed key is provided.
-     *
+     * 
      * @return the isActiveCmk value.
      */
     public Boolean isActiveCmk() {
@@ -37,7 +43,7 @@ public final class KeyProperties {
 
     /**
      * Set the isActiveCmk property: Used to activate the workspace after a customer managed key is provided.
-     *
+     * 
      * @param isActiveCmk the isActiveCmk value to set.
      * @return the KeyProperties object itself.
      */
@@ -48,7 +54,7 @@ public final class KeyProperties {
 
     /**
      * Get the keyVaultUrl property: The Key Vault Url of the workspace key.
-     *
+     * 
      * @return the keyVaultUrl value.
      */
     public String keyVaultUrl() {
@@ -57,7 +63,7 @@ public final class KeyProperties {
 
     /**
      * Set the keyVaultUrl property: The Key Vault Url of the workspace key.
-     *
+     * 
      * @param keyVaultUrl the keyVaultUrl value to set.
      * @return the KeyProperties object itself.
      */
@@ -68,9 +74,48 @@ public final class KeyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isActiveCMK", this.isActiveCmk);
+        jsonWriter.writeStringField("keyVaultUrl", this.keyVaultUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KeyProperties.
+     */
+    public static KeyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyProperties deserializedKeyProperties = new KeyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isActiveCMK".equals(fieldName)) {
+                    deserializedKeyProperties.isActiveCmk = reader.getNullable(JsonReader::getBoolean);
+                } else if ("keyVaultUrl".equals(fieldName)) {
+                    deserializedKeyProperties.keyVaultUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKeyProperties;
+        });
     }
 }

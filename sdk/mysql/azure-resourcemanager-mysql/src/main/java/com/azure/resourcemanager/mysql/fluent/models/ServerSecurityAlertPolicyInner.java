@@ -15,7 +15,8 @@ import java.util.List;
 /** A server security alert policy. */
 @Fluent
 public final class ServerSecurityAlertPolicyInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerSecurityAlertPolicyInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServerSecurityAlertPolicyInner.class);
 
     /*
      * Resource properties.

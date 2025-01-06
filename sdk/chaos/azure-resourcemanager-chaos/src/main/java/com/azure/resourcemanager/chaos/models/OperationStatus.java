@@ -6,6 +6,7 @@ package com.azure.resourcemanager.chaos.models;
 
 import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.chaos.fluent.models.OperationStatusInner;
+import java.time.OffsetDateTime;
 
 /**
  * An immutable client-side representation of OperationStatus.
@@ -30,14 +31,14 @@ public interface OperationStatus {
      * 
      * @return the startTime value.
      */
-    String startTime();
+    OffsetDateTime startTime();
 
     /**
      * Gets the endTime property: The end time of the operation.
      * 
      * @return the endTime value.
      */
-    String endTime();
+    OffsetDateTime endTime();
 
     /**
      * Gets the status property: The status of the operation.

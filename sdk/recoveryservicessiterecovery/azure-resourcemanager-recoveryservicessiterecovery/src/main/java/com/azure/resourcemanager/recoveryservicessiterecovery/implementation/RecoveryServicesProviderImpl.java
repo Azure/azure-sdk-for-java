@@ -79,14 +79,16 @@ public final class RecoveryServicesProviderImpl
     }
 
     public RecoveryServicesProvider create() {
-        this.innerObject = serviceManager.serviceClient().getReplicationRecoveryServicesProviders().create(resourceName,
-            resourceGroupName, fabricName, providerName, createAddProviderInput, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicationRecoveryServicesProviders()
+            .create(resourceName, resourceGroupName, fabricName, providerName, createAddProviderInput, Context.NONE);
         return this;
     }
 
     public RecoveryServicesProvider create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getReplicationRecoveryServicesProviders().create(resourceName,
-            resourceGroupName, fabricName, providerName, createAddProviderInput, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicationRecoveryServicesProviders()
+            .create(resourceName, resourceGroupName, fabricName, providerName, createAddProviderInput, context);
         return this;
     }
 
@@ -99,35 +101,39 @@ public final class RecoveryServicesProviderImpl
     }
 
     public RecoveryServicesProvider refresh() {
-        this.innerObject = serviceManager.serviceClient().getReplicationRecoveryServicesProviders()
-            .getWithResponse(resourceName, resourceGroupName, fabricName, providerName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicationRecoveryServicesProviders()
+            .getWithResponse(resourceName, resourceGroupName, fabricName, providerName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public RecoveryServicesProvider refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getReplicationRecoveryServicesProviders()
-            .getWithResponse(resourceName, resourceGroupName, fabricName, providerName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicationRecoveryServicesProviders()
+            .getWithResponse(resourceName, resourceGroupName, fabricName, providerName, context)
+            .getValue();
         return this;
     }
 
     public RecoveryServicesProvider refreshProvider() {
-        return serviceManager.replicationRecoveryServicesProviders().refreshProvider(resourceName, resourceGroupName,
-            fabricName, providerName);
+        return serviceManager.replicationRecoveryServicesProviders()
+            .refreshProvider(resourceName, resourceGroupName, fabricName, providerName);
     }
 
     public RecoveryServicesProvider refreshProvider(Context context) {
-        return serviceManager.replicationRecoveryServicesProviders().refreshProvider(resourceName, resourceGroupName,
-            fabricName, providerName, context);
+        return serviceManager.replicationRecoveryServicesProviders()
+            .refreshProvider(resourceName, resourceGroupName, fabricName, providerName, context);
     }
 
     public void delete() {
-        serviceManager.replicationRecoveryServicesProviders().delete(resourceName, resourceGroupName, fabricName,
-            providerName);
+        serviceManager.replicationRecoveryServicesProviders()
+            .delete(resourceName, resourceGroupName, fabricName, providerName);
     }
 
     public void delete(Context context) {
-        serviceManager.replicationRecoveryServicesProviders().delete(resourceName, resourceGroupName, fabricName,
-            providerName, context);
+        serviceManager.replicationRecoveryServicesProviders()
+            .delete(resourceName, resourceGroupName, fabricName, providerName, context);
     }
 
     public RecoveryServicesProviderImpl withProperties(AddRecoveryServicesProviderInputProperties properties) {

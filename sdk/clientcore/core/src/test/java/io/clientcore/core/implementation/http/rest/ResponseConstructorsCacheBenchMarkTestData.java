@@ -10,9 +10,9 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
 import io.clientcore.core.implementation.util.UriBuilder;
 import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.implementation.util.JsonSerializer;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 
 import java.io.IOException;
@@ -71,7 +71,7 @@ class ResponseConstructorsCacheBenchMarkTestData {
         FooSimpleResponse getFooSimpleResponse();
     }
 
-    private static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
+    private static final ObjectSerializer SERIALIZER = new JsonSerializer();
     private static final HttpRequest HTTP_REQUEST = new HttpRequest(HttpMethod.GET, createUri());
     private static final HttpHeaderName HELLO = HttpHeaderName.fromString("hello");
     private static final HttpHeaders RESPONSE_HEADERS = new HttpHeaders().set(HELLO, "world");
@@ -79,8 +79,8 @@ class ResponseConstructorsCacheBenchMarkTestData {
     private static final Foo FOO = new Foo().setName("foo1");
     private static final byte[] FOO_BYTE_ARRAY = asJsonByteArray(FOO);
     // MOCK RESPONSES
-    private static final Response<?> VOID_RESPONSE = new MockHttpResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE,
-        RESPONSE_HEADERS, null);
+    private static final Response<?> VOID_RESPONSE
+        = new MockHttpResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE, RESPONSE_HEADERS, null);
     private static final Response<?> FOO_RESPONSE = new MockHttpResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE,
         RESPONSE_HEADERS, BinaryData.fromBytes(FOO_BYTE_ARRAY));
 

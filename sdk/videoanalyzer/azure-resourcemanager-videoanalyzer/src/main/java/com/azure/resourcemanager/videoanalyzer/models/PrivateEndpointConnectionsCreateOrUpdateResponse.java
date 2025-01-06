@@ -21,12 +21,8 @@ public final class PrivateEndpointConnectionsCreateOrUpdateResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public PrivateEndpointConnectionsCreateOrUpdateResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        PrivateEndpointConnectionInner value,
-        PrivateEndpointConnectionsCreateOrUpdateHeaders headers) {
+    public PrivateEndpointConnectionsCreateOrUpdateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        PrivateEndpointConnectionInner value, PrivateEndpointConnectionsCreateOrUpdateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

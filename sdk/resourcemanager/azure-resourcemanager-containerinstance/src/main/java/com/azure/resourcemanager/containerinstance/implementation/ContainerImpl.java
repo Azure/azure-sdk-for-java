@@ -25,19 +25,16 @@ import java.util.List;
 import java.util.Map;
 
 /** Implementation for container group's container instance definition stages interface. */
-class ContainerImpl
-    implements ContainerGroup.DefinitionStages.ContainerInstanceDefinitionStages.ContainerInstanceDefinition<
-        ContainerGroup.DefinitionStages.WithNextContainerInstance> {
+class ContainerImpl implements
+    ContainerGroup.DefinitionStages.ContainerInstanceDefinitionStages.ContainerInstanceDefinition<ContainerGroup.DefinitionStages.WithNextContainerInstance> {
     private Container innerContainer;
     private ContainerGroupImpl parent;
 
     ContainerImpl(ContainerGroupImpl parent, String containerName) {
         this.parent = parent;
-        this.innerContainer =
-            new Container()
-                .withName(containerName)
-                .withResources(
-                    new ResourceRequirements().withRequests(new ResourceRequests().withCpu(1).withMemoryInGB(1.5)));
+        this.innerContainer = new Container().withName(containerName)
+            .withResources(
+                new ResourceRequirements().withRequests(new ResourceRequests().withCpu(1).withMemoryInGB(1.5)));
     }
 
     @Override
@@ -227,8 +224,7 @@ class ContainerImpl
             innerContainer.withEnvironmentVariables(new ArrayList<EnvironmentVariable>());
         }
 
-        innerContainer
-            .environmentVariables()
+        innerContainer.environmentVariables()
             .add(new EnvironmentVariable().withName(envName).withSecureValue(securedValue));
 
         return this;
@@ -239,8 +235,7 @@ class ContainerImpl
         if (innerContainer.volumeMounts() == null) {
             innerContainer.withVolumeMounts(new ArrayList<VolumeMount>());
         }
-        innerContainer
-            .volumeMounts()
+        innerContainer.volumeMounts()
             .add(new VolumeMount().withName(volumeName).withMountPath(mountPath).withReadOnly(false));
 
         return this;
@@ -260,8 +255,7 @@ class ContainerImpl
         if (innerContainer.volumeMounts() == null) {
             innerContainer.withVolumeMounts(new ArrayList<VolumeMount>());
         }
-        innerContainer
-            .volumeMounts()
+        innerContainer.volumeMounts()
             .add(new VolumeMount().withName(volumeName).withMountPath(mountPath).withReadOnly(true));
 
         return this;
@@ -278,44 +272,29 @@ class ContainerImpl
 
     @Override
     public ContainerImpl withLivenessProbeExecutionCommand(List<String> command, int probePeriodSeconds) {
-        return this.withLivenessProbe(
-            new ContainerProbe()
-                .withExec(
-                    new ContainerExec()
-                        .withCommand(command))
-                .withPeriodSeconds(probePeriodSeconds));
+        return this.withLivenessProbe(new ContainerProbe().withExec(new ContainerExec().withCommand(command))
+            .withPeriodSeconds(probePeriodSeconds));
     }
 
     @Override
-    public ContainerImpl withLivenessProbeExecutionCommand(List<String> command, int probePeriodSeconds, int failureThreshold) {
-        return this.withLivenessProbe(
-            new ContainerProbe()
-                .withExec(
-                    new ContainerExec()
-                        .withCommand(command))
-                .withPeriodSeconds(probePeriodSeconds)
-                .withFailureThreshold(failureThreshold));
+    public ContainerImpl withLivenessProbeExecutionCommand(List<String> command, int probePeriodSeconds,
+        int failureThreshold) {
+        return this.withLivenessProbe(new ContainerProbe().withExec(new ContainerExec().withCommand(command))
+            .withPeriodSeconds(probePeriodSeconds)
+            .withFailureThreshold(failureThreshold));
     }
 
     @Override
     public ContainerImpl withLivenessProbeHttpGet(String path, int port, int probePeriodSeconds) {
-        return this.withLivenessProbe(
-            new ContainerProbe()
-                .withHttpGet(
-                    new ContainerHttpGet()
-                        .withPath(path)
-                        .withPort(port))
+        return this
+            .withLivenessProbe(new ContainerProbe().withHttpGet(new ContainerHttpGet().withPath(path).withPort(port))
                 .withPeriodSeconds(probePeriodSeconds));
     }
 
     @Override
     public ContainerImpl withLivenessProbeHttpGet(String path, int port, int probePeriodSeconds, int failureThreshold) {
-        return this.withLivenessProbe(
-            new ContainerProbe()
-                .withHttpGet(
-                    new ContainerHttpGet()
-                        .withPath(path)
-                        .withPort(port))
+        return this
+            .withLivenessProbe(new ContainerProbe().withHttpGet(new ContainerHttpGet().withPath(path).withPort(port))
                 .withPeriodSeconds(probePeriodSeconds)
                 .withFailureThreshold(failureThreshold));
     }
@@ -330,44 +309,30 @@ class ContainerImpl
 
     @Override
     public ContainerImpl withReadinessProbeExecutionCommand(List<String> command, int probePeriodSeconds) {
-        return this.withReadinessProbe(
-            new ContainerProbe()
-                .withExec(
-                    new ContainerExec()
-                        .withCommand(command))
-                .withPeriodSeconds(probePeriodSeconds));
+        return this.withReadinessProbe(new ContainerProbe().withExec(new ContainerExec().withCommand(command))
+            .withPeriodSeconds(probePeriodSeconds));
     }
 
     @Override
-    public ContainerImpl withReadinessProbeExecutionCommand(List<String> command, int probePeriodSeconds, int failureThreshold) {
-        return this.withReadinessProbe(
-            new ContainerProbe()
-                .withExec(
-                    new ContainerExec()
-                        .withCommand(command))
-                .withPeriodSeconds(probePeriodSeconds)
-                .withFailureThreshold(failureThreshold));
+    public ContainerImpl withReadinessProbeExecutionCommand(List<String> command, int probePeriodSeconds,
+        int failureThreshold) {
+        return this.withReadinessProbe(new ContainerProbe().withExec(new ContainerExec().withCommand(command))
+            .withPeriodSeconds(probePeriodSeconds)
+            .withFailureThreshold(failureThreshold));
     }
 
     @Override
     public ContainerImpl withReadinessProbeHttpGet(String path, int port, int probePeriodSeconds) {
-        return this.withReadinessProbe(
-            new ContainerProbe()
-                .withHttpGet(
-                    new ContainerHttpGet()
-                        .withPath(path)
-                        .withPort(port))
+        return this
+            .withReadinessProbe(new ContainerProbe().withHttpGet(new ContainerHttpGet().withPath(path).withPort(port))
                 .withPeriodSeconds(probePeriodSeconds));
     }
 
     @Override
-    public ContainerImpl withReadinessProbeHttpGet(String path, int port, int probePeriodSeconds, int failureThreshold) {
-        return this.withReadinessProbe(
-            new ContainerProbe()
-                .withHttpGet(
-                    new ContainerHttpGet()
-                        .withPath(path)
-                        .withPort(port))
+    public ContainerImpl withReadinessProbeHttpGet(String path, int port, int probePeriodSeconds,
+        int failureThreshold) {
+        return this
+            .withReadinessProbe(new ContainerProbe().withHttpGet(new ContainerHttpGet().withPath(path).withPort(port))
                 .withPeriodSeconds(probePeriodSeconds)
                 .withFailureThreshold(failureThreshold));
     }

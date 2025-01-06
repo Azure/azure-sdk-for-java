@@ -25,18 +25,19 @@ class EventDataImpl extends WrapperImpl<EventDataInner> implements EventData {
 
     EventDataImpl(EventDataInner innerObject) {
         super(innerObject);
-        this.eventName =
-            (innerModel().eventName() == null) ? null : new LocalizableStringImpl(innerModel().eventName());
+        this.eventName
+            = (innerModel().eventName() == null) ? null : new LocalizableStringImpl(innerModel().eventName());
         this.category = (innerModel().category() == null) ? null : new LocalizableStringImpl(innerModel().category());
         this.resourceProviderName = (innerModel().resourceProviderName() == null)
-            ? null : new LocalizableStringImpl(innerModel().resourceProviderName());
-        this.resourceType =
-            (innerModel().resourceType() == null) ? null : new LocalizableStringImpl(innerModel().resourceType());
-        this.operationName =
-            (innerModel().operationName() == null) ? null : new LocalizableStringImpl(innerModel().operationName());
+            ? null
+            : new LocalizableStringImpl(innerModel().resourceProviderName());
+        this.resourceType
+            = (innerModel().resourceType() == null) ? null : new LocalizableStringImpl(innerModel().resourceType());
+        this.operationName
+            = (innerModel().operationName() == null) ? null : new LocalizableStringImpl(innerModel().operationName());
         this.status = (innerModel().status() == null) ? null : new LocalizableStringImpl(innerModel().status());
-        this.subStatus =
-            (innerModel().subStatus() == null) ? null : new LocalizableStringImpl(innerModel().subStatus());
+        this.subStatus
+            = (innerModel().subStatus() == null) ? null : new LocalizableStringImpl(innerModel().subStatus());
     }
 
     @Override

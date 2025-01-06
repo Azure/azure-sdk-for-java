@@ -5,10 +5,11 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,65 +19,52 @@ import java.util.List;
  * module. Any attempt to record content to an existing video which has not been created by the same module instance
  * will result in failure to record.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
-@JsonTypeName("#Microsoft.VideoAnalyzer.VideoSink")
 @Fluent
 public final class VideoSink extends SinkNodeBase {
     /*
-     * Name of a new or existing Video Analyzer video resource used for the
-     * media recording.
+     * Type discriminator for the derived types.
      */
-    @JsonProperty(value = "videoName", required = true)
-    private String videoName;
+    private String type = "#Microsoft.VideoAnalyzer.VideoSink";
 
     /*
-     * Optional video properties to be used in case a new video resource needs
-     * to be created on the service.
+     * Name of a new or existing Video Analyzer video resource used for the media recording.
      */
-    @JsonProperty(value = "videoCreationProperties")
+    private final String videoName;
+
+    /*
+     * Optional video properties to be used in case a new video resource needs to be created on the service.
+     */
     private VideoCreationProperties videoCreationProperties;
 
     /*
-     * Optional video publishing options to be used for changing publishing
-     * behavior of the output video.
+     * Optional video publishing options to be used for changing publishing behavior of the output video.
      */
-    @JsonProperty(value = "videoPublishingOptions")
     private VideoPublishingOptions videoPublishingOptions;
 
     /*
-     * Path to a local file system directory for caching of temporary media
-     * files. This will also be used to store content which cannot be
-     * immediately uploaded to Azure due to Internet connectivity issues.
+     * Path to a local file system directory for caching of temporary media files. This will also be used to store
+     * content which cannot be immediately uploaded to Azure due to Internet connectivity issues.
      */
-    @JsonProperty(value = "localMediaCachePath", required = true)
-    private String localMediaCachePath;
+    private final String localMediaCachePath;
 
     /*
-     * Maximum amount of disk space that can be used for caching of temporary
-     * media files. Once this limit is reached, the oldest segments of the
-     * media archive will be continuously deleted in order to make space for
-     * new media, thus leading to gaps in the cloud recorded content.
+     * Maximum amount of disk space that can be used for caching of temporary media files. Once this limit is reached,
+     * the oldest segments of the media archive will be continuously deleted in order to make space for new media, thus
+     * leading to gaps in the cloud recorded content.
      */
-    @JsonProperty(value = "localMediaCacheMaximumSizeMiB", required = true)
-    private String localMediaCacheMaximumSizeMiB;
+    private final String localMediaCacheMaximumSizeMiB;
 
     /**
      * Creates an instance of VideoSink class.
-     *
+     * 
      * @param name the name value to set.
      * @param inputs the inputs value to set.
      * @param videoName the videoName value to set.
      * @param localMediaCachePath the localMediaCachePath value to set.
      * @param localMediaCacheMaximumSizeMiB the localMediaCacheMaximumSizeMiB value to set.
      */
-    @JsonCreator
-    public VideoSink(
-            @JsonProperty(value = "name", required = true) String name,
-            @JsonProperty(value = "inputs", required = true) List<NodeInput> inputs,
-            @JsonProperty(value = "videoName", required = true) String videoName,
-            @JsonProperty(value = "localMediaCachePath", required = true) String localMediaCachePath,
-            @JsonProperty(value = "localMediaCacheMaximumSizeMiB", required = true)
-                    String localMediaCacheMaximumSizeMiB) {
+    public VideoSink(String name, List<NodeInput> inputs, String videoName, String localMediaCachePath,
+        String localMediaCacheMaximumSizeMiB) {
         super(name, inputs);
         this.videoName = videoName;
         this.localMediaCachePath = localMediaCachePath;
@@ -84,8 +72,18 @@ public final class VideoSink extends SinkNodeBase {
     }
 
     /**
+     * Get the type property: Type discriminator for the derived types.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
      * Get the videoName property: Name of a new or existing Video Analyzer video resource used for the media recording.
-     *
+     * 
      * @return the videoName value.
      */
     public String getVideoName() {
@@ -95,7 +93,7 @@ public final class VideoSink extends SinkNodeBase {
     /**
      * Get the videoCreationProperties property: Optional video properties to be used in case a new video resource needs
      * to be created on the service.
-     *
+     * 
      * @return the videoCreationProperties value.
      */
     public VideoCreationProperties getVideoCreationProperties() {
@@ -105,7 +103,7 @@ public final class VideoSink extends SinkNodeBase {
     /**
      * Set the videoCreationProperties property: Optional video properties to be used in case a new video resource needs
      * to be created on the service.
-     *
+     * 
      * @param videoCreationProperties the videoCreationProperties value to set.
      * @return the VideoSink object itself.
      */
@@ -117,7 +115,7 @@ public final class VideoSink extends SinkNodeBase {
     /**
      * Get the videoPublishingOptions property: Optional video publishing options to be used for changing publishing
      * behavior of the output video.
-     *
+     * 
      * @return the videoPublishingOptions value.
      */
     public VideoPublishingOptions getVideoPublishingOptions() {
@@ -127,7 +125,7 @@ public final class VideoSink extends SinkNodeBase {
     /**
      * Set the videoPublishingOptions property: Optional video publishing options to be used for changing publishing
      * behavior of the output video.
-     *
+     * 
      * @param videoPublishingOptions the videoPublishingOptions value to set.
      * @return the VideoSink object itself.
      */
@@ -140,7 +138,7 @@ public final class VideoSink extends SinkNodeBase {
      * Get the localMediaCachePath property: Path to a local file system directory for caching of temporary media files.
      * This will also be used to store content which cannot be immediately uploaded to Azure due to Internet
      * connectivity issues.
-     *
+     * 
      * @return the localMediaCachePath value.
      */
     public String getLocalMediaCachePath() {
@@ -151,10 +149,115 @@ public final class VideoSink extends SinkNodeBase {
      * Get the localMediaCacheMaximumSizeMiB property: Maximum amount of disk space that can be used for caching of
      * temporary media files. Once this limit is reached, the oldest segments of the media archive will be continuously
      * deleted in order to make space for new media, thus leading to gaps in the cloud recorded content.
-     *
+     * 
      * @return the localMediaCacheMaximumSizeMiB value.
      */
     public String getLocalMediaCacheMaximumSizeMiB() {
         return this.localMediaCacheMaximumSizeMiB;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("videoName", this.videoName);
+        jsonWriter.writeStringField("localMediaCachePath", this.localMediaCachePath);
+        jsonWriter.writeStringField("localMediaCacheMaximumSizeMiB", this.localMediaCacheMaximumSizeMiB);
+        jsonWriter.writeStringField("@type", this.type);
+        jsonWriter.writeJsonField("videoCreationProperties", this.videoCreationProperties);
+        jsonWriter.writeJsonField("videoPublishingOptions", this.videoPublishingOptions);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VideoSink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VideoSink if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VideoSink.
+     */
+    public static VideoSink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean nameFound = false;
+            String name = null;
+            boolean inputsFound = false;
+            List<NodeInput> inputs = null;
+            boolean videoNameFound = false;
+            String videoName = null;
+            boolean localMediaCachePathFound = false;
+            String localMediaCachePath = null;
+            boolean localMediaCacheMaximumSizeMiBFound = false;
+            String localMediaCacheMaximumSizeMiB = null;
+            String type = "#Microsoft.VideoAnalyzer.VideoSink";
+            VideoCreationProperties videoCreationProperties = null;
+            VideoPublishingOptions videoPublishingOptions = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                    nameFound = true;
+                } else if ("inputs".equals(fieldName)) {
+                    inputs = reader.readArray(reader1 -> NodeInput.fromJson(reader1));
+                    inputsFound = true;
+                } else if ("videoName".equals(fieldName)) {
+                    videoName = reader.getString();
+                    videoNameFound = true;
+                } else if ("localMediaCachePath".equals(fieldName)) {
+                    localMediaCachePath = reader.getString();
+                    localMediaCachePathFound = true;
+                } else if ("localMediaCacheMaximumSizeMiB".equals(fieldName)) {
+                    localMediaCacheMaximumSizeMiB = reader.getString();
+                    localMediaCacheMaximumSizeMiBFound = true;
+                } else if ("@type".equals(fieldName)) {
+                    type = reader.getString();
+                } else if ("videoCreationProperties".equals(fieldName)) {
+                    videoCreationProperties = VideoCreationProperties.fromJson(reader);
+                } else if ("videoPublishingOptions".equals(fieldName)) {
+                    videoPublishingOptions = VideoPublishingOptions.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (nameFound
+                && inputsFound
+                && videoNameFound
+                && localMediaCachePathFound
+                && localMediaCacheMaximumSizeMiBFound) {
+                VideoSink deserializedVideoSink
+                    = new VideoSink(name, inputs, videoName, localMediaCachePath, localMediaCacheMaximumSizeMiB);
+                deserializedVideoSink.type = type;
+                deserializedVideoSink.videoCreationProperties = videoCreationProperties;
+                deserializedVideoSink.videoPublishingOptions = videoPublishingOptions;
+
+                return deserializedVideoSink;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!nameFound) {
+                missingProperties.add("name");
+            }
+            if (!inputsFound) {
+                missingProperties.add("inputs");
+            }
+            if (!videoNameFound) {
+                missingProperties.add("videoName");
+            }
+            if (!localMediaCachePathFound) {
+                missingProperties.add("localMediaCachePath");
+            }
+            if (!localMediaCacheMaximumSizeMiBFound) {
+                missingProperties.add("localMediaCacheMaximumSizeMiB");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

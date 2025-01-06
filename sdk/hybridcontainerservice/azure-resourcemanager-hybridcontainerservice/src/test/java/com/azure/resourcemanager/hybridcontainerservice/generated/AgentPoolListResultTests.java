@@ -50,49 +50,66 @@ public final class AgentPoolListResultTests {
                     Arrays
                         .asList(
                             new AgentPoolInner()
-                                .withProperties(
-                                    new AgentPoolProperties().withOsType(OsType.WINDOWS).withOsSku(Ossku.CBLMARINER)
-                                        .withNodeLabels(mapOf("q", "xmqci", "xuigdtopbobj", "hkh", "uhrzayvvt",
-                                            "ghmewuam", "ln", "gvdfgiotkftutq"))
-                                        .withNodeTaints(Arrays.asList("efgugnxk", "xdqmidtthzrvqdra", "hjybigehoqfbo"))
-                                        .withMaxCount(1382683860).withMinCount(465330089).withEnableAutoScaling(true)
-                                        .withMaxPods(1937589018).withCount(1765758465).withVmSize("xhdzxibqeojnx")
-                                        .withStatus(
-                                            new AgentPoolProvisioningStatusStatus().withErrorMessage("hrhcffcyddglmjth")
-                                                .withReadyReplicas(Arrays.asList(new AgentPoolUpdateProfile()))))
+                                .withProperties(new AgentPoolProperties().withOsType(OsType.WINDOWS)
+                                    .withOsSku(Ossku.CBLMARINER)
+                                    .withNodeLabels(mapOf("q", "xmqci", "xuigdtopbobj", "hkh", "uhrzayvvt", "ghmewuam",
+                                        "ln", "gvdfgiotkftutq"))
+                                    .withNodeTaints(Arrays.asList("efgugnxk", "xdqmidtthzrvqdra", "hjybigehoqfbo"))
+                                    .withMaxCount(1382683860)
+                                    .withMinCount(465330089)
+                                    .withEnableAutoScaling(true)
+                                    .withMaxPods(1937589018)
+                                    .withCount(1765758465)
+                                    .withVmSize("xhdzxibqeojnx")
+                                    .withStatus(
+                                        new AgentPoolProvisioningStatusStatus().withErrorMessage("hrhcffcyddglmjth")
+                                            .withReadyReplicas(Arrays.asList(new AgentPoolUpdateProfile()))))
                                 .withTags(mapOf("y", "u", "nhzgpphrcgyn", "gqywgndrv", "fsxlzevgbmqjqa", "ocpecfvmmco"))
-                                .withExtendedLocation(new ExtendedLocation()
-                                    .withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("ivkwlzuvccfwnfnb")),
+                                .withExtendedLocation(
+                                    new ExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION)
+                                        .withName("ivkwlzuvccfwnfnb")),
                             new AgentPoolInner()
                                 .withProperties(
-                                    new AgentPoolProperties().withOsType(OsType.LINUX).withOsSku(Ossku.WINDOWS2022)
+                                    new AgentPoolProperties().withOsType(OsType.LINUX)
+                                        .withOsSku(Ossku.WINDOWS2022)
                                         .withNodeLabels(
                                             mapOf("oflokey", "fakeTokenPlaceholder", "pdjpjumasxazjp", "ienjbdlwtgr"))
-                                        .withNodeTaints(Arrays.asList("gual")).withMaxCount(523710647)
-                                        .withMinCount(1163750271).withEnableAutoScaling(false).withMaxPods(497531730)
-                                        .withCount(1993000932).withVmSize("nwsubisnj")
+                                        .withNodeTaints(Arrays.asList("gual"))
+                                        .withMaxCount(523710647)
+                                        .withMinCount(1163750271)
+                                        .withEnableAutoScaling(false)
+                                        .withMaxPods(497531730)
+                                        .withCount(1993000932)
+                                        .withVmSize("nwsubisnj")
                                         .withStatus(new AgentPoolProvisioningStatusStatus().withErrorMessage("wooc")
                                             .withReadyReplicas(Arrays.asList(new AgentPoolUpdateProfile(),
                                                 new AgentPoolUpdateProfile(), new AgentPoolUpdateProfile(),
                                                 new AgentPoolUpdateProfile()))))
                                 .withTags(mapOf("mcy", "dudgwdslfhot"))
                                 .withExtendedLocation(new ExtendedLocation()
-                                    .withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("jnpg")),
+                                    .withType(ExtendedLocationTypes.CUSTOM_LOCATION)
+                                    .withName("jnpg")),
                             new AgentPoolInner()
                                 .withProperties(
-                                    new AgentPoolProperties().withOsType(OsType.LINUX).withOsSku(Ossku.WINDOWS2019)
+                                    new AgentPoolProperties().withOsType(OsType.LINUX)
+                                        .withOsSku(Ossku.WINDOWS2019)
                                         .withNodeLabels(mapOf("bvyvdcsity", "hmenevfyexfwhybc"))
-                                        .withNodeTaints(Arrays.asList("amdecte", "f")).withMaxCount(1860942440)
-                                        .withMinCount(993666965).withEnableAutoScaling(true).withMaxPods(796129419)
-                                        .withCount(1222672575).withVmSize("nvowgujju")
+                                        .withNodeTaints(Arrays.asList("amdecte", "f"))
+                                        .withMaxCount(1860942440)
+                                        .withMinCount(993666965)
+                                        .withEnableAutoScaling(true)
+                                        .withMaxPods(796129419)
+                                        .withCount(1222672575)
+                                        .withVmSize("nvowgujju")
                                         .withStatus(new AgentPoolProvisioningStatusStatus().withErrorMessage("dtjixhb")
                                             .withReadyReplicas(Arrays.asList(new AgentPoolUpdateProfile(),
                                                 new AgentPoolUpdateProfile(), new AgentPoolUpdateProfile(),
                                                 new AgentPoolUpdateProfile()))))
                                 .withTags(mapOf("kqsleyyvxy", "zrkgqhcjrefovg", "cr", "jpkcattpng", "ajvnysounqe",
                                     "czsqpjhvm", "oaeupfhyhltrpmo", "a"))
-                                .withExtendedLocation(new ExtendedLocation()
-                                    .withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("atuokthfuiu"))))
+                                .withExtendedLocation(
+                                    new ExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION)
+                                        .withName("atuokthfuiu"))))
                 .withNextLink("wqsmbsur");
         model = BinaryData.fromObject(model).toObject(AgentPoolListResult.class);
         Assertions.assertEquals(OsType.WINDOWS, model.value().get(0).properties().osType());

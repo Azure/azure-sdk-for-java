@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -72,7 +71,6 @@ public final class BundleType extends ExpandableStringEnum<BundleType> {
      * @param name a name to look for.
      * @return the corresponding BundleType.
      */
-    @JsonCreator
     public static BundleType fromString(String name) {
         return fromString(name, BundleType.class);
     }

@@ -157,7 +157,7 @@ public final class RelationshipsImpl {
      * {@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -167,7 +167,7 @@ public final class RelationshipsImpl {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     end2 (Optional): (recursive schema, see end2 above)
@@ -189,7 +189,7 @@ public final class RelationshipsImpl {
      * {@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -199,7 +199,7 @@ public final class RelationshipsImpl {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     end2 (Optional): (recursive schema, see end2 above)
@@ -239,7 +239,7 @@ public final class RelationshipsImpl {
      * {@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -249,7 +249,7 @@ public final class RelationshipsImpl {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     end2 (Optional): (recursive schema, see end2 above)
@@ -271,7 +271,7 @@ public final class RelationshipsImpl {
      * {@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -281,7 +281,7 @@ public final class RelationshipsImpl {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     end2 (Optional): (recursive schema, see end2 above)
@@ -320,7 +320,7 @@ public final class RelationshipsImpl {
      * {@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -330,7 +330,7 @@ public final class RelationshipsImpl {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     end2 (Optional): (recursive schema, see end2 above)
@@ -352,7 +352,7 @@ public final class RelationshipsImpl {
      * {@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -362,7 +362,7 @@ public final class RelationshipsImpl {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     end2 (Optional): (recursive schema, see end2 above)
@@ -402,7 +402,7 @@ public final class RelationshipsImpl {
      * {@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -412,7 +412,7 @@ public final class RelationshipsImpl {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     end2 (Optional): (recursive schema, see end2 above)
@@ -434,7 +434,7 @@ public final class RelationshipsImpl {
      * {@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -444,7 +444,7 @@ public final class RelationshipsImpl {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     end2 (Optional): (recursive schema, see end2 above)
@@ -492,7 +492,7 @@ public final class RelationshipsImpl {
      *     referredEntities (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -502,7 +502,7 @@ public final class RelationshipsImpl {
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -545,7 +545,7 @@ public final class RelationshipsImpl {
      *     }
      *     relationship (Optional): {
      *         attributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -555,7 +555,7 @@ public final class RelationshipsImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *         end2 (Optional): (recursive schema, see end2 above)
@@ -605,7 +605,7 @@ public final class RelationshipsImpl {
      *     referredEntities (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -615,7 +615,7 @@ public final class RelationshipsImpl {
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -658,7 +658,7 @@ public final class RelationshipsImpl {
      *     }
      *     relationship (Optional): {
      *         attributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -668,7 +668,7 @@ public final class RelationshipsImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *         end2 (Optional): (recursive schema, see end2 above)

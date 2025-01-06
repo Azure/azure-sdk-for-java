@@ -95,11 +95,11 @@ public final class DigitalTwinPropertyMetadata implements JsonSerializable<Digit
                 reader.nextToken();
 
                 if (DigitalTwinsJsonPropertyNames.METADATA_PROPERTY_LAST_UPDATE_TIME.equals(fieldName)) {
-                    metadata.lastUpdatedOn = reader.getNullable(
-                        nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    metadata.lastUpdatedOn
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if (DigitalTwinsJsonPropertyNames.METADATA_PROPERTY_SOURCE_TIME.equals(fieldName)) {
-                    metadata.sourceTime = reader.getNullable(
-                        nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    metadata.sourceTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

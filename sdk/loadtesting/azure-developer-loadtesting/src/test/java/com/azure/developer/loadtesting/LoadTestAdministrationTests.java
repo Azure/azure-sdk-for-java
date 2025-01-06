@@ -67,8 +67,8 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     @Order(1)
     public void createOrUpdateTest() {
         BinaryData body = BinaryData.fromObject(getTestBodyFromDict());
-        Response<BinaryData> response =
-            getLoadTestAdministrationClient().createOrUpdateTestWithResponse(newTestId, body, null);
+        Response<BinaryData> response
+            = getLoadTestAdministrationClient().createOrUpdateTestWithResponse(newTestId, body, null);
 
         assertTrue(Arrays.asList(200, 201).contains(response.getStatusCode()));
     }
@@ -78,9 +78,9 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     public void beginUploadTestFileAdditionalFiles() {
         BinaryData file = getFileBodyFromResource(uploadCsvFileName);
         RequestOptions requestOptions = new RequestOptions().addQueryParam("fileType", "ADDITIONAL_ARTIFACTS");
-        PollResponse<BinaryData> response = getLoadTestAdministrationClient()
-            .beginUploadTestFile(newTestId, uploadCsvFileName, file, requestOptions)
-            .poll();
+        PollResponse<BinaryData> response
+            = getLoadTestAdministrationClient().beginUploadTestFile(newTestId, uploadCsvFileName, file, requestOptions)
+                .poll();
 
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
     }
@@ -90,8 +90,8 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     public void beginUploadTestFileTestScript() {
         BinaryData file = getFileBodyFromResource(uploadJmxFileName);
         RequestOptions fileUploadRequestOptions = new RequestOptions().addQueryParam("fileType", "JMX_FILE");
-        SyncPoller<BinaryData, BinaryData> poller = getLoadTestAdministrationClient()
-            .beginUploadTestFile(newTestId, uploadJmxFileName, file, fileUploadRequestOptions);
+        SyncPoller<BinaryData, BinaryData> poller = getLoadTestAdministrationClient().beginUploadTestFile(newTestId,
+            uploadJmxFileName, file, fileUploadRequestOptions);
         poller = setPlaybackSyncPollerPollInterval(poller);
         PollResponse<BinaryData> response = poller.waitForCompletion();
         BinaryData fileBinary = poller.getFinalResult();
@@ -112,8 +112,8 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     @Order(4)
     public void createOrUpdateAppComponents() {
         BinaryData body = BinaryData.fromObject(getAppComponentBodyFromDict());
-        Response<BinaryData> response = getLoadTestAdministrationClient()
-            .createOrUpdateAppComponentsWithResponse(newTestId, body, null);
+        Response<BinaryData> response
+            = getLoadTestAdministrationClient().createOrUpdateAppComponentsWithResponse(newTestId, body, null);
 
         assertTrue(Arrays.asList(200, 201).contains(response.getStatusCode()));
     }
@@ -122,8 +122,8 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     @Order(5)
     public void createOrUpdateServerMetricsConfig() {
         BinaryData body = BinaryData.fromObject(getServerMetricsBodyFromDict());
-        Response<BinaryData> response = getLoadTestAdministrationClient()
-            .createOrUpdateServerMetricsConfigWithResponse(newTestId, body, null);
+        Response<BinaryData> response
+            = getLoadTestAdministrationClient().createOrUpdateServerMetricsConfigWithResponse(newTestId, body, null);
 
         assertTrue(Arrays.asList(200, 201).contains(response.getStatusCode()));
     }
@@ -133,8 +133,8 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     @Test
     @Order(6)
     public void getTestFile() {
-        Response<BinaryData> response = getLoadTestAdministrationClient()
-            .getTestFileWithResponse(newTestId, uploadJmxFileName, null);
+        Response<BinaryData> response
+            = getLoadTestAdministrationClient().getTestFileWithResponse(newTestId, uploadJmxFileName, null);
 
         assertEquals(200, response.getStatusCode());
 
@@ -178,11 +178,11 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
 
             assertTrue(components.containsKey(defaultAppComponentResourceId));
 
-            Map<String, Object> appComponentResource =
-                (Map<String, Object>) components.get(defaultAppComponentResourceId);
+            Map<String, Object> appComponentResource
+                = (Map<String, Object>) components.get(defaultAppComponentResourceId);
 
-            assertTrue(defaultAppComponentResourceId
-                .equalsIgnoreCase(appComponentResource.get("resourceId").toString()));
+            assertTrue(
+                defaultAppComponentResourceId.equalsIgnoreCase(appComponentResource.get("resourceId").toString()));
         } catch (IOException e) {
             fail("Encountered exception while reading test data", e);
         }
@@ -192,8 +192,8 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     @Test
     @Order(9)
     public void getServerMetricsConfig() {
-        Response<BinaryData> response = getLoadTestAdministrationClient()
-            .getServerMetricsConfigWithResponse(newTestId, null);
+        Response<BinaryData> response
+            = getLoadTestAdministrationClient().getServerMetricsConfigWithResponse(newTestId, null);
 
         assertEquals(200, response.getStatusCode());
 
@@ -203,8 +203,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
 
             assertTrue(components.containsKey(defaultServerMetricId));
 
-            Map<String, Object> appComponentResource =
-                (Map<String, Object>) components.get(defaultServerMetricId);
+            Map<String, Object> appComponentResource = (Map<String, Object>) components.get(defaultServerMetricId);
 
             assertTrue(defaultServerMetricId.equalsIgnoreCase(appComponentResource.get("id").toString()));
         } catch (IOException e) {

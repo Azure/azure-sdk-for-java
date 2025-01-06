@@ -24,9 +24,13 @@ public final class RecoveryPointInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryPointInner model = new RecoveryPointInner().withProperties(new RecoveryPointProperties()
-            .withRecoveryPointTime(OffsetDateTime.parse("2021-05-29T05:16:16Z")).withRecoveryPointType("umvfclu")
-            .withProviderSpecificDetails(new ProviderSpecificRecoveryPointDetails())).withLocation("wxnb");
+        RecoveryPointInner model
+            = new RecoveryPointInner()
+                .withProperties(
+                    new RecoveryPointProperties().withRecoveryPointTime(OffsetDateTime.parse("2021-05-29T05:16:16Z"))
+                        .withRecoveryPointType("umvfclu")
+                        .withProviderSpecificDetails(new ProviderSpecificRecoveryPointDetails()))
+                .withLocation("wxnb");
         model = BinaryData.fromObject(model).toObject(RecoveryPointInner.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-05-29T05:16:16Z"), model.properties().recoveryPointTime());
         Assertions.assertEquals("umvfclu", model.properties().recoveryPointType());

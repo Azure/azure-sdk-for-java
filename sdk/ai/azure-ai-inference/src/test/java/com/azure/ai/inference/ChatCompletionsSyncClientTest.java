@@ -10,11 +10,11 @@ import com.azure.ai.inference.models.ChatMessageContentItem;
 import com.azure.ai.inference.models.ChatMessageImageContentItem;
 import com.azure.ai.inference.models.ChatMessageImageUrl;
 import com.azure.ai.inference.models.ChatMessageTextContentItem;
-import com.azure.ai.inference.models.ChatRequestMessage;
 import com.azure.ai.inference.models.ChatRequestAssistantMessage;
-import com.azure.ai.inference.models.ChatRequestUserMessage;
+import com.azure.ai.inference.models.ChatRequestMessage;
 import com.azure.ai.inference.models.ChatRequestSystemMessage;
 import com.azure.ai.inference.models.ChatRequestToolMessage;
+import com.azure.ai.inference.models.ChatRequestUserMessage;
 import com.azure.ai.inference.models.CompletionsFinishReason;
 import com.azure.ai.inference.models.CompletionsUsage;
 import com.azure.ai.inference.models.FunctionCall;
@@ -23,17 +23,26 @@ import com.azure.ai.inference.models.StreamingChatChoiceUpdate;
 import com.azure.ai.inference.models.StreamingChatCompletionsUpdate;
 import com.azure.ai.inference.models.StreamingChatResponseToolCallUpdate;
 import com.azure.core.http.HttpClient;
-
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import io.opentelemetry.api.common.Attributes;
+import io.opentelemetry.context.Context;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.trace.ReadWriteSpan;
+import io.opentelemetry.sdk.trace.ReadableSpan;
+import io.opentelemetry.sdk.trace.SdkTracerProvider;
+import io.opentelemetry.sdk.trace.SpanProcessor;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -43,26 +52,54 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.stream.Collectors;
 
+import static com.azure.ai.inference.ChatCompletionClientTracerTest.assertCapturedChatEvents;
+import static com.azure.ai.inference.ChatCompletionClientTracerTest.assertChatSpanRequestAttributes;
+import static com.azure.ai.inference.ChatCompletionClientTracerTest.assertChatSpanResponseAttributes;
+import static com.azure.ai.inference.ChatCompletionClientTracerTest.assertNoChatEventsCaptured;
+import static com.azure.ai.inference.ChatCompletionClientTracerTest.getChatSpan;
 import static com.azure.ai.inference.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
-import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase {
     private ChatCompletionsClient client;
     private static final String FUNCTION_NAME = "FutureTemperature";
     private static final String FUNCTION_RETURN = "-7";
-    private static final String TEST_URL =
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg";
+    private static final String TEST_URL
+        = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg";
     private static final String TEST_IMAGE_PATH = "./src/samples/resources/sample-images/sample.png";
     private static final String TEST_IMAGE_FORMAT = "png";
 
-    private ChatCompletionsClient getChatCompletionsClient(HttpClient httpClient) {
+    private ChatCompletionsClientBuilder getBuilder(HttpClient httpClient) {
         return getChatCompletionsClientBuilder(
-            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
-            .buildClient();
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
+    }
+
+    private ChatCompletionsClient getChatCompletionsClient(HttpClient httpClient) {
+        return getBuilder(httpClient).buildClient();
+    }
+
+    private ChatCompletionsClient getChatCompletionsClientWithTracing(HttpClient httpClient,
+        SpanProcessor spanProcessor, boolean captureContent) {
+        final OpenTelemetryTracingOptions tracingOptions
+            = new OpenTelemetryTracingOptions().setOpenTelemetry(OpenTelemetrySdk.builder()
+                .setTracerProvider(SdkTracerProvider.builder().addSpanProcessor(spanProcessor).build())
+                .build());
+        final ChatCompletionsClientBuilder builder
+            = getBuilder(httpClient).clientOptions(new ClientOptions().setTracingOptions(tracingOptions));
+        if (captureContent) {
+            final Configuration configuration
+                = new ConfigurationBuilder().putProperty("azure.tracing.gen_ai.content_recording_enabled", "true")
+                    .build();
+            return builder.configuration(configuration).buildClient();
+        } else {
+            return builder.buildClient();
+        }
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -82,7 +119,8 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
         getChatCompletionsRunner((prompt) -> {
             List<ChatRequestMessage> chatMessages = new ArrayList<>();
             chatMessages.add(new ChatRequestUserMessage(prompt));
-            IterableStream<StreamingChatCompletionsUpdate> resultCompletions = client.completeStream(new ChatCompletionsOptions(chatMessages));
+            IterableStream<StreamingChatCompletionsUpdate> resultCompletions
+                = client.completeStream(new ChatCompletionsOptions(chatMessages));
             assertTrue(resultCompletions.stream().toArray().length > 1);
             resultCompletions.forEach(ChatCompletionsClientTestBase::assertCompletionsStream);
         });
@@ -103,8 +141,8 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
     public void testGetCompletionsWithResponse(HttpClient httpClient) {
         client = getChatCompletionsClient(httpClient);
         getChatCompletionsFromOptionsRunner((options) -> {
-            Response<BinaryData> binaryDataResponse = client.completeWithResponse(
-                BinaryData.fromObject(options), new RequestOptions());
+            Response<BinaryData> binaryDataResponse
+                = client.completeWithResponse(BinaryData.fromObject(options), new RequestOptions());
             ChatCompletions response = binaryDataResponse.getValue().toObject(ChatCompletions.class);
             assertCompletions(1, response);
         });
@@ -161,8 +199,7 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
         client = getChatCompletionsClient(httpClient);
         List<ChatMessageContentItem> contentItems = new ArrayList<>();
         contentItems.add(new ChatMessageTextContentItem("Describe the image."));
-        contentItems.add(new ChatMessageImageContentItem(
-            new ChatMessageImageUrl(TEST_URL)));
+        contentItems.add(new ChatMessageImageContentItem(new ChatMessageImageUrl(TEST_URL)));
 
         List<ChatRequestMessage> chatMessages = new ArrayList<>();
         chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant."));
@@ -180,16 +217,16 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
         String location = "Berlin";
         List<ChatRequestMessage> chatMessages = Arrays.asList(
             new ChatRequestSystemMessage("You are a helpful assistant."),
-            new ChatRequestUserMessage(String.format("What sort of clothing should I wear today in %s?", location))
-        );
+            new ChatRequestUserMessage(String.format("What sort of clothing should I wear today in %s?", location)));
 
-        ChatCompletionsFunctionToolDefinition toolDefinition = new ChatCompletionsFunctionToolDefinition(
-            getFutureTemperatureFunctionDefinition());
+        ChatCompletionsFunctionToolDefinition toolDefinition
+            = new ChatCompletionsFunctionToolDefinition(getFutureTemperatureFunctionDefinition());
 
         ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatMessages);
         chatCompletionsOptions.setTools(Arrays.asList(toolDefinition));
 
-        IterableStream<StreamingChatCompletionsUpdate> chatCompletionsStream = client.completeStream(chatCompletionsOptions);
+        IterableStream<StreamingChatCompletionsUpdate> chatCompletionsStream
+            = client.completeStream(chatCompletionsOptions);
 
         String toolCallId = null;
         String functionName = null;
@@ -203,7 +240,7 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
             StreamingChatChoiceUpdate choice = chatCompletions.getChoice();
             if (choice.getFinishReason() != null) {
                 finishReason = choice.getFinishReason();
-                assertSame(finishReason, CompletionsFinishReason.TOOL_CALLS);
+                assertSame(CompletionsFinishReason.TOOL_CALLS, finishReason);
             }
             List<StreamingChatResponseToolCallUpdate> toolCalls = choice.getDelta().getToolCalls();
             // We take the functionName when it's available, and we aggregate the arguments.
@@ -239,12 +276,14 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
             // - The tool call id
             // - The function description
             FunctionCall functionCall = new FunctionCall(functionName, functionArguments.toString());
-            ChatCompletionsFunctionToolCall functionToolCall = new ChatCompletionsFunctionToolCall(toolCallId, functionCall);
+            ChatCompletionsFunctionToolCall functionToolCall
+                = new ChatCompletionsFunctionToolCall(toolCallId, functionCall);
             ChatRequestAssistantMessage assistantRequestMessage = new ChatRequestAssistantMessage("");
             assistantRequestMessage.setToolCalls(Arrays.asList(functionToolCall));
 
             // As an additional step, you may want to deserialize the parameters, so you can call your function
-            FunctionArguments parameters = BinaryData.fromString(functionArguments.toString()).toObject(FunctionArguments.class);
+            FunctionArguments parameters
+                = BinaryData.fromString(functionArguments.toString()).toObject(FunctionArguments.class);
             assertTrue(parameters.locationName.contentEquals(location));
             String functionCallResult = futureTemperature(parameters.locationName, parameters.date);
 
@@ -252,17 +291,13 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
             ChatRequestToolMessage toolRequestMessage = new ChatRequestToolMessage(functionCallResult, toolCallId);
             List<ChatRequestMessage> followUpMessages = Arrays.asList(
                 // We add the original messages from the request
-                chatMessages.get(0),
-                chatMessages.get(1),
-                assistantRequestMessage,
-                toolRequestMessage
-            );
+                chatMessages.get(0), chatMessages.get(1), assistantRequestMessage, toolRequestMessage);
 
-            IterableStream<StreamingChatCompletionsUpdate> followUpChatCompletionsStream = client.completeStream(
-                new ChatCompletionsOptions(followUpMessages));
+            IterableStream<StreamingChatCompletionsUpdate> followUpChatCompletionsStream
+                = client.completeStream(new ChatCompletionsOptions(followUpMessages));
 
             StringBuilder finalResult = new StringBuilder();
-            CompletionsFinishReason finalFinishReason = null;
+            CompletionsFinishReason finalFinishReason;
             for (StreamingChatCompletionsUpdate chatCompletions : followUpChatCompletionsStream) {
                 if (chatCompletions.getChoices().isEmpty()) {
                     continue;
@@ -270,7 +305,7 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
                 StreamingChatChoiceUpdate choice = chatCompletions.getChoice();
                 if (choice.getFinishReason() != null) {
                     finalFinishReason = choice.getFinishReason();
-                    assertSame(finalFinishReason, CompletionsFinishReason.STOPPED);
+                    assertSame(CompletionsFinishReason.STOPPED, finalFinishReason);
                 }
                 if (choice.getDelta().getContent() != null) {
                     finalResult.append(choice.getDelta().getContent());
@@ -278,6 +313,40 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
             }
             assertTrue(finalResult.toString().contains(FUNCTION_RETURN));
         }
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.inference.TestUtils#getTestParameters")
+    public void testGetCompletionsWithTracing(HttpClient httpClient) {
+        final TestSpanProcessor spanProcessor = new TestSpanProcessor();
+        client = getChatCompletionsClientWithTracing(httpClient, spanProcessor, false);
+        getChatCompletionsFromOptionsRunner((options) -> {
+            final ChatCompletions completions = client.complete(options);
+            assertCompletions(1, completions);
+            final List<ReadableSpan> spans = spanProcessor.getEndedSpans();
+            final ReadableSpan chatSpan = getChatSpan(spans, options);
+            final Attributes chatAttributes = chatSpan.getAttributes();
+            assertChatSpanRequestAttributes(chatAttributes, options);
+            assertNoChatEventsCaptured(chatSpan);
+            assertChatSpanResponseAttributes(chatAttributes, completions);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.inference.TestUtils#getTestParameters")
+    public void testGetCompletionsWithTracingCapturingContent(HttpClient httpClient) {
+        final TestSpanProcessor spanProcessor = new TestSpanProcessor();
+        client = getChatCompletionsClientWithTracing(httpClient, spanProcessor, true);
+        getChatCompletionsFromOptionsRunner((options) -> {
+            final ChatCompletions completions = client.complete(options);
+            assertCompletions(1, completions);
+            final List<ReadableSpan> spans = spanProcessor.getEndedSpans();
+            final ReadableSpan chatSpan = getChatSpan(spans, options);
+            final Attributes chatAttributes = chatSpan.getAttributes();
+            assertChatSpanRequestAttributes(chatAttributes, options);
+            assertCapturedChatEvents(chatSpan, options.getMessages());
+            assertChatSpanResponseAttributes(chatAttributes, completions);
+        });
     }
 
     private static String futureTemperature(String locationName, String data) {
@@ -293,13 +362,10 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
     }
 
     public static final class FunctionArguments implements JsonSerializable<FunctionArguments> {
-        @JsonProperty(value = "location_name")
-        private String locationName;
+        private final String locationName;
+        private final String date;
 
-        @JsonProperty(value = "date")
-        private String date;
-
-        private FunctionArguments(String location,  String date) {
+        private FunctionArguments(String location, String date) {
             this.locationName = location;
             this.date = date;
         }
@@ -333,11 +399,8 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
     }
 
     private static final class FutureTemperatureParameters implements JsonSerializable<FutureTemperatureParameters> {
-        @JsonProperty(value = "type")
-        private String type = "object";
-
-        @JsonProperty(value = "properties")
-        private FutureTemperatureProperties properties;
+        private final String type;
+        private final FutureTemperatureProperties properties;
 
         private FutureTemperatureParameters() {
             this.type = "object";
@@ -352,7 +415,7 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
         @Override
         public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
             jsonWriter.writeStartObject();
-            jsonWriter.writeStringField("type", this.type == null ? null : this.type);
+            jsonWriter.writeStringField("type", this.type);
             jsonWriter.writeJsonField("properties", this.properties);
             return jsonWriter.writeEndObject();
         }
@@ -378,22 +441,14 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
     }
 
     private static final class FutureTemperatureProperties implements JsonSerializable<FutureTemperatureProperties> {
-        private String unitString = "Temperature unit. Can be either Celsius or Fahrenheit. Defaults to Celsius.";
-        @JsonProperty(value = "unit")
-        StringField unit = new StringField(unitString);
-
-        private String locationString = "The name of the location to get the future temperature for.";
-        @JsonProperty(value = "location_name")
-        StringField locationName = new StringField(locationString);
-
-        private String dateString = "The date to get the future temperature for. The format is YYYY-MM-DD.";
-        @JsonProperty(value = "date")
-        StringField date = new StringField(dateString);
+        StringField unit;
+        StringField locationName;
+        StringField date;
 
         private FutureTemperatureProperties() {
-            this.unit = new StringField(unitString);
-            this.locationName = new StringField(locationString);
-            this.date = new StringField(dateString);
+            this.unit = new StringField("Temperature unit. Can be either Celsius or Fahrenheit. Defaults to Celsius.");
+            this.locationName = new StringField("The name of the location to get the future temperature for.");
+            this.date = new StringField("The date to get the future temperature for. The format is YYYY-MM-DD.");
         }
 
         private FutureTemperatureProperties(StringField unit, StringField locationName, StringField date) {
@@ -435,21 +490,16 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
     }
 
     private static class StringField implements JsonSerializable<StringField> {
-        @JsonProperty(value = "type")
-        private final String type = "string";
+        private final String description;
 
-        @JsonProperty(value = "description")
-        private String description;
-
-        @JsonCreator
-        StringField(@JsonProperty(value = "description") String description) {
+        StringField(String description) {
             this.description = description;
         }
 
         @Override
         public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
             jsonWriter.writeStartObject();
-            jsonWriter.writeStringField("type", this.type);
+            jsonWriter.writeStringField("type", "string");
             jsonWriter.writeStringField("description", this.description);
             return jsonWriter.writeEndObject();
         }
@@ -471,5 +521,38 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
         }
 
     }
-}
 
+    private static final class TestSpanProcessor implements SpanProcessor {
+
+        private final ClientLogger logger;
+        private final ConcurrentLinkedDeque<ReadableSpan> spans = new ConcurrentLinkedDeque<>();
+
+        TestSpanProcessor() {
+            this.logger = new ClientLogger(TestSpanProcessor.class);
+        }
+
+        public List<ReadableSpan> getEndedSpans() {
+            return spans.stream().collect(Collectors.toList());
+        }
+
+        @Override
+        public void onStart(Context context, ReadWriteSpan readWriteSpan) {
+        }
+
+        @Override
+        public boolean isStartRequired() {
+            return false;
+        }
+
+        @Override
+        public void onEnd(ReadableSpan readableSpan) {
+            logger.info(readableSpan.toString());
+            spans.add(readableSpan);
+        }
+
+        @Override
+        public boolean isEndRequired() {
+            return true;
+        }
+    }
+}

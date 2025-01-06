@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkPacketBrokerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkPacketBrokerProperties model =
-            BinaryData
-                .fromString(
-                    "{\"networkFabricId\":\"ujqbbgsimwejl\",\"networkDeviceIds\":[\"bpjzobdwbcpraswk\",\"hydt\",\"aczkf\",\"fatgawphnski\"],\"sourceInterfaceIds\":[\"gtqcumecsaaqgoq\",\"diuycsbskowkrbhz\"],\"networkTapIds\":[\"k\",\"tmqowiuasfgqg\",\"cyhfaimqvdru\"],\"neighborGroupIds\":[\"gyfpeoehgfmqmsk\",\"ixvlz\",\"xplhpeva\",\"yntvzjyielbq\"],\"provisioningState\":\"Deleting\"}")
-                .toObject(NetworkPacketBrokerProperties.class);
-        Assertions.assertEquals("ujqbbgsimwejl", model.networkFabricId());
+        NetworkPacketBrokerProperties model = BinaryData.fromString(
+            "{\"networkFabricId\":\"caddtgc\",\"networkDeviceIds\":[\"gtvgwyu\",\"be\",\"fnzzryizwbxg\"],\"sourceInterfaceIds\":[\"xlayunomir\",\"p\",\"abenqlamwmg\",\"way\"],\"networkTapIds\":[\"nbcpjstbhemhcucs\",\"snxfbxu\",\"eapdrbzyv\"],\"neighborGroupIds\":[\"adulpodkaxp\",\"obkzhmhjdqltdel\",\"qrojadhfztlray\",\"rkgzkyhudbkuw\"],\"provisioningState\":\"Succeeded\"}")
+            .toObject(NetworkPacketBrokerProperties.class);
+        Assertions.assertEquals("caddtgc", model.networkFabricId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkPacketBrokerProperties model = new NetworkPacketBrokerProperties().withNetworkFabricId("ujqbbgsimwejl");
+        NetworkPacketBrokerProperties model = new NetworkPacketBrokerProperties().withNetworkFabricId("caddtgc");
         model = BinaryData.fromObject(model).toObject(NetworkPacketBrokerProperties.class);
-        Assertions.assertEquals("ujqbbgsimwejl", model.networkFabricId());
+        Assertions.assertEquals("caddtgc", model.networkFabricId());
     }
 }

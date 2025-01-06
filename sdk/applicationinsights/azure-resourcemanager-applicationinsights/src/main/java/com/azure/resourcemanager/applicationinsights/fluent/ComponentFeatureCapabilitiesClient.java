@@ -10,11 +10,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.applicationinsights.fluent.models.ApplicationInsightsComponentFeatureCapabilitiesInner;
 
-/** An instance of this class provides access to all the operations defined in ComponentFeatureCapabilitiesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ComponentFeatureCapabilitiesClient.
+ */
 public interface ComponentFeatureCapabilitiesClient {
     /**
      * Returns feature capabilities of the application insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param context The context to associate with this operation.
@@ -24,12 +26,12 @@ public interface ComponentFeatureCapabilitiesClient {
      * @return an Application Insights component feature capabilities along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationInsightsComponentFeatureCapabilitiesInner> getWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<ApplicationInsightsComponentFeatureCapabilitiesInner> getWithResponse(String resourceGroupName,
+        String resourceName, Context context);
 
     /**
      * Returns feature capabilities of the application insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

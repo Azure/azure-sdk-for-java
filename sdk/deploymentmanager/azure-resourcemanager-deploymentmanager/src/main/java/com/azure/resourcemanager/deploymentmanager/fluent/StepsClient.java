@@ -28,8 +28,8 @@ public interface StepsClient {
      * @return the resource representation of a rollout step along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StepResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName, String stepName, StepResourceInner stepInfo, Context context);
+    Response<StepResourceInner> createOrUpdateWithResponse(String resourceGroupName, String stepName,
+        StepResourceInner stepInfo, Context context);
 
     /**
      * Creates or updates a rollout step with the given step properties.
@@ -58,8 +58,8 @@ public interface StepsClient {
      * @return the step along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StepResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String stepName, Context context);
+    Response<StepResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String stepName,
+        Context context);
 
     /**
      * Gets the step.

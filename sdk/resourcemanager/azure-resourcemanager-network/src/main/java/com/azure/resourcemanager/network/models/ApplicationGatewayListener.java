@@ -11,15 +11,9 @@ import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 
 /** A client-side representation of an application gateway's HTTP listener. */
 @Fluent()
-public interface ApplicationGatewayListener
-    extends HasInnerModel<ApplicationGatewayHttpListener>,
-        ChildResource<ApplicationGateway>,
-        HasSslCertificate<ApplicationGatewaySslCertificate>,
-        HasPublicIpAddress,
-        HasProtocol<ApplicationGatewayProtocol>,
-        HasHostname,
-        HasServerNameIndication,
-        HasSubnet {
+public interface ApplicationGatewayListener extends HasInnerModel<ApplicationGatewayHttpListener>,
+    ChildResource<ApplicationGateway>, HasSslCertificate<ApplicationGatewaySslCertificate>, HasPublicIpAddress,
+    HasProtocol<ApplicationGatewayProtocol>, HasHostname, HasServerNameIndication, HasSubnet {
 
     /** @return the frontend IP configuration this listener is associated with. */
     ApplicationGatewayFrontend frontend();
@@ -50,11 +44,8 @@ public interface ApplicationGatewayListener
          * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this
          *     definition
          */
-        interface WithAttach<ParentT>
-            extends Attachable.InDefinition<ParentT>,
-                WithProtocol<ParentT>,
-                WithHostname<ParentT>,
-                WithServerNameIndication<ParentT> {
+        interface WithAttach<ParentT> extends Attachable.InDefinition<ParentT>, WithProtocol<ParentT>,
+            WithHostname<ParentT>, WithServerNameIndication<ParentT> {
         }
 
         /**
@@ -186,14 +177,10 @@ public interface ApplicationGatewayListener
      * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this
      *     definition
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithAttach<ParentT>,
-            DefinitionStages.WithFrontend<ParentT>,
-            DefinitionStages.WithFrontendPort<ParentT>,
-            DefinitionStages.WithSslCertificate<ParentT>,
-            DefinitionStages.WithSslPassword<ParentT>,
-            DefinitionStages.WithHostname<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithAttach<ParentT>,
+        DefinitionStages.WithFrontend<ParentT>, DefinitionStages.WithFrontendPort<ParentT>,
+        DefinitionStages.WithSslCertificate<ParentT>, DefinitionStages.WithSslPassword<ParentT>,
+        DefinitionStages.WithHostname<ParentT> {
     }
 
     /** Grouping of application gateway HTTP listener update stages. */
@@ -297,15 +284,9 @@ public interface ApplicationGatewayListener
     }
 
     /** The entirety of an application gateway HTTP listener update as part of an application gateway update. */
-    interface Update
-        extends Settable<ApplicationGateway.Update>,
-            UpdateStages.WithServerNameIndication,
-            UpdateStages.WithHostname,
-            UpdateStages.WithProtocol,
-            UpdateStages.WithSslCertificate,
-            UpdateStages.WithSslPassword,
-            UpdateStages.WithFrontendPort,
-            UpdateStages.WithFrontend {
+    interface Update extends Settable<ApplicationGateway.Update>, UpdateStages.WithServerNameIndication,
+        UpdateStages.WithHostname, UpdateStages.WithProtocol, UpdateStages.WithSslCertificate,
+        UpdateStages.WithSslPassword, UpdateStages.WithFrontendPort, UpdateStages.WithFrontend {
     }
 
     /**
@@ -454,10 +435,8 @@ public interface ApplicationGatewayListener
          *     definition
          */
         interface WithAttach<ParentT>
-            extends Attachable.InUpdate<ParentT>,
-                UpdateDefinitionStages.WithServerNameIndication<ParentT>,
-                UpdateDefinitionStages.WithHostname<ParentT>,
-                UpdateDefinitionStages.WithProtocol<ParentT> {
+            extends Attachable.InUpdate<ParentT>, UpdateDefinitionStages.WithServerNameIndication<ParentT>,
+            UpdateDefinitionStages.WithHostname<ParentT>, UpdateDefinitionStages.WithProtocol<ParentT> {
         }
     }
 
@@ -468,11 +447,8 @@ public interface ApplicationGatewayListener
      *     definition
      */
     interface UpdateDefinition<ParentT>
-        extends UpdateDefinitionStages.Blank<ParentT>,
-            UpdateDefinitionStages.WithFrontend<ParentT>,
-            UpdateDefinitionStages.WithFrontendPort<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT>,
-            UpdateDefinitionStages.WithSslCertificate<ParentT>,
-            UpdateDefinitionStages.WithSslPassword<ParentT> {
+        extends UpdateDefinitionStages.Blank<ParentT>, UpdateDefinitionStages.WithFrontend<ParentT>,
+        UpdateDefinitionStages.WithFrontendPort<ParentT>, UpdateDefinitionStages.WithAttach<ParentT>,
+        UpdateDefinitionStages.WithSslCertificate<ParentT>, UpdateDefinitionStages.WithSslPassword<ParentT> {
     }
 }

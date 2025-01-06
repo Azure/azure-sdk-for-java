@@ -11,7 +11,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 @Fluent
 public interface ApplicationGatewayBackendServerHealth
     extends HasInnerModel<ApplicationGatewayBackendHealthServerInner>,
-        HasParent<ApplicationGatewayBackendHttpConfigurationHealth> {
+    HasParent<ApplicationGatewayBackendHttpConfigurationHealth> {
 
     /** @return IP address of the server this health information pertains to */
     String ipAddress();

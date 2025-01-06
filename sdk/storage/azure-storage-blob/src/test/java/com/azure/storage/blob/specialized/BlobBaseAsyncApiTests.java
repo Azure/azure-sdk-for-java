@@ -109,16 +109,16 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
-    @ValueSource(ints = {
-        1, // 32 bytes
-        32,  // 1 KB
-        256, // 8 KB
-        400, // 12 ish KB
-        4000,  // 125 KB
-    })
+    @ValueSource(
+        ints = {
+            1, // 32 bytes
+            32,  // 1 KB
+            256, // 8 KB
+            400, // 12 ish KB
+            4000,  // 125 KB
+        })
     public void queryMin(int numCopies) {
-        BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
-            .setRecordSeparator('\n')
+        BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization().setRecordSeparator('\n')
             .setColumnSeparator(',')
             .setEscapeChar('\0')
             .setFieldQuote('\0')
@@ -127,9 +127,9 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
         liveTestScenarioWithRetry(() -> {
             String expression = "SELECT * from BlobStorage";
 
-            Mono<Tuple2<byte[], byte[]>> response = uploadCsv(ser, numCopies)
-                .then(Mono.zip(FluxUtil.collectBytesInByteBufferStream(bc.downloadStream()),
-                FluxUtil.collectBytesInByteBufferStream(bc.query(expression))));
+            Mono<Tuple2<byte[], byte[]>> response
+                = uploadCsv(ser, numCopies).then(Mono.zip(FluxUtil.collectBytesInByteBufferStream(bc.downloadStream()),
+                    FluxUtil.collectBytesInByteBufferStream(bc.query(expression))));
 
             StepVerifier.create(response)
                 .assertNext(r -> TestUtils.assertArraysEqual(r.getT1(), r.getT2()))
@@ -141,85 +141,73 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("queryCsvSerializationSeparatorSupplier")
     public void queryCsvSerializationSeparator(char recordSeparator, char columnSeparator, boolean headersPresentIn,
-                                               boolean headersPresentOut) {
-        BlobQueryDelimitedSerialization serIn = new BlobQueryDelimitedSerialization()
-            .setRecordSeparator(recordSeparator)
-            .setColumnSeparator(columnSeparator)
-            .setEscapeChar('\0')
-            .setFieldQuote('\0')
-            .setHeadersPresent(headersPresentIn);
-        BlobQueryDelimitedSerialization serOut = new BlobQueryDelimitedSerialization()
-            .setRecordSeparator(recordSeparator)
-            .setColumnSeparator(columnSeparator)
-            .setEscapeChar('\0')
-            .setFieldQuote('\0')
-            .setHeadersPresent(headersPresentOut);
+        boolean headersPresentOut) {
+        BlobQueryDelimitedSerialization serIn
+            = new BlobQueryDelimitedSerialization().setRecordSeparator(recordSeparator)
+                .setColumnSeparator(columnSeparator)
+                .setEscapeChar('\0')
+                .setFieldQuote('\0')
+                .setHeadersPresent(headersPresentIn);
+        BlobQueryDelimitedSerialization serOut
+            = new BlobQueryDelimitedSerialization().setRecordSeparator(recordSeparator)
+                .setColumnSeparator(columnSeparator)
+                .setEscapeChar('\0')
+                .setFieldQuote('\0')
+                .setHeadersPresent(headersPresentOut);
         String expression = "SELECT * from BlobStorage";
 
         liveTestScenarioWithRetry(() -> {
-            Mono<Tuple2<byte[], byte[]>> response = uploadCsv(serIn, 32)
-                .then(Mono.zip(FluxUtil.collectBytesInByteBufferStream(bc.downloadStream()),
-                    bc.queryWithResponse(new BlobQueryOptions(expression).setInputSerialization(serIn)
-                        .setOutputSerialization(serOut))
+            Mono<Tuple2<byte[], byte[]>> response
+                = uploadCsv(serIn, 32).then(Mono.zip(FluxUtil.collectBytesInByteBufferStream(bc.downloadStream()),
+                    bc.queryWithResponse(
+                        new BlobQueryOptions(expression).setInputSerialization(serIn).setOutputSerialization(serOut))
                         .flatMap(piece -> FluxUtil.collectBytesInByteBufferStream(piece.getValue()))));
 
             /* Output Stream. */
-            StepVerifier.create(response)
-                .assertNext(r -> {
-                    if (headersPresentIn && !headersPresentOut) {
-                        assertEquals(r.getT1().length - 16, r.getT2().length);
+            StepVerifier.create(response).assertNext(r -> {
+                if (headersPresentIn && !headersPresentOut) {
+                    assertEquals(r.getT1().length - 16, r.getT2().length);
 
-                        /* Account for 16 bytes of header. */
-                        TestUtils.assertArraysEqual(r.getT1(), 16, r.getT2(), 0,
-                            r.getT1().length - 16);
-                    } else {
-                        TestUtils.assertArraysEqual(r.getT1(), r.getT2());
-                    }
-                })
-                .verifyComplete();
+                    /* Account for 16 bytes of header. */
+                    TestUtils.assertArraysEqual(r.getT1(), 16, r.getT2(), 0, r.getT1().length - 16);
+                } else {
+                    TestUtils.assertArraysEqual(r.getT1(), r.getT2());
+                }
+            }).verifyComplete();
         });
     }
 
     private static Stream<Arguments> queryCsvSerializationSeparatorSupplier() {
-        return Stream.of(
-            Arguments.of('\n', ',', false, false), /* Default. */
+        return Stream.of(Arguments.of('\n', ',', false, false), /* Default. */
             Arguments.of('\n', ',', true, true), /* Headers. */
             Arguments.of('\n', ',', true, false), /* Headers. */
             Arguments.of('\t', ',', false, false), /* Record separator. */
-            Arguments.of('\r', ',', false, false),
-            Arguments.of('<', ',', false, false),
-            Arguments.of('>', ',', false, false),
-            Arguments.of('&', ',', false, false),
-            Arguments.of('\\', ',', false, false),
-            Arguments.of(',', '.', false, false), /* Column separator. */
-//            Arguments.of(',', '\n', false, false), /* Keep getting a qq error: Field delimiter and record delimiter must be different characters. */
-            Arguments.of(',', ';', false, false),
-            Arguments.of('\n', '\t', false, false), /* Record separator. */
-//            Arguments.of('\n', '\r', false, false), /* Keep getting a qq error: Field delimiter and record delimiter must be different characters. */
-            Arguments.of('\n', '<', false, false),
-            Arguments.of('\n', '>', false, false),
-            Arguments.of('\n', '&', false, false),
-            Arguments.of('\n', '\\', false, false)
-        );
+            Arguments.of('\r', ',', false, false), Arguments.of('<', ',', false, false),
+            Arguments.of('>', ',', false, false), Arguments.of('&', ',', false, false),
+            Arguments.of('\\', ',', false, false), Arguments.of(',', '.', false, false), /* Column separator. */
+            //            Arguments.of(',', '\n', false, false), /* Keep getting a qq error: Field delimiter and record delimiter must be different characters. */
+            Arguments.of(',', ';', false, false), Arguments.of('\n', '\t', false, false), /* Record separator. */
+            //            Arguments.of('\n', '\r', false, false), /* Keep getting a qq error: Field delimiter and record delimiter must be different characters. */
+            Arguments.of('\n', '<', false, false), Arguments.of('\n', '>', false, false),
+            Arguments.of('\n', '&', false, false), Arguments.of('\n', '\\', false, false));
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void queryCsvSerializationEscapeAndFieldQuote() {
-        BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
-            .setRecordSeparator('\n')
+        BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization().setRecordSeparator('\n')
             .setColumnSeparator(',')
             .setEscapeChar('\\') /* Escape set here. */
-            .setFieldQuote('"')  /* Field quote set here*/
+            .setFieldQuote('"') /* Field quote set here*/
             .setHeadersPresent(false);
         String expression = "SELECT * from BlobStorage";
 
         liveTestScenarioWithRetry(() -> {
-            Mono<Tuple2<byte[], byte[]>> response = uploadCsv(ser, 32)
-                .then(Mono.zip(FluxUtil.collectBytesInByteBufferStream(bc.downloadStream()),
-                bc.queryWithResponse(new BlobQueryOptions(expression)
-                    .setInputSerialization(ser).setOutputSerialization(ser))
-                .flatMap(piece -> FluxUtil.collectBytesInByteBufferStream(piece.getValue()))));
+            Mono<Tuple2<byte[], byte[]>> response
+                = uploadCsv(ser, 32).then(Mono.zip(FluxUtil.collectBytesInByteBufferStream(bc.downloadStream()),
+                    bc.queryWithResponse(
+                        new BlobQueryOptions(expression).setInputSerialization(ser).setOutputSerialization(ser))
+                        .flatMap(piece -> FluxUtil.collectBytesInByteBufferStream(piece.getValue()))));
 
             StepVerifier.create(response)
                 .assertNext(r -> TestUtils.assertArraysEqual(r.getT1(), r.getT2()))
@@ -230,28 +218,26 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
     /* Note: Input delimited tested everywhere */
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
-    @ValueSource(ints = {1, 10, 100, 1000})
+    @ValueSource(ints = { 1, 10, 100, 1000 })
     public void queryInputJson(int numCopies) {
         BlobQueryJsonSerialization ser = new BlobQueryJsonSerialization().setRecordSeparator('\n');
         String expression = "SELECT * from BlobStorage";
 
         liveTestScenarioWithRetry(() -> {
             ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
-            BlobQueryOptions options = new BlobQueryOptions(expression)
-                .setInputSerialization(ser).setOutputSerialization(ser);
+            BlobQueryOptions options
+                = new BlobQueryOptions(expression).setInputSerialization(ser).setOutputSerialization(ser);
 
-            Mono<byte[]> response = uploadSmallJson(numCopies)
-                .then(FluxUtil.writeToOutputStream(bc.downloadStream(), downloadData))
-                .then(bc.queryWithResponse(options))
-                .flatMap(piece -> FluxUtil.collectBytesInByteBufferStream(piece.getValue()));
+            Mono<byte[]> response
+                = uploadSmallJson(numCopies).then(FluxUtil.writeToOutputStream(bc.downloadStream(), downloadData))
+                    .then(bc.queryWithResponse(options))
+                    .flatMap(piece -> FluxUtil.collectBytesInByteBufferStream(piece.getValue()));
 
-            StepVerifier.create(response)
-                .assertNext(r -> {
-                    downloadData.write(10);
-                    byte[] downloadedData = downloadData.toByteArray();
-                    TestUtils.assertArraysEqual(downloadedData, r);
-                })
-                .verifyComplete();
+            StepVerifier.create(response).assertNext(r -> {
+                downloadData.write(10);
+                byte[] downloadedData = downloadData.toByteArray();
+                TestUtils.assertArraysEqual(downloadedData, r);
+            }).verifyComplete();
         });
     }
 
@@ -268,20 +254,18 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
 
         BlobQueryOptions optionsOs = new BlobQueryOptions(expression).setInputSerialization(ser);
 
-        liveTestScenarioWithRetry(() ->
-            StepVerifier.create(bc.uploadFromFile(f.getAbsolutePath(), true)
+        liveTestScenarioWithRetry(() -> StepVerifier
+            .create(bc.uploadFromFile(f.getAbsolutePath(), true)
                 .then(bc.queryWithResponse(optionsOs)
                     .flatMap(piece -> FluxUtil.collectBytesInByteBufferStream(piece.getValue()))))
-                .assertNext(r -> TestUtils.assertArraysEqual(expectedData, r))
-                .verifyComplete()
-        );
+            .assertNext(r -> TestUtils.assertArraysEqual(expectedData, r))
+            .verifyComplete());
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void queryInputCsvOutputJson() {
-        BlobQueryDelimitedSerialization inSer = new BlobQueryDelimitedSerialization()
-            .setRecordSeparator('\n')
+        BlobQueryDelimitedSerialization inSer = new BlobQueryDelimitedSerialization().setRecordSeparator('\n')
             .setColumnSeparator(',')
             .setEscapeChar('\0')
             .setFieldQuote('\0')
@@ -289,49 +273,41 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
         BlobQueryJsonSerialization outSer = new BlobQueryJsonSerialization().setRecordSeparator('\n');
         String expression = "SELECT * from BlobStorage";
         byte[] expectedData = "{\"_1\":\"100\",\"_2\":\"200\",\"_3\":\"300\",\"_4\":\"400\"}".getBytes();
-        BlobQueryOptions options = new BlobQueryOptions(expression).setInputSerialization(inSer)
-            .setOutputSerialization(outSer);
+        BlobQueryOptions options
+            = new BlobQueryOptions(expression).setInputSerialization(inSer).setOutputSerialization(outSer);
 
-        liveTestScenarioWithRetry(() ->
-            StepVerifier.create(uploadCsv(inSer, 1).then(bc.queryWithResponse(options)
+        liveTestScenarioWithRetry(() -> StepVerifier
+            .create(uploadCsv(inSer, 1).then(bc.queryWithResponse(options)
                 .flatMap(piece -> FluxUtil.collectBytesInByteBufferStream(piece.getValue()))))
-                .assertNext(r -> TestUtils.assertArraysEqual(expectedData, 0, r, 0,
-                    expectedData.length))
-                .verifyComplete()
-        );
+            .assertNext(r -> TestUtils.assertArraysEqual(expectedData, 0, r, 0, expectedData.length))
+            .verifyComplete());
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void queryInputJsonOutputCsv() {
-        BlobQueryJsonSerialization inSer = new BlobQueryJsonSerialization()
-            .setRecordSeparator('\n');
-        BlobQueryDelimitedSerialization outSer = new BlobQueryDelimitedSerialization()
-            .setRecordSeparator('\n')
+        BlobQueryJsonSerialization inSer = new BlobQueryJsonSerialization().setRecordSeparator('\n');
+        BlobQueryDelimitedSerialization outSer = new BlobQueryDelimitedSerialization().setRecordSeparator('\n')
             .setColumnSeparator(',')
             .setEscapeChar('\0')
             .setFieldQuote('\0')
             .setHeadersPresent(false);
         String expression = "SELECT * from BlobStorage";
         byte[] expectedData = "owner0,owner1\n".getBytes();
-        BlobQueryOptions options = new BlobQueryOptions(expression).setInputSerialization(inSer)
-            .setOutputSerialization(outSer);
+        BlobQueryOptions options
+            = new BlobQueryOptions(expression).setInputSerialization(inSer).setOutputSerialization(outSer);
 
-        liveTestScenarioWithRetry(() ->
-            StepVerifier.create(uploadSmallJson(2)
-                .then(bc.queryWithResponse(options))
+        liveTestScenarioWithRetry(() -> StepVerifier
+            .create(uploadSmallJson(2).then(bc.queryWithResponse(options))
                 .flatMap(piece -> FluxUtil.collectBytesInByteBufferStream(piece.getValue())))
-                .assertNext(r -> TestUtils.assertArraysEqual(expectedData, 0, r, 0,
-                    expectedData.length))
-                .verifyComplete()
-        );
+            .assertNext(r -> TestUtils.assertArraysEqual(expectedData, 0, r, 0, expectedData.length))
+            .verifyComplete());
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void queryInputCsvOutputArrow() {
-        BlobQueryDelimitedSerialization inSer = new BlobQueryDelimitedSerialization()
-            .setRecordSeparator('\n')
+        BlobQueryDelimitedSerialization inSer = new BlobQueryDelimitedSerialization().setRecordSeparator('\n')
             .setColumnSeparator(',')
             .setEscapeChar('\0')
             .setFieldQuote('\0')
@@ -339,8 +315,8 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
 
         liveTestScenarioWithRetry(() -> {
             List<BlobQueryArrowField> schema = new ArrayList<>();
-            schema.add(new BlobQueryArrowField(BlobQueryArrowFieldType.DECIMAL).setName("Name").setPrecision(4)
-                .setScale(2));
+            schema.add(
+                new BlobQueryArrowField(BlobQueryArrowFieldType.DECIMAL).setName("Name").setPrecision(4).setScale(2));
             BlobQueryArrowSerialization outSer = new BlobQueryArrowSerialization().setSchema(schema);
             String expression = "SELECT _2 from BlobStorage WHERE _1 > 250;";
             BlobQueryOptions options = new BlobQueryOptions(expression).setOutputSerialization(outSer);
@@ -354,8 +330,7 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void queryNonFatalError() {
-        BlobQueryDelimitedSerialization base = new BlobQueryDelimitedSerialization()
-            .setRecordSeparator('\n')
+        BlobQueryDelimitedSerialization base = new BlobQueryDelimitedSerialization().setRecordSeparator('\n')
             .setEscapeChar('\0')
             .setFieldQuote('\0')
             .setHeadersPresent(false);
@@ -363,13 +338,12 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
 
         liveTestScenarioWithRetry(() -> {
             MockErrorConsumer receiver2 = new MockErrorConsumer("InvalidColumnOrdinal");
-            BlobQueryOptions options2 = new BlobQueryOptions(expression)
-                .setInputSerialization(base.setColumnSeparator(','))
-                .setOutputSerialization(base.setColumnSeparator(','))
-                .setErrorConsumer(receiver2);
+            BlobQueryOptions options2
+                = new BlobQueryOptions(expression).setInputSerialization(base.setColumnSeparator(','))
+                    .setOutputSerialization(base.setColumnSeparator(','))
+                    .setErrorConsumer(receiver2);
 
-            StepVerifier.create(uploadCsv(base.setColumnSeparator('.'), 32)
-                .then(bc.queryWithResponse(options2)))
+            StepVerifier.create(uploadCsv(base.setColumnSeparator('.'), 32).then(bc.queryWithResponse(options2)))
                 .expectNextCount(1)
                 .verifyComplete();
 
@@ -380,28 +354,24 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void queryFatalError() {
-        BlobQueryDelimitedSerialization base = new BlobQueryDelimitedSerialization()
-            .setRecordSeparator('\n')
+        BlobQueryDelimitedSerialization base = new BlobQueryDelimitedSerialization().setRecordSeparator('\n')
             .setEscapeChar('\0')
             .setFieldQuote('\0')
             .setHeadersPresent(true);
         String expression = "SELECT * from BlobStorage";
-        BlobQueryOptions options = new BlobQueryOptions(expression)
-            .setInputSerialization(new BlobQueryJsonSerialization());
+        BlobQueryOptions options
+            = new BlobQueryOptions(expression).setInputSerialization(new BlobQueryJsonSerialization());
 
-        liveTestScenarioWithRetry(() ->
-            StepVerifier.create(uploadCsv(base.setColumnSeparator('.'), 32)
-                .then(bc.queryWithResponse(options)
-                    .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue()))))
-                .verifyError(Throwable.class)
-        );
+        liveTestScenarioWithRetry(() -> StepVerifier
+            .create(uploadCsv(base.setColumnSeparator('.'), 32).then(
+                bc.queryWithResponse(options).flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue()))))
+            .verifyError(Throwable.class));
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void queryProgressReceiver() {
-        BlobQueryDelimitedSerialization base = new BlobQueryDelimitedSerialization()
-            .setRecordSeparator('\n')
+        BlobQueryDelimitedSerialization base = new BlobQueryDelimitedSerialization().setRecordSeparator('\n')
             .setEscapeChar('\0')
             .setFieldQuote('\0')
             .setHeadersPresent(false);
@@ -412,9 +382,9 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
             MockProgressConsumer mockReceiver2 = new MockProgressConsumer();
             BlobQueryOptions options2 = new BlobQueryOptions(expression).setProgressConsumer(mockReceiver2);
 
-            Mono<Tuple2<BlobProperties, byte[]>> response = uploadCsv(base.setColumnSeparator('.'), 32)
-                .then(Mono.zip(bc.getProperties(), bc.queryWithResponse(options2)
-                    .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue()))));
+            Mono<Tuple2<BlobProperties, byte[]>> response = uploadCsv(base.setColumnSeparator('.'), 32).then(Mono.zip(
+                bc.getProperties(),
+                bc.queryWithResponse(options2).flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue()))));
 
             StepVerifier.create(response)
                 .assertNext(r -> assertTrue(mockReceiver2.progressList.contains(r.getT1().getBlobSize())))
@@ -426,8 +396,7 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
     @LiveOnly // Large amounts of data
     @Test
     public void queryMultipleRecordsWithProgressReceiver() {
-        BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
-            .setRecordSeparator('\n')
+        BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization().setRecordSeparator('\n')
             .setColumnSeparator(',')
             .setEscapeChar('\0')
             .setFieldQuote('\0')
@@ -456,25 +425,21 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void querySnapshot() {
-        BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
-            .setRecordSeparator('\n')
+        BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization().setRecordSeparator('\n')
             .setColumnSeparator(',')
             .setEscapeChar('\0')
             .setFieldQuote('\0')
             .setHeadersPresent(false);
         String expression = "SELECT * from BlobStorage";
 
-
         Mono<Tuple2<byte[], byte[]>> response = uploadCsv(ser, 32).then(bc.createSnapshot())
             .flatMap(r -> bc.upload(Flux.just(ByteBuffer.wrap(new byte[0])), null, true)
                 .then(Mono.zip(FluxUtil.collectBytesInByteBufferStream(r.download()),
                     FluxUtil.collectBytesInByteBufferStream(r.query(expression)))));
 
-        liveTestScenarioWithRetry(() ->
-            StepVerifier.create(response)
-                .assertNext(r -> TestUtils.assertArraysEqual(r.getT1(), r.getT2()))
-                .verifyComplete()
-        );
+        liveTestScenarioWithRetry(() -> StepVerifier.create(response)
+            .assertNext(r -> TestUtils.assertArraysEqual(r.getT1(), r.getT2()))
+            .verifyComplete());
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -486,14 +451,11 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
         BlobQuerySerialization inSer = input ? ser : null;
         BlobQuerySerialization outSer = output ? ser : null;
         String expression = "SELECT * from BlobStorage";
-        BlobQueryOptions options = new BlobQueryOptions(expression)
-            .setInputSerialization(inSer)
-            .setOutputSerialization(outSer);
+        BlobQueryOptions options
+            = new BlobQueryOptions(expression).setInputSerialization(inSer).setOutputSerialization(outSer);
 
-        liveTestScenarioWithRetry(() ->
-            StepVerifier.create(bc.queryWithResponse(options))
-                .verifyError(IllegalArgumentException.class)
-        );
+        liveTestScenarioWithRetry(
+            () -> StepVerifier.create(bc.queryWithResponse(options)).verifyError(IllegalArgumentException.class));
     }
 
     private static class RandomOtherSerialization implements BlobQuerySerialization {
@@ -507,10 +469,8 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
         String expression = "SELECT * from BlobStorage";
 
         liveTestScenarioWithRetry(() -> {
-            BlobQueryOptions options2 = new BlobQueryOptions(expression)
-                .setInputSerialization(inSer);
-            StepVerifier.create(bc.queryWithResponse(options2))
-                .verifyError(IllegalArgumentException.class);
+            BlobQueryOptions options2 = new BlobQueryOptions(expression).setInputSerialization(inSer);
+            StepVerifier.create(bc.queryWithResponse(options2)).verifyError(IllegalArgumentException.class);
         });
     }
 
@@ -521,10 +481,8 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
         String expression = "SELECT * from BlobStorage";
 
         liveTestScenarioWithRetry(() -> {
-            BlobQueryOptions options2 = new BlobQueryOptions(expression)
-                .setOutputSerialization(outSer);
-            StepVerifier.create(bc.queryWithResponse(options2))
-                .verifyError(IllegalArgumentException.class);
+            BlobQueryOptions options2 = new BlobQueryOptions(expression).setOutputSerialization(outSer);
+            StepVerifier.create(bc.queryWithResponse(options2)).verifyError(IllegalArgumentException.class);
         });
     }
 
@@ -534,8 +492,7 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
         liveTestScenarioWithRetry(() -> {
             bc = ccAsync.getBlobAsyncClient(generateBlobName());
 
-            StepVerifier.create(bc.query("SELECT * from BlobStorage"))
-                .verifyError(BlobStorageException.class);
+            StepVerifier.create(bc.query("SELECT * from BlobStorage")).verifyError(BlobStorageException.class);
         });
     }
 
@@ -543,88 +500,68 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("queryACSupplier")
     public void queryAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
-                        String leaseID, String tags) {
+        String leaseID, String tags) {
         Map<String, String> t = new HashMap<>();
         t.put("foo", "bar");
 
         Mono<BlobQueryAsyncResponse> response = bc.setTags(t)
-            .then(Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match)))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                BlobRequestConditions bac = new BlobRequestConditions()
-                    .setLeaseId(newLease)
-                    .setIfMatch(newMatch)
+            .then(Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match),
+                BlobTestBase::convertNulls))
+            .flatMap(conditions -> {
+                BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(conditions.get(0))
+                    .setIfMatch(conditions.get(1))
                     .setIfNoneMatch(noneMatch)
                     .setIfModifiedSince(modified)
                     .setIfUnmodifiedSince(unmodified)
                     .setTagsConditions(tags);
 
                 String expression = "SELECT * from BlobStorage";
-                BlobQueryOptions optionsOs = new BlobQueryOptions(expression)
-                    .setRequestConditions(bac);
+                BlobQueryOptions optionsOs = new BlobQueryOptions(expression).setRequestConditions(bac);
                 return bc.queryWithResponse(optionsOs);
             });
 
-        liveTestScenarioWithRetry(() ->
-            StepVerifier.create(response)
-                .expectNextCount(1)
-                .verifyComplete()
-        );
+        liveTestScenarioWithRetry(() -> StepVerifier.create(response).expectNextCount(1).verifyComplete());
     }
 
     private static Stream<Arguments> queryACSupplier() {
         return Stream.of(Arguments.of(null, null, null, null, null, null),
-            Arguments.of(OLD_DATE, null, null, null, null, null),
-            Arguments.of(null, NEW_DATE, null, null, null, null),
+            Arguments.of(OLD_DATE, null, null, null, null, null), Arguments.of(null, NEW_DATE, null, null, null, null),
             Arguments.of(null, null, RECEIVED_ETAG, null, null, null),
             Arguments.of(null, null, null, null, RECEIVED_LEASE_ID, null),
-            Arguments.of(null, null, null, null, null, "\"foo\" = 'bar'")
-        );
+            Arguments.of(null, null, null, null, null, "\"foo\" = 'bar'"));
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void queryACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
-                            String leaseID, String tags) {
-        Mono<BlobQueryAsyncResponse> response = Mono.zip(setupBlobLeaseCondition(bc, leaseID),
-            setupBlobMatchCondition(bc, noneMatch))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                BlobRequestConditions bac = new BlobRequestConditions()
-                    .setLeaseId(leaseID)
-                    .setIfMatch(match)
-                    .setIfNoneMatch(newNoneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified)
-                    .setTagsConditions(tags);
+        String leaseID, String tags) {
+        Mono<BlobQueryAsyncResponse> response
+            = Mono
+                .zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, noneMatch),
+                    BlobTestBase::convertNulls)
+                .flatMap(conditions -> {
+                    BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(leaseID)
+                        .setIfMatch(match)
+                        .setIfNoneMatch(conditions.get(1))
+                        .setIfModifiedSince(modified)
+                        .setIfUnmodifiedSince(unmodified)
+                        .setTagsConditions(tags);
 
-                String expression = "SELECT * from BlobStorage";
-                BlobQueryOptions optionsOs = new BlobQueryOptions(expression)
-                    .setRequestConditions(bac);
+                    String expression = "SELECT * from BlobStorage";
+                    BlobQueryOptions optionsOs = new BlobQueryOptions(expression).setRequestConditions(bac);
 
-                return bc.queryWithResponse(optionsOs);
-            });
+                    return bc.queryWithResponse(optionsOs);
+                });
 
-        StepVerifier.create(response)
-            .verifyError(BlobStorageException.class);
+        StepVerifier.create(response).verifyError(BlobStorageException.class);
     }
 
     /*@RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
     @Test
     public void copyFromURLSourceErrorAndStatusCode() {
         BlockBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-
+    
         StepVerifier.create(destBlob.copyFromUrl(bc.getBlobUrl()))
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
@@ -633,7 +570,6 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
                 assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
             });
     }*/
-
 
     static class MockProgressConsumer implements Consumer<BlobQueryProgress> {
 

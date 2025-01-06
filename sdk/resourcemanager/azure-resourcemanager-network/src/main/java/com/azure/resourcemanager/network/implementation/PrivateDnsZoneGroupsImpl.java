@@ -15,14 +15,9 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Mono;
 
-public class PrivateDnsZoneGroupsImpl
-    extends
-    IndependentChildrenImpl<
-        PrivateDnsZoneGroup, PrivateDnsZoneGroupImpl,
-        PrivateDnsZoneGroupInner, PrivateDnsZoneGroupsClient,
-        NetworkManager, PrivateEndpoint>
-    implements
-    PrivateDnsZoneGroups {
+public class PrivateDnsZoneGroupsImpl extends
+    IndependentChildrenImpl<PrivateDnsZoneGroup, PrivateDnsZoneGroupImpl, PrivateDnsZoneGroupInner, PrivateDnsZoneGroupsClient, NetworkManager, PrivateEndpoint>
+    implements PrivateDnsZoneGroups {
 
     private final PrivateEndpointImpl parent;
 
@@ -68,7 +63,7 @@ public class PrivateDnsZoneGroupsImpl
 
     @Override
     public PagedFlux<PrivateDnsZoneGroup> listAsync() {
-        return PagedConverter.mapPage(this.innerModel().
-            listAsync(parent.name(), parent.resourceGroupName()), this::wrapModel);
+        return PagedConverter.mapPage(this.innerModel().listAsync(parent.name(), parent.resourceGroupName()),
+            this::wrapModel);
     }
 }

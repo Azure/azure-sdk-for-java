@@ -341,10 +341,11 @@ public final class QueueServiceAsyncClient {
             }
         }
 
-        BiFunction<String, Integer, Mono<PagedResponse<QueueItem>>> retriever =
-            (nextMarker, pageSize) -> StorageImplUtils.applyOptionalTimeout(this.client.getServices()
+        BiFunction<String, Integer, Mono<PagedResponse<QueueItem>>> retriever = (nextMarker,
+            pageSize) -> StorageImplUtils.applyOptionalTimeout(this.client.getServices()
                 .listQueuesSegmentSinglePageAsync(prefix, nextMarker, pageSize == null ? maxResultsPerPage : pageSize,
-                    include, null, null, context), timeout);
+                    include, null, null, context),
+                timeout);
 
         return new PagedFlux<>(pageSize -> retriever.apply(marker, pageSize), retriever);
     }
@@ -414,7 +415,8 @@ public final class QueueServiceAsyncClient {
 
     Mono<Response<QueueServiceProperties>> getPropertiesWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return client.getServices().getPropertiesWithResponseAsync(null, null, context)
+        return client.getServices()
+            .getPropertiesWithResponseAsync(null, null, context)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -602,10 +604,10 @@ public final class QueueServiceAsyncClient {
 
     Mono<Response<QueueServiceStatistics>> getStatisticsWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return client.getServices().getStatisticsWithResponseAsync(null, null, context)
+        return client.getServices()
+            .getStatisticsWithResponseAsync(null, null, context)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
-
 
     /**
      * Get associated account name.

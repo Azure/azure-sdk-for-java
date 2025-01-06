@@ -11,21 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ScheduleAvailabilityRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScheduleAvailabilityRequest model =
-            BinaryData
-                .fromString(
-                    "{\"skuName\":\"ScheduleAvailabilityRequest\",\"storageLocation\":\"mgucna\",\"country\":\"t\"}")
-                .toObject(ScheduleAvailabilityRequest.class);
-        Assertions.assertEquals("mgucna", model.storageLocation());
-        Assertions.assertEquals("t", model.country());
+        ScheduleAvailabilityRequest model = BinaryData.fromString(
+            "{\"skuName\":\"ScheduleAvailabilityRequest\",\"storageLocation\":\"wvnhdldwmgx\",\"country\":\"rslpmutwuoeg\"}")
+            .toObject(ScheduleAvailabilityRequest.class);
+        Assertions.assertEquals("wvnhdldwmgx", model.storageLocation());
+        Assertions.assertEquals("rslpmutwuoeg", model.country());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScheduleAvailabilityRequest model =
-            new ScheduleAvailabilityRequest().withStorageLocation("mgucna").withCountry("t");
+        ScheduleAvailabilityRequest model
+            = new ScheduleAvailabilityRequest().withStorageLocation("wvnhdldwmgx").withCountry("rslpmutwuoeg");
         model = BinaryData.fromObject(model).toObject(ScheduleAvailabilityRequest.class);
-        Assertions.assertEquals("mgucna", model.storageLocation());
-        Assertions.assertEquals("t", model.country());
+        Assertions.assertEquals("wvnhdldwmgx", model.storageLocation());
+        Assertions.assertEquals("rslpmutwuoeg", model.country());
     }
 }

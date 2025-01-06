@@ -24,21 +24,15 @@ import java.util.Collections;
 import reactor.core.publisher.Mono;
 
 /** Implementation for VirtualNetworkGatewayConnection and its create and update interfaces. */
-public class VirtualNetworkGatewayConnectionImpl
-    extends GroupableResourceImpl<
-        VirtualNetworkGatewayConnection,
-        VirtualNetworkGatewayConnectionInner,
-        VirtualNetworkGatewayConnectionImpl,
-        NetworkManager>
-    implements VirtualNetworkGatewayConnection,
-        VirtualNetworkGatewayConnection.Definition,
-        VirtualNetworkGatewayConnection.Update,
-        AppliableWithTags<VirtualNetworkGatewayConnection> {
+public class VirtualNetworkGatewayConnectionImpl extends
+    GroupableResourceImpl<VirtualNetworkGatewayConnection, VirtualNetworkGatewayConnectionInner, VirtualNetworkGatewayConnectionImpl, NetworkManager>
+    implements VirtualNetworkGatewayConnection, VirtualNetworkGatewayConnection.Definition,
+    VirtualNetworkGatewayConnection.Update, AppliableWithTags<VirtualNetworkGatewayConnection> {
     private final VirtualNetworkGateway parent;
     private String updateSharedKey;
 
-    VirtualNetworkGatewayConnectionImpl(
-        String name, VirtualNetworkGatewayImpl parent, VirtualNetworkGatewayConnectionInner inner) {
+    VirtualNetworkGatewayConnectionImpl(String name, VirtualNetworkGatewayImpl parent,
+        VirtualNetworkGatewayConnectionInner inner) {
         super(name, inner, parent.manager());
         this.parent = parent;
     }
@@ -168,8 +162,8 @@ public class VirtualNetworkGatewayConnectionImpl
     }
 
     @Override
-    public VirtualNetworkGatewayConnectionImpl withSecondVirtualNetworkGateway(
-        VirtualNetworkGateway virtualNetworkGateway2) {
+    public VirtualNetworkGatewayConnectionImpl
+        withSecondVirtualNetworkGateway(VirtualNetworkGateway virtualNetworkGateway2) {
         innerModel().withVirtualNetworkGateway2(virtualNetworkGateway2.innerModel());
         return this;
     }
@@ -204,8 +198,7 @@ public class VirtualNetworkGatewayConnectionImpl
 
     @Override
     protected Mono<VirtualNetworkGatewayConnectionInner> getInnerAsync() {
-        return myManager
-            .serviceClient()
+        return myManager.serviceClient()
             .getVirtualNetworkGatewayConnections()
             .getByResourceGroupAsync(resourceGroupName(), name());
     }
@@ -213,8 +206,7 @@ public class VirtualNetworkGatewayConnectionImpl
     @Override
     public Mono<VirtualNetworkGatewayConnection> createResourceAsync() {
         beforeCreating();
-        return myManager
-            .serviceClient()
+        return myManager.serviceClient()
             .getVirtualNetworkGatewayConnections()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
             .map(innerToFluentMap(this))
@@ -222,15 +214,15 @@ public class VirtualNetworkGatewayConnectionImpl
                 if (updateSharedKey == null) {
                     return Mono.just(virtualNetworkGatewayConnection);
                 }
-                return myManager.serviceClient().getVirtualNetworkGatewayConnections()
-                    .setSharedKeyAsync(
-                        this.resourceGroupName(),
-                        this.name(),
+                return myManager.serviceClient()
+                    .getVirtualNetworkGatewayConnections()
+                    .setSharedKeyAsync(this.resourceGroupName(), this.name(),
                         new ConnectionSharedKeyInner().withValue(updateSharedKey))
                     .doOnSuccess(inner -> {
                         updateSharedKey = null;
                     })
-                    .then(myManager.serviceClient().getVirtualNetworkGatewayConnections()
+                    .then(myManager.serviceClient()
+                        .getVirtualNetworkGatewayConnections()
                         .getByResourceGroupAsync(this.resourceGroupName(), this.name())
                         .map(innerToFluentMap(this)));
             });
@@ -252,8 +244,7 @@ public class VirtualNetworkGatewayConnectionImpl
 
     @Override
     public Mono<VirtualNetworkGatewayConnection> applyTagsAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getVirtualNetworkGatewayConnections()
             .updateTagsAsync(resourceGroupName(), name(), new TagsObject().withTags(innerModel().tags()))

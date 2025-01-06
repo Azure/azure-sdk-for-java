@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class GatewayContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GatewayContractProperties model =
-            BinaryData
-                .fromString(
-                    "{\"locationData\":{\"name\":\"xkf\",\"city\":\"oaqymhcctopuowyr\",\"district\":\"kbyhqu\",\"countryOrRegion\":\"zygxvha\"},\"description\":\"xecxqnwh\"}")
-                .toObject(GatewayContractProperties.class);
+        GatewayContractProperties model = BinaryData.fromString(
+            "{\"locationData\":{\"name\":\"xkf\",\"city\":\"oaqymhcctopuowyr\",\"district\":\"kbyhqu\",\"countryOrRegion\":\"zygxvha\"},\"description\":\"xecxqnwh\"}")
+            .toObject(GatewayContractProperties.class);
         Assertions.assertEquals("xkf", model.locationData().name());
         Assertions.assertEquals("oaqymhcctopuowyr", model.locationData().city());
         Assertions.assertEquals("kbyhqu", model.locationData().district());
@@ -26,15 +24,11 @@ public final class GatewayContractPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GatewayContractProperties model =
-            new GatewayContractProperties()
-                .withLocationData(
-                    new ResourceLocationDataContract()
-                        .withName("xkf")
-                        .withCity("oaqymhcctopuowyr")
-                        .withDistrict("kbyhqu")
-                        .withCountryOrRegion("zygxvha"))
-                .withDescription("xecxqnwh");
+        GatewayContractProperties model
+            = new GatewayContractProperties().withLocationData(new ResourceLocationDataContract().withName("xkf")
+                .withCity("oaqymhcctopuowyr")
+                .withDistrict("kbyhqu")
+                .withCountryOrRegion("zygxvha")).withDescription("xecxqnwh");
         model = BinaryData.fromObject(model).toObject(GatewayContractProperties.class);
         Assertions.assertEquals("xkf", model.locationData().name());
         Assertions.assertEquals("oaqymhcctopuowyr", model.locationData().city());

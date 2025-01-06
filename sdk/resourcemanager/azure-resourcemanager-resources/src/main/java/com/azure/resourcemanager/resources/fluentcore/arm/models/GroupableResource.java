@@ -16,11 +16,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
  * @param <InnerT> the wrapped, inner, auto-generated implementation object type
  */
 @Fluent()
-public interface GroupableResource<TManager, InnerT> extends
-        Resource,
-        HasResourceGroup,
-        HasManager<TManager>,
-        HasInnerModel<InnerT> {
+public interface GroupableResource<TManager, InnerT>
+    extends Resource, HasResourceGroup, HasManager<TManager>, HasInnerModel<InnerT> {
 
     /**
      * Grouping of all the definition stages.
@@ -33,9 +30,7 @@ public interface GroupableResource<TManager, InnerT> extends
          *
          * @param <T> the next stage of the definition
          */
-        interface WithGroup<T> extends
-                WithExistingResourceGroup<T>,
-                WithNewResourceGroup<T> {
+        interface WithGroup<T> extends WithExistingResourceGroup<T>, WithNewResourceGroup<T> {
         }
 
         /**
@@ -45,9 +40,7 @@ public interface GroupableResource<TManager, InnerT> extends
          *
          * @param <T> the next stage of the definition
          */
-        interface WithGroupAndRegion<T> extends
-                WithExistingResourceGroup<T>,
-                WithNewResourceGroupWithRegion<T> {
+        interface WithGroupAndRegion<T> extends WithExistingResourceGroup<T>, WithNewResourceGroupWithRegion<T> {
         }
 
         /**
@@ -56,8 +49,7 @@ public interface GroupableResource<TManager, InnerT> extends
          *
          * @param <T> the next stage of the definition
          */
-        interface WithNewResourceGroup<T> extends
-                WithCreatableResourceGroup<T> {
+        interface WithNewResourceGroup<T> extends WithCreatableResourceGroup<T> {
             /**
              * Creates a new resource group to put the resource in.
              * <p>
@@ -85,8 +77,7 @@ public interface GroupableResource<TManager, InnerT> extends
          *
          * @param <T> the next stage of the definition
          */
-        interface WithNewResourceGroupWithRegion<T> extends
-                WithCreatableResourceGroup<T> {
+        interface WithNewResourceGroupWithRegion<T> extends WithCreatableResourceGroup<T> {
             /**
              * Creates a new resource group to put the resource in.
              * <p>

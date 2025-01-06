@@ -70,8 +70,8 @@ public class SearchServiceSubClientTests extends SearchTestBase {
     @Test
     public void canGetIndexClientAfterUsingServiceClient() {
         // This will fail and be retried as the index doesn't exist so use a short retry policy.
-        SearchIndexClient serviceClient = getSearchIndexClient(new RetryPolicy(
-            new FixedDelay(3, Duration.ofMillis(10))));
+        SearchIndexClient serviceClient
+            = getSearchIndexClient(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(10))));
 
         assertThrows(Exception.class, () -> serviceClient.deleteIndex("thisindexdoesnotexist"));
 
@@ -84,8 +84,7 @@ public class SearchServiceSubClientTests extends SearchTestBase {
     public void canGetIndexAsyncClientAfterUsingServiceClient() {
         SearchIndexAsyncClient serviceClient = getSearchIndexAsyncClient();
 
-        StepVerifier.create(serviceClient.deleteIndex("thisindexdoesnotexist"))
-            .verifyError();
+        StepVerifier.create(serviceClient.deleteIndex("thisindexdoesnotexist")).verifyError();
 
         // This should not fail
         SearchAsyncClient indexClient = serviceClient.getSearchAsyncClient("hotels");
@@ -97,8 +96,7 @@ public class SearchServiceSubClientTests extends SearchTestBase {
     }
 
     private SearchIndexClient getSearchIndexClient(RetryPolicy retryPolicy) {
-        return new SearchIndexClientBuilder()
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+        return new SearchIndexClientBuilder().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .endpoint("https://test1.search.windows.net")
             .credential(new AzureKeyCredential("api-key"))
             .retryPolicy(retryPolicy)
@@ -106,8 +104,7 @@ public class SearchServiceSubClientTests extends SearchTestBase {
     }
 
     private SearchIndexAsyncClient getSearchIndexAsyncClient() {
-        return new SearchIndexClientBuilder()
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+        return new SearchIndexClientBuilder().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .endpoint("https://test1.search.windows.net")
             .credential(new AzureKeyCredential("api-key"))
             .buildAsyncClient();

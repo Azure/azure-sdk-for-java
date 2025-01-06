@@ -23,9 +23,13 @@ public class DAGraphTest {
          *   |-------->[H]-------------------->[I]
          */
         List<String> expectedOrder = new ArrayList<>();
-        expectedOrder.add("A"); expectedOrder.add("I");
-        expectedOrder.add("B"); expectedOrder.add("C"); expectedOrder.add("H");
-        expectedOrder.add("D"); expectedOrder.add("G");
+        expectedOrder.add("A");
+        expectedOrder.add("I");
+        expectedOrder.add("B");
+        expectedOrder.add("C");
+        expectedOrder.add("H");
+        expectedOrder.add("D");
+        expectedOrder.add("G");
         expectedOrder.add("E");
         expectedOrder.add("F");
 
@@ -50,7 +54,6 @@ public class DAGraphTest {
 
         ItemHolder nodeD = new ItemHolder("D", "dataD");
         nodeD.addDependency(nodeB.key());
-
 
         ItemHolder nodeF = new ItemHolder("F", "dataF");
         nodeF.addDependency(nodeD.key());
@@ -93,9 +96,13 @@ public class DAGraphTest {
          *   |-------->[H]-------------------->[I]
          */
         List<String> expectedOrder = new ArrayList<>();
-        expectedOrder.add("A"); expectedOrder.add("I");
-        expectedOrder.add("B"); expectedOrder.add("C"); expectedOrder.add("H");
-        expectedOrder.add("D"); expectedOrder.add("G");
+        expectedOrder.add("A");
+        expectedOrder.add("I");
+        expectedOrder.add("B");
+        expectedOrder.add("C");
+        expectedOrder.add("H");
+        expectedOrder.add("D");
+        expectedOrder.add("G");
         expectedOrder.add("E");
         expectedOrder.add("F");
 

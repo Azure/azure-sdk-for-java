@@ -26,7 +26,7 @@ pr:
 extends:
   template:  /eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
-    ServiceDirectory: spring
+    ServiceDirectory: spring/spring-cloud-azure-starter-monitor
     Artifacts:
       - name: spring-cloud-azure-starter-monitor
         groupId: com.azure.spring

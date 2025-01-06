@@ -250,7 +250,8 @@ private case class ItemsPartitionReader
     },
     readConfig.maxItemCount,
     readConfig.prefetchBufferSize,
-    operationContextAndListenerTuple
+    operationContextAndListenerTuple,
+    None
   )
 
   private val rowSerializer: ExpressionEncoder.Serializer[Row] = RowSerializerPool.getOrCreateSerializer(readSchema)

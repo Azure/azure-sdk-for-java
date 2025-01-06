@@ -21,7 +21,6 @@ import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -34,32 +33,39 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/** A builder for creating a new instance of the ReceivedSharesClient type. */
-@ServiceClientBuilder(serviceClients = {ReceivedSharesClient.class, ReceivedSharesAsyncClient.class})
+/**
+ * A builder for creating a new instance of the ReceivedSharesClient type.
+ */
+@ServiceClientBuilder(serviceClients = { ReceivedSharesClient.class, ReceivedSharesAsyncClient.class })
 public final class ReceivedSharesClientBuilder
-        implements HttpTrait<ReceivedSharesClientBuilder>,
-                ConfigurationTrait<ReceivedSharesClientBuilder>,
-                TokenCredentialTrait<ReceivedSharesClientBuilder>,
-                EndpointTrait<ReceivedSharesClientBuilder> {
-    @Generated private static final String SDK_NAME = "name";
-
-    @Generated private static final String SDK_VERSION = "version";
-
-    @Generated private static final String[] DEFAULT_SCOPES = new String[] {"https://purview.azure.net/.default"};
+    implements HttpTrait<ReceivedSharesClientBuilder>, ConfigurationTrait<ReceivedSharesClientBuilder>,
+    TokenCredentialTrait<ReceivedSharesClientBuilder>, EndpointTrait<ReceivedSharesClientBuilder> {
+    @Generated
+    private static final String SDK_NAME = "name";
 
     @Generated
-    private static final Map<String, String> PROPERTIES =
-            CoreUtils.getProperties("azure-analytics-purview-sharing.properties");
+    private static final String SDK_VERSION = "version";
 
-    @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
+    @Generated
+    private static final String[] DEFAULT_SCOPES = new String[] { "https://purview.azure.net/.default" };
 
-    /** Create an instance of the ReceivedSharesClientBuilder. */
+    @Generated
+    private static final Map<String, String> PROPERTIES
+        = CoreUtils.getProperties("azure-analytics-purview-sharing.properties");
+
+    @Generated
+    private final List<HttpPipelinePolicy> pipelinePolicies;
+
+    /**
+     * Create an instance of the ReceivedSharesClientBuilder.
+     */
     @Generated
     public ReceivedSharesClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
@@ -68,12 +74,18 @@ public final class ReceivedSharesClientBuilder
     /*
      * The HTTP pipeline to send requests through.
      */
-    @Generated private HttpPipeline pipeline;
+    @Generated
+    private HttpPipeline pipeline;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public ReceivedSharesClientBuilder pipeline(HttpPipeline pipeline) {
+        if (this.pipeline != null && pipeline == null) {
+            LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
+        }
         this.pipeline = pipeline;
         return this;
     }
@@ -81,9 +93,12 @@ public final class ReceivedSharesClientBuilder
     /*
      * The HTTP client used to send the request.
      */
-    @Generated private HttpClient httpClient;
+    @Generated
+    private HttpClient httpClient;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public ReceivedSharesClientBuilder httpClient(HttpClient httpClient) {
@@ -94,9 +109,12 @@ public final class ReceivedSharesClientBuilder
     /*
      * The logging configuration for HTTP requests and responses.
      */
-    @Generated private HttpLogOptions httpLogOptions;
+    @Generated
+    private HttpLogOptions httpLogOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public ReceivedSharesClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
@@ -107,9 +125,12 @@ public final class ReceivedSharesClientBuilder
     /*
      * The client options such as application ID and custom headers to set on a request.
      */
-    @Generated private ClientOptions clientOptions;
+    @Generated
+    private ClientOptions clientOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public ReceivedSharesClientBuilder clientOptions(ClientOptions clientOptions) {
@@ -120,9 +141,12 @@ public final class ReceivedSharesClientBuilder
     /*
      * The retry options to configure retry policy for failed requests.
      */
-    @Generated private RetryOptions retryOptions;
+    @Generated
+    private RetryOptions retryOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public ReceivedSharesClientBuilder retryOptions(RetryOptions retryOptions) {
@@ -130,7 +154,9 @@ public final class ReceivedSharesClientBuilder
         return this;
     }
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public ReceivedSharesClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
@@ -142,9 +168,12 @@ public final class ReceivedSharesClientBuilder
     /*
      * The configuration store that is used during construction of the service client.
      */
-    @Generated private Configuration configuration;
+    @Generated
+    private Configuration configuration;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public ReceivedSharesClientBuilder configuration(Configuration configuration) {
@@ -155,9 +184,12 @@ public final class ReceivedSharesClientBuilder
     /*
      * The TokenCredential used for authentication.
      */
-    @Generated private TokenCredential tokenCredential;
+    @Generated
+    private TokenCredential tokenCredential;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public ReceivedSharesClientBuilder credential(TokenCredential tokenCredential) {
@@ -168,9 +200,12 @@ public final class ReceivedSharesClientBuilder
     /*
      * The service endpoint
      */
-    @Generated private String endpoint;
+    @Generated
+    private String endpoint;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public ReceivedSharesClientBuilder endpoint(String endpoint) {
@@ -181,11 +216,12 @@ public final class ReceivedSharesClientBuilder
     /*
      * Service version
      */
-    @Generated private PurviewShareServiceVersion serviceVersion;
+    @Generated
+    private PurviewShareServiceVersion serviceVersion;
 
     /**
      * Sets Service version.
-     *
+     * 
      * @param serviceVersion the serviceVersion value.
      * @return the ReceivedSharesClientBuilder.
      */
@@ -198,11 +234,12 @@ public final class ReceivedSharesClientBuilder
     /*
      * The retry policy that will attempt to retry failed requests, if applicable.
      */
-    @Generated private RetryPolicy retryPolicy;
+    @Generated
+    private RetryPolicy retryPolicy;
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     *
+     * 
      * @param retryPolicy the retryPolicy value.
      * @return the ReceivedSharesClientBuilder.
      */
@@ -214,24 +251,31 @@ public final class ReceivedSharesClientBuilder
 
     /**
      * Builds an instance of PurviewShareClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of PurviewShareClientImpl.
      */
     @Generated
     private PurviewShareClientImpl buildInnerClient() {
+        this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        PurviewShareServiceVersion localServiceVersion =
-                (serviceVersion != null) ? serviceVersion : PurviewShareServiceVersion.getLatest();
-        PurviewShareClientImpl client =
-                new PurviewShareClientImpl(
-                        localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, localServiceVersion);
+        PurviewShareServiceVersion localServiceVersion
+            = (serviceVersion != null) ? serviceVersion : PurviewShareServiceVersion.getLatest();
+        PurviewShareClientImpl client = new PurviewShareClientImpl(localPipeline,
+            JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, localServiceVersion);
         return client;
     }
 
     @Generated
+    private void validateClient() {
+        // This method is invoked from 'buildInnerClient'/'buildClient' method.
+        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+    }
+
+    @Generated
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration =
-                (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
         ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
         List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -241,38 +285,34 @@ public final class ReceivedSharesClientBuilder
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
-        HttpHeaders headers = new HttpHeaders();
-        localClientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
-        if (headers.getSize() > 0) {
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(localClientOptions);
+        if (headers != null) {
             policies.add(new AddHeadersPolicy(headers));
         }
         this.pipelinePolicies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                .forEach(p -> policies.add(p));
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            .forEach(p -> policies.add(p));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
-        policies.add(new CookiePolicy());
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
         this.pipelinePolicies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                .forEach(p -> policies.add(p));
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+            .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(httpLogOptions));
-        HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                        .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                        .httpClient(httpClient)
-                        .clientOptions(localClientOptions)
-                        .build();
+        policies.add(new HttpLoggingPolicy(localHttpLogOptions));
+        HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .clientOptions(localClientOptions)
+            .build();
         return httpPipeline;
     }
 
     /**
      * Builds an instance of ReceivedSharesAsyncClient class.
-     *
+     * 
      * @return an instance of ReceivedSharesAsyncClient.
      */
     @Generated
@@ -282,11 +322,13 @@ public final class ReceivedSharesClientBuilder
 
     /**
      * Builds an instance of ReceivedSharesClient class.
-     *
+     * 
      * @return an instance of ReceivedSharesClient.
      */
     @Generated
     public ReceivedSharesClient buildClient() {
         return new ReceivedSharesClient(new ReceivedSharesAsyncClient(buildInnerClient().getReceivedShares()));
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ReceivedSharesClientBuilder.class);
 }

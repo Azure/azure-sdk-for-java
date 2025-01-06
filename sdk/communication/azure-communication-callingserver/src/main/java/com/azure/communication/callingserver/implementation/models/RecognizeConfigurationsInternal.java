@@ -50,8 +50,8 @@ public final class RecognizeConfigurationsInternal implements JsonSerializable<R
      * @param interruptPromptAndStartRecognition the interruptPromptAndStartRecognition value to set.
      * @return the RecognizeConfigurationsInternal object itself.
      */
-    public RecognizeConfigurationsInternal setInterruptPromptAndStartRecognition(
-            Boolean interruptPromptAndStartRecognition) {
+    public RecognizeConfigurationsInternal
+        setInterruptPromptAndStartRecognition(Boolean interruptPromptAndStartRecognition) {
         this.interruptPromptAndStartRecognition = interruptPromptAndStartRecognition;
         return this;
     }

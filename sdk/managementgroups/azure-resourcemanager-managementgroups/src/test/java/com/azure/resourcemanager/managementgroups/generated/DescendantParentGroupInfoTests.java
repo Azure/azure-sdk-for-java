@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class DescendantParentGroupInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DescendantParentGroupInfo model =
-            BinaryData.fromString("{\"id\":\"nqvpkvlrxnje\"}").toObject(DescendantParentGroupInfo.class);
-        Assertions.assertEquals("nqvpkvlrxnje", model.id());
+        DescendantParentGroupInfo model
+            = BinaryData.fromString("{\"id\":\"gkvtmelmqkrhah\"}").toObject(DescendantParentGroupInfo.class);
+        Assertions.assertEquals("gkvtmelmqkrhah", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DescendantParentGroupInfo model = new DescendantParentGroupInfo().withId("nqvpkvlrxnje");
+        DescendantParentGroupInfo model = new DescendantParentGroupInfo().withId("gkvtmelmqkrhah");
         model = BinaryData.fromObject(model).toObject(DescendantParentGroupInfo.class);
-        Assertions.assertEquals("nqvpkvlrxnje", model.id());
+        Assertions.assertEquals("gkvtmelmqkrhah", model.id());
     }
 }

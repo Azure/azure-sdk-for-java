@@ -23,22 +23,26 @@ public final class SapOpenHubSource extends TabularSource {
     private String type = "SapOpenHubSource";
 
     /*
-     * Whether to exclude the records of the last request. The default value is true. Type: boolean (or Expression with resultType boolean).
+     * Whether to exclude the records of the last request. The default value is true. Type: boolean (or Expression with
+     * resultType boolean).
      */
     private Object excludeLastRequest;
 
     /*
-     * The ID of request for delta loading. Once it is set, only data with requestId larger than the value of this property will be retrieved. The default value is 0. Type: integer (or Expression with resultType integer ).
+     * The ID of request for delta loading. Once it is set, only data with requestId larger than the value of this
+     * property will be retrieved. The default value is 0. Type: integer (or Expression with resultType integer ).
      */
     private Object baseRequestId;
 
     /*
-     * Specifies the custom RFC function module that will be used to read data from SAP Table. Type: string (or Expression with resultType string).
+     * Specifies the custom RFC function module that will be used to read data from SAP Table. Type: string (or
+     * Expression with resultType string).
      */
     private Object customRfcReadTableFunctionModule;
 
     /*
-     * The single character that will be used as delimiter passed to SAP RFC as well as splitting the output data retrieved. Type: string (or Expression with resultType string).
+     * The single character that will be used as delimiter passed to SAP RFC as well as splitting the output data
+     * retrieved. Type: string (or Expression with resultType string).
      */
     private Object sapDataColumnDelimiter;
 

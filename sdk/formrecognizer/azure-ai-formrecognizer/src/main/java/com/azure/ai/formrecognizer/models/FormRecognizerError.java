@@ -40,7 +40,6 @@ public final class FormRecognizerError {
         return this.errorCode;
     }
 
-
     /**
      * Get the message property.
      *

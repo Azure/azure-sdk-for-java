@@ -6,59 +6,31 @@ package com.azure.resourcemanager.costmanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.costmanagement.CostManagementManager;
 import com.azure.resourcemanager.costmanagement.models.ExportListResult;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ExportsListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"schedule\":{\"status\":\"Active\",\"recurrence\":\"Weekly\",\"recurrencePeriod\":{\"from\":\"2021-07-19T01:45:33Z\"}},\"format\":\"Csv\",\"deliveryInfo\":{\"destination\":{\"container\":\"et\"}},\"definition\":{\"type\":\"Usage\",\"timeframe\":\"MonthToDate\",\"timePeriod\":{\"from\":\"2021-01-12T18:34:48Z\",\"to\":\"2021-06-04T17:44:57Z\"},\"dataSet\":{}},\"runHistory\":{\"value\":[{\"id\":\"kyfwnwpiwxeiicr\",\"name\":\"p\",\"type\":\"pk\"}]},\"partitionData\":true,\"nextRunTimeEstimate\":\"2021-02-06T15:21:36Z\"},\"eTag\":\"ijvs\",\"id\":\"ws\",\"name\":\"gkjgya\",\"type\":\"wrasekw\"},{\"properties\":{\"schedule\":{\"status\":\"Active\",\"recurrence\":\"Monthly\",\"recurrencePeriod\":{\"from\":\"2021-07-19T15:07:46Z\"}},\"format\":\"Csv\",\"deliveryInfo\":{\"destination\":{\"container\":\"rtwy\"}},\"definition\":{\"type\":\"AmortizedCost\",\"timeframe\":\"WeekToDate\",\"timePeriod\":{\"from\":\"2020-12-22T10:03:42Z\",\"to\":\"2021-08-01T11:14:17Z\"},\"dataSet\":{}},\"runHistory\":{\"value\":[{\"id\":\"davuqmcbyms\",\"name\":\"ob\",\"type\":\"lquvjezcjumvp\"},{\"id\":\"imioyo\",\"name\":\"glkmiqwnnr\",\"type\":\"clibbfqpsp\"},{\"id\":\"ladydgnhautwu\",\"name\":\"exzgpmnmabedd\",\"type\":\"ilwgdfpfqfpcvstc\"},{\"id\":\"gq\",\"name\":\"vwerfwxbsmtb\",\"type\":\"jj\"}]},\"partitionData\":false,\"nextRunTimeEstimate\":\"2021-02-16T12:19:52Z\"},\"eTag\":\"kwdvbtb\",\"id\":\"ekqhs\",\"name\":\"htfpwpqb\",\"type\":\"ejuwyqwdqigmghgi\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"eTag\":\"ytnrzvuljraae\",\"id\":\"anokqgu\",\"name\":\"kjq\",\"type\":\"vbroylaxxu\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        CostManagementManager manager = CostManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        ExportListResult response
+            = manager.exports().listWithResponse("lbciphmsexro", "rndktx", com.azure.core.util.Context.NONE).getValue();
 
-        CostManagementManager manager =
-            CostManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ExportListResult response =
-            manager.exports().listWithResponse("obrjlnacgcc", "knh", com.azure.core.util.Context.NONE).getValue();
     }
 }

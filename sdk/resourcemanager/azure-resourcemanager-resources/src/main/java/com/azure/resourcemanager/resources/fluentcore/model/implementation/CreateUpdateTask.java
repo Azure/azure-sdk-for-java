@@ -70,7 +70,6 @@ public class CreateUpdateTask<ResourceT extends Indexable> implements TaskItem {
         return this.resourceCreatorUpdater.isHot();
     }
 
-
     /**
      * Represents a type that know how to create or update a resource of type {@link T}.
      * <p>

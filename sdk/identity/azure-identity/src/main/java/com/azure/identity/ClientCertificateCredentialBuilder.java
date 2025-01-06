@@ -101,6 +101,7 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
     public ClientCertificateCredentialBuilder() {
         super();
     }
+
     /**
      * Sets the path of the PEM certificate for authenticating to Microsoft Entra ID.
      *
@@ -135,8 +136,7 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      * @return An updated instance of this builder.
      */
     @Deprecated
-    public ClientCertificateCredentialBuilder pfxCertificate(String certificatePath,
-                                                             String clientCertificatePassword) {
+    public ClientCertificateCredentialBuilder pfxCertificate(String certificatePath, String clientCertificatePassword) {
         this.clientCertificatePath = certificatePath;
         this.clientCertificatePassword = clientCertificatePassword;
         return this;
@@ -206,8 +206,8 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      * @param tokenCachePersistenceOptions the token cache configuration options
      * @return An updated instance of this builder with the token cache options configured.
      */
-    public ClientCertificateCredentialBuilder tokenCachePersistenceOptions(TokenCachePersistenceOptions
-                                                                          tokenCachePersistenceOptions) {
+    public ClientCertificateCredentialBuilder
+        tokenCachePersistenceOptions(TokenCachePersistenceOptions tokenCachePersistenceOptions) {
         this.identityClientOptions.setTokenCacheOptions(tokenCachePersistenceOptions);
         return this;
     }
@@ -231,16 +231,17 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      * @return a {@link ClientCertificateCredential} with the current configurations.
      */
     public ClientCertificateCredential build() {
-        ValidationUtil.validate(CLASS_NAME, LOGGER, "clientId", clientId, "tenantId", tenantId,
-            "clientCertificate", (clientCertificateBytes == null || clientCertificateBytes.length == 0)
-                ? clientCertificatePath : clientCertificateBytes);
+        ValidationUtil.validate(CLASS_NAME, LOGGER, "clientId", clientId, "tenantId", tenantId, "clientCertificate",
+            (clientCertificateBytes == null || clientCertificateBytes.length == 0)
+                ? clientCertificatePath
+                : clientCertificateBytes);
 
         if (clientCertificateBytes != null && clientCertificatePath != null) {
             throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("Both certificate input stream and "
-                    + "certificate path are provided in ClientCertificateCredentialBuilder. Only one of them should "
-                    + "be provided."));
+                + "certificate path are provided in ClientCertificateCredentialBuilder. Only one of them should "
+                + "be provided."));
         }
-        return new ClientCertificateCredential(tenantId, clientId, clientCertificatePath,
-            clientCertificateBytes, clientCertificatePassword, identityClientOptions);
+        return new ClientCertificateCredential(tenantId, clientId, clientCertificatePath, clientCertificateBytes,
+            clientCertificatePassword, identityClientOptions);
     }
 }

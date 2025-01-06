@@ -5,40 +5,41 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes how media is transferred to the extension plugin. */
+/**
+ * Describes how media is transferred to the extension plugin.
+ */
 @Fluent
-public final class GrpcExtensionDataTransfer {
+public final class GrpcExtensionDataTransfer implements JsonSerializable<GrpcExtensionDataTransfer> {
     /*
-     * The share memory buffer for sample transfers, in mebibytes. It can only
-     * be used with the 'SharedMemory' transfer mode.
+     * The share memory buffer for sample transfers, in mebibytes. It can only be used with the 'SharedMemory' transfer
+     * mode.
      */
-    @JsonProperty(value = "sharedMemorySizeMiB")
     private String sharedMemorySizeMiB;
 
     /*
      * Data transfer mode: embedded or sharedMemory.
      */
-    @JsonProperty(value = "mode", required = true)
-    private GrpcExtensionDataTransferMode mode;
+    private final GrpcExtensionDataTransferMode mode;
 
     /**
      * Creates an instance of GrpcExtensionDataTransfer class.
-     *
+     * 
      * @param mode the mode value to set.
      */
-    @JsonCreator
-    public GrpcExtensionDataTransfer(
-            @JsonProperty(value = "mode", required = true) GrpcExtensionDataTransferMode mode) {
+    public GrpcExtensionDataTransfer(GrpcExtensionDataTransferMode mode) {
         this.mode = mode;
     }
 
     /**
      * Get the sharedMemorySizeMiB property: The share memory buffer for sample transfers, in mebibytes. It can only be
      * used with the 'SharedMemory' transfer mode.
-     *
+     * 
      * @return the sharedMemorySizeMiB value.
      */
     public String getSharedMemorySizeMiB() {
@@ -48,7 +49,7 @@ public final class GrpcExtensionDataTransfer {
     /**
      * Set the sharedMemorySizeMiB property: The share memory buffer for sample transfers, in mebibytes. It can only be
      * used with the 'SharedMemory' transfer mode.
-     *
+     * 
      * @param sharedMemorySizeMiB the sharedMemorySizeMiB value to set.
      * @return the GrpcExtensionDataTransfer object itself.
      */
@@ -59,10 +60,58 @@ public final class GrpcExtensionDataTransfer {
 
     /**
      * Get the mode property: Data transfer mode: embedded or sharedMemory.
-     *
+     * 
      * @return the mode value.
      */
     public GrpcExtensionDataTransferMode getMode() {
         return this.mode;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        jsonWriter.writeStringField("sharedMemorySizeMiB", this.sharedMemorySizeMiB);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GrpcExtensionDataTransfer from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GrpcExtensionDataTransfer if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GrpcExtensionDataTransfer.
+     */
+    public static GrpcExtensionDataTransfer fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean modeFound = false;
+            GrpcExtensionDataTransferMode mode = null;
+            String sharedMemorySizeMiB = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mode".equals(fieldName)) {
+                    mode = GrpcExtensionDataTransferMode.fromString(reader.getString());
+                    modeFound = true;
+                } else if ("sharedMemorySizeMiB".equals(fieldName)) {
+                    sharedMemorySizeMiB = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (modeFound) {
+                GrpcExtensionDataTransfer deserializedGrpcExtensionDataTransfer = new GrpcExtensionDataTransfer(mode);
+                deserializedGrpcExtensionDataTransfer.sharedMemorySizeMiB = sharedMemorySizeMiB;
+
+                return deserializedGrpcExtensionDataTransfer;
+            }
+            throw new IllegalStateException("Missing required property: mode");
+        });
     }
 }

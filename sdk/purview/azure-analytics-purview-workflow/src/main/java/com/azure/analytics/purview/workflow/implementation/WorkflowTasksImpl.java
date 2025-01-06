@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.workflow.implementation;
 
+import com.azure.analytics.purview.workflow.PurviewWorkflowServiceVersion;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
@@ -35,23 +36,38 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in WorkflowTasks. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkflowTasks.
+ */
 public final class WorkflowTasksImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final WorkflowTasksService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PurviewWorkflowClientImpl client;
 
     /**
      * Initializes an instance of WorkflowTasksImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     WorkflowTasksImpl(PurviewWorkflowClientImpl client) {
-        this.service =
-                RestProxy.create(WorkflowTasksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(WorkflowTasksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
+    }
+
+    /**
+     * Gets Service version.
+     * 
+     * @return the serviceVersion value.
+     */
+    public PurviewWorkflowServiceVersion getServiceVersion() {
+        return client.getServiceVersion();
     }
 
     /**
@@ -62,108 +78,81 @@ public final class WorkflowTasksImpl {
     @ServiceInterface(name = "PurviewWorkflowWorkf")
     public interface WorkflowTasksService {
         @Get("/workflowtasks")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> list(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> list(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/workflowtasks")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
     }
 
     /**
      * Get all workflow tasks.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>viewMode</td><td>String</td><td>No</td><td>To filter user's sent, received or history workflow tasks.</td></tr>
-     *     <tr><td>workflowIds</td><td>List&lt;String&gt;</td><td>No</td><td>Filter items by workflow id list. In the form of "," separated string.</td></tr>
-     *     <tr><td>timeWindow</td><td>String</td><td>No</td><td>Time window of filtering items. Allowed values: "1d", "7d", "30d", "90d".</td></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum page size to get the items at one time. The default value is 100.</td></tr>
-     *     <tr><td>orderby</td><td>String</td><td>No</td><td>The key word which used to sort the results. Allowed values: "status desc", "status asc", "requestor desc", "requestor asc", "startTime desc", "startTime asc", "createdTime desc", "createdTime asc".</td></tr>
-     *     <tr><td>taskTypes</td><td>List&lt;String&gt;</td><td>No</td><td>Filter items by workflow task type. In the form of "," separated string.</td></tr>
-     *     <tr><td>taskStatuses</td><td>List&lt;String&gt;</td><td>No</td><td>Filter workflow tasks by status. In the form of "," separated string.</td></tr>
-     *     <tr><td>requestors</td><td>List&lt;String&gt;</td><td>No</td><td>Requestors' ids to filter. In the form of "," separated string.</td></tr>
-     *     <tr><td>assignees</td><td>List&lt;String&gt;</td><td>No</td><td>Assignees' ids to filter. In the form of "," separated string.</td></tr>
-     *     <tr><td>workflowNameKeyword</td><td>String</td><td>No</td><td>The key word which could used to filter workflow item with related workflow.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>viewMode</td><td>String</td><td>No</td><td>To filter user's sent, received or history workflow
+     * tasks.</td></tr>
+     * <tr><td>workflowIds</td><td>List&lt;String&gt;</td><td>No</td><td>Filter items by workflow id list. In the form
+     * of "," separated string.</td></tr>
+     * <tr><td>timeWindow</td><td>String</td><td>No</td><td>Time window of filtering items. Allowed values: "1d", "7d",
+     * "30d", "90d".</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum page size to get the items at one time. The
+     * default value is 100.</td></tr>
+     * <tr><td>orderby</td><td>String</td><td>No</td><td>The key word which used to sort the results. Allowed values:
+     * "status desc", "status asc", "requestor desc", "requestor asc", "startTime desc", "startTime asc", "createdTime
+     * desc", "createdTime asc".</td></tr>
+     * <tr><td>taskTypes</td><td>List&lt;String&gt;</td><td>No</td><td>Filter items by workflow task type. In the form
+     * of "," separated string.</td></tr>
+     * <tr><td>taskStatuses</td><td>List&lt;String&gt;</td><td>No</td><td>Filter workflow tasks by status. In the form
+     * of "," separated string.</td></tr>
+     * <tr><td>requestors</td><td>List&lt;String&gt;</td><td>No</td><td>Requestors' ids to filter. In the form of ","
+     * separated string.</td></tr>
+     * <tr><td>assignees</td><td>List&lt;String&gt;</td><td>No</td><td>Assignees' ids to filter. In the form of ","
+     * separated string.</td></tr>
+     * <tr><td>workflowNameKeyword</td><td>String</td><td>No</td><td>The key word which could used to filter workflow
+     * item with related workflow.</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
+     *     type: String(Approval/SimpleTask/approval/simpleTask) (Required)
      *     id: String (Required)
      *     title: String (Optional)
      *     workflowRunId: String (Required)
@@ -193,8 +182,9 @@ public final class WorkflowTasksImpl {
      *         }
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -205,51 +195,48 @@ public final class WorkflowTasksImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.list(
-                                        this.client.getEndpoint(),
-                                        this.client.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.list(this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
      * Get all workflow tasks.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>viewMode</td><td>String</td><td>No</td><td>To filter user's sent, received or history workflow tasks.</td></tr>
-     *     <tr><td>workflowIds</td><td>List&lt;String&gt;</td><td>No</td><td>Filter items by workflow id list. In the form of "," separated string.</td></tr>
-     *     <tr><td>timeWindow</td><td>String</td><td>No</td><td>Time window of filtering items. Allowed values: "1d", "7d", "30d", "90d".</td></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum page size to get the items at one time. The default value is 100.</td></tr>
-     *     <tr><td>orderby</td><td>String</td><td>No</td><td>The key word which used to sort the results. Allowed values: "status desc", "status asc", "requestor desc", "requestor asc", "startTime desc", "startTime asc", "createdTime desc", "createdTime asc".</td></tr>
-     *     <tr><td>taskTypes</td><td>List&lt;String&gt;</td><td>No</td><td>Filter items by workflow task type. In the form of "," separated string.</td></tr>
-     *     <tr><td>taskStatuses</td><td>List&lt;String&gt;</td><td>No</td><td>Filter workflow tasks by status. In the form of "," separated string.</td></tr>
-     *     <tr><td>requestors</td><td>List&lt;String&gt;</td><td>No</td><td>Requestors' ids to filter. In the form of "," separated string.</td></tr>
-     *     <tr><td>assignees</td><td>List&lt;String&gt;</td><td>No</td><td>Assignees' ids to filter. In the form of "," separated string.</td></tr>
-     *     <tr><td>workflowNameKeyword</td><td>String</td><td>No</td><td>The key word which could used to filter workflow item with related workflow.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>viewMode</td><td>String</td><td>No</td><td>To filter user's sent, received or history workflow
+     * tasks.</td></tr>
+     * <tr><td>workflowIds</td><td>List&lt;String&gt;</td><td>No</td><td>Filter items by workflow id list. In the form
+     * of "," separated string.</td></tr>
+     * <tr><td>timeWindow</td><td>String</td><td>No</td><td>Time window of filtering items. Allowed values: "1d", "7d",
+     * "30d", "90d".</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum page size to get the items at one time. The
+     * default value is 100.</td></tr>
+     * <tr><td>orderby</td><td>String</td><td>No</td><td>The key word which used to sort the results. Allowed values:
+     * "status desc", "status asc", "requestor desc", "requestor asc", "startTime desc", "startTime asc", "createdTime
+     * desc", "createdTime asc".</td></tr>
+     * <tr><td>taskTypes</td><td>List&lt;String&gt;</td><td>No</td><td>Filter items by workflow task type. In the form
+     * of "," separated string.</td></tr>
+     * <tr><td>taskStatuses</td><td>List&lt;String&gt;</td><td>No</td><td>Filter workflow tasks by status. In the form
+     * of "," separated string.</td></tr>
+     * <tr><td>requestors</td><td>List&lt;String&gt;</td><td>No</td><td>Requestors' ids to filter. In the form of ","
+     * separated string.</td></tr>
+     * <tr><td>assignees</td><td>List&lt;String&gt;</td><td>No</td><td>Assignees' ids to filter. In the form of ","
+     * separated string.</td></tr>
+     * <tr><td>workflowNameKeyword</td><td>String</td><td>No</td><td>The key word which could used to filter workflow
+     * item with related workflow.</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
+     *     type: String(Approval/SimpleTask/approval/simpleTask) (Required)
      *     id: String (Required)
      *     title: String (Optional)
      *     workflowRunId: String (Required)
@@ -279,8 +266,9 @@ public final class WorkflowTasksImpl {
      *         }
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -292,63 +280,66 @@ public final class WorkflowTasksImpl {
     public PagedFlux<BinaryData> listAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                (pageSize) -> {
-                    RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-                    if (pageSize != null) {
-                        requestOptionsLocal.addRequestCallback(
-                                requestLocal -> {
-                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
-                                    requestLocal.setUrl(urlBuilder.toString());
-                                });
-                    }
-                    return listSinglePageAsync(requestOptionsLocal);
-                },
-                (nextLink, pageSize) -> {
-                    RequestOptions requestOptionsLocal = new RequestOptions();
-                    requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
-                    if (pageSize != null) {
-                        requestOptionsLocal.addRequestCallback(
-                                requestLocal -> {
-                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
-                                    requestLocal.setUrl(urlBuilder.toString());
-                                });
-                    }
-                    return listNextSinglePageAsync(nextLink, requestOptionsLocal);
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>((pageSize) -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            if (pageSize != null) {
+                requestOptionsLocal.addRequestCallback(requestLocal -> {
+                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
+                    requestLocal.setUrl(urlBuilder.toString());
                 });
+            }
+            return listSinglePageAsync(requestOptionsLocal);
+        }, (nextLink, pageSize) -> {
+            RequestOptions requestOptionsLocal = new RequestOptions();
+            requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
+            if (pageSize != null) {
+                requestOptionsLocal.addRequestCallback(requestLocal -> {
+                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
+                    requestLocal.setUrl(urlBuilder.toString());
+                });
+            }
+            return listNextSinglePageAsync(nextLink, requestOptionsLocal);
+        });
     }
 
     /**
      * Get all workflow tasks.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>viewMode</td><td>String</td><td>No</td><td>To filter user's sent, received or history workflow tasks.</td></tr>
-     *     <tr><td>workflowIds</td><td>List&lt;String&gt;</td><td>No</td><td>Filter items by workflow id list. In the form of "," separated string.</td></tr>
-     *     <tr><td>timeWindow</td><td>String</td><td>No</td><td>Time window of filtering items. Allowed values: "1d", "7d", "30d", "90d".</td></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum page size to get the items at one time. The default value is 100.</td></tr>
-     *     <tr><td>orderby</td><td>String</td><td>No</td><td>The key word which used to sort the results. Allowed values: "status desc", "status asc", "requestor desc", "requestor asc", "startTime desc", "startTime asc", "createdTime desc", "createdTime asc".</td></tr>
-     *     <tr><td>taskTypes</td><td>List&lt;String&gt;</td><td>No</td><td>Filter items by workflow task type. In the form of "," separated string.</td></tr>
-     *     <tr><td>taskStatuses</td><td>List&lt;String&gt;</td><td>No</td><td>Filter workflow tasks by status. In the form of "," separated string.</td></tr>
-     *     <tr><td>requestors</td><td>List&lt;String&gt;</td><td>No</td><td>Requestors' ids to filter. In the form of "," separated string.</td></tr>
-     *     <tr><td>assignees</td><td>List&lt;String&gt;</td><td>No</td><td>Assignees' ids to filter. In the form of "," separated string.</td></tr>
-     *     <tr><td>workflowNameKeyword</td><td>String</td><td>No</td><td>The key word which could used to filter workflow item with related workflow.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>viewMode</td><td>String</td><td>No</td><td>To filter user's sent, received or history workflow
+     * tasks.</td></tr>
+     * <tr><td>workflowIds</td><td>List&lt;String&gt;</td><td>No</td><td>Filter items by workflow id list. In the form
+     * of "," separated string.</td></tr>
+     * <tr><td>timeWindow</td><td>String</td><td>No</td><td>Time window of filtering items. Allowed values: "1d", "7d",
+     * "30d", "90d".</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum page size to get the items at one time. The
+     * default value is 100.</td></tr>
+     * <tr><td>orderby</td><td>String</td><td>No</td><td>The key word which used to sort the results. Allowed values:
+     * "status desc", "status asc", "requestor desc", "requestor asc", "startTime desc", "startTime asc", "createdTime
+     * desc", "createdTime asc".</td></tr>
+     * <tr><td>taskTypes</td><td>List&lt;String&gt;</td><td>No</td><td>Filter items by workflow task type. In the form
+     * of "," separated string.</td></tr>
+     * <tr><td>taskStatuses</td><td>List&lt;String&gt;</td><td>No</td><td>Filter workflow tasks by status. In the form
+     * of "," separated string.</td></tr>
+     * <tr><td>requestors</td><td>List&lt;String&gt;</td><td>No</td><td>Requestors' ids to filter. In the form of ","
+     * separated string.</td></tr>
+     * <tr><td>assignees</td><td>List&lt;String&gt;</td><td>No</td><td>Assignees' ids to filter. In the form of ","
+     * separated string.</td></tr>
+     * <tr><td>workflowNameKeyword</td><td>String</td><td>No</td><td>The key word which could used to filter workflow
+     * item with related workflow.</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
+     *     type: String(Approval/SimpleTask/approval/simpleTask) (Required)
      *     id: String (Required)
      *     title: String (Optional)
      *     workflowRunId: String (Required)
@@ -378,8 +369,9 @@ public final class WorkflowTasksImpl {
      *         }
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -390,48 +382,47 @@ public final class WorkflowTasksImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listSync(
-                        this.client.getEndpoint(),
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res = service.listSync(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
      * Get all workflow tasks.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>viewMode</td><td>String</td><td>No</td><td>To filter user's sent, received or history workflow tasks.</td></tr>
-     *     <tr><td>workflowIds</td><td>List&lt;String&gt;</td><td>No</td><td>Filter items by workflow id list. In the form of "," separated string.</td></tr>
-     *     <tr><td>timeWindow</td><td>String</td><td>No</td><td>Time window of filtering items. Allowed values: "1d", "7d", "30d", "90d".</td></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum page size to get the items at one time. The default value is 100.</td></tr>
-     *     <tr><td>orderby</td><td>String</td><td>No</td><td>The key word which used to sort the results. Allowed values: "status desc", "status asc", "requestor desc", "requestor asc", "startTime desc", "startTime asc", "createdTime desc", "createdTime asc".</td></tr>
-     *     <tr><td>taskTypes</td><td>List&lt;String&gt;</td><td>No</td><td>Filter items by workflow task type. In the form of "," separated string.</td></tr>
-     *     <tr><td>taskStatuses</td><td>List&lt;String&gt;</td><td>No</td><td>Filter workflow tasks by status. In the form of "," separated string.</td></tr>
-     *     <tr><td>requestors</td><td>List&lt;String&gt;</td><td>No</td><td>Requestors' ids to filter. In the form of "," separated string.</td></tr>
-     *     <tr><td>assignees</td><td>List&lt;String&gt;</td><td>No</td><td>Assignees' ids to filter. In the form of "," separated string.</td></tr>
-     *     <tr><td>workflowNameKeyword</td><td>String</td><td>No</td><td>The key word which could used to filter workflow item with related workflow.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>viewMode</td><td>String</td><td>No</td><td>To filter user's sent, received or history workflow
+     * tasks.</td></tr>
+     * <tr><td>workflowIds</td><td>List&lt;String&gt;</td><td>No</td><td>Filter items by workflow id list. In the form
+     * of "," separated string.</td></tr>
+     * <tr><td>timeWindow</td><td>String</td><td>No</td><td>Time window of filtering items. Allowed values: "1d", "7d",
+     * "30d", "90d".</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum page size to get the items at one time. The
+     * default value is 100.</td></tr>
+     * <tr><td>orderby</td><td>String</td><td>No</td><td>The key word which used to sort the results. Allowed values:
+     * "status desc", "status asc", "requestor desc", "requestor asc", "startTime desc", "startTime asc", "createdTime
+     * desc", "createdTime asc".</td></tr>
+     * <tr><td>taskTypes</td><td>List&lt;String&gt;</td><td>No</td><td>Filter items by workflow task type. In the form
+     * of "," separated string.</td></tr>
+     * <tr><td>taskStatuses</td><td>List&lt;String&gt;</td><td>No</td><td>Filter workflow tasks by status. In the form
+     * of "," separated string.</td></tr>
+     * <tr><td>requestors</td><td>List&lt;String&gt;</td><td>No</td><td>Requestors' ids to filter. In the form of ","
+     * separated string.</td></tr>
+     * <tr><td>assignees</td><td>List&lt;String&gt;</td><td>No</td><td>Assignees' ids to filter. In the form of ","
+     * separated string.</td></tr>
+     * <tr><td>workflowNameKeyword</td><td>String</td><td>No</td><td>The key word which could used to filter workflow
+     * item with related workflow.</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
+     *     type: String(Approval/SimpleTask/approval/simpleTask) (Required)
      *     id: String (Required)
      *     title: String (Optional)
      *     workflowRunId: String (Required)
@@ -461,8 +452,9 @@ public final class WorkflowTasksImpl {
      *         }
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -474,44 +466,39 @@ public final class WorkflowTasksImpl {
     public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                (pageSize) -> {
-                    RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-                    if (pageSize != null) {
-                        requestOptionsLocal.addRequestCallback(
-                                requestLocal -> {
-                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
-                                    requestLocal.setUrl(urlBuilder.toString());
-                                });
-                    }
-                    return listSinglePage(requestOptionsLocal);
-                },
-                (nextLink, pageSize) -> {
-                    RequestOptions requestOptionsLocal = new RequestOptions();
-                    requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
-                    if (pageSize != null) {
-                        requestOptionsLocal.addRequestCallback(
-                                requestLocal -> {
-                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
-                                    requestLocal.setUrl(urlBuilder.toString());
-                                });
-                    }
-                    return listNextSinglePage(nextLink, requestOptionsLocal);
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>((pageSize) -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            if (pageSize != null) {
+                requestOptionsLocal.addRequestCallback(requestLocal -> {
+                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
+                    requestLocal.setUrl(urlBuilder.toString());
                 });
+            }
+            return listSinglePage(requestOptionsLocal);
+        }, (nextLink, pageSize) -> {
+            RequestOptions requestOptionsLocal = new RequestOptions();
+            requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
+            if (pageSize != null) {
+                requestOptionsLocal.addRequestCallback(requestLocal -> {
+                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
+                    requestLocal.setUrl(urlBuilder.toString());
+                });
+            }
+            return listNextSinglePage(nextLink, requestOptionsLocal);
+        });
     }
 
     /**
      * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
+     *     type: String(Approval/SimpleTask/approval/simpleTask) (Required)
      *     id: String (Required)
      *     title: String (Optional)
      *     workflowRunId: String (Required)
@@ -541,10 +528,10 @@ public final class WorkflowTasksImpl {
      *         }
      *     }
      * }
-     * }</pre>
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * }
+     * </pre>
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -555,27 +542,21 @@ public final class WorkflowTasksImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(
+                context -> service.listNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
+     *     type: String(Approval/SimpleTask/approval/simpleTask) (Required)
      *     id: String (Required)
      *     title: String (Optional)
      *     workflowRunId: String (Required)
@@ -605,10 +586,10 @@ public final class WorkflowTasksImpl {
      *         }
      *     }
      * }
-     * }</pre>
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * }
+     * </pre>
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -619,15 +600,10 @@ public final class WorkflowTasksImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {

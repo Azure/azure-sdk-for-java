@@ -11,10 +11,17 @@ import com.azure.storage.blob.models.BlobRequestConditions;
  */
 @Fluent
 public class BlobGetTagsOptions {
-
     private BlobRequestConditions requestConditions;
 
     /**
+     * Creates a new instance of {@link BlobGetTagsOptions}.
+     */
+    public BlobGetTagsOptions() {
+    }
+
+    /**
+     * Gets the {@link BlobRequestConditions}.
+     *
      * @return {@link BlobRequestConditions}
      */
     public BlobRequestConditions getRequestConditions() {
@@ -22,6 +29,8 @@ public class BlobGetTagsOptions {
     }
 
     /**
+     * Sets the {@link BlobRequestConditions}.
+     *
      * @param requestConditions {@link BlobRequestConditions}
      * @return The updated options.
      */

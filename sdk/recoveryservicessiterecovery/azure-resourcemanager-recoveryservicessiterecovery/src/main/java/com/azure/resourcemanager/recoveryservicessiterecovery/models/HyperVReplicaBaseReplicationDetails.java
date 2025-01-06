@@ -5,65 +5,74 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Hyper V replica provider specific settings base class.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("HyperVReplicaBaseReplicationDetails")
 @Fluent
 public final class HyperVReplicaBaseReplicationDetails extends ReplicationProviderSpecificSettings {
     /*
+     * Gets the Instance type.
+     */
+    private String instanceType = "HyperVReplicaBaseReplicationDetails";
+
+    /*
      * The Last replication time.
      */
-    @JsonProperty(value = "lastReplicatedTime")
     private OffsetDateTime lastReplicatedTime;
 
     /*
      * The PE Network details.
      */
-    @JsonProperty(value = "vmNics")
     private List<VMNicDetails> vmNics;
 
     /*
      * The virtual machine Id.
      */
-    @JsonProperty(value = "vmId")
     private String vmId;
 
     /*
      * The protection state for the vm.
      */
-    @JsonProperty(value = "vmProtectionState")
     private String vmProtectionState;
 
     /*
      * The protection state description for the vm.
      */
-    @JsonProperty(value = "vmProtectionStateDescription")
     private String vmProtectionStateDescription;
 
     /*
      * Initial replication details.
      */
-    @JsonProperty(value = "initialReplicationDetails")
     private InitialReplicationDetails initialReplicationDetails;
 
     /*
      * VM disk details.
      */
-    @JsonProperty(value = "vMDiskDetails")
     private List<DiskDetails> vMDiskDetails;
 
     /**
      * Creates an instance of HyperVReplicaBaseReplicationDetails class.
      */
     public HyperVReplicaBaseReplicationDetails() {
+    }
+
+    /**
+     * Get the instanceType property: Gets the Instance type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -214,7 +223,6 @@ public final class HyperVReplicaBaseReplicationDetails extends ReplicationProvid
      */
     @Override
     public void validate() {
-        super.validate();
         if (vmNics() != null) {
             vmNics().forEach(e -> e.validate());
         }
@@ -224,5 +232,70 @@ public final class HyperVReplicaBaseReplicationDetails extends ReplicationProvid
         if (vMDiskDetails() != null) {
             vMDiskDetails().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("lastReplicatedTime",
+            this.lastReplicatedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastReplicatedTime));
+        jsonWriter.writeArrayField("vmNics", this.vmNics, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("vmId", this.vmId);
+        jsonWriter.writeStringField("vmProtectionState", this.vmProtectionState);
+        jsonWriter.writeStringField("vmProtectionStateDescription", this.vmProtectionStateDescription);
+        jsonWriter.writeJsonField("initialReplicationDetails", this.initialReplicationDetails);
+        jsonWriter.writeArrayField("vMDiskDetails", this.vMDiskDetails, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HyperVReplicaBaseReplicationDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HyperVReplicaBaseReplicationDetails if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HyperVReplicaBaseReplicationDetails.
+     */
+    public static HyperVReplicaBaseReplicationDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HyperVReplicaBaseReplicationDetails deserializedHyperVReplicaBaseReplicationDetails
+                = new HyperVReplicaBaseReplicationDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedHyperVReplicaBaseReplicationDetails.instanceType = reader.getString();
+                } else if ("lastReplicatedTime".equals(fieldName)) {
+                    deserializedHyperVReplicaBaseReplicationDetails.lastReplicatedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("vmNics".equals(fieldName)) {
+                    List<VMNicDetails> vmNics = reader.readArray(reader1 -> VMNicDetails.fromJson(reader1));
+                    deserializedHyperVReplicaBaseReplicationDetails.vmNics = vmNics;
+                } else if ("vmId".equals(fieldName)) {
+                    deserializedHyperVReplicaBaseReplicationDetails.vmId = reader.getString();
+                } else if ("vmProtectionState".equals(fieldName)) {
+                    deserializedHyperVReplicaBaseReplicationDetails.vmProtectionState = reader.getString();
+                } else if ("vmProtectionStateDescription".equals(fieldName)) {
+                    deserializedHyperVReplicaBaseReplicationDetails.vmProtectionStateDescription = reader.getString();
+                } else if ("initialReplicationDetails".equals(fieldName)) {
+                    deserializedHyperVReplicaBaseReplicationDetails.initialReplicationDetails
+                        = InitialReplicationDetails.fromJson(reader);
+                } else if ("vMDiskDetails".equals(fieldName)) {
+                    List<DiskDetails> vMDiskDetails = reader.readArray(reader1 -> DiskDetails.fromJson(reader1));
+                    deserializedHyperVReplicaBaseReplicationDetails.vMDiskDetails = vMDiskDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHyperVReplicaBaseReplicationDetails;
+        });
     }
 }

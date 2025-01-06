@@ -7,7 +7,6 @@ import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Collection;
 
-
 /**
  * The audience to be used when requesting a token from Azure Active Directory (AAD).
  * Note: This audience only has an effect when authenticating a TokenCredential.

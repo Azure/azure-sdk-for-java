@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class CrossRegionRestore extends ExpandableStringEnum<CrossRegionRe
      * @param name a name to look for.
      * @return the corresponding CrossRegionRestore.
      */
-    @JsonCreator
     public static CrossRegionRestore fromString(String name) {
         return fromString(name, CrossRegionRestore.class);
     }

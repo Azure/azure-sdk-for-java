@@ -21,7 +21,6 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.NodeTypeNat
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.NodeTypeSku;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.SecurityType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VaultSecretGroup;
-import com.azure.resourcemanager.servicefabricmanagedclusters.models.VmApplication;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VmImagePlan;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VmManagedIdentity;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VmSetupAction;
@@ -1363,31 +1362,6 @@ public final class NodeTypeInner extends ManagedProxyResource {
             this.innerProperties = new NodeTypeProperties();
         }
         this.innerProperties().withComputerNamePrefix(computerNamePrefix);
-        return this;
-    }
-
-    /**
-     * Get the vmApplications property: Specifies the gallery applications that should be made available to the
-     * underlying VMSS.
-     * 
-     * @return the vmApplications value.
-     */
-    public List<VmApplication> vmApplications() {
-        return this.innerProperties() == null ? null : this.innerProperties().vmApplications();
-    }
-
-    /**
-     * Set the vmApplications property: Specifies the gallery applications that should be made available to the
-     * underlying VMSS.
-     * 
-     * @param vmApplications the vmApplications value to set.
-     * @return the NodeTypeInner object itself.
-     */
-    public NodeTypeInner withVmApplications(List<VmApplication> vmApplications) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new NodeTypeProperties();
-        }
-        this.innerProperties().withVmApplications(vmApplications);
         return this;
     }
 

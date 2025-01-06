@@ -5,110 +5,86 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The base backup engine class. All workload specific backup engines derive from this class.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "backupEngineType",
-    defaultImpl = BackupEngineBase.class,
-    visible = true)
-@JsonTypeName("BackupEngineBase")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AzureBackupServerEngine", value = AzureBackupServerEngine.class),
-    @JsonSubTypes.Type(name = "DpmBackupEngine", value = DpmBackupEngine.class) })
 @Fluent
-public class BackupEngineBase {
+public class BackupEngineBase implements JsonSerializable<BackupEngineBase> {
     /*
      * Type of the backup engine.
      */
-    @JsonTypeId
-    @JsonProperty(value = "backupEngineType", required = true)
-    private BackupEngineType backupEngineType;
+    private BackupEngineType backupEngineType = BackupEngineType.fromString("BackupEngineBase");
 
     /*
      * Friendly name of the backup engine.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * Type of backup management for the backup engine.
      */
-    @JsonProperty(value = "backupManagementType")
     private BackupManagementType backupManagementType;
 
     /*
      * Registration status of the backup engine with the Recovery Services Vault.
      */
-    @JsonProperty(value = "registrationStatus")
     private String registrationStatus;
 
     /*
      * Status of the backup engine with the Recovery Services Vault. = {Active/Deleting/DeleteFailed}
      */
-    @JsonProperty(value = "backupEngineState")
     private String backupEngineState;
 
     /*
      * Backup status of the backup engine.
      */
-    @JsonProperty(value = "healthStatus")
     private String healthStatus;
 
     /*
      * Flag indicating if the backup engine be registered, once already registered.
      */
-    @JsonProperty(value = "canReRegister")
     private Boolean canReRegister;
 
     /*
      * ID of the backup engine.
      */
-    @JsonProperty(value = "backupEngineId")
     private String backupEngineId;
 
     /*
      * Backup engine version
      */
-    @JsonProperty(value = "dpmVersion")
     private String dpmVersion;
 
     /*
      * Backup agent version
      */
-    @JsonProperty(value = "azureBackupAgentVersion")
     private String azureBackupAgentVersion;
 
     /*
      * To check if backup agent upgrade available
      */
-    @JsonProperty(value = "isAzureBackupAgentUpgradeAvailable")
     private Boolean isAzureBackupAgentUpgradeAvailable;
 
     /*
      * To check if backup engine upgrade available
      */
-    @JsonProperty(value = "isDpmUpgradeAvailable")
     private Boolean isDpmUpgradeAvailable;
 
     /*
      * Extended info of the backupengine
      */
-    @JsonProperty(value = "extendedInfo")
     private BackupEngineExtendedInfo extendedInfo;
 
     /**
      * Creates an instance of BackupEngineBase class.
      */
     public BackupEngineBase() {
-        this.backupEngineType = BackupEngineType.fromString("BackupEngineBase");
     }
 
     /**
@@ -371,5 +347,108 @@ public class BackupEngineBase {
         if (extendedInfo() != null) {
             extendedInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("backupEngineType",
+            this.backupEngineType == null ? null : this.backupEngineType.toString());
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeStringField("backupManagementType",
+            this.backupManagementType == null ? null : this.backupManagementType.toString());
+        jsonWriter.writeStringField("registrationStatus", this.registrationStatus);
+        jsonWriter.writeStringField("backupEngineState", this.backupEngineState);
+        jsonWriter.writeStringField("healthStatus", this.healthStatus);
+        jsonWriter.writeBooleanField("canReRegister", this.canReRegister);
+        jsonWriter.writeStringField("backupEngineId", this.backupEngineId);
+        jsonWriter.writeStringField("dpmVersion", this.dpmVersion);
+        jsonWriter.writeStringField("azureBackupAgentVersion", this.azureBackupAgentVersion);
+        jsonWriter.writeBooleanField("isAzureBackupAgentUpgradeAvailable", this.isAzureBackupAgentUpgradeAvailable);
+        jsonWriter.writeBooleanField("isDpmUpgradeAvailable", this.isDpmUpgradeAvailable);
+        jsonWriter.writeJsonField("extendedInfo", this.extendedInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackupEngineBase from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackupEngineBase if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BackupEngineBase.
+     */
+    public static BackupEngineBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("backupEngineType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzureBackupServerEngine".equals(discriminatorValue)) {
+                    return AzureBackupServerEngine.fromJson(readerToUse.reset());
+                } else if ("DpmBackupEngine".equals(discriminatorValue)) {
+                    return DpmBackupEngine.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static BackupEngineBase fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackupEngineBase deserializedBackupEngineBase = new BackupEngineBase();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("backupEngineType".equals(fieldName)) {
+                    deserializedBackupEngineBase.backupEngineType = BackupEngineType.fromString(reader.getString());
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedBackupEngineBase.friendlyName = reader.getString();
+                } else if ("backupManagementType".equals(fieldName)) {
+                    deserializedBackupEngineBase.backupManagementType
+                        = BackupManagementType.fromString(reader.getString());
+                } else if ("registrationStatus".equals(fieldName)) {
+                    deserializedBackupEngineBase.registrationStatus = reader.getString();
+                } else if ("backupEngineState".equals(fieldName)) {
+                    deserializedBackupEngineBase.backupEngineState = reader.getString();
+                } else if ("healthStatus".equals(fieldName)) {
+                    deserializedBackupEngineBase.healthStatus = reader.getString();
+                } else if ("canReRegister".equals(fieldName)) {
+                    deserializedBackupEngineBase.canReRegister = reader.getNullable(JsonReader::getBoolean);
+                } else if ("backupEngineId".equals(fieldName)) {
+                    deserializedBackupEngineBase.backupEngineId = reader.getString();
+                } else if ("dpmVersion".equals(fieldName)) {
+                    deserializedBackupEngineBase.dpmVersion = reader.getString();
+                } else if ("azureBackupAgentVersion".equals(fieldName)) {
+                    deserializedBackupEngineBase.azureBackupAgentVersion = reader.getString();
+                } else if ("isAzureBackupAgentUpgradeAvailable".equals(fieldName)) {
+                    deserializedBackupEngineBase.isAzureBackupAgentUpgradeAvailable
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isDpmUpgradeAvailable".equals(fieldName)) {
+                    deserializedBackupEngineBase.isDpmUpgradeAvailable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("extendedInfo".equals(fieldName)) {
+                    deserializedBackupEngineBase.extendedInfo = BackupEngineExtendedInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackupEngineBase;
+        });
     }
 }

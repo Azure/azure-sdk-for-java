@@ -29,8 +29,7 @@ public class AzureConfigurableTests {
     @Test
     public void testRetryOptions() throws NoSuchFieldException, IllegalAccessException {
         // RetryOptions should take effect
-        ResourceManager resourceManager = ResourceManager
-            .configure()
+        ResourceManager resourceManager = ResourceManager.configure()
             .withRetryOptions(new RetryOptions(new FixedDelayOptions(3, Duration.ofSeconds(1))))
             .withHttpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE))
@@ -40,8 +39,7 @@ public class AzureConfigurableTests {
         validateRetryPolicy(httpPipeline, FixedDelay.class);
 
         // Default is RetryPolicy with ExponentialBackoff
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withHttpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE))
             .withSubscription(Mockito.anyString());
@@ -49,8 +47,7 @@ public class AzureConfigurableTests {
         httpPipeline = resourceManager.genericResources().manager().httpPipeline();
         validateRetryPolicy(httpPipeline, ExponentialBackoff.class);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withHttpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE))
             .withSubscription(Mockito.anyString());
@@ -59,7 +56,8 @@ public class AzureConfigurableTests {
         validateRetryPolicy(httpPipeline, ExponentialBackoff.class);
     }
 
-    private static void validateRetryPolicy(HttpPipeline httpPipeline, Class<?> retryStrategyClass) throws NoSuchFieldException, IllegalAccessException {
+    private static void validateRetryPolicy(HttpPipeline httpPipeline, Class<?> retryStrategyClass)
+        throws NoSuchFieldException, IllegalAccessException {
         Assertions.assertNotNull(httpPipeline);
 
         Field pipelinePoliciesField = HttpPipeline.class.getDeclaredField("pipelinePolicies");
@@ -72,7 +70,8 @@ public class AzureConfigurableTests {
         }
     }
 
-    private static void validateRetryPolicy(RetryPolicy retryPolicy, Class<?> retryStrategyClass) throws NoSuchFieldException, IllegalAccessException {
+    private static void validateRetryPolicy(RetryPolicy retryPolicy, Class<?> retryStrategyClass)
+        throws NoSuchFieldException, IllegalAccessException {
         Assertions.assertNotNull(retryPolicy);
 
         Field retryStrategyField = RetryPolicy.class.getDeclaredField("retryStrategy");

@@ -45,7 +45,7 @@ public final class RelationshipClient {
      * {@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -55,7 +55,7 @@ public final class RelationshipClient {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     end2 (Optional): (recursive schema, see end2 above)
@@ -77,7 +77,7 @@ public final class RelationshipClient {
      * {@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -87,7 +87,7 @@ public final class RelationshipClient {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     end2 (Optional): (recursive schema, see end2 above)
@@ -125,7 +125,7 @@ public final class RelationshipClient {
      * {@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -135,7 +135,7 @@ public final class RelationshipClient {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     end2 (Optional): (recursive schema, see end2 above)
@@ -157,7 +157,7 @@ public final class RelationshipClient {
      * {@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -167,7 +167,7 @@ public final class RelationshipClient {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     end2 (Optional): (recursive schema, see end2 above)
@@ -214,7 +214,7 @@ public final class RelationshipClient {
      *     referredEntities (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -224,7 +224,7 @@ public final class RelationshipClient {
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -267,7 +267,7 @@ public final class RelationshipClient {
      *     }
      *     relationship (Optional): {
      *         attributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -277,7 +277,7 @@ public final class RelationshipClient {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *         end2 (Optional): (recursive schema, see end2 above)

@@ -24,12 +24,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-
 /**
  * Event handler for taking care of event related tasks.
  */
 public final class EventHandler {
     private static final ClientLogger LOGGER = new ClientLogger(EventHandler.class);
+
+    /**
+     * Initializes a new instance of EventHandler.
+     */
+    public EventHandler() {
+    }
 
     /***
      * Returns a list of events from request's body.
@@ -69,7 +74,8 @@ public final class EventHandler {
             }
 
             for (CloudEvent cloudEvent : cloudEvents) {
-                CallAutomationEventBase temp = parseSingleCloudEvent(cloudEvent.getData().toString(), cloudEvent.getType());
+                CallAutomationEventBase temp
+                    = parseSingleCloudEvent(cloudEvent.getData().toString(), cloudEvent.getType());
                 if (temp != null) {
                     callAutomationBaseEvents.add(temp);
                 }

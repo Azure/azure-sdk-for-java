@@ -14,9 +14,6 @@ parameters:
   - name: ArtifactName
     type: string
     default: 'not-specified'
-  - name: TargetDocRepoName
-    type: string
-    default: ''
   - name: EnableIntegrationStage
     type: boolean
     default: true
@@ -95,7 +92,7 @@ stages:
             - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
               parameters:
                 Paths:
-                  - '${{ parameters.ServiceDirectory }}'
+                  - 'sdk/${{ parameters.ServiceDirectory }}'
                   - '**/*.xml'
                   - '!sdk/**/test-recordings'
                   - '!sdk/**/session-records'
@@ -269,6 +266,7 @@ stages:
                       Paths:
                         - '${{ parameters.ServiceDirectory }}'
                         - '**/*.xml'
+                        - '**/*.md'
                         - '!sdk/**/test-recordings'
                         - '!sdk/**/session-records'
 
@@ -278,7 +276,7 @@ stages:
                       versionSpec: $(PythonVersion)
 
                   # Apply the version increment to each library, which only updates the version_client.txt file,
-                  # and then call to update_versions will then apply all of the updates.
+                  # and then call to update_versions will then apply all the updates.
                   - pwsh: |
                       $ArtifactsList = $('$(ArtifactsJson)' | ConvertFrom-Json | Select-Object name, groupId)
                       $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
@@ -338,8 +336,8 @@ stages:
                           - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
                             - $(Pipeline.Workspace)/${{parameters.ArtifactName}}/PackageInfo/${{artifact.name}}.json
                       WorkingDirectory: $(System.DefaultWorkingDirectory)
-                      TargetDocRepoOwner: 'Azure'
-                      TargetDocRepoName: ${{parameters.TargetDocRepoName}}
+                      TargetDocRepoOwner: $(DocRepoOwner)
+                      TargetDocRepoName: $(DocRepoName)
                       Language: 'java'
                       SparseCheckoutPaths:
                         - docs-ref-services/
@@ -476,8 +474,8 @@ stages:
                   - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
                     - $(Pipeline.Workspace)/${{parameters.ArtifactName}}/PackageInfo/${{artifact.name}}.json
               WorkingDirectory: $(System.DefaultWorkingDirectory)
-              TargetDocRepoOwner: "azure-sdk"
-              TargetDocRepoName: ${{parameters.TargetDocRepoName}}
+              TargetDocRepoOwner: $(DocRepoOwner)
+              TargetDocRepoName: $(DocRepoName)
               Language: 'java'
               DailyDocsBuild: true
               SparseCheckoutPaths:

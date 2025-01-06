@@ -12,9 +12,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
  * Type representing authorization rule defined for namespace.
  */
 @Fluent
-public interface NamespaceAuthorizationRule extends
-    AuthorizationRule<NamespaceAuthorizationRule>,
-    Updatable<NamespaceAuthorizationRule.Update> {
+public interface NamespaceAuthorizationRule
+    extends AuthorizationRule<NamespaceAuthorizationRule>, Updatable<NamespaceAuthorizationRule.Update> {
     /**
      * @return the name of the parent namespace name
      */
@@ -42,16 +41,14 @@ public interface NamespaceAuthorizationRule extends
     /**
      * The entirety of the namespace authorization rule definition.
      */
-    interface Definition extends
-            NamespaceAuthorizationRule.DefinitionStages.Blank,
-            NamespaceAuthorizationRule.DefinitionStages.WithCreate {
+    interface Definition extends NamespaceAuthorizationRule.DefinitionStages.Blank,
+        NamespaceAuthorizationRule.DefinitionStages.WithCreate {
     }
 
     /**
      * The entirety of the namespace authorization rule update.
      */
-    interface Update extends
-        Appliable<NamespaceAuthorizationRule>,
-        AuthorizationRule.UpdateStages.WithListenOrSendOrManage<Update> {
+    interface Update
+        extends Appliable<NamespaceAuthorizationRule>, AuthorizationRule.UpdateStages.WithListenOrSendOrManage<Update> {
     }
 }

@@ -39,8 +39,8 @@ public final class OperatorInformationRequestOptions implements JsonSerializable
      * @param includeAdditionalPhoneAndOperatorDetails the includeAdditionalPhoneAndOperatorDetails value to set.
      * @return the OperatorInformationRequestOptions object itself.
      */
-    public OperatorInformationRequestOptions setIncludeAdditionalPhoneAndOperatorDetails(
-            Boolean includeAdditionalPhoneAndOperatorDetails) {
+    public OperatorInformationRequestOptions
+        setIncludeAdditionalPhoneAndOperatorDetails(Boolean includeAdditionalPhoneAndOperatorDetails) {
         this.includeAdditionalPhoneAndOperatorDetails = includeAdditionalPhoneAndOperatorDetails;
         return this;
     }

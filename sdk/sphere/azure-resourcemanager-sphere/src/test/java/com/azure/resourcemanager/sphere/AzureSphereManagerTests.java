@@ -15,6 +15,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.resourcemanager.sphere.models.Catalog;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -35,16 +36,15 @@ public class AzureSphereManagerTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        azureSphereManager = AzureSphereManager
-            .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile);
-
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
+
+        azureSphereManager = AzureSphereManager.configure()
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile);
 
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
@@ -52,10 +52,7 @@ public class AzureSphereManagerTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION_USEAST)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION_USEAST).create();
         }
     }
 
@@ -82,7 +79,8 @@ public class AzureSphereManagerTests extends TestProxyTestBase {
             catalog.refresh();
             Assertions.assertEquals(catalogName, catalog.name());
             Assertions.assertEquals(catalogName, azureSphereManager.catalogs().getById(catalog.id()).name());
-            Assertions.assertTrue(azureSphereManager.catalogs().listByResourceGroup(resourceGroupName).stream().findAny().isPresent());
+            Assertions.assertTrue(
+                azureSphereManager.catalogs().listByResourceGroup(resourceGroupName).stream().findAny().isPresent());
         } finally {
             if (catalog != null) {
                 azureSphereManager.catalogs().deleteById(catalog.id());

@@ -11,7 +11,7 @@ public final class DelegatedSubnetUsageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DelegatedSubnetUsage model
-            = BinaryData.fromString("{\"subnetName\":\"lkdmtncvokotllxd\",\"usage\":8614672168967170032}")
+            = BinaryData.fromString("{\"subnetName\":\"ezrkgqhcjrefo\",\"usage\":149589040651836260}")
                 .toObject(DelegatedSubnetUsage.class);
     }
 

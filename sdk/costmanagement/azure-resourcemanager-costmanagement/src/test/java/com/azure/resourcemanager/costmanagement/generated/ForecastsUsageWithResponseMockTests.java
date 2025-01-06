@@ -6,22 +6,24 @@ package com.azure.resourcemanager.costmanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.costmanagement.CostManagementManager;
+import com.azure.resourcemanager.costmanagement.models.ForecastAggregation;
+import com.azure.resourcemanager.costmanagement.models.ForecastComparisonExpression;
 import com.azure.resourcemanager.costmanagement.models.ForecastDataset;
 import com.azure.resourcemanager.costmanagement.models.ForecastDatasetConfiguration;
 import com.azure.resourcemanager.costmanagement.models.ForecastDefinition;
 import com.azure.resourcemanager.costmanagement.models.ForecastFilter;
+import com.azure.resourcemanager.costmanagement.models.ForecastOperatorType;
 import com.azure.resourcemanager.costmanagement.models.ForecastResult;
 import com.azure.resourcemanager.costmanagement.models.ForecastTimePeriod;
 import com.azure.resourcemanager.costmanagement.models.ForecastTimeframe;
 import com.azure.resourcemanager.costmanagement.models.ForecastType;
+import com.azure.resourcemanager.costmanagement.models.FunctionName;
+import com.azure.resourcemanager.costmanagement.models.FunctionType;
 import com.azure.resourcemanager.costmanagement.models.GranularityType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -29,76 +31,132 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ForecastsUsageWithResponseMockTests {
     @Test
     public void testUsageWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"nextLink\":\"pxwgsa\",\"columns\":[{\"name\":\"powzafcz\",\"type\":\"mlj\"}],\"rows\":[[\"datapefyc\",\"dataveitit\"]]},\"sku\":\"s\",\"eTag\":\"ajlnsjhwjuyxx\",\"location\":\"xqvmvuay\",\"tags\":{\"eqbw\":\"dxk\",\"xsl\":\"ntghyksarcdr\",\"x\":\"vlzladl\",\"wzdanojisgglmvo\":\"pbqhvfdqqjwkr\"},\"id\":\"atuztjct\",\"name\":\"bpvbkaehxsmzygd\",\"type\":\"wakwseivmakxhys\"}";
 
-        String responseStr =
-            "{\"properties\":{\"nextLink\":\"dnbzydvfvfcjn\",\"columns\":[],\"rows\":[[\"datavhmgorffukis\",\"datavwmzhwplefaxvxil\"],[\"datatg\"],[\"datanzeyqxtjj\"],[\"dataqlqhycavodg\",\"dataxdbeesmieknl\"]]},\"sku\":\"riaa\",\"eTag\":\"uagydwqfbylyrf\",\"location\":\"iagtc\",\"tags\":{\"mozuxylfsb\":\"cqwogfnzjvusfzl\",\"tgkbugrjqctojc\":\"kadpysown\",\"cuplcplcwkhih\":\"isofieypefojyqd\",\"cjhfgmvecactxmw\":\"hlhzdsqtzbsrgno\"},\"id\":\"teyowclu\",\"name\":\"ovekqvgqouwi\",\"type\":\"zmpjwyiv\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        CostManagementManager manager = CostManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        CostManagementManager manager =
-            CostManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ForecastResult response =
-            manager
-                .forecasts()
-                .usageWithResponse(
-                    "aspavehhr",
-                    new ForecastDefinition()
-                        .withType(ForecastType.AMORTIZED_COST)
+        ForecastResult response
+            = manager.forecasts()
+                .usageWithResponse("rmpwctofld",
+                    new ForecastDefinition().withType(ForecastType.ACTUAL_COST)
                         .withTimeframe(ForecastTimeframe.CUSTOM)
-                        .withTimePeriod(
-                            new ForecastTimePeriod()
-                                .withFrom(OffsetDateTime.parse("2021-10-10T05:55:50Z"))
-                                .withTo(OffsetDateTime.parse("2021-12-01T01:47:09Z")))
-                        .withDataset(
-                            new ForecastDataset()
-                                .withGranularity(GranularityType.DAILY)
-                                .withConfiguration(new ForecastDatasetConfiguration().withColumns(Arrays.asList()))
-                                .withAggregation(mapOf())
-                                .withFilter(new ForecastFilter().withAnd(Arrays.asList()).withOr(Arrays.asList())))
+                        .withTimePeriod(new ForecastTimePeriod().withFrom(OffsetDateTime.parse("2020-12-26T00:57:10Z"))
+                            .withTo(OffsetDateTime.parse("2021-02-12T16:16:33Z")))
+                        .withDataset(new ForecastDataset().withGranularity(GranularityType.DAILY)
+                            .withConfiguration(new ForecastDatasetConfiguration()
+                                .withColumns(Arrays.asList("rfgdrwj", "yewhfjsrwq", "xet")))
+                            .withAggregation(mapOf("vrrmdqntycn",
+                                new ForecastAggregation().withName(FunctionName.PRE_TAX_COST_USD)
+                                    .withFunction(FunctionType.SUM),
+                                "hvmaxgnuyeamcmhu",
+                                new ForecastAggregation().withName(FunctionName.PRE_TAX_COST_USD)
+                                    .withFunction(FunctionType.SUM),
+                                "ecehokw",
+                                new ForecastAggregation().withName(FunctionName.COST).withFunction(FunctionType.SUM),
+                                "twloesqr", new ForecastAggregation().withName(FunctionName.PRE_TAX_COST)
+                                    .withFunction(FunctionType.SUM)))
+                            .withFilter(
+                                new ForecastFilter()
+                                    .withAnd(Arrays.asList(new ForecastFilter()
+                                        .withAnd(Arrays.asList(new ForecastFilter(), new ForecastFilter()))
+                                        .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter()))
+                                        .withDimensions(new ForecastComparisonExpression()
+                                            .withName("koilaci")
+                                            .withOperator(ForecastOperatorType.IN)
+                                            .withValues(Arrays.asList()))
+                                        .withTags(new ForecastComparisonExpression()
+                                            .withName("jleip")
+                                            .withOperator(ForecastOperatorType.IN)
+                                            .withValues(Arrays.asList())),
+                                        new ForecastFilter()
+                                            .withAnd(Arrays.asList(new ForecastFilter(), new ForecastFilter(),
+                                                new ForecastFilter()))
+                                            .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter(),
+                                                new ForecastFilter()))
+                                            .withDimensions(new ForecastComparisonExpression().withName("zr")
+                                                .withOperator(ForecastOperatorType.IN)
+                                                .withValues(Arrays.asList()))
+                                            .withTags(
+                                                new ForecastComparisonExpression().withName("thqkkwhbgxvellv")
+                                                    .withOperator(ForecastOperatorType.IN)
+                                                    .withValues(Arrays.asList())),
+                                        new ForecastFilter()
+                                            .withAnd(Arrays.asList(new ForecastFilter()))
+                                            .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter()))
+                                            .withDimensions(new ForecastComparisonExpression().withName("itmujdtvm")
+                                                .withOperator(ForecastOperatorType.IN)
+                                                .withValues(Arrays.asList()))
+                                            .withTags(new ForecastComparisonExpression()
+                                                .withName("ymffhmjpddnyx")
+                                                .withOperator(ForecastOperatorType.IN)
+                                                .withValues(Arrays.asList())),
+                                        new ForecastFilter().withAnd(Arrays.asList(new ForecastFilter()))
+                                            .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter(),
+                                                new ForecastFilter()))
+                                            .withDimensions(new ForecastComparisonExpression().withName("z")
+                                                .withOperator(ForecastOperatorType.IN)
+                                                .withValues(Arrays.asList()))
+                                            .withTags(new ForecastComparisonExpression().withName("jqrbrpvnm")
+                                                .withOperator(ForecastOperatorType.IN)
+                                                .withValues(Arrays.asList()))))
+                                    .withOr(Arrays.asList(
+                                        new ForecastFilter()
+                                            .withAnd(Arrays.asList(new ForecastFilter(), new ForecastFilter(),
+                                                new ForecastFilter(), new ForecastFilter()))
+                                            .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter()))
+                                            .withDimensions(new ForecastComparisonExpression().withName("jpp")
+                                                .withOperator(ForecastOperatorType.IN)
+                                                .withValues(Arrays.asList()))
+                                            .withTags(new ForecastComparisonExpression().withName("ohoqkpjtnqjilayw")
+                                                .withOperator(ForecastOperatorType.IN)
+                                                .withValues(Arrays.asList())),
+                                        new ForecastFilter().withAnd(Arrays.asList(new ForecastFilter()))
+                                            .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter(),
+                                                new ForecastFilter(), new ForecastFilter()))
+                                            .withDimensions(new ForecastComparisonExpression().withName("yrilmhxdqaolf")
+                                                .withOperator(ForecastOperatorType.IN)
+                                                .withValues(Arrays.asList()))
+                                            .withTags(new ForecastComparisonExpression().withName("kkbjpjv")
+                                                .withOperator(ForecastOperatorType.IN)
+                                                .withValues(Arrays.asList())),
+                                        new ForecastFilter().withAnd(Arrays.asList(new ForecastFilter()))
+                                            .withOr(Arrays.asList(new ForecastFilter()))
+                                            .withDimensions(new ForecastComparisonExpression().withName("wob")
+                                                .withOperator(ForecastOperatorType.IN)
+                                                .withValues(Arrays.asList()))
+                                            .withTags(new ForecastComparisonExpression().withName("hlwyjfnqzocrd")
+                                                .withOperator(ForecastOperatorType.IN)
+                                                .withValues(Arrays.asList()))))
+                                    .withDimensions(new ForecastComparisonExpression().withName("zeunt")
+                                        .withOperator(ForecastOperatorType.IN)
+                                        .withValues(Arrays.asList("ncaqttiekoifu")))
+                                    .withTags(new ForecastComparisonExpression().withName("yttzgixgyrih")
+                                        .withOperator(ForecastOperatorType.IN)
+                                        .withValues(Arrays.asList("gbehlqtxnr")))))
                         .withIncludeActualCost(true)
-                        .withIncludeFreshPartialCost(true),
-                    "dyuib",
-                    com.azure.core.util.Context.NONE)
+                        .withIncludeFreshPartialCost(false),
+                    "rndpgfjodhdaqotw", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("iagtc", response.location());
-        Assertions.assertEquals("cqwogfnzjvusfzl", response.tags().get("mozuxylfsb"));
-        Assertions.assertEquals("dnbzydvfvfcjn", response.nextLink());
+        Assertions.assertEquals("xqvmvuay", response.location());
+        Assertions.assertEquals("dxk", response.tags().get("eqbw"));
+        Assertions.assertEquals("pxwgsa", response.nextLink());
+        Assertions.assertEquals("powzafcz", response.columns().get(0).name());
+        Assertions.assertEquals("mlj", response.columns().get(0).type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -65,8 +65,7 @@ public final class RecordingStateChangedEvent extends CallAutomationEventBase {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return toJsonShared(jsonWriter.writeStartObject())
-            .writeStringField("recordingId", recordingId)
+        return toJsonShared(jsonWriter.writeStartObject()).writeStringField("recordingId", recordingId)
             .writeStringField("state", Objects.toString(recordingState, null))
             .writeEndObject();
     }

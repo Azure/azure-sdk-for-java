@@ -40,8 +40,8 @@ import java.util.stream.Stream;
 public abstract class KeyVaultAdministrationClientTestBase extends TestProxyTestBase {
     private static final String SDK_NAME = "client_name";
     private static final String SDK_VERSION = "client_version";
-    protected static final boolean IS_MANAGED_HSM_DEPLOYED =
-        Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT") != null;
+    protected static final boolean IS_MANAGED_HSM_DEPLOYED
+        = Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT") != null;
     static final String DISPLAY_NAME = "{displayName}";
 
     @Override
@@ -69,8 +69,7 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestProxyTest
             credential = new MockTokenCredential();
 
             List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
-            customMatchers.add(new CustomMatcher()
-                .setComparingBodies(false)
+            customMatchers.add(new CustomMatcher().setComparingBodies(false)
                 .setHeadersKeyOnlyMatch(Collections.singletonList("Accept"))
                 .setExcludedHeaders(Arrays.asList("Authorization", "Accept-Language")));
             interceptorManager.addMatchers(customMatchers);
@@ -97,14 +96,14 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestProxyTest
             policies.add(interceptorManager.getRecordPolicy());
         }
 
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .build();
     }
 
     public String getEndpoint() {
-        final String endpoint = interceptorManager.isPlaybackMode() ? "https://localhost:8080"
+        final String endpoint = interceptorManager.isPlaybackMode()
+            ? "https://localhost:8080"
             : Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT");
 
         Objects.requireNonNull(endpoint);

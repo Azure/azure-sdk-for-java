@@ -101,7 +101,8 @@ public final class CreateToolResourcesOptions implements JsonSerializable<Create
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("code_interpreter", this.codeInterpreter);
         if (this.fileSearch != null) {
-            jsonWriter.writeUntypedField("file_search", this.fileSearch.toObject(Object.class));
+            jsonWriter.writeFieldName("file_search");
+            this.fileSearch.writeTo(jsonWriter);
         }
         return jsonWriter.writeEndObject();
     }

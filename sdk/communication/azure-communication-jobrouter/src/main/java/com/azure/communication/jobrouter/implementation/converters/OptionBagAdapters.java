@@ -27,8 +27,7 @@ public final class OptionBagAdapters {
      * @return classification policy.
      */
     public static ClassificationPolicy toClassificationPolicy(CreateClassificationPolicyOptions options) {
-        return new ClassificationPolicy()
-            .setName(options.getName())
+        return new ClassificationPolicy().setName(options.getName())
             .setPrioritizationRule(options.getPrioritizationRule())
             .setFallbackQueueId(options.getFallbackQueueId())
             .setQueueSelectorAttachments(options.getQueueSelectors())
@@ -40,10 +39,9 @@ public final class OptionBagAdapters {
      * @param createDistributionPolicyOptions Container with options to create a DistributionPolicy.
      * @return distribution policy.
      */
-    public static DistributionPolicy toDistributionPolicy(
-        CreateDistributionPolicyOptions createDistributionPolicyOptions) {
-        DistributionPolicy policy = new DistributionPolicy()
-            .setMode(createDistributionPolicyOptions.getMode())
+    public static DistributionPolicy
+        toDistributionPolicy(CreateDistributionPolicyOptions createDistributionPolicyOptions) {
+        DistributionPolicy policy = new DistributionPolicy().setMode(createDistributionPolicyOptions.getMode())
             .setOfferExpiresAfter(createDistributionPolicyOptions.getOfferExpiresAfter())
             .setName(createDistributionPolicyOptions.getName());
 
@@ -59,8 +57,7 @@ public final class OptionBagAdapters {
      * @return exception policy.
      */
     public static ExceptionPolicy toExceptionPolicy(CreateExceptionPolicyOptions createExceptionPolicyOptions) {
-        return new ExceptionPolicy()
-            .setName(createExceptionPolicyOptions.getName())
+        return new ExceptionPolicy().setName(createExceptionPolicyOptions.getName())
             .setExceptionRules(createExceptionPolicyOptions.getExceptionRules());
     }
 
@@ -70,8 +67,7 @@ public final class OptionBagAdapters {
      * @return RouterJob
      */
     public static RouterJob toRouterJob(CreateJobOptions createJobOptions) {
-        return new RouterJob()
-            .setChannelId(createJobOptions.getChannelId())
+        return new RouterJob().setChannelId(createJobOptions.getChannelId())
             .setChannelReference(createJobOptions.getChannelReference())
             .setQueueId(createJobOptions.getQueueId())
             .setLabels(createJobOptions.getLabels())
@@ -89,8 +85,7 @@ public final class OptionBagAdapters {
      * @return RouterJob
      */
     public static RouterJob toRouterJob(CreateJobWithClassificationPolicyOptions createJobOptions) {
-        return new RouterJob()
-            .setClassificationPolicyId(createJobOptions.getClassificationPolicyId())
+        return new RouterJob().setClassificationPolicyId(createJobOptions.getClassificationPolicyId())
             .setChannelId(createJobOptions.getChannelId())
             .setChannelReference(createJobOptions.getChannelReference())
             .setQueueId(createJobOptions.getQueueId())
@@ -109,8 +104,7 @@ public final class OptionBagAdapters {
      * @return JobQueue
      */
     public static RouterQueue toRouterQueue(CreateQueueOptions createQueueOptions) {
-        return new RouterQueue()
-            .setName(createQueueOptions.getName())
+        return new RouterQueue().setName(createQueueOptions.getName())
             .setLabels(createQueueOptions.getLabels())
             .setDistributionPolicyId(createQueueOptions.getDistributionPolicyId())
             .setExceptionPolicyId(createQueueOptions.getExceptionPolicyId());
@@ -122,8 +116,7 @@ public final class OptionBagAdapters {
      * @return RouterWorker
      */
     public static RouterWorker toRouterWorker(CreateWorkerOptions createWorkerOptions) {
-        return new RouterWorker()
-            .setQueues(createWorkerOptions.getQueues())
+        return new RouterWorker().setQueues(createWorkerOptions.getQueues())
             .setLabels(createWorkerOptions.getLabels())
             .setTags(createWorkerOptions.getTags())
             .setAvailableForOffers(createWorkerOptions.isAvailableForOffers())

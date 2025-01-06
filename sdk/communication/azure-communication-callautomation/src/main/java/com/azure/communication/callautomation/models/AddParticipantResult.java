@@ -34,8 +34,8 @@ public class AddParticipantResult extends ResultWithEventHandling<AddParticipant
     private final String invitationId;
 
     static {
-        AddParticipantResponseConstructorProxy.setAccessor(
-            new AddParticipantResponseConstructorProxy.AddParticipantResponseConstructorAccessor() {
+        AddParticipantResponseConstructorProxy
+            .setAccessor(new AddParticipantResponseConstructorProxy.AddParticipantResponseConstructorAccessor() {
                 @Override
                 public AddParticipantResult create(AddParticipantResponseInternal internalHeaders) {
                     return new AddParticipantResult(internalHeaders);
@@ -102,21 +102,31 @@ public class AddParticipantResult extends ResultWithEventHandling<AddParticipant
             return Mono.empty();
         }
 
-        return (timeout == null ? eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
-            && (Objects.equals(event.getOperationContext(), operationContextFromRequest) || operationContextFromRequest == null)
-            && (event.getClass() == AddParticipantSucceeded.class || event.getClass() == AddParticipantFailed.class))
-            : eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
-            && (Objects.equals(event.getOperationContext(), operationContextFromRequest) || operationContextFromRequest == null)
-            && (event.getClass() == AddParticipantSucceeded.class || event.getClass() == AddParticipantFailed.class), timeout)).flatMap(event -> Mono.just(getReturnedEvent(event)));
+        return (timeout == null
+            ? eventProcessor
+                .waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
+                    && (Objects.equals(event.getOperationContext(), operationContextFromRequest)
+                        || operationContextFromRequest == null)
+                    && (event.getClass() == AddParticipantSucceeded.class
+                        || event.getClass() == AddParticipantFailed.class))
+            : eventProcessor
+                .waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
+                    && (Objects.equals(event.getOperationContext(), operationContextFromRequest)
+                        || operationContextFromRequest == null)
+                    && (event.getClass() == AddParticipantSucceeded.class
+                        || event.getClass() == AddParticipantFailed.class),
+                    timeout)).flatMap(event -> Mono.just(getReturnedEvent(event)));
     }
 
     @Override
     protected AddParticipantEventResult getReturnedEvent(CallAutomationEventBase event) {
         AddParticipantEventResult result = null;
         if (event.getClass() == AddParticipantSucceeded.class) {
-            result = new AddParticipantEventResult(true, (AddParticipantSucceeded) event, null, ((AddParticipantSucceeded) event).getParticipant());
+            result = new AddParticipantEventResult(true, (AddParticipantSucceeded) event, null,
+                ((AddParticipantSucceeded) event).getParticipant());
         } else if (event.getClass() == AddParticipantFailed.class) {
-            result = new AddParticipantEventResult(false, null, (AddParticipantFailed) event, ((AddParticipantFailed) event).getParticipant());
+            result = new AddParticipantEventResult(false, null, (AddParticipantFailed) event,
+                ((AddParticipantFailed) event).getParticipant());
         }
 
         return result;

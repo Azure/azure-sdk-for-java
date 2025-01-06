@@ -334,7 +334,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @return A flag indicating if the request or response body should be logged.
      */
     private static boolean shouldBodyBeLogged(String contentTypeHeader, long contentLength) {
-        return !APPLICATION_OCTET_STREAM.equalsIgnoreCase(contentTypeHeader) && contentLength != 0
+        return !APPLICATION_OCTET_STREAM.equalsIgnoreCase(contentTypeHeader)
+            && contentLength != 0
             && contentLength < MAX_BODY_LOG_SIZE;
     }
 
@@ -349,10 +350,13 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         switch (logLevel) {
             case ERROR:
                 return logger.atError();
+
             case WARNING:
                 return logger.atWarning();
+
             case INFORMATIONAL:
                 return logger.atInfo();
+
             case VERBOSE:
             default:
                 return logger.atVerbose();

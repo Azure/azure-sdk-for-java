@@ -24,9 +24,10 @@ public final class A2AContainerMappingInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        A2AContainerMappingInput model = new A2AContainerMappingInput()
-            .withAgentAutoUpdateStatus(AgentAutoUpdateStatus.ENABLED).withAutomationAccountArmId("goaqylkjztj")
-            .withAutomationAccountAuthenticationType(AutomationAccountAuthenticationType.SYSTEM_ASSIGNED_IDENTITY);
+        A2AContainerMappingInput model
+            = new A2AContainerMappingInput().withAgentAutoUpdateStatus(AgentAutoUpdateStatus.ENABLED)
+                .withAutomationAccountArmId("goaqylkjztj")
+                .withAutomationAccountAuthenticationType(AutomationAccountAuthenticationType.SYSTEM_ASSIGNED_IDENTITY);
         model = BinaryData.fromObject(model).toObject(A2AContainerMappingInput.class);
         Assertions.assertEquals(AgentAutoUpdateStatus.ENABLED, model.agentAutoUpdateStatus());
         Assertions.assertEquals("goaqylkjztj", model.automationAccountArmId());

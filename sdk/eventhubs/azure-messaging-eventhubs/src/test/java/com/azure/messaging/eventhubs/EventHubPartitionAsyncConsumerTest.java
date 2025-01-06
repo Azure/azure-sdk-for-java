@@ -62,8 +62,8 @@ class EventHubPartitionAsyncConsumerTest {
     private static final String PARTITION_ID = "a-partition-id";
     private static final Instant TEST_DATE = Instant.ofEpochSecond(1578643343);
     private static final ClientLogger LOGGER = new ClientLogger(EventHubPartitionAsyncConsumerTest.class);
-    private static final EventHubsConsumerInstrumentation DEFAULT_INSTRUMENTATION =
-        new EventHubsConsumerInstrumentation(null, null, HOSTNAME, EVENT_HUB_NAME, CONSUMER_GROUP, false);
+    private static final EventHubsConsumerInstrumentation DEFAULT_INSTRUMENTATION
+        = new EventHubsConsumerInstrumentation(null, null, HOSTNAME, EVENT_HUB_NAME, CONSUMER_GROUP, false);
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
     @Mock
     private AmqpReceiveLink link1;
@@ -81,7 +81,8 @@ class EventHubPartitionAsyncConsumerTest {
     private Disposable parentConnection;
 
     private final EventPosition originalPosition = EventPosition.latest();
-    private final AtomicReference<Supplier<EventPosition>> currentPosition = new AtomicReference<>(() -> originalPosition);
+    private final AtomicReference<Supplier<EventPosition>> currentPosition
+        = new AtomicReference<>(() -> originalPosition);
     final Sinks.Many<AmqpEndpointState> endpointStatesSink = Sinks.many().multicast().onBackpressureBuffer();
     final Sinks.Many<Message> messagesSink = Sinks.many().multicast().onBackpressureBuffer();
 
@@ -113,7 +114,7 @@ class EventHubPartitionAsyncConsumerTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"true", "false"})
+    @ValueSource(strings = { "true", "false" })
     void receivesMessages(boolean trackLastEnqueuedProperties) {
         // Arrange
         linkProcessor = createLinkProcessor(false);
@@ -122,8 +123,8 @@ class EventHubPartitionAsyncConsumerTest {
 
         final EventData event1 = new EventData("Foo");
         final EventData event2 = new EventData("Bar");
-        final LastEnqueuedEventProperties last1 = new LastEnqueuedEventProperties(10L, 15L,
-            Instant.ofEpochMilli(1243454), Instant.ofEpochMilli(1240004));
+        final LastEnqueuedEventProperties last1
+            = new LastEnqueuedEventProperties(10L, 15L, Instant.ofEpochMilli(1243454), Instant.ofEpochMilli(1240004));
         final LastEnqueuedEventProperties last2 = new LastEnqueuedEventProperties(1005L, 154L,
             Instant.ofEpochMilli(8796254), Instant.ofEpochMilli(8795200));
 
@@ -134,28 +135,23 @@ class EventHubPartitionAsyncConsumerTest {
         when(messageSerializer.deserialize(same(message2), eq(LastEnqueuedEventProperties.class))).thenReturn(last2);
 
         // Act & Assert
-        StepVerifier.create(consumer.receive())
-            .then(() -> {
-                endpointStatesSink.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
-                messagesSink.emitNext(message1, Sinks.EmitFailureHandler.FAIL_FAST);
-                messagesSink.emitNext(message2, Sinks.EmitFailureHandler.FAIL_FAST);
-            })
-            .assertNext(partitionEvent -> {
-                verifyPartitionContext(partitionEvent.getPartitionContext());
-                verifyLastEnqueuedInformation(trackLastEnqueuedProperties, last1,
-                    partitionEvent.getLastEnqueuedEventProperties());
+        StepVerifier.create(consumer.receive()).then(() -> {
+            endpointStatesSink.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+            messagesSink.emitNext(message1, Sinks.EmitFailureHandler.FAIL_FAST);
+            messagesSink.emitNext(message2, Sinks.EmitFailureHandler.FAIL_FAST);
+        }).assertNext(partitionEvent -> {
+            verifyPartitionContext(partitionEvent.getPartitionContext());
+            verifyLastEnqueuedInformation(trackLastEnqueuedProperties, last1,
+                partitionEvent.getLastEnqueuedEventProperties());
 
-                Assertions.assertSame(event1, partitionEvent.getData());
-            })
-            .assertNext(partitionEvent -> {
-                verifyPartitionContext(partitionEvent.getPartitionContext());
-                verifyLastEnqueuedInformation(trackLastEnqueuedProperties, last2,
-                    partitionEvent.getLastEnqueuedEventProperties());
+            Assertions.assertSame(event1, partitionEvent.getData());
+        }).assertNext(partitionEvent -> {
+            verifyPartitionContext(partitionEvent.getPartitionContext());
+            verifyLastEnqueuedInformation(trackLastEnqueuedProperties, last2,
+                partitionEvent.getLastEnqueuedEventProperties());
 
-                Assertions.assertSame(event2, partitionEvent.getData());
-            })
-            .thenCancel()
-            .verify(DEFAULT_TIMEOUT);
+            Assertions.assertSame(event2, partitionEvent.getData());
+        }).thenCancel().verify(DEFAULT_TIMEOUT);
 
         Assertions.assertTrue(linkProcessor.isTerminated());
         Assertions.assertSame(originalPosition, currentPosition.get().get());
@@ -171,42 +167,37 @@ class EventHubPartitionAsyncConsumerTest {
         final Message message3 = mock(Message.class);
         final Long secondOffset = 54L;
         final Long lastOffset = 65L;
-        final AmqpAnnotatedMessage annotatedMessage1 = new AmqpAnnotatedMessage(
-            AmqpMessageBody.fromData("Foo".getBytes(StandardCharsets.UTF_8)));
-        final AmqpAnnotatedMessage annotatedMessage2 = new AmqpAnnotatedMessage(
-            AmqpMessageBody.fromData("Bar".getBytes(StandardCharsets.UTF_8)));
-        final AmqpAnnotatedMessage annotatedMessage3 = new AmqpAnnotatedMessage(
-            AmqpMessageBody.fromData("Baz".getBytes(StandardCharsets.UTF_8)));
+        final AmqpAnnotatedMessage annotatedMessage1
+            = new AmqpAnnotatedMessage(AmqpMessageBody.fromData("Foo".getBytes(StandardCharsets.UTF_8)));
+        final AmqpAnnotatedMessage annotatedMessage2
+            = new AmqpAnnotatedMessage(AmqpMessageBody.fromData("Bar".getBytes(StandardCharsets.UTF_8)));
+        final AmqpAnnotatedMessage annotatedMessage3
+            = new AmqpAnnotatedMessage(AmqpMessageBody.fromData("Baz".getBytes(StandardCharsets.UTF_8)));
 
-        final EventData event1 = new EventData(annotatedMessage1,
-            getSystemProperties(annotatedMessage1, 25L, 14L), Context.NONE);
-        final EventData event2 = new EventData(annotatedMessage2,
-            getSystemProperties(annotatedMessage1, secondOffset, 21L), Context.NONE);
-        final EventData event3 = new EventData(annotatedMessage3,
-            getSystemProperties(annotatedMessage1, lastOffset, 53L), Context.NONE);
+        final EventData event1
+            = new EventData(annotatedMessage1, getSystemProperties(annotatedMessage1, 25L, 14L), Context.NONE);
+        final EventData event2
+            = new EventData(annotatedMessage2, getSystemProperties(annotatedMessage1, secondOffset, 21L), Context.NONE);
+        final EventData event3
+            = new EventData(annotatedMessage3, getSystemProperties(annotatedMessage1, lastOffset, 53L), Context.NONE);
 
         when(messageSerializer.deserialize(same(message1), eq(EventData.class))).thenReturn(event1);
         when(messageSerializer.deserialize(same(message2), eq(EventData.class))).thenReturn(event2);
         when(messageSerializer.deserialize(same(message3), eq(EventData.class))).thenReturn(event3);
 
         // Act & Assert
-        StepVerifier.create(consumer.receive())
-            .then(() -> {
-                messagesSink.emitNext(message1, Sinks.EmitFailureHandler.FAIL_FAST);
-                messagesSink.emitNext(message2, Sinks.EmitFailureHandler.FAIL_FAST);
-            })
-            .assertNext(partitionEvent -> {
-                verifyPartitionContext(partitionEvent.getPartitionContext());
-                verifyLastEnqueuedInformation(false, null, partitionEvent.getLastEnqueuedEventProperties());
-                Assertions.assertSame(event1, partitionEvent.getData());
-            })
-            .assertNext(partitionEvent -> {
-                verifyPartitionContext(partitionEvent.getPartitionContext());
-                verifyLastEnqueuedInformation(false, null, partitionEvent.getLastEnqueuedEventProperties());
-                Assertions.assertSame(event2, partitionEvent.getData());
-            })
-            .thenCancel()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(consumer.receive()).then(() -> {
+            messagesSink.emitNext(message1, Sinks.EmitFailureHandler.FAIL_FAST);
+            messagesSink.emitNext(message2, Sinks.EmitFailureHandler.FAIL_FAST);
+        }).assertNext(partitionEvent -> {
+            verifyPartitionContext(partitionEvent.getPartitionContext());
+            verifyLastEnqueuedInformation(false, null, partitionEvent.getLastEnqueuedEventProperties());
+            Assertions.assertSame(event1, partitionEvent.getData());
+        }).assertNext(partitionEvent -> {
+            verifyPartitionContext(partitionEvent.getPartitionContext());
+            verifyLastEnqueuedInformation(false, null, partitionEvent.getLastEnqueuedEventProperties());
+            Assertions.assertSame(event2, partitionEvent.getData());
+        }).thenCancel().verify(DEFAULT_TIMEOUT);
 
         // Assert that we have the current offset.
         final EventPosition firstPosition = currentPosition.get().get();
@@ -214,9 +205,7 @@ class EventHubPartitionAsyncConsumerTest {
         Assertions.assertEquals(secondOffset, Long.parseLong(firstPosition.getOffset()));
         Assertions.assertFalse(firstPosition.isInclusive());
 
-        StepVerifier.create(consumer.receive())
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(consumer.receive()).expectComplete().verify(DEFAULT_TIMEOUT);
 
         consumer.close();
 
@@ -237,19 +226,19 @@ class EventHubPartitionAsyncConsumerTest {
         final Message message3 = mock(Message.class);
         final long secondOffset = 54L;
         final long lastOffset = 65L;
-        final AmqpAnnotatedMessage annotatedMessage1 = new AmqpAnnotatedMessage(
-            AmqpMessageBody.fromData("Foo".getBytes(StandardCharsets.UTF_8)));
-        final AmqpAnnotatedMessage annotatedMessage2 = new AmqpAnnotatedMessage(
-            AmqpMessageBody.fromData("Bar".getBytes(StandardCharsets.UTF_8)));
-        final AmqpAnnotatedMessage annotatedMessage3 = new AmqpAnnotatedMessage(
-            AmqpMessageBody.fromData("Baz".getBytes(StandardCharsets.UTF_8)));
+        final AmqpAnnotatedMessage annotatedMessage1
+            = new AmqpAnnotatedMessage(AmqpMessageBody.fromData("Foo".getBytes(StandardCharsets.UTF_8)));
+        final AmqpAnnotatedMessage annotatedMessage2
+            = new AmqpAnnotatedMessage(AmqpMessageBody.fromData("Bar".getBytes(StandardCharsets.UTF_8)));
+        final AmqpAnnotatedMessage annotatedMessage3
+            = new AmqpAnnotatedMessage(AmqpMessageBody.fromData("Baz".getBytes(StandardCharsets.UTF_8)));
 
-        final EventData event1 = new EventData(annotatedMessage1,
-            getSystemProperties(annotatedMessage1, 25L, 14L), Context.NONE);
-        final EventData event2 = new EventData(annotatedMessage2,
-            getSystemProperties(annotatedMessage2, secondOffset, 21L), Context.NONE);
-        final EventData event3 = new EventData(annotatedMessage3,
-            getSystemProperties(annotatedMessage3, lastOffset, 53L), Context.NONE);
+        final EventData event1
+            = new EventData(annotatedMessage1, getSystemProperties(annotatedMessage1, 25L, 14L), Context.NONE);
+        final EventData event2
+            = new EventData(annotatedMessage2, getSystemProperties(annotatedMessage2, secondOffset, 21L), Context.NONE);
+        final EventData event3
+            = new EventData(annotatedMessage3, getSystemProperties(annotatedMessage3, lastOffset, 53L), Context.NONE);
 
         when(messageSerializer.deserialize(same(message1), eq(EventData.class))).thenReturn(event1);
         when(messageSerializer.deserialize(same(message2), eq(EventData.class))).thenReturn(event2);
@@ -257,13 +246,11 @@ class EventHubPartitionAsyncConsumerTest {
 
         final CountDownLatch shutdownReceived = new CountDownLatch(1);
         final Disposable subscriptions = consumer.receive()
-                .subscribe(
-                    event -> LOGGER.info("1. Received: {}", event.getData().getSequenceNumber()),
-                    error -> Assertions.fail(error.toString()),
-                    () -> {
-                        LOGGER.info("1. Shutdown received");
-                        shutdownReceived.countDown();
-                    });
+            .subscribe(event -> LOGGER.info("1. Received: {}", event.getData().getSequenceNumber()),
+                error -> Assertions.fail(error.toString()), () -> {
+                    LOGGER.info("1. Shutdown received");
+                    shutdownReceived.countDown();
+                });
 
         // Act
         messagesSink.emitNext(message1, Sinks.EmitFailureHandler.FAIL_FAST);
@@ -284,8 +271,8 @@ class EventHubPartitionAsyncConsumerTest {
         }
     }
 
-    private void verifyLastEnqueuedInformation(boolean trackLastEnqueued,
-        LastEnqueuedEventProperties expected, LastEnqueuedEventProperties actual) {
+    private void verifyLastEnqueuedInformation(boolean trackLastEnqueued, LastEnqueuedEventProperties expected,
+        LastEnqueuedEventProperties actual) {
 
         if (!trackLastEnqueued) {
             Assertions.assertNull(actual);
@@ -315,9 +302,8 @@ class EventHubPartitionAsyncConsumerTest {
                     final int index = counter.getAndIncrement();
 
                     if (index == links.length) {
-                        emitter.error(new RuntimeException(String.format(
-                            "Cannot emit more. Index: %s. # of Connections: %s",
-                            index, links.length)));
+                        emitter.error(new RuntimeException(
+                            String.format("Cannot emit more. Index: %s. # of Connections: %s", index, links.length)));
                         break;
                     }
 
@@ -330,8 +316,7 @@ class EventHubPartitionAsyncConsumerTest {
     private static SystemProperties getSystemProperties(AmqpAnnotatedMessage amqpAnnotatedMessage, long offset,
         long sequenceNumber) {
 
-        amqpAnnotatedMessage.getMessageAnnotations()
-            .put(AmqpMessageConstant.OFFSET_ANNOTATION_NAME.getValue(), offset);
+        amqpAnnotatedMessage.getMessageAnnotations().put(AmqpMessageConstant.OFFSET_ANNOTATION_NAME.getValue(), offset);
         amqpAnnotatedMessage.getMessageAnnotations()
             .put(AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), sequenceNumber);
         amqpAnnotatedMessage.getMessageAnnotations()
@@ -340,13 +325,15 @@ class EventHubPartitionAsyncConsumerTest {
         return new SystemProperties(amqpAnnotatedMessage, offset, TEST_DATE, sequenceNumber, null);
     }
 
-
     private MessageFluxWrapper createLinkProcessor(boolean isV2) {
         if (isV2) {
-            final MessageFlux messageFlux = new MessageFlux(createSink(link1, link2), PREFETCH, CreditFlowMode.EmissionDriven, MessageFlux.NULL_RETRY_POLICY);
+            final MessageFlux messageFlux = new MessageFlux(createSink(link1, link2), PREFETCH,
+                CreditFlowMode.EmissionDriven, MessageFlux.NULL_RETRY_POLICY);
             return new MessageFluxWrapper(messageFlux);
         } else {
-            final AmqpReceiveLinkProcessor receiveLinkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor("path", PREFETCH, PARTITION_ID, parentConnection, DEFAULT_INSTRUMENTATION));
+            final AmqpReceiveLinkProcessor receiveLinkProcessor
+                = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor("path", PREFETCH, PARTITION_ID,
+                    parentConnection, DEFAULT_INSTRUMENTATION));
             return new MessageFluxWrapper(receiveLinkProcessor);
         }
     }

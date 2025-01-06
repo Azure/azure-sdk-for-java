@@ -19,8 +19,8 @@ public interface ResourceProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of Query Performance Insight data reset.
      */
-    QueryPerformanceInsightResetDataResult resetQueryPerformanceInsightData(
-        String resourceGroupName, String serverName);
+    QueryPerformanceInsightResetDataResult resetQueryPerformanceInsightData(String resourceGroupName,
+        String serverName);
 
     /**
      * Reset data for Query Performance Insight.
@@ -33,8 +33,8 @@ public interface ResourceProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of Query Performance Insight data reset along with {@link Response}.
      */
-    Response<QueryPerformanceInsightResetDataResult> resetQueryPerformanceInsightDataWithResponse(
-        String resourceGroupName, String serverName, Context context);
+    Response<QueryPerformanceInsightResetDataResult>
+        resetQueryPerformanceInsightDataWithResponse(String resourceGroupName, String serverName, Context context);
 
     /**
      * Create recommendation action session for the advisor.
@@ -47,8 +47,8 @@ public interface ResourceProviders {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void createRecommendedActionSession(
-        String resourceGroupName, String serverName, String advisorName, String databaseName);
+    void createRecommendedActionSession(String resourceGroupName, String serverName, String advisorName,
+        String databaseName);
 
     /**
      * Create recommendation action session for the advisor.
@@ -62,6 +62,6 @@ public interface ResourceProviders {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void createRecommendedActionSession(
-        String resourceGroupName, String serverName, String advisorName, String databaseName, Context context);
+    void createRecommendedActionSession(String resourceGroupName, String serverName, String advisorName,
+        String databaseName, Context context);
 }

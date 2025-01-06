@@ -22,7 +22,7 @@ public final class DataNetworksListByMobileNetworkMockTests {
     @Test
     public void testListByMobileNetwork() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"description\":\"hjpenuygbq\"},\"location\":\"qekewvnqvcd\",\"tags\":{\"cmfdjwnlax\":\"a\",\"qikczvvita\":\"un\"},\"id\":\"gx\",\"name\":\"fcsserxhtvsox\",\"type\":\"lwntsjgqrs\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"description\":\"c\"},\"location\":\"srlzknmzlan\",\"tags\":{\"phcnzqtpj\":\"dwv\",\"iwdcxsmlzzhzd\":\"mqrhvthl\",\"n\":\"xetlgydlhqv\"},\"id\":\"pxy\",\"name\":\"afiqgeaarbgjekg\",\"type\":\"klbyulidwcw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class DataNetworksListByMobileNetworkMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DataNetwork> response
-            = manager.dataNetworks().listByMobileNetwork("iqxf", "yjqtt", com.azure.core.util.Context.NONE);
+            = manager.dataNetworks().listByMobileNetwork("rag", "gdphtvdula", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qekewvnqvcd", response.iterator().next().location());
-        Assertions.assertEquals("a", response.iterator().next().tags().get("cmfdjwnlax"));
-        Assertions.assertEquals("hjpenuygbq", response.iterator().next().description());
+        Assertions.assertEquals("srlzknmzlan", response.iterator().next().location());
+        Assertions.assertEquals("dwv", response.iterator().next().tags().get("phcnzqtpj"));
+        Assertions.assertEquals("c", response.iterator().next().description());
     }
 }

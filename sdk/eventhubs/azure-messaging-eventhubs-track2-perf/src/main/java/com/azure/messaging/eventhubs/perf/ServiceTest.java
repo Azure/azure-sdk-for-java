@@ -93,8 +93,8 @@ abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T>
      * @return An {@link EventHubClientBuilder}.
      */
     EventHubClientBuilder createEventHubClientBuilder() {
-        final EventHubClientBuilder builder = new EventHubClientBuilder()
-            .connectionString(options.getConnectionString(), options.getEventHubName());
+        final EventHubClientBuilder builder
+            = new EventHubClientBuilder().connectionString(options.getConnectionString(), options.getEventHubName());
 
         if (options.getTransportType() != null) {
             builder.transportType(options.getTransportType());
@@ -104,28 +104,25 @@ abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T>
     }
 
     Mono<Void> sendMessages(EventHubProducerAsyncClient client, String partitionId, int totalMessagesToSend) {
-        final CreateBatchOptions options = partitionId != null
-            ? new CreateBatchOptions().setPartitionId(partitionId)
-            : new CreateBatchOptions();
+        final CreateBatchOptions options
+            = partitionId != null ? new CreateBatchOptions().setPartitionId(partitionId) : new CreateBatchOptions();
 
         final AtomicInteger number = new AtomicInteger(totalMessagesToSend);
-        return Mono.defer(() -> client.createBatch(options)
-            .flatMap(batch -> {
-                EventData event = events.get(0);
-                while (batch.tryAdd(event)) {
-                    final int index = number.getAndDecrement() % events.size();
-                    if (index < 0) {
-                        break;
-                    }
-
-                    event = events.get(index);
+        return Mono.defer(() -> client.createBatch(options).flatMap(batch -> {
+            EventData event = events.get(0);
+            while (batch.tryAdd(event)) {
+                final int index = number.getAndDecrement() % events.size();
+                if (index < 0) {
+                    break;
                 }
 
-                return client.send(batch);
-            }))
+                event = events.get(index);
+            }
+
+            return client.send(batch);
+        }))
             .repeat(() -> number.get() > 0)
             .then()
-            .doFinally(signal ->
-                System.out.printf("%s: Sent %d messages.%n", partitionId, totalMessagesToSend));
+            .doFinally(signal -> System.out.printf("%s: Sent %d messages.%n", partitionId, totalMessagesToSend));
     }
 }

@@ -4,38 +4,38 @@
 
 package com.azure.analytics.purview.sharing.models;
 
-import java.util.List;
-
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * The purview share error body model.
  */
 @Fluent
-public final class PurviewShareErrorInfo {
+public final class PurviewShareErrorInfo implements JsonSerializable<PurviewShareErrorInfo> {
     /*
      * Code of the error
      */
-    @JsonProperty(value = "code", required = true)
     private String code;
 
     /*
      * Nested details of the error model
      */
-    @JsonProperty(value = "details")
     private List<PurviewShareErrorInfo> details;
 
     /*
      * Message of the error
      */
-    @JsonProperty(value = "message", required = true)
     private String message;
 
     /*
      * Target of the error
      */
-    @JsonProperty(value = "target")
     private String target;
 
     /**
@@ -46,7 +46,7 @@ public final class PurviewShareErrorInfo {
 
     /**
      * Get the code property: Code of the error.
-     * 
+     *
      * @return the code value.
      */
     public String getCode() {
@@ -55,7 +55,7 @@ public final class PurviewShareErrorInfo {
 
     /**
      * Set the code property: Code of the error.
-     * 
+     *
      * @param code the code value to set.
      * @return the PurviewShareErrorInfo object itself.
      */
@@ -66,7 +66,7 @@ public final class PurviewShareErrorInfo {
 
     /**
      * Get the details property: Nested details of the error model.
-     * 
+     *
      * @return the details value.
      */
     public List<PurviewShareErrorInfo> getDetails() {
@@ -75,7 +75,7 @@ public final class PurviewShareErrorInfo {
 
     /**
      * Set the details property: Nested details of the error model.
-     * 
+     *
      * @param details the details value to set.
      * @return the PurviewShareErrorInfo object itself.
      */
@@ -86,7 +86,7 @@ public final class PurviewShareErrorInfo {
 
     /**
      * Get the message property: Message of the error.
-     * 
+     *
      * @return the message value.
      */
     public String getMessage() {
@@ -95,7 +95,7 @@ public final class PurviewShareErrorInfo {
 
     /**
      * Set the message property: Message of the error.
-     * 
+     *
      * @param message the message value to set.
      * @return the PurviewShareErrorInfo object itself.
      */
@@ -106,7 +106,7 @@ public final class PurviewShareErrorInfo {
 
     /**
      * Get the target property: Target of the error.
-     * 
+     *
      * @return the target value.
      */
     public String getTarget() {
@@ -115,12 +115,60 @@ public final class PurviewShareErrorInfo {
 
     /**
      * Set the target property: Target of the error.
-     * 
+     *
      * @param target the target value to set.
      * @return the PurviewShareErrorInfo object itself.
      */
     public PurviewShareErrorInfo setTarget(String target) {
         this.target = target;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeArrayField("details", this.details, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("target", this.target);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PurviewShareErrorInfo from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PurviewShareErrorInfo if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PurviewShareErrorInfo.
+     */
+    public static PurviewShareErrorInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PurviewShareErrorInfo deserializedPurviewShareErrorInfo = new PurviewShareErrorInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedPurviewShareErrorInfo.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedPurviewShareErrorInfo.message = reader.getString();
+                } else if ("details".equals(fieldName)) {
+                    List<PurviewShareErrorInfo> details
+                        = reader.readArray(reader1 -> PurviewShareErrorInfo.fromJson(reader1));
+                    deserializedPurviewShareErrorInfo.details = details;
+                } else if ("target".equals(fieldName)) {
+                    deserializedPurviewShareErrorInfo.target = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPurviewShareErrorInfo;
+        });
     }
 }

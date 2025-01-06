@@ -115,9 +115,7 @@ public final class EntitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> getWithResponseAsync(String entityName, Boolean enrich) {
-        final String accept = "application/xml, application/atom+xml";
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), entityName, enrich,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> getWithResponseAsync(entityName, enrich, context));
     }
 
     /**
@@ -228,9 +226,7 @@ public final class EntitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> putWithResponseAsync(String entityName, Object requestBody, String ifMatch) {
-        final String accept = "application/xml, application/atom+xml";
-        return FluxUtil.withContext(context -> service.put(this.client.getEndpoint(), entityName,
-            this.client.getApiVersion(), ifMatch, requestBody, accept, context));
+        return FluxUtil.withContext(context -> putWithResponseAsync(entityName, requestBody, ifMatch, context));
     }
 
     /**
@@ -350,9 +346,7 @@ public final class EntitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> deleteWithResponseAsync(String entityName) {
-        final String accept = "application/xml, application/atom+xml";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), entityName,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> deleteWithResponseAsync(entityName, context));
     }
 
     /**

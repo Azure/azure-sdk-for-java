@@ -22,14 +22,14 @@ import java.nio.file.Paths;
 public class IntelliJCacheAccessor {
     private static final ClientLogger LOGGER = new ClientLogger(IntelliJCacheAccessor.class);
     public static final String INTELLIJ_TOOLKIT_CACHE = "azure-toolkit.cache.nocae";
-    private static final byte[] CRYPTO_KEY = new byte[] {0x50, 0x72, 0x6f, 0x78, 0x79, 0x20, 0x43, 0x6f, 0x6e, 0x66,
-        0x69, 0x67, 0x20, 0x53, 0x65, 0x63};
-
+    private static final byte[] CRYPTO_KEY
+        = new byte[] { 0x50, 0x72, 0x6f, 0x78, 0x79, 0x20, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x20, 0x53, 0x65, 0x63 };
 
     public String getIntelliJCredentialsFromIdentityMsalCache() {
         if (Platform.isMac()) {
             try {
-                KeyChainAccessor accessor = new KeyChainAccessor(null, "Microsoft.Developer.IdentityService", INTELLIJ_TOOLKIT_CACHE);
+                KeyChainAccessor accessor
+                    = new KeyChainAccessor(null, "Microsoft.Developer.IdentityService", INTELLIJ_TOOLKIT_CACHE);
                 String jsonCred = new String(accessor.read(), StandardCharsets.UTF_8);
                 return parseRefreshTokenFromJson(jsonCred);
             } catch (Exception | Error e) {
@@ -38,10 +38,8 @@ public class IntelliJCacheAccessor {
 
         } else if (Platform.isLinux()) {
             try {
-                LinuxKeyRingAccessor accessor = new LinuxKeyRingAccessor(
-                    "com.intellij.credentialStore.Credential",
-                    "service", "Microsoft.Developer.IdentityService",
-                    "account", "azure-toolkit.cache");
+                LinuxKeyRingAccessor accessor = new LinuxKeyRingAccessor("com.intellij.credentialStore.Credential",
+                    "service", "Microsoft.Developer.IdentityService", "account", "azure-toolkit.cache");
 
                 String jsonCred = new String(accessor.read(), StandardCharsets.UTF_8);
 
@@ -53,7 +51,11 @@ public class IntelliJCacheAccessor {
         } else if (Platform.isWindows()) {
 
             try {
-                CacheFileAccessor cacheFileAccessor = new CacheFileAccessor(Paths.get(PersistentTokenCacheImpl.DEFAULT_CACHE_FILE_PATH.toString(), File.separator, INTELLIJ_TOOLKIT_CACHE).toString());
+                CacheFileAccessor cacheFileAccessor = new CacheFileAccessor(
+                    Paths
+                        .get(PersistentTokenCacheImpl.DEFAULT_CACHE_FILE_PATH.toString(), File.separator,
+                            INTELLIJ_TOOLKIT_CACHE)
+                        .toString());
                 String data = new String(cacheFileAccessor.read(), StandardCharsets.UTF_8);
                 return parseRefreshTokenFromJson(data);
             } catch (Exception | Error e) {

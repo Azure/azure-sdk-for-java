@@ -216,22 +216,20 @@ public final class ShareServiceClient {
             }
         }
 
-        BiFunction<String, Integer, PagedResponse<ShareItem>> retriever =
-            (nextMarker, pageSize) -> {
-                Callable<PagedResponse<ShareItemInternal>> operation = () -> this.azureFileStorageClient.getServices()
-                    .listSharesSegmentNoCustomHeadersSinglePage(prefix, nextMarker,
-                        pageSize == null ? maxResultsPerPage : pageSize, include, null, finalContext);
+        BiFunction<String, Integer, PagedResponse<ShareItem>> retriever = (nextMarker, pageSize) -> {
+            Callable<PagedResponse<ShareItemInternal>> operation = () -> this.azureFileStorageClient.getServices()
+                .listSharesSegmentNoCustomHeadersSinglePage(prefix, nextMarker,
+                    pageSize == null ? maxResultsPerPage : pageSize, include, null, finalContext);
 
-                PagedResponse<ShareItemInternal> response
-                    = sendRequest(operation, timeout, ShareStorageException.class);
+            PagedResponse<ShareItemInternal> response = sendRequest(operation, timeout, ShareStorageException.class);
 
-                List<ShareItem> value = response.getValue() == null ? Collections.emptyList()
-                    : response.getValue().stream().map(ModelHelper::populateShareItem).collect(Collectors.toList());
+            List<ShareItem> value = response.getValue() == null
+                ? Collections.emptyList()
+                : response.getValue().stream().map(ModelHelper::populateShareItem).collect(Collectors.toList());
 
-                return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), value, response.getContinuationToken(),
-                    ModelHelper.transformListSharesHeaders(response.getHeaders()));
-            };
+            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                value, response.getContinuationToken(), ModelHelper.transformListSharesHeaders(response.getHeaders()));
+        };
 
         return new PagedIterable<>(pageSize -> retriever.apply(null, pageSize), retriever);
     }
@@ -530,8 +528,8 @@ public final class ShareServiceClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ShareClient> createShareWithResponse(String shareName, ShareCreateOptions options,
-        Duration timeout, Context context) {
+    public Response<ShareClient> createShareWithResponse(String shareName, ShareCreateOptions options, Duration timeout,
+        Context context) {
         ShareClient shareClient = getShareClient(shareName);
         return new SimpleResponse<>(shareClient.createWithResponse(options, timeout, context), shareClient);
     }
@@ -593,14 +591,13 @@ public final class ShareServiceClient {
     public Response<Void> deleteShareWithResponse(String shareName, String snapshot, Duration timeout,
         Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        DeleteSnapshotsOptionType deleteSnapshots = CoreUtils.isNullOrEmpty(snapshot)
-            ? DeleteSnapshotsOptionType.INCLUDE : null;
+        DeleteSnapshotsOptionType deleteSnapshots
+            = CoreUtils.isNullOrEmpty(snapshot) ? DeleteSnapshotsOptionType.INCLUDE : null;
         Callable<Response<Void>> operation = () -> this.azureFileStorageClient.getShares()
             .deleteNoCustomHeadersWithResponse(shareName, snapshot, null, deleteSnapshots, null, finalContext);
 
         return sendRequest(operation, timeout, ShareStorageException.class);
     }
-
 
     /**
      * Get associated account name.
@@ -742,8 +739,7 @@ public final class ShareServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareClient undeleteShare(String deletedShareName, String deletedShareVersion) {
-        return this.undeleteShareWithResponse(deletedShareName, deletedShareVersion, null, Context.NONE)
-            .getValue();
+        return this.undeleteShareWithResponse(deletedShareName, deletedShareVersion, null, Context.NONE).getValue();
     }
 
     /**

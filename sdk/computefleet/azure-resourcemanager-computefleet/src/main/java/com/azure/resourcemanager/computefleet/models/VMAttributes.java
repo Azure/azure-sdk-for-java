@@ -38,6 +38,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
 
     /*
      * Specifies whether the VMSize supporting local storage should be used to build Fleet or not.
+     * Included - Default if not specified as most Azure VMs support local storage.
      */
     private VMAttributeSupport localStorageSupport;
 
@@ -214,6 +215,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
     /**
      * Get the localStorageSupport property: Specifies whether the VMSize supporting local storage should be used to
      * build Fleet or not.
+     * Included - Default if not specified as most Azure VMs support local storage.
      * 
      * @return the localStorageSupport value.
      */
@@ -224,6 +226,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
     /**
      * Set the localStorageSupport property: Specifies whether the VMSize supporting local storage should be used to
      * build Fleet or not.
+     * Included - Default if not specified as most Azure VMs support local storage.
      * 
      * @param localStorageSupport the localStorageSupport value to set.
      * @return the VMAttributes object itself.

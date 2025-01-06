@@ -63,13 +63,13 @@ public class BufferStagingAreaTests {
 
     static byte[] byteBufferListToByteArray(List<ByteBuffer> buffers) {
         int totalSize = 0;
-        for (ByteBuffer b: buffers) {
+        for (ByteBuffer b : buffers) {
             totalSize += b.remaining();
         }
 
         byte[] bytes = new byte[totalSize];
         int begin = 0;
-        for (ByteBuffer b: buffers) {
+        for (ByteBuffer b : buffers) {
             System.arraycopy(b.array(), b.position(), bytes, begin, b.remaining());
             begin += b.remaining();
         }
@@ -86,8 +86,10 @@ public class BufferStagingAreaTests {
         ByteBuffer[] expectedData = generatedData.getT2();
 
         List<List<ByteBuffer>> recoveredData = data.flatMapSequential(stagingArea::write, 1)
-            .concatWith(Flux.defer(stagingArea::flush)).flatMap(aggregator -> aggregator.asFlux().collectList())
-            .collectList().block();
+            .concatWith(Flux.defer(stagingArea::flush))
+            .flatMap(aggregator -> aggregator.asFlux().collectList())
+            .collectList()
+            .block();
 
         assertEquals(expectedData.length, recoveredData.size());
         for (int i = 0; i < expectedData.length; i++) {
@@ -121,7 +123,8 @@ public class BufferStagingAreaTests {
         List<ByteBuffer> collectedBuffers = byteBufferFlux.flatMapSequential(stagingArea::write, 1)
             .concatWith(Flux.defer(stagingArea::flush))
             .flatMap(BufferAggregator::asFlux)
-            .collectList().block();
+            .collectList()
+            .block();
 
         assertNotNull(collectedBuffers);
         assertFalse(collectedBuffers.isEmpty());
@@ -149,7 +152,8 @@ public class BufferStagingAreaTests {
         if (sizeRemaining != 0) {
             assertEquals(sizeRemaining, lastArray.length, "The last buffer's size should match the remaining size.");
         } else {
-            assertEquals(stagingSize, lastArray.length, "The last buffer should match the staging size if no remainder.");
+            assertEquals(stagingSize, lastArray.length,
+                "The last buffer should match the staging size if no remainder.");
         }
         try {
             outputStream.write(lastArray);
@@ -164,12 +168,8 @@ public class BufferStagingAreaTests {
     }
 
     private static Stream<Arguments> bufferStagingAreaWithSmallerBufferSupplier() {
-        return Stream.of(
-            Arguments.of(4 * Constants.KB, 4 * Constants.MB),
-            Arguments.of(Constants.KB, 4 * Constants.MB),
-            Arguments.of(25, Constants.KB),
-            Arguments.of(2 * Constants.KB, 4 * Constants.MB),
-            Arguments.of(10 * Constants.KB, 4 * Constants.MB)
-        );
+        return Stream.of(Arguments.of(4 * Constants.KB, 4 * Constants.MB), Arguments.of(Constants.KB, 4 * Constants.MB),
+            Arguments.of(25, Constants.KB), Arguments.of(2 * Constants.KB, 4 * Constants.MB),
+            Arguments.of(10 * Constants.KB, 4 * Constants.MB));
     }
 }

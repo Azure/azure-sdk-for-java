@@ -5,30 +5,37 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** OAuth2 settings details. */
+/**
+ * OAuth2 settings details.
+ */
 @Fluent
-public final class AuthorizationProviderOAuth2Settings {
+public final class AuthorizationProviderOAuth2Settings
+    implements JsonSerializable<AuthorizationProviderOAuth2Settings> {
     /*
      * Redirect URL to be set in the OAuth application.
      */
-    @JsonProperty(value = "redirectUrl")
     private String redirectUrl;
 
     /*
      * OAuth2 settings
      */
-    @JsonProperty(value = "grantTypes")
     private AuthorizationProviderOAuth2GrantTypes grantTypes;
 
-    /** Creates an instance of AuthorizationProviderOAuth2Settings class. */
+    /**
+     * Creates an instance of AuthorizationProviderOAuth2Settings class.
+     */
     public AuthorizationProviderOAuth2Settings() {
     }
 
     /**
      * Get the redirectUrl property: Redirect URL to be set in the OAuth application.
-     *
+     * 
      * @return the redirectUrl value.
      */
     public String redirectUrl() {
@@ -37,7 +44,7 @@ public final class AuthorizationProviderOAuth2Settings {
 
     /**
      * Set the redirectUrl property: Redirect URL to be set in the OAuth application.
-     *
+     * 
      * @param redirectUrl the redirectUrl value to set.
      * @return the AuthorizationProviderOAuth2Settings object itself.
      */
@@ -48,7 +55,7 @@ public final class AuthorizationProviderOAuth2Settings {
 
     /**
      * Get the grantTypes property: OAuth2 settings.
-     *
+     * 
      * @return the grantTypes value.
      */
     public AuthorizationProviderOAuth2GrantTypes grantTypes() {
@@ -57,7 +64,7 @@ public final class AuthorizationProviderOAuth2Settings {
 
     /**
      * Set the grantTypes property: OAuth2 settings.
-     *
+     * 
      * @param grantTypes the grantTypes value to set.
      * @return the AuthorizationProviderOAuth2Settings object itself.
      */
@@ -68,12 +75,53 @@ public final class AuthorizationProviderOAuth2Settings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (grantTypes() != null) {
             grantTypes().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("redirectUrl", this.redirectUrl);
+        jsonWriter.writeJsonField("grantTypes", this.grantTypes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AuthorizationProviderOAuth2Settings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AuthorizationProviderOAuth2Settings if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AuthorizationProviderOAuth2Settings.
+     */
+    public static AuthorizationProviderOAuth2Settings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AuthorizationProviderOAuth2Settings deserializedAuthorizationProviderOAuth2Settings
+                = new AuthorizationProviderOAuth2Settings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("redirectUrl".equals(fieldName)) {
+                    deserializedAuthorizationProviderOAuth2Settings.redirectUrl = reader.getString();
+                } else if ("grantTypes".equals(fieldName)) {
+                    deserializedAuthorizationProviderOAuth2Settings.grantTypes
+                        = AuthorizationProviderOAuth2GrantTypes.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAuthorizationProviderOAuth2Settings;
+        });
     }
 }

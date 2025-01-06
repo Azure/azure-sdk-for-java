@@ -87,7 +87,8 @@ public final class ChannelAffinity implements JsonSerializable<ChannelAffinity> 
                 if ("channel".equals(fieldName)) {
                     channel = reader.getNullable(JsonReader::getInt);
                 } else if ("participant".equals(fieldName)) {
-                    participant = CommunicationIdentifierConverter.convert(CommunicationIdentifierModel.fromJson(reader));
+                    participant
+                        = CommunicationIdentifierConverter.convert(CommunicationIdentifierModel.fromJson(reader));
                 } else {
                     reader.skipChildren();
                 }

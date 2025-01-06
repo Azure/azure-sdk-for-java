@@ -4,9 +4,8 @@
 
 package com.azure.storage.blob.models;
 
-import java.util.Collection;
-
 import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
 
 /**
  * Error codes returned by the service.

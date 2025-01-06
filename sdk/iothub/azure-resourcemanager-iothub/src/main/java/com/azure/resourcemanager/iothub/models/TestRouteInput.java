@@ -6,36 +6,41 @@ package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Input for testing route. */
+/**
+ * Input for testing route.
+ */
 @Fluent
-public final class TestRouteInput {
+public final class TestRouteInput implements JsonSerializable<TestRouteInput> {
     /*
      * Routing message
      */
-    @JsonProperty(value = "message")
     private RoutingMessage message;
 
     /*
      * Route properties
      */
-    @JsonProperty(value = "route", required = true)
     private RouteProperties route;
 
     /*
      * Routing Twin Reference
      */
-    @JsonProperty(value = "twin")
     private RoutingTwin twin;
 
-    /** Creates an instance of TestRouteInput class. */
+    /**
+     * Creates an instance of TestRouteInput class.
+     */
     public TestRouteInput() {
     }
 
     /**
      * Get the message property: Routing message.
-     *
+     * 
      * @return the message value.
      */
     public RoutingMessage message() {
@@ -44,7 +49,7 @@ public final class TestRouteInput {
 
     /**
      * Set the message property: Routing message.
-     *
+     * 
      * @param message the message value to set.
      * @return the TestRouteInput object itself.
      */
@@ -55,7 +60,7 @@ public final class TestRouteInput {
 
     /**
      * Get the route property: Route properties.
-     *
+     * 
      * @return the route value.
      */
     public RouteProperties route() {
@@ -64,7 +69,7 @@ public final class TestRouteInput {
 
     /**
      * Set the route property: Route properties.
-     *
+     * 
      * @param route the route value to set.
      * @return the TestRouteInput object itself.
      */
@@ -75,7 +80,7 @@ public final class TestRouteInput {
 
     /**
      * Get the twin property: Routing Twin Reference.
-     *
+     * 
      * @return the twin value.
      */
     public RoutingTwin twin() {
@@ -84,7 +89,7 @@ public final class TestRouteInput {
 
     /**
      * Set the twin property: Routing Twin Reference.
-     *
+     * 
      * @param twin the twin value to set.
      * @return the TestRouteInput object itself.
      */
@@ -95,7 +100,7 @@ public final class TestRouteInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -103,9 +108,8 @@ public final class TestRouteInput {
             message().validate();
         }
         if (route() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property route in model TestRouteInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property route in model TestRouteInput"));
         } else {
             route().validate();
         }
@@ -115,4 +119,47 @@ public final class TestRouteInput {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TestRouteInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("route", this.route);
+        jsonWriter.writeJsonField("message", this.message);
+        jsonWriter.writeJsonField("twin", this.twin);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TestRouteInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TestRouteInput if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TestRouteInput.
+     */
+    public static TestRouteInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TestRouteInput deserializedTestRouteInput = new TestRouteInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("route".equals(fieldName)) {
+                    deserializedTestRouteInput.route = RouteProperties.fromJson(reader);
+                } else if ("message".equals(fieldName)) {
+                    deserializedTestRouteInput.message = RoutingMessage.fromJson(reader);
+                } else if ("twin".equals(fieldName)) {
+                    deserializedTestRouteInput.twin = RoutingTwin.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTestRouteInput;
+        });
+    }
 }

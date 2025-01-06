@@ -20,6 +20,7 @@ import java.time.OffsetDateTime;
  */
 public final class TestUtils {
     private static final HttpHeaderName CUSTOMER_HEADER = HttpHeaderName.fromString("Custom-Header");
+
     /**
      * Private constructor so this class cannot be instantiated.
      */

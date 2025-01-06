@@ -40,7 +40,8 @@ public class HmacDateTimeFormatTests {
     }
 
     private String getDateTimeString(int year, int month, int day, int hour, int minute, int second) {
-        ZonedDateTime dateTime = ZonedDateTime.of(year, month, day, hour, minute, second, 0 /* nanoOfSecond */, ZoneId.of("UTC"));
+        ZonedDateTime dateTime
+            = ZonedDateTime.of(year, month, day, hour, minute, second, 0 /* nanoOfSecond */, ZoneId.of("UTC"));
         return dateTime.format(HmacAuthenticationPolicy.HMAC_DATETIMEFORMATTER_PATTERN);
     }
 }

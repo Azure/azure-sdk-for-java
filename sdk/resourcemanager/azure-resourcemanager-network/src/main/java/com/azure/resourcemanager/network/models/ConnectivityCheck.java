@@ -35,11 +35,8 @@ public interface ConnectivityCheck extends Executable<ConnectivityCheck>, HasPar
     int probesFailed();
 
     /** The entirety of connectivity check parameters definition. */
-    interface Definition
-        extends DefinitionStages.ToDestination,
-            DefinitionStages.ToDestinationPort,
-            DefinitionStages.FromSourceVirtualMachine,
-            DefinitionStages.WithExecute {
+    interface Definition extends DefinitionStages.ToDestination, DefinitionStages.ToDestinationPort,
+        DefinitionStages.FromSourceVirtualMachine, DefinitionStages.WithExecute {
     }
 
     /** Grouping of connectivity check parameters definition stages. */
@@ -51,6 +48,7 @@ public interface ConnectivityCheck extends Executable<ConnectivityCheck>, HasPar
              * @return next definition stage
              */
             WithExecute fromSourceVirtualMachine(String resourceId);
+
             /**
              * @param vm virtual machine from which a connectivity check will be initiated
              * @return next definition stage
@@ -95,10 +93,8 @@ public interface ConnectivityCheck extends Executable<ConnectivityCheck>, HasPar
          * The stage of the definition which contains all the minimum required inputs for execution, but also allows for
          * any other optional settings to be specified.
          */
-        interface WithExecute
-            extends Executable<ConnectivityCheck>,
-                FromSourcePort,
-                HasProtocol.DefinitionStages.WithProtocol<WithExecute, Protocol> {
+        interface WithExecute extends Executable<ConnectivityCheck>, FromSourcePort,
+            HasProtocol.DefinitionStages.WithProtocol<WithExecute, Protocol> {
         }
     }
 }

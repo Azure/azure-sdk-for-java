@@ -36,38 +36,39 @@ public class CallAutomationLiveTestBase extends TestProxyTestBase {
         .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING",
             "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
 
-    protected static final String ENDPOINT = Configuration.getGlobalConfiguration().get("COMMUNICATION_LIVETEST_STATIC_ENDPOINT",
-        "https://REDACTED.communication.azure.com/");
+    protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
+        .get("COMMUNICATION_LIVETEST_STATIC_ENDPOINT", "https://REDACTED.communication.azure.com/");
 
-    protected static final String ENDPOINT_401 = Configuration.getGlobalConfiguration().get("COMMUNICATION_LIVETEST_STATIC_ENDPOINT_401",
-        "https://REDACTED.communication.azure.com/");
+    protected static final String ENDPOINT_401 = Configuration.getGlobalConfiguration()
+        .get("COMMUNICATION_LIVETEST_STATIC_ENDPOINT_401", "https://REDACTED.communication.azure.com/");
 
     protected static final String METADATA_URL = Configuration.getGlobalConfiguration()
-        .get("METADATA_URL", "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141c/content/acsmetadata");
+        .get("METADATA_URL",
+            "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141c/content/acsmetadata");
 
     protected static final String VIDEO_URL = Configuration.getGlobalConfiguration()
-        .get("VIDEO_URL", "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141c/content/video");
+        .get("VIDEO_URL",
+            "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141c/content/video");
 
     protected static final String CONTENT_URL_404 = Configuration.getGlobalConfiguration()
-        .get("CONTENT_URL_404", "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141d/content/acsmetadata");
+        .get("CONTENT_URL_404",
+            "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141d/content/acsmetadata");
 
     protected static final String RECORDING_DELETE_URL = Configuration.getGlobalConfiguration()
-        .get("RECORDING_DELETE_URL", "https://storage.asm.skype.com/v1/objects/0-eus-d10-598a3ea36bfbc27e68c026b17982af22");
+        .get("RECORDING_DELETE_URL",
+            "https://storage.asm.skype.com/v1/objects/0-eus-d10-598a3ea36bfbc27e68c026b17982af22");
 
     protected static final String RECORDING_DELETE_URL_404 = Configuration.getGlobalConfiguration()
-        .get("RECORDING_DELETE_URL_404", "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141c");
+        .get("RECORDING_DELETE_URL_404",
+            "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141c");
 
-    private static final StringJoiner JSON_PROPERTIES_TO_REDACT
-        = new StringJoiner("\":\"|\"", "\"", "\":\"")
-        .add("to");
+    private static final StringJoiner JSON_PROPERTIES_TO_REDACT = new StringJoiner("\":\"|\"", "\"", "\":\"").add("to");
 
     private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
-        = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT),
-        Pattern.CASE_INSENSITIVE);
+        = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT), Pattern.CASE_INSENSITIVE);
 
     protected CallAutomationClientBuilder getCallingServerClientUsingConnectionString(HttpClient httpClient) {
-        CallAutomationClientBuilder builder = new CallAutomationClientBuilder()
-            .connectionString(CONNECTION_STRING)
+        CallAutomationClientBuilder builder = new CallAutomationClientBuilder().connectionString(CONNECTION_STRING)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
@@ -79,10 +80,10 @@ public class CallAutomationLiveTestBase extends TestProxyTestBase {
     }
 
     protected CallAutomationClientBuilder getCallingServerClientUsingTokenCredential(HttpClient httpClient) {
-        TokenCredential tokenCredential = getTestMode() == TestMode.PLAYBACK ? new FakeCredentials() : new DefaultAzureCredentialBuilder().build();
+        TokenCredential tokenCredential
+            = getTestMode() == TestMode.PLAYBACK ? new FakeCredentials() : new DefaultAzureCredentialBuilder().build();
 
-        CallAutomationClientBuilder builder = new CallAutomationClientBuilder()
-            .endpoint(ENDPOINT)
+        CallAutomationClientBuilder builder = new CallAutomationClientBuilder().endpoint(ENDPOINT)
             .credential(tokenCredential)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
@@ -95,10 +96,10 @@ public class CallAutomationLiveTestBase extends TestProxyTestBase {
     }
 
     protected CallAutomationClientBuilder getCallingServerClientUsingInvalidTokenCredential(HttpClient httpClient) {
-        TokenCredential tokenCredential = getTestMode() == TestMode.PLAYBACK ? new FakeCredentials() : new DefaultAzureCredentialBuilder().build();
+        TokenCredential tokenCredential
+            = getTestMode() == TestMode.PLAYBACK ? new FakeCredentials() : new DefaultAzureCredentialBuilder().build();
 
-        CallAutomationClientBuilder builder = new CallAutomationClientBuilder()
-            .credential(tokenCredential)
+        CallAutomationClientBuilder builder = new CallAutomationClientBuilder().credential(tokenCredential)
             .endpoint(ENDPOINT_401)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
@@ -111,16 +112,15 @@ public class CallAutomationLiveTestBase extends TestProxyTestBase {
     }
 
     protected Mono<HttpResponse> logHeaders(String testName, HttpPipelineNextPolicy next) {
-        return next.process()
-            .flatMap(httpResponse -> {
-                final HttpResponse bufferedResponse = httpResponse.buffer();
+        return next.process().flatMap(httpResponse -> {
+            final HttpResponse bufferedResponse = httpResponse.buffer();
 
-                /* Should sanitize printed response url */
-                LOGGER.log(LogLevel.VERBOSE, () -> "Chain-ID header for " + testName + " request "
-                    + bufferedResponse.getRequest().getUrl()
-                    + ": " + bufferedResponse.getHeaderValue("X-Microsoft-Skype-Chain-ID"));
-                return Mono.just(bufferedResponse);
-            });
+            /* Should sanitize printed response url */
+            LOGGER.log(LogLevel.VERBOSE,
+                () -> "Chain-ID header for " + testName + " request " + bufferedResponse.getRequest().getUrl() + ": "
+                    + bufferedResponse.getHeaderValue("X-Microsoft-Skype-Chain-ID"));
+            return Mono.just(bufferedResponse);
+        });
     }
 
     static class FakeCredentials implements TokenCredential {

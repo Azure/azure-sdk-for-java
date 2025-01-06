@@ -23,7 +23,8 @@ public final class OrganizationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OrganizationProperties model = new OrganizationProperties().withOrganizationId("utduqktapspwgcu")
-            .withOrganizationName("tumkdosvqwhbm").withBillingSource(BillingSource.NEWRELIC);
+            .withOrganizationName("tumkdosvqwhbm")
+            .withBillingSource(BillingSource.NEWRELIC);
         model = BinaryData.fromObject(model).toObject(OrganizationProperties.class);
         Assertions.assertEquals("utduqktapspwgcu", model.organizationId());
         Assertions.assertEquals("tumkdosvqwhbm", model.organizationName());

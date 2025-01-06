@@ -27,7 +27,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class ClusterInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ClusterInner.class);
 
     /*
      * The size of the virtual machines in the cluster. All nodes in a cluster

@@ -3,10 +3,10 @@
 
 package io.clientcore.core.shared;
 
-import io.clientcore.core.json.JsonReader;
-import io.clientcore.core.json.JsonSerializable;
-import io.clientcore.core.json.JsonToken;
-import io.clientcore.core.json.JsonWriter;
+import io.clientcore.core.serialization.json.JsonReader;
+import io.clientcore.core.serialization.json.JsonSerializable;
+import io.clientcore.core.serialization.json.JsonToken;
+import io.clientcore.core.serialization.json.JsonWriter;
 
 import java.io.IOException;
 import java.util.List;
@@ -162,8 +162,8 @@ public class HttpBinJSON implements JsonSerializable<HttpBinJSON> {
                     httpBinJSON.data = reader.readUntyped();
                 } else if ("queryParams".equalsIgnoreCase(fieldName)) {
                     // Pass the JsonReader to another JsonSerializable to read the inner object.
-                    httpBinJSON.queryParams = reader.readMap(
-                        paramReader -> paramReader.readArray(JsonReader::getString));
+                    httpBinJSON.queryParams
+                        = reader.readMap(paramReader -> paramReader.readArray(JsonReader::getString));
                 } else {
                     reader.skipChildren();
                 }

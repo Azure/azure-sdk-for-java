@@ -10,17 +10,16 @@ import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyPlayReadyC
 public final class ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeaderTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader model =
-            BinaryData
-                .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader\"}")
-                .toObject(ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader.class);
+        ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader model = BinaryData
+            .fromString(
+                "{\"@odata.type\":\"#Microsoft.Media.ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader\"}")
+            .toObject(ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader model =
-            new ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader();
+        ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader model
+            = new ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader();
         model = BinaryData.fromObject(model).toObject(ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader.class);
     }
 }

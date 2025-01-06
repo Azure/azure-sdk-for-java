@@ -27,15 +27,14 @@ public class TestBase extends TestProxyTestBase {
 
     protected static WebPubSubClientBuilder getClientBuilder(String userId) {
         WebPubSubServiceClient client = new WebPubSubServiceClientBuilder()
-            .endpoint(Configuration.getGlobalConfiguration().get(
-                "WEB_PUB_SUB_ENDPOINT"))
+            .endpoint(Configuration.getGlobalConfiguration().get("WEB_PUB_SUB_ENDPOINT"))
             .credential(TestUtils.getIdentityTestCredential(TestMode.LIVE))
             .hub("hub1")
             .buildClient();
 
         // client builder
-        return new WebPubSubClientBuilder().credential(new WebPubSubClientCredential(() -> client.getClientAccessToken(
-            new GetClientAccessTokenOptions().setUserId(userId)
+        return new WebPubSubClientBuilder().credential(new WebPubSubClientCredential(
+            () -> client.getClientAccessToken(new GetClientAccessTokenOptions().setUserId(userId)
                 .addRole("webpubsub.joinLeaveGroup")
                 .addRole("webpubsub.sendToGroup")).getUrl()));
     }

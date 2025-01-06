@@ -24,10 +24,7 @@ public final class CustomerCertificateParameters extends SecretParameters {
 
     /*
      * Resource reference to the Azure Key Vault certificate. Expected to be in format of
-     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}
-     * ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}
-     * ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{certificateName}
-     * ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
+     * /subscriptions/{subscriptionId}/resourceGroups/{sourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/secrets/{certificateName}
      */
     private ResourceReference secretSource;
 
@@ -74,7 +71,7 @@ public final class CustomerCertificateParameters extends SecretParameters {
 
     /**
      * Get the type property: The type of the secret resource.
-     * 
+     *
      * @return the type value.
      */
     @Override
@@ -84,8 +81,8 @@ public final class CustomerCertificateParameters extends SecretParameters {
 
     /**
      * Get the secretSource property: Resource reference to the Azure Key Vault certificate. Expected to be in format of
-     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{certificateName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​.
-     * 
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/secrets/{certificateName}.
+     *
      * @return the secretSource value.
      */
     public ResourceReference secretSource() {
@@ -94,8 +91,8 @@ public final class CustomerCertificateParameters extends SecretParameters {
 
     /**
      * Set the secretSource property: Resource reference to the Azure Key Vault certificate. Expected to be in format of
-     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{certificateName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​.
-     * 
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/secrets/{certificateName}.
+     *
      * @param secretSource the secretSource value to set.
      * @return the CustomerCertificateParameters object itself.
      */
@@ -106,7 +103,7 @@ public final class CustomerCertificateParameters extends SecretParameters {
 
     /**
      * Get the secretVersion property: Version of the secret to be used.
-     * 
+     *
      * @return the secretVersion value.
      */
     public String secretVersion() {
@@ -115,7 +112,7 @@ public final class CustomerCertificateParameters extends SecretParameters {
 
     /**
      * Set the secretVersion property: Version of the secret to be used.
-     * 
+     *
      * @param secretVersion the secretVersion value to set.
      * @return the CustomerCertificateParameters object itself.
      */
@@ -126,7 +123,7 @@ public final class CustomerCertificateParameters extends SecretParameters {
 
     /**
      * Get the useLatestVersion property: Whether to use the latest version for the certificate.
-     * 
+     *
      * @return the useLatestVersion value.
      */
     public Boolean useLatestVersion() {
@@ -135,7 +132,7 @@ public final class CustomerCertificateParameters extends SecretParameters {
 
     /**
      * Set the useLatestVersion property: Whether to use the latest version for the certificate.
-     * 
+     *
      * @param useLatestVersion the useLatestVersion value to set.
      * @return the CustomerCertificateParameters object itself.
      */
@@ -146,7 +143,7 @@ public final class CustomerCertificateParameters extends SecretParameters {
 
     /**
      * Get the subject property: Subject name in the certificate.
-     * 
+     *
      * @return the subject value.
      */
     public String subject() {
@@ -155,7 +152,7 @@ public final class CustomerCertificateParameters extends SecretParameters {
 
     /**
      * Get the expirationDate property: Certificate expiration date.
-     * 
+     *
      * @return the expirationDate value.
      */
     public String expirationDate() {
@@ -164,7 +161,7 @@ public final class CustomerCertificateParameters extends SecretParameters {
 
     /**
      * Get the certificateAuthority property: Certificate issuing authority.
-     * 
+     *
      * @return the certificateAuthority value.
      */
     public String certificateAuthority() {
@@ -173,7 +170,7 @@ public final class CustomerCertificateParameters extends SecretParameters {
 
     /**
      * Get the subjectAlternativeNames property: The list of SANs.
-     * 
+     *
      * @return the subjectAlternativeNames value.
      */
     public List<String> subjectAlternativeNames() {
@@ -182,7 +179,7 @@ public final class CustomerCertificateParameters extends SecretParameters {
 
     /**
      * Set the subjectAlternativeNames property: The list of SANs.
-     * 
+     *
      * @param subjectAlternativeNames the subjectAlternativeNames value to set.
      * @return the CustomerCertificateParameters object itself.
      */
@@ -193,7 +190,7 @@ public final class CustomerCertificateParameters extends SecretParameters {
 
     /**
      * Get the thumbprint property: Certificate thumbprint.
-     * 
+     *
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -202,7 +199,7 @@ public final class CustomerCertificateParameters extends SecretParameters {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -236,7 +233,7 @@ public final class CustomerCertificateParameters extends SecretParameters {
 
     /**
      * Reads an instance of CustomerCertificateParameters from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of CustomerCertificateParameters if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.

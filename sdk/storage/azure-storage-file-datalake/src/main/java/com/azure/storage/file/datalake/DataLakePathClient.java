@@ -106,8 +106,7 @@ public class DataLakePathClient {
         this.pathName = pathName;
         this.pathResourceType = pathResourceType;
         this.sasToken = sasToken;
-        this.dataLakeStorage = new AzureDataLakeStorageRestAPIImplBuilder()
-            .pipeline(pipeline)
+        this.dataLakeStorage = new AzureDataLakeStorageRestAPIImplBuilder().pipeline(pipeline)
             .url(url)
             .fileSystem(fileSystemName)
             .path(this.pathName)
@@ -116,16 +115,14 @@ public class DataLakePathClient {
         this.serviceVersion = serviceVersion;
 
         String blobUrl = DataLakeImplUtils.endpointToDesiredEndpoint(url, "blob", "dfs");
-        this.blobDataLakeStorage = new AzureDataLakeStorageRestAPIImplBuilder()
-            .pipeline(pipeline)
+        this.blobDataLakeStorage = new AzureDataLakeStorageRestAPIImplBuilder().pipeline(pipeline)
             .url(blobUrl)
             .fileSystem(fileSystemName)
             .path(this.pathName)
             .version(serviceVersion.getVersion())
             .buildClient();
 
-        this.fileSystemDataLakeStorage = new AzureDataLakeStorageRestAPIImplBuilder()
-            .pipeline(pipeline)
+        this.fileSystemDataLakeStorage = new AzureDataLakeStorageRestAPIImplBuilder().pipeline(pipeline)
             .url(url)
             .fileSystem(fileSystemName)
             .version(serviceVersion.getVersion())
@@ -247,16 +244,15 @@ public class DataLakePathClient {
     public DataLakePathClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
         CpkInfo finalCustomerProvidedKey = null;
         if (customerProvidedKey != null) {
-            finalCustomerProvidedKey = new CpkInfo()
-                .setEncryptionKey(customerProvidedKey.getKey())
+            finalCustomerProvidedKey = new CpkInfo().setEncryptionKey(customerProvidedKey.getKey())
                 .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
                 .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
         }
         return new DataLakePathClient(dataLakePathAsyncClient,
             blockBlobClient.getCustomerProvidedKeyClient(Transforms.toBlobCustomerProvidedKey(customerProvidedKey)),
-            getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
-            getFileSystemName(), getObjectPath(), this.pathResourceType, getSasToken(),
-            finalCustomerProvidedKey, isTokenCredentialAuthenticated());
+            getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(), getFileSystemName(),
+            getObjectPath(), this.pathResourceType, getSasToken(), finalCustomerProvidedKey,
+            isTokenCredentialAuthenticated());
     }
 
     /**
@@ -307,7 +303,8 @@ public class DataLakePathClient {
         if (!overwrite) {
             requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
-        return createWithResponse(new DataLakePathCreateOptions().setRequestConditions(requestConditions), null, Context.NONE).getValue();
+        return createWithResponse(new DataLakePathCreateOptions().setRequestConditions(requestConditions), null,
+            Context.NONE).getValue();
     }
 
     /**
@@ -348,10 +345,8 @@ public class DataLakePathClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PathInfo> createWithResponse(String permissions, String umask, PathHttpHeaders headers,
-        Map<String, String> metadata, DataLakeRequestConditions requestConditions, Duration timeout,
-        Context context) {
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
-            .setPermissions(permissions)
+        Map<String, String> metadata, DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions(permissions)
             .setUmask(umask)
             .setPathHttpHeaders(headers)
             .setMetadata(metadata)
@@ -408,29 +403,33 @@ public class DataLakePathClient {
     public Response<PathInfo> createWithResponse(DataLakePathCreateOptions options, Duration timeout, Context context) {
         DataLakePathCreateOptions finalOptions = options == null ? new DataLakePathCreateOptions() : options;
         DataLakeRequestConditions requestConditions = finalOptions.getRequestConditions() == null
-            ? new DataLakeRequestConditions() : finalOptions.getRequestConditions();
+            ? new DataLakeRequestConditions()
+            : finalOptions.getRequestConditions();
 
         LeaseAccessConditions lac = new LeaseAccessConditions().setLeaseId(requestConditions.getLeaseId());
-        ModifiedAccessConditions mac = new ModifiedAccessConditions()
-            .setIfMatch(requestConditions.getIfMatch())
+        ModifiedAccessConditions mac = new ModifiedAccessConditions().setIfMatch(requestConditions.getIfMatch())
             .setIfNoneMatch(requestConditions.getIfNoneMatch())
             .setIfModifiedSince(requestConditions.getIfModifiedSince())
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
 
-        String acl = finalOptions.getAccessControlList() != null ? PathAccessControlEntry
-            .serializeList(finalOptions.getAccessControlList()) : null;
+        String acl = finalOptions.getAccessControlList() != null
+            ? PathAccessControlEntry.serializeList(finalOptions.getAccessControlList())
+            : null;
         PathExpiryOptions expiryOptions = ModelHelper.setFieldsIfNull(finalOptions, pathResourceType);
 
         String expiresOnString = null; // maybe return string instead and do check for expiryOptions in here
-        if (finalOptions.getScheduleDeletionOptions() != null && finalOptions.getScheduleDeletionOptions().getExpiresOn() != null) {
+        if (finalOptions.getScheduleDeletionOptions() != null
+            && finalOptions.getScheduleDeletionOptions().getExpiresOn() != null) {
             expiresOnString = DateTimeRfc1123.toRfc1123String(finalOptions.getScheduleDeletionOptions().getExpiresOn());
-        } else if (finalOptions.getScheduleDeletionOptions() != null && finalOptions.getScheduleDeletionOptions().getTimeToExpire() != null) {
+        } else if (finalOptions.getScheduleDeletionOptions() != null
+            && finalOptions.getScheduleDeletionOptions().getTimeToExpire() != null) {
             expiresOnString = Long.toString(finalOptions.getScheduleDeletionOptions().getTimeToExpire().toMillis());
         }
 
         String finalExpiresOnString = expiresOnString;
 
-        Long leaseDuration = finalOptions.getLeaseDuration() != null ? Long.valueOf(finalOptions.getLeaseDuration()) : null;
+        Long leaseDuration
+            = finalOptions.getLeaseDuration() != null ? Long.valueOf(finalOptions.getLeaseDuration()) : null;
 
         Context finalContext = context == null ? Context.NONE : context;
 
@@ -442,13 +441,13 @@ public class DataLakePathClient {
                 finalOptions.getEncryptionContext(), finalOptions.getPathHttpHeaders(), lac, mac, null,
                 customerProvidedKey, finalContext);
 
-        ResponseBase<PathsCreateHeaders, Void> response = sendRequest(operation, timeout,
-            DataLakeStorageException.class);
-        return new SimpleResponse<>(response, new PathInfo(
-            response.getDeserializedHeaders().getETag(),
-            response.getDeserializedHeaders().getLastModified(),
-            response.getDeserializedHeaders().isXMsRequestServerEncrypted() != null,
-            response.getDeserializedHeaders().getXMsEncryptionKeySha256()));
+        ResponseBase<PathsCreateHeaders, Void> response
+            = sendRequest(operation, timeout, DataLakeStorageException.class);
+        return new SimpleResponse<>(response,
+            new PathInfo(response.getDeserializedHeaders().getETag(),
+                response.getDeserializedHeaders().getLastModified(),
+                response.getDeserializedHeaders().isXMsRequestServerEncrypted() != null,
+                response.getDeserializedHeaders().getXMsEncryptionKeySha256()));
     }
 
     /**
@@ -519,8 +518,8 @@ public class DataLakePathClient {
         Context context) {
         try {
             options = options == null ? new DataLakePathCreateOptions() : options;
-            options.setRequestConditions(new DataLakeRequestConditions()
-                .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
+            options.setRequestConditions(
+                new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
 
             return createWithResponse(options, timeout, context);
         } catch (DataLakeStorageException e) {
@@ -597,8 +596,8 @@ public class DataLakePathClient {
         Context context) {
         options = options == null ? new DataLakePathDeleteOptions() : options;
         try {
-            Response<Void> response = this.deleteWithResponse(options.getIsRecursive(), options.getRequestConditions(),
-                timeout, context);
+            Response<Void> response
+                = this.deleteWithResponse(options.getIsRecursive(), options.getRequestConditions(), timeout, context);
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), true);
 
         } catch (DataLakeStorageException e) {
@@ -624,8 +623,7 @@ public class DataLakePathClient {
         requestConditions = requestConditions == null ? new DataLakeRequestConditions() : requestConditions;
 
         LeaseAccessConditions lac = new LeaseAccessConditions().setLeaseId(requestConditions.getLeaseId());
-        ModifiedAccessConditions mac = new ModifiedAccessConditions()
-            .setIfMatch(requestConditions.getIfMatch())
+        ModifiedAccessConditions mac = new ModifiedAccessConditions().setIfMatch(requestConditions.getIfMatch())
             .setIfNoneMatch(requestConditions.getIfNoneMatch())
             .setIfModifiedSince(requestConditions.getIfModifiedSince())
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
@@ -649,7 +647,8 @@ public class DataLakePathClient {
             return lastResponse;
         };
 
-        ResponseBase<PathsDeleteHeaders, Void> response = sendRequest(operation, timeout, DataLakeStorageException.class);
+        ResponseBase<PathsDeleteHeaders, Void> response
+            = sendRequest(operation, timeout, DataLakeStorageException.class);
         return new SimpleResponse<>(response, null);
     }
 
@@ -706,9 +705,8 @@ public class DataLakePathClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setMetadataWithResponse(Map<String, String> metadata,
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
-        return DataLakeImplUtils.returnOrConvertException(() ->
-            blockBlobClient.setMetadataWithResponse(metadata, Transforms.toBlobRequestConditions(requestConditions),
-                timeout, context), LOGGER);
+        return DataLakeImplUtils.returnOrConvertException(() -> blockBlobClient.setMetadataWithResponse(metadata,
+            Transforms.toBlobRequestConditions(requestConditions), timeout, context), LOGGER);
     }
 
     /**
@@ -765,9 +763,10 @@ public class DataLakePathClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setHttpHeadersWithResponse(PathHttpHeaders headers,
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
-        return DataLakeImplUtils.returnOrConvertException(() ->
-            blockBlobClient.setHttpHeadersWithResponse(Transforms.toBlobHttpHeaders(headers),
-                Transforms.toBlobRequestConditions(requestConditions), timeout, context), LOGGER);
+        return DataLakeImplUtils.returnOrConvertException(
+            () -> blockBlobClient.setHttpHeadersWithResponse(Transforms.toBlobHttpHeaders(headers),
+                Transforms.toBlobRequestConditions(requestConditions), timeout, context),
+            LOGGER);
     }
 
     /**
@@ -839,8 +838,7 @@ public class DataLakePathClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PathInfo> setAccessControlListWithResponse(List<PathAccessControlEntry> accessControlList,
         String group, String owner, DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
-        return setAccessControlWithResponse(accessControlList, null, group, owner,
-            requestConditions, timeout, context);
+        return setAccessControlWithResponse(accessControlList, null, group, owner, requestConditions, timeout, context);
     }
 
     Response<PathInfo> setAccessControlWithResponse(List<PathAccessControlEntry> accessControlList,
@@ -850,28 +848,25 @@ public class DataLakePathClient {
         requestConditions = requestConditions == null ? new DataLakeRequestConditions() : requestConditions;
 
         LeaseAccessConditions lac = new LeaseAccessConditions().setLeaseId(requestConditions.getLeaseId());
-        ModifiedAccessConditions mac = new ModifiedAccessConditions()
-            .setIfMatch(requestConditions.getIfMatch())
+        ModifiedAccessConditions mac = new ModifiedAccessConditions().setIfMatch(requestConditions.getIfMatch())
             .setIfNoneMatch(requestConditions.getIfNoneMatch())
             .setIfModifiedSince(requestConditions.getIfModifiedSince())
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
 
         String permissionsString = permissions == null ? null : permissions.toString();
-        String accessControlListString =
-            accessControlList == null
-                ? null
-                : PathAccessControlEntry.serializeList(accessControlList);
+        String accessControlListString
+            = accessControlList == null ? null : PathAccessControlEntry.serializeList(accessControlList);
 
         Context finalContext = context == null ? Context.NONE : context;
 
         Callable<ResponseBase<PathsSetAccessControlHeaders, Void>> operation = () -> this.dataLakeStorage.getPaths()
             .setAccessControlWithResponse(null, owner, group, permissionsString, accessControlListString, null, lac,
                 mac, finalContext);
-        ResponseBase<PathsSetAccessControlHeaders, Void> response = sendRequest(operation, timeout,
-            DataLakeStorageException.class);
+        ResponseBase<PathsSetAccessControlHeaders, Void> response
+            = sendRequest(operation, timeout, DataLakeStorageException.class);
 
         return new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
-                response.getDeserializedHeaders().getLastModified()));
+            response.getDeserializedHeaders().getLastModified()));
     }
 
     /**
@@ -1045,11 +1040,10 @@ public class DataLakePathClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessControlChangeResult> setAccessControlRecursiveWithResponse(
         PathSetAccessControlRecursiveOptions options, Duration timeout, Context context) {
-        Mono<Response<AccessControlChangeResult>> response =
-            dataLakePathAsyncClient.setAccessControlRecursiveWithResponse(
-                PathAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
-                PathSetAccessControlRecursiveMode.SET, options.getBatchSize(), options.getMaxBatches(),
-                options.isContinueOnFailure(), options.getContinuationToken(), context);
+        Mono<Response<AccessControlChangeResult>> response = dataLakePathAsyncClient
+            .setAccessControlRecursiveWithResponse(PathAccessControlEntry.serializeList(options.getAccessControlList()),
+                options.getProgressHandler(), PathSetAccessControlRecursiveMode.SET, options.getBatchSize(),
+                options.getMaxBatches(), options.isContinueOnFailure(), options.getContinuationToken(), context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
@@ -1169,11 +1163,10 @@ public class DataLakePathClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessControlChangeResult> updateAccessControlRecursiveWithResponse(
         PathUpdateAccessControlRecursiveOptions options, Duration timeout, Context context) {
-        Mono<Response<AccessControlChangeResult>> response =
-            dataLakePathAsyncClient.setAccessControlRecursiveWithResponse(
-                PathAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
-                PathSetAccessControlRecursiveMode.MODIFY, options.getBatchSize(), options.getMaxBatches(),
-                options.isContinueOnFailure(), options.getContinuationToken(), context);
+        Mono<Response<AccessControlChangeResult>> response = dataLakePathAsyncClient
+            .setAccessControlRecursiveWithResponse(PathAccessControlEntry.serializeList(options.getAccessControlList()),
+                options.getProgressHandler(), PathSetAccessControlRecursiveMode.MODIFY, options.getBatchSize(),
+                options.getMaxBatches(), options.isContinueOnFailure(), options.getContinuationToken(), context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
@@ -1221,8 +1214,8 @@ public class DataLakePathClient {
      * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccessControlChangeResult removeAccessControlRecursive(
-        List<PathRemoveAccessControlEntry> accessControlList) {
+    public AccessControlChangeResult
+        removeAccessControlRecursive(List<PathRemoveAccessControlEntry> accessControlList) {
         return removeAccessControlRecursiveWithResponse(new PathRemoveAccessControlRecursiveOptions(accessControlList),
             null, Context.NONE).getValue();
     }
@@ -1290,15 +1283,14 @@ public class DataLakePathClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessControlChangeResult> removeAccessControlRecursiveWithResponse(
         PathRemoveAccessControlRecursiveOptions options, Duration timeout, Context context) {
-        Mono<Response<AccessControlChangeResult>> response =
-            dataLakePathAsyncClient.setAccessControlRecursiveWithResponse(
+        Mono<Response<AccessControlChangeResult>> response
+            = dataLakePathAsyncClient.setAccessControlRecursiveWithResponse(
                 PathRemoveAccessControlEntry.serializeList(options.getAccessControlList()),
                 options.getProgressHandler(), PathSetAccessControlRecursiveMode.REMOVE, options.getBatchSize(),
                 options.getMaxBatches(), options.isContinueOnFailure(), options.getContinuationToken(), context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
-
 
     /**
      * Returns the access control for a resource.
@@ -1361,8 +1353,7 @@ public class DataLakePathClient {
         requestConditions = requestConditions == null ? new DataLakeRequestConditions() : requestConditions;
 
         LeaseAccessConditions lac = new LeaseAccessConditions().setLeaseId(requestConditions.getLeaseId());
-        ModifiedAccessConditions mac = new ModifiedAccessConditions()
-            .setIfMatch(requestConditions.getIfMatch())
+        ModifiedAccessConditions mac = new ModifiedAccessConditions().setIfMatch(requestConditions.getIfMatch())
             .setIfNoneMatch(requestConditions.getIfNoneMatch())
             .setIfModifiedSince(requestConditions.getIfModifiedSince())
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
@@ -1371,23 +1362,23 @@ public class DataLakePathClient {
         Callable<ResponseBase<PathsGetPropertiesHeaders, Void>> operation = () -> this.dataLakeStorage.getPaths()
             .getPropertiesWithResponse(null, null, PathGetPropertiesAction.GET_ACCESS_CONTROL,
                 userPrincipalNameReturned, lac, mac, finalContext);
-        ResponseBase<PathsGetPropertiesHeaders, Void> response = sendRequest(operation, timeout,
-            DataLakeStorageException.class);
+        ResponseBase<PathsGetPropertiesHeaders, Void> response
+            = sendRequest(operation, timeout, DataLakeStorageException.class);
 
-        return new SimpleResponse<>(response, new PathAccessControl(
-            PathAccessControlEntry.parseList(response.getDeserializedHeaders().getXMsAcl()),
-            PathPermissions.parseSymbolic(response.getDeserializedHeaders().getXMsPermissions()),
-            response.getDeserializedHeaders().getXMsGroup(), response.getDeserializedHeaders().getXMsOwner()));
+        return new SimpleResponse<>(response,
+            new PathAccessControl(PathAccessControlEntry.parseList(response.getDeserializedHeaders().getXMsAcl()),
+                PathPermissions.parseSymbolic(response.getDeserializedHeaders().getXMsPermissions()),
+                response.getDeserializedHeaders().getXMsGroup(), response.getDeserializedHeaders().getXMsOwner()));
     }
 
     Response<DataLakePathClient> renameWithResponseWithTimeout(String destinationFileSystem, String destinationPath,
-                                                               DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destinationRequestConditions,
-                                                               Duration timeout, Context context) {
+        DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destinationRequestConditions,
+        Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        destinationRequestConditions = destinationRequestConditions == null ? new DataLakeRequestConditions()
-            : destinationRequestConditions;
-        DataLakeRequestConditions finalSourceRequestConditions = sourceRequestConditions == null ? new DataLakeRequestConditions()
-            : sourceRequestConditions;
+        destinationRequestConditions
+            = destinationRequestConditions == null ? new DataLakeRequestConditions() : destinationRequestConditions;
+        DataLakeRequestConditions finalSourceRequestConditions
+            = sourceRequestConditions == null ? new DataLakeRequestConditions() : sourceRequestConditions;
 
         // We want to hide the SourceAccessConditions type from the user for consistency's sake, so we convert here.
         SourceModifiedAccessConditions sourceConditions = new SourceModifiedAccessConditions()
@@ -1396,13 +1387,13 @@ public class DataLakePathClient {
             .setSourceIfMatch(finalSourceRequestConditions.getIfMatch())
             .setSourceIfNoneMatch(finalSourceRequestConditions.getIfNoneMatch());
 
-        LeaseAccessConditions destLac = new LeaseAccessConditions()
-            .setLeaseId(destinationRequestConditions.getLeaseId());
-        ModifiedAccessConditions destMac = new ModifiedAccessConditions()
-            .setIfMatch(destinationRequestConditions.getIfMatch())
-            .setIfNoneMatch(destinationRequestConditions.getIfNoneMatch())
-            .setIfModifiedSince(destinationRequestConditions.getIfModifiedSince())
-            .setIfUnmodifiedSince(destinationRequestConditions.getIfUnmodifiedSince());
+        LeaseAccessConditions destLac
+            = new LeaseAccessConditions().setLeaseId(destinationRequestConditions.getLeaseId());
+        ModifiedAccessConditions destMac
+            = new ModifiedAccessConditions().setIfMatch(destinationRequestConditions.getIfMatch())
+                .setIfNoneMatch(destinationRequestConditions.getIfNoneMatch())
+                .setIfModifiedSince(destinationRequestConditions.getIfModifiedSince())
+                .setIfUnmodifiedSince(destinationRequestConditions.getIfUnmodifiedSince());
 
         DataLakePathClient dataLakePathClient = getPathClient(destinationFileSystem, destinationPath);
 
@@ -1425,8 +1416,8 @@ public class DataLakePathClient {
                 null /* leaseDuration */, null /* expiryOptions */, null /* expiresOn */, null /* encryptionContext */,
                 null /* pathHttpHeaders */, destLac, destMac, sourceConditions, null /* cpkInfo */, finalContext);
 
-        ResponseBase<PathsCreateHeaders, Void> response = sendRequest(operation, timeout,
-            DataLakeStorageException.class);
+        ResponseBase<PathsCreateHeaders, Void> response
+            = sendRequest(operation, timeout, DataLakeStorageException.class);
         return new SimpleResponse<>(response, dataLakePathClient);
     }
 
@@ -1445,7 +1436,8 @@ public class DataLakePathClient {
         }
 
         return new DataLakePathClient(dataLakePathAsyncClient,
-            dataLakePathAsyncClient.prepareBuilderReplacePath(destinationFileSystem, destinationPath).buildBlockBlobClient(),
+            dataLakePathAsyncClient.prepareBuilderReplacePath(destinationFileSystem, destinationPath)
+                .buildBlockBlobClient(),
             getHttpPipeline(), getAccountUrl(), serviceVersion, accountName, destinationFileSystem, destinationPath,
             pathResourceType, sasToken, customerProvidedKey, isTokenCredentialAuthenticated());
     }
@@ -1526,8 +1518,8 @@ public class DataLakePathClient {
     public Response<PathProperties> getPropertiesWithResponse(DataLakeRequestConditions requestConditions,
         Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() -> {
-            Response<BlobProperties> response = blockBlobClient.getPropertiesWithResponse(
-                Transforms.toBlobRequestConditions(requestConditions), timeout, context);
+            Response<BlobProperties> response = blockBlobClient
+                .getPropertiesWithResponse(Transforms.toBlobRequestConditions(requestConditions), timeout, context);
             return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), response));
         }, LOGGER);
     }
@@ -1544,8 +1536,8 @@ public class DataLakePathClient {
      * @return A response containing the resource properties and metadata.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<PathProperties> getPropertiesUsingOptionsWithResponse(PathGetPropertiesOptions options, Duration timeout,
-                                                              Context context) {
+    private Response<PathProperties> getPropertiesUsingOptionsWithResponse(PathGetPropertiesOptions options,
+        Duration timeout, Context context) {
         context = BuilderHelper.addUpnHeader(() -> (options == null) ? null : options.isUserPrincipalName(), context);
         Context finalContext = context;
 
@@ -1598,8 +1590,8 @@ public class DataLakePathClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> existsWithResponse(Duration timeout, Context context) {
-        return DataLakeImplUtils.returnOrConvertException(() ->
-            blockBlobClient.existsWithResponse(timeout, context), LOGGER);
+        return DataLakeImplUtils.returnOrConvertException(() -> blockBlobClient.existsWithResponse(timeout, context),
+            LOGGER);
     }
 
     BlockBlobClient getBlockBlobClient() {
@@ -1668,8 +1660,8 @@ public class DataLakePathClient {
      */
     public String generateUserDelegationSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues,
         UserDelegationKey userDelegationKey, String accountName, Context context) {
-        return generateUserDelegationSas(dataLakeServiceSasSignatureValues, userDelegationKey, accountName,
-            null, context);
+        return generateUserDelegationSas(dataLakeServiceSasSignatureValues, userDelegationKey, accountName, null,
+            context);
     }
 
     /**
@@ -1689,10 +1681,11 @@ public class DataLakePathClient {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateUserDelegationSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues,
-        UserDelegationKey userDelegationKey, String accountName, Consumer<String> stringToSignHandler, Context context) {
+        UserDelegationKey userDelegationKey, String accountName, Consumer<String> stringToSignHandler,
+        Context context) {
         return new DataLakeSasImplUtil(dataLakeServiceSasSignatureValues, getFileSystemName(), getObjectPath(),
-            PathResourceType.DIRECTORY.equals(this.pathResourceType))
-            .generateUserDelegationSas(userDelegationKey, accountName, stringToSignHandler, context);
+            PathResourceType.DIRECTORY.equals(this.pathResourceType)).generateUserDelegationSas(userDelegationKey,
+                accountName, stringToSignHandler, context);
     }
 
     /**
@@ -1767,6 +1760,6 @@ public class DataLakePathClient {
         Consumer<String> stringToSignHandler, Context context) {
         return new DataLakeSasImplUtil(dataLakeServiceSasSignatureValues, getFileSystemName(), getObjectPath(),
             PathResourceType.DIRECTORY.equals(this.pathResourceType))
-            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
+                .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
     }
 }

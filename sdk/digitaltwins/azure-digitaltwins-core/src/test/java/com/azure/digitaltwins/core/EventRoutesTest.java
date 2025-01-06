@@ -105,8 +105,8 @@ public class EventRoutesTest extends EventRoutesTestBase {
         // list event routes by page, make sure that all non-final pages have the expected page size
         ListDigitalTwinsEventRoutesOptions listEventRoutesOptions
             = (new ListDigitalTwinsEventRoutesOptions()).setMaxItemsPerPage(expectedPageSize);
-        PagedIterable<DigitalTwinsEventRoute> eventRoutes = client.listEventRoutes(listEventRoutesOptions,
-            Context.NONE);
+        PagedIterable<DigitalTwinsEventRoute> eventRoutes
+            = client.listEventRoutes(listEventRoutesOptions, Context.NONE);
         Iterable<PagedResponse<DigitalTwinsEventRoute>> eventRoutePages = eventRoutes.iterableByPage();
         int pageCount = 0;
         for (PagedResponse<DigitalTwinsEventRoute> eventRoutePagedResponse : eventRoutePages) {

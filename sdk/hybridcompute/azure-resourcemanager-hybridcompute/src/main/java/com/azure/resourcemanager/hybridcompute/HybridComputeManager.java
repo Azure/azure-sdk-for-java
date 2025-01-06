@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -19,16 +20,17 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridcompute.fluent.HybridComputeManagementClient;
 import com.azure.resourcemanager.hybridcompute.implementation.ExtensionMetadatasImpl;
+import com.azure.resourcemanager.hybridcompute.implementation.GatewaysImpl;
 import com.azure.resourcemanager.hybridcompute.implementation.HybridComputeManagementClientBuilder;
 import com.azure.resourcemanager.hybridcompute.implementation.LicenseProfilesImpl;
 import com.azure.resourcemanager.hybridcompute.implementation.LicensesImpl;
 import com.azure.resourcemanager.hybridcompute.implementation.MachineExtensionsImpl;
+import com.azure.resourcemanager.hybridcompute.implementation.MachineRunCommandsImpl;
 import com.azure.resourcemanager.hybridcompute.implementation.MachinesImpl;
 import com.azure.resourcemanager.hybridcompute.implementation.NetworkProfilesImpl;
 import com.azure.resourcemanager.hybridcompute.implementation.NetworkSecurityPerimeterConfigurationsImpl;
@@ -37,10 +39,13 @@ import com.azure.resourcemanager.hybridcompute.implementation.PrivateEndpointCon
 import com.azure.resourcemanager.hybridcompute.implementation.PrivateLinkResourcesImpl;
 import com.azure.resourcemanager.hybridcompute.implementation.PrivateLinkScopesImpl;
 import com.azure.resourcemanager.hybridcompute.implementation.ResourceProvidersImpl;
+import com.azure.resourcemanager.hybridcompute.implementation.SettingsOperationsImpl;
 import com.azure.resourcemanager.hybridcompute.models.ExtensionMetadatas;
+import com.azure.resourcemanager.hybridcompute.models.Gateways;
 import com.azure.resourcemanager.hybridcompute.models.LicenseProfiles;
 import com.azure.resourcemanager.hybridcompute.models.Licenses;
 import com.azure.resourcemanager.hybridcompute.models.MachineExtensions;
+import com.azure.resourcemanager.hybridcompute.models.MachineRunCommands;
 import com.azure.resourcemanager.hybridcompute.models.Machines;
 import com.azure.resourcemanager.hybridcompute.models.NetworkProfiles;
 import com.azure.resourcemanager.hybridcompute.models.NetworkSecurityPerimeterConfigurations;
@@ -49,6 +54,7 @@ import com.azure.resourcemanager.hybridcompute.models.PrivateEndpointConnections
 import com.azure.resourcemanager.hybridcompute.models.PrivateLinkResources;
 import com.azure.resourcemanager.hybridcompute.models.PrivateLinkScopes;
 import com.azure.resourcemanager.hybridcompute.models.ResourceProviders;
+import com.azure.resourcemanager.hybridcompute.models.SettingsOperations;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -76,6 +82,12 @@ public final class HybridComputeManager {
     private Operations operations;
 
     private NetworkProfiles networkProfiles;
+
+    private MachineRunCommands machineRunCommands;
+
+    private Gateways gateways;
+
+    private SettingsOperations settingsOperations;
 
     private PrivateLinkScopes privateLinkScopes;
 
@@ -249,7 +261,7 @@ public final class HybridComputeManager {
                 .append("-")
                 .append("com.azure.resourcemanager.hybridcompute")
                 .append("/")
-                .append("1.0.0");
+                .append("1.1.0-beta.1");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -282,7 +294,7 @@ public final class HybridComputeManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
                 .collect(Collectors.toList()));
@@ -389,6 +401,42 @@ public final class HybridComputeManager {
             this.networkProfiles = new NetworkProfilesImpl(clientObject.getNetworkProfiles(), this);
         }
         return networkProfiles;
+    }
+
+    /**
+     * Gets the resource collection API of MachineRunCommands. It manages MachineRunCommand.
+     * 
+     * @return Resource collection API of MachineRunCommands.
+     */
+    public MachineRunCommands machineRunCommands() {
+        if (this.machineRunCommands == null) {
+            this.machineRunCommands = new MachineRunCommandsImpl(clientObject.getMachineRunCommands(), this);
+        }
+        return machineRunCommands;
+    }
+
+    /**
+     * Gets the resource collection API of Gateways. It manages Gateway.
+     * 
+     * @return Resource collection API of Gateways.
+     */
+    public Gateways gateways() {
+        if (this.gateways == null) {
+            this.gateways = new GatewaysImpl(clientObject.getGateways(), this);
+        }
+        return gateways;
+    }
+
+    /**
+     * Gets the resource collection API of SettingsOperations.
+     * 
+     * @return Resource collection API of SettingsOperations.
+     */
+    public SettingsOperations settingsOperations() {
+        if (this.settingsOperations == null) {
+            this.settingsOperations = new SettingsOperationsImpl(clientObject.getSettingsOperations(), this);
+        }
+        return settingsOperations;
     }
 
     /**

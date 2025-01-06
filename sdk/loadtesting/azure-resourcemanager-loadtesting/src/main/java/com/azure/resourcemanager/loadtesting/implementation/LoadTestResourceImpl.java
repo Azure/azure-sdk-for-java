@@ -95,7 +95,7 @@ public final class LoadTestResourceImpl
 
     private String loadTestName;
 
-    private LoadTestResourcePatchRequestBody updateLoadTestResourcePatchRequestBody;
+    private LoadTestResourcePatchRequestBody updateProperties;
 
     public LoadTestResourceImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
@@ -103,20 +103,16 @@ public final class LoadTestResourceImpl
     }
 
     public LoadTestResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLoadTests()
-                .createOrUpdate(resourceGroupName, loadTestName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getLoadTests()
+            .createOrUpdate(resourceGroupName, loadTestName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public LoadTestResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLoadTests()
-                .createOrUpdate(resourceGroupName, loadTestName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getLoadTests()
+            .createOrUpdate(resourceGroupName, loadTestName, this.innerModel(), context);
         return this;
     }
 
@@ -127,53 +123,45 @@ public final class LoadTestResourceImpl
     }
 
     public LoadTestResourceImpl update() {
-        this.updateLoadTestResourcePatchRequestBody = new LoadTestResourcePatchRequestBody();
+        this.updateProperties = new LoadTestResourcePatchRequestBody();
         return this;
     }
 
     public LoadTestResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLoadTests()
-                .update(resourceGroupName, loadTestName, updateLoadTestResourcePatchRequestBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getLoadTests()
+            .update(resourceGroupName, loadTestName, updateProperties, Context.NONE);
         return this;
     }
 
     public LoadTestResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLoadTests()
-                .update(resourceGroupName, loadTestName, updateLoadTestResourcePatchRequestBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getLoadTests()
+            .update(resourceGroupName, loadTestName, updateProperties, context);
         return this;
     }
 
-    LoadTestResourceImpl(
-        LoadTestResourceInner innerObject, com.azure.resourcemanager.loadtesting.LoadTestManager serviceManager) {
+    LoadTestResourceImpl(LoadTestResourceInner innerObject,
+        com.azure.resourcemanager.loadtesting.LoadTestManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.loadTestName = Utils.getValueFromIdByName(innerObject.id(), "loadTests");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.loadTestName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "loadTests");
     }
 
     public LoadTestResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLoadTests()
-                .getByResourceGroupWithResponse(resourceGroupName, loadTestName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLoadTests()
+            .getByResourceGroupWithResponse(resourceGroupName, loadTestName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public LoadTestResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLoadTests()
-                .getByResourceGroupWithResponse(resourceGroupName, loadTestName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLoadTests()
+            .getByResourceGroupWithResponse(resourceGroupName, loadTestName, context)
+            .getValue();
         return this;
     }
 
@@ -192,7 +180,7 @@ public final class LoadTestResourceImpl
             this.innerModel().withTags(tags);
             return this;
         } else {
-            this.updateLoadTestResourcePatchRequestBody.withTags(tags);
+            this.updateProperties.withTags(tags);
             return this;
         }
     }
@@ -202,7 +190,7 @@ public final class LoadTestResourceImpl
             this.innerModel().withIdentity(identity);
             return this;
         } else {
-            this.updateLoadTestResourcePatchRequestBody.withIdentity(identity);
+            this.updateProperties.withIdentity(identity);
             return this;
         }
     }
@@ -212,7 +200,7 @@ public final class LoadTestResourceImpl
             this.innerModel().withDescription(description);
             return this;
         } else {
-            this.updateLoadTestResourcePatchRequestBody.withDescription(description);
+            this.updateProperties.withDescription(description);
             return this;
         }
     }
@@ -222,7 +210,7 @@ public final class LoadTestResourceImpl
             this.innerModel().withEncryption(encryption);
             return this;
         } else {
-            this.updateLoadTestResourcePatchRequestBody.withEncryption(encryption);
+            this.updateProperties.withEncryption(encryption);
             return this;
         }
     }

@@ -11,12 +11,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 
 /** A client-side representation of an application gateway frontend. */
 @Fluent()
-public interface ApplicationGatewayFrontend
-    extends HasInnerModel<ApplicationGatewayFrontendIpConfiguration>,
-        ChildResource<ApplicationGateway>,
-        HasPrivateIpAddress,
-        HasSubnet,
-        HasPublicIpAddress {
+public interface ApplicationGatewayFrontend extends HasInnerModel<ApplicationGatewayFrontendIpConfiguration>,
+    ChildResource<ApplicationGateway>, HasPrivateIpAddress, HasSubnet, HasPublicIpAddress {
 
     /** @return true if the frontend is accessible via a public IP address, else false */
     boolean isPublic();
@@ -98,10 +94,8 @@ public interface ApplicationGatewayFrontend
      * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this
      *     definition
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithAttach<ParentT>,
-            DefinitionStages.WithPublicIPAddress<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithAttach<ParentT>,
+        DefinitionStages.WithPublicIPAddress<ParentT> {
     }
 
     /** Grouping of application gateway frontend update stages. */
@@ -179,11 +173,8 @@ public interface ApplicationGatewayFrontend
          * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this
          *     definition
          */
-        interface WithAttach<ParentT>
-            extends Attachable.InUpdateAlt<ParentT>,
-                WithPublicIPAddress<ParentT>,
-                WithSubnet<ParentT>,
-                WithPrivateIP<ParentT> {
+        interface WithAttach<ParentT> extends Attachable.InUpdateAlt<ParentT>, WithPublicIPAddress<ParentT>,
+            WithSubnet<ParentT>, WithPrivateIP<ParentT> {
         }
     }
 

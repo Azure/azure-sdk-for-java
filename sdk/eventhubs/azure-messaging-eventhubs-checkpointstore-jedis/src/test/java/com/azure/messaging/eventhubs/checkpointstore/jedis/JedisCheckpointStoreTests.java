@@ -53,9 +53,10 @@ public class JedisCheckpointStoreTests {
     private static final String CONSUMER_GROUP = "consumerGroup";
     private static final long MODIFIED_TIME = 10000000L;
     private static final String PARTITION_ID = "1";
-    private static final byte[] PREFIX = JedisCheckpointStore.prefixBuilder(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME,
-        CONSUMER_GROUP);
-    private static final byte[] KEY = keyBuilder(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP, PARTITION_ID);
+    private static final byte[] PREFIX
+        = JedisCheckpointStore.prefixBuilder(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP);
+    private static final byte[] KEY
+        = keyBuilder(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP, PARTITION_ID);
 
     @Mock
     private JedisPool jedisPool;
@@ -90,8 +91,7 @@ public class JedisCheckpointStoreTests {
 
         when(jedisPool.getResource()).thenReturn(jedis);
         when(jedis.smembers(PREFIX)).thenReturn(value);
-        when(jedis.hmget(eq(KEY),
-            eq(JedisCheckpointStore.CHECKPOINT))).thenReturn(list);
+        when(jedis.hmget(eq(KEY), eq(JedisCheckpointStore.CHECKPOINT))).thenReturn(list);
 
         StepVerifier.create(store.listCheckpoints(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP))
             .assertNext(checkpointTest -> {
@@ -119,8 +119,7 @@ public class JedisCheckpointStoreTests {
 
         when(jedisPool.getResource()).thenReturn(jedis);
         when(jedis.smembers(PREFIX)).thenReturn(value);
-        when(jedis.hmget(eq(KEY),
-            eq(JedisCheckpointStore.CHECKPOINT))).thenReturn(nullList);
+        when(jedis.hmget(eq(KEY), eq(JedisCheckpointStore.CHECKPOINT))).thenReturn(nullList);
 
         StepVerifier.create(store.listCheckpoints(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP))
             .verifyComplete();
@@ -136,8 +135,7 @@ public class JedisCheckpointStoreTests {
 
         when(jedisPool.getResource()).thenReturn(jedis);
         when(jedis.smembers(PREFIX)).thenReturn(value);
-        when(jedis.hmget(eq(KEY),
-            eq(PARTITION_OWNERSHIP))).thenReturn(list);
+        when(jedis.hmget(eq(KEY), eq(PARTITION_OWNERSHIP))).thenReturn(list);
 
         StepVerifier.create(store.listOwnership(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP))
             .assertNext(partitionOwnershipTest -> {
@@ -171,14 +169,12 @@ public class JedisCheckpointStoreTests {
         when(transaction.exec()).thenReturn(Collections.singletonList(1L));
         when(jedis.multi()).thenReturn(transaction);
 
-        StepVerifier.create(store.claimOwnership(partitionOwnershipList))
-            .assertNext(partitionOwnershipTest -> {
-                assertEquals(EVENT_HUB_NAME, partitionOwnershipTest.getEventHubName());
-                assertEquals(CONSUMER_GROUP, partitionOwnershipTest.getConsumerGroup());
-                assertEquals(FULLY_QUALIFIED_NAMESPACE, partitionOwnershipTest.getFullyQualifiedNamespace());
-                assertEquals("ownerOne", partitionOwnershipTest.getOwnerId());
-            })
-            .verifyComplete();
+        StepVerifier.create(store.claimOwnership(partitionOwnershipList)).assertNext(partitionOwnershipTest -> {
+            assertEquals(EVENT_HUB_NAME, partitionOwnershipTest.getEventHubName());
+            assertEquals(CONSUMER_GROUP, partitionOwnershipTest.getConsumerGroup());
+            assertEquals(FULLY_QUALIFIED_NAMESPACE, partitionOwnershipTest.getFullyQualifiedNamespace());
+            assertEquals("ownerOne", partitionOwnershipTest.getOwnerId());
+        }).verifyComplete();
     }
 
     @Test
@@ -189,19 +185,18 @@ public class JedisCheckpointStoreTests {
         when(transaction.exec()).thenReturn(Collections.singletonList(1L));
 
         when(jedisPool.getResource()).thenReturn(jedis);
-        when(jedis.hmget(KEY, PARTITION_OWNERSHIP)).thenReturn(Collections.singletonList("oldOwnershipRecord".getBytes(StandardCharsets.UTF_8)));
+        when(jedis.hmget(KEY, PARTITION_OWNERSHIP))
+            .thenReturn(Collections.singletonList("oldOwnershipRecord".getBytes(StandardCharsets.UTF_8)));
         when(jedis.multi()).thenReturn(transaction);
         when(jedis.time()).thenReturn(Collections.singletonList("10000000"));
         when(transaction.exec()).thenReturn(Collections.singletonList(1L));
 
-        StepVerifier.create(store.claimOwnership(partitionOwnershipList))
-            .assertNext(partitionOwnershipTest -> {
-                assertEquals(EVENT_HUB_NAME, partitionOwnershipTest.getEventHubName());
-                assertEquals(CONSUMER_GROUP, partitionOwnershipTest.getConsumerGroup());
-                assertEquals(FULLY_QUALIFIED_NAMESPACE, partitionOwnershipTest.getFullyQualifiedNamespace());
-                assertEquals("ownerOne", partitionOwnershipTest.getOwnerId());
-            })
-            .verifyComplete();
+        StepVerifier.create(store.claimOwnership(partitionOwnershipList)).assertNext(partitionOwnershipTest -> {
+            assertEquals(EVENT_HUB_NAME, partitionOwnershipTest.getEventHubName());
+            assertEquals(CONSUMER_GROUP, partitionOwnershipTest.getConsumerGroup());
+            assertEquals(FULLY_QUALIFIED_NAMESPACE, partitionOwnershipTest.getFullyQualifiedNamespace());
+            assertEquals("ownerOne", partitionOwnershipTest.getOwnerId());
+        }).verifyComplete();
 
         verify(jedis, times(1)).sadd(eq(PREFIX), eq(KEY));
     }
@@ -224,9 +219,7 @@ public class JedisCheckpointStoreTests {
 
         when(jedis.time()).thenReturn(Arrays.asList("1678740344"));
 
-        StepVerifier.create(store.claimOwnership(partitionOwnershipList))
-            .expectError(AzureException.class)
-            .verify();
+        StepVerifier.create(store.claimOwnership(partitionOwnershipList)).expectError(AzureException.class).verify();
 
         verify(jedis, times(1)).sadd(eq(PREFIX), eq(KEY));
     }
@@ -252,9 +245,7 @@ public class JedisCheckpointStoreTests {
         when(jedis.time()).thenReturn(Arrays.asList("1678740344"));
 
         // Act & Assert
-        StepVerifier.create(store.claimOwnership(partitionOwnershipList))
-            .expectError(AzureException.class)
-            .verify();
+        StepVerifier.create(store.claimOwnership(partitionOwnershipList)).expectError(AzureException.class).verify();
 
         verify(jedis).unwatch();
         verify(jedis, times(1)).sadd(eq(PREFIX), eq(KEY));
@@ -315,17 +306,13 @@ public class JedisCheckpointStoreTests {
         when(transaction.exec()).thenReturn(Collections.singletonList(0));
 
         // Act & Assert
-        StepVerifier.create(store.claimOwnership(partitionsToClaim))
-            .assertNext(first -> {
-                assertEquals(owner2, first.getOwnerId());
-                assertEquals(lastModifiedTime * 1000, first.getLastModifiedTime());
-            })
-            .assertNext(second -> {
-                assertEquals(owner3, second.getOwnerId());
-                assertEquals(lastModifiedTime * 1000, second.getLastModifiedTime());
-            })
-            .expectComplete()
-            .verify();
+        StepVerifier.create(store.claimOwnership(partitionsToClaim)).assertNext(first -> {
+            assertEquals(owner2, first.getOwnerId());
+            assertEquals(lastModifiedTime * 1000, first.getLastModifiedTime());
+        }).assertNext(second -> {
+            assertEquals(owner3, second.getOwnerId());
+            assertEquals(lastModifiedTime * 1000, second.getLastModifiedTime());
+        }).expectComplete().verify();
 
         verify(transaction, times(2)).exec();
         verify(jedis, times(2)).multi();
@@ -351,11 +338,7 @@ public class JedisCheckpointStoreTests {
     }
 
     public static Stream<List<Object>> claimOwnershipExistingOwnershipsFails() {
-        return Stream.of(
-            Collections.emptyList(),
-            Collections.singletonList(null),
-            null
-        );
+        return Stream.of(Collections.emptyList(), Collections.singletonList(null), null);
     }
 
     /**
@@ -427,16 +410,13 @@ public class JedisCheckpointStoreTests {
         });
 
         // Act & Assert
-        StepVerifier.create(store.claimOwnership(partitionsToClaim))
-            .assertNext(first -> {
-                assertEquals(owner2, first.getOwnerId());
-                assertEquals(lastModifiedTime * 1000, first.getLastModifiedTime());
-            })
-            .expectErrorMatches(error -> {
-                // The scenario where unsuccessfulReturns is given when the transaction is executed.
-                return error instanceof AzureException;
-            })
-            .verify();
+        StepVerifier.create(store.claimOwnership(partitionsToClaim)).assertNext(first -> {
+            assertEquals(owner2, first.getOwnerId());
+            assertEquals(lastModifiedTime * 1000, first.getLastModifiedTime());
+        }).expectErrorMatches(error -> {
+            // The scenario where unsuccessfulReturns is given when the transaction is executed.
+            return error instanceof AzureException;
+        }).verify();
 
         verify(transaction, times(2)).exec();
         verify(jedis, times(2)).multi();
@@ -459,16 +439,13 @@ public class JedisCheckpointStoreTests {
         when(jedisPool.getResource()).thenReturn(jedis);
         when(jedis.exists(PREFIX)).thenReturn(true);
 
-        StepVerifier.create(store.updateCheckpoint(checkpoint))
-            .verifyComplete();
+        StepVerifier.create(store.updateCheckpoint(checkpoint)).verifyComplete();
     }
 
     @Test
     public void updateInvalidCheckpoint() {
         // Arrange
-        Checkpoint invalidCheckpoint = createCheckpoint()
-            .setOffset(null)
-            .setSequenceNumber(null);
+        Checkpoint invalidCheckpoint = createCheckpoint().setOffset(null).setSequenceNumber(null);
 
         // Act
         StepVerifier.create(store.updateCheckpoint(invalidCheckpoint))
@@ -478,14 +455,11 @@ public class JedisCheckpointStoreTests {
 
     @Test
     public void updateNullCheckpoint() {
-        StepVerifier.create(store.updateCheckpoint(null))
-            .expectError(NullPointerException.class)
-            .verify();
+        StepVerifier.create(store.updateCheckpoint(null)).expectError(NullPointerException.class).verify();
     }
 
     private static PartitionOwnership createPartitionOwnership(String partitionId) {
-        return new PartitionOwnership()
-            .setFullyQualifiedNamespace(FULLY_QUALIFIED_NAMESPACE)
+        return new PartitionOwnership().setFullyQualifiedNamespace(FULLY_QUALIFIED_NAMESPACE)
             .setEventHubName(EVENT_HUB_NAME)
             .setConsumerGroup(CONSUMER_GROUP)
             .setPartitionId(partitionId)
@@ -495,8 +469,7 @@ public class JedisCheckpointStoreTests {
     }
 
     private static Checkpoint createCheckpoint() {
-        return new Checkpoint()
-            .setFullyQualifiedNamespace(FULLY_QUALIFIED_NAMESPACE)
+        return new Checkpoint().setFullyQualifiedNamespace(FULLY_QUALIFIED_NAMESPACE)
             .setEventHubName(EVENT_HUB_NAME)
             .setConsumerGroup(CONSUMER_GROUP)
             .setPartitionId(PARTITION_ID)

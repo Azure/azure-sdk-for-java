@@ -42,21 +42,21 @@ public final class SkusClientImpl implements SkusClient {
     /**
      * The service client containing this operation class.
      */
-    private final DevOpsInfrastructureClientImpl client;
+    private final DevOpsInfrastructureManagementClientImpl client;
 
     /**
      * Initializes an instance of SkusClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    SkusClientImpl(DevOpsInfrastructureClientImpl client) {
+    SkusClientImpl(DevOpsInfrastructureManagementClientImpl client) {
         this.service = RestProxy.create(SkusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for DevOpsInfrastructureClientSkus to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for DevOpsInfrastructureManagementClientSkus to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "DevOpsInfrastructure")

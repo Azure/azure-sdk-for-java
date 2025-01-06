@@ -12,26 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class VlanMatchConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VlanMatchCondition model =
-            BinaryData
-                .fromString(
-                    "{\"vlans\":[\"lfmk\",\"scazuawxtzxpu\"],\"innerVlans\":[\"abzxrvxcushsp\",\"aivmxyasflvgs\",\"zwywako\",\"hknsmjbl\"],\"vlanGroupNames\":[\"hlnymzotq\",\"ryuzcbmqqv\",\"mv\",\"fgtayxonsup\"]}")
-                .toObject(VlanMatchCondition.class);
-        Assertions.assertEquals("lfmk", model.vlans().get(0));
-        Assertions.assertEquals("abzxrvxcushsp", model.innerVlans().get(0));
-        Assertions.assertEquals("hlnymzotq", model.vlanGroupNames().get(0));
+        VlanMatchCondition model = BinaryData.fromString(
+            "{\"vlans\":[\"tfpmvmemfnczdw\",\"vbalxlllc\",\"podbzevwrdnh\"],\"innerVlans\":[\"uvsj\",\"swsmys\",\"uluqypfc\"],\"vlanGroupNames\":[\"rchpqbmfpjbabwid\"]}")
+            .toObject(VlanMatchCondition.class);
+        Assertions.assertEquals("tfpmvmemfnczdw", model.vlans().get(0));
+        Assertions.assertEquals("uvsj", model.innerVlans().get(0));
+        Assertions.assertEquals("rchpqbmfpjbabwid", model.vlanGroupNames().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VlanMatchCondition model =
-            new VlanMatchCondition()
-                .withVlans(Arrays.asList("lfmk", "scazuawxtzxpu"))
-                .withInnerVlans(Arrays.asList("abzxrvxcushsp", "aivmxyasflvgs", "zwywako", "hknsmjbl"))
-                .withVlanGroupNames(Arrays.asList("hlnymzotq", "ryuzcbmqqv", "mv", "fgtayxonsup"));
+        VlanMatchCondition model
+            = new VlanMatchCondition().withVlans(Arrays.asList("tfpmvmemfnczdw", "vbalxlllc", "podbzevwrdnh"))
+                .withInnerVlans(Arrays.asList("uvsj", "swsmys", "uluqypfc"))
+                .withVlanGroupNames(Arrays.asList("rchpqbmfpjbabwid"));
         model = BinaryData.fromObject(model).toObject(VlanMatchCondition.class);
-        Assertions.assertEquals("lfmk", model.vlans().get(0));
-        Assertions.assertEquals("abzxrvxcushsp", model.innerVlans().get(0));
-        Assertions.assertEquals("hlnymzotq", model.vlanGroupNames().get(0));
+        Assertions.assertEquals("tfpmvmemfnczdw", model.vlans().get(0));
+        Assertions.assertEquals("uvsj", model.innerVlans().get(0));
+        Assertions.assertEquals("rchpqbmfpjbabwid", model.vlanGroupNames().get(0));
     }
 }

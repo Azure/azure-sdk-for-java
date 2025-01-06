@@ -29,10 +29,8 @@ public interface Topology extends Executable<Topology>, HasInnerModel<TopologyIn
     Map<String, TopologyResource> resources();
 
     /** The entirety of topology parameters definition. */
-    interface Definition
-        extends DefinitionStages.WithTargetResourceGroup,
-            DefinitionStages.WithExecute,
-            DefinitionStages.WithExecuteAndSubnet {
+    interface Definition extends DefinitionStages.WithTargetResourceGroup, DefinitionStages.WithExecute,
+        DefinitionStages.WithExecuteAndSubnet {
     }
 
     /** Grouping of topology definition stages. */

@@ -5,66 +5,67 @@
 package com.azure.resourcemanager.postgresql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.postgresql.models.MinimalTlsVersionEnum;
 import com.azure.resourcemanager.postgresql.models.PublicNetworkAccessEnum;
 import com.azure.resourcemanager.postgresql.models.ServerVersion;
 import com.azure.resourcemanager.postgresql.models.SslEnforcementEnum;
 import com.azure.resourcemanager.postgresql.models.StorageProfile;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties that can be updated for a server. */
+/**
+ * The properties that can be updated for a server.
+ */
 @Fluent
-public final class ServerUpdateParametersProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerUpdateParametersProperties.class);
-
+public final class ServerUpdateParametersProperties implements JsonSerializable<ServerUpdateParametersProperties> {
     /*
      * Storage profile of a server.
      */
-    @JsonProperty(value = "storageProfile")
     private StorageProfile storageProfile;
 
     /*
      * The password of the administrator login.
      */
-    @JsonProperty(value = "administratorLoginPassword")
     private String administratorLoginPassword;
 
     /*
      * The version of a server.
      */
-    @JsonProperty(value = "version")
     private ServerVersion version;
 
     /*
      * Enable ssl enforcement or not when connect to server.
      */
-    @JsonProperty(value = "sslEnforcement")
     private SslEnforcementEnum sslEnforcement;
 
     /*
      * Enforce a minimal Tls version for the server.
      */
-    @JsonProperty(value = "minimalTlsVersion")
     private MinimalTlsVersionEnum minimalTlsVersion;
 
     /*
-     * Whether or not public network access is allowed for this server. Value
-     * is optional but if passed in, must be 'Enabled' or 'Disabled'
+     * Whether or not public network access is allowed for this server. Value is optional but if passed in, must be
+     * 'Enabled' or 'Disabled'
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccessEnum publicNetworkAccess;
 
     /*
      * The replication role of the server.
      */
-    @JsonProperty(value = "replicationRole")
     private String replicationRole;
 
     /**
+     * Creates an instance of ServerUpdateParametersProperties class.
+     */
+    public ServerUpdateParametersProperties() {
+    }
+
+    /**
      * Get the storageProfile property: Storage profile of a server.
-     *
+     * 
      * @return the storageProfile value.
      */
     public StorageProfile storageProfile() {
@@ -73,7 +74,7 @@ public final class ServerUpdateParametersProperties {
 
     /**
      * Set the storageProfile property: Storage profile of a server.
-     *
+     * 
      * @param storageProfile the storageProfile value to set.
      * @return the ServerUpdateParametersProperties object itself.
      */
@@ -84,7 +85,7 @@ public final class ServerUpdateParametersProperties {
 
     /**
      * Get the administratorLoginPassword property: The password of the administrator login.
-     *
+     * 
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
@@ -93,7 +94,7 @@ public final class ServerUpdateParametersProperties {
 
     /**
      * Set the administratorLoginPassword property: The password of the administrator login.
-     *
+     * 
      * @param administratorLoginPassword the administratorLoginPassword value to set.
      * @return the ServerUpdateParametersProperties object itself.
      */
@@ -104,7 +105,7 @@ public final class ServerUpdateParametersProperties {
 
     /**
      * Get the version property: The version of a server.
-     *
+     * 
      * @return the version value.
      */
     public ServerVersion version() {
@@ -113,7 +114,7 @@ public final class ServerUpdateParametersProperties {
 
     /**
      * Set the version property: The version of a server.
-     *
+     * 
      * @param version the version value to set.
      * @return the ServerUpdateParametersProperties object itself.
      */
@@ -124,7 +125,7 @@ public final class ServerUpdateParametersProperties {
 
     /**
      * Get the sslEnforcement property: Enable ssl enforcement or not when connect to server.
-     *
+     * 
      * @return the sslEnforcement value.
      */
     public SslEnforcementEnum sslEnforcement() {
@@ -133,7 +134,7 @@ public final class ServerUpdateParametersProperties {
 
     /**
      * Set the sslEnforcement property: Enable ssl enforcement or not when connect to server.
-     *
+     * 
      * @param sslEnforcement the sslEnforcement value to set.
      * @return the ServerUpdateParametersProperties object itself.
      */
@@ -144,7 +145,7 @@ public final class ServerUpdateParametersProperties {
 
     /**
      * Get the minimalTlsVersion property: Enforce a minimal Tls version for the server.
-     *
+     * 
      * @return the minimalTlsVersion value.
      */
     public MinimalTlsVersionEnum minimalTlsVersion() {
@@ -153,7 +154,7 @@ public final class ServerUpdateParametersProperties {
 
     /**
      * Set the minimalTlsVersion property: Enforce a minimal Tls version for the server.
-     *
+     * 
      * @param minimalTlsVersion the minimalTlsVersion value to set.
      * @return the ServerUpdateParametersProperties object itself.
      */
@@ -165,7 +166,7 @@ public final class ServerUpdateParametersProperties {
     /**
      * Get the publicNetworkAccess property: Whether or not public network access is allowed for this server. Value is
      * optional but if passed in, must be 'Enabled' or 'Disabled'.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccessEnum publicNetworkAccess() {
@@ -175,7 +176,7 @@ public final class ServerUpdateParametersProperties {
     /**
      * Set the publicNetworkAccess property: Whether or not public network access is allowed for this server. Value is
      * optional but if passed in, must be 'Enabled' or 'Disabled'.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ServerUpdateParametersProperties object itself.
      */
@@ -186,7 +187,7 @@ public final class ServerUpdateParametersProperties {
 
     /**
      * Get the replicationRole property: The replication role of the server.
-     *
+     * 
      * @return the replicationRole value.
      */
     public String replicationRole() {
@@ -195,7 +196,7 @@ public final class ServerUpdateParametersProperties {
 
     /**
      * Set the replicationRole property: The replication role of the server.
-     *
+     * 
      * @param replicationRole the replicationRole value to set.
      * @return the ServerUpdateParametersProperties object itself.
      */
@@ -206,12 +207,73 @@ public final class ServerUpdateParametersProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (storageProfile() != null) {
             storageProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("storageProfile", this.storageProfile);
+        jsonWriter.writeStringField("administratorLoginPassword", this.administratorLoginPassword);
+        jsonWriter.writeStringField("version", this.version == null ? null : this.version.toString());
+        jsonWriter.writeStringField("sslEnforcement",
+            this.sslEnforcement == null ? null : this.sslEnforcement.toString());
+        jsonWriter.writeStringField("minimalTlsVersion",
+            this.minimalTlsVersion == null ? null : this.minimalTlsVersion.toString());
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeStringField("replicationRole", this.replicationRole);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerUpdateParametersProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerUpdateParametersProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServerUpdateParametersProperties.
+     */
+    public static ServerUpdateParametersProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerUpdateParametersProperties deserializedServerUpdateParametersProperties
+                = new ServerUpdateParametersProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageProfile".equals(fieldName)) {
+                    deserializedServerUpdateParametersProperties.storageProfile = StorageProfile.fromJson(reader);
+                } else if ("administratorLoginPassword".equals(fieldName)) {
+                    deserializedServerUpdateParametersProperties.administratorLoginPassword = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedServerUpdateParametersProperties.version = ServerVersion.fromString(reader.getString());
+                } else if ("sslEnforcement".equals(fieldName)) {
+                    deserializedServerUpdateParametersProperties.sslEnforcement
+                        = SslEnforcementEnum.fromString(reader.getString());
+                } else if ("minimalTlsVersion".equals(fieldName)) {
+                    deserializedServerUpdateParametersProperties.minimalTlsVersion
+                        = MinimalTlsVersionEnum.fromString(reader.getString());
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedServerUpdateParametersProperties.publicNetworkAccess
+                        = PublicNetworkAccessEnum.fromString(reader.getString());
+                } else if ("replicationRole".equals(fieldName)) {
+                    deserializedServerUpdateParametersProperties.replicationRole = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerUpdateParametersProperties;
+        });
     }
 }

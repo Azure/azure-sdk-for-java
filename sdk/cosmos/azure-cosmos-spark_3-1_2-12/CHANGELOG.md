@@ -1,17 +1,25 @@
 ## Release History
 
-### 4.35.0-beta.1 (Unreleased)
+### 4.36.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added the udfs `GetFeedRangesForContainer` and `GetOverlappingFeedRange` to ease mapping of cosmos partition key to databricks table partition key. - See [PR 43092](https://github.com/Azure/azure-sdk-for-java/pull/43092)
 
 #### Breaking Changes
 
 #### Bugs Fixed
 
 #### Other Changes
+* Added options to fine-tune settings for bulk operations. - [PR 43509](https://github.com/Azure/azure-sdk-for-java/pull/43509)
+
+### 4.35.0 (2024-11-27)
+
+#### Bugs Fixed
+* Fixed an issue when using `ChangeFeed` causing some cosmos partitions to not be fully processed in some cases. - See [PR 42553](https://github.com/Azure/azure-sdk-for-java/pull/42553)
 
 ### 4.34.0 (2024-10-10)
-
+> [!IMPORTANT]
+> We strongly recommend our customers to use version 4.34.0 and above.
 #### Bugs Fixed
 * Fixed an issue to avoid transient `IllegalArgumentException` due to duplicate json properties for the `uniqueKeyPolicy` property in `DocumentCollection`. - See [PR 41608](https://github.com/Azure/azure-sdk-for-java/pull/41608) and [PR 42244](https://github.com/Azure/azure-sdk-for-java/pull/42244)
 
@@ -26,7 +34,7 @@
 ### 4.33.0 (2024-06-22)
 
 #### Features Added
-* Added a service trait `CosmosClinetBuilderInterceptor` to allow intercepting and customizing the CosmosClient creation. - See [PR 40714](https://github.com/Azure/azure-sdk-for-java/pull/40714)
+* Added a service trait `CosmosClientBuilderInterceptor` to allow intercepting and customizing the CosmosClient creation. - See [PR 40714](https://github.com/Azure/azure-sdk-for-java/pull/40714)
 
 #### Bugs Fixed
 * Fixed a race condition resulting in not always re-enqueueing retries for bulk writes. - See [PR 40714](https://github.com/Azure/azure-sdk-for-java/pull/40714)
@@ -238,8 +246,6 @@
 * Reduced the logging noise level on CancellationExceptions from `RntbdReporter.reportIssue`. - See [PR 32175](https://github.com/Azure/azure-sdk-for-java/pull/32175)
 
 ### 4.14.1 (2022-10-07)
-> [!IMPORTANT]
-> We strongly recommend our customers to use version 4.14.1 and above.
 #### Bugs Fixed
 * Fixed incorrect RU metric reporting in micrometer metrics. - See [PR 31307](https://github.com/Azure/azure-sdk-for-java/pull/31307)
 

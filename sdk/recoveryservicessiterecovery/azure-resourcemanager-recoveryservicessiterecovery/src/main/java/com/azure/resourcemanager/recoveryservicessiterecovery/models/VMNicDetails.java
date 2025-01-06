@@ -5,126 +5,111 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Hyper V VM network details.
  */
 @Fluent
-public final class VMNicDetails {
+public final class VMNicDetails implements JsonSerializable<VMNicDetails> {
     /*
      * The nic Id.
      */
-    @JsonProperty(value = "nicId")
     private String nicId;
 
     /*
      * The replica nic Id.
      */
-    @JsonProperty(value = "replicaNicId")
     private String replicaNicId;
 
     /*
      * The source nic ARM Id.
      */
-    @JsonProperty(value = "sourceNicArmId")
     private String sourceNicArmId;
 
     /*
      * VM network name.
      */
-    @JsonProperty(value = "vMNetworkName")
     private String vMNetworkName;
 
     /*
      * Recovery VM network Id.
      */
-    @JsonProperty(value = "recoveryVMNetworkId")
     private String recoveryVMNetworkId;
 
     /*
      * The IP configurations of the NIC.
      */
-    @JsonProperty(value = "ipConfigs")
     private List<IpConfigDetails> ipConfigs;
 
     /*
      * Selection type for failover.
      */
-    @JsonProperty(value = "selectionType")
     private String selectionType;
 
     /*
      * The id of the NSG associated with the NIC.
      */
-    @JsonProperty(value = "recoveryNetworkSecurityGroupId")
     private String recoveryNetworkSecurityGroupId;
 
     /*
      * A value indicating whether the NIC has accelerated networking enabled.
      */
-    @JsonProperty(value = "enableAcceleratedNetworkingOnRecovery")
     private Boolean enableAcceleratedNetworkingOnRecovery;
 
     /*
      * The network to be used by NIC during test failover.
      */
-    @JsonProperty(value = "tfoVMNetworkId")
     private String tfoVMNetworkId;
 
     /*
      * The NSG to be used by NIC during test failover.
      */
-    @JsonProperty(value = "tfoNetworkSecurityGroupId")
     private String tfoNetworkSecurityGroupId;
 
     /*
      * Whether the TFO NIC has accelerated networking enabled.
      */
-    @JsonProperty(value = "enableAcceleratedNetworkingOnTfo")
     private Boolean enableAcceleratedNetworkingOnTfo;
 
     /*
      * The name of the NIC to be used when creating target NICs.
      */
-    @JsonProperty(value = "recoveryNicName")
     private String recoveryNicName;
 
     /*
      * The resource group of the NIC to be used when creating target NICs.
      */
-    @JsonProperty(value = "recoveryNicResourceGroupName")
     private String recoveryNicResourceGroupName;
 
     /*
      * A value indicating whether an existing NIC is allowed to be reused during failover subject to availability.
      */
-    @JsonProperty(value = "reuseExistingNic")
     private Boolean reuseExistingNic;
 
     /*
      * The name of the NIC to be used when creating target NICs in TFO.
      */
-    @JsonProperty(value = "tfoRecoveryNicName")
     private String tfoRecoveryNicName;
 
     /*
      * The resource group of the NIC to be used when creating target NICs in TFO.
      */
-    @JsonProperty(value = "tfoRecoveryNicResourceGroupName")
     private String tfoRecoveryNicResourceGroupName;
 
     /*
      * A value indicating whether an existing NIC is allowed to be reused during test failover subject to availability.
      */
-    @JsonProperty(value = "tfoReuseExistingNic")
     private Boolean tfoReuseExistingNic;
 
     /*
      * Target NIC name.
      */
-    @JsonProperty(value = "targetNicName")
     private String targetNicName;
 
     /**
@@ -532,5 +517,99 @@ public final class VMNicDetails {
         if (ipConfigs() != null) {
             ipConfigs().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nicId", this.nicId);
+        jsonWriter.writeStringField("replicaNicId", this.replicaNicId);
+        jsonWriter.writeStringField("sourceNicArmId", this.sourceNicArmId);
+        jsonWriter.writeStringField("vMNetworkName", this.vMNetworkName);
+        jsonWriter.writeStringField("recoveryVMNetworkId", this.recoveryVMNetworkId);
+        jsonWriter.writeArrayField("ipConfigs", this.ipConfigs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("selectionType", this.selectionType);
+        jsonWriter.writeStringField("recoveryNetworkSecurityGroupId", this.recoveryNetworkSecurityGroupId);
+        jsonWriter.writeBooleanField("enableAcceleratedNetworkingOnRecovery",
+            this.enableAcceleratedNetworkingOnRecovery);
+        jsonWriter.writeStringField("tfoVMNetworkId", this.tfoVMNetworkId);
+        jsonWriter.writeStringField("tfoNetworkSecurityGroupId", this.tfoNetworkSecurityGroupId);
+        jsonWriter.writeBooleanField("enableAcceleratedNetworkingOnTfo", this.enableAcceleratedNetworkingOnTfo);
+        jsonWriter.writeStringField("recoveryNicName", this.recoveryNicName);
+        jsonWriter.writeStringField("recoveryNicResourceGroupName", this.recoveryNicResourceGroupName);
+        jsonWriter.writeBooleanField("reuseExistingNic", this.reuseExistingNic);
+        jsonWriter.writeStringField("tfoRecoveryNicName", this.tfoRecoveryNicName);
+        jsonWriter.writeStringField("tfoRecoveryNicResourceGroupName", this.tfoRecoveryNicResourceGroupName);
+        jsonWriter.writeBooleanField("tfoReuseExistingNic", this.tfoReuseExistingNic);
+        jsonWriter.writeStringField("targetNicName", this.targetNicName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VMNicDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VMNicDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VMNicDetails.
+     */
+    public static VMNicDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VMNicDetails deserializedVMNicDetails = new VMNicDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nicId".equals(fieldName)) {
+                    deserializedVMNicDetails.nicId = reader.getString();
+                } else if ("replicaNicId".equals(fieldName)) {
+                    deserializedVMNicDetails.replicaNicId = reader.getString();
+                } else if ("sourceNicArmId".equals(fieldName)) {
+                    deserializedVMNicDetails.sourceNicArmId = reader.getString();
+                } else if ("vMNetworkName".equals(fieldName)) {
+                    deserializedVMNicDetails.vMNetworkName = reader.getString();
+                } else if ("recoveryVMNetworkId".equals(fieldName)) {
+                    deserializedVMNicDetails.recoveryVMNetworkId = reader.getString();
+                } else if ("ipConfigs".equals(fieldName)) {
+                    List<IpConfigDetails> ipConfigs = reader.readArray(reader1 -> IpConfigDetails.fromJson(reader1));
+                    deserializedVMNicDetails.ipConfigs = ipConfigs;
+                } else if ("selectionType".equals(fieldName)) {
+                    deserializedVMNicDetails.selectionType = reader.getString();
+                } else if ("recoveryNetworkSecurityGroupId".equals(fieldName)) {
+                    deserializedVMNicDetails.recoveryNetworkSecurityGroupId = reader.getString();
+                } else if ("enableAcceleratedNetworkingOnRecovery".equals(fieldName)) {
+                    deserializedVMNicDetails.enableAcceleratedNetworkingOnRecovery
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("tfoVMNetworkId".equals(fieldName)) {
+                    deserializedVMNicDetails.tfoVMNetworkId = reader.getString();
+                } else if ("tfoNetworkSecurityGroupId".equals(fieldName)) {
+                    deserializedVMNicDetails.tfoNetworkSecurityGroupId = reader.getString();
+                } else if ("enableAcceleratedNetworkingOnTfo".equals(fieldName)) {
+                    deserializedVMNicDetails.enableAcceleratedNetworkingOnTfo
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("recoveryNicName".equals(fieldName)) {
+                    deserializedVMNicDetails.recoveryNicName = reader.getString();
+                } else if ("recoveryNicResourceGroupName".equals(fieldName)) {
+                    deserializedVMNicDetails.recoveryNicResourceGroupName = reader.getString();
+                } else if ("reuseExistingNic".equals(fieldName)) {
+                    deserializedVMNicDetails.reuseExistingNic = reader.getNullable(JsonReader::getBoolean);
+                } else if ("tfoRecoveryNicName".equals(fieldName)) {
+                    deserializedVMNicDetails.tfoRecoveryNicName = reader.getString();
+                } else if ("tfoRecoveryNicResourceGroupName".equals(fieldName)) {
+                    deserializedVMNicDetails.tfoRecoveryNicResourceGroupName = reader.getString();
+                } else if ("tfoReuseExistingNic".equals(fieldName)) {
+                    deserializedVMNicDetails.tfoReuseExistingNic = reader.getNullable(JsonReader::getBoolean);
+                } else if ("targetNicName".equals(fieldName)) {
+                    deserializedVMNicDetails.targetNicName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVMNicDetails;
+        });
     }
 }

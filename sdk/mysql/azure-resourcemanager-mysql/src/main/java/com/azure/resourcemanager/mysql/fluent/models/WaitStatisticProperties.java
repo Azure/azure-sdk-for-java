@@ -13,7 +13,8 @@ import java.time.OffsetDateTime;
 /** The properties of a wait statistic. */
 @Fluent
 public final class WaitStatisticProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WaitStatisticProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(WaitStatisticProperties.class);
 
     /*
      * Observation start time.

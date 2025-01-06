@@ -83,10 +83,8 @@ public interface ApplicationGatewayAuthenticationCertificate
      * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this
      *     definition
      */
-    interface Definition<ReturnT>
-        extends DefinitionStages.Blank<ReturnT>,
-            DefinitionStages.WithAttach<ReturnT>,
-            DefinitionStages.WithData<ReturnT> {
+    interface Definition<ReturnT> extends DefinitionStages.Blank<ReturnT>, DefinitionStages.WithAttach<ReturnT>,
+        DefinitionStages.WithData<ReturnT> {
     }
 
     /** Grouping of application gateway authentication certificate update stages. */
@@ -168,9 +166,7 @@ public interface ApplicationGatewayAuthenticationCertificate
      * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this
      *     definition
      */
-    interface UpdateDefinition<ReturnT>
-        extends UpdateDefinitionStages.Blank<ReturnT>,
-            UpdateDefinitionStages.WithAttach<ReturnT>,
-            UpdateDefinitionStages.WithData<ReturnT> {
+    interface UpdateDefinition<ReturnT> extends UpdateDefinitionStages.Blank<ReturnT>,
+        UpdateDefinitionStages.WithAttach<ReturnT>, UpdateDefinitionStages.WithData<ReturnT> {
     }
 }

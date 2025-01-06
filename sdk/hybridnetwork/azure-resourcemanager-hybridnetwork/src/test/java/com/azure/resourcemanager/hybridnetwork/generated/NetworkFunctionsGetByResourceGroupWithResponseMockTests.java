@@ -6,52 +6,35 @@ package com.azure.resourcemanager.hybridnetwork.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridnetwork.HybridNetworkManager;
 import com.azure.resourcemanager.hybridnetwork.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.hybridnetwork.models.NetworkFunction;
 import com.azure.resourcemanager.hybridnetwork.models.NfviType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class NetworkFunctionsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"configurationType\":\"NetworkFunctionPropertiesFormat\",\"provisioningState\":\"Deleting\",\"publisherName\":\"ov\",\"publisherScope\":\"Unknown\",\"networkFunctionDefinitionGroupName\":\"kqmhhaowjr\",\"networkFunctionDefinitionVersion\":\"vuporqzdfuydzv\",\"networkFunctionDefinitionOfferingLocation\":\"vxcnqmxqps\",\"networkFunctionDefinitionVersionResourceReference\":{\"idType\":\"DeploymentResourceIdReference\"},\"nfviType\":\"AzureArcKubernetes\",\"nfviId\":\"khlg\",\"allowSoftwareUpdate\":false,\"roleOverrideValues\":[\"mzqkz\"]},\"etag\":\"uwiwtglxxhljfpg\",\"identity\":{\"principalId\":\"0804eeb7-f5b3-417e-9ffe-3714a50de7a4\",\"tenantId\":\"a2129acd-8c4e-4da6-a010-adec7fe6dabd\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"gmqgjs\":{\"principalId\":\"b80311d5-c0d8-4bd0-ac7e-5c0b7eed8bbc\",\"clientId\":\"6bb9c4a7-04b6-4590-95e8-50bcf56f999c\"},\"qcbfrmbodths\":{\"principalId\":\"a8107902-2c71-4df4-ace7-ab3466e3696b\",\"clientId\":\"56bc677f-df0c-4c57-8363-c460dc3ad4d1\"},\"vriibakclacjfr\":{\"principalId\":\"b41a4983-c969-4077-8769-f3054a1f0731\",\"clientId\":\"d4c63ae9-a116-43ab-afc3-f85617ee7adc\"},\"usx\":{\"principalId\":\"8d58b51a-a2f2-414d-b260-7bc8e809321d\",\"clientId\":\"3dfc22a4-b2bd-4e95-be72-150d77938939\"}}},\"location\":\"zlwvsgmwohqfz\",\"tags\":{\"tekovmri\":\"uxmmkjsvthnwp\"},\"id\":\"iattgplu\",\"name\":\"fotang\",\"type\":\"fhnykzcugs\"}";
+            = "{\"properties\":{\"configurationType\":\"NetworkFunctionPropertiesFormat\",\"provisioningState\":\"Deleting\",\"publisherName\":\"ov\",\"publisherScope\":\"Unknown\",\"networkFunctionDefinitionGroupName\":\"kqmhhaowjr\",\"networkFunctionDefinitionVersion\":\"vuporqzdfuydzv\",\"networkFunctionDefinitionOfferingLocation\":\"vxcnqmxqps\",\"networkFunctionDefinitionVersionResourceReference\":{\"idType\":\"DeploymentResourceIdReference\"},\"nfviType\":\"AzureArcKubernetes\",\"nfviId\":\"khlg\",\"allowSoftwareUpdate\":false,\"roleOverrideValues\":[\"mzqkz\"]},\"etag\":\"uwiwtglxxhljfpg\",\"identity\":{\"principalId\":\"12114fd7-1539-4afa-a8be-275949b928a1\",\"tenantId\":\"36d041aa-5ab9-46b4-a654-b2d12161939a\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"gmqgjs\":{\"principalId\":\"62295b9b-dda4-4933-baaf-935946c69180\",\"clientId\":\"e1626f47-1a32-4195-b83e-4ff2feec62c0\"},\"qcbfrmbodths\":{\"principalId\":\"6191a679-355c-4396-a0e2-03ca967aa724\",\"clientId\":\"56191fe6-1b22-4fee-850c-3501243153e8\"},\"vriibakclacjfr\":{\"principalId\":\"0afe2cef-2680-4c98-93aa-ebb23e3ee1e4\",\"clientId\":\"751db222-2b32-4ce9-b93f-cf5003d0f074\"},\"usx\":{\"principalId\":\"1808fc2b-5954-4d05-817f-8c4b57fb6239\",\"clientId\":\"652c0da3-ba2f-4e17-a24b-898e32b494e0\"}}},\"location\":\"zlwvsgmwohqfz\",\"tags\":{\"tekovmri\":\"uxmmkjsvthnwp\"},\"id\":\"iattgplu\",\"name\":\"fotang\",\"type\":\"fhnykzcugs\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        HybridNetworkManager manager = HybridNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        HybridNetworkManager manager = HybridNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         NetworkFunction response = manager.networkFunctions()
-            .getByResourceGroupWithResponse("j", "nidibgqjxg", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("j", "nidibgqjxg", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("zlwvsgmwohqfz", response.location());
         Assertions.assertEquals("uxmmkjsvthnwp", response.tags().get("tekovmri"));

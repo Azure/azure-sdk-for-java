@@ -79,8 +79,7 @@ class ProxySendTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        builder = createBuilder()
-            .verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
+        builder = createBuilder().verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
             .eventHubName(TestUtils.getEventHubName())
             .fullyQualifiedNamespace(TestUtils.getFullyQualifiedDomainName());
@@ -101,21 +100,17 @@ class ProxySendTest extends IntegrationTestBase {
         assertNotNull(information, "Should receive partition information.");
 
         final EventPosition position = EventPosition.fromSequenceNumber(information.getLastEnqueuedSequenceNumber());
-        final EventHubConsumerAsyncClient consumer = toClose(createBuilder()
-            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumerClient());
+        final EventHubConsumerAsyncClient consumer
+            = toClose(createBuilder().consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+                .buildAsyncConsumerClient());
 
         // Act
-        StepVerifier.create(producer.send(events, options))
-            .expectComplete()
-            .verify(TIMEOUT);
+        StepVerifier.create(producer.send(events, options)).expectComplete().verify(TIMEOUT);
 
         // Assert
         logger.info("Waiting to receive events.");
         StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, position)
-            .filter(x -> TestUtils.isMatchingEvent(x, messageId)).take(NUMBER_OF_EVENTS))
-            .expectNextCount(NUMBER_OF_EVENTS)
-            .expectComplete()
-            .verify(TIMEOUT);
+            .filter(x -> TestUtils.isMatchingEvent(x, messageId))
+            .take(NUMBER_OF_EVENTS)).expectNextCount(NUMBER_OF_EVENTS).expectComplete().verify(TIMEOUT);
     }
 }

@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceUnitResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceUnitResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"targetResourceGroup\":\"kc\",\"deploymentMode\":\"Complete\",\"artifacts\":{\"templateUri\":\"rcryuanzwuxzdxta\",\"parametersUri\":\"lhmwhfpmrqobm\",\"templateArtifactSourceRelativePath\":\"kknryrtihf\",\"parametersArtifactSourceRelativePath\":\"ijbpzvgnwzsymgl\"}},\"location\":\"uf\",\"tags\":{\"ufhfcbjysa\":\"kohdbiha\"},\"id\":\"ithxqhabifpi\",\"name\":\"xwczbyscnp\",\"type\":\"x\"}")
-                .toObject(ServiceUnitResourceInner.class);
+        ServiceUnitResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"targetResourceGroup\":\"kc\",\"deploymentMode\":\"Complete\",\"artifacts\":{\"templateUri\":\"rcryuanzwuxzdxta\",\"parametersUri\":\"lhmwhfpmrqobm\",\"templateArtifactSourceRelativePath\":\"kknryrtihf\",\"parametersArtifactSourceRelativePath\":\"ijbpzvgnwzsymgl\"}},\"location\":\"uf\",\"tags\":{\"ufhfcbjysa\":\"kohdbiha\"},\"id\":\"ithxqhabifpi\",\"name\":\"xwczbyscnp\",\"type\":\"x\"}")
+            .toObject(ServiceUnitResourceInner.class);
         Assertions.assertEquals("uf", model.location());
         Assertions.assertEquals("kohdbiha", model.tags().get("ufhfcbjysa"));
         Assertions.assertEquals("kc", model.targetResourceGroup());
@@ -32,18 +30,14 @@ public final class ServiceUnitResourceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceUnitResourceInner model =
-            new ServiceUnitResourceInner()
-                .withLocation("uf")
-                .withTags(mapOf("ufhfcbjysa", "kohdbiha"))
-                .withTargetResourceGroup("kc")
-                .withDeploymentMode(DeploymentMode.COMPLETE)
-                .withArtifacts(
-                    new ServiceUnitArtifacts()
-                        .withTemplateUri("rcryuanzwuxzdxta")
-                        .withParametersUri("lhmwhfpmrqobm")
-                        .withTemplateArtifactSourceRelativePath("kknryrtihf")
-                        .withParametersArtifactSourceRelativePath("ijbpzvgnwzsymgl"));
+        ServiceUnitResourceInner model = new ServiceUnitResourceInner().withLocation("uf")
+            .withTags(mapOf("ufhfcbjysa", "kohdbiha"))
+            .withTargetResourceGroup("kc")
+            .withDeploymentMode(DeploymentMode.COMPLETE)
+            .withArtifacts(new ServiceUnitArtifacts().withTemplateUri("rcryuanzwuxzdxta")
+                .withParametersUri("lhmwhfpmrqobm")
+                .withTemplateArtifactSourceRelativePath("kknryrtihf")
+                .withParametersArtifactSourceRelativePath("ijbpzvgnwzsymgl"));
         model = BinaryData.fromObject(model).toObject(ServiceUnitResourceInner.class);
         Assertions.assertEquals("uf", model.location());
         Assertions.assertEquals("kohdbiha", model.tags().get("ufhfcbjysa"));

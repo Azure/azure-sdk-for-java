@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -39,7 +38,6 @@ public final class JsonOutputSerializationFormat extends ExpandableStringEnum<Js
      * @param name a name to look for.
      * @return the corresponding JsonOutputSerializationFormat.
      */
-    @JsonCreator
     public static JsonOutputSerializationFormat fromString(String name) {
         return fromString(name, JsonOutputSerializationFormat.class);
     }

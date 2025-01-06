@@ -4,6 +4,7 @@
 package io.clientcore.core.util.binarydata;
 
 import io.clientcore.core.implementation.util.SliceInputStream;
+import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 
@@ -69,8 +70,8 @@ public class FileBinaryData extends BinaryData {
         Objects.requireNonNull(file, "'file' cannot be null.");
 
         if (!file.toFile().exists()) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(
-                new FileNotFoundException("File does not exist " + file)));
+            throw LOGGER.logThrowableAsError(
+                new UncheckedIOException(new FileNotFoundException("File does not exist " + file)));
         }
 
         return file;
@@ -78,8 +79,8 @@ public class FileBinaryData extends BinaryData {
 
     private static int validateChunkSize(int chunkSize) {
         if (chunkSize <= 0) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException(
-                "'chunkSize' cannot be less than or equal to 0."));
+            throw LOGGER
+                .logThrowableAsError(new IllegalArgumentException("'chunkSize' cannot be less than or equal to 0."));
         }
 
         return chunkSize;
@@ -169,6 +170,13 @@ public class FileBinaryData extends BinaryData {
         try (FileChannel fileChannel = FileChannel.open(file)) {
             fileChannel.transferTo(position, length, channel);
         }
+    }
+
+    @Override
+    public void writeTo(JsonWriter jsonWriter) throws IOException {
+        Objects.requireNonNull(jsonWriter, "'jsonWriter' cannot be null");
+
+        jsonWriter.writeBinary(toBytes());
     }
 
     ByteBuffer toByteBufferInternal() {

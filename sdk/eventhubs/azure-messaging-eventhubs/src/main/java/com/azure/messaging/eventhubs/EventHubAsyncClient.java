@@ -37,10 +37,10 @@ class EventHubAsyncClient implements Closeable {
     private final Meter meter;
 
     EventHubAsyncClient(ConnectionCacheWrapper connectionProcessor, MessageSerializer messageSerializer,
-        Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose, String identifier, Meter meter, Tracer tracer) {
+        Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose, String identifier, Meter meter,
+        Tracer tracer) {
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
-        this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
-            "'connectionProcessor' cannot be null.");
+        this.connectionProcessor = Objects.requireNonNull(connectionProcessor, "'connectionProcessor' cannot be null.");
         this.scheduler = Objects.requireNonNull(scheduler, "'scheduler' cannot be null");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
 
@@ -106,7 +106,8 @@ class EventHubAsyncClient implements Closeable {
      * @return A new {@link EventHubProducerAsyncClient}.
      */
     EventHubProducerAsyncClient createProducer() {
-        EventHubsProducerInstrumentation instrumentation = new EventHubsProducerInstrumentation(tracer, meter, connectionProcessor.getFullyQualifiedNamespace(), connectionProcessor.getEventHubName());
+        EventHubsProducerInstrumentation instrumentation = new EventHubsProducerInstrumentation(tracer, meter,
+            connectionProcessor.getFullyQualifiedNamespace(), connectionProcessor.getEventHubName());
         return new EventHubProducerAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), getEventHubName(),
             connectionProcessor, connectionProcessor.getRetryOptions(), messageSerializer, scheduler,
             isSharedConnection, onClientClose, identifier, instrumentation);
@@ -128,16 +129,17 @@ class EventHubAsyncClient implements Closeable {
         Objects.requireNonNull(consumerGroup, "'consumerGroup' cannot be null.");
 
         if (consumerGroup.isEmpty()) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("'consumerGroup' cannot be an empty string."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("'consumerGroup' cannot be an empty string."));
         }
 
-        EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, meter,
-            connectionProcessor.getFullyQualifiedNamespace(), connectionProcessor.getEventHubName(), consumerGroup, isSync);
+        EventHubsConsumerInstrumentation instrumentation
+            = new EventHubsConsumerInstrumentation(tracer, meter, connectionProcessor.getFullyQualifiedNamespace(),
+                connectionProcessor.getEventHubName(), consumerGroup, isSync);
 
         return new EventHubConsumerAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), getEventHubName(),
-            connectionProcessor, messageSerializer, consumerGroup, prefetchCount, isSharedConnection,
-            onClientClose, identifier, instrumentation);
+            connectionProcessor, messageSerializer, consumerGroup, prefetchCount, isSharedConnection, onClientClose,
+            identifier, instrumentation);
     }
 
     /**

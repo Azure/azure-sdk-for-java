@@ -20,7 +20,7 @@ public class FeaturesTests extends ResourceManagementTest {
         features.stream()
             .filter(f -> "NotRegistered".equals(f.state()))
             .findFirst()
-            .ifPresent(feature -> resourceClient.features()
-                .register(feature.resourceProviderName(), feature.featureName()));
+            .ifPresent(
+                feature -> resourceClient.features().register(feature.resourceProviderName(), feature.featureName()));
     }
 }

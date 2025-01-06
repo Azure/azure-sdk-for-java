@@ -5,32 +5,47 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * A video analyzer preset that extracts insights (rich metadata) from both audio and video, and outputs a JSON format
  * file.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Media.VideoAnalyzerPreset")
 @Fluent
 public final class VideoAnalyzerPreset extends AudioAnalyzerPreset {
+    /*
+     * The discriminator for derived types.
+     */
+    private String odataType = "#Microsoft.Media.VideoAnalyzerPreset";
+
     /*
      * Defines the type of insights that you want the service to generate. The allowed values are 'AudioInsightsOnly',
      * 'VideoInsightsOnly', and 'AllInsights'. The default is AllInsights. If you set this to AllInsights and the input
      * is audio only, then only audio insights are generated. Similarly if the input is video only, then only video
-     * insights are generated. It is recommended that you not use AudioInsightsOnly if you expect some of your inputs
-     * to be video only; or use VideoInsightsOnly if you expect some of your inputs to be audio only. Your Jobs in such
+     * insights are generated. It is recommended that you not use AudioInsightsOnly if you expect some of your inputs to
+     * be video only; or use VideoInsightsOnly if you expect some of your inputs to be audio only. Your Jobs in such
      * conditions would error out.
      */
-    @JsonProperty(value = "insightsToExtract")
     private InsightsType insightsToExtract;
 
-    /** Creates an instance of VideoAnalyzerPreset class. */
+    /**
+     * Creates an instance of VideoAnalyzerPreset class.
+     */
     public VideoAnalyzerPreset() {
+    }
+
+    /**
+     * Get the odataType property: The discriminator for derived types.
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public String odataType() {
+        return this.odataType;
     }
 
     /**
@@ -40,7 +55,7 @@ public final class VideoAnalyzerPreset extends AudioAnalyzerPreset {
      * input is video only, then only video insights are generated. It is recommended that you not use AudioInsightsOnly
      * if you expect some of your inputs to be video only; or use VideoInsightsOnly if you expect some of your inputs to
      * be audio only. Your Jobs in such conditions would error out.
-     *
+     * 
      * @return the insightsToExtract value.
      */
     public InsightsType insightsToExtract() {
@@ -54,7 +69,7 @@ public final class VideoAnalyzerPreset extends AudioAnalyzerPreset {
      * input is video only, then only video insights are generated. It is recommended that you not use AudioInsightsOnly
      * if you expect some of your inputs to be video only; or use VideoInsightsOnly if you expect some of your inputs to
      * be audio only. Your Jobs in such conditions would error out.
-     *
+     * 
      * @param insightsToExtract the insightsToExtract value to set.
      * @return the VideoAnalyzerPreset object itself.
      */
@@ -63,21 +78,27 @@ public final class VideoAnalyzerPreset extends AudioAnalyzerPreset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VideoAnalyzerPreset withAudioLanguage(String audioLanguage) {
         super.withAudioLanguage(audioLanguage);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VideoAnalyzerPreset withMode(AudioAnalysisMode mode) {
         super.withMode(mode);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VideoAnalyzerPreset withExperimentalOptions(Map<String, String> experimentalOptions) {
         super.withExperimentalOptions(experimentalOptions);
@@ -86,11 +107,61 @@ public final class VideoAnalyzerPreset extends AudioAnalyzerPreset {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("audioLanguage", audioLanguage());
+        jsonWriter.writeStringField("mode", mode() == null ? null : mode().toString());
+        jsonWriter.writeMapField("experimentalOptions", experimentalOptions(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        jsonWriter.writeStringField("insightsToExtract",
+            this.insightsToExtract == null ? null : this.insightsToExtract.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VideoAnalyzerPreset from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VideoAnalyzerPreset if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VideoAnalyzerPreset.
+     */
+    public static VideoAnalyzerPreset fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VideoAnalyzerPreset deserializedVideoAnalyzerPreset = new VideoAnalyzerPreset();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("audioLanguage".equals(fieldName)) {
+                    deserializedVideoAnalyzerPreset.withAudioLanguage(reader.getString());
+                } else if ("mode".equals(fieldName)) {
+                    deserializedVideoAnalyzerPreset.withMode(AudioAnalysisMode.fromString(reader.getString()));
+                } else if ("experimentalOptions".equals(fieldName)) {
+                    Map<String, String> experimentalOptions = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVideoAnalyzerPreset.withExperimentalOptions(experimentalOptions);
+                } else if ("@odata.type".equals(fieldName)) {
+                    deserializedVideoAnalyzerPreset.odataType = reader.getString();
+                } else if ("insightsToExtract".equals(fieldName)) {
+                    deserializedVideoAnalyzerPreset.insightsToExtract = InsightsType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVideoAnalyzerPreset;
+        });
     }
 }

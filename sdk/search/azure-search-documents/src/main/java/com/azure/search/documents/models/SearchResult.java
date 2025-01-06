@@ -38,6 +38,11 @@ public final class SearchResult {
     private Map<String, List<String>> highlights;
 
     /*
+     * Contains debugging information that can be used to further explore your search results.
+     */
+    private DocumentDebugInfo documentDebugInfo;
+
+    /*
      * Contains a document found by a search query, plus associated metadata.
      */
     private Map<String, Object> additionalProperties;
@@ -68,6 +73,11 @@ public final class SearchResult {
             public void setSemanticSearchResults(SearchResult searchResult, Double rerankerScore,
                 List<QueryCaptionResult> captions) {
                 searchResult.setSemanticSearchResult(rerankerScore, captions);
+            }
+
+            @Override
+            public void setDocumentDebugInfo(SearchResult searchResult, DocumentDebugInfo documentDebugInfo) {
+                searchResult.setDocumentDebugInfo(documentDebugInfo);
             }
         });
     }
@@ -112,6 +122,14 @@ public final class SearchResult {
     }
 
     /**
+     * Get the documentDebugInfo property: Contains debugging information that can be used to further explore your search results.
+     * @return the documentDebugInfo value.
+     */
+    public DocumentDebugInfo getDocumentDebugInfo() {
+        return this.documentDebugInfo;
+    }
+
+    /**
      * Get the additionalProperties property: Unmatched properties from the message are deserialized this collection.
      *
      * @param modelClass The model class converts to.
@@ -149,6 +167,15 @@ public final class SearchResult {
      */
     private void setJsonSerializer(JsonSerializer jsonSerializer) {
         this.jsonSerializer = jsonSerializer;
+    }
+
+    /**
+     * The private setter to set the documentDebugInfo property via {@code SearchResultHelper.SearchResultAccessor}.
+     *
+     * @param documentDebugInfo The document debug info.
+     */
+    private void setDocumentDebugInfo(DocumentDebugInfo documentDebugInfo) {
+        this.documentDebugInfo = documentDebugInfo;
     }
 
     /**

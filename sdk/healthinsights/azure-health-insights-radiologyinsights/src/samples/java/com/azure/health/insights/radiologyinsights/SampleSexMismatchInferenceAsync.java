@@ -3,26 +3,16 @@
 
 package com.azure.health.insights.radiologyinsights;
 
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.function.Predicate;
-
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentType;
-import com.azure.health.insights.radiologyinsights.models.DocumentAdministrativeMetadata;
 import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentAuthor;
 import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentContent;
-import com.azure.health.insights.radiologyinsights.models.DocumentContentSourceType;
 import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentContentType;
+import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentType;
+import com.azure.health.insights.radiologyinsights.models.DocumentAdministrativeMetadata;
+import com.azure.health.insights.radiologyinsights.models.DocumentContentSourceType;
 import com.azure.health.insights.radiologyinsights.models.EncounterClass;
 import com.azure.health.insights.radiologyinsights.models.FhirR4CodeableConcept;
 import com.azure.health.insights.radiologyinsights.models.FhirR4Coding;
@@ -47,15 +37,24 @@ import com.azure.health.insights.radiologyinsights.models.SpecialtyType;
 import com.azure.health.insights.radiologyinsights.models.TimePeriod;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.function.Predicate;
+
 /**
- * The SampleCriticalResultInferenceAsync class processes a sample radiology document 
- * with the Radiology Insights service. It will initialize an asynchronous 
- * RadiologyInsightsAsyncClient, build a Radiology Insights request with the sample document, poll the 
- * results and display the Critical Results extracted by the Radiology Insights service.  
- * 
+ * The SampleCriticalResultInferenceAsync class processes a sample radiology document
+ * with the Radiology Insights service. It will initialize an asynchronous
+ * RadiologyInsightsAsyncClient, build a Radiology Insights request with the sample document, poll the
+ * results and display the Critical Results extracted by the Radiology Insights service.
+ *
  */
 public class SampleSexMismatchInferenceAsync {
 
@@ -89,7 +88,7 @@ public class SampleSexMismatchInferenceAsync {
      */
     public static void main(final String[] args) throws InterruptedException {
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
-        
+
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder()
                 .endpoint(endpoint)
@@ -98,9 +97,9 @@ public class SampleSexMismatchInferenceAsync {
 
         PollerFlux<RadiologyInsightsJob, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
                 .beginInferRadiologyInsights("job" + new Date().getTime(), createRadiologyInsightsJob());
-        
+
         CountDownLatch latch = new CountDownLatch(1);
-        
+
         asyncPoller
             .takeUntil(isComplete)
             .doFinally(signal -> {
@@ -121,7 +120,7 @@ public class SampleSexMismatchInferenceAsync {
     }
 
     private static Mono<RadiologyInsightsInferenceResult> mono = null;
-    
+
     /**
      * Display the sex mismatches of the Radiology Insights request.
      *
@@ -181,7 +180,7 @@ public class SampleSexMismatchInferenceAsync {
         // Parse the string to LocalDateTime
         LocalDateTime dateTime = LocalDateTime.parse("1959-11-11T19:00:00+00:00", formatter);
         patientDetails.setBirthDate(dateTime.toLocalDate());
-        
+
         patientRecord.setDetails(patientDetails);
 
         PatientEncounter encounter = new PatientEncounter("encounterid1");
@@ -246,7 +245,7 @@ public class SampleSexMismatchInferenceAsync {
      * @return The patient document.
      */
     private static PatientDocument getPatientDocument() {
-    	ClinicalDocumentContent documentContent = new ClinicalDocumentContent(DocumentContentSourceType.INLINE, DOC_CONTENT);
+        ClinicalDocumentContent documentContent = new ClinicalDocumentContent(DocumentContentSourceType.INLINE, DOC_CONTENT);
         return new PatientDocument(ClinicalDocumentContentType.NOTE, "docid1", documentContent);
     }
 

@@ -24,17 +24,10 @@ import java.util.List;
  * Entry point for CDN profile management API.
  */
 @Fluent
-public interface CdnProfiles extends
-    SupportsCreating<CdnProfile.DefinitionStages.Blank>,
-    SupportsListing<CdnProfile>,
-    SupportsListingByResourceGroup<CdnProfile>,
-    SupportsGettingByResourceGroup<CdnProfile>,
-    SupportsGettingById<CdnProfile>,
-    SupportsDeletingById,
-    SupportsDeletingByResourceGroup,
-    SupportsBatchCreation<CdnProfile>,
-    SupportsBatchDeletion,
-    HasManager<CdnManager> {
+public interface CdnProfiles extends SupportsCreating<CdnProfile.DefinitionStages.Blank>, SupportsListing<CdnProfile>,
+    SupportsListingByResourceGroup<CdnProfile>, SupportsGettingByResourceGroup<CdnProfile>,
+    SupportsGettingById<CdnProfile>, SupportsDeletingById, SupportsDeletingByResourceGroup,
+    SupportsBatchCreation<CdnProfile>, SupportsBatchDeletion, HasManager<CdnManager> {
 
     /**
      * Generates a dynamic SSO URI used to sign in to the CDN supplemental portal.
@@ -112,8 +105,8 @@ public interface CdnProfiles extends
      * @param endpointName name of the endpoint under the profile which is unique globally.
      * @param contentPaths the path to the content to be purged. Can describe a file path or a wild card directory.
      */
-    void purgeEndpointContent(
-        String resourceGroupName, String profileName, String endpointName, List<String> contentPaths);
+    void purgeEndpointContent(String resourceGroupName, String profileName, String endpointName,
+        List<String> contentPaths);
 
     /**
      * Forcibly pre-loads CDN endpoint content. Available for Verizon profiles.
@@ -123,6 +116,6 @@ public interface CdnProfiles extends
      * @param endpointName name of the endpoint under the profile which is unique globally.
      * @param contentPaths the path to the content to be loaded. Should describe a file path.
      */
-    void loadEndpointContent(
-        String resourceGroupName, String profileName, String endpointName, List<String> contentPaths);
+    void loadEndpointContent(String resourceGroupName, String profileName, String endpointName,
+        List<String> contentPaths);
 }

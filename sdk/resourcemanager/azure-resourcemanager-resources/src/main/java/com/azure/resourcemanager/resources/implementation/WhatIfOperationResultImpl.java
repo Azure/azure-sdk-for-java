@@ -14,10 +14,8 @@ import java.util.List;
 /**
  * Implementation for {@link WhatIfOperationResult}.
  */
-public class WhatIfOperationResultImpl extends
-        WrapperImpl<WhatIfOperationResultInner>
-        implements
-        WhatIfOperationResult {
+public class WhatIfOperationResultImpl extends WrapperImpl<WhatIfOperationResultInner>
+    implements WhatIfOperationResult {
 
     WhatIfOperationResultImpl(WhatIfOperationResultInner inner) {
         super(inner);

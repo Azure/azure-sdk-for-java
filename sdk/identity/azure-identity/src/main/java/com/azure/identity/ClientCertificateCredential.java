@@ -116,11 +116,10 @@ public class ClientCertificateCredential implements TokenCredential {
      * @param identityClientOptions the options to configure the identity client
      */
     ClientCertificateCredential(String tenantId, String clientId, String certificatePath, byte[] certificate,
-                                String certificatePassword, IdentityClientOptions identityClientOptions) {
+        String certificatePassword, IdentityClientOptions identityClientOptions) {
         Objects.requireNonNull(certificatePath == null ? certificate : certificatePath,
-                "'certificate' and 'certificatePath' cannot both be null.");
-        IdentityClientBuilder builder = new IdentityClientBuilder()
-            .tenantId(tenantId)
+            "'certificate' and 'certificatePath' cannot both be null.");
+        IdentityClientBuilder builder = new IdentityClientBuilder().tenantId(tenantId)
             .clientId(clientId)
             .certificatePath(certificatePath)
             .certificate(certificate)
@@ -137,8 +136,8 @@ public class ClientCertificateCredential implements TokenCredential {
             .onErrorResume(t -> Mono.empty())
             .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithConfidentialClient(request)))
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
-            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
-                request, error));
+            .doOnError(
+                error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, error));
     }
 
     @Override
@@ -149,7 +148,8 @@ public class ClientCertificateCredential implements TokenCredential {
                 LoggingUtil.logTokenSuccess(LOGGER, request);
                 return token;
             }
-        } catch (Exception e) { }
+        } catch (Exception e) {
+        }
 
         try {
             AccessToken token = identitySyncClient.authenticateWithConfidentialClient(request);

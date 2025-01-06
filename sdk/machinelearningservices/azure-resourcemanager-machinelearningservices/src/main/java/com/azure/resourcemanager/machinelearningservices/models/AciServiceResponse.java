@@ -18,7 +18,8 @@ import java.util.Map;
 @JsonTypeName("ACI")
 @Fluent
 public final class AciServiceResponse extends ServiceResponseBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AciServiceResponse.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AciServiceResponse.class);
 
     /*
      * The container resource requirements.
@@ -143,8 +144,8 @@ public final class AciServiceResponse extends ServiceResponseBase {
      * @param containerResourceRequirements the containerResourceRequirements value to set.
      * @return the AciServiceResponse object itself.
      */
-    public AciServiceResponse withContainerResourceRequirements(
-        ContainerResourceRequirements containerResourceRequirements) {
+    public AciServiceResponse
+        withContainerResourceRequirements(ContainerResourceRequirements containerResourceRequirements) {
         this.containerResourceRequirements = containerResourceRequirements;
         return this;
     }
@@ -411,8 +412,8 @@ public final class AciServiceResponse extends ServiceResponseBase {
      * @param environmentImageRequest the environmentImageRequest value to set.
      * @return the AciServiceResponse object itself.
      */
-    public AciServiceResponse withEnvironmentImageRequest(
-        AciServiceResponseEnvironmentImageRequest environmentImageRequest) {
+    public AciServiceResponse
+        withEnvironmentImageRequest(AciServiceResponseEnvironmentImageRequest environmentImageRequest) {
         this.environmentImageRequest = environmentImageRequest;
         return this;
     }

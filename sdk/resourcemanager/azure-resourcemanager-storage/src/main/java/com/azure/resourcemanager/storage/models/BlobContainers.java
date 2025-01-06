@@ -97,8 +97,8 @@ public interface BlobContainers {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Mono<LegalHold> setLegalHoldAsync(
-        String resourceGroupName, String accountName, String containerName, List<String> tags);
+    Mono<LegalHold> setLegalHoldAsync(String resourceGroupName, String accountName, String containerName,
+        List<String> tags);
 
     /**
      * Clears legal hold tags. Clearing the same or non-existent tag results in an idempotent operation. ClearLegalHold
@@ -115,8 +115,8 @@ public interface BlobContainers {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Mono<LegalHold> clearLegalHoldAsync(
-        String resourceGroupName, String accountName, String containerName, List<String> tags);
+    Mono<LegalHold> clearLegalHoldAsync(String resourceGroupName, String accountName, String containerName,
+        List<String> tags);
 
     /**
      * Gets the existing immutability policy along with the corresponding ETag in response headers and body.
@@ -131,8 +131,8 @@ public interface BlobContainers {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Mono<ImmutabilityPolicy> getImmutabilityPolicyAsync(
-        String resourceGroupName, String accountName, String containerName);
+    Mono<ImmutabilityPolicy> getImmutabilityPolicyAsync(String resourceGroupName, String accountName,
+        String containerName);
 
     /**
      * Gets the existing immutability policy along with the corresponding ETag in response headers and body.
@@ -150,8 +150,8 @@ public interface BlobContainers {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Mono<ImmutabilityPolicy> getImmutabilityPolicyAsync(
-        String resourceGroupName, String accountName, String containerName, String eTagValue);
+    Mono<ImmutabilityPolicy> getImmutabilityPolicyAsync(String resourceGroupName, String accountName,
+        String containerName, String eTagValue);
 
     /**
      * Aborts an unlocked immutability policy. The response of delete has immutabilityPeriodSinceCreationInDays set to
@@ -168,8 +168,7 @@ public interface BlobContainers {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Mono<Void> deleteImmutabilityPolicyAsync(
-        String resourceGroupName, String accountName, String containerName);
+    Mono<Void> deleteImmutabilityPolicyAsync(String resourceGroupName, String accountName, String containerName);
 
     /**
      * Aborts an unlocked immutability policy. The response of delete has immutabilityPeriodSinceCreationInDays set to
@@ -189,8 +188,8 @@ public interface BlobContainers {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Mono<Void> deleteImmutabilityPolicyAsync(
-        String resourceGroupName, String accountName, String containerName, String eTagValue);
+    Mono<Void> deleteImmutabilityPolicyAsync(String resourceGroupName, String accountName, String containerName,
+        String eTagValue);
 
     /**
      * Sets the ImmutabilityPolicy to Locked state. The only action allowed on a Locked policy is
@@ -206,8 +205,8 @@ public interface BlobContainers {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Mono<ImmutabilityPolicy> lockImmutabilityPolicyAsync(
-        String resourceGroupName, String accountName, String containerName);
+    Mono<ImmutabilityPolicy> lockImmutabilityPolicyAsync(String resourceGroupName, String accountName,
+        String containerName);
 
     /**
      * Sets the ImmutabilityPolicy to Locked state. The only action allowed on a Locked policy is
@@ -226,8 +225,8 @@ public interface BlobContainers {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Mono<ImmutabilityPolicy> lockImmutabilityPolicyAsync(
-        String resourceGroupName, String accountName, String containerName, String eTagValue);
+    Mono<ImmutabilityPolicy> lockImmutabilityPolicyAsync(String resourceGroupName, String accountName,
+        String containerName, String eTagValue);
 
     /**
      * Extends the immutabilityPeriodSinceCreationInDays of a locked immutabilityPolicy. The only action allowed on a
@@ -249,12 +248,8 @@ public interface BlobContainers {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Mono<ImmutabilityPolicy> extendImmutabilityPolicyAsync(
-        String resourceGroupName,
-        String accountName,
-        String containerName,
-        int immutabilityPeriodSinceCreationInDays,
-        Boolean allowProtectedAppendWrites);
+    Mono<ImmutabilityPolicy> extendImmutabilityPolicyAsync(String resourceGroupName, String accountName,
+        String containerName, int immutabilityPeriodSinceCreationInDays, Boolean allowProtectedAppendWrites);
 
     /**
      * Extends the immutabilityPeriodSinceCreationInDays of a locked immutabilityPolicy. The only action allowed on a
@@ -279,12 +274,8 @@ public interface BlobContainers {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Mono<ImmutabilityPolicy> extendImmutabilityPolicyAsync(
-        String resourceGroupName,
-        String accountName,
-        String containerName,
-        int immutabilityPeriodSinceCreationInDays,
-        Boolean allowProtectedAppendWrites,
+    Mono<ImmutabilityPolicy> extendImmutabilityPolicyAsync(String resourceGroupName, String accountName,
+        String containerName, int immutabilityPeriodSinceCreationInDays, Boolean allowProtectedAppendWrites,
         String eTagValue);
 
     /**
@@ -352,8 +343,7 @@ public interface BlobContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the LegalHold property of a blob container.
      */
-    LegalHold setLegalHold(
-        String resourceGroupName, String accountName, String containerName, List<String> tags);
+    LegalHold setLegalHold(String resourceGroupName, String accountName, String containerName, List<String> tags);
 
     /**
      * Clears legal hold tags. Clearing the same or non-existent tag results in an idempotent operation. ClearLegalHold
@@ -372,8 +362,7 @@ public interface BlobContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the LegalHold property of a blob container.
      */
-    LegalHold clearLegalHold(
-        String resourceGroupName, String accountName, String containerName, List<String> tags);
+    LegalHold clearLegalHold(String resourceGroupName, String accountName, String containerName, List<String> tags);
 
     /**
      * Gets the existing immutability policy along with the corresponding ETag in response headers and body.
@@ -433,8 +422,7 @@ public interface BlobContainers {
      * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
      */
     @Deprecated
-    ImmutabilityPolicy lockImmutabilityPolicy(
-        String resourceGroupName, String accountName, String containerName);
+    ImmutabilityPolicy lockImmutabilityPolicy(String resourceGroupName, String accountName, String containerName);
 
     /**
      * Extends the immutabilityPeriodSinceCreationInDays of a locked immutabilityPolicy. The only action allowed on a
@@ -462,8 +450,7 @@ public interface BlobContainers {
      * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
      */
     @Deprecated
-    ImmutabilityPolicy extendImmutabilityPolicy(
-        String resourceGroupName, String accountName, String containerName,
+    ImmutabilityPolicy extendImmutabilityPolicy(String resourceGroupName, String accountName, String containerName,
         int immutabilityPeriodSinceCreationInDays, Boolean allowProtectedAppendWrites);
 
     /**
@@ -485,8 +472,7 @@ public interface BlobContainers {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deleteImmutabilityPolicy(String resourceGroupName, String accountName, String containerName,
-                                  String eTagValue);
+    void deleteImmutabilityPolicy(String resourceGroupName, String accountName, String containerName, String eTagValue);
 
     /**
      * Sets the ImmutabilityPolicy to Locked state. The only action allowed on a Locked policy is
@@ -507,8 +493,8 @@ public interface BlobContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
      */
-    ImmutabilityPolicy lockImmutabilityPolicy(
-        String resourceGroupName, String accountName, String containerName, String eTagValue);
+    ImmutabilityPolicy lockImmutabilityPolicy(String resourceGroupName, String accountName, String containerName,
+        String eTagValue);
 
     /**
      * Extends the immutabilityPeriodSinceCreationInDays of a locked immutabilityPolicy. The only action allowed on a
@@ -535,8 +521,6 @@ public interface BlobContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
      */
-    ImmutabilityPolicy extendImmutabilityPolicy(
-        String resourceGroupName, String accountName, String containerName,
-        int immutabilityPeriodSinceCreationInDays, Boolean allowProtectedAppendWrites,
-        String eTagValue);
+    ImmutabilityPolicy extendImmutabilityPolicy(String resourceGroupName, String accountName, String containerName,
+        int immutabilityPeriodSinceCreationInDays, Boolean allowProtectedAppendWrites, String eTagValue);
 }

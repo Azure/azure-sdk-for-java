@@ -81,7 +81,6 @@ public class AuthorizationChallengeParser {
         return parameters;
     }
 
-
     // Method to extract the nonce parameter from the challenge response
     public static String extractNonce(String challenge) {
         // Split the challenge by commas to separate key-value pairs

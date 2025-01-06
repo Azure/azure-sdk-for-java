@@ -65,36 +65,25 @@ class GalleryImageVersionImpl
 
     @Override
     public Mono<GalleryImageVersion> createResourceAsync() {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getGalleryImageVersions()
-            .createOrUpdateAsync(
-                this.resourceGroupName,
-                this.galleryName,
-                this.galleryImageName,
-                this.galleryImageVersionName,
-                this.innerModel())
+            .createOrUpdateAsync(this.resourceGroupName, this.galleryName, this.galleryImageName,
+                this.galleryImageVersionName, this.innerModel())
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Mono<GalleryImageVersion> updateResourceAsync() {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getGalleryImageVersions()
-            .createOrUpdateAsync(
-                this.resourceGroupName,
-                this.galleryName,
-                this.galleryImageName,
-                this.galleryImageVersionName,
-                this.innerModel())
+            .createOrUpdateAsync(this.resourceGroupName, this.galleryName, this.galleryImageName,
+                this.galleryImageVersionName, this.innerModel())
             .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<GalleryImageVersionInner> getInnerAsync() {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getGalleryImageVersions()
             .getAsync(this.resourceGroupName, this.galleryName, this.galleryImageName, this.galleryImageVersionName);
     }
@@ -135,11 +124,8 @@ class GalleryImageVersionImpl
         if (this.innerModel().publishingProfile() != null
             && this.innerModel().publishingProfile().targetRegions() != null) {
             for (TargetRegion targetRegion : this.innerModel().publishingProfile().targetRegions()) {
-                regions
-                    .add(
-                        new TargetRegion()
-                            .withName(targetRegion.name())
-                            .withRegionalReplicaCount(targetRegion.regionalReplicaCount()));
+                regions.add(new TargetRegion().withName(targetRegion.name())
+                    .withRegionalReplicaCount(targetRegion.regionalReplicaCount()));
             }
         }
         return Collections.unmodifiableList(regions);
@@ -184,8 +170,8 @@ class GalleryImageVersionImpl
     }
 
     @Override
-    public GalleryImageVersionImpl withExistingImage(
-        String resourceGroupName, String galleryName, String galleryImageName) {
+    public GalleryImageVersionImpl withExistingImage(String resourceGroupName, String galleryName,
+        String galleryImageName) {
         this.resourceGroupName = resourceGroupName;
         this.galleryName = galleryName;
         this.galleryImageName = galleryImageName;
@@ -252,8 +238,8 @@ class GalleryImageVersionImpl
             }
         }
         if (!found) {
-            TargetRegion targetRegion =
-                new TargetRegion().withName(newRegionName).withRegionalReplicaCount(replicaCount);
+            TargetRegion targetRegion
+                = new TargetRegion().withName(newRegionName).withRegionalReplicaCount(replicaCount);
             this.innerModel().publishingProfile().targetRegions().add(targetRegion);
         }
         //
@@ -270,10 +256,8 @@ class GalleryImageVersionImpl
             }
         }
         if (!found) {
-            TargetRegion defaultTargetRegion =
-                new TargetRegion()
-                    .withName(this.location())
-                    .withRegionalReplicaCount(null); // null means default where service default to 1 replica
+            TargetRegion defaultTargetRegion
+                = new TargetRegion().withName(this.location()).withRegionalReplicaCount(null); // null means default where service default to 1 replica
             this.innerModel().publishingProfile().targetRegions().add(defaultTargetRegion);
         }
         //
@@ -300,10 +284,8 @@ class GalleryImageVersionImpl
             }
         }
         if (!found) {
-            TargetRegion defaultTargetRegion =
-                new TargetRegion()
-                    .withName(this.location())
-                    .withRegionalReplicaCount(null); // null means default where service default to 1 replica
+            TargetRegion defaultTargetRegion
+                = new TargetRegion().withName(this.location()).withRegionalReplicaCount(null); // null means default where service default to 1 replica
             this.innerModel().publishingProfile().targetRegions().add(defaultTargetRegion);
         }
         //

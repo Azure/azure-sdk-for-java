@@ -33,13 +33,13 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestProxyTestBase {
     protected boolean runManagedHsmTest = false;
 
     private static final int MAX_RETRIES = 5;
-    private static final RetryOptions LIVE_RETRY_OPTIONS = new RetryOptions(new ExponentialBackoffOptions()
-        .setMaxRetries(MAX_RETRIES)
-        .setBaseDelay(Duration.ofSeconds(2))
-        .setMaxDelay(Duration.ofSeconds(16)));
+    private static final RetryOptions LIVE_RETRY_OPTIONS
+        = new RetryOptions(new ExponentialBackoffOptions().setMaxRetries(MAX_RETRIES)
+            .setBaseDelay(Duration.ofSeconds(2))
+            .setMaxDelay(Duration.ofSeconds(16)));
 
-    private static final RetryOptions PLAYBACK_RETRY_OPTIONS =
-        new RetryOptions(new FixedDelayOptions(MAX_RETRIES, Duration.ofMillis(1)));
+    private static final RetryOptions PLAYBACK_RETRY_OPTIONS
+        = new RetryOptions(new FixedDelayOptions(MAX_RETRIES, Duration.ofMillis(1)));
 
     void beforeTestSetup() {
         KeyVaultCredentialPolicy.clearCache();
@@ -48,8 +48,7 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestProxyTestBase {
     KeyEncryptionKeyClientBuilder getKeyEncryptionKeyClientBuilder(HttpClient httpClient,
         CryptographyServiceVersion serviceVersion) {
 
-        KeyEncryptionKeyClientBuilder builder = new KeyEncryptionKeyClientBuilder()
-            .serviceVersion(serviceVersion)
+        KeyEncryptionKeyClientBuilder builder = new KeyEncryptionKeyClientBuilder().serviceVersion(serviceVersion)
             .credential(getTokenCredentialAndSetMatchers())
             .httpClient(httpClient);
 
@@ -66,8 +65,7 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestProxyTestBase {
 
     KeyClientBuilder getKeyClientBuilder(HttpClient httpClient, String endpoint, KeyServiceVersion serviceVersion) {
 
-        KeyClientBuilder builder = new KeyClientBuilder()
-            .vaultUrl(endpoint)
+        KeyClientBuilder builder = new KeyClientBuilder().vaultUrl(endpoint)
             .serviceVersion(serviceVersion)
             .credential(getTokenCredentialAndSetMatchers())
             .httpClient(httpClient);
@@ -85,8 +83,7 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestProxyTestBase {
 
     CryptographyClientImpl getCryptographyClientImpl(HttpClient httpClient, String keyId,
         CryptographyServiceVersion serviceVersion) {
-        CryptographyClientBuilder builder = new CryptographyClientBuilder()
-            .keyIdentifier(keyId)
+        CryptographyClientBuilder builder = new CryptographyClientBuilder().keyIdentifier(keyId)
             .serviceVersion(serviceVersion)
             .credential(getTokenCredentialAndSetMatchers())
             .httpClient(httpClient);
@@ -109,7 +106,7 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestProxyTestBase {
             return new AzurePowerShellCredentialBuilder().additionallyAllowedTenants("*").build();
         } else if (interceptorManager.isRecordMode()) {
             return new DefaultAzureCredentialBuilder().additionallyAllowedTenants("*").build();
-        } else  {
+        } else {
             List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
             customMatchers.add(new BodilessMatcher());
             customMatchers.add(new CustomMatcher().setExcludedHeaders(Collections.singletonList("Authorization")));
@@ -133,8 +130,10 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestProxyTestBase {
 
     public String getEndpoint() {
         final String endpoint = runManagedHsmTest
-            ? Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT", "https://hsmname.managedhsm.azure.net")
-            : Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT", "https://vaultname.vault.azure.net");
+            ? Configuration.getGlobalConfiguration()
+                .get("AZURE_MANAGEDHSM_ENDPOINT", "https://hsmname.managedhsm.azure.net")
+            : Configuration.getGlobalConfiguration()
+                .get("AZURE_KEYVAULT_ENDPOINT", "https://vaultname.vault.azure.net");
         Objects.requireNonNull(endpoint);
         return endpoint;
     }

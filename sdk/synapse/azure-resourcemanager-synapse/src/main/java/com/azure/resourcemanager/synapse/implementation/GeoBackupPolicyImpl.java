@@ -80,24 +80,20 @@ public final class GeoBackupPolicyImpl implements GeoBackupPolicy, GeoBackupPoli
     }
 
     public GeoBackupPolicy create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolGeoBackupPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, sqlPoolName, geoBackupPolicyName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolGeoBackupPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, geoBackupPolicyName,
+                this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public GeoBackupPolicy create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolGeoBackupPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, sqlPoolName, geoBackupPolicyName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolGeoBackupPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, geoBackupPolicyName,
+                this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -112,55 +108,47 @@ public final class GeoBackupPolicyImpl implements GeoBackupPolicy, GeoBackupPoli
     }
 
     public GeoBackupPolicy apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolGeoBackupPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, sqlPoolName, geoBackupPolicyName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolGeoBackupPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, geoBackupPolicyName,
+                this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public GeoBackupPolicy apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolGeoBackupPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, sqlPoolName, geoBackupPolicyName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolGeoBackupPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, geoBackupPolicyName,
+                this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    GeoBackupPolicyImpl(
-        GeoBackupPolicyInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    GeoBackupPolicyImpl(GeoBackupPolicyInner innerObject,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.sqlPoolName = Utils.getValueFromIdByName(innerObject.id(), "sqlPools");
-        this.geoBackupPolicyName =
-            GeoBackupPolicyName.fromString(Utils.getValueFromIdByName(innerObject.id(), "geoBackupPolicies"));
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.sqlPoolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sqlPools");
+        this.geoBackupPolicyName = GeoBackupPolicyName
+            .fromString(ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "geoBackupPolicies"));
     }
 
     public GeoBackupPolicy refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolGeoBackupPolicies()
-                .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, geoBackupPolicyName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolGeoBackupPolicies()
+            .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, geoBackupPolicyName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public GeoBackupPolicy refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolGeoBackupPolicies()
-                .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, geoBackupPolicyName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolGeoBackupPolicies()
+            .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, geoBackupPolicyName, context)
+            .getValue();
         return this;
     }
 

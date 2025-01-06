@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceTopologyResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceTopologyResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"artifactSourceId\":\"mhquvgjxp\"},\"location\":\"bczmeh\",\"tags\":{\"phrupidgsybbejhp\":\"opb\",\"ioq\":\"oycmsxaobhdxbmt\",\"p\":\"zehtbmu\",\"hwlrx\":\"wnoi\"},\"id\":\"bqsoqijg\",\"name\":\"dmbpazlobcufpdz\",\"type\":\"rbt\"}")
-                .toObject(ServiceTopologyResourceInner.class);
+        ServiceTopologyResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"artifactSourceId\":\"mhquvgjxp\"},\"location\":\"bczmeh\",\"tags\":{\"phrupidgsybbejhp\":\"opb\",\"ioq\":\"oycmsxaobhdxbmt\",\"p\":\"zehtbmu\",\"hwlrx\":\"wnoi\"},\"id\":\"bqsoqijg\",\"name\":\"dmbpazlobcufpdz\",\"type\":\"rbt\"}")
+            .toObject(ServiceTopologyResourceInner.class);
         Assertions.assertEquals("bczmeh", model.location());
         Assertions.assertEquals("opb", model.tags().get("phrupidgsybbejhp"));
         Assertions.assertEquals("mhquvgjxp", model.artifactSourceId());
@@ -25,11 +23,9 @@ public final class ServiceTopologyResourceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceTopologyResourceInner model =
-            new ServiceTopologyResourceInner()
-                .withLocation("bczmeh")
-                .withTags(mapOf("phrupidgsybbejhp", "opb", "ioq", "oycmsxaobhdxbmt", "p", "zehtbmu", "hwlrx", "wnoi"))
-                .withArtifactSourceId("mhquvgjxp");
+        ServiceTopologyResourceInner model = new ServiceTopologyResourceInner().withLocation("bczmeh")
+            .withTags(mapOf("phrupidgsybbejhp", "opb", "ioq", "oycmsxaobhdxbmt", "p", "zehtbmu", "hwlrx", "wnoi"))
+            .withArtifactSourceId("mhquvgjxp");
         model = BinaryData.fromObject(model).toObject(ServiceTopologyResourceInner.class);
         Assertions.assertEquals("bczmeh", model.location());
         Assertions.assertEquals("opb", model.tags().get("phrupidgsybbejhp"));

@@ -34,7 +34,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_KEY = "PartitionIDCopyFromProducerOption";
 
-    private static final EventHubsProducerInstrumentation DEFAULT_INSTRUMENTATION = new EventHubsProducerInstrumentation(null, null, "fqdn", "entity");
+    private static final EventHubsProducerInstrumentation DEFAULT_INSTRUMENTATION
+        = new EventHubsProducerInstrumentation(null, null, "fqdn", "entity");
     private EventHubProducerAsyncClient producer;
     private EventHubClientBuilder builder;
     @Mock
@@ -48,13 +49,10 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     protected void beforeTest() {
         MockitoAnnotations.initMocks(this);
 
-        builder = createBuilder()
-            .shareConnection()
+        builder = createBuilder().shareConnection()
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
             .prefetchCount(EventHubClientBuilder.DEFAULT_PREFETCH_COUNT);
-        producer = toClose(builder
-            .retryOptions(RETRY_OPTIONS)
-            .buildAsyncProducerClient());
+        producer = toClose(builder.retryOptions(RETRY_OPTIONS).buildAsyncProducerClient());
     }
 
     /**
@@ -63,8 +61,8 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     @Test
     public void sendSmallEventsFullBatch() {
         // Arrange
-        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, null, contextProvider,
-            DEFAULT_INSTRUMENTATION);
+        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, null,
+            contextProvider, DEFAULT_INSTRUMENTATION);
         int count = 0;
         while (batch.tryAdd(createData())) {
             // We only print every 100th item or it'll be really spammy.
@@ -76,9 +74,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
         }
 
         // Act & Assert
-        StepVerifier.create(producer.send(batch.getEvents()))
-            .expectComplete()
-            .verify(TIMEOUT);
+        StepVerifier.create(producer.send(batch.getEvents())).expectComplete().verify(TIMEOUT);
     }
 
     /**
@@ -87,8 +83,8 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     @Test
     public void sendSmallEventsFullBatchPartitionKey() {
         // Arrange
-        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null,
-            PARTITION_KEY, contextProvider, DEFAULT_INSTRUMENTATION);
+        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, PARTITION_KEY,
+            contextProvider, DEFAULT_INSTRUMENTATION);
         int count = 0;
         while (batch.tryAdd(createData())) {
             // We only print every 100th item or it'll be really spammy.
@@ -99,9 +95,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
         }
 
         // Act & Assert
-        StepVerifier.create(producer.send(batch.getEvents()))
-            .expectComplete()
-            .verify(TIMEOUT);
+        StepVerifier.create(producer.send(batch.getEvents())).expectComplete().verify(TIMEOUT);
     }
 
     /**
@@ -114,8 +108,8 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
         final String messageValue = UUID.randomUUID().toString();
 
         final SendOptions sendOptions = new SendOptions().setPartitionKey(PARTITION_KEY);
-        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null,
-            PARTITION_KEY, contextProvider, DEFAULT_INSTRUMENTATION);
+        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, PARTITION_KEY,
+            contextProvider, DEFAULT_INSTRUMENTATION);
         int count = 0;
         while (count < 10) {
             final EventData data = createData();
@@ -136,12 +130,11 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
         for (String id : partitionIds) {
             final EventHubConsumerAsyncClient consumer = toClose(builder.buildAsyncConsumerClient());
 
-            toClose(consumer.receiveFromPartition(id, EventPosition.fromEnqueuedTime(now))
-                .subscribe(partitionEvent -> {
-                    if (isMatchingEvent(partitionEvent.getData(), messageValue)) {
-                        countDownLatch.countDown();
-                    }
-                }));
+            toClose(consumer.receiveFromPartition(id, EventPosition.fromEnqueuedTime(now)).subscribe(partitionEvent -> {
+                if (isMatchingEvent(partitionEvent.getData(), messageValue)) {
+                    countDownLatch.countDown();
+                }
+            }));
         }
 
         // Act
@@ -159,8 +152,8 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     public void sendEventsFullBatchWithPartitionKey() {
         // Arrange
         final int maxMessageSize = 1024;
-        final EventDataBatch batch = new EventDataBatch(maxMessageSize, null, PARTITION_KEY, contextProvider,
-            DEFAULT_INSTRUMENTATION);
+        final EventDataBatch batch
+            = new EventDataBatch(maxMessageSize, null, PARTITION_KEY, contextProvider, DEFAULT_INSTRUMENTATION);
         final Random random = new Random();
         final SendOptions sendOptions = new SendOptions().setPartitionKey(PARTITION_KEY);
         int count = 0;
@@ -180,9 +173,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         Assertions.assertEquals(count, batch.getCount());
-        StepVerifier.create(producer.send(batch.getEvents(), sendOptions))
-            .expectComplete()
-            .verify(TIMEOUT);
+        StepVerifier.create(producer.send(batch.getEvents(), sendOptions)).expectComplete().verify(TIMEOUT);
     }
 
     private static EventData createData() {

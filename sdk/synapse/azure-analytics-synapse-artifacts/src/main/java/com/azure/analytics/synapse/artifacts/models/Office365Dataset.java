@@ -29,7 +29,8 @@ public class Office365Dataset extends Dataset {
     private Object tableName;
 
     /*
-     * A predicate expression that can be used to filter the specific rows to extract from Office 365. Type: string (or Expression with resultType string).
+     * A predicate expression that can be used to filter the specific rows to extract from Office 365. Type: string (or
+     * Expression with resultType string).
      */
     private Object predicate;
 

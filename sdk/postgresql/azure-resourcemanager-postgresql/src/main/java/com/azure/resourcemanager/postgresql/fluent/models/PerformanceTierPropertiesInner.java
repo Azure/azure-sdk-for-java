@@ -5,68 +5,68 @@
 package com.azure.resourcemanager.postgresql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.postgresql.models.PerformanceTierServiceLevelObjectives;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Performance tier properties. */
+/**
+ * Performance tier properties.
+ */
 @Fluent
-public final class PerformanceTierPropertiesInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PerformanceTierPropertiesInner.class);
-
+public final class PerformanceTierPropertiesInner implements JsonSerializable<PerformanceTierPropertiesInner> {
     /*
      * ID of the performance tier.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Maximum Backup retention in days for the performance tier edition
      */
-    @JsonProperty(value = "maxBackupRetentionDays")
     private Integer maxBackupRetentionDays;
 
     /*
      * Minimum Backup retention in days for the performance tier edition
      */
-    @JsonProperty(value = "minBackupRetentionDays")
     private Integer minBackupRetentionDays;
 
     /*
      * Max storage allowed for a server.
      */
-    @JsonProperty(value = "maxStorageMB")
     private Integer maxStorageMB;
 
     /*
      * Max storage allowed for a server.
      */
-    @JsonProperty(value = "minLargeStorageMB")
     private Integer minLargeStorageMB;
 
     /*
      * Max storage allowed for a server.
      */
-    @JsonProperty(value = "maxLargeStorageMB")
     private Integer maxLargeStorageMB;
 
     /*
      * Max storage allowed for a server.
      */
-    @JsonProperty(value = "minStorageMB")
     private Integer minStorageMB;
 
     /*
      * Service level objectives associated with the performance tier
      */
-    @JsonProperty(value = "serviceLevelObjectives")
     private List<PerformanceTierServiceLevelObjectives> serviceLevelObjectives;
 
     /**
+     * Creates an instance of PerformanceTierPropertiesInner class.
+     */
+    public PerformanceTierPropertiesInner() {
+    }
+
+    /**
      * Get the id property: ID of the performance tier.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -75,7 +75,7 @@ public final class PerformanceTierPropertiesInner {
 
     /**
      * Set the id property: ID of the performance tier.
-     *
+     * 
      * @param id the id value to set.
      * @return the PerformanceTierPropertiesInner object itself.
      */
@@ -86,7 +86,7 @@ public final class PerformanceTierPropertiesInner {
 
     /**
      * Get the maxBackupRetentionDays property: Maximum Backup retention in days for the performance tier edition.
-     *
+     * 
      * @return the maxBackupRetentionDays value.
      */
     public Integer maxBackupRetentionDays() {
@@ -95,7 +95,7 @@ public final class PerformanceTierPropertiesInner {
 
     /**
      * Set the maxBackupRetentionDays property: Maximum Backup retention in days for the performance tier edition.
-     *
+     * 
      * @param maxBackupRetentionDays the maxBackupRetentionDays value to set.
      * @return the PerformanceTierPropertiesInner object itself.
      */
@@ -106,7 +106,7 @@ public final class PerformanceTierPropertiesInner {
 
     /**
      * Get the minBackupRetentionDays property: Minimum Backup retention in days for the performance tier edition.
-     *
+     * 
      * @return the minBackupRetentionDays value.
      */
     public Integer minBackupRetentionDays() {
@@ -115,7 +115,7 @@ public final class PerformanceTierPropertiesInner {
 
     /**
      * Set the minBackupRetentionDays property: Minimum Backup retention in days for the performance tier edition.
-     *
+     * 
      * @param minBackupRetentionDays the minBackupRetentionDays value to set.
      * @return the PerformanceTierPropertiesInner object itself.
      */
@@ -126,7 +126,7 @@ public final class PerformanceTierPropertiesInner {
 
     /**
      * Get the maxStorageMB property: Max storage allowed for a server.
-     *
+     * 
      * @return the maxStorageMB value.
      */
     public Integer maxStorageMB() {
@@ -135,7 +135,7 @@ public final class PerformanceTierPropertiesInner {
 
     /**
      * Set the maxStorageMB property: Max storage allowed for a server.
-     *
+     * 
      * @param maxStorageMB the maxStorageMB value to set.
      * @return the PerformanceTierPropertiesInner object itself.
      */
@@ -146,7 +146,7 @@ public final class PerformanceTierPropertiesInner {
 
     /**
      * Get the minLargeStorageMB property: Max storage allowed for a server.
-     *
+     * 
      * @return the minLargeStorageMB value.
      */
     public Integer minLargeStorageMB() {
@@ -155,7 +155,7 @@ public final class PerformanceTierPropertiesInner {
 
     /**
      * Set the minLargeStorageMB property: Max storage allowed for a server.
-     *
+     * 
      * @param minLargeStorageMB the minLargeStorageMB value to set.
      * @return the PerformanceTierPropertiesInner object itself.
      */
@@ -166,7 +166,7 @@ public final class PerformanceTierPropertiesInner {
 
     /**
      * Get the maxLargeStorageMB property: Max storage allowed for a server.
-     *
+     * 
      * @return the maxLargeStorageMB value.
      */
     public Integer maxLargeStorageMB() {
@@ -175,7 +175,7 @@ public final class PerformanceTierPropertiesInner {
 
     /**
      * Set the maxLargeStorageMB property: Max storage allowed for a server.
-     *
+     * 
      * @param maxLargeStorageMB the maxLargeStorageMB value to set.
      * @return the PerformanceTierPropertiesInner object itself.
      */
@@ -186,7 +186,7 @@ public final class PerformanceTierPropertiesInner {
 
     /**
      * Get the minStorageMB property: Max storage allowed for a server.
-     *
+     * 
      * @return the minStorageMB value.
      */
     public Integer minStorageMB() {
@@ -195,7 +195,7 @@ public final class PerformanceTierPropertiesInner {
 
     /**
      * Set the minStorageMB property: Max storage allowed for a server.
-     *
+     * 
      * @param minStorageMB the minStorageMB value to set.
      * @return the PerformanceTierPropertiesInner object itself.
      */
@@ -206,7 +206,7 @@ public final class PerformanceTierPropertiesInner {
 
     /**
      * Get the serviceLevelObjectives property: Service level objectives associated with the performance tier.
-     *
+     * 
      * @return the serviceLevelObjectives value.
      */
     public List<PerformanceTierServiceLevelObjectives> serviceLevelObjectives() {
@@ -215,24 +215,89 @@ public final class PerformanceTierPropertiesInner {
 
     /**
      * Set the serviceLevelObjectives property: Service level objectives associated with the performance tier.
-     *
+     * 
      * @param serviceLevelObjectives the serviceLevelObjectives value to set.
      * @return the PerformanceTierPropertiesInner object itself.
      */
-    public PerformanceTierPropertiesInner withServiceLevelObjectives(
-        List<PerformanceTierServiceLevelObjectives> serviceLevelObjectives) {
+    public PerformanceTierPropertiesInner
+        withServiceLevelObjectives(List<PerformanceTierServiceLevelObjectives> serviceLevelObjectives) {
         this.serviceLevelObjectives = serviceLevelObjectives;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (serviceLevelObjectives() != null) {
             serviceLevelObjectives().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeNumberField("maxBackupRetentionDays", this.maxBackupRetentionDays);
+        jsonWriter.writeNumberField("minBackupRetentionDays", this.minBackupRetentionDays);
+        jsonWriter.writeNumberField("maxStorageMB", this.maxStorageMB);
+        jsonWriter.writeNumberField("minLargeStorageMB", this.minLargeStorageMB);
+        jsonWriter.writeNumberField("maxLargeStorageMB", this.maxLargeStorageMB);
+        jsonWriter.writeNumberField("minStorageMB", this.minStorageMB);
+        jsonWriter.writeArrayField("serviceLevelObjectives", this.serviceLevelObjectives,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PerformanceTierPropertiesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PerformanceTierPropertiesInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PerformanceTierPropertiesInner.
+     */
+    public static PerformanceTierPropertiesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PerformanceTierPropertiesInner deserializedPerformanceTierPropertiesInner
+                = new PerformanceTierPropertiesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPerformanceTierPropertiesInner.id = reader.getString();
+                } else if ("maxBackupRetentionDays".equals(fieldName)) {
+                    deserializedPerformanceTierPropertiesInner.maxBackupRetentionDays
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("minBackupRetentionDays".equals(fieldName)) {
+                    deserializedPerformanceTierPropertiesInner.minBackupRetentionDays
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("maxStorageMB".equals(fieldName)) {
+                    deserializedPerformanceTierPropertiesInner.maxStorageMB = reader.getNullable(JsonReader::getInt);
+                } else if ("minLargeStorageMB".equals(fieldName)) {
+                    deserializedPerformanceTierPropertiesInner.minLargeStorageMB
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("maxLargeStorageMB".equals(fieldName)) {
+                    deserializedPerformanceTierPropertiesInner.maxLargeStorageMB
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("minStorageMB".equals(fieldName)) {
+                    deserializedPerformanceTierPropertiesInner.minStorageMB = reader.getNullable(JsonReader::getInt);
+                } else if ("serviceLevelObjectives".equals(fieldName)) {
+                    List<PerformanceTierServiceLevelObjectives> serviceLevelObjectives
+                        = reader.readArray(reader1 -> PerformanceTierServiceLevelObjectives.fromJson(reader1));
+                    deserializedPerformanceTierPropertiesInner.serviceLevelObjectives = serviceLevelObjectives;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPerformanceTierPropertiesInner;
+        });
     }
 }

@@ -227,6 +227,9 @@ public final class AcsIncomingCallEventData implements JsonSerializable<AcsIncom
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

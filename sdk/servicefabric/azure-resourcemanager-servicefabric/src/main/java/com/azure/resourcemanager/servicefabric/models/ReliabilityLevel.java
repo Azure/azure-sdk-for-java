@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -59,7 +58,6 @@ public final class ReliabilityLevel extends ExpandableStringEnum<ReliabilityLeve
      * @param name a name to look for.
      * @return the corresponding ReliabilityLevel.
      */
-    @JsonCreator
     public static ReliabilityLevel fromString(String name) {
         return fromString(name, ReliabilityLevel.class);
     }

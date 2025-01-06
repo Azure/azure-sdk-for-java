@@ -132,13 +132,10 @@ public interface Ipv6PeeringConfig extends HasInnerModel<Ipv6ExpressRouteCircuit
      *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithAttach<ParentT>,
-            DefinitionStages.WithPrimaryPeerAddressPrefix<ParentT>,
-            DefinitionStages.WithSecondaryPeerAddressPrefix<ParentT>,
-            DefinitionStages.WithCustomerASN<ParentT>,
-            DefinitionStages.WithRoutingRegistryName<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithAttach<ParentT>,
+        DefinitionStages.WithPrimaryPeerAddressPrefix<ParentT>,
+        DefinitionStages.WithSecondaryPeerAddressPrefix<ParentT>, DefinitionStages.WithCustomerASN<ParentT>,
+        DefinitionStages.WithRoutingRegistryName<ParentT> {
     }
 
     /** Grouping of public frontend update stages. */
@@ -235,13 +232,9 @@ public interface Ipv6PeeringConfig extends HasInnerModel<Ipv6ExpressRouteCircuit
 
     /** The entirety of a public frontend update as part of an Internet-facing load balancer update. */
     interface Update
-        extends Settable<ExpressRouteCrossConnectionPeering.Update>,
-            UpdateStages.WithAdvertisedPublicPrefixes,
-            UpdateStages.WithPrimaryPeerAddressPrefix,
-            UpdateStages.WithSecondaryPeerAddressPrefix,
-            UpdateStages.WithCustomerASN,
-            UpdateStages.WithRoutingRegistryName,
-            UpdateStages.WithRouteFilter {
+        extends Settable<ExpressRouteCrossConnectionPeering.Update>, UpdateStages.WithAdvertisedPublicPrefixes,
+        UpdateStages.WithPrimaryPeerAddressPrefix, UpdateStages.WithSecondaryPeerAddressPrefix,
+        UpdateStages.WithCustomerASN, UpdateStages.WithRoutingRegistryName, UpdateStages.WithRouteFilter {
     }
 
     /** Grouping of public frontend definition stages applicable as part of an Internet-facing load balancer update. */
@@ -370,13 +363,10 @@ public interface Ipv6PeeringConfig extends HasInnerModel<Ipv6ExpressRouteCircuit
      *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface UpdateDefinition<ParentT>
-        extends UpdateDefinitionStages.Blank<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT>,
-            UpdateDefinitionStages.WithAdvertisedPublicPrefixes<ParentT>,
-            UpdateDefinitionStages.WithPrimaryPeerAddressPrefix<ParentT>,
-            UpdateDefinitionStages.WithSecondaryPeerAddressPrefix<ParentT>,
-            UpdateDefinitionStages.WithCustomerASN<ParentT>,
-            UpdateDefinitionStages.WithRoutingRegistryName<ParentT> {
+    interface UpdateDefinition<ParentT> extends UpdateDefinitionStages.Blank<ParentT>,
+        UpdateDefinitionStages.WithAttach<ParentT>, UpdateDefinitionStages.WithAdvertisedPublicPrefixes<ParentT>,
+        UpdateDefinitionStages.WithPrimaryPeerAddressPrefix<ParentT>,
+        UpdateDefinitionStages.WithSecondaryPeerAddressPrefix<ParentT>, UpdateDefinitionStages.WithCustomerASN<ParentT>,
+        UpdateDefinitionStages.WithRoutingRegistryName<ParentT> {
     }
 }

@@ -13,26 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class CostManagementResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CostManagementResource model =
-            BinaryData
-                .fromString(
-                    "{\"sku\":\"fqbuaceopzf\",\"eTag\":\"hhuao\",\"location\":\"ppcqeqxolz\",\"tags\":{\"dmoizpostmg\":\"zxctobgb\",\"rmfqjhhkxbpvj\":\"cfbu\"},\"id\":\"mjh\",\"name\":\"xjyngudivk\",\"type\":\"tswb\"}")
-                .toObject(CostManagementResource.class);
-        Assertions.assertEquals("ppcqeqxolz", model.location());
-        Assertions.assertEquals("zxctobgb", model.tags().get("dmoizpostmg"));
+        CostManagementResource model = BinaryData.fromString(
+            "{\"sku\":\"hpfeoajvgcxtxjc\",\"eTag\":\"eafidltugsresm\",\"location\":\"ssjhoiftxfkf\",\"tags\":{\"biqtgdq\":\"prhptillu\"},\"id\":\"hm\",\"name\":\"wsldrizetpwbr\",\"type\":\"lllibph\"}")
+            .toObject(CostManagementResource.class);
+        Assertions.assertEquals("ssjhoiftxfkf", model.location());
+        Assertions.assertEquals("prhptillu", model.tags().get("biqtgdq"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CostManagementResource model =
-            new CostManagementResource()
-                .withLocation("ppcqeqxolz")
-                .withTags(mapOf("dmoizpostmg", "zxctobgb", "rmfqjhhkxbpvj", "cfbu"));
+        CostManagementResource model
+            = new CostManagementResource().withLocation("ssjhoiftxfkf").withTags(mapOf("biqtgdq", "prhptillu"));
         model = BinaryData.fromObject(model).toObject(CostManagementResource.class);
-        Assertions.assertEquals("ppcqeqxolz", model.location());
-        Assertions.assertEquals("zxctobgb", model.tags().get("dmoizpostmg"));
+        Assertions.assertEquals("ssjhoiftxfkf", model.location());
+        Assertions.assertEquals("prhptillu", model.tags().get("biqtgdq"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

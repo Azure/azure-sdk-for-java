@@ -34,6 +34,12 @@ public final class DtmfConfigurations implements JsonSerializable<DtmfConfigurat
     private List<StopTones> stopTones;
 
     /**
+     * Creates a new instance of {@link DtmfConfigurations}.
+     */
+    public DtmfConfigurations() {
+    }
+
+    /**
      * Get the interToneTimeoutInSeconds property: Time to wait between DTMF inputs to stop recognizing.
      *
      * @return the interToneTimeoutInSeconds value.
@@ -120,7 +126,8 @@ public final class DtmfConfigurations implements JsonSerializable<DtmfConfigurat
                 reader.nextToken();
 
                 if ("interToneTimeoutInSeconds".equals(fieldName)) {
-                    configurations.interToneTimeoutInSeconds = reader.getNullable(nonNull -> Duration.parse(nonNull.getString()));
+                    configurations.interToneTimeoutInSeconds
+                        = reader.getNullable(nonNull -> Duration.parse(nonNull.getString()));
                 } else if ("maxTonesToCollect".equals(fieldName)) {
                     configurations.maxTonesToCollect = reader.getNullable(JsonReader::getInt);
                 } else if ("stopTones".equals(fieldName)) {

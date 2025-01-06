@@ -96,12 +96,12 @@ import java.util.Objects;
  * @see DocumentModelAdministrationAsyncClient
  * @see DocumentModelAdministrationClient
  */
-@ServiceClientBuilder(serviceClients = {DocumentModelAdministrationAsyncClient.class, DocumentModelAdministrationClient.class})
-public final class DocumentModelAdministrationClientBuilder implements
-    AzureKeyCredentialTrait<DocumentModelAdministrationClientBuilder>,
+@ServiceClientBuilder(
+    serviceClients = { DocumentModelAdministrationAsyncClient.class, DocumentModelAdministrationClient.class })
+public final class DocumentModelAdministrationClientBuilder
+    implements AzureKeyCredentialTrait<DocumentModelAdministrationClientBuilder>,
     ConfigurationTrait<DocumentModelAdministrationClientBuilder>,
-    EndpointTrait<DocumentModelAdministrationClientBuilder>,
-    HttpTrait<DocumentModelAdministrationClientBuilder>,
+    EndpointTrait<DocumentModelAdministrationClientBuilder>, HttpTrait<DocumentModelAdministrationClientBuilder>,
     TokenCredentialTrait<DocumentModelAdministrationClientBuilder> {
 
     /**
@@ -153,17 +153,17 @@ public final class DocumentModelAdministrationClientBuilder implements
         }
 
         // Global Env configuration store
-        final Configuration buildConfiguration =
-            (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
+        final Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
 
         // Service Version
-        final DocumentAnalysisServiceVersion serviceVersion =
-            version != null ? version : DocumentAnalysisServiceVersion.getLatest();
+        final DocumentAnalysisServiceVersion serviceVersion
+            = version != null ? version : DocumentAnalysisServiceVersion.getLatest();
 
         HttpPipeline pipeline = getHttpPipeline(buildConfiguration);
 
-        return new DocumentModelAdministrationClient(new FormRecognizerClientImpl(pipeline, endpoint,
-            serviceVersion.getVersion()), audience);
+        return new DocumentModelAdministrationClient(
+            new FormRecognizerClientImpl(pipeline, endpoint, serviceVersion.getVersion()), audience);
     }
 
     private HttpPipeline getHttpPipeline(Configuration buildConfiguration) {
@@ -202,17 +202,17 @@ public final class DocumentModelAdministrationClientBuilder implements
         }
 
         // Global Env configuration store
-        final Configuration buildConfiguration =
-            (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
+        final Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
 
         // Service Version
-        final DocumentAnalysisServiceVersion serviceVersion =
-            version != null ? version : DocumentAnalysisServiceVersion.getLatest();
+        final DocumentAnalysisServiceVersion serviceVersion
+            = version != null ? version : DocumentAnalysisServiceVersion.getLatest();
 
         HttpPipeline pipeline = getHttpPipeline(buildConfiguration);
 
-        return new DocumentModelAdministrationAsyncClient(new FormRecognizerClientImpl(pipeline, endpoint,
-            serviceVersion.getVersion()), serviceVersion, audience);
+        return new DocumentModelAdministrationAsyncClient(
+            new FormRecognizerClientImpl(pipeline, endpoint, serviceVersion.getVersion()), serviceVersion, audience);
     }
 
     /**

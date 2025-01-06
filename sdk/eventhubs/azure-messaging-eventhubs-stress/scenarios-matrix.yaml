@@ -1,9 +1,11 @@
 matrix:
+  imageBuildDir: ..\..\..\
+  useV2: [ true, false ]
   scenarios:
     processor:
-      imageBuildDir: ..\..\..\
-      testDurationMin: 15
       senderTestClass: EventSender
+      testDurationMin: 15
+      messageSizeInBytes: 1024
       sendRate: 38500
       sendBatchSize: 385
       sendConcurrency: 15
@@ -11,24 +13,10 @@ matrix:
       processorBatchSize: 128
       processorInstancesCount: 1
       processorFailureRatio: 0
-      messageSizeInBytes: 1024
-    processorV2:
-      imageBuildDir: ..\..\..\
-      testDurationMin: 15
-      senderTestClass: EventSender
-      sendRate: 38500
-      sendBatchSize: 385
-      sendConcurrency: 15
-      receiverTestClass: EventProcessor
-      processorBatchSize: 128
-      processorInstancesCount: 1
-      processorFailureRatio: 0
-      messageSizeInBytes: 1024
-      useV2: true
     forwarder:
-      imageBuildDir: ..\..\..\
-      testDurationMin: 15
       senderTestClass: EventSender
+      testDurationMin: 15
+      messageSizeInBytes: 1024
       sendRate: 20000
       sendBatchSize: 50
       sendConcurrency: 10
@@ -36,24 +24,10 @@ matrix:
       processorBatchSize: 128
       processorInstancesCount: 2
       processorFailureRatio: 0.000003125
-      messageSizeInBytes: 1024
-    forwarderV2:
-      imageBuildDir: ..\..\..\
-      testDurationMin: 15
-      senderTestClass: EventSender
-      sendRate: 20000
-      sendBatchSize: 50
-      sendConcurrency: 10
-      receiverTestClass: EventForwarder
-      processorBatchSize: 128
-      processorInstancesCount: 2
-      processorFailureRatio: 0.000003125
-      messageSizeInBytes: 1024
-      useV2: true
     idleSender:
-      imageBuildDir: ..\..\..\
-      testDurationMin: 2160
       senderTestClass: EventSender
+      testDurationMin: 1440
+      messageSizeInBytes: 1024
       sendRate: 5000
       sendBatchSize: 25
       sendConcurrency: 5
@@ -61,19 +35,4 @@ matrix:
       processorBatchSize: 32
       processorInstancesCount: 1
       processorFailureRatio: 0
-      messageSizeInBytes: 1024
       idleDurationMinutes: 40
-    idleSenderV2:
-      imageBuildDir: ..\..\..\
-      testDurationMin: 2160
-      senderTestClass: EventSender
-      sendRate: 5000
-      sendBatchSize: 25
-      sendConcurrency: 5
-      receiverTestClass: EventProcessor
-      processorBatchSize: 32
-      processorInstancesCount: 1
-      processorFailureRatio: 0
-      messageSizeInBytes: 1024
-      idleDurationMinutes: 40
-      useV2: true

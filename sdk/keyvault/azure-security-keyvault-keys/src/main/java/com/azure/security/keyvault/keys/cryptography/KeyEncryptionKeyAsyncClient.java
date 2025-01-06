@@ -40,7 +40,7 @@ public final class KeyEncryptionKeyAsyncClient extends CryptographyAsyncClient i
      * deferred to the service.
      */
     KeyEncryptionKeyAsyncClient(String keyId, HttpPipeline pipeline, CryptographyServiceVersion version,
-                                boolean disableKeyCaching) {
+        boolean disableKeyCaching) {
         super(keyId, pipeline, version, disableKeyCaching);
     }
 

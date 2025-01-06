@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.synapse.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.PrivateEndpointConnectionsPrivateLinkHubsClient;
@@ -21,55 +19,26 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsImpl implements Priv
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public PrivateEndpointConnectionsPrivateLinkHubsImpl(
-        PrivateEndpointConnectionsPrivateLinkHubsClient innerClient,
+    public PrivateEndpointConnectionsPrivateLinkHubsImpl(PrivateEndpointConnectionsPrivateLinkHubsClient innerClient,
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<PrivateEndpointConnectionForPrivateLinkHub> list(
-        String resourceGroupName, String privateLinkHubName) {
-        PagedIterable<PrivateEndpointConnectionForPrivateLinkHubInner> inner =
-            this.serviceClient().list(resourceGroupName, privateLinkHubName);
-        return Utils
-            .mapPage(inner, inner1 -> new PrivateEndpointConnectionForPrivateLinkHubImpl(inner1, this.manager()));
+    public PagedIterable<PrivateEndpointConnectionForPrivateLinkHub> list(String resourceGroupName,
+        String privateLinkHubName) {
+        PagedIterable<PrivateEndpointConnectionForPrivateLinkHubInner> inner
+            = this.serviceClient().list(resourceGroupName, privateLinkHubName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new PrivateEndpointConnectionForPrivateLinkHubImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<PrivateEndpointConnectionForPrivateLinkHub> list(
-        String resourceGroupName, String privateLinkHubName, Context context) {
-        PagedIterable<PrivateEndpointConnectionForPrivateLinkHubInner> inner =
-            this.serviceClient().list(resourceGroupName, privateLinkHubName, context);
-        return Utils
-            .mapPage(inner, inner1 -> new PrivateEndpointConnectionForPrivateLinkHubImpl(inner1, this.manager()));
-    }
-
-    public Response<PrivateEndpointConnectionForPrivateLinkHub> getWithResponse(
-        String resourceGroupName, String privateLinkHubName, String privateEndpointConnectionName, Context context) {
-        Response<PrivateEndpointConnectionForPrivateLinkHubInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, privateLinkHubName, privateEndpointConnectionName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new PrivateEndpointConnectionForPrivateLinkHubImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public PrivateEndpointConnectionForPrivateLinkHub get(
-        String resourceGroupName, String privateLinkHubName, String privateEndpointConnectionName) {
-        PrivateEndpointConnectionForPrivateLinkHubInner inner =
-            this.serviceClient().get(resourceGroupName, privateLinkHubName, privateEndpointConnectionName);
-        if (inner != null) {
-            return new PrivateEndpointConnectionForPrivateLinkHubImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public PagedIterable<PrivateEndpointConnectionForPrivateLinkHub> list(String resourceGroupName,
+        String privateLinkHubName, Context context) {
+        PagedIterable<PrivateEndpointConnectionForPrivateLinkHubInner> inner
+            = this.serviceClient().list(resourceGroupName, privateLinkHubName, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new PrivateEndpointConnectionForPrivateLinkHubImpl(inner1, this.manager()));
     }
 
     private PrivateEndpointConnectionsPrivateLinkHubsClient serviceClient() {

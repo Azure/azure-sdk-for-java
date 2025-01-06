@@ -14,9 +14,8 @@ import reactor.core.publisher.Mono;
  * Entry point to manage disaster recovery pairing authorization rules.
  */
 @Fluent
-public interface DisasterRecoveryPairingAuthorizationRules extends
-    SupportsGettingById<DisasterRecoveryPairingAuthorizationRule>,
-    HasManager<EventHubsManager> {
+public interface DisasterRecoveryPairingAuthorizationRules
+    extends SupportsGettingById<DisasterRecoveryPairingAuthorizationRule>, HasManager<EventHubsManager> {
     /**
      * Lists the authorization rules that can be used to access the disaster recovery pairing.
      *
@@ -25,8 +24,8 @@ public interface DisasterRecoveryPairingAuthorizationRules extends
      * @param pairingName pairing name
      * @return list of authorization rules
      */
-    PagedIterable<DisasterRecoveryPairingAuthorizationRule> listByDisasterRecoveryPairing(
-        String resourceGroupName, String namespaceName, String pairingName);
+    PagedIterable<DisasterRecoveryPairingAuthorizationRule> listByDisasterRecoveryPairing(String resourceGroupName,
+        String namespaceName, String pairingName);
 
     /**
      * Lists the authorization rules that can be used to access the disaster recovery pairing.
@@ -36,8 +35,8 @@ public interface DisasterRecoveryPairingAuthorizationRules extends
      * @param pairingName pairing name
      * @return observable that emits the authorization rules
      */
-    PagedFlux<DisasterRecoveryPairingAuthorizationRule> listByDisasterRecoveryPairingAsync(
-        String resourceGroupName, String namespaceName, String pairingName);
+    PagedFlux<DisasterRecoveryPairingAuthorizationRule> listByDisasterRecoveryPairingAsync(String resourceGroupName,
+        String namespaceName, String pairingName);
 
     /**
      * Gets an authorization rule that can be used to access the disaster recovery pairing.
@@ -48,8 +47,8 @@ public interface DisasterRecoveryPairingAuthorizationRules extends
      * @param name rule name
      * @return observable that emits the authorization rule
      */
-    Mono<DisasterRecoveryPairingAuthorizationRule> getByNameAsync(
-        String resourceGroupName, String namespaceName, String pairingName, String name);
+    Mono<DisasterRecoveryPairingAuthorizationRule> getByNameAsync(String resourceGroupName, String namespaceName,
+        String pairingName, String name);
 
     /**
      * Gets an authorization rule that can be used to access the disaster recovery pairing.
@@ -60,6 +59,6 @@ public interface DisasterRecoveryPairingAuthorizationRules extends
      * @param name rule name
      * @return the authorization rule
      */
-    DisasterRecoveryPairingAuthorizationRule getByName(
-        String resourceGroupName, String namespaceName, String pairingName, String name);
+    DisasterRecoveryPairingAuthorizationRule getByName(String resourceGroupName, String namespaceName,
+        String pairingName, String name);
 }

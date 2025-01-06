@@ -21,10 +21,8 @@ import reactor.core.publisher.Mono;
  * An immutable client-side representation of an Azure Cognitive Search service.
  */
 @Fluent
-public interface SearchService extends
-    GroupableResource<SearchServiceManager, SearchServiceInner>,
-    Refreshable<SearchService>,
-    Updatable<SearchService.Update> {
+public interface SearchService extends GroupableResource<SearchServiceManager, SearchServiceInner>,
+    Refreshable<SearchService>, Updatable<SearchService.Update> {
 
     /**
      * The hosting mode value.
@@ -207,18 +205,12 @@ public interface SearchService extends
      */
     PublicNetworkAccess publicNetworkAccess();
 
-
     /**
      * The entirety of the Search service definition.
      */
-    interface Definition extends
-        DefinitionStages.Blank,
-        DefinitionStages.WithGroup,
-        DefinitionStages.WithSku,
-        DefinitionStages.WithPublicNetworkAccess,
-        DefinitionStages.WithPartitionsAndCreate,
-        DefinitionStages.WithReplicasAndCreate,
-        DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithSku,
+        DefinitionStages.WithPublicNetworkAccess, DefinitionStages.WithPartitionsAndCreate,
+        DefinitionStages.WithReplicasAndCreate, DefinitionStages.WithCreate {
     }
 
     /**
@@ -228,15 +220,13 @@ public interface SearchService extends
         /**
          * The first stage of the Search service definition.
          */
-        interface Blank
-            extends GroupableResource.DefinitionWithRegion<WithGroup> {
+        interface Blank extends GroupableResource.DefinitionWithRegion<WithGroup> {
         }
 
         /**
          * The stage of the Search service definition allowing to specify the resource group.
          */
-        interface WithGroup
-            extends GroupableResource.DefinitionStages.WithGroup<DefinitionStages.WithSku> {
+        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<DefinitionStages.WithSku> {
         }
 
         /**
@@ -313,22 +303,16 @@ public interface SearchService extends
          * The stage of the definition which contains all the minimum required inputs for the resource to be created
          *   (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
          */
-        interface WithCreate extends
-            Creatable<SearchService>,
-            Resource.DefinitionWithTags<WithCreate>,
-            WithPublicNetworkAccess {
+        interface WithCreate
+            extends Creatable<SearchService>, Resource.DefinitionWithTags<WithCreate>, WithPublicNetworkAccess {
         }
     }
 
     /**
      * The template for a Search service update operation, containing all the settings that can be modified.
      */
-    interface Update extends
-        Appliable<SearchService>,
-        Resource.UpdateWithTags<Update>,
-        UpdateStages.WithReplicaCount,
-        UpdateStages.WithPartitionCount,
-        UpdateStages.WithPublicNetworkAccess {
+    interface Update extends Appliable<SearchService>, Resource.UpdateWithTags<Update>, UpdateStages.WithReplicaCount,
+        UpdateStages.WithPartitionCount, UpdateStages.WithPublicNetworkAccess {
     }
 
     /**
@@ -372,6 +356,7 @@ public interface SearchService extends
              * @return the next stage of the update
              */
             Update enablePublicNetworkAccess();
+
             /**
              * Disables public network access for the search service.
              *

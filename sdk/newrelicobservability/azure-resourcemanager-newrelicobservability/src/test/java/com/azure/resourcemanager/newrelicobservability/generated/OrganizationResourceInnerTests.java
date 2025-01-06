@@ -23,7 +23,8 @@ public final class OrganizationResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OrganizationResourceInner model = new OrganizationResourceInner().withOrganizationId("kgfg")
-            .withOrganizationName("madgakeqsrxyb").withBillingSource(BillingSource.NEWRELIC);
+            .withOrganizationName("madgakeqsrxyb")
+            .withBillingSource(BillingSource.NEWRELIC);
         model = BinaryData.fromObject(model).toObject(OrganizationResourceInner.class);
         Assertions.assertEquals("kgfg", model.organizationId());
         Assertions.assertEquals("madgakeqsrxyb", model.organizationName());

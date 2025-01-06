@@ -5,26 +5,34 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 
-/** Properties to control reconnect requests. */
+/**
+ * Properties to control reconnect requests.
+ */
 @Fluent
-public final class BackendReconnectProperties {
+public final class BackendReconnectProperties implements JsonSerializable<BackendReconnectProperties> {
     /*
      * Duration in ISO8601 format after which reconnect will be initiated. Minimum duration of the Reconnect is PT2M.
      */
-    @JsonProperty(value = "after")
     private Duration after;
 
-    /** Creates an instance of BackendReconnectProperties class. */
+    /**
+     * Creates an instance of BackendReconnectProperties class.
+     */
     public BackendReconnectProperties() {
     }
 
     /**
      * Get the after property: Duration in ISO8601 format after which reconnect will be initiated. Minimum duration of
      * the Reconnect is PT2M.
-     *
+     * 
      * @return the after value.
      */
     public Duration after() {
@@ -34,7 +42,7 @@ public final class BackendReconnectProperties {
     /**
      * Set the after property: Duration in ISO8601 format after which reconnect will be initiated. Minimum duration of
      * the Reconnect is PT2M.
-     *
+     * 
      * @param after the after value to set.
      * @return the BackendReconnectProperties object itself.
      */
@@ -45,9 +53,46 @@ public final class BackendReconnectProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("after", CoreUtils.durationToStringWithDays(this.after));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackendReconnectProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackendReconnectProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BackendReconnectProperties.
+     */
+    public static BackendReconnectProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackendReconnectProperties deserializedBackendReconnectProperties = new BackendReconnectProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("after".equals(fieldName)) {
+                    deserializedBackendReconnectProperties.after
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackendReconnectProperties;
+        });
     }
 }

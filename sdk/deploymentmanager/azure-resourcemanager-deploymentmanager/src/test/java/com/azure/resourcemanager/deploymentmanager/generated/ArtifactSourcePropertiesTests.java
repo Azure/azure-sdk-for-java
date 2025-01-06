@@ -12,22 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ArtifactSourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ArtifactSourceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"sourceType\":\"ciwwzjuqkhr\",\"artifactRoot\":\"jiwkuofoskghsau\",\"authentication\":{\"type\":\"Authentication\"}}")
-                .toObject(ArtifactSourceProperties.class);
+        ArtifactSourceProperties model = BinaryData.fromString(
+            "{\"sourceType\":\"ciwwzjuqkhr\",\"artifactRoot\":\"jiwkuofoskghsau\",\"authentication\":{\"type\":\"Authentication\"}}")
+            .toObject(ArtifactSourceProperties.class);
         Assertions.assertEquals("ciwwzjuqkhr", model.sourceType());
         Assertions.assertEquals("jiwkuofoskghsau", model.artifactRoot());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArtifactSourceProperties model =
-            new ArtifactSourceProperties()
-                .withSourceType("ciwwzjuqkhr")
-                .withArtifactRoot("jiwkuofoskghsau")
-                .withAuthentication(new Authentication());
+        ArtifactSourceProperties model = new ArtifactSourceProperties().withSourceType("ciwwzjuqkhr")
+            .withArtifactRoot("jiwkuofoskghsau")
+            .withAuthentication(new Authentication());
         model = BinaryData.fromObject(model).toObject(ArtifactSourceProperties.class);
         Assertions.assertEquals("ciwwzjuqkhr", model.sourceType());
         Assertions.assertEquals("jiwkuofoskghsau", model.artifactRoot());

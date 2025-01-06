@@ -16,38 +16,39 @@ public final class TimeseriesPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TimeseriesProperties model = BinaryData.fromString(
-            "{\"endpoint\":\"udqwyxebeybpmzz\",\"startDateTimeUTC\":\"tffyaqit\",\"endDateTimeUTC\":\"heioqa\",\"aggregationInterval\":\"Hourly\",\"timeseriesType\":\"LatencyP95\",\"country\":\"fuqyrxpdlcgqlsi\",\"timeseriesData\":[{\"dateTimeUTC\":\"frddgamquhiosrsj\",\"value\":58.48823},{\"dateTimeUTC\":\"cdisyir\",\"value\":97.895584},{\"dateTimeUTC\":\"czexrxzbujrtrhqv\",\"value\":21.759623}]}")
+            "{\"endpoint\":\"daultxijjumfq\",\"startDateTimeUTC\":\"z\",\"endDateTimeUTC\":\"qnmcjngzqdqx\",\"aggregationInterval\":\"Hourly\",\"timeseriesType\":\"MeasurementCounts\",\"country\":\"yfu\",\"timeseriesData\":[{\"dateTimeUTC\":\"vtuikzhajq\",\"value\":72.3863},{\"dateTimeUTC\":\"hm\",\"value\":36.039417},{\"dateTimeUTC\":\"yxynq\",\"value\":8.290434},{\"dateTimeUTC\":\"p\",\"value\":27.988852}]}")
             .toObject(TimeseriesProperties.class);
-        Assertions.assertEquals("udqwyxebeybpmzz", model.endpoint());
-        Assertions.assertEquals("tffyaqit", model.startDateTimeUtc());
-        Assertions.assertEquals("heioqa", model.endDateTimeUtc());
+        Assertions.assertEquals("daultxijjumfq", model.endpoint());
+        Assertions.assertEquals("z", model.startDateTimeUtc());
+        Assertions.assertEquals("qnmcjngzqdqx", model.endDateTimeUtc());
         Assertions.assertEquals(AggregationInterval.HOURLY, model.aggregationInterval());
-        Assertions.assertEquals(TimeseriesType.LATENCY_P95, model.timeseriesType());
-        Assertions.assertEquals("fuqyrxpdlcgqlsi", model.country());
-        Assertions.assertEquals("frddgamquhiosrsj", model.timeseriesData().get(0).dateTimeUtc());
-        Assertions.assertEquals(58.48823F, model.timeseriesData().get(0).value());
+        Assertions.assertEquals(TimeseriesType.MEASUREMENT_COUNTS, model.timeseriesType());
+        Assertions.assertEquals("yfu", model.country());
+        Assertions.assertEquals("vtuikzhajq", model.timeseriesData().get(0).dateTimeUtc());
+        Assertions.assertEquals(72.3863F, model.timeseriesData().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TimeseriesProperties model = new TimeseriesProperties().withEndpoint("udqwyxebeybpmzz")
-            .withStartDateTimeUtc("tffyaqit")
-            .withEndDateTimeUtc("heioqa")
+        TimeseriesProperties model = new TimeseriesProperties().withEndpoint("daultxijjumfq")
+            .withStartDateTimeUtc("z")
+            .withEndDateTimeUtc("qnmcjngzqdqx")
             .withAggregationInterval(AggregationInterval.HOURLY)
-            .withTimeseriesType(TimeseriesType.LATENCY_P95)
-            .withCountry("fuqyrxpdlcgqlsi")
+            .withTimeseriesType(TimeseriesType.MEASUREMENT_COUNTS)
+            .withCountry("yfu")
             .withTimeseriesData(
-                Arrays.asList(new TimeseriesDataPoint().withDateTimeUtc("frddgamquhiosrsj").withValue(58.48823F),
-                    new TimeseriesDataPoint().withDateTimeUtc("cdisyir").withValue(97.895584F),
-                    new TimeseriesDataPoint().withDateTimeUtc("czexrxzbujrtrhqv").withValue(21.759623F)));
+                Arrays.asList(new TimeseriesDataPoint().withDateTimeUtc("vtuikzhajq").withValue(72.3863F),
+                    new TimeseriesDataPoint().withDateTimeUtc("hm").withValue(36.039417F),
+                    new TimeseriesDataPoint().withDateTimeUtc("yxynq").withValue(8.290434F),
+                    new TimeseriesDataPoint().withDateTimeUtc("p").withValue(27.988852F)));
         model = BinaryData.fromObject(model).toObject(TimeseriesProperties.class);
-        Assertions.assertEquals("udqwyxebeybpmzz", model.endpoint());
-        Assertions.assertEquals("tffyaqit", model.startDateTimeUtc());
-        Assertions.assertEquals("heioqa", model.endDateTimeUtc());
+        Assertions.assertEquals("daultxijjumfq", model.endpoint());
+        Assertions.assertEquals("z", model.startDateTimeUtc());
+        Assertions.assertEquals("qnmcjngzqdqx", model.endDateTimeUtc());
         Assertions.assertEquals(AggregationInterval.HOURLY, model.aggregationInterval());
-        Assertions.assertEquals(TimeseriesType.LATENCY_P95, model.timeseriesType());
-        Assertions.assertEquals("fuqyrxpdlcgqlsi", model.country());
-        Assertions.assertEquals("frddgamquhiosrsj", model.timeseriesData().get(0).dateTimeUtc());
-        Assertions.assertEquals(58.48823F, model.timeseriesData().get(0).value());
+        Assertions.assertEquals(TimeseriesType.MEASUREMENT_COUNTS, model.timeseriesType());
+        Assertions.assertEquals("yfu", model.country());
+        Assertions.assertEquals("vtuikzhajq", model.timeseriesData().get(0).dateTimeUtc());
+        Assertions.assertEquals(72.3863F, model.timeseriesData().get(0).value());
     }
 }

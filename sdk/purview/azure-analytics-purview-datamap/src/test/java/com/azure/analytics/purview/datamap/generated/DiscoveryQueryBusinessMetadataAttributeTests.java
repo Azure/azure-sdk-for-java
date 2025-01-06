@@ -7,9 +7,8 @@ package com.azure.analytics.purview.datamap.generated;
 import com.azure.analytics.purview.datamap.models.QueryOptions;
 import com.azure.analytics.purview.datamap.models.QueryResult;
 import com.azure.analytics.purview.datamap.models.SearchResultValue;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
-import java.io.IOException;
+import com.azure.core.util.BinaryData;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -19,13 +18,12 @@ import org.junit.jupiter.api.Test;
 public final class DiscoveryQueryBusinessMetadataAttributeTests extends DataMapClientTestBase {
     @Test
     @Disabled
-    public void testDiscoveryQueryBusinessMetadataAttributeTests() throws IOException {
+    public void testDiscoveryQueryBusinessMetadataAttributeTests() {
         // method invocation
         QueryResult response = discoveryClient.query(new QueryOptions().setLimit(10)
-            .setFilter(JacksonAdapter.createDefaultSerializerAdapter()
-                .deserialize(
-                    "{\"or\":[{\"attributeName\":\"<BusinessMetadataName>.<StringAttributeName>\",\"operator\":\"eq|ne|contains|prefix\",\"attributeValue\":\"string value\"},{\"attributeName\":\"<BusinessMetadataName>.<NumberAttributeName>\",\"operator\":\"eq|ne|gt|ge|lt|le\",\"attributeValue\":123},{\"attributeName\":\"<BusinessMetadataName>.<BooleanAttributeName>\",\"operator\":\"eq|ne\",\"attributeValue\":true},{\"attributeName\":\"<BusinessMetadataName>.<DateAttributeName>\",\"operator\":\"timerange\",\"attributeValue\":\"LAST_24H|LAST_7D|LAST_30D|LAST_365D|MORE_THAN_365D\"}]}",
-                    Object.class, SerializerEncoding.JSON)));
+            .setFilter(BinaryData.fromBytes(
+                "{or=[{attributeName=<BusinessMetadataName>.<StringAttributeName>, operator=eq|ne|contains|prefix, attributeValue=string value}, {attributeName=<BusinessMetadataName>.<NumberAttributeName>, operator=eq|ne|gt|ge|lt|le, attributeValue=123}, {attributeName=<BusinessMetadataName>.<BooleanAttributeName>, operator=eq|ne, attributeValue=true}, {attributeName=<BusinessMetadataName>.<DateAttributeName>, operator=timerange, attributeValue=LAST_24H|LAST_7D|LAST_30D|LAST_365D|MORE_THAN_365D}]}"
+                    .getBytes(StandardCharsets.UTF_8))));
 
         // response assertion
         Assertions.assertNotNull(response);

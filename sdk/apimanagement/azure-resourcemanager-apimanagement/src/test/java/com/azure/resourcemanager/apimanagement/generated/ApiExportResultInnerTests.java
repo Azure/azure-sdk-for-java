@@ -13,10 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ApiExportResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiExportResultInner model =
-            BinaryData
-                .fromString("{\"id\":\"bc\",\"format\":\"swagger-link-json\",\"value\":{\"link\":\"xxqcwgaxf\"}}")
-                .toObject(ApiExportResultInner.class);
+        ApiExportResultInner model = BinaryData
+            .fromString("{\"id\":\"bc\",\"format\":\"swagger-link-json\",\"value\":{\"link\":\"xxqcwgaxf\"}}")
+            .toObject(ApiExportResultInner.class);
         Assertions.assertEquals("bc", model.id());
         Assertions.assertEquals(ExportResultFormat.SWAGGER_LINK_JSON, model.exportResultFormat());
         Assertions.assertEquals("xxqcwgaxf", model.value().link());
@@ -24,11 +23,9 @@ public final class ApiExportResultInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiExportResultInner model =
-            new ApiExportResultInner()
-                .withId("bc")
-                .withExportResultFormat(ExportResultFormat.SWAGGER_LINK_JSON)
-                .withValue(new ApiExportResultValue().withLink("xxqcwgaxf"));
+        ApiExportResultInner model = new ApiExportResultInner().withId("bc")
+            .withExportResultFormat(ExportResultFormat.SWAGGER_LINK_JSON)
+            .withValue(new ApiExportResultValue().withLink("xxqcwgaxf"));
         model = BinaryData.fromObject(model).toObject(ApiExportResultInner.class);
         Assertions.assertEquals("bc", model.id());
         Assertions.assertEquals(ExportResultFormat.SWAGGER_LINK_JSON, model.exportResultFormat());

@@ -17,6 +17,7 @@ import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.resourcemanager.resourcemover.models.MoveCollection;
 import com.azure.resourcemanager.resourcemover.models.MoveCollectionProperties;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -35,16 +36,15 @@ public class ResourceMoverManagerTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        resourceMoverManager = ResourceMoverManager
-            .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile);
-
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
+
+        resourceMoverManager = ResourceMoverManager.configure()
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile);
 
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
@@ -52,10 +52,7 @@ public class ResourceMoverManagerTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -77,14 +74,14 @@ public class ResourceMoverManagerTests extends TestProxyTestBase {
                 .define(collectionName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
-                .withProperties(new MoveCollectionProperties()
-                    .withSourceRegion(Region.US_WEST2.name())
+                .withProperties(new MoveCollectionProperties().withSourceRegion(Region.US_WEST2.name())
                     .withTargetRegion(Region.US_WEST.name()))
                 .create();
             // @embedmeEnd
             moveCollection.refresh();
             Assertions.assertEquals(moveCollection.name(), collectionName);
-            Assertions.assertEquals(moveCollection.name(), resourceMoverManager.moveCollections().getById(moveCollection.id()).name());
+            Assertions.assertEquals(moveCollection.name(),
+                resourceMoverManager.moveCollections().getById(moveCollection.id()).name());
             Assertions.assertTrue(resourceMoverManager.moveCollections().list().stream().count() > 0);
         } finally {
             if (moveCollection != null) {

@@ -52,25 +52,25 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
     /**
      * The service client containing this operation class.
      */
-    private final DeviceRegistryClientImpl client;
+    private final DeviceRegistryManagementClientImpl client;
 
     /**
      * Initializes an instance of AssetEndpointProfilesClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    AssetEndpointProfilesClientImpl(DeviceRegistryClientImpl client) {
+    AssetEndpointProfilesClientImpl(DeviceRegistryManagementClientImpl client) {
         this.service = RestProxy.create(AssetEndpointProfilesService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for DeviceRegistryClientAssetEndpointProfiles to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for DeviceRegistryManagementClientAssetEndpointProfiles to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DeviceRegistryClient")
+    @ServiceInterface(name = "DeviceRegistryManage")
     public interface AssetEndpointProfilesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/assetEndpointProfiles/{assetEndpointProfileName}")

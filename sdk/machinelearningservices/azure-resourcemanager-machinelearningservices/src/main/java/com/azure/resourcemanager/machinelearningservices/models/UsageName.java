@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The Usage Names. */
 @Immutable
 public final class UsageName {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageName.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(UsageName.class);
 
     /*
      * The name of the resource.

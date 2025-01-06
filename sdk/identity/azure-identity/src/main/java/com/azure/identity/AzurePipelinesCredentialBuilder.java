@@ -74,7 +74,8 @@ public class AzurePipelinesCredentialBuilder extends AadCredentialBuilderBase<Az
      * @param tokenCachePersistenceOptions the token cache configuration options
      * @return An updated instance of this builder with the token cache options configured.
      */
-    public AzurePipelinesCredentialBuilder tokenCachePersistenceOptions(TokenCachePersistenceOptions tokenCachePersistenceOptions) {
+    public AzurePipelinesCredentialBuilder
+        tokenCachePersistenceOptions(TokenCachePersistenceOptions tokenCachePersistenceOptions) {
         this.identityClientOptions.setTokenCacheOptions(tokenCachePersistenceOptions);
         return this;
     }
@@ -102,13 +103,12 @@ public class AzurePipelinesCredentialBuilder extends AadCredentialBuilderBase<Az
 
         String oidcEndpoint = configuration.get("SYSTEM_OIDCREQUESTURI");
 
-        ValidationUtil.validate(getClass().getSimpleName(),
-            LOGGER,
+        ValidationUtil.validate(getClass().getSimpleName(), LOGGER,
             Arrays.asList("clientId", "tenantId", "serviceConnectionId", "systemAccessToken", "oidcEndpoint"),
             Arrays.asList(clientId, tenantId, serviceConnectionId, this.systemAccessToken, oidcEndpoint));
 
-        String requestUrl = String.format("%s?api-version=%s&serviceConnectionId=%s",
-            oidcEndpoint, OIDC_API_VERSION, serviceConnectionId);
+        String requestUrl = String.format("%s?api-version=%s&serviceConnectionId=%s", oidcEndpoint, OIDC_API_VERSION,
+            serviceConnectionId);
 
         // We need to make a best effort to log these headers.
         // If the user gives us options, we'll sneak the headers in, or make an options with them.
@@ -122,6 +122,7 @@ public class AzurePipelinesCredentialBuilder extends AadCredentialBuilderBase<Az
             options.addAllowedHeaderName("x-msedge-ref");
             identityClientOptions.setHttpLogOptions(options);
         }
-        return new AzurePipelinesCredential(clientId, tenantId, requestUrl, systemAccessToken, identityClientOptions.clone());
+        return new AzurePipelinesCredential(clientId, tenantId, requestUrl, systemAccessToken,
+            identityClientOptions.clone());
     }
 }

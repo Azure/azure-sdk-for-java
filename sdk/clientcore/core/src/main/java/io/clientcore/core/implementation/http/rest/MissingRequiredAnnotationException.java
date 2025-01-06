@@ -32,7 +32,7 @@ public class MissingRequiredAnnotationException extends RuntimeException {
      * @param swaggerInterfaceMethod The swagger interface method that is missing the required annotation.
      */
     public MissingRequiredAnnotationException(List<Class<? extends Annotation>> requiredAnnotationOptions,
-                                              Method swaggerInterfaceMethod) {
+        Method swaggerInterfaceMethod) {
 
         super("Either " + optionsToString(requiredAnnotationOptions) + " annotation must be defined on the method "
             + methodFullName(swaggerInterfaceMethod) + ".");

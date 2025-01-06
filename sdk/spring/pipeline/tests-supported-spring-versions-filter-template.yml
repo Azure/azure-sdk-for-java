@@ -1,0 +1,28 @@
+parameters:
+  - name: TestName
+    type: string
+    default: 'NotSet'
+  - name: TimeoutInMinutes
+    type: number
+    default: 240
+  - name: TestOptions
+    type: string
+    default: "-DskipSpringITs=false -Dcompiler.failondeprecatedstatus=-"
+  - name: TestClassPatterns
+    type: string
+    default: '*.*IT'
+  - name: TestResourceDirectories
+    type: object
+    default: []
+
+stages:
+  - template: /sdk/spring/pipeline/tests-supported-spring-versions-template.yml
+    parameters:
+      TestName: ${{ parameters.TestName }}
+      TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
+      TestOptions: ' ${{ parameters.TestOptions }} -Dit.test=${{ parameters.TestClassPatterns }} '
+      TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
+      Artifacts:
+        - name: spring-cloud-azure-integration-tests
+          groupId: com.azure.spring
+          safeName: springcloudazureintegrationtests

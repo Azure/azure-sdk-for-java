@@ -20,44 +20,36 @@ public final class DimensionsImpl implements Dimensions {
 
     private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    public DimensionsImpl(
-        DimensionsClient innerClient, com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
+    public DimensionsImpl(DimensionsClient innerClient,
+        com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Dimension> list(String scope) {
         PagedIterable<DimensionInner> inner = this.serviceClient().list(scope);
-        return Utils.mapPage(inner, inner1 -> new DimensionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DimensionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Dimension> list(
-        String scope, String filter, String expand, String skiptoken, Integer top, Context context) {
-        PagedIterable<DimensionInner> inner = this.serviceClient().list(scope, filter, expand, skiptoken, top, context);
-        return Utils.mapPage(inner, inner1 -> new DimensionImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<Dimension> byExternalCloudProviderType(
-        ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId) {
-        PagedIterable<DimensionInner> inner =
-            this.serviceClient().byExternalCloudProviderType(externalCloudProviderType, externalCloudProviderId);
-        return Utils.mapPage(inner, inner1 -> new DimensionImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<Dimension> byExternalCloudProviderType(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
-        String filter,
-        String expand,
-        String skiptoken,
-        Integer top,
+    public PagedIterable<Dimension> list(String scope, String filter, String expand, String skiptoken, Integer top,
         Context context) {
-        PagedIterable<DimensionInner> inner =
-            this
-                .serviceClient()
-                .byExternalCloudProviderType(
-                    externalCloudProviderType, externalCloudProviderId, filter, expand, skiptoken, top, context);
-        return Utils.mapPage(inner, inner1 -> new DimensionImpl(inner1, this.manager()));
+        PagedIterable<DimensionInner> inner = this.serviceClient().list(scope, filter, expand, skiptoken, top, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DimensionImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<Dimension> byExternalCloudProviderType(ExternalCloudProviderType externalCloudProviderType,
+        String externalCloudProviderId) {
+        PagedIterable<DimensionInner> inner
+            = this.serviceClient().byExternalCloudProviderType(externalCloudProviderType, externalCloudProviderId);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DimensionImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<Dimension> byExternalCloudProviderType(ExternalCloudProviderType externalCloudProviderType,
+        String externalCloudProviderId, String filter, String expand, String skiptoken, Integer top, Context context) {
+        PagedIterable<DimensionInner> inner = this.serviceClient()
+            .byExternalCloudProviderType(externalCloudProviderType, externalCloudProviderId, filter, expand, skiptoken,
+                top, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DimensionImpl(inner1, this.manager()));
     }
 
     private DimensionsClient serviceClient() {

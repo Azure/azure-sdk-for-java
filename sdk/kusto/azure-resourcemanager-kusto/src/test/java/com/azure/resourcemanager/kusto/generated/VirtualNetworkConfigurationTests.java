@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualNetworkConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualNetworkConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"subnetId\":\"bcryffdfd\",\"enginePublicIpId\":\"sy\",\"dataManagementPublicIpId\":\"expa\",\"state\":\"Disabled\"}")
-                .toObject(VirtualNetworkConfiguration.class);
+        VirtualNetworkConfiguration model = BinaryData.fromString(
+            "{\"subnetId\":\"bcryffdfd\",\"enginePublicIpId\":\"sy\",\"dataManagementPublicIpId\":\"expa\",\"state\":\"Disabled\"}")
+            .toObject(VirtualNetworkConfiguration.class);
         Assertions.assertEquals("bcryffdfd", model.subnetId());
         Assertions.assertEquals("sy", model.enginePublicIpId());
         Assertions.assertEquals("expa", model.dataManagementPublicIpId());
@@ -25,12 +23,10 @@ public final class VirtualNetworkConfigurationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualNetworkConfiguration model =
-            new VirtualNetworkConfiguration()
-                .withSubnetId("bcryffdfd")
-                .withEnginePublicIpId("sy")
-                .withDataManagementPublicIpId("expa")
-                .withState(VnetState.DISABLED);
+        VirtualNetworkConfiguration model = new VirtualNetworkConfiguration().withSubnetId("bcryffdfd")
+            .withEnginePublicIpId("sy")
+            .withDataManagementPublicIpId("expa")
+            .withState(VnetState.DISABLED);
         model = BinaryData.fromObject(model).toObject(VirtualNetworkConfiguration.class);
         Assertions.assertEquals("bcryffdfd", model.subnetId());
         Assertions.assertEquals("sy", model.enginePublicIpId());

@@ -35,7 +35,7 @@ public class RadiologyInsightsClientTest extends RadiologyInsightsClientTestBase
             testRadiologyInsightsWithResponse(request -> {
 
                 RadiologyInsightsInferenceResult riResponse = setPlaybackSyncPollerPollInterval(
-                        getClient().beginInferRadiologyInsights("job1715007505099", request)).getFinalResult();
+                    getClient().beginInferRadiologyInsights("job1715007505099", request)).getFinalResult();
 
                 List<RadiologyInsightsPatientResult> patients = riResponse.getPatientResults();
                 assertEquals(1, patients.size());

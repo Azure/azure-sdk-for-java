@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ArmTemplates. */
+/**
+ * Resource collection API of ArmTemplates.
+ */
 public interface ArmTemplates {
     /**
      * List azure resource manager templates in a given artifact source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -25,7 +27,7 @@ public interface ArmTemplates {
 
     /**
      * List azure resource manager templates in a given artifact source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -39,19 +41,12 @@ public interface ArmTemplates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ArmTemplate> list(
-        String resourceGroupName,
-        String labName,
-        String artifactSourceName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<ArmTemplate> list(String resourceGroupName, String labName, String artifactSourceName, String expand,
+        String filter, Integer top, String orderby, Context context);
 
     /**
      * Get azure resource manager template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -63,17 +58,12 @@ public interface ArmTemplates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure resource manager template along with {@link Response}.
      */
-    Response<ArmTemplate> getWithResponse(
-        String resourceGroupName,
-        String labName,
-        String artifactSourceName,
-        String name,
-        String expand,
-        Context context);
+    Response<ArmTemplate> getWithResponse(String resourceGroupName, String labName, String artifactSourceName,
+        String name, String expand, Context context);
 
     /**
      * Get azure resource manager template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.

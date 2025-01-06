@@ -26,8 +26,8 @@ class AutoscaleSettingImpl
 
     private final ClientLogger logger = new ClientLogger(getClass());
 
-    AutoscaleSettingImpl(
-        String name, final AutoscaleSettingResourceInner innerModel, final MonitorManager monitorManager) {
+    AutoscaleSettingImpl(String name, final AutoscaleSettingResourceInner innerModel,
+        final MonitorManager monitorManager) {
         super(name, innerModel, monitorManager);
         if (isInCreateMode()) {
             this.innerModel().withEnabled(true);
@@ -215,8 +215,7 @@ class AutoscaleSettingImpl
 
     @Override
     public Mono<AutoscaleSetting> createResourceAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getAutoscaleSettings()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
@@ -225,8 +224,7 @@ class AutoscaleSettingImpl
 
     @Override
     protected Mono<AutoscaleSettingResourceInner> getInnerAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getAutoscaleSettings()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());

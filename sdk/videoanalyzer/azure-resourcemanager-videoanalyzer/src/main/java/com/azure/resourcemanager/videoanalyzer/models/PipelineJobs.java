@@ -36,8 +36,8 @@ public interface PipelineJobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of PipelineJob items as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<PipelineJob> list(
-        String resourceGroupName, String accountName, String filter, Integer top, Context context);
+    PagedIterable<PipelineJob> list(String resourceGroupName, String accountName, String filter, Integer top,
+        Context context);
 
     /**
      * Retrieves a specific pipeline job by name. If a pipeline job with that name has been previously created, the call
@@ -68,8 +68,8 @@ public interface PipelineJobs {
      * @return pipeline job represents a unique instance of a batch topology, used for offline processing of selected
      *     portions of archived content along with {@link Response}.
      */
-    Response<PipelineJob> getWithResponse(
-        String resourceGroupName, String accountName, String pipelineJobName, Context context);
+    Response<PipelineJob> getWithResponse(String resourceGroupName, String accountName, String pipelineJobName,
+        Context context);
 
     /**
      * Deletes a pipeline job with the given name.
@@ -95,8 +95,8 @@ public interface PipelineJobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String pipelineJobName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String pipelineJobName,
+        Context context);
 
     /**
      * Cancels a pipeline job with the given name.

@@ -15,102 +15,33 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationRuntimeMonitoringDataInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationRuntimeMonitoringDataInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"jfrnxousxauzlwv\",\"nodes\":[{\"nodeName\":\"ohqfzizv\",\"availableMemoryInMB\":1707376707,\"cpuUtilization\":1537872857,\"concurrentJobsLimit\":898982207,\"concurrentJobsRunning\":2035263923,\"maxConcurrentJobs\":1281920058,\"sentBytes\":12.24882,\"receivedBytes\":47.57043,\"\":{\"lu\":\"dataovmribiattg\",\"fhnykzcugs\":\"datafotang\",\"xmcuqud\":\"datavxwlmzqwmvtxnj\"}},{\"nodeName\":\"vclx\",\"availableMemoryInMB\":1138354387,\"cpuUtilization\":267466114,\"concurrentJobsLimit\":1887329670,\"concurrentJobsRunning\":1186529927,\"maxConcurrentJobs\":1392311287,\"sentBytes\":75.20067,\"receivedBytes\":24.185776,\"\":{\"oxgjiuqhibt\":\"datazphdugneiknp\",\"pqwjedm\":\"dataz\",\"lkm\":\"datarrxxgewpktvq\"}},{\"nodeName\":\"zoyhlfbcgwg\",\"availableMemoryInMB\":1700222183,\"cpuUtilization\":325536454,\"concurrentJobsLimit\":809854276,\"concurrentJobsRunning\":189021776,\"maxConcurrentJobs\":1567586671,\"sentBytes\":49.565147,\"receivedBytes\":30.378746,\"\":{\"zpofoiyjwpfilk\":\"dataujqlafcbahh\",\"ogphuartvtiu\":\"datakkholvdndvia\",\"ahmnxhkxjqirw\":\"datayefchnm\"}},{\"nodeName\":\"eooxffifh\",\"availableMemoryInMB\":2004143928,\"cpuUtilization\":109793124,\"concurrentJobsLimit\":225627049,\"concurrentJobsRunning\":682704724,\"maxConcurrentJobs\":557932259,\"sentBytes\":78.87173,\"receivedBytes\":99.20141,\"\":{\"abo\":\"dataamhsycxhxzgazt\"}}]}")
-                .toObject(IntegrationRuntimeMonitoringDataInner.class);
-        Assertions.assertEquals("jfrnxousxauzlwv", model.name());
+        IntegrationRuntimeMonitoringDataInner model = BinaryData.fromString(
+            "{\"name\":\"hmgkbrpyy\",\"nodes\":[{\"nodeName\":\"nuqqkpikadrgvt\",\"availableMemoryInMB\":1163936229,\"cpuUtilization\":424672875,\"concurrentJobsLimit\":122504841,\"concurrentJobsRunning\":1620063095,\"maxConcurrentJobs\":1131716397,\"sentBytes\":92.13511,\"receivedBytes\":16.016691,\"\":{\"zzmhjrunmpxttd\":\"datasiarbutrcvpn\",\"nbtkcxywnytnr\":\"datahrbnlankxmyskpbh\",\"qidybyx\":\"datayn\"}},{\"nodeName\":\"fclhaaxdbabphlwr\",\"availableMemoryInMB\":818210611,\"cpuUtilization\":285105336,\"concurrentJobsLimit\":1003967781,\"concurrentJobsRunning\":1927626418,\"maxConcurrentJobs\":801364840,\"sentBytes\":56.913887,\"receivedBytes\":98.78118,\"\":{\"bt\":\"dataazt\",\"ckzywbiexzfeyue\":\"datawrqpue\",\"zyoxaepdkzjan\":\"dataxibxujwbhqwalm\",\"hdwbavxbniwdjs\":\"dataux\"}},{\"nodeName\":\"tsdbpgn\",\"availableMemoryInMB\":862771413,\"cpuUtilization\":686373242,\"concurrentJobsLimit\":999605731,\"concurrentJobsRunning\":1621747655,\"maxConcurrentJobs\":936315847,\"sentBytes\":65.9889,\"receivedBytes\":6.1180353,\"\":{\"wtctyqi\":\"datacuh\",\"bhvgy\":\"datalbbovplw\",\"svmkfssxquk\":\"datagu\",\"mg\":\"datafpl\"}}]}")
+            .toObject(IntegrationRuntimeMonitoringDataInner.class);
+        Assertions.assertEquals("hmgkbrpyy", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeMonitoringDataInner model =
-            new IntegrationRuntimeMonitoringDataInner()
-                .withName("jfrnxousxauzlwv")
-                .withNodes(
-                    Arrays
-                        .asList(
-                            new IntegrationRuntimeNodeMonitoringData()
-                                .withAdditionalProperties(
-                                    mapOf(
-                                        "nodeName",
-                                        "ohqfzizv",
-                                        "cpuUtilization",
-                                        1537872857,
-                                        "receivedBytes",
-                                        47.57043f,
-                                        "concurrentJobsLimit",
-                                        898982207,
-                                        "concurrentJobsRunning",
-                                        2035263923,
-                                        "maxConcurrentJobs",
-                                        1281920058,
-                                        "availableMemoryInMB",
-                                        1707376707,
-                                        "sentBytes",
-                                        12.24882f)),
-                            new IntegrationRuntimeNodeMonitoringData()
-                                .withAdditionalProperties(
-                                    mapOf(
-                                        "nodeName",
-                                        "vclx",
-                                        "cpuUtilization",
-                                        267466114,
-                                        "receivedBytes",
-                                        24.185776f,
-                                        "concurrentJobsLimit",
-                                        1887329670,
-                                        "concurrentJobsRunning",
-                                        1186529927,
-                                        "maxConcurrentJobs",
-                                        1392311287,
-                                        "availableMemoryInMB",
-                                        1138354387,
-                                        "sentBytes",
-                                        75.20067f)),
-                            new IntegrationRuntimeNodeMonitoringData()
-                                .withAdditionalProperties(
-                                    mapOf(
-                                        "nodeName",
-                                        "zoyhlfbcgwg",
-                                        "cpuUtilization",
-                                        325536454,
-                                        "receivedBytes",
-                                        30.378746f,
-                                        "concurrentJobsLimit",
-                                        809854276,
-                                        "concurrentJobsRunning",
-                                        189021776,
-                                        "maxConcurrentJobs",
-                                        1567586671,
-                                        "availableMemoryInMB",
-                                        1700222183,
-                                        "sentBytes",
-                                        49.565147f)),
-                            new IntegrationRuntimeNodeMonitoringData()
-                                .withAdditionalProperties(
-                                    mapOf(
-                                        "nodeName",
-                                        "eooxffifh",
-                                        "cpuUtilization",
-                                        109793124,
-                                        "receivedBytes",
-                                        99.20141f,
-                                        "concurrentJobsLimit",
-                                        225627049,
-                                        "concurrentJobsRunning",
-                                        682704724,
-                                        "maxConcurrentJobs",
-                                        557932259,
-                                        "availableMemoryInMB",
-                                        2004143928,
-                                        "sentBytes",
-                                        78.87173f))));
+        IntegrationRuntimeMonitoringDataInner model = new IntegrationRuntimeMonitoringDataInner().withName("hmgkbrpyy")
+            .withNodes(Arrays.asList(
+                new IntegrationRuntimeNodeMonitoringData().withAdditionalProperties(
+                    mapOf("nodeName", "nuqqkpikadrgvt", "cpuUtilization", 424672875, "receivedBytes", 16.016691f,
+                        "concurrentJobsLimit", 122504841, "concurrentJobsRunning", 1620063095, "maxConcurrentJobs",
+                        1131716397, "availableMemoryInMB", 1163936229, "sentBytes", 92.13511f)),
+                new IntegrationRuntimeNodeMonitoringData().withAdditionalProperties(
+                    mapOf("nodeName", "fclhaaxdbabphlwr", "cpuUtilization", 285105336, "receivedBytes", 98.78118f,
+                        "concurrentJobsLimit", 1003967781, "concurrentJobsRunning", 1927626418, "maxConcurrentJobs",
+                        801364840, "availableMemoryInMB", 818210611, "sentBytes", 56.913887f)),
+                new IntegrationRuntimeNodeMonitoringData()
+                    .withAdditionalProperties(mapOf("nodeName", "tsdbpgn", "cpuUtilization", 686373242, "receivedBytes",
+                        6.1180353f, "concurrentJobsLimit", 999605731, "concurrentJobsRunning", 1621747655,
+                        "maxConcurrentJobs", 936315847, "availableMemoryInMB", 862771413, "sentBytes", 65.9889f))));
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeMonitoringDataInner.class);
-        Assertions.assertEquals("jfrnxousxauzlwv", model.name());
+        Assertions.assertEquals("hmgkbrpyy", model.name());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

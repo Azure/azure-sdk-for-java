@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-mediaservices</artifactId>
-    <version>2.4.0-beta.1</version>
+    <version>2.4.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -45,15 +45,11 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 
 ### Authentication
 
-By default, Azure Active Directory token authentication depends on correct configuration of the following environment variables.
+Microsoft Entra ID token authentication relies on the [credential class][azure_identity_credentials] from [Azure Identity][azure_identity] package.
 
-- `AZURE_CLIENT_ID` for Azure client ID.
-- `AZURE_TENANT_ID` for Azure tenant ID.
-- `AZURE_CLIENT_SECRET` or `AZURE_CLIENT_CERTIFICATE_PATH` for client secret or client certificate.
+Azure subscription ID can be configured via `AZURE_SUBSCRIPTION_ID` environment variable.
 
-In addition, Azure subscription ID can be configured via `AZURE_SUBSCRIPTION_ID` environment variable.
-
-With above configuration, `azure` client can be authenticated using the following code:
+Assuming the use of the `DefaultAzureCredential` credential class, the client can be authenticated using the following code:
 
 ```java
 AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
@@ -76,18 +72,19 @@ See [API design][design] for general introduction on design and key concepts on 
 
 ```java
 // storage account
-StorageAccount storageAccount = storageManager.storageAccounts().define(STORAGE_ACCOUNT)
+StorageAccount storageAccount = storageManager.storageAccounts()
+    .define(STORAGE_ACCOUNT)
     .withRegion(REGION)
     .withExistingResourceGroup(resourceGroup)
     .create();
 
 // media service account
-MediaService account = manager.mediaservices().define(ACCOUNT)
+MediaService account = manager.mediaservices()
+    .define(ACCOUNT)
     .withRegion(Region.US_WEST3)
     .withExistingResourceGroup(resourceGroup)
     .withStorageAccounts(Collections.singletonList(
-        new com.azure.resourcemanager.mediaservices.models.StorageAccount()
-            .withId(storageAccount.id())
+        new com.azure.resourcemanager.mediaservices.models.StorageAccount().withId(storageAccount.id())
             .withType(StorageAccountType.PRIMARY)))
     .create();
 
@@ -95,26 +92,23 @@ MediaService account = manager.mediaservices().define(ACCOUNT)
 Transform transform = manager.transforms()
     .define("transform1")
     .withExistingMediaService(resourceGroup, ACCOUNT)
-    .withOutputs(Collections.singletonList(new TransformOutput()
-        .withPreset(new BuiltInStandardEncoderPreset()
-            .withPresetName(EncoderNamedPreset.CONTENT_AWARE_ENCODING))))
+    .withOutputs(Collections.singletonList(new TransformOutput().withPreset(
+        new BuiltInStandardEncoderPreset().withPresetName(EncoderNamedPreset.CONTENT_AWARE_ENCODING))))
     .create();
 
 // output asset
-Asset asset = manager.assets()
-    .define("output1")
-    .withExistingMediaService(resourceGroup, ACCOUNT)
-    .create();
+Asset asset = manager.assets().define("output1").withExistingMediaService(resourceGroup, ACCOUNT).create();
 
 // input uri
-String jobHttpBaseUri = "https://nimbuscdn-nimbuspm.streaming.mediaservices.windows.net/2b533311-b215-4409-80af-529c3e853622/";
+String jobHttpBaseUri
+    = "https://nimbuscdn-nimbuspm.streaming.mediaservices.windows.net/2b533311-b215-4409-80af-529c3e853622/";
 String jobFile = "Ignite-short.mp4";
 
 // job
-Job job = manager.jobs().define("job1")
+Job job = manager.jobs()
+    .define("job1")
     .withExistingTransform(resourceGroup, ACCOUNT, "transform1")
-    .withInput(new JobInputHttp()
-        .withFiles(Collections.singletonList(jobFile))
+    .withInput(new JobInputHttp().withFiles(Collections.singletonList(jobFile))
         .withBaseUri(jobHttpBaseUri)
         .withLabel("input1"))
     .withOutputs(Collections.singletonList(new JobOutputAsset().withAssetName("output1")))
@@ -150,12 +144,15 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 <!-- LINKS -->
 [survey]: https://microsoft.qualtrics.com/jfe/form/SV_ehN0lIk2FKEBkwd?Q_CHL=DOCS
 [docs]: https://azure.github.io/azure-sdk-for-java/
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[jdk]: https://learn.microsoft.com/azure/developer/java/fundamentals/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
+[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
 [azure_core_http_netty]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-netty
 [authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/AUTH.md
 [design]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/DESIGN.md
 [cg]: https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fmediaservices%2Fazure-resourcemanager-mediaservices%2FREADME.png)

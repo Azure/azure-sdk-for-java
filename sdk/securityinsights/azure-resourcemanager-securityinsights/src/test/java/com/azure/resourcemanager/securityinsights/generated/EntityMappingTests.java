@@ -15,23 +15,20 @@ public final class EntityMappingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EntityMapping model = BinaryData.fromString(
-            "{\"entityType\":\"Malware\",\"fieldMappings\":[{\"identifier\":\"vuzqymt\",\"columnName\":\"wogtgitsq\"},{\"identifier\":\"vbrzcdb\",\"columnName\":\"fzndscxmxeatkd\"},{\"identifier\":\"wnrdjyibqbnaom\",\"columnName\":\"rmkuh\"},{\"identifier\":\"xljalfihc\",\"columnName\":\"obcancdexxqcw\"}]}")
+            "{\"entityType\":\"AzureResource\",\"fieldMappings\":[{\"identifier\":\"vmm\",\"columnName\":\"pqfrtqlkz\"}]}")
             .toObject(EntityMapping.class);
-        Assertions.assertEquals(EntityMappingType.MALWARE, model.entityType());
-        Assertions.assertEquals("vuzqymt", model.fieldMappings().get(0).identifier());
-        Assertions.assertEquals("wogtgitsq", model.fieldMappings().get(0).columnName());
+        Assertions.assertEquals(EntityMappingType.AZURE_RESOURCE, model.entityType());
+        Assertions.assertEquals("vmm", model.fieldMappings().get(0).identifier());
+        Assertions.assertEquals("pqfrtqlkz", model.fieldMappings().get(0).columnName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EntityMapping model = new EntityMapping().withEntityType(EntityMappingType.MALWARE)
-            .withFieldMappings(Arrays.asList(new FieldMapping().withIdentifier("vuzqymt").withColumnName("wogtgitsq"),
-                new FieldMapping().withIdentifier("vbrzcdb").withColumnName("fzndscxmxeatkd"),
-                new FieldMapping().withIdentifier("wnrdjyibqbnaom").withColumnName("rmkuh"),
-                new FieldMapping().withIdentifier("xljalfihc").withColumnName("obcancdexxqcw")));
+        EntityMapping model = new EntityMapping().withEntityType(EntityMappingType.AZURE_RESOURCE)
+            .withFieldMappings(Arrays.asList(new FieldMapping().withIdentifier("vmm").withColumnName("pqfrtqlkz")));
         model = BinaryData.fromObject(model).toObject(EntityMapping.class);
-        Assertions.assertEquals(EntityMappingType.MALWARE, model.entityType());
-        Assertions.assertEquals("vuzqymt", model.fieldMappings().get(0).identifier());
-        Assertions.assertEquals("wogtgitsq", model.fieldMappings().get(0).columnName());
+        Assertions.assertEquals(EntityMappingType.AZURE_RESOURCE, model.entityType());
+        Assertions.assertEquals("vmm", model.fieldMappings().get(0).identifier());
+        Assertions.assertEquals("pqfrtqlkz", model.fieldMappings().get(0).columnName());
     }
 }

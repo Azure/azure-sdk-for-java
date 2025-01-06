@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of NeighborGroups. */
+/**
+ * Resource collection API of NeighborGroups.
+ */
 public interface NeighborGroups {
     /**
      * Retrieves details of neighbor Group using GET method.
-     *
-     * <p>Gets the Neighbor Group.
-     *
+     * 
+     * Gets the Neighbor Group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param context The context to associate with this operation.
@@ -23,14 +25,14 @@ public interface NeighborGroups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Neighbor Group along with {@link Response}.
      */
-    Response<NeighborGroup> getByResourceGroupWithResponse(
-        String resourceGroupName, String neighborGroupName, Context context);
+    Response<NeighborGroup> getByResourceGroupWithResponse(String resourceGroupName, String neighborGroupName,
+        Context context);
 
     /**
      * Retrieves details of neighbor Group using GET method.
-     *
-     * <p>Gets the Neighbor Group.
-     *
+     * 
+     * Gets the Neighbor Group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,9 +44,9 @@ public interface NeighborGroups {
 
     /**
      * Deletes a Neighbor Group.
-     *
-     * <p>Implements Neighbor Group DELETE method.
-     *
+     * 
+     * Implements Neighbor Group DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,9 +57,9 @@ public interface NeighborGroups {
 
     /**
      * Deletes a Neighbor Group.
-     *
-     * <p>Implements Neighbor Group DELETE method.
-     *
+     * 
+     * Implements Neighbor Group DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param context The context to associate with this operation.
@@ -69,9 +71,9 @@ public interface NeighborGroups {
 
     /**
      * List Neighbor Groups by resource group.
-     *
-     * <p>Displays NeighborGroups list by resource group GET method.
-     *
+     * 
+     * Displays NeighborGroups list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -82,9 +84,9 @@ public interface NeighborGroups {
 
     /**
      * List Neighbor Groups by resource group.
-     *
-     * <p>Displays NeighborGroups list by resource group GET method.
-     *
+     * 
+     * Displays NeighborGroups list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -96,9 +98,9 @@ public interface NeighborGroups {
 
     /**
      * List Neighbor Groups by subscription.
-     *
-     * <p>Displays NeighborGroups list by subscription GET method.
-     *
+     * 
+     * Displays NeighborGroups list by subscription GET method.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Neighbor Group as paginated response with {@link PagedIterable}.
@@ -107,9 +109,9 @@ public interface NeighborGroups {
 
     /**
      * List Neighbor Groups by subscription.
-     *
-     * <p>Displays NeighborGroups list by subscription GET method.
-     *
+     * 
+     * Displays NeighborGroups list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -120,9 +122,9 @@ public interface NeighborGroups {
 
     /**
      * Retrieves details of neighbor Group using GET method.
-     *
-     * <p>Gets the Neighbor Group.
-     *
+     * 
+     * Gets the Neighbor Group.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -133,9 +135,9 @@ public interface NeighborGroups {
 
     /**
      * Retrieves details of neighbor Group using GET method.
-     *
-     * <p>Gets the Neighbor Group.
-     *
+     * 
+     * Gets the Neighbor Group.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -147,9 +149,9 @@ public interface NeighborGroups {
 
     /**
      * Deletes a Neighbor Group.
-     *
-     * <p>Implements Neighbor Group DELETE method.
-     *
+     * 
+     * Implements Neighbor Group DELETE method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -159,9 +161,9 @@ public interface NeighborGroups {
 
     /**
      * Deletes a Neighbor Group.
-     *
-     * <p>Implements Neighbor Group DELETE method.
-     *
+     * 
+     * Implements Neighbor Group DELETE method.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -172,7 +174,7 @@ public interface NeighborGroups {
 
     /**
      * Begins definition for a new NeighborGroup resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new NeighborGroup definition.
      */

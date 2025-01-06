@@ -14,8 +14,8 @@ public final class SqlPoolOperationImpl implements SqlPoolOperation {
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    SqlPoolOperationImpl(
-        SqlPoolOperationInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    SqlPoolOperationImpl(SqlPoolOperationInner innerObject,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

@@ -26,7 +26,8 @@ public class FutureTemperatureParameters implements JsonSerializable<FutureTempe
         this.properties = properties;
     }
 
-    public FutureTemperatureParameters() {}
+    public FutureTemperatureParameters() {
+    }
 
     public String getType() {
         return type;

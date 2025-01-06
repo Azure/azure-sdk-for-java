@@ -5,39 +5,41 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The SpatialAnalysisPersonDistanceZoneEvents model. */
+/**
+ * The SpatialAnalysisPersonDistanceZoneEvents model.
+ */
 @Fluent
-public final class SpatialAnalysisPersonDistanceZoneEvents {
+public final class SpatialAnalysisPersonDistanceZoneEvents
+    implements JsonSerializable<SpatialAnalysisPersonDistanceZoneEvents> {
     /*
      * The named zone.
      */
-    @JsonProperty(value = "zone", required = true)
-    private NamedPolygonBase zone;
+    private final NamedPolygonBase zone;
 
     /*
      * The event configuration.
      */
-    @JsonProperty(value = "events")
     private List<SpatialAnalysisPersonDistanceEvent> events;
 
     /**
      * Creates an instance of SpatialAnalysisPersonDistanceZoneEvents class.
-     *
+     * 
      * @param zone the zone value to set.
      */
-    @JsonCreator
-    public SpatialAnalysisPersonDistanceZoneEvents(
-            @JsonProperty(value = "zone", required = true) NamedPolygonBase zone) {
+    public SpatialAnalysisPersonDistanceZoneEvents(NamedPolygonBase zone) {
         this.zone = zone;
     }
 
     /**
      * Get the zone property: The named zone.
-     *
+     * 
      * @return the zone value.
      */
     public NamedPolygonBase getZone() {
@@ -46,7 +48,7 @@ public final class SpatialAnalysisPersonDistanceZoneEvents {
 
     /**
      * Get the events property: The event configuration.
-     *
+     * 
      * @return the events value.
      */
     public List<SpatialAnalysisPersonDistanceEvent> getEvents() {
@@ -55,12 +57,61 @@ public final class SpatialAnalysisPersonDistanceZoneEvents {
 
     /**
      * Set the events property: The event configuration.
-     *
+     * 
      * @param events the events value to set.
      * @return the SpatialAnalysisPersonDistanceZoneEvents object itself.
      */
     public SpatialAnalysisPersonDistanceZoneEvents setEvents(List<SpatialAnalysisPersonDistanceEvent> events) {
         this.events = events;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("zone", this.zone);
+        jsonWriter.writeArrayField("events", this.events, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SpatialAnalysisPersonDistanceZoneEvents from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SpatialAnalysisPersonDistanceZoneEvents if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SpatialAnalysisPersonDistanceZoneEvents.
+     */
+    public static SpatialAnalysisPersonDistanceZoneEvents fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean zoneFound = false;
+            NamedPolygonBase zone = null;
+            List<SpatialAnalysisPersonDistanceEvent> events = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("zone".equals(fieldName)) {
+                    zone = NamedPolygonBase.fromJson(reader);
+                    zoneFound = true;
+                } else if ("events".equals(fieldName)) {
+                    events = reader.readArray(reader1 -> SpatialAnalysisPersonDistanceEvent.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (zoneFound) {
+                SpatialAnalysisPersonDistanceZoneEvents deserializedSpatialAnalysisPersonDistanceZoneEvents
+                    = new SpatialAnalysisPersonDistanceZoneEvents(zone);
+                deserializedSpatialAnalysisPersonDistanceZoneEvents.events = events;
+
+                return deserializedSpatialAnalysisPersonDistanceZoneEvents;
+            }
+            throw new IllegalStateException("Missing required property: zone");
+        });
     }
 }

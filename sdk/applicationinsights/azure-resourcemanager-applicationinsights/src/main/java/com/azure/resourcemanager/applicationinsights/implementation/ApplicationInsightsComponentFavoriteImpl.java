@@ -15,8 +15,7 @@ public final class ApplicationInsightsComponentFavoriteImpl implements Applicati
 
     private final com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager;
 
-    ApplicationInsightsComponentFavoriteImpl(
-        ApplicationInsightsComponentFavoriteInner innerObject,
+    ApplicationInsightsComponentFavoriteImpl(ApplicationInsightsComponentFavoriteInner innerObject,
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

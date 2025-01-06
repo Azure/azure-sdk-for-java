@@ -15,8 +15,7 @@ public final class NetworkStatusContractImpl implements NetworkStatusContract {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    NetworkStatusContractImpl(
-        NetworkStatusContractInner innerObject,
+    NetworkStatusContractImpl(NetworkStatusContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -38,24 +38,29 @@ public class TokenCustomExpirationTimeHelper {
         return argumentsList.stream();
     }
 
-    static void assertTokenExpirationWithinAllowedDeviation(Duration expectedTokenExpiration, OffsetDateTime tokenExpiresIn) {
+    static void assertTokenExpirationWithinAllowedDeviation(Duration expectedTokenExpiration,
+        OffsetDateTime tokenExpiresIn) {
         if (getTestMode() != TestMode.PLAYBACK) {
-            Duration expectedExpiration = expectedTokenExpiration == null ? Duration.ofDays(1) : expectedTokenExpiration;
+            Duration expectedExpiration
+                = expectedTokenExpiration == null ? Duration.ofDays(1) : expectedTokenExpiration;
             OffsetDateTime utcDateTimeNow = OffsetDateTime.now(Clock.systemUTC());
             long tokenSeconds = ChronoUnit.SECONDS.between(utcDateTimeNow, tokenExpiresIn);
             long expectedTime = expectedExpiration.getSeconds();
             long timeDiff = Math.abs(expectedTime - tokenSeconds);
             double allowedTimeDiff = expectedTime * TOKEN_EXPIRATION_ALLOWED_DEVIATION;
-            assertTrue(timeDiff < allowedTimeDiff, getTokenExpirationOutsideAllowedDeviationErrorMessage(expectedTokenExpiration, tokenSeconds));
+            assertTrue(timeDiff < allowedTimeDiff,
+                getTokenExpirationOutsideAllowedDeviationErrorMessage(expectedTokenExpiration, tokenSeconds));
         }
     }
 
-    private static String getTokenExpirationOutsideAllowedDeviationErrorMessage(Duration tokenExpiresIn, long actualExpiration) {
-        long tokenExpiresInMinutes = tokenExpiresIn == null ? MAX_TOKEN_EXPIRATION_IN_MINUTES : tokenExpiresIn.getSeconds() / 60;
+    private static String getTokenExpirationOutsideAllowedDeviationErrorMessage(Duration tokenExpiresIn,
+        long actualExpiration) {
+        long tokenExpiresInMinutes
+            = tokenExpiresIn == null ? MAX_TOKEN_EXPIRATION_IN_MINUTES : tokenExpiresIn.getSeconds() / 60;
         double actualExpirationInMinutes = actualExpiration / 60;
-        return String.format("Token expiration is outside of allowed %d%% deviation. Expected minutes: %d, actual minutes: %s",
-            (int) (TOKEN_EXPIRATION_ALLOWED_DEVIATION * 100),
-            tokenExpiresInMinutes,
+        return String.format(
+            "Token expiration is outside of allowed %d%% deviation. Expected minutes: %d, actual minutes: %s",
+            (int) (TOKEN_EXPIRATION_ALLOWED_DEVIATION * 100), tokenExpiresInMinutes,
             Math.round(actualExpirationInMinutes * 100) / 100);
     }
 

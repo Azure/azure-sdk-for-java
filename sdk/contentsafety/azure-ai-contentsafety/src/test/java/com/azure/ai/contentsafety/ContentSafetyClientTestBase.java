@@ -29,11 +29,12 @@ class ContentSafetyClientTestBase extends TestProxyTestBase {
 
     @Override
     protected void beforeTest() {
-        String endpoint = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_ENDPOINT", "https://fake_cs_resource.cognitiveservices.azure.com");
-        String key = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_KEY", "00000000000000000000000000000000");
-        ContentSafetyClientBuilder contentSafetyClientBuilder =
-            new ContentSafetyClientBuilder()
-                .credential(new KeyCredential(key))
+        String endpoint = Configuration.getGlobalConfiguration()
+            .get("CONTENT_SAFETY_ENDPOINT", "https://fake_cs_resource.cognitiveservices.azure.com");
+        String key
+            = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_KEY", "00000000000000000000000000000000");
+        ContentSafetyClientBuilder contentSafetyClientBuilder
+            = new ContentSafetyClientBuilder().credential(new KeyCredential(key))
                 .endpoint(endpoint)
                 .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
@@ -44,9 +45,8 @@ class ContentSafetyClientTestBase extends TestProxyTestBase {
         }
         contentSafetyClient = contentSafetyClientBuilder.buildClient();
 
-        ContentSafetyClientBuilder contentSafetyClientAADBuilder =
-            new ContentSafetyClientBuilder()
-                .credential(new DefaultAzureCredentialBuilder().build())
+        ContentSafetyClientBuilder contentSafetyClientAADBuilder
+            = new ContentSafetyClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
                 .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
@@ -58,9 +58,8 @@ class ContentSafetyClientTestBase extends TestProxyTestBase {
         }
         contentSafetyClientAAD = contentSafetyClientAADBuilder.buildClient();
 
-        ContentSafetyClientBuilder contentSafetyAsyncClientBuilder =
-            new ContentSafetyClientBuilder()
-                .credential(new KeyCredential(key))
+        ContentSafetyClientBuilder contentSafetyAsyncClientBuilder
+            = new ContentSafetyClientBuilder().credential(new KeyCredential(key))
                 .endpoint(endpoint)
                 .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
@@ -71,8 +70,7 @@ class ContentSafetyClientTestBase extends TestProxyTestBase {
         }
         contentSafetyAsyncClient = contentSafetyAsyncClientBuilder.buildAsyncClient();
 
-        BlocklistClientBuilder blocklistClientBuilder = new BlocklistClientBuilder()
-            .credential(new KeyCredential(key))
+        BlocklistClientBuilder blocklistClientBuilder = new BlocklistClientBuilder().credential(new KeyCredential(key))
             .endpoint(endpoint)
             .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
@@ -83,11 +81,11 @@ class ContentSafetyClientTestBase extends TestProxyTestBase {
         }
         blocklistClient = blocklistClientBuilder.buildClient();
 
-        BlocklistClientBuilder blocklistAsyncClientBuilder = new BlocklistClientBuilder()
-            .credential(new KeyCredential(key))
-            .endpoint(endpoint)
-            .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        BlocklistClientBuilder blocklistAsyncClientBuilder
+            = new BlocklistClientBuilder().credential(new KeyCredential(key))
+                .endpoint(endpoint)
+                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             blocklistAsyncClientBuilder.httpClient(interceptorManager.getPlaybackClient());
         } else if (getTestMode() == TestMode.RECORD) {

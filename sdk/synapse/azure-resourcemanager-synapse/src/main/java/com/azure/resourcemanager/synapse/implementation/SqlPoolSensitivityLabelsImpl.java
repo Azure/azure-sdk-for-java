@@ -23,146 +23,83 @@ public final class SqlPoolSensitivityLabelsImpl implements SqlPoolSensitivityLab
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public SqlPoolSensitivityLabelsImpl(
-        SqlPoolSensitivityLabelsClient innerClient, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    public SqlPoolSensitivityLabelsImpl(SqlPoolSensitivityLabelsClient innerClient,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<SensitivityLabel> listCurrent(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
-        PagedIterable<SensitivityLabelInner> inner =
-            this.serviceClient().listCurrent(resourceGroupName, workspaceName, sqlPoolName);
-        return Utils.mapPage(inner, inner1 -> new SensitivityLabelImpl(inner1, this.manager()));
+    public PagedIterable<SensitivityLabel> listCurrent(String resourceGroupName, String workspaceName,
+        String sqlPoolName) {
+        PagedIterable<SensitivityLabelInner> inner
+            = this.serviceClient().listCurrent(resourceGroupName, workspaceName, sqlPoolName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SensitivityLabelImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<SensitivityLabel> listCurrent(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String filter, Context context) {
-        PagedIterable<SensitivityLabelInner> inner =
-            this.serviceClient().listCurrent(resourceGroupName, workspaceName, sqlPoolName, filter, context);
-        return Utils.mapPage(inner, inner1 -> new SensitivityLabelImpl(inner1, this.manager()));
+    public PagedIterable<SensitivityLabel> listCurrent(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String filter, Context context) {
+        PagedIterable<SensitivityLabelInner> inner
+            = this.serviceClient().listCurrent(resourceGroupName, workspaceName, sqlPoolName, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SensitivityLabelImpl(inner1, this.manager()));
     }
 
-    public Response<Void> updateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        SensitivityLabelUpdateList parameters,
-        Context context) {
-        return this
-            .serviceClient()
+    public Response<Void> updateWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        SensitivityLabelUpdateList parameters, Context context) {
+        return this.serviceClient()
             .updateWithResponse(resourceGroupName, workspaceName, sqlPoolName, parameters, context);
     }
 
-    public void update(
-        String resourceGroupName, String workspaceName, String sqlPoolName, SensitivityLabelUpdateList parameters) {
+    public void update(String resourceGroupName, String workspaceName, String sqlPoolName,
+        SensitivityLabelUpdateList parameters) {
         this.serviceClient().update(resourceGroupName, workspaceName, sqlPoolName, parameters);
     }
 
-    public PagedIterable<SensitivityLabel> listRecommended(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
-        PagedIterable<SensitivityLabelInner> inner =
-            this.serviceClient().listRecommended(resourceGroupName, workspaceName, sqlPoolName);
-        return Utils.mapPage(inner, inner1 -> new SensitivityLabelImpl(inner1, this.manager()));
+    public PagedIterable<SensitivityLabel> listRecommended(String resourceGroupName, String workspaceName,
+        String sqlPoolName) {
+        PagedIterable<SensitivityLabelInner> inner
+            = this.serviceClient().listRecommended(resourceGroupName, workspaceName, sqlPoolName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SensitivityLabelImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<SensitivityLabel> listRecommended(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        Boolean includeDisabledRecommendations,
-        String skipToken,
-        String filter,
-        Context context) {
-        PagedIterable<SensitivityLabelInner> inner =
-            this
-                .serviceClient()
-                .listRecommended(
-                    resourceGroupName,
-                    workspaceName,
-                    sqlPoolName,
-                    includeDisabledRecommendations,
-                    skipToken,
-                    filter,
-                    context);
-        return Utils.mapPage(inner, inner1 -> new SensitivityLabelImpl(inner1, this.manager()));
+    public PagedIterable<SensitivityLabel> listRecommended(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Boolean includeDisabledRecommendations, String skipToken, String filter, Context context) {
+        PagedIterable<SensitivityLabelInner> inner = this.serviceClient()
+            .listRecommended(resourceGroupName, workspaceName, sqlPoolName, includeDisabledRecommendations, skipToken,
+                filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SensitivityLabelImpl(inner1, this.manager()));
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        Context context) {
-        return this
-            .serviceClient()
-            .deleteWithResponse(
-                resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName, context);
+    public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String tableName, String columnName, Context context) {
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName,
+                context);
     }
 
-    public void delete(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName) {
+    public void delete(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName,
+        String tableName, String columnName) {
         this.serviceClient().delete(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName);
     }
 
-    public Response<SensitivityLabel> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        SensitivityLabelSource sensitivityLabelSource,
-        Context context) {
-        Response<SensitivityLabelInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(
-                    resourceGroupName,
-                    workspaceName,
-                    sqlPoolName,
-                    schemaName,
-                    tableName,
-                    columnName,
-                    sensitivityLabelSource,
-                    context);
+    public Response<SensitivityLabel> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String schemaName, String tableName, String columnName,
+        SensitivityLabelSource sensitivityLabelSource, Context context) {
+        Response<SensitivityLabelInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName,
+                sensitivityLabelSource, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SensitivityLabelImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public SensitivityLabel get(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        SensitivityLabelSource sensitivityLabelSource) {
-        SensitivityLabelInner inner =
-            this
-                .serviceClient()
-                .get(
-                    resourceGroupName,
-                    workspaceName,
-                    sqlPoolName,
-                    schemaName,
-                    tableName,
-                    columnName,
-                    sensitivityLabelSource);
+    public SensitivityLabel get(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName,
+        String tableName, String columnName, SensitivityLabelSource sensitivityLabelSource) {
+        SensitivityLabelInner inner = this.serviceClient()
+            .get(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName,
+                sensitivityLabelSource);
         if (inner != null) {
             return new SensitivityLabelImpl(inner, this.manager());
         } else {
@@ -170,154 +107,100 @@ public final class SqlPoolSensitivityLabelsImpl implements SqlPoolSensitivityLab
         }
     }
 
-    public Response<Void> enableRecommendationWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        Context context) {
-        return this
-            .serviceClient()
-            .enableRecommendationWithResponse(
-                resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName, context);
+    public Response<Void> enableRecommendationWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String schemaName, String tableName, String columnName, Context context) {
+        return this.serviceClient()
+            .enableRecommendationWithResponse(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName,
+                columnName, context);
     }
 
-    public void enableRecommendation(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName) {
-        this
-            .serviceClient()
+    public void enableRecommendation(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String tableName, String columnName) {
+        this.serviceClient()
             .enableRecommendation(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName);
     }
 
-    public Response<Void> disableRecommendationWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        Context context) {
-        return this
-            .serviceClient()
-            .disableRecommendationWithResponse(
-                resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName, context);
+    public Response<Void> disableRecommendationWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String schemaName, String tableName, String columnName, Context context) {
+        return this.serviceClient()
+            .disableRecommendationWithResponse(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName,
+                columnName, context);
     }
 
-    public void disableRecommendation(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName) {
-        this
-            .serviceClient()
+    public void disableRecommendation(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String tableName, String columnName) {
+        this.serviceClient()
             .disableRecommendation(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
+        String sqlPoolName = ResourceManagerUtils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
         }
-        String schemaName = Utils.getValueFromIdByName(id, "schemas");
+        String schemaName = ResourceManagerUtils.getValueFromIdByName(id, "schemas");
         if (schemaName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
         }
-        String tableName = Utils.getValueFromIdByName(id, "tables");
+        String tableName = ResourceManagerUtils.getValueFromIdByName(id, "tables");
         if (tableName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'tables'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'tables'.", id)));
         }
-        String columnName = Utils.getValueFromIdByName(id, "columns");
+        String columnName = ResourceManagerUtils.getValueFromIdByName(id, "columns");
         if (columnName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'columns'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'columns'.", id)));
         }
-        this
-            .deleteWithResponse(
-                resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName, Context.NONE);
+        this.deleteWithResponse(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName,
+            Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
+        String sqlPoolName = ResourceManagerUtils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
         }
-        String schemaName = Utils.getValueFromIdByName(id, "schemas");
+        String schemaName = ResourceManagerUtils.getValueFromIdByName(id, "schemas");
         if (schemaName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
         }
-        String tableName = Utils.getValueFromIdByName(id, "tables");
+        String tableName = ResourceManagerUtils.getValueFromIdByName(id, "tables");
         if (tableName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'tables'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'tables'.", id)));
         }
-        String columnName = Utils.getValueFromIdByName(id, "columns");
+        String columnName = ResourceManagerUtils.getValueFromIdByName(id, "columns");
         if (columnName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'columns'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'columns'.", id)));
         }
-        return this
-            .deleteWithResponse(
-                resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName, context);
+        return this.deleteWithResponse(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName,
+            context);
     }
 
     private SqlPoolSensitivityLabelsClient serviceClient() {

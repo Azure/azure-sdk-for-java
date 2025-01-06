@@ -14,12 +14,6 @@ parameters:
 - name: Skip.VersionVerification
   type: boolean
   default: true
-- name: TargetDocRepoOwner
-  type: string
-  default: Azure
-- name: TargetDocRepoName
-  type: string
-  default: azure-docs-sdk-java
 
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
@@ -60,7 +54,5 @@ extends:
             - ${{ else }}:
               - ${{ parameters.Artifacts }}
             ArtifactName: packages
-            TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
-            TargetDocRepoName: ${{parameters.TargetDocRepoName}}
             EnableIntegrationStage: false
 

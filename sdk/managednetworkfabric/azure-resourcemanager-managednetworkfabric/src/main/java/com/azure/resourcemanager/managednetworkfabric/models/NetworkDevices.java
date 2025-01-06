@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of NetworkDevices. */
+/**
+ * Resource collection API of NetworkDevices.
+ */
 public interface NetworkDevices {
     /**
      * Gets a Network Device.
-     *
-     * <p>Gets the Network Device resource details.
-     *
+     * 
+     * Gets the Network Device resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param context The context to associate with this operation.
@@ -23,14 +25,14 @@ public interface NetworkDevices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Network Device resource details along with {@link Response}.
      */
-    Response<NetworkDevice> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkDeviceName, Context context);
+    Response<NetworkDevice> getByResourceGroupWithResponse(String resourceGroupName, String networkDeviceName,
+        Context context);
 
     /**
      * Gets a Network Device.
-     *
-     * <p>Gets the Network Device resource details.
-     *
+     * 
+     * Gets the Network Device resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,9 +44,9 @@ public interface NetworkDevices {
 
     /**
      * Deletes a Network Device.
-     *
-     * <p>Delete the Network Device resource.
-     *
+     * 
+     * Delete the Network Device resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,9 +57,9 @@ public interface NetworkDevices {
 
     /**
      * Deletes a Network Device.
-     *
-     * <p>Delete the Network Device resource.
-     *
+     * 
+     * Delete the Network Device resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param context The context to associate with this operation.
@@ -69,9 +71,9 @@ public interface NetworkDevices {
 
     /**
      * List NetworkDevices by resource group.
-     *
-     * <p>List all the Network Device resources in a given resource group.
-     *
+     * 
+     * List all the Network Device resources in a given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -82,9 +84,9 @@ public interface NetworkDevices {
 
     /**
      * List NetworkDevices by resource group.
-     *
-     * <p>List all the Network Device resources in a given resource group.
-     *
+     * 
+     * List all the Network Device resources in a given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -96,9 +98,9 @@ public interface NetworkDevices {
 
     /**
      * List NetworkDevices by subscription.
-     *
-     * <p>List all the Network Device resources in a given subscription.
-     *
+     * 
+     * List all the Network Device resources in a given subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of NetworkDevices as paginated response with {@link PagedIterable}.
@@ -107,9 +109,9 @@ public interface NetworkDevices {
 
     /**
      * List NetworkDevices by subscription.
-     *
-     * <p>List all the Network Device resources in a given subscription.
-     *
+     * 
+     * List all the Network Device resources in a given subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -120,9 +122,9 @@ public interface NetworkDevices {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Reboot the Network Device.
-     *
+     * 
+     * Reboot the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -131,14 +133,14 @@ public interface NetworkDevices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate reboot(
-        String resourceGroupName, String networkDeviceName, RebootProperties body);
+    CommonPostActionResponseForStateUpdate reboot(String resourceGroupName, String networkDeviceName,
+        RebootProperties body);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Reboot the Network Device.
-     *
+     * 
+     * Reboot the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -148,14 +150,14 @@ public interface NetworkDevices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate reboot(
-        String resourceGroupName, String networkDeviceName, RebootProperties body, Context context);
+    CommonPostActionResponseForStateUpdate reboot(String resourceGroupName, String networkDeviceName,
+        RebootProperties body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration the Network Device.
-     *
+     * 
+     * Refreshes the configuration the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -167,9 +169,9 @@ public interface NetworkDevices {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration the Network Device.
-     *
+     * 
+     * Refreshes the configuration the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param context The context to associate with this operation.
@@ -178,14 +180,14 @@ public interface NetworkDevices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate refreshConfiguration(
-        String resourceGroupName, String networkDeviceName, Context context);
+    CommonPostActionResponseForStateUpdate refreshConfiguration(String resourceGroupName, String networkDeviceName,
+        Context context);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Administrative state of the Network Device.
-     *
+     * 
+     * Updates the Administrative state of the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -194,47 +196,14 @@ public interface NetworkDevices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        String resourceGroupName, String networkDeviceName, UpdateDeviceAdministrativeState body);
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(String resourceGroupName, String networkDeviceName,
+        UpdateDeviceAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Administrative state of the Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates.
-     */
-    CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        String resourceGroupName, String networkDeviceName, UpdateDeviceAdministrativeState body, Context context);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the Network Device.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates.
-     */
-    CommonPostActionResponseForStateUpdate upgrade(
-        String resourceGroupName, String networkDeviceName, UpdateVersion body);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the Network Device.
-     *
+     * 
+     * Updates the Administrative state of the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -244,14 +213,47 @@ public interface NetworkDevices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate upgrade(
-        String resourceGroupName, String networkDeviceName, UpdateVersion body, Context context);
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(String resourceGroupName, String networkDeviceName,
+        UpdateDeviceAdministrativeState body, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     * 
+     * Upgrades the version of the Network Device.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate upgrade(String resourceGroupName, String networkDeviceName,
+        UpdateVersion body);
+
+    /**
+     * Implements the operation to the underlying resources.
+     * 
+     * Upgrades the version of the Network Device.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkDeviceName Name of the Network Device.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate upgrade(String resourceGroupName, String networkDeviceName,
+        UpdateVersion body, Context context);
 
     /**
      * Gets a Network Device.
-     *
-     * <p>Gets the Network Device resource details.
-     *
+     * 
+     * Gets the Network Device resource details.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -262,9 +264,9 @@ public interface NetworkDevices {
 
     /**
      * Gets a Network Device.
-     *
-     * <p>Gets the Network Device resource details.
-     *
+     * 
+     * Gets the Network Device resource details.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -276,9 +278,9 @@ public interface NetworkDevices {
 
     /**
      * Deletes a Network Device.
-     *
-     * <p>Delete the Network Device resource.
-     *
+     * 
+     * Delete the Network Device resource.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -288,9 +290,9 @@ public interface NetworkDevices {
 
     /**
      * Deletes a Network Device.
-     *
-     * <p>Delete the Network Device resource.
-     *
+     * 
+     * Delete the Network Device resource.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -301,7 +303,7 @@ public interface NetworkDevices {
 
     /**
      * Begins definition for a new NetworkDevice resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new NetworkDevice definition.
      */

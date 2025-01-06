@@ -32,7 +32,8 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
     private static final String REDIRECT_URIS_KEY = "redirectUris";
     private static final String ORIGINATING_REQUEST_URI_KEY = "originatingRequestUri";
 
-    private static final EnumSet<HttpMethod> DEFAULT_REDIRECT_ALLOWED_METHODS = EnumSet.of(HttpMethod.GET, HttpMethod.HEAD);
+    private static final EnumSet<HttpMethod> DEFAULT_REDIRECT_ALLOWED_METHODS
+        = EnumSet.of(HttpMethod.GET, HttpMethod.HEAD);
     private static final int PERMANENT_REDIRECT_STATUS_CODE = 308;
     private static final int TEMPORARY_REDIRECT_STATUS_CODE = 307;
     private final EnumSet<HttpMethod> allowedRedirectHttpMethods;
@@ -80,12 +81,13 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
      * Function to process through the HTTP Response received in the pipeline and redirect sending the request with a
      * new redirect URI.
      */
-    private Response<?> attemptRedirect(final HttpPipelineNextPolicy next,
-                                        final int redirectAttempt, LinkedHashSet<String> attemptedRedirectUris) {
+    private Response<?> attemptRedirect(final HttpPipelineNextPolicy next, final int redirectAttempt,
+        LinkedHashSet<String> attemptedRedirectUris) {
         // Make sure the context is not modified during redirect, except for the URI
         Response<?> response = next.clone().process();
 
-        HttpRequestRedirectCondition requestRedirectCondition = new HttpRequestRedirectCondition(response, redirectAttempt, attemptedRedirectUris);
+        HttpRequestRedirectCondition requestRedirectCondition
+            = new HttpRequestRedirectCondition(response, redirectAttempt, attemptedRedirectUris);
         if ((shouldRedirectCondition != null && shouldRedirectCondition.test(requestRedirectCondition))
             || (shouldRedirectCondition == null && defaultShouldAttemptRedirect(requestRedirectCondition))) {
             createRedirectRequest(response);
@@ -130,9 +132,7 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
      */
     private boolean isValidRedirectCount(int tryCount) {
         if (tryCount >= this.maxAttempts) {
-            LOGGER.atError()
-                .addKeyValue("maxAttempts", this.maxAttempts)
-                .log("Redirect attempts have been exhausted.");
+            LOGGER.atError().addKeyValue("maxAttempts", this.maxAttempts).log("Redirect attempts have been exhausted.");
 
             return false;
         }
@@ -160,7 +160,6 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
 
         return false;
     }
-
 
     /**
      * Check if the request http method is a valid redirect method.

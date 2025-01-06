@@ -8,37 +8,57 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkTapPropertiesDestinationsItem;
 import com.azure.resourcemanager.managednetworkfabric.models.PollingType;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The Network Tap resource definition. */
+/**
+ * The Network Tap resource definition.
+ */
 @Fluent
 public final class NetworkTapInner extends Resource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private NetworkTapProperties innerProperties = new NetworkTapProperties();
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of NetworkTapInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of NetworkTapInner class.
+     */
     public NetworkTapInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NetworkTapProperties innerProperties() {
@@ -47,21 +67,55 @@ public final class NetworkTapInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkTapInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkTapInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -70,7 +124,7 @@ public final class NetworkTapInner extends Resource {
 
     /**
      * Get the networkPacketBrokerId property: ARM resource ID of the Network Packet Broker.
-     *
+     * 
      * @return the networkPacketBrokerId value.
      */
     public String networkPacketBrokerId() {
@@ -79,7 +133,7 @@ public final class NetworkTapInner extends Resource {
 
     /**
      * Set the networkPacketBrokerId property: ARM resource ID of the Network Packet Broker.
-     *
+     * 
      * @param networkPacketBrokerId the networkPacketBrokerId value to set.
      * @return the NetworkTapInner object itself.
      */
@@ -93,7 +147,7 @@ public final class NetworkTapInner extends Resource {
 
     /**
      * Get the sourceTapRuleId property: Source Tap Rule Id. ARM Resource ID of the Network Tap Rule.
-     *
+     * 
      * @return the sourceTapRuleId value.
      */
     public String sourceTapRuleId() {
@@ -102,7 +156,7 @@ public final class NetworkTapInner extends Resource {
 
     /**
      * Get the destinations property: List of destinations to send the filter traffic.
-     *
+     * 
      * @return the destinations value.
      */
     public List<NetworkTapPropertiesDestinationsItem> destinations() {
@@ -111,7 +165,7 @@ public final class NetworkTapInner extends Resource {
 
     /**
      * Set the destinations property: List of destinations to send the filter traffic.
-     *
+     * 
      * @param destinations the destinations value to set.
      * @return the NetworkTapInner object itself.
      */
@@ -125,7 +179,7 @@ public final class NetworkTapInner extends Resource {
 
     /**
      * Get the pollingType property: Polling type.
-     *
+     * 
      * @return the pollingType value.
      */
     public PollingType pollingType() {
@@ -134,7 +188,7 @@ public final class NetworkTapInner extends Resource {
 
     /**
      * Set the pollingType property: Polling type.
-     *
+     * 
      * @param pollingType the pollingType value to set.
      * @return the NetworkTapInner object itself.
      */
@@ -148,7 +202,7 @@ public final class NetworkTapInner extends Resource {
 
     /**
      * Get the configurationState property: Gets the configurations state of the resource.
-     *
+     * 
      * @return the configurationState value.
      */
     public ConfigurationState configurationState() {
@@ -159,7 +213,7 @@ public final class NetworkTapInner extends Resource {
      * Get the provisioningState property: Provides you the latest status of the NFC service, whether it is Accepted,
      * updating, Succeeded or Failed. During this process, the states keep changing based on the status of Network Tap
      * provisioning.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -168,7 +222,7 @@ public final class NetworkTapInner extends Resource {
 
     /**
      * Get the administrativeState property: Administrative state of the resource. Example -Enabled/Disabled.
-     *
+     * 
      * @return the administrativeState value.
      */
     public AdministrativeState administrativeState() {
@@ -177,7 +231,7 @@ public final class NetworkTapInner extends Resource {
 
     /**
      * Get the annotation property: Switch configuration description.
-     *
+     * 
      * @return the annotation value.
      */
     public String annotation() {
@@ -186,7 +240,7 @@ public final class NetworkTapInner extends Resource {
 
     /**
      * Set the annotation property: Switch configuration description.
-     *
+     * 
      * @param annotation the annotation value to set.
      * @return the NetworkTapInner object itself.
      */
@@ -200,13 +254,13 @@ public final class NetworkTapInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property innerProperties in model NetworkTapInner"));
         } else {
             innerProperties().validate();
@@ -214,4 +268,56 @@ public final class NetworkTapInner extends Resource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(NetworkTapInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkTapInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkTapInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NetworkTapInner.
+     */
+    public static NetworkTapInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkTapInner deserializedNetworkTapInner = new NetworkTapInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedNetworkTapInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedNetworkTapInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedNetworkTapInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedNetworkTapInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedNetworkTapInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedNetworkTapInner.innerProperties = NetworkTapProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedNetworkTapInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkTapInner;
+        });
+    }
 }

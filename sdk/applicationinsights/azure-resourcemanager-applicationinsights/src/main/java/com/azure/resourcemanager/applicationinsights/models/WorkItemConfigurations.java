@@ -8,74 +8,73 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of WorkItemConfigurations. */
+/**
+ * Resource collection API of WorkItemConfigurations.
+ */
 public interface WorkItemConfigurations {
     /**
      * Gets the list work item configurations that exist for the application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.applicationinsights.models.WorkItemConfigurationErrorException thrown if the
-     *     request is rejected by server.
+     * request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list work item configurations that exist for the application as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list work item configurations that exist for the application as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<WorkItemConfiguration> list(String resourceGroupName, String resourceName);
 
     /**
      * Gets the list work item configurations that exist for the application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.applicationinsights.models.WorkItemConfigurationErrorException thrown if the
-     *     request is rejected by server.
+     * request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list work item configurations that exist for the application as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list work item configurations that exist for the application as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<WorkItemConfiguration> list(String resourceGroupName, String resourceName, Context context);
 
     /**
      * Create a work item configuration for an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workItemConfigurationProperties Properties that need to be specified to create a work item configuration
-     *     of a Application Insights component.
+     * of a Application Insights component.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return work item configuration associated with an application insights resource along with {@link Response}.
      */
-    Response<WorkItemConfiguration> createWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        WorkItemCreateConfiguration workItemConfigurationProperties,
-        Context context);
+    Response<WorkItemConfiguration> createWithResponse(String resourceGroupName, String resourceName,
+        WorkItemCreateConfiguration workItemConfigurationProperties, Context context);
 
     /**
      * Create a work item configuration for an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workItemConfigurationProperties Properties that need to be specified to create a work item configuration
-     *     of a Application Insights component.
+     * of a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return work item configuration associated with an application insights resource.
      */
-    WorkItemConfiguration create(
-        String resourceGroupName, String resourceName, WorkItemCreateConfiguration workItemConfigurationProperties);
+    WorkItemConfiguration create(String resourceGroupName, String resourceName,
+        WorkItemCreateConfiguration workItemConfigurationProperties);
 
     /**
      * Gets default work item configurations that exist for the application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param context The context to associate with this operation.
@@ -84,12 +83,12 @@ public interface WorkItemConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return default work item configurations that exist for the application along with {@link Response}.
      */
-    Response<WorkItemConfiguration> getDefaultWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<WorkItemConfiguration> getDefaultWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Gets default work item configurations that exist for the application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -101,27 +100,27 @@ public interface WorkItemConfigurations {
 
     /**
      * Delete a work item configuration of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workItemConfigId The unique work item configuration Id. This can be either friendly name of connector as
-     *     defined in connector configuration.
+     * defined in connector configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String workItemConfigId, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String workItemConfigId,
+        Context context);
 
     /**
      * Delete a work item configuration of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workItemConfigId The unique work item configuration Id. This can be either friendly name of connector as
-     *     defined in connector configuration.
+     * defined in connector configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -130,27 +129,27 @@ public interface WorkItemConfigurations {
 
     /**
      * Gets specified work item configuration for an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workItemConfigId The unique work item configuration Id. This can be either friendly name of connector as
-     *     defined in connector configuration.
+     * defined in connector configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specified work item configuration for an Application Insights component along with {@link Response}.
      */
-    Response<WorkItemConfiguration> getItemWithResponse(
-        String resourceGroupName, String resourceName, String workItemConfigId, Context context);
+    Response<WorkItemConfiguration> getItemWithResponse(String resourceGroupName, String resourceName,
+        String workItemConfigId, Context context);
 
     /**
      * Gets specified work item configuration for an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workItemConfigId The unique work item configuration Id. This can be either friendly name of connector as
-     *     defined in connector configuration.
+     * defined in connector configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -160,43 +159,36 @@ public interface WorkItemConfigurations {
 
     /**
      * Update a work item configuration for an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workItemConfigId The unique work item configuration Id. This can be either friendly name of connector as
-     *     defined in connector configuration.
+     * defined in connector configuration.
      * @param workItemConfigurationProperties Properties that need to be specified to update a work item configuration
-     *     for this Application Insights component.
+     * for this Application Insights component.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return work item configuration associated with an application insights resource along with {@link Response}.
      */
-    Response<WorkItemConfiguration> updateItemWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String workItemConfigId,
-        WorkItemCreateConfiguration workItemConfigurationProperties,
-        Context context);
+    Response<WorkItemConfiguration> updateItemWithResponse(String resourceGroupName, String resourceName,
+        String workItemConfigId, WorkItemCreateConfiguration workItemConfigurationProperties, Context context);
 
     /**
      * Update a work item configuration for an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workItemConfigId The unique work item configuration Id. This can be either friendly name of connector as
-     *     defined in connector configuration.
+     * defined in connector configuration.
      * @param workItemConfigurationProperties Properties that need to be specified to update a work item configuration
-     *     for this Application Insights component.
+     * for this Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return work item configuration associated with an application insights resource.
      */
-    WorkItemConfiguration updateItem(
-        String resourceGroupName,
-        String resourceName,
-        String workItemConfigId,
+    WorkItemConfiguration updateItem(String resourceGroupName, String resourceName, String workItemConfigId,
         WorkItemCreateConfiguration workItemConfigurationProperties);
 }

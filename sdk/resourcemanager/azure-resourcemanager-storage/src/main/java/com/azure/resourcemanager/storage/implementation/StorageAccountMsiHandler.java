@@ -79,7 +79,8 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
      * @param creatableIdentity yet-to-be-created identity to be associated with the storage account
      * @return StorageAccountMsiHandler
      */
-    StorageAccountMsiHandler withNewExternalManagedServiceIdentity(Creatable<com.azure.resourcemanager.msi.models.Identity> creatableIdentity) {
+    StorageAccountMsiHandler withNewExternalManagedServiceIdentity(
+        Creatable<com.azure.resourcemanager.msi.models.Identity> creatableIdentity) {
         this.initStorageAccountIdentity(IdentityType.USER_ASSIGNED, false);
 
         TaskGroup.HasTaskGroup dependency = (TaskGroup.HasTaskGroup) creatableIdentity;
@@ -98,7 +99,8 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
      * @param identity an identity to associate
      * @return StorageAccountMsiHandler
      */
-    StorageAccountMsiHandler withExistingExternalManagedServiceIdentity(com.azure.resourcemanager.msi.models.Identity identity) {
+    StorageAccountMsiHandler
+        withExistingExternalManagedServiceIdentity(com.azure.resourcemanager.msi.models.Identity identity) {
         this.initStorageAccountIdentity(IdentityType.USER_ASSIGNED, false);
         this.userAssignedIdentities.put(identity.id(), new UserAssignedIdentity());
         return this;
@@ -139,7 +141,8 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
 
     void processCreatedExternalIdentities() {
         for (String key : this.creatableIdentityKeys) {
-            com.azure.resourcemanager.msi.models.Identity identity = (com.azure.resourcemanager.msi.models.Identity) this.storageAccount.taskGroup().taskResult(key);
+            com.azure.resourcemanager.msi.models.Identity identity
+                = (com.azure.resourcemanager.msi.models.Identity) this.storageAccount.taskGroup().taskResult(key);
             Objects.requireNonNull(identity);
             this.userAssignedIdentities.put(identity.id(), new UserAssignedIdentity());
         }
@@ -168,7 +171,8 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
                 //
                 if (!this.userAssignedIdentities.isEmpty()) {
                     // At this point its guaranteed that updateParameters.identity() is not null.
-                    this.storageAccount.updateParameters.identity().withUserAssignedIdentities(this.userAssignedIdentities);
+                    this.storageAccount.updateParameters.identity()
+                        .withUserAssignedIdentities(this.userAssignedIdentities);
                 } else {
                     // User don't want to touch 'StorageAccount.Identity.userAssignedIdentities' property
                     if (this.storageAccount.updateParameters.identity() != null) {
@@ -212,15 +216,14 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
                     }
                 }
                 Set<String> removeIds = new HashSet<>();
-                for (Map.Entry<String, UserAssignedIdentity> entrySet
-                    : this.userAssignedIdentities.entrySet()) {
+                for (Map.Entry<String, UserAssignedIdentity> entrySet : this.userAssignedIdentities.entrySet()) {
                     if (entrySet.getValue() == null) {
                         removeIds.add(entrySet.getKey().toLowerCase(Locale.ROOT));
                     }
                 }
                 // If so check user want to remove all the identities
-                boolean removeAllCurrentIds =
-                    currentIds.size() == removeIds.size() && currentIds.containsAll(removeIds);
+                boolean removeAllCurrentIds
+                    = currentIds.size() == removeIds.size() && currentIds.containsAll(removeIds);
                 if (removeAllCurrentIds) {
                     // If so adjust  the identity type [Setting type to SYSTEM_ASSIGNED orNONE will remove all the
                     // identities]
@@ -239,8 +242,8 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
                     if (currentIds.isEmpty() && !removeIds.isEmpty() && currentIdentity == null) {
                         // If so we are in a invalid state but we want to send user input to service and let service
                         // handle it (ignore or error).
-                        this.storageAccount.updateParameters.withIdentity(
-                            new Identity().withType(IdentityType.NONE).withUserAssignedIdentities(null));
+                        this.storageAccount.updateParameters
+                            .withIdentity(new Identity().withType(IdentityType.NONE).withUserAssignedIdentities(null));
                         return true;
                     }
                 }
@@ -255,8 +258,7 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
      * @param identityType the identity type to set
      */
     private void initStorageAccountIdentity(IdentityType identityType, Boolean isWithout) {
-        if (!identityType.equals(IdentityType.USER_ASSIGNED)
-            && !identityType.equals(IdentityType.SYSTEM_ASSIGNED)) {
+        if (!identityType.equals(IdentityType.USER_ASSIGNED) && !identityType.equals(IdentityType.SYSTEM_ASSIGNED)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Invalid argument: " + identityType));
         }
         if (this.storageAccount.isInCreateMode()) {
@@ -291,7 +293,8 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
                     || this.storageAccount.updateParameters.identity().type().equals(identityType)) {
                     this.storageAccount.updateParameters.identity().withType(identityType);
                 } else {
-                    this.storageAccount.updateParameters.identity().withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED);
+                    this.storageAccount.updateParameters.identity()
+                        .withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED);
                 }
             }
         }

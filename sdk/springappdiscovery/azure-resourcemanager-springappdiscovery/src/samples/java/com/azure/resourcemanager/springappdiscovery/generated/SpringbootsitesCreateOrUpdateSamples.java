@@ -25,8 +25,11 @@ public final class SpringbootsitesCreateOrUpdateSamples {
      */
     public static void springbootsitesCreateOrUpdateMaximumSetGen(
         com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
-        manager.springbootsites().define("xrmzlavpewxtfeitghdrj").withRegion("tgobtvxktootwhhvjtsmpddvlqlrq")
-            .withExistingResourceGroup("rgspringbootsites").withTags(mapOf("key3558", "fakeTokenPlaceholder"))
+        manager.springbootsites()
+            .define("xrmzlavpewxtfeitghdrj")
+            .withRegion("tgobtvxktootwhhvjtsmpddvlqlrq")
+            .withExistingResourceGroup("rgspringbootsites")
+            .withTags(mapOf("key3558", "fakeTokenPlaceholder"))
             .withProperties(new SpringbootsitesProperties().withMasterSiteId("xsoimrgshsactearljwuljmi")
                 .withMigrateProjectId("wwuattybgco"))
             .withExtendedLocation(
@@ -46,8 +49,11 @@ public final class SpringbootsitesCreateOrUpdateSamples {
      */
     public static void springbootsitesCreateOrUpdateMinimumSetGen(
         com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
-        manager.springbootsites().define("xrmzlavpewxtfeitghdrj").withRegion("tgobtvxktootwhhvjtsmpddvlqlrq")
-            .withExistingResourceGroup("rgspringbootsites").create();
+        manager.springbootsites()
+            .define("xrmzlavpewxtfeitghdrj")
+            .withRegion("tgobtvxktootwhhvjtsmpddvlqlrq")
+            .withExistingResourceGroup("rgspringbootsites")
+            .create();
     }
 
     // Use "Map.of" if available

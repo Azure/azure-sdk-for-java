@@ -11,9 +11,8 @@ import com.azure.resourcemanager.servicebus.models.UnavailableReason;
 /**
  * Implementation for CheckNameAvailabilityResult.
  */
-class CheckNameAvailabilityResultImpl
-        extends WrapperImpl<CheckNameAvailabilityResultInner>
-        implements CheckNameAvailabilityResult {
+class CheckNameAvailabilityResultImpl extends WrapperImpl<CheckNameAvailabilityResultInner>
+    implements CheckNameAvailabilityResult {
     /**
      * Creates an instance of the check name availability result object.
      *
@@ -38,4 +37,3 @@ class CheckNameAvailabilityResultImpl
         return innerModel().message();
     }
 }
-

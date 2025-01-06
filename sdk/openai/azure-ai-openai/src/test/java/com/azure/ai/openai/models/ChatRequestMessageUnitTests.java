@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ChatRequestMessageUnitTests {
     String content = "You are a helpful assistant.";
     String name = "Alice";
+
     @Test
     public void testChatRequestUserMessageContentInString() {
         // String type content
@@ -31,7 +32,8 @@ public class ChatRequestMessageUnitTests {
         assertEquals(USER, chatRequestUserMessage.getRole());
 
         // Test it in ChatCompletionsOptions
-        ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(Arrays.asList(chatRequestUserMessage));
+        ChatCompletionsOptions chatCompletionsOptions
+            = new ChatCompletionsOptions(Arrays.asList(chatRequestUserMessage));
         assertChatCompletionsOptions(chatCompletionsOptions);
     }
 
@@ -39,50 +41,53 @@ public class ChatRequestMessageUnitTests {
     public void testUserMessageContentSameStructureAfterConverted() {
         // content type: String
         final ChatRequestUserMessage messageInString = new ChatRequestUserMessage(content).setName(name);
-        ChatRequestUserMessage stringConverted = BinaryData.fromObject(messageInString).toObject(ChatRequestUserMessage.class);
+        ChatRequestUserMessage stringConverted
+            = BinaryData.fromObject(messageInString).toObject(ChatRequestUserMessage.class);
         assertEquals(content, stringConverted.getContent().toString());
         assertEquals(name, stringConverted.getName());
         assertEquals(USER, stringConverted.getRole());
 
         // content type: List
-        final ChatRequestUserMessage messageInList = new ChatRequestUserMessage(Arrays.asList(
-                new ChatMessageTextContentItem("textContent"),
-                new ChatMessageImageContentItem(new ChatMessageImageUrl("testImage"))
-        ));
-        final ChatRequestUserMessage convertedMessageInList = BinaryData.fromObject(messageInList)
-                .toObject(ChatRequestUserMessage.class);
+        final ChatRequestUserMessage messageInList
+            = new ChatRequestUserMessage(Arrays.asList(new ChatMessageTextContentItem("textContent"),
+                new ChatMessageImageContentItem(new ChatMessageImageUrl("testImage"))));
+        final ChatRequestUserMessage convertedMessageInList
+            = BinaryData.fromObject(messageInList).toObject(ChatRequestUserMessage.class);
 
-        final List<ChatMessageContentItem> convertedContentMessageInList = convertedMessageInList
-                .getContent()
-                .toObject(new TypeReference<List<ChatMessageContentItem>>() {});
+        final List<ChatMessageContentItem> convertedContentMessageInList
+            = convertedMessageInList.getContent().toObject(new TypeReference<List<ChatMessageContentItem>>() {
+            });
         assertEquals(2, convertedContentMessageInList.size());
         assertTrue(convertedContentMessageInList.get(0) instanceof ChatMessageTextContentItem);
-        ChatMessageContentItem chatMessageContentItem = (ChatMessageTextContentItem) convertedContentMessageInList.get(0);
+        ChatMessageContentItem chatMessageContentItem
+            = (ChatMessageTextContentItem) convertedContentMessageInList.get(0);
         assertEquals("textContent", ((ChatMessageTextContentItem) chatMessageContentItem).getText());
 
         assertTrue(convertedContentMessageInList.get(1) instanceof ChatMessageImageContentItem);
-        ChatMessageImageContentItem imageContentItem = (ChatMessageImageContentItem) convertedContentMessageInList.get(1);
+        ChatMessageImageContentItem imageContentItem
+            = (ChatMessageImageContentItem) convertedContentMessageInList.get(1);
         assertEquals("testImage", imageContentItem.getImageUrl().getUrl());
 
         // content type: Array
-        final ChatRequestUserMessage messageInArray = new ChatRequestUserMessage(new ChatMessageContentItem[]{
+        final ChatRequestUserMessage messageInArray = new ChatRequestUserMessage(new ChatMessageContentItem[] {
             new ChatMessageTextContentItem("textContent"),
-            new ChatMessageImageContentItem(new ChatMessageImageUrl("testImage"))
-        });
+            new ChatMessageImageContentItem(new ChatMessageImageUrl("testImage")) });
 
-        final ChatRequestUserMessage convertedMessageInArray = BinaryData.fromObject(messageInArray)
-            .toObject(ChatRequestUserMessage.class);
+        final ChatRequestUserMessage convertedMessageInArray
+            = BinaryData.fromObject(messageInArray).toObject(ChatRequestUserMessage.class);
 
-        final ChatMessageContentItem[] convertedContentMessageInArray = convertedMessageInArray.getContent()
-                .toObject(new TypeReference<List<ChatMessageContentItem>>() {})
-                .toArray(new ChatMessageContentItem[0]);
+        final ChatMessageContentItem[] convertedContentMessageInArray
+            = convertedMessageInArray.getContent().toObject(new TypeReference<List<ChatMessageContentItem>>() {
+            }).toArray(new ChatMessageContentItem[0]);
         assertEquals(2, convertedContentMessageInArray.length);
         assertTrue(convertedContentMessageInArray[0] instanceof ChatMessageTextContentItem);
-        ChatMessageContentItem chatMessageContentArrayItem = (ChatMessageTextContentItem) convertedContentMessageInArray[0];
+        ChatMessageContentItem chatMessageContentArrayItem
+            = (ChatMessageTextContentItem) convertedContentMessageInArray[0];
         assertEquals("textContent", ((ChatMessageTextContentItem) chatMessageContentArrayItem).getText());
 
         assertTrue(convertedContentMessageInArray[1] instanceof ChatMessageImageContentItem);
-        ChatMessageImageContentItem imageContentArrayItem = (ChatMessageImageContentItem) convertedContentMessageInArray[1];
+        ChatMessageImageContentItem imageContentArrayItem
+            = (ChatMessageImageContentItem) convertedContentMessageInArray[1];
         assertEquals("testImage", imageContentArrayItem.getImageUrl().getUrl());
     }
 
@@ -90,8 +95,7 @@ public class ChatRequestMessageUnitTests {
     public void testChatRequestUserMessageContentInChatMessageContentItemList() {
         ChatRequestUserMessage userMessage = new ChatRequestUserMessage(new ChatMessageContentItem[] {
             new ChatMessageTextContentItem("textContent"),
-            new ChatMessageImageContentItem(new ChatMessageImageUrl("testImage"))
-        });
+            new ChatMessageImageContentItem(new ChatMessageImageUrl("testImage")) });
         assertChatRequestUserMessage(userMessage);
         // Test it in ChatCompletionsOptions with ChatMessageContentItem
         assertChatCompletionsOptions(new ChatCompletionsOptions(Arrays.asList(userMessage)));
@@ -99,10 +103,9 @@ public class ChatRequestMessageUnitTests {
 
     @Test
     public void testChatRequestUserMessageContentInChatMessageContentItemArray() {
-        ChatRequestUserMessage userMessage = new ChatRequestUserMessage(Arrays.asList(
-            new ChatMessageTextContentItem("textContent"),
-            new ChatMessageImageContentItem(new ChatMessageImageUrl("testImage"))
-        ));
+        ChatRequestUserMessage userMessage
+            = new ChatRequestUserMessage(Arrays.asList(new ChatMessageTextContentItem("textContent"),
+                new ChatMessageImageContentItem(new ChatMessageImageUrl("testImage"))));
         assertChatRequestUserMessage(userMessage);
         // Test it in ChatCompletionsOptions with ChatMessageContentItem
         assertChatCompletionsOptions(new ChatCompletionsOptions(Arrays.asList(userMessage)));
@@ -120,15 +123,18 @@ public class ChatRequestMessageUnitTests {
     public void testChatRequestSystemMessageContentInChatMessageContentItemList() {
         ArrayList<ChatMessageContentItem> expectedContentItems = new ArrayList<>();
         expectedContentItems.add(new ChatMessageTextContentItem("textContent"));
-        ChatRequestSystemMessage messageInChatMessageContentItems = new ChatRequestSystemMessage(expectedContentItems).setName(name);
-        assertEquals(BinaryData.fromObject(expectedContentItems).toString(), messageInChatMessageContentItems.getContent().toString());
+        ChatRequestSystemMessage messageInChatMessageContentItems
+            = new ChatRequestSystemMessage(expectedContentItems).setName(name);
+        assertEquals(BinaryData.fromObject(expectedContentItems).toString(),
+            messageInChatMessageContentItems.getContent().toString());
         // Test it in ChatCompletionsOptions with ChatMessageContentItem
         assertChatCompletionsOptions(new ChatCompletionsOptions(Arrays.asList(messageInChatMessageContentItems)));
     }
 
     @Test
     public void testChatRequestAssistantMessage() {
-        ChatRequestAssistantMessage chatRequestAssistantMessage = new ChatRequestAssistantMessage(content).setName(name);
+        ChatRequestAssistantMessage chatRequestAssistantMessage
+            = new ChatRequestAssistantMessage(content).setName(name);
         assertEquals(content, chatRequestAssistantMessage.getContent().toString());
         // Test it in ChatCompletionsOptions
         assertChatCompletionsOptions(new ChatCompletionsOptions(Arrays.asList(chatRequestAssistantMessage)));
@@ -139,9 +145,10 @@ public class ChatRequestMessageUnitTests {
         ArrayList<ChatMessageContentItem> expectedContentItems = new ArrayList<>();
         expectedContentItems.add(new ChatMessageTextContentItem("textContent"));
         expectedContentItems.add(new ChatMessageRefusalContentItem("refusalContent"));
-        ChatRequestAssistantMessage messageInChatMessageContentItems =
-            new ChatRequestAssistantMessage(expectedContentItems).setName(name);
-        assertEquals(BinaryData.fromObject(expectedContentItems).toString(), messageInChatMessageContentItems.getContent().toString());
+        ChatRequestAssistantMessage messageInChatMessageContentItems
+            = new ChatRequestAssistantMessage(expectedContentItems).setName(name);
+        assertEquals(BinaryData.fromObject(expectedContentItems).toString(),
+            messageInChatMessageContentItems.getContent().toString());
         // Test it in ChatCompletionsOptions with ChatMessageContentItem
         assertChatCompletionsOptions(new ChatCompletionsOptions(Arrays.asList(messageInChatMessageContentItems)));
     }
@@ -158,9 +165,10 @@ public class ChatRequestMessageUnitTests {
     public void testChatRequestToolMessageContentInChatMessageContentItemList() {
         ArrayList<ChatMessageContentItem> expectedContentItems = new ArrayList<>();
         expectedContentItems.add(new ChatMessageTextContentItem("textContent"));
-        ChatRequestToolMessage messageInChatMessageContentItems =
-            new ChatRequestToolMessage(expectedContentItems, "tool_call_id_value");
-        assertEquals(BinaryData.fromObject(expectedContentItems).toString(), messageInChatMessageContentItems.getContent().toString());
+        ChatRequestToolMessage messageInChatMessageContentItems
+            = new ChatRequestToolMessage(expectedContentItems, "tool_call_id_value");
+        assertEquals(BinaryData.fromObject(expectedContentItems).toString(),
+            messageInChatMessageContentItems.getContent().toString());
         // Test it in ChatCompletionsOptions with ChatMessageContentItem
         assertChatCompletionsOptions(new ChatCompletionsOptions(Arrays.asList(messageInChatMessageContentItems)));
     }
@@ -171,14 +179,15 @@ public class ChatRequestMessageUnitTests {
         assertEquals(content, chatRequestFunctionMessage.getContent());
 
         // Test it in ChatCompletionsOptions
-        ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(Arrays.asList(chatRequestFunctionMessage));
+        ChatCompletionsOptions chatCompletionsOptions
+            = new ChatCompletionsOptions(Arrays.asList(chatRequestFunctionMessage));
         assertChatCompletionsOptions(chatCompletionsOptions);
     }
 
     private void assertChatRequestUserMessage(ChatRequestUserMessage userMessage) {
         String userMessageInString = BinaryData.fromObject(userMessage).toString();
-        ChatRequestUserMessage converted = BinaryData.fromString(userMessageInString)
-                .toObject(ChatRequestUserMessage.class);
+        ChatRequestUserMessage converted
+            = BinaryData.fromString(userMessageInString).toObject(ChatRequestUserMessage.class);
         assertEquals(userMessage.getContent().toString(), converted.getContent().toString());
         assertEquals(userMessage.getName(), converted.getName());
         assertEquals(USER, converted.getRole());
@@ -186,29 +195,35 @@ public class ChatRequestMessageUnitTests {
 
     private void assertChatCompletionsOptions(ChatCompletionsOptions chatCompletionsOptions) {
         String chatCompletionsOptionsInString = BinaryData.fromObject(chatCompletionsOptions).toString();
-        ChatCompletionsOptions converted = BinaryData.fromString(chatCompletionsOptionsInString)
-            .toObject(ChatCompletionsOptions.class);
+        ChatCompletionsOptions converted
+            = BinaryData.fromString(chatCompletionsOptionsInString).toObject(ChatCompletionsOptions.class);
 
         converted.getMessages().forEach(message -> {
             if (message instanceof ChatRequestUserMessage) {
                 ChatRequestUserMessage userMessage = (ChatRequestUserMessage) message;
-                ChatRequestUserMessage expectedUserMessage = (ChatRequestUserMessage) chatCompletionsOptions.getMessages().get(0);
+                ChatRequestUserMessage expectedUserMessage
+                    = (ChatRequestUserMessage) chatCompletionsOptions.getMessages().get(0);
                 assertEquals(expectedUserMessage.getContent().toString(), userMessage.getContent().toString());
             } else if (message instanceof ChatRequestSystemMessage) {
                 ChatRequestSystemMessage systemMessage = (ChatRequestSystemMessage) message;
-                ChatRequestSystemMessage expectedSystemMessage = (ChatRequestSystemMessage) chatCompletionsOptions.getMessages().get(0);
+                ChatRequestSystemMessage expectedSystemMessage
+                    = (ChatRequestSystemMessage) chatCompletionsOptions.getMessages().get(0);
                 assertEquals(expectedSystemMessage.getContent().toString(), systemMessage.getContent().toString());
             } else if (message instanceof ChatRequestAssistantMessage) {
                 ChatRequestAssistantMessage assistantMessage = (ChatRequestAssistantMessage) message;
-                ChatRequestAssistantMessage expectedAssistantMessage = (ChatRequestAssistantMessage) chatCompletionsOptions.getMessages().get(0);
-                assertEquals(expectedAssistantMessage.getContent().toString(), assistantMessage.getContent().toString());
+                ChatRequestAssistantMessage expectedAssistantMessage
+                    = (ChatRequestAssistantMessage) chatCompletionsOptions.getMessages().get(0);
+                assertEquals(expectedAssistantMessage.getContent().toString(),
+                    assistantMessage.getContent().toString());
             } else if (message instanceof ChatRequestToolMessage) {
                 ChatRequestToolMessage toolMessage = (ChatRequestToolMessage) message;
-                ChatRequestToolMessage expectedToolMessage = (ChatRequestToolMessage) chatCompletionsOptions.getMessages().get(0);
+                ChatRequestToolMessage expectedToolMessage
+                    = (ChatRequestToolMessage) chatCompletionsOptions.getMessages().get(0);
                 assertEquals(expectedToolMessage.getContent().toString(), toolMessage.getContent().toString());
             } else if (message instanceof ChatRequestFunctionMessage) {
                 ChatRequestFunctionMessage functionMessage = (ChatRequestFunctionMessage) message;
-                ChatRequestFunctionMessage expectedFunctionMessage = (ChatRequestFunctionMessage) chatCompletionsOptions.getMessages().get(0);
+                ChatRequestFunctionMessage expectedFunctionMessage
+                    = (ChatRequestFunctionMessage) chatCompletionsOptions.getMessages().get(0);
                 assertEquals(expectedFunctionMessage.getContent(), functionMessage.getContent());
             } else {
                 assertFalse(true, "Unexpected message type");

@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.mediaservices;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
@@ -24,6 +25,8 @@ import com.azure.resourcemanager.mediaservices.models.MediaService;
 import com.azure.resourcemanager.mediaservices.models.StorageAccountType;
 import com.azure.resourcemanager.mediaservices.models.Transform;
 import com.azure.resourcemanager.mediaservices.models.TransformOutput;
+import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
@@ -47,39 +50,48 @@ public class MediaServicesTests extends TestProxyTestBase {
     @Test
     @LiveOnly
     public void mediaServicesTest() {
-        StorageManager storageManager = StorageManager
-            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
+        TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
+        AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        MediaServicesManager manager = MediaServicesManager
-            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
+        ResourceManager resourceManager = ResourceManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile)
+            .withDefaultSubscription();
+
+        StorageManager storageManager = StorageManager.configure()
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile);
+
+        MediaServicesManager manager = MediaServicesManager.configure()
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile);
 
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
         boolean testEnv = !CoreUtils.isNullOrEmpty(testResourceGroup);
         if (testEnv) {
             resourceGroup = testResourceGroup;
         } else {
-            storageManager.resourceManager().resourceGroups().define(resourceGroup)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroup).withRegion(REGION).create();
         }
 
         try {
             // @embedmeStart
             // storage account
-            StorageAccount storageAccount = storageManager.storageAccounts().define(STORAGE_ACCOUNT)
+            StorageAccount storageAccount = storageManager.storageAccounts()
+                .define(STORAGE_ACCOUNT)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroup)
                 .create();
 
             // media service account
-            MediaService account = manager.mediaservices().define(ACCOUNT)
+            MediaService account = manager.mediaservices()
+                .define(ACCOUNT)
                 .withRegion(Region.US_WEST3)
                 .withExistingResourceGroup(resourceGroup)
                 .withStorageAccounts(Collections.singletonList(
-                    new com.azure.resourcemanager.mediaservices.models.StorageAccount()
-                        .withId(storageAccount.id())
+                    new com.azure.resourcemanager.mediaservices.models.StorageAccount().withId(storageAccount.id())
                         .withType(StorageAccountType.PRIMARY)))
                 .create();
 
@@ -87,26 +99,23 @@ public class MediaServicesTests extends TestProxyTestBase {
             Transform transform = manager.transforms()
                 .define("transform1")
                 .withExistingMediaService(resourceGroup, ACCOUNT)
-                .withOutputs(Collections.singletonList(new TransformOutput()
-                    .withPreset(new BuiltInStandardEncoderPreset()
-                        .withPresetName(EncoderNamedPreset.CONTENT_AWARE_ENCODING))))
+                .withOutputs(Collections.singletonList(new TransformOutput().withPreset(
+                    new BuiltInStandardEncoderPreset().withPresetName(EncoderNamedPreset.CONTENT_AWARE_ENCODING))))
                 .create();
 
             // output asset
-            Asset asset = manager.assets()
-                .define("output1")
-                .withExistingMediaService(resourceGroup, ACCOUNT)
-                .create();
+            Asset asset = manager.assets().define("output1").withExistingMediaService(resourceGroup, ACCOUNT).create();
 
             // input uri
-            String jobHttpBaseUri = "https://nimbuscdn-nimbuspm.streaming.mediaservices.windows.net/2b533311-b215-4409-80af-529c3e853622/";
+            String jobHttpBaseUri
+                = "https://nimbuscdn-nimbuspm.streaming.mediaservices.windows.net/2b533311-b215-4409-80af-529c3e853622/";
             String jobFile = "Ignite-short.mp4";
 
             // job
-            Job job = manager.jobs().define("job1")
+            Job job = manager.jobs()
+                .define("job1")
                 .withExistingTransform(resourceGroup, ACCOUNT, "transform1")
-                .withInput(new JobInputHttp()
-                    .withFiles(Collections.singletonList(jobFile))
+                .withInput(new JobInputHttp().withFiles(Collections.singletonList(jobFile))
                     .withBaseUri(jobHttpBaseUri)
                     .withLabel("input1"))
                 .withOutputs(Collections.singletonList(new JobOutputAsset().withAssetName("output1")))
@@ -131,7 +140,7 @@ public class MediaServicesTests extends TestProxyTestBase {
             storageManager.storageAccounts().deleteById(storageAccount.id());
         } finally {
             if (!testEnv) {
-                storageManager.resourceManager().resourceGroups().beginDeleteByName(resourceGroup);
+                resourceManager.resourceGroups().beginDeleteByName(resourceGroup);
             }
         }
     }

@@ -28,7 +28,8 @@ public final class SiteListResultTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SiteListResult model = new SiteListResult().withValue(Arrays.asList(
-            new SiteInner().withLocation("nhxmsi").withTags(mapOf("zaofjchvcyy", "miloxggdufiqndie"))
+            new SiteInner().withLocation("nhxmsi")
+                .withTags(mapOf("zaofjchvcyy", "miloxggdufiqndie"))
                 .withProperties(new SitePropertiesFormat().withNfvis(Arrays.asList(new NfvIs().withName("yuqdu")))),
             new SiteInner().withLocation("fnynszqujizdvoqy")
                 .withTags(mapOf("bblgyavut", "yo", "ksbpimlqoljx", "thjoxoism", "fgcviz", "cgxxlxs", "jub",

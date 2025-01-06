@@ -5,69 +5,72 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A processor that allows the pipeline topology to send video frames to a Cognitive Services Vision extension.
  * Inference results are relayed to downstream nodes.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
-@JsonTypeName("#Microsoft.VideoAnalyzer.CognitiveServicesVisionProcessor")
 @Fluent
 public final class CognitiveServicesVisionProcessor extends ProcessorNodeBase {
     /*
-     * Endpoint to which this processor should connect.
+     * Type discriminator for the derived types.
      */
-    @JsonProperty(value = "endpoint", required = true)
-    private EndpointBase endpoint;
+    private String type = "#Microsoft.VideoAnalyzer.CognitiveServicesVisionProcessor";
 
     /*
-     * Describes the parameters of the image that is sent as input to the
-     * endpoint.
+     * Endpoint to which this processor should connect.
      */
-    @JsonProperty(value = "image")
+    private final EndpointBase endpoint;
+
+    /*
+     * Describes the parameters of the image that is sent as input to the endpoint.
+     */
     private ImageProperties image;
 
     /*
-     * Describes the sampling options to be applied when forwarding samples to
-     * the extension.
+     * Describes the sampling options to be applied when forwarding samples to the extension.
      */
-    @JsonProperty(value = "samplingOptions")
     private SamplingOptions samplingOptions;
 
     /*
-     * Describes the Spatial Analysis operation to be used in the Cognitive
-     * Services Vision processor.
+     * Describes the Spatial Analysis operation to be used in the Cognitive Services Vision processor.
      */
-    @JsonProperty(value = "operation", required = true)
-    private SpatialAnalysisOperationBase operation;
+    private final SpatialAnalysisOperationBase operation;
 
     /**
      * Creates an instance of CognitiveServicesVisionProcessor class.
-     *
+     * 
      * @param name the name value to set.
      * @param inputs the inputs value to set.
      * @param endpoint the endpoint value to set.
      * @param operation the operation value to set.
      */
-    @JsonCreator
-    public CognitiveServicesVisionProcessor(
-            @JsonProperty(value = "name", required = true) String name,
-            @JsonProperty(value = "inputs", required = true) List<NodeInput> inputs,
-            @JsonProperty(value = "endpoint", required = true) EndpointBase endpoint,
-            @JsonProperty(value = "operation", required = true) SpatialAnalysisOperationBase operation) {
+    public CognitiveServicesVisionProcessor(String name, List<NodeInput> inputs, EndpointBase endpoint,
+        SpatialAnalysisOperationBase operation) {
         super(name, inputs);
         this.endpoint = endpoint;
         this.operation = operation;
     }
 
     /**
+     * Get the type property: Type discriminator for the derived types.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
      * Get the endpoint property: Endpoint to which this processor should connect.
-     *
+     * 
      * @return the endpoint value.
      */
     public EndpointBase getEndpoint() {
@@ -76,7 +79,7 @@ public final class CognitiveServicesVisionProcessor extends ProcessorNodeBase {
 
     /**
      * Get the image property: Describes the parameters of the image that is sent as input to the endpoint.
-     *
+     * 
      * @return the image value.
      */
     public ImageProperties getImage() {
@@ -85,7 +88,7 @@ public final class CognitiveServicesVisionProcessor extends ProcessorNodeBase {
 
     /**
      * Set the image property: Describes the parameters of the image that is sent as input to the endpoint.
-     *
+     * 
      * @param image the image value to set.
      * @return the CognitiveServicesVisionProcessor object itself.
      */
@@ -97,7 +100,7 @@ public final class CognitiveServicesVisionProcessor extends ProcessorNodeBase {
     /**
      * Get the samplingOptions property: Describes the sampling options to be applied when forwarding samples to the
      * extension.
-     *
+     * 
      * @return the samplingOptions value.
      */
     public SamplingOptions getSamplingOptions() {
@@ -107,7 +110,7 @@ public final class CognitiveServicesVisionProcessor extends ProcessorNodeBase {
     /**
      * Set the samplingOptions property: Describes the sampling options to be applied when forwarding samples to the
      * extension.
-     *
+     * 
      * @param samplingOptions the samplingOptions value to set.
      * @return the CognitiveServicesVisionProcessor object itself.
      */
@@ -119,10 +122,102 @@ public final class CognitiveServicesVisionProcessor extends ProcessorNodeBase {
     /**
      * Get the operation property: Describes the Spatial Analysis operation to be used in the Cognitive Services Vision
      * processor.
-     *
+     * 
      * @return the operation value.
      */
     public SpatialAnalysisOperationBase getOperation() {
         return this.operation;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("endpoint", this.endpoint);
+        jsonWriter.writeJsonField("operation", this.operation);
+        jsonWriter.writeStringField("@type", this.type);
+        jsonWriter.writeJsonField("image", this.image);
+        jsonWriter.writeJsonField("samplingOptions", this.samplingOptions);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CognitiveServicesVisionProcessor from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CognitiveServicesVisionProcessor if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CognitiveServicesVisionProcessor.
+     */
+    public static CognitiveServicesVisionProcessor fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean nameFound = false;
+            String name = null;
+            boolean inputsFound = false;
+            List<NodeInput> inputs = null;
+            boolean endpointFound = false;
+            EndpointBase endpoint = null;
+            boolean operationFound = false;
+            SpatialAnalysisOperationBase operation = null;
+            String type = "#Microsoft.VideoAnalyzer.CognitiveServicesVisionProcessor";
+            ImageProperties image = null;
+            SamplingOptions samplingOptions = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                    nameFound = true;
+                } else if ("inputs".equals(fieldName)) {
+                    inputs = reader.readArray(reader1 -> NodeInput.fromJson(reader1));
+                    inputsFound = true;
+                } else if ("endpoint".equals(fieldName)) {
+                    endpoint = EndpointBase.fromJson(reader);
+                    endpointFound = true;
+                } else if ("operation".equals(fieldName)) {
+                    operation = SpatialAnalysisOperationBase.fromJson(reader);
+                    operationFound = true;
+                } else if ("@type".equals(fieldName)) {
+                    type = reader.getString();
+                } else if ("image".equals(fieldName)) {
+                    image = ImageProperties.fromJson(reader);
+                } else if ("samplingOptions".equals(fieldName)) {
+                    samplingOptions = SamplingOptions.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (nameFound && inputsFound && endpointFound && operationFound) {
+                CognitiveServicesVisionProcessor deserializedCognitiveServicesVisionProcessor
+                    = new CognitiveServicesVisionProcessor(name, inputs, endpoint, operation);
+                deserializedCognitiveServicesVisionProcessor.type = type;
+                deserializedCognitiveServicesVisionProcessor.image = image;
+                deserializedCognitiveServicesVisionProcessor.samplingOptions = samplingOptions;
+
+                return deserializedCognitiveServicesVisionProcessor;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!nameFound) {
+                missingProperties.add("name");
+            }
+            if (!inputsFound) {
+                missingProperties.add("inputs");
+            }
+            if (!endpointFound) {
+                missingProperties.add("endpoint");
+            }
+            if (!operationFound) {
+                missingProperties.add("operation");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

@@ -12,14 +12,14 @@ public final class NasRerouteConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NasRerouteConfiguration model
-            = BinaryData.fromString("{\"macroMmeGroupId\":1364753762}").toObject(NasRerouteConfiguration.class);
-        Assertions.assertEquals(1364753762, model.macroMmeGroupId());
+            = BinaryData.fromString("{\"macroMmeGroupId\":26018404}").toObject(NasRerouteConfiguration.class);
+        Assertions.assertEquals(26018404, model.macroMmeGroupId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NasRerouteConfiguration model = new NasRerouteConfiguration().withMacroMmeGroupId(1364753762);
+        NasRerouteConfiguration model = new NasRerouteConfiguration().withMacroMmeGroupId(26018404);
         model = BinaryData.fromObject(model).toObject(NasRerouteConfiguration.class);
-        Assertions.assertEquals(1364753762, model.macroMmeGroupId());
+        Assertions.assertEquals(26018404, model.macroMmeGroupId());
     }
 }

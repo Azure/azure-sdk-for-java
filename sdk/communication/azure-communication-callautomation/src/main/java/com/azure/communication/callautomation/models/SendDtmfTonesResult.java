@@ -19,8 +19,8 @@ public final class SendDtmfTonesResult {
     private final String operationContext;
 
     static {
-        SendDtmfTonesResponseConstructorProxy.setAccessor(
-            new SendDtmfTonesResponseConstructorProxy.SendDtmfTonesResponseConstructorAccessor() {
+        SendDtmfTonesResponseConstructorProxy
+            .setAccessor(new SendDtmfTonesResponseConstructorProxy.SendDtmfTonesResponseConstructorAccessor() {
                 @Override
                 public SendDtmfTonesResult create(SendDtmfTonesResultInternal internalHeaders) {
                     return new SendDtmfTonesResult(internalHeaders);

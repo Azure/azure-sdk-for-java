@@ -16,6 +16,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.*;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -34,16 +35,15 @@ public class PaloAltoNetworksNgfwManagerTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        paloAltoNetworksNgfwManager = PaloAltoNetworksNgfwManager
-            .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile);
-
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
+
+        paloAltoNetworksNgfwManager = PaloAltoNetworksNgfwManager.configure()
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile);
 
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
@@ -51,10 +51,7 @@ public class PaloAltoNetworksNgfwManagerTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -82,7 +79,8 @@ public class PaloAltoNetworksNgfwManagerTests extends TestProxyTestBase {
             // @embedmeEnd
             localRulestackResource.refresh();
             Assertions.assertEquals(localRulestackResource.name(), localRulestackName);
-            Assertions.assertEquals(localRulestackResource.name(), paloAltoNetworksNgfwManager.localRulestacks().getById(localRulestackResource.id()).name());
+            Assertions.assertEquals(localRulestackResource.name(),
+                paloAltoNetworksNgfwManager.localRulestacks().getById(localRulestackResource.id()).name());
             Assertions.assertTrue(paloAltoNetworksNgfwManager.localRulestacks().list().stream().findAny().isPresent());
         } finally {
             if (localRulestackResource != null) {

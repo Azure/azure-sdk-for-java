@@ -11,29 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class DDAudioTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DDAudio model =
-            BinaryData
-                .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.DDAudio\",\"channels\":1224339207,\"samplingRate\":536315027,\"bitrate\":549450060,\"label\":\"sukokwbqplhl\"}")
-                .toObject(DDAudio.class);
-        Assertions.assertEquals("sukokwbqplhl", model.label());
-        Assertions.assertEquals(1224339207, model.channels());
-        Assertions.assertEquals(536315027, model.samplingRate());
-        Assertions.assertEquals(549450060, model.bitrate());
+        DDAudio model = BinaryData.fromString(
+            "{\"@odata.type\":\"#Microsoft.Media.DDAudio\",\"channels\":1956453984,\"samplingRate\":1516168564,\"bitrate\":1126537021,\"label\":\"sbtkadpysownbtgk\"}")
+            .toObject(DDAudio.class);
+        Assertions.assertEquals("sbtkadpysownbtgk", model.label());
+        Assertions.assertEquals(1956453984, model.channels());
+        Assertions.assertEquals(1516168564, model.samplingRate());
+        Assertions.assertEquals(1126537021, model.bitrate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DDAudio model =
-            new DDAudio()
-                .withLabel("sukokwbqplhl")
-                .withChannels(1224339207)
-                .withSamplingRate(536315027)
-                .withBitrate(549450060);
+        DDAudio model = new DDAudio().withLabel("sbtkadpysownbtgk")
+            .withChannels(1956453984)
+            .withSamplingRate(1516168564)
+            .withBitrate(1126537021);
         model = BinaryData.fromObject(model).toObject(DDAudio.class);
-        Assertions.assertEquals("sukokwbqplhl", model.label());
-        Assertions.assertEquals(1224339207, model.channels());
-        Assertions.assertEquals(536315027, model.samplingRate());
-        Assertions.assertEquals(549450060, model.bitrate());
+        Assertions.assertEquals("sbtkadpysownbtgk", model.label());
+        Assertions.assertEquals(1956453984, model.channels());
+        Assertions.assertEquals(1516168564, model.samplingRate());
+        Assertions.assertEquals(1126537021, model.bitrate());
     }
 }

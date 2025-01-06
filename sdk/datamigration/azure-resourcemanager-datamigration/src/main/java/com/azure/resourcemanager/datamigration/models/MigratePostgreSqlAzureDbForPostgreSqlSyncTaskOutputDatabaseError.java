@@ -32,11 +32,6 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseEr
      */
     private List<SyncMigrationDatabaseErrorEvent> events;
 
-    /*
-     * Result identifier
-     */
-    private String id;
-
     /**
      * Creates an instance of MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseError class.
      */
@@ -95,16 +90,6 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseEr
     }
 
     /**
-     * Get the id property: Result identifier.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -147,8 +132,8 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseEr
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseError.id
-                        = reader.getString();
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseError
+                        .withId(reader.getString());
                 } else if ("resultType".equals(fieldName)) {
                     deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseError.resultType
                         = reader.getString();

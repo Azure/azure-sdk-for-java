@@ -12,8 +12,8 @@ public final class MonitoredResourceImpl implements MonitoredResource {
 
     private final com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager;
 
-    MonitoredResourceImpl(
-        MonitoredResourceInner innerObject, com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
+    MonitoredResourceImpl(MonitoredResourceInner innerObject,
+        com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

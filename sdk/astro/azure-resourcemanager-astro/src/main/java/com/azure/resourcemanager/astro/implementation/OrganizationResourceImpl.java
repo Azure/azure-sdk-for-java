@@ -91,14 +91,16 @@ public final class OrganizationResourceImpl
     }
 
     public OrganizationResource create() {
-        this.innerObject = serviceManager.serviceClient().getOrganizations().createOrUpdate(resourceGroupName,
-            organizationName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getOrganizations()
+            .createOrUpdate(resourceGroupName, organizationName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public OrganizationResource create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getOrganizations().createOrUpdate(resourceGroupName,
-            organizationName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getOrganizations()
+            .createOrUpdate(resourceGroupName, organizationName, this.innerModel(), context);
         return this;
     }
 
@@ -114,14 +116,16 @@ public final class OrganizationResourceImpl
     }
 
     public OrganizationResource apply() {
-        this.innerObject = serviceManager.serviceClient().getOrganizations().update(resourceGroupName, organizationName,
-            updateProperties, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getOrganizations()
+            .update(resourceGroupName, organizationName, updateProperties, Context.NONE);
         return this;
     }
 
     public OrganizationResource apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getOrganizations().update(resourceGroupName, organizationName,
-            updateProperties, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getOrganizations()
+            .update(resourceGroupName, organizationName, updateProperties, context);
         return this;
     }
 
@@ -134,14 +138,18 @@ public final class OrganizationResourceImpl
     }
 
     public OrganizationResource refresh() {
-        this.innerObject = serviceManager.serviceClient().getOrganizations()
-            .getByResourceGroupWithResponse(resourceGroupName, organizationName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getOrganizations()
+            .getByResourceGroupWithResponse(resourceGroupName, organizationName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public OrganizationResource refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getOrganizations()
-            .getByResourceGroupWithResponse(resourceGroupName, organizationName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getOrganizations()
+            .getByResourceGroupWithResponse(resourceGroupName, organizationName, context)
+            .getValue();
         return this;
     }
 

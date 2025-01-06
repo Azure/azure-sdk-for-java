@@ -11,7 +11,7 @@ public final class ServiceProviderParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceProviderParameter model = BinaryData.fromString(
-            "{\"name\":\"kgqhcjrefovg\",\"type\":\"qsl\",\"displayName\":\"yvxyqjp\",\"description\":\"attpngjcrcczsq\",\"helpUrl\":\"hvmdajvnysounq\",\"default\":\"a\",\"metadata\":{\"constraints\":{\"required\":false}}}")
+            "{\"name\":\"axibxujw\",\"type\":\"qwalmuzyoxaepd\",\"displayName\":\"jancu\",\"description\":\"hdwbavxbniwdjs\",\"helpUrl\":\"tsdbpgn\",\"default\":\"txhp\",\"metadata\":{\"constraints\":{\"required\":false}}}")
             .toObject(ServiceProviderParameter.class);
     }
 

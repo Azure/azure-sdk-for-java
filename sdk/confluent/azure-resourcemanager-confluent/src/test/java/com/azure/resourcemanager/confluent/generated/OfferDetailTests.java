@@ -29,9 +29,14 @@ public final class OfferDetailTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OfferDetail model = new OfferDetail().withPublisherId("bhtqqrolfpfpsa").withId("gbquxigj")
-            .withPlanId("jgzjaoyfhrtx").withPlanName("lnerkujysvleju").withTermUnit("fqawrlyxw").withTermId("cpr")
-            .withPrivateOfferId("wbxgjvt").withPrivateOfferIds(Arrays.asList("ysszdnrujqguh"))
+        OfferDetail model = new OfferDetail().withPublisherId("bhtqqrolfpfpsa")
+            .withId("gbquxigj")
+            .withPlanId("jgzjaoyfhrtx")
+            .withPlanName("lnerkujysvleju")
+            .withTermUnit("fqawrlyxw")
+            .withTermId("cpr")
+            .withPrivateOfferId("wbxgjvt")
+            .withPrivateOfferIds(Arrays.asList("ysszdnrujqguh"))
             .withStatus(SaaSOfferStatus.SUSPENDED);
         model = BinaryData.fromObject(model).toObject(OfferDetail.class);
         Assertions.assertEquals("bhtqqrolfpfpsa", model.publisherId());

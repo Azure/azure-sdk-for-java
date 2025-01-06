@@ -11,17 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class AuthorizationLoginRequestContractTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AuthorizationLoginRequestContract model =
-            BinaryData
-                .fromString("{\"postLoginRedirectUrl\":\"xcpwzvmdok\"}")
-                .toObject(AuthorizationLoginRequestContract.class);
+        AuthorizationLoginRequestContract model = BinaryData.fromString("{\"postLoginRedirectUrl\":\"xcpwzvmdok\"}")
+            .toObject(AuthorizationLoginRequestContract.class);
         Assertions.assertEquals("xcpwzvmdok", model.postLoginRedirectUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AuthorizationLoginRequestContract model =
-            new AuthorizationLoginRequestContract().withPostLoginRedirectUrl("xcpwzvmdok");
+        AuthorizationLoginRequestContract model
+            = new AuthorizationLoginRequestContract().withPostLoginRedirectUrl("xcpwzvmdok");
         model = BinaryData.fromObject(model).toObject(AuthorizationLoginRequestContract.class);
         Assertions.assertEquals("xcpwzvmdok", model.postLoginRedirectUrl());
     }

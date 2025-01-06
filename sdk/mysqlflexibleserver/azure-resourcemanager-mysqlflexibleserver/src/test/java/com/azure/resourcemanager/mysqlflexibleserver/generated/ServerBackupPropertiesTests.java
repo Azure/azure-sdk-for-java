@@ -12,23 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ServerBackupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerBackupProperties model = BinaryData
-            .fromString(
-                "{\"backupType\":\"ekuksjtx\",\"completedTime\":\"2021-01-21T08:28Z\",\"source\":\"mparcryuanzw\"}")
+        ServerBackupProperties model = BinaryData.fromString(
+            "{\"backupType\":\"qtrgqjbpfzfsinzg\",\"completedTime\":\"2021-07-30T11:45:35Z\",\"source\":\"rwzoxxjtfelluwf\"}")
             .toObject(ServerBackupProperties.class);
-        Assertions.assertEquals("ekuksjtx", model.backupType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-21T08:28Z"), model.completedTime());
-        Assertions.assertEquals("mparcryuanzw", model.source());
+        Assertions.assertEquals("qtrgqjbpfzfsinzg", model.backupType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-30T11:45:35Z"), model.completedTime());
+        Assertions.assertEquals("rwzoxxjtfelluwf", model.source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerBackupProperties model = new ServerBackupProperties().withBackupType("ekuksjtx")
-            .withCompletedTime(OffsetDateTime.parse("2021-01-21T08:28Z"))
-            .withSource("mparcryuanzw");
+        ServerBackupProperties model = new ServerBackupProperties().withBackupType("qtrgqjbpfzfsinzg")
+            .withCompletedTime(OffsetDateTime.parse("2021-07-30T11:45:35Z"))
+            .withSource("rwzoxxjtfelluwf");
         model = BinaryData.fromObject(model).toObject(ServerBackupProperties.class);
-        Assertions.assertEquals("ekuksjtx", model.backupType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-21T08:28Z"), model.completedTime());
-        Assertions.assertEquals("mparcryuanzw", model.source());
+        Assertions.assertEquals("qtrgqjbpfzfsinzg", model.backupType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-30T11:45:35Z"), model.completedTime());
+        Assertions.assertEquals("rwzoxxjtfelluwf", model.source());
     }
 }

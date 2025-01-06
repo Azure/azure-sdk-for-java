@@ -17,63 +17,54 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationRuntimeComputePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationRuntimeComputeProperties model =
-            BinaryData
-                .fromString(
-                    "{\"location\":\"itpkpztrgdg\",\"nodeSize\":\"coqra\",\"numberOfNodes\":2040757308,\"maxParallelExecutionsPerNode\":601079141,\"dataFlowProperties\":{\"computeType\":\"General\",\"coreCount\":2036171481,\"timeToLive\":151899144,\"cleanup\":false,\"\":{\"yltcoqcuj\":\"datavskbuhzacaq\",\"ztjofqcvovjufyc\":\"datadsxzakuejkmvb\",\"gthortudaw\":\"datajmlbemyejiriux\",\"qerpptcbgqnzm\":\"datapjfe\"}},\"vNetProperties\":{\"vNetId\":\"ilialwcjgc\",\"subnet\":\"bcccgzpra\",\"publicIPs\":[\"yuffatsgf\",\"ipwcxbyu\"],\"subnetId\":\"iqdxyurnpnuh\",\"\":{\"yl\":\"dataccnuhiig\",\"vxva\":\"dataui\",\"lbnb\":\"datavcrk\"}},\"\":{\"syhzlwx\":\"datah\"}}")
-                .toObject(IntegrationRuntimeComputeProperties.class);
-        Assertions.assertEquals("itpkpztrgdg", model.location());
-        Assertions.assertEquals("coqra", model.nodeSize());
-        Assertions.assertEquals(2040757308, model.numberOfNodes());
-        Assertions.assertEquals(601079141, model.maxParallelExecutionsPerNode());
+        IntegrationRuntimeComputeProperties model = BinaryData.fromString(
+            "{\"location\":\"zvlnsnnjz\",\"nodeSize\":\"afolpymwamxqzrag\",\"numberOfNodes\":1193102156,\"maxParallelExecutionsPerNode\":1656670838,\"dataFlowProperties\":{\"computeType\":\"General\",\"coreCount\":881668100,\"timeToLive\":1328440985,\"\":{\"nmzlanru\":\"dataejchcsrlz\",\"phcnzqtpj\":\"datadwv\"}},\"vNetProperties\":{\"vNetId\":\"rhv\",\"subnet\":\"laiwdcxsmlzzh\",\"publicIPs\":[\"xetlgydlhqv\",\"n\",\"pxy\"],\"subnetId\":\"fiqgeaar\",\"\":{\"ulidwc\":\"dataekglklb\",\"nfhjirwgdnqzbr\":\"datavmzegj\",\"igsxcdgljplk\":\"datakspzhzmtksjcit\"}},\"\":{\"pfmdgycx\":\"datachtomflrytsw\"}}")
+            .toObject(IntegrationRuntimeComputeProperties.class);
+        Assertions.assertEquals("zvlnsnnjz", model.location());
+        Assertions.assertEquals("afolpymwamxqzrag", model.nodeSize());
+        Assertions.assertEquals(1193102156, model.numberOfNodes());
+        Assertions.assertEquals(1656670838, model.maxParallelExecutionsPerNode());
         Assertions.assertEquals(DataFlowComputeType.GENERAL, model.dataFlowProperties().computeType());
-        Assertions.assertEquals(2036171481, model.dataFlowProperties().coreCount());
-        Assertions.assertEquals(151899144, model.dataFlowProperties().timeToLive());
-        Assertions.assertEquals(false, model.dataFlowProperties().cleanup());
-        Assertions.assertEquals("ilialwcjgc", model.vNetProperties().vNetId());
-        Assertions.assertEquals("bcccgzpra", model.vNetProperties().subnet());
-        Assertions.assertEquals("yuffatsgf", model.vNetProperties().publicIPs().get(0));
-        Assertions.assertEquals("iqdxyurnpnuh", model.vNetProperties().subnetId());
+        Assertions.assertEquals(881668100, model.dataFlowProperties().coreCount());
+        Assertions.assertEquals(1328440985, model.dataFlowProperties().timeToLive());
+        Assertions.assertEquals("rhv", model.vNetProperties().vNetId());
+        Assertions.assertEquals("laiwdcxsmlzzh", model.vNetProperties().subnet());
+        Assertions.assertEquals("xetlgydlhqv", model.vNetProperties().publicIPs().get(0));
+        Assertions.assertEquals("fiqgeaar", model.vNetProperties().subnetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeComputeProperties model =
-            new IntegrationRuntimeComputeProperties()
-                .withLocation("itpkpztrgdg")
-                .withNodeSize("coqra")
-                .withNumberOfNodes(2040757308)
-                .withMaxParallelExecutionsPerNode(601079141)
-                .withDataFlowProperties(
-                    new IntegrationRuntimeDataFlowProperties()
-                        .withComputeType(DataFlowComputeType.GENERAL)
-                        .withCoreCount(2036171481)
-                        .withTimeToLive(151899144)
-                        .withCleanup(false)
-                        .withAdditionalProperties(mapOf()))
-                .withVNetProperties(
-                    new IntegrationRuntimeVNetProperties()
-                        .withVNetId("ilialwcjgc")
-                        .withSubnet("bcccgzpra")
-                        .withPublicIPs(Arrays.asList("yuffatsgf", "ipwcxbyu"))
-                        .withSubnetId("iqdxyurnpnuh")
-                        .withAdditionalProperties(mapOf()))
-                .withAdditionalProperties(mapOf());
+        IntegrationRuntimeComputeProperties model = new IntegrationRuntimeComputeProperties().withLocation("zvlnsnnjz")
+            .withNodeSize("afolpymwamxqzrag")
+            .withNumberOfNodes(1193102156)
+            .withMaxParallelExecutionsPerNode(1656670838)
+            .withDataFlowProperties(
+                new IntegrationRuntimeDataFlowProperties().withComputeType(DataFlowComputeType.GENERAL)
+                    .withCoreCount(881668100)
+                    .withTimeToLive(1328440985)
+                    .withAdditionalProperties(mapOf()))
+            .withVNetProperties(new IntegrationRuntimeVNetProperties().withVNetId("rhv")
+                .withSubnet("laiwdcxsmlzzh")
+                .withPublicIPs(Arrays.asList("xetlgydlhqv", "n", "pxy"))
+                .withSubnetId("fiqgeaar")
+                .withAdditionalProperties(mapOf()))
+            .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeComputeProperties.class);
-        Assertions.assertEquals("itpkpztrgdg", model.location());
-        Assertions.assertEquals("coqra", model.nodeSize());
-        Assertions.assertEquals(2040757308, model.numberOfNodes());
-        Assertions.assertEquals(601079141, model.maxParallelExecutionsPerNode());
+        Assertions.assertEquals("zvlnsnnjz", model.location());
+        Assertions.assertEquals("afolpymwamxqzrag", model.nodeSize());
+        Assertions.assertEquals(1193102156, model.numberOfNodes());
+        Assertions.assertEquals(1656670838, model.maxParallelExecutionsPerNode());
         Assertions.assertEquals(DataFlowComputeType.GENERAL, model.dataFlowProperties().computeType());
-        Assertions.assertEquals(2036171481, model.dataFlowProperties().coreCount());
-        Assertions.assertEquals(151899144, model.dataFlowProperties().timeToLive());
-        Assertions.assertEquals(false, model.dataFlowProperties().cleanup());
-        Assertions.assertEquals("ilialwcjgc", model.vNetProperties().vNetId());
-        Assertions.assertEquals("bcccgzpra", model.vNetProperties().subnet());
-        Assertions.assertEquals("yuffatsgf", model.vNetProperties().publicIPs().get(0));
-        Assertions.assertEquals("iqdxyurnpnuh", model.vNetProperties().subnetId());
+        Assertions.assertEquals(881668100, model.dataFlowProperties().coreCount());
+        Assertions.assertEquals(1328440985, model.dataFlowProperties().timeToLive());
+        Assertions.assertEquals("rhv", model.vNetProperties().vNetId());
+        Assertions.assertEquals("laiwdcxsmlzzh", model.vNetProperties().subnet());
+        Assertions.assertEquals("xetlgydlhqv", model.vNetProperties().publicIPs().get(0));
+        Assertions.assertEquals("fiqgeaar", model.vNetProperties().subnetId());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

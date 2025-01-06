@@ -22,8 +22,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CallAutomationClientBuilderUnitTests {
     static final String MOCK_URL = "https://REDACTED.communication.azure.com";
-    static final String MOCK_ACCESS_KEY = "eyKfcHciOiJIUzI1NiIsInR5cCI6IkqXVCJ9eyJzdWIiOiIxMjM0NTY5ODkwIiwibmFtZSI7IkpvaGfQSflKxwRJSMeKKF2QT4fwpMeJf36POk6yJVadUs4s5d";
-    static final String MOCK_CONNECTION_STRING = "endpoint=https://REDACTED.communication.azure.com/;accesskey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaGfQSflKxwRJSMeKKF2QT4fwpMeJf36POk6yJVadQssw5c";
+    static final String MOCK_ACCESS_KEY
+        = "eyKfcHciOiJIUzI1NiIsInR5cCI6IkqXVCJ9eyJzdWIiOiIxMjM0NTY5ODkwIiwibmFtZSI7IkpvaGfQSflKxwRJSMeKKF2QT4fwpMeJf36POk6yJVadUs4s5d";
+    static final String MOCK_CONNECTION_STRING
+        = "endpoint=https://REDACTED.communication.azure.com/;accesskey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaGfQSflKxwRJSMeKKF2QT4fwpMeJf36POk6yJVadQssw5c";
     private static final String APPLICATION_ID = "833bad32-4432-4d41-8bb4";
     private final CallAutomationClientBuilder builder = new CallAutomationClientBuilder();
 
@@ -36,66 +38,53 @@ public class CallAutomationClientBuilderUnitTests {
 
     @Test
     public void missingTokenCredentialTest() throws NullPointerException {
-        builder
-            .endpoint(MOCK_URL)
-            .httpClient(new NoOpHttpClient());
+        builder.endpoint(MOCK_URL).httpClient(new NoOpHttpClient());
         assertThrows(Exception.class, builder::buildAsyncClient);
     }
 
     @Test
-    public void missingUrlTest()
-        throws NullPointerException {
-        builder
-            .credential(new AzureKeyCredential(MOCK_ACCESS_KEY))
-            .httpClient(new NoOpHttpClient());
+    public void missingUrlTest() throws NullPointerException {
+        builder.credential(new AzureKeyCredential(MOCK_ACCESS_KEY)).httpClient(new NoOpHttpClient());
         assertThrows(Exception.class, builder::buildAsyncClient);
     }
 
     @Test
     public void nullPipelineTest() {
-        assertThrows(NullPointerException.class, () -> builder
-            .connectionString(MOCK_CONNECTION_STRING)
-            .httpClient(new NoOpHttpClient())
-            .pipeline(null));
+        assertThrows(NullPointerException.class,
+            () -> builder.connectionString(MOCK_CONNECTION_STRING).httpClient(new NoOpHttpClient()).pipeline(null));
     }
 
     @Test
     public void nullCustomPolicyTest() {
-        assertThrows(NullPointerException.class, () -> builder
-            .connectionString(MOCK_CONNECTION_STRING)
-            .httpClient(new NoOpHttpClient())
-            .addPolicy(null));
+        assertThrows(NullPointerException.class,
+            () -> builder.connectionString(MOCK_CONNECTION_STRING).httpClient(new NoOpHttpClient()).addPolicy(null));
     }
 
     @Test
     public void nullConfigurationTest() {
-        assertThrows(NullPointerException.class, () -> builder
-            .connectionString(MOCK_CONNECTION_STRING)
-            .httpClient(new NoOpHttpClient())
-            .configuration(null));
+        assertThrows(NullPointerException.class,
+            () -> builder.connectionString(MOCK_CONNECTION_STRING)
+                .httpClient(new NoOpHttpClient())
+                .configuration(null));
     }
 
     @Test
     public void nullHttpLogOptionsTest() {
-        assertThrows(NullPointerException.class, () -> builder
-            .connectionString(MOCK_CONNECTION_STRING)
-            .httpClient(new NoOpHttpClient())
-            .httpLogOptions(null));
+        assertThrows(NullPointerException.class,
+            () -> builder.connectionString(MOCK_CONNECTION_STRING)
+                .httpClient(new NoOpHttpClient())
+                .httpLogOptions(null));
     }
 
     @Test
     public void nullRetryPolicyTest() {
-        assertThrows(
-            NullPointerException.class, () -> builder
-                .connectionString(MOCK_CONNECTION_STRING)
-                .httpClient(new NoOpHttpClient())
-                .retryPolicy(null));
+        assertThrows(NullPointerException.class,
+            () -> builder.connectionString(MOCK_CONNECTION_STRING).httpClient(new NoOpHttpClient()).retryPolicy(null));
     }
 
     @Test
     public void buildPipelineForClient() {
-        CallAutomationAsyncClient callAutomationAsyncClient = builder
-            .connectionString(MOCK_CONNECTION_STRING)
+        CallAutomationAsyncClient callAutomationAsyncClient = builder.connectionString(MOCK_CONNECTION_STRING)
             .httpClient(new NoOpHttpClient())
             .pipeline(new HttpPipelineBuilder().httpClient(new NoOpHttpClient()).build())
             .buildAsyncClient();
@@ -105,8 +94,7 @@ public class CallAutomationClientBuilderUnitTests {
     @Test
     public void setHttpLogOptions() {
         HttpLogOptions options = new HttpLogOptions().setApplicationId(APPLICATION_ID);
-        CallAutomationAsyncClient callAutomationAsyncClient = builder
-            .connectionString(MOCK_CONNECTION_STRING)
+        CallAutomationAsyncClient callAutomationAsyncClient = builder.connectionString(MOCK_CONNECTION_STRING)
             .httpLogOptions(options)
             .httpClient(new NoOpHttpClient())
             .buildAsyncClient();
@@ -116,8 +104,7 @@ public class CallAutomationClientBuilderUnitTests {
     @Test
     public void setClientOptions() {
         ClientOptions options = new ClientOptions().setApplicationId(APPLICATION_ID);
-        CallAutomationAsyncClient callAutomationAsyncClient = builder
-            .connectionString(MOCK_CONNECTION_STRING)
+        CallAutomationAsyncClient callAutomationAsyncClient = builder.connectionString(MOCK_CONNECTION_STRING)
             .clientOptions(options)
             .httpClient(new NoOpHttpClient())
             .buildAsyncClient();
@@ -126,19 +113,15 @@ public class CallAutomationClientBuilderUnitTests {
 
     @Test
     public void noClientOptionsNoPipeline() {
-        CallAutomationAsyncClient callAutomationAsyncClient = builder
-            .connectionString(MOCK_CONNECTION_STRING)
-            .httpClient(new NoOpHttpClient())
-            .buildAsyncClient();
+        CallAutomationAsyncClient callAutomationAsyncClient
+            = builder.connectionString(MOCK_CONNECTION_STRING).httpClient(new NoOpHttpClient()).buildAsyncClient();
         assertNotNull(callAutomationAsyncClient);
     }
 
     @Test
     public void addPolicy() {
         AzureKeyCredential credential = new AzureKeyCredential("key");
-        CallAutomationAsyncClient callAutomationAsyncClient =
-            builder
-            .connectionString(MOCK_CONNECTION_STRING)
+        CallAutomationAsyncClient callAutomationAsyncClient = builder.connectionString(MOCK_CONNECTION_STRING)
             .addPolicy(new HmacAuthenticationPolicy(credential))
             .httpClient(new NoOpHttpClient())
             .pipeline(new HttpPipelineBuilder().httpClient(new NoOpHttpClient()).build())
@@ -148,30 +131,16 @@ public class CallAutomationClientBuilderUnitTests {
     }
 
     @Test
-    public void argumentExceptionOnConnectionStringAndEndpoint() {
-        assertThrows(IllegalArgumentException.class,
-            () -> builder
-                .connectionString(MOCK_CONNECTION_STRING)
-                .endpoint(MOCK_URL)
-                .httpClient(new NoOpHttpClient())
-                .buildAsyncClient());
-    }
-
-    @Test
     public void argumentExceptionOnEmptyConnectionString() {
         assertThrows(NullPointerException.class,
-            () -> builder
-                .connectionString("")
-                .httpClient(new NoOpHttpClient())
-                .buildAsyncClient());
+            () -> builder.connectionString("").httpClient(new NoOpHttpClient()).buildAsyncClient());
     }
 
     @Test
     public void argumentExceptionOnConnectionStringAndAzureKeyCredential() {
         AzureKeyCredential credential = new AzureKeyCredential("key");
-        assertThrows(
-            IllegalArgumentException.class, () -> builder
-                .connectionString(MOCK_CONNECTION_STRING)
+        assertThrows(IllegalArgumentException.class,
+            () -> builder.connectionString(MOCK_CONNECTION_STRING)
                 .credential(credential)
                 .httpClient(new NoOpHttpClient())
                 .buildAsyncClient());
@@ -179,9 +148,8 @@ public class CallAutomationClientBuilderUnitTests {
 
     @Test
     public void argumentExceptionOnConnectionStringAndTokenCredential() {
-        assertThrows(
-            IllegalArgumentException.class, () -> builder
-                .connectionString(MOCK_CONNECTION_STRING)
+        assertThrows(IllegalArgumentException.class,
+            () -> builder.connectionString(MOCK_CONNECTION_STRING)
                 .credential(new MockTokenCredential())
                 .httpClient(new NoOpHttpClient())
                 .buildAsyncClient());
@@ -190,9 +158,8 @@ public class CallAutomationClientBuilderUnitTests {
     @Test
     public void argumentExceptionOnAzureKeyCredentialAndTokenCredential() {
         AzureKeyCredential credential = new AzureKeyCredential("key");
-        assertThrows(
-            IllegalArgumentException.class, () -> builder
-                .credential(credential)
+        assertThrows(IllegalArgumentException.class,
+            () -> builder.credential(credential)
                 .credential(new MockTokenCredential())
                 .httpClient(new NoOpHttpClient())
                 .buildAsyncClient());
@@ -200,8 +167,7 @@ public class CallAutomationClientBuilderUnitTests {
 
     @Test
     public void noPipelineWithToken() {
-        CallAutomationAsyncClient callAutomationAsyncClient = builder
-            .endpoint(MOCK_URL)
+        CallAutomationAsyncClient callAutomationAsyncClient = builder.endpoint(MOCK_URL)
             .credential(new MockTokenCredential())
             .httpClient(new NoOpHttpClient())
             .buildAsyncClient();
@@ -211,29 +177,22 @@ public class CallAutomationClientBuilderUnitTests {
 
     @Test
     public void noCredential() {
-        assertThrows(
-            IllegalArgumentException.class, () -> builder
-                .endpoint(MOCK_URL)
-                .httpClient(new NoOpHttpClient())
-                .buildAsyncClient());
+        assertThrows(IllegalArgumentException.class,
+            () -> builder.endpoint(MOCK_URL).httpClient(new NoOpHttpClient()).buildAsyncClient());
     }
 
     @Test
     public void noEndpoint() {
-        assertThrows(
-            NullPointerException.class, () -> builder
-                .httpClient(new NoOpHttpClient())
-                .buildAsyncClient());
+        assertThrows(NullPointerException.class, () -> builder.httpClient(new NoOpHttpClient()).buildAsyncClient());
     }
 
     @Test
     public void bothRetryOptionsAndRetryPolicySet() {
-        assertThrows(IllegalStateException.class, () -> builder
-            .connectionString(MOCK_CONNECTION_STRING)
-            .httpClient(new NoOpHttpClient())
-            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
-            .retryPolicy(new RetryPolicy())
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> builder.connectionString(MOCK_CONNECTION_STRING)
+                .httpClient(new NoOpHttpClient())
+                .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+                .retryPolicy(new RetryPolicy())
+                .buildClient());
     }
 }
-

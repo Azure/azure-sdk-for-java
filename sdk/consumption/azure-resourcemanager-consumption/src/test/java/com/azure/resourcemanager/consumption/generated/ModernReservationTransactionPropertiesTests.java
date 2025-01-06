@@ -11,7 +11,7 @@ public final class ModernReservationTransactionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ModernReservationTransactionProperties model = BinaryData.fromString(
-            "{\"armSkuName\":\"gz\",\"billingFrequency\":\"lucvpam\",\"billingProfileId\":\"reuzvxurisjn\",\"billingProfileName\":\"ytxifqjzgxmrh\",\"currency\":\"lw\",\"description\":\"esutrgjupauutpw\",\"eventDate\":\"2021-02-03T03:54:48Z\",\"eventType\":\"hej\",\"invoice\":\"w\",\"invoiceId\":\"nfqn\",\"invoiceSectionId\":\"ypsxjvfoim\",\"invoiceSectionName\":\"slirciz\",\"purchasingSubscriptionGuid\":\"e7b3e161-f477-427f-add8-0890dbb66eca\",\"purchasingSubscriptionName\":\"ydfce\",\"region\":\"lhvygdyftu\",\"reservationOrderId\":\"twnawjslbiwkojgc\",\"reservationOrderName\":\"tsf\",\"term\":\"nbaeqphchqn\"}")
+            "{\"armSkuName\":\"gz\",\"billingFrequency\":\"lucvpam\",\"billingProfileId\":\"reuzvxurisjn\",\"billingProfileName\":\"ytxifqjzgxmrh\",\"currency\":\"lw\",\"description\":\"esutrgjupauutpw\",\"eventDate\":\"2021-02-03T03:54:48Z\",\"eventType\":\"hej\",\"invoice\":\"w\",\"invoiceId\":\"nfqn\",\"invoiceSectionId\":\"ypsxjvfoim\",\"invoiceSectionName\":\"slirciz\",\"purchasingSubscriptionGuid\":\"aff90af7-8487-4bf8-9e6e-e6babc33fbe9\",\"purchasingSubscriptionName\":\"ydfce\",\"region\":\"lhvygdyftu\",\"reservationOrderId\":\"twnawjslbiwkojgc\",\"reservationOrderName\":\"tsf\",\"term\":\"nbaeqphchqn\"}")
             .toObject(ModernReservationTransactionProperties.class);
     }
 

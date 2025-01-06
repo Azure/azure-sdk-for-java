@@ -48,22 +48,18 @@ public final class CustomRolloutImpl implements CustomRollout, CustomRollout.Def
     }
 
     public CustomRollout create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCustomRollouts()
-                .createOrUpdateWithResponse(providerNamespace, rolloutName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCustomRollouts()
+            .createOrUpdateWithResponse(providerNamespace, rolloutName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public CustomRollout create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCustomRollouts()
-                .createOrUpdateWithResponse(providerNamespace, rolloutName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCustomRollouts()
+            .createOrUpdateWithResponse(providerNamespace, rolloutName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -78,50 +74,42 @@ public final class CustomRolloutImpl implements CustomRollout, CustomRollout.Def
     }
 
     public CustomRollout apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCustomRollouts()
-                .createOrUpdateWithResponse(providerNamespace, rolloutName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCustomRollouts()
+            .createOrUpdateWithResponse(providerNamespace, rolloutName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public CustomRollout apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCustomRollouts()
-                .createOrUpdateWithResponse(providerNamespace, rolloutName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCustomRollouts()
+            .createOrUpdateWithResponse(providerNamespace, rolloutName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    CustomRolloutImpl(
-        CustomRolloutInner innerObject, com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager) {
+    CustomRolloutImpl(CustomRolloutInner innerObject,
+        com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.providerNamespace = Utils.getValueFromIdByName(innerObject.id(), "providerRegistrations");
-        this.rolloutName = Utils.getValueFromIdByName(innerObject.id(), "customRollouts");
+        this.providerNamespace = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "providerRegistrations");
+        this.rolloutName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "customRollouts");
     }
 
     public CustomRollout refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCustomRollouts()
-                .getWithResponse(providerNamespace, rolloutName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCustomRollouts()
+            .getWithResponse(providerNamespace, rolloutName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public CustomRollout refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCustomRollouts()
-                .getWithResponse(providerNamespace, rolloutName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCustomRollouts()
+            .getWithResponse(providerNamespace, rolloutName, context)
+            .getValue();
         return this;
     }
 

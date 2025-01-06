@@ -34,7 +34,7 @@ public final class DataSourceCredentialList implements JsonSerializable<DataSour
     }
 
     /**
-     * Get the nextLink property: The @nextLink property.
+     * Get the nextLink property: The &#064;nextLink property.
      * 
      * @return the nextLink value.
      */
@@ -51,6 +51,9 @@ public final class DataSourceCredentialList implements JsonSerializable<DataSour
         return this.value;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

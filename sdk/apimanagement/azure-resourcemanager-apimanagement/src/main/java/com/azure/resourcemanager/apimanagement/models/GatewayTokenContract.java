@@ -6,18 +6,20 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.resourcemanager.apimanagement.fluent.models.GatewayTokenContractInner;
 
-/** An immutable client-side representation of GatewayTokenContract. */
+/**
+ * An immutable client-side representation of GatewayTokenContract.
+ */
 public interface GatewayTokenContract {
     /**
      * Gets the value property: Shared Access Authentication token value for the Gateway.
-     *
+     * 
      * @return the value value.
      */
     String value();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.GatewayTokenContractInner object.
-     *
+     * 
      * @return the inner object.
      */
     GatewayTokenContractInner innerModel();

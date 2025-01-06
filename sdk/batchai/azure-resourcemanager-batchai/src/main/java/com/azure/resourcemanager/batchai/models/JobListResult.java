@@ -14,7 +14,8 @@ import java.util.List;
 /** Values returned by the List operation. */
 @Immutable
 public final class JobListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(JobListResult.class);
 
     /*
      * The collection of jobs.

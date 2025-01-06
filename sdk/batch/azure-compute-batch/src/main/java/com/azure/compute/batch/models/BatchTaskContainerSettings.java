@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The container settings for a Task.
@@ -140,6 +141,8 @@ public final class BatchTaskContainerSettings implements JsonSerializable<BatchT
         jsonWriter.writeJsonField("registry", this.registry);
         jsonWriter.writeStringField("workingDirectory",
             this.workingDirectory == null ? null : this.workingDirectory.toString());
+        jsonWriter.writeArrayField("containerHostBatchBindMounts", this.containerHostBatchBindMounts,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -159,6 +162,7 @@ public final class BatchTaskContainerSettings implements JsonSerializable<BatchT
             String containerRunOptions = null;
             ContainerRegistryReference registry = null;
             ContainerWorkingDirectory workingDirectory = null;
+            List<ContainerHostBatchBindMountEntry> containerHostBatchBindMounts = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -170,6 +174,9 @@ public final class BatchTaskContainerSettings implements JsonSerializable<BatchT
                     registry = ContainerRegistryReference.fromJson(reader);
                 } else if ("workingDirectory".equals(fieldName)) {
                     workingDirectory = ContainerWorkingDirectory.fromString(reader.getString());
+                } else if ("containerHostBatchBindMounts".equals(fieldName)) {
+                    containerHostBatchBindMounts
+                        = reader.readArray(reader1 -> ContainerHostBatchBindMountEntry.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
@@ -179,6 +186,7 @@ public final class BatchTaskContainerSettings implements JsonSerializable<BatchT
             deserializedBatchTaskContainerSettings.containerRunOptions = containerRunOptions;
             deserializedBatchTaskContainerSettings.registry = registry;
             deserializedBatchTaskContainerSettings.workingDirectory = workingDirectory;
+            deserializedBatchTaskContainerSettings.containerHostBatchBindMounts = containerHostBatchBindMounts;
             return deserializedBatchTaskContainerSettings;
         });
     }
@@ -193,6 +201,41 @@ public final class BatchTaskContainerSettings implements JsonSerializable<BatchT
     @Generated
     public BatchTaskContainerSettings setRegistry(ContainerRegistryReference registry) {
         this.registry = registry;
+        return this;
+    }
+
+    /*
+     * The paths you want to mounted to container task. If this array is null or be not present, container task will
+     * mount entire temporary disk drive in windows (or AZ_BATCH_NODE_ROOT_DIR in Linux). It won't' mount any data paths
+     * into container if this array is set as empty.
+     */
+    @Generated
+    private List<ContainerHostBatchBindMountEntry> containerHostBatchBindMounts;
+
+    /**
+     * Get the containerHostBatchBindMounts property: The paths you want to mounted to container task. If this array is
+     * null or be not present, container task will mount entire temporary disk drive in windows (or
+     * AZ_BATCH_NODE_ROOT_DIR in Linux). It won't' mount any data paths into container if this array is set as empty.
+     *
+     * @return the containerHostBatchBindMounts value.
+     */
+    @Generated
+    public List<ContainerHostBatchBindMountEntry> getContainerHostBatchBindMounts() {
+        return this.containerHostBatchBindMounts;
+    }
+
+    /**
+     * Set the containerHostBatchBindMounts property: The paths you want to mounted to container task. If this array is
+     * null or be not present, container task will mount entire temporary disk drive in windows (or
+     * AZ_BATCH_NODE_ROOT_DIR in Linux). It won't' mount any data paths into container if this array is set as empty.
+     *
+     * @param containerHostBatchBindMounts the containerHostBatchBindMounts value to set.
+     * @return the BatchTaskContainerSettings object itself.
+     */
+    @Generated
+    public BatchTaskContainerSettings
+        setContainerHostBatchBindMounts(List<ContainerHostBatchBindMountEntry> containerHostBatchBindMounts) {
+        this.containerHostBatchBindMounts = containerHostBatchBindMounts;
         return this;
     }
 }

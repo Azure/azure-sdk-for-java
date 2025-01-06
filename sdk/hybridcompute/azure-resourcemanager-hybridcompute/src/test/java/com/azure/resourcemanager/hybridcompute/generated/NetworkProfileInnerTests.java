@@ -15,29 +15,52 @@ public final class NetworkProfileInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkProfileInner model = BinaryData.fromString(
-            "{\"networkInterfaces\":[{\"ipAddresses\":[{\"address\":\"pxjmflbvvnchr\",\"ipAddressVersion\":\"ciwwzjuqkhr\",\"subnet\":{\"addressPrefix\":\"iwkuofos\"}},{\"address\":\"hsauuimjmvxied\",\"ipAddressVersion\":\"gidyjrrf\",\"subnet\":{\"addressPrefix\":\"osvexcsonpclhoc\"}},{\"address\":\"slkevle\",\"ipAddressVersion\":\"zfbuhf\",\"subnet\":{\"addressPrefix\":\"axkffei\"}}]},{\"ipAddresses\":[{\"address\":\"vmezy\",\"ipAddressVersion\":\"hxmzsbbzoggig\",\"subnet\":{\"addressPrefix\":\"burvjxxjnspy\"}}]},{\"ipAddresses\":[{\"address\":\"oenkouknvudwti\",\"ipAddressVersion\":\"bldngkpoc\",\"subnet\":{\"addressPrefix\":\"z\"}}]},{\"ipAddresses\":[{\"address\":\"gukgjnpiucgygevq\",\"ipAddressVersion\":\"typmrbpizcdrqjsd\",\"subnet\":{\"addressPrefix\":\"nfyhx\"}}]}]}")
+            "{\"networkInterfaces\":[{\"macAddress\":\"tkcxywnytnrsy\",\"id\":\"qidybyx\",\"name\":\"fclhaaxdbabphlwr\",\"ipAddresses\":[{\"address\":\"tsthsucocm\",\"ipAddressVersion\":\"yazttbtwwrqpue\",\"subnet\":{\"addressPrefix\":\"zywbiex\"}}]},{\"macAddress\":\"eyueaxibxujwb\",\"id\":\"walm\",\"name\":\"yoxa\",\"ipAddresses\":[{\"address\":\"zjancuxr\",\"ipAddressVersion\":\"wbavxbniwdj\",\"subnet\":{\"addressPrefix\":\"tsdbpgn\"}},{\"address\":\"txhp\",\"ipAddressVersion\":\"bzpfzab\",\"subnet\":{\"addressPrefix\":\"uhxwtctyqiklbbov\"}},{\"address\":\"wzbhvgyugu\",\"ipAddressVersion\":\"vmkfssxqu\",\"subnet\":{\"addressPrefix\":\"plgmgsxnk\"}}]},{\"macAddress\":\"kde\",\"id\":\"pvlopwiyighxpkd\",\"name\":\"baiuebbaumny\",\"ipAddresses\":[{\"address\":\"deoj\",\"ipAddressVersion\":\"bckhsmtxpsi\",\"subnet\":{\"addressPrefix\":\"fhvpesaps\"}}]},{\"macAddress\":\"dqmh\",\"id\":\"dhtldwkyz\",\"name\":\"utknc\",\"ipAddresses\":[{\"address\":\"svlxotogtwrup\",\"ipAddressVersion\":\"xvnmicykvceov\",\"subnet\":{\"addressPrefix\":\"ovnotyfjfcnjbkcn\"}},{\"address\":\"hbttkphyw\",\"ipAddressVersion\":\"vjtoqnermclfp\",\"subnet\":{\"addressPrefix\":\"oxuscrpabgyepsbj\"}},{\"address\":\"zq\",\"ipAddressVersion\":\"xywpmueefjzwfqkq\",\"subnet\":{\"addressPrefix\":\"dsuyonobgla\"}}]}]}")
             .toObject(NetworkProfileInner.class);
-        Assertions.assertEquals("pxjmflbvvnchr", model.networkInterfaces().get(0).ipAddresses().get(0).address());
-        Assertions.assertEquals("ciwwzjuqkhr",
+        Assertions.assertEquals("tkcxywnytnrsy", model.networkInterfaces().get(0).macAddress());
+        Assertions.assertEquals("qidybyx", model.networkInterfaces().get(0).id());
+        Assertions.assertEquals("fclhaaxdbabphlwr", model.networkInterfaces().get(0).name());
+        Assertions.assertEquals("tsthsucocm", model.networkInterfaces().get(0).ipAddresses().get(0).address());
+        Assertions.assertEquals("yazttbtwwrqpue",
             model.networkInterfaces().get(0).ipAddresses().get(0).ipAddressVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkProfileInner model = new NetworkProfileInner().withNetworkInterfaces(Arrays.asList(
-            new NetworkInterface().withIpAddresses(
-                Arrays.asList(new IpAddress().withAddress("pxjmflbvvnchr").withIpAddressVersion("ciwwzjuqkhr"),
-                    new IpAddress().withAddress("hsauuimjmvxied").withIpAddressVersion("gidyjrrf"),
-                    new IpAddress().withAddress("slkevle").withIpAddressVersion("zfbuhf"))),
-            new NetworkInterface().withIpAddresses(
-                Arrays.asList(new IpAddress().withAddress("vmezy").withIpAddressVersion("hxmzsbbzoggig"))),
-            new NetworkInterface().withIpAddresses(
-                Arrays.asList(new IpAddress().withAddress("oenkouknvudwti").withIpAddressVersion("bldngkpoc"))),
-            new NetworkInterface().withIpAddresses(Arrays
-                .asList(new IpAddress().withAddress("gukgjnpiucgygevq").withIpAddressVersion("typmrbpizcdrqjsd")))));
+        NetworkProfileInner model
+            = new NetworkProfileInner()
+                .withNetworkInterfaces(
+                    Arrays.asList(
+                        new NetworkInterface().withMacAddress("tkcxywnytnrsy")
+                            .withId("qidybyx")
+                            .withName("fclhaaxdbabphlwr")
+                            .withIpAddresses(Arrays.asList(
+                                new IpAddress().withAddress("tsthsucocm").withIpAddressVersion("yazttbtwwrqpue"))),
+                        new NetworkInterface().withMacAddress("eyueaxibxujwb")
+                            .withId("walm")
+                            .withName("yoxa")
+                            .withIpAddresses(Arrays
+                                .asList(new IpAddress().withAddress("zjancuxr").withIpAddressVersion("wbavxbniwdj"),
+                                    new IpAddress().withAddress("txhp").withIpAddressVersion("bzpfzab"),
+                                    new IpAddress().withAddress("wzbhvgyugu").withIpAddressVersion("vmkfssxqu"))),
+                        new NetworkInterface().withMacAddress("kde")
+                            .withId("pvlopwiyighxpkd")
+                            .withName("baiuebbaumny")
+                            .withIpAddresses(
+                                Arrays.asList(new IpAddress().withAddress("deoj").withIpAddressVersion("bckhsmtxpsi"))),
+                        new NetworkInterface().withMacAddress("dqmh")
+                            .withId("dhtldwkyz")
+                            .withName("utknc")
+                            .withIpAddresses(Arrays.asList(
+                                new IpAddress().withAddress("svlxotogtwrup").withIpAddressVersion("xvnmicykvceov"),
+                                new IpAddress().withAddress("hbttkphyw").withIpAddressVersion("vjtoqnermclfp"),
+                                new IpAddress().withAddress("zq").withIpAddressVersion("xywpmueefjzwfqkq")))));
         model = BinaryData.fromObject(model).toObject(NetworkProfileInner.class);
-        Assertions.assertEquals("pxjmflbvvnchr", model.networkInterfaces().get(0).ipAddresses().get(0).address());
-        Assertions.assertEquals("ciwwzjuqkhr",
+        Assertions.assertEquals("tkcxywnytnrsy", model.networkInterfaces().get(0).macAddress());
+        Assertions.assertEquals("qidybyx", model.networkInterfaces().get(0).id());
+        Assertions.assertEquals("fclhaaxdbabphlwr", model.networkInterfaces().get(0).name());
+        Assertions.assertEquals("tsthsucocm", model.networkInterfaces().get(0).ipAddresses().get(0).address());
+        Assertions.assertEquals("yazttbtwwrqpue",
             model.networkInterfaces().get(0).ipAddresses().get(0).ipAddressVersion());
     }
 }

@@ -5,50 +5,53 @@
 package com.azure.resourcemanager.managementgroups.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The results of Azure-AsyncOperation. */
+/**
+ * The results of Azure-AsyncOperation.
+ */
 @Fluent
-public final class AzureAsyncOperationResultsInner {
+public final class AzureAsyncOperationResultsInner implements JsonSerializable<AzureAsyncOperationResultsInner> {
     /*
-     * The fully qualified ID for the management group.  For example,
+     * The fully qualified ID for the management group. For example,
      * /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
-     * The type of the resource.  For example, Microsoft.Management/managementGroups
+     * The type of the resource. For example, Microsoft.Management/managementGroups
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * The name of the management group. For example, 00000000-0000-0000-0000-000000000000
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The current status of the asynchronous operation performed . For example, Running, Succeeded, Failed
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /*
      * The generic properties of a management group.
      */
-    @JsonProperty(value = "properties")
     private ManagementGroupInfoProperties innerProperties;
 
-    /** Creates an instance of AzureAsyncOperationResultsInner class. */
+    /**
+     * Creates an instance of AzureAsyncOperationResultsInner class.
+     */
     public AzureAsyncOperationResultsInner() {
     }
 
     /**
      * Get the id property: The fully qualified ID for the management group. For example,
      * /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -57,7 +60,7 @@ public final class AzureAsyncOperationResultsInner {
 
     /**
      * Get the type property: The type of the resource. For example, Microsoft.Management/managementGroups.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -66,7 +69,7 @@ public final class AzureAsyncOperationResultsInner {
 
     /**
      * Get the name property: The name of the management group. For example, 00000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -76,7 +79,7 @@ public final class AzureAsyncOperationResultsInner {
     /**
      * Get the status property: The current status of the asynchronous operation performed . For example, Running,
      * Succeeded, Failed.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -85,7 +88,7 @@ public final class AzureAsyncOperationResultsInner {
 
     /**
      * Get the innerProperties property: The generic properties of a management group.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ManagementGroupInfoProperties innerProperties() {
@@ -95,7 +98,7 @@ public final class AzureAsyncOperationResultsInner {
     /**
      * Get the tenantId property: The AAD Tenant ID associated with the management group. For example,
      * 00000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -105,7 +108,7 @@ public final class AzureAsyncOperationResultsInner {
     /**
      * Set the tenantId property: The AAD Tenant ID associated with the management group. For example,
      * 00000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the AzureAsyncOperationResultsInner object itself.
      */
@@ -119,7 +122,7 @@ public final class AzureAsyncOperationResultsInner {
 
     /**
      * Get the displayName property: The friendly name of the management group.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -128,7 +131,7 @@ public final class AzureAsyncOperationResultsInner {
 
     /**
      * Set the displayName property: The friendly name of the management group.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the AzureAsyncOperationResultsInner object itself.
      */
@@ -142,12 +145,58 @@ public final class AzureAsyncOperationResultsInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureAsyncOperationResultsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureAsyncOperationResultsInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureAsyncOperationResultsInner.
+     */
+    public static AzureAsyncOperationResultsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureAsyncOperationResultsInner deserializedAzureAsyncOperationResultsInner
+                = new AzureAsyncOperationResultsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAzureAsyncOperationResultsInner.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureAsyncOperationResultsInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAzureAsyncOperationResultsInner.name = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedAzureAsyncOperationResultsInner.status = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAzureAsyncOperationResultsInner.innerProperties
+                        = ManagementGroupInfoProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureAsyncOperationResultsInner;
+        });
     }
 }

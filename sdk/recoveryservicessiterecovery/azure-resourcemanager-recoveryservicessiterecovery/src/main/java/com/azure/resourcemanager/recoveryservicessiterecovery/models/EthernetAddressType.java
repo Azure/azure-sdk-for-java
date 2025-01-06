@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class EthernetAddressType extends ExpandableStringEnum<EthernetAddr
      * @param name a name to look for.
      * @return the corresponding EthernetAddressType.
      */
-    @JsonCreator
     public static EthernetAddressType fromString(String name) {
         return fromString(name, EthernetAddressType.class);
     }

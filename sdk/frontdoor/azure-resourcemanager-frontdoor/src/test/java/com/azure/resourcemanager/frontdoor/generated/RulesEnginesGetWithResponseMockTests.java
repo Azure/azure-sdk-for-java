@@ -25,7 +25,7 @@ public final class RulesEnginesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"resourceState\":\"Disabled\",\"rules\":[{\"name\":\"ugfsxzecpaxwk\",\"priority\":1277972193,\"action\":{\"requestHeaderActions\":[{\"headerActionType\":\"Delete\",\"headerName\":\"vuhx\"},{\"headerActionType\":\"Overwrite\",\"headerName\":\"mrutznabaobnsluj\"},{\"headerActionType\":\"Append\",\"headerName\":\"ltymkmvguihywart\"},{\"headerActionType\":\"Append\",\"headerName\":\"phkixkykxdssjpe\"}],\"responseHeaderActions\":[{\"headerActionType\":\"Append\",\"headerName\":\"fxhikkflrmymyi\"}],\"routeConfigurationOverride\":{\"@odata.type\":\"RouteConfiguration\"}},\"matchConditions\":[{\"rulesEngineMatchVariable\":\"RequestFilename\",\"rulesEngineOperator\":\"Any\",\"rulesEngineMatchValue\":[]},{\"rulesEngineMatchVariable\":\"RequestScheme\",\"rulesEngineOperator\":\"EndsWith\",\"rulesEngineMatchValue\":[]}],\"matchProcessingBehavior\":\"Continue\"}]},\"id\":\"lmiiiovg\",\"name\":\"cgxuugqkctotiowl\",\"type\":\"teqdptj\"}";
+            = "{\"properties\":{\"resourceState\":\"Deleting\",\"rules\":[{\"name\":\"cnhz\",\"priority\":1513584029,\"action\":{\"requestHeaderActions\":[{\"headerActionType\":\"Overwrite\",\"headerName\":\"jzcfyjzptwr\"},{\"headerActionType\":\"Delete\",\"headerName\":\"h\"},{\"headerActionType\":\"Overwrite\",\"headerName\":\"qinfszpyglqd\"}],\"responseHeaderActions\":[{\"headerActionType\":\"Append\",\"headerName\":\"zralcxpjbyyps\"},{\"headerActionType\":\"Overwrite\",\"headerName\":\"qcjenkyhf\"}],\"routeConfigurationOverride\":{\"@odata.type\":\"RouteConfiguration\"}},\"matchConditions\":[{\"rulesEngineMatchVariable\":\"PostArgs\",\"rulesEngineOperator\":\"GreaterThan\",\"rulesEngineMatchValue\":[]},{\"rulesEngineMatchVariable\":\"RequestScheme\",\"rulesEngineOperator\":\"Equal\",\"rulesEngineMatchValue\":[]},{\"rulesEngineMatchVariable\":\"RequestScheme\",\"rulesEngineOperator\":\"LessThan\",\"rulesEngineMatchValue\":[]},{\"rulesEngineMatchVariable\":\"RequestPath\",\"rulesEngineOperator\":\"IPMatch\",\"rulesEngineMatchValue\":[]}],\"matchProcessingBehavior\":\"Stop\"},{\"name\":\"pzqjhhhq\",\"priority\":663285814,\"action\":{\"requestHeaderActions\":[{\"headerActionType\":\"Overwrite\",\"headerName\":\"cacoyvivbsiz\"}],\"responseHeaderActions\":[{\"headerActionType\":\"Overwrite\",\"headerName\":\"zlbscmnlziji\"},{\"headerActionType\":\"Overwrite\",\"headerName\":\"ehgmvflnwyv\"}],\"routeConfigurationOverride\":{\"@odata.type\":\"RouteConfiguration\"}},\"matchConditions\":[{\"rulesEngineMatchVariable\":\"QueryString\",\"rulesEngineOperator\":\"EndsWith\",\"rulesEngineMatchValue\":[]},{\"rulesEngineMatchVariable\":\"RequestScheme\",\"rulesEngineOperator\":\"GreaterThanOrEqual\",\"rulesEngineMatchValue\":[]}],\"matchProcessingBehavior\":\"Continue\"},{\"name\":\"lylyfwxzutgqz\",\"priority\":1687298742,\"action\":{\"requestHeaderActions\":[{\"headerActionType\":\"Append\",\"headerName\":\"mupgxy\"}],\"responseHeaderActions\":[{\"headerActionType\":\"Overwrite\",\"headerName\":\"xabb\"}],\"routeConfigurationOverride\":{\"@odata.type\":\"RouteConfiguration\"}},\"matchConditions\":[{\"rulesEngineMatchVariable\":\"RequestHeader\",\"rulesEngineOperator\":\"LessThanOrEqual\",\"rulesEngineMatchValue\":[]},{\"rulesEngineMatchVariable\":\"QueryString\",\"rulesEngineOperator\":\"LessThan\",\"rulesEngineMatchValue\":[]}],\"matchProcessingBehavior\":\"Continue\"},{\"name\":\"klqpx\",\"priority\":1851207538,\"action\":{\"requestHeaderActions\":[{\"headerActionType\":\"Append\",\"headerName\":\"e\"},{\"headerActionType\":\"Delete\",\"headerName\":\"wwnlzafwxudgnh\"},{\"headerActionType\":\"Append\",\"headerName\":\"okrtalvnb\"}],\"responseHeaderActions\":[{\"headerActionType\":\"Append\",\"headerName\":\"emeluclv\"},{\"headerActionType\":\"Overwrite\",\"headerName\":\"jukyrdn\"}],\"routeConfigurationOverride\":{\"@odata.type\":\"RouteConfiguration\"}},\"matchConditions\":[{\"rulesEngineMatchVariable\":\"RequestFilename\",\"rulesEngineOperator\":\"IPMatch\",\"rulesEngineMatchValue\":[]},{\"rulesEngineMatchVariable\":\"QueryString\",\"rulesEngineOperator\":\"Contains\",\"rulesEngineMatchValue\":[]},{\"rulesEngineMatchVariable\":\"RequestFilename\",\"rulesEngineOperator\":\"Contains\",\"rulesEngineMatchValue\":[]},{\"rulesEngineMatchVariable\":\"IsMobile\",\"rulesEngineOperator\":\"Any\",\"rulesEngineMatchValue\":[]}],\"matchProcessingBehavior\":\"Stop\"}]},\"id\":\"vzoqgyipemchgavs\",\"name\":\"zuejd\",\"type\":\"xptlghwzho\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,22 +35,23 @@ public final class RulesEnginesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         RulesEngine response = manager.rulesEngines()
-            .getWithResponse("srlsmd", "sqplpvmjcd", "ewbidyvteowxv", com.azure.core.util.Context.NONE)
+            .getWithResponse("mffjkutycyarn", "oohguabzoghkt", "pyc", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ugfsxzecpaxwk", response.rules().get(0).name());
-        Assertions.assertEquals(1277972193, response.rules().get(0).priority());
-        Assertions.assertEquals(HeaderActionType.DELETE,
+        Assertions.assertEquals("cnhz", response.rules().get(0).name());
+        Assertions.assertEquals(1513584029, response.rules().get(0).priority());
+        Assertions.assertEquals(HeaderActionType.OVERWRITE,
             response.rules().get(0).action().requestHeaderActions().get(0).headerActionType());
-        Assertions.assertEquals("vuhx", response.rules().get(0).action().requestHeaderActions().get(0).headerName());
+        Assertions.assertEquals("jzcfyjzptwr",
+            response.rules().get(0).action().requestHeaderActions().get(0).headerName());
         Assertions.assertEquals(HeaderActionType.APPEND,
             response.rules().get(0).action().responseHeaderActions().get(0).headerActionType());
-        Assertions.assertEquals("fxhikkflrmymyi",
+        Assertions.assertEquals("zralcxpjbyyps",
             response.rules().get(0).action().responseHeaderActions().get(0).headerName());
-        Assertions.assertEquals(RulesEngineMatchVariable.REQUEST_FILENAME,
+        Assertions.assertEquals(RulesEngineMatchVariable.POST_ARGS,
             response.rules().get(0).matchConditions().get(0).rulesEngineMatchVariable());
-        Assertions.assertEquals(RulesEngineOperator.ANY,
+        Assertions.assertEquals(RulesEngineOperator.GREATER_THAN,
             response.rules().get(0).matchConditions().get(0).rulesEngineOperator());
-        Assertions.assertEquals(MatchProcessingBehavior.CONTINUE, response.rules().get(0).matchProcessingBehavior());
+        Assertions.assertEquals(MatchProcessingBehavior.STOP, response.rules().get(0).matchProcessingBehavior());
     }
 }

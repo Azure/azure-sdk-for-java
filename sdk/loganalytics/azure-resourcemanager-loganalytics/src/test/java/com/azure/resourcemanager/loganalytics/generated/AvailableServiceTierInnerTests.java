@@ -10,11 +10,9 @@ import com.azure.resourcemanager.loganalytics.fluent.models.AvailableServiceTier
 public final class AvailableServiceTierInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailableServiceTierInner model =
-            BinaryData
-                .fromString(
-                    "{\"serviceTier\":\"Free\",\"enabled\":true,\"minimumRetention\":3535746995814018434,\"maximumRetention\":3103507589533354334,\"defaultRetention\":4122830623851114030,\"capacityReservationLevel\":1876601356819705966,\"lastSkuUpdate\":\"ovljxywsu\"}")
-                .toObject(AvailableServiceTierInner.class);
+        AvailableServiceTierInner model = BinaryData.fromString(
+            "{\"serviceTier\":\"Premium\",\"enabled\":true,\"minimumRetention\":2447311563304363726,\"maximumRetention\":2614637191948743156,\"defaultRetention\":5459563894986340273,\"capacityReservationLevel\":7110930774958137161,\"lastSkuUpdate\":\"piexpbtgiw\"}")
+            .toObject(AvailableServiceTierInner.class);
     }
 
     @org.junit.jupiter.api.Test

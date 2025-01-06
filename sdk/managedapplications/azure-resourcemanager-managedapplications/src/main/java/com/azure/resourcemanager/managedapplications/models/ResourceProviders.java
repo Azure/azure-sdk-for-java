@@ -7,27 +7,29 @@ package com.azure.resourcemanager.managedapplications.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ResourceProviders. */
+/**
+ * Resource collection API of ResourceProviders.
+ */
 public interface ResourceProviders {
     /**
      * Lists all of the available Microsoft.Solutions REST API operations.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<Operation> listOperations();
 
     /**
      * Lists all of the available Microsoft.Solutions REST API operations.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<Operation> listOperations(Context context);
 }

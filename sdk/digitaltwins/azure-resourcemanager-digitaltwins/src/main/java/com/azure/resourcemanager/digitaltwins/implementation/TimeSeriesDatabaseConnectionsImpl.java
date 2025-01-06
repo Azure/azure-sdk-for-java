@@ -22,47 +22,43 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
 
     private final com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager serviceManager;
 
-    public TimeSeriesDatabaseConnectionsImpl(
-        TimeSeriesDatabaseConnectionsClient innerClient,
+    public TimeSeriesDatabaseConnectionsImpl(TimeSeriesDatabaseConnectionsClient innerClient,
         com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<TimeSeriesDatabaseConnection> list(String resourceGroupName, String resourceName) {
-        PagedIterable<TimeSeriesDatabaseConnectionInner> inner =
-            this.serviceClient().list(resourceGroupName, resourceName);
-        return Utils.mapPage(inner, inner1 -> new TimeSeriesDatabaseConnectionImpl(inner1, this.manager()));
+        PagedIterable<TimeSeriesDatabaseConnectionInner> inner
+            = this.serviceClient().list(resourceGroupName, resourceName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new TimeSeriesDatabaseConnectionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<TimeSeriesDatabaseConnection> list(
-        String resourceGroupName, String resourceName, Context context) {
-        PagedIterable<TimeSeriesDatabaseConnectionInner> inner =
-            this.serviceClient().list(resourceGroupName, resourceName, context);
-        return Utils.mapPage(inner, inner1 -> new TimeSeriesDatabaseConnectionImpl(inner1, this.manager()));
+    public PagedIterable<TimeSeriesDatabaseConnection> list(String resourceGroupName, String resourceName,
+        Context context) {
+        PagedIterable<TimeSeriesDatabaseConnectionInner> inner
+            = this.serviceClient().list(resourceGroupName, resourceName, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new TimeSeriesDatabaseConnectionImpl(inner1, this.manager()));
     }
 
-    public Response<TimeSeriesDatabaseConnection> getWithResponse(
-        String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName, Context context) {
-        Response<TimeSeriesDatabaseConnectionInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, context);
+    public Response<TimeSeriesDatabaseConnection> getWithResponse(String resourceGroupName, String resourceName,
+        String timeSeriesDatabaseConnectionName, Context context) {
+        Response<TimeSeriesDatabaseConnectionInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new TimeSeriesDatabaseConnectionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public TimeSeriesDatabaseConnection get(
-        String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName) {
-        TimeSeriesDatabaseConnectionInner inner =
-            this.serviceClient().get(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName);
+    public TimeSeriesDatabaseConnection get(String resourceGroupName, String resourceName,
+        String timeSeriesDatabaseConnectionName) {
+        TimeSeriesDatabaseConnectionInner inner
+            = this.serviceClient().get(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName);
         if (inner != null) {
             return new TimeSeriesDatabaseConnectionImpl(inner, this.manager());
         } else {
@@ -70,10 +66,10 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
         }
     }
 
-    public TimeSeriesDatabaseConnection delete(
-        String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName) {
-        TimeSeriesDatabaseConnectionInner inner =
-            this.serviceClient().delete(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName);
+    public TimeSeriesDatabaseConnection delete(String resourceGroupName, String resourceName,
+        String timeSeriesDatabaseConnectionName) {
+        TimeSeriesDatabaseConnectionInner inner
+            = this.serviceClient().delete(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName);
         if (inner != null) {
             return new TimeSeriesDatabaseConnectionImpl(inner, this.manager());
         } else {
@@ -81,21 +77,12 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
         }
     }
 
-    public TimeSeriesDatabaseConnection delete(
-        String resourceGroupName,
-        String resourceName,
-        String timeSeriesDatabaseConnectionName,
-        CleanupConnectionArtifacts cleanupConnectionArtifacts,
+    public TimeSeriesDatabaseConnection delete(String resourceGroupName, String resourceName,
+        String timeSeriesDatabaseConnectionName, CleanupConnectionArtifacts cleanupConnectionArtifacts,
         Context context) {
-        TimeSeriesDatabaseConnectionInner inner =
-            this
-                .serviceClient()
-                .delete(
-                    resourceGroupName,
-                    resourceName,
-                    timeSeriesDatabaseConnectionName,
-                    cleanupConnectionArtifacts,
-                    context);
+        TimeSeriesDatabaseConnectionInner inner = this.serviceClient()
+            .delete(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, cleanupConnectionArtifacts,
+                context);
         if (inner != null) {
             return new TimeSeriesDatabaseConnectionImpl(inner, this.manager());
         } else {
@@ -104,147 +91,88 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
     }
 
     public TimeSeriesDatabaseConnection getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "digitalTwinsInstances");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "digitalTwinsInstances");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'digitalTwinsInstances'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'digitalTwinsInstances'.", id)));
         }
-        String timeSeriesDatabaseConnectionName = Utils.getValueFromIdByName(id, "timeSeriesDatabaseConnections");
+        String timeSeriesDatabaseConnectionName
+            = ResourceManagerUtils.getValueFromIdByName(id, "timeSeriesDatabaseConnections");
         if (timeSeriesDatabaseConnectionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'timeSeriesDatabaseConnections'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment 'timeSeriesDatabaseConnections'.", id)));
         }
-        return this
-            .getWithResponse(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, Context.NONE)
+        return this.getWithResponse(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, Context.NONE)
             .getValue();
     }
 
     public Response<TimeSeriesDatabaseConnection> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "digitalTwinsInstances");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "digitalTwinsInstances");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'digitalTwinsInstances'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'digitalTwinsInstances'.", id)));
         }
-        String timeSeriesDatabaseConnectionName = Utils.getValueFromIdByName(id, "timeSeriesDatabaseConnections");
+        String timeSeriesDatabaseConnectionName
+            = ResourceManagerUtils.getValueFromIdByName(id, "timeSeriesDatabaseConnections");
         if (timeSeriesDatabaseConnectionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'timeSeriesDatabaseConnections'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment 'timeSeriesDatabaseConnections'.", id)));
         }
         return this.getWithResponse(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, context);
     }
 
     public TimeSeriesDatabaseConnection deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "digitalTwinsInstances");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "digitalTwinsInstances");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'digitalTwinsInstances'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'digitalTwinsInstances'.", id)));
         }
-        String timeSeriesDatabaseConnectionName = Utils.getValueFromIdByName(id, "timeSeriesDatabaseConnections");
+        String timeSeriesDatabaseConnectionName
+            = ResourceManagerUtils.getValueFromIdByName(id, "timeSeriesDatabaseConnections");
         if (timeSeriesDatabaseConnectionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'timeSeriesDatabaseConnections'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment 'timeSeriesDatabaseConnections'.", id)));
         }
         CleanupConnectionArtifacts localCleanupConnectionArtifacts = null;
-        return this
-            .delete(
-                resourceGroupName,
-                resourceName,
-                timeSeriesDatabaseConnectionName,
-                localCleanupConnectionArtifacts,
-                Context.NONE);
+        return this.delete(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName,
+            localCleanupConnectionArtifacts, Context.NONE);
     }
 
-    public TimeSeriesDatabaseConnection deleteByIdWithResponse(
-        String id, CleanupConnectionArtifacts cleanupConnectionArtifacts, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+    public TimeSeriesDatabaseConnection deleteByIdWithResponse(String id,
+        CleanupConnectionArtifacts cleanupConnectionArtifacts, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "digitalTwinsInstances");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "digitalTwinsInstances");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'digitalTwinsInstances'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'digitalTwinsInstances'.", id)));
         }
-        String timeSeriesDatabaseConnectionName = Utils.getValueFromIdByName(id, "timeSeriesDatabaseConnections");
+        String timeSeriesDatabaseConnectionName
+            = ResourceManagerUtils.getValueFromIdByName(id, "timeSeriesDatabaseConnections");
         if (timeSeriesDatabaseConnectionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'timeSeriesDatabaseConnections'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment 'timeSeriesDatabaseConnections'.", id)));
         }
-        return this
-            .delete(
-                resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, cleanupConnectionArtifacts, context);
+        return this.delete(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName,
+            cleanupConnectionArtifacts, context);
     }
 
     private TimeSeriesDatabaseConnectionsClient serviceClient() {

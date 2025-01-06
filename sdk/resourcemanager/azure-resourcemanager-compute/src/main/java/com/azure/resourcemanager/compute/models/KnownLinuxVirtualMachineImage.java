@@ -43,7 +43,6 @@ public enum KnownLinuxVirtualMachineImage {
     /** Oracle Linux 8.1. */
     ORACLE_LINUX_8_1("Oracle", "Oracle-Linux", "81"),
 
-
     /** UbuntuServer 18.04LTS Gen2. */
     UBUNTU_SERVER_18_04_LTS_GEN2("Canonical", "UbuntuServer", "18_04-lts-gen2"),
     /** UbuntuServer 20.04LTS. */
@@ -61,22 +60,38 @@ public enum KnownLinuxVirtualMachineImage {
         this.sku = sku;
     }
 
-    /** @return the name of the image publisher */
+    /**
+     * Gets the name of the image publisher.
+     *
+     * @return the name of the image publisher
+     */
     public String publisher() {
         return this.publisher;
     }
 
-    /** @return the name of the image offer */
+    /**
+     * Gets the name of the image offer.
+     *
+     * @return the name of the image offer
+     */
     public String offer() {
         return this.offer;
     }
 
-    /** @return the name of the image SKU */
+    /**
+     * Gets the name of the image SKU.
+     *
+     * @return the name of the image SKU
+     */
     public String sku() {
         return this.sku;
     }
 
-    /** @return the image reference */
+    /**
+     * Gets the image reference.
+     *
+     * @return the image reference
+     */
     public ImageReference imageReference() {
         return new ImageReference().withPublisher(publisher()).withOffer(offer()).withSku(sku()).withVersion("latest");
     }

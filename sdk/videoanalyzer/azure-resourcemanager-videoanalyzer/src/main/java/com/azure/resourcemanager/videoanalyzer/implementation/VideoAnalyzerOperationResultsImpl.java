@@ -20,8 +20,7 @@ public final class VideoAnalyzerOperationResultsImpl implements VideoAnalyzerOpe
 
     private final com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager;
 
-    public VideoAnalyzerOperationResultsImpl(
-        VideoAnalyzerOperationResultsClient innerClient,
+    public VideoAnalyzerOperationResultsImpl(VideoAnalyzerOperationResultsClient innerClient,
         com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -39,10 +38,7 @@ public final class VideoAnalyzerOperationResultsImpl implements VideoAnalyzerOpe
     public Response<VideoAnalyzer> getWithResponse(String locationName, String operationId, Context context) {
         Response<VideoAnalyzerInner> inner = this.serviceClient().getWithResponse(locationName, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new VideoAnalyzerImpl(inner.getValue(), this.manager()));
         } else {
             return null;

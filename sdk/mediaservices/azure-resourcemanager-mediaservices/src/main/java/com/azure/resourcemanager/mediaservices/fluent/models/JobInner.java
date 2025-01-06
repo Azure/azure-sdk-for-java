@@ -7,11 +7,14 @@ package com.azure.resourcemanager.mediaservices.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mediaservices.models.JobInput;
 import com.azure.resourcemanager.mediaservices.models.JobOutput;
 import com.azure.resourcemanager.mediaservices.models.JobState;
 import com.azure.resourcemanager.mediaservices.models.Priority;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -25,22 +28,37 @@ public final class JobInner extends ProxyResource {
     /*
      * The resource properties.
      */
-    @JsonProperty(value = "properties")
     private JobProperties innerProperties;
 
     /*
      * The system metadata relating to this resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of JobInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of JobInner class.
+     */
     public JobInner() {
     }
 
     /**
      * Get the innerProperties property: The resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private JobProperties innerProperties() {
@@ -49,7 +67,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Get the systemData property: The system metadata relating to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -57,9 +75,39 @@ public final class JobInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the created property: The UTC date and time when the customer has created the Job, in 'YYYY-MM-DDThh:mm:ssZ'
      * format.
-     *
+     * 
      * @return the created value.
      */
     public OffsetDateTime created() {
@@ -68,7 +116,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Get the state property: The current state of the job.
-     *
+     * 
      * @return the state value.
      */
     public JobState state() {
@@ -77,7 +125,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Get the description property: Optional customer supplied description of the Job.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -86,7 +134,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Set the description property: Optional customer supplied description of the Job.
-     *
+     * 
      * @param description the description value to set.
      * @return the JobInner object itself.
      */
@@ -100,7 +148,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Get the input property: The inputs for the Job.
-     *
+     * 
      * @return the input value.
      */
     public JobInput input() {
@@ -109,7 +157,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Set the input property: The inputs for the Job.
-     *
+     * 
      * @param input the input value to set.
      * @return the JobInner object itself.
      */
@@ -124,7 +172,7 @@ public final class JobInner extends ProxyResource {
     /**
      * Get the lastModified property: The UTC date and time when the customer has last updated the Job, in
      * 'YYYY-MM-DDThh:mm:ssZ' format.
-     *
+     * 
      * @return the lastModified value.
      */
     public OffsetDateTime lastModified() {
@@ -133,7 +181,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Get the outputs property: The outputs for the Job.
-     *
+     * 
      * @return the outputs value.
      */
     public List<JobOutput> outputs() {
@@ -142,7 +190,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Set the outputs property: The outputs for the Job.
-     *
+     * 
      * @param outputs the outputs value to set.
      * @return the JobInner object itself.
      */
@@ -157,7 +205,7 @@ public final class JobInner extends ProxyResource {
     /**
      * Get the priority property: Priority with which the job should be processed. Higher priority jobs are processed
      * before lower priority jobs. If not set, the default is normal.
-     *
+     * 
      * @return the priority value.
      */
     public Priority priority() {
@@ -167,7 +215,7 @@ public final class JobInner extends ProxyResource {
     /**
      * Set the priority property: Priority with which the job should be processed. Higher priority jobs are processed
      * before lower priority jobs. If not set, the default is normal.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the JobInner object itself.
      */
@@ -182,7 +230,7 @@ public final class JobInner extends ProxyResource {
     /**
      * Get the correlationData property: Customer provided key, value pairs that will be returned in Job and JobOutput
      * state events.
-     *
+     * 
      * @return the correlationData value.
      */
     public Map<String, String> correlationData() {
@@ -192,7 +240,7 @@ public final class JobInner extends ProxyResource {
     /**
      * Set the correlationData property: Customer provided key, value pairs that will be returned in Job and JobOutput
      * state events.
-     *
+     * 
      * @param correlationData the correlationData value to set.
      * @return the JobInner object itself.
      */
@@ -206,7 +254,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Get the startTime property: The UTC date and time at which this Job began processing.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -215,7 +263,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Get the endTime property: The UTC date and time at which this Job finished processing.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -224,12 +272,57 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JobInner.
+     */
+    public static JobInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobInner deserializedJobInner = new JobInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedJobInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedJobInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedJobInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedJobInner.innerProperties = JobProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedJobInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobInner;
+        });
     }
 }

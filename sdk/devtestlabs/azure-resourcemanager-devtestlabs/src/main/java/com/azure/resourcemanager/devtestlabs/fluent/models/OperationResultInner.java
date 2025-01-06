@@ -5,38 +5,43 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devtestlabs.models.HttpStatusCode;
 import com.azure.resourcemanager.devtestlabs.models.OperationError;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** An Operation Result. */
+/**
+ * An Operation Result.
+ */
 @Fluent
-public final class OperationResultInner {
+public final class OperationResultInner implements JsonSerializable<OperationResultInner> {
     /*
      * The operation status.
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /*
      * The status code for the operation.
      */
-    @JsonProperty(value = "statusCode")
     private HttpStatusCode statusCode;
 
     /*
      * Error details for the operation in case of a failure.
      */
-    @JsonProperty(value = "error")
     private OperationError error;
 
-    /** Creates an instance of OperationResultInner class. */
+    /**
+     * Creates an instance of OperationResultInner class.
+     */
     public OperationResultInner() {
     }
 
     /**
      * Get the status property: The operation status.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -45,7 +50,7 @@ public final class OperationResultInner {
 
     /**
      * Set the status property: The operation status.
-     *
+     * 
      * @param status the status value to set.
      * @return the OperationResultInner object itself.
      */
@@ -56,7 +61,7 @@ public final class OperationResultInner {
 
     /**
      * Get the statusCode property: The status code for the operation.
-     *
+     * 
      * @return the statusCode value.
      */
     public HttpStatusCode statusCode() {
@@ -65,7 +70,7 @@ public final class OperationResultInner {
 
     /**
      * Set the statusCode property: The status code for the operation.
-     *
+     * 
      * @param statusCode the statusCode value to set.
      * @return the OperationResultInner object itself.
      */
@@ -76,7 +81,7 @@ public final class OperationResultInner {
 
     /**
      * Get the error property: Error details for the operation in case of a failure.
-     *
+     * 
      * @return the error value.
      */
     public OperationError error() {
@@ -85,7 +90,7 @@ public final class OperationResultInner {
 
     /**
      * Set the error property: Error details for the operation in case of a failure.
-     *
+     * 
      * @param error the error value to set.
      * @return the OperationResultInner object itself.
      */
@@ -96,12 +101,54 @@ public final class OperationResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (error() != null) {
             error().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeStringField("statusCode", this.statusCode == null ? null : this.statusCode.toString());
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationResultInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationResultInner.
+     */
+    public static OperationResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationResultInner deserializedOperationResultInner = new OperationResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedOperationResultInner.status = reader.getString();
+                } else if ("statusCode".equals(fieldName)) {
+                    deserializedOperationResultInner.statusCode = HttpStatusCode.fromString(reader.getString());
+                } else if ("error".equals(fieldName)) {
+                    deserializedOperationResultInner.error = OperationError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationResultInner;
+        });
     }
 }

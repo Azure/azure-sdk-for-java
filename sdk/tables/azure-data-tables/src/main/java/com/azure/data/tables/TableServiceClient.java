@@ -251,7 +251,7 @@ public final class TableServiceClient {
     private final HttpPipeline pipeline;
 
     TableServiceClient(HttpPipeline pipeline, String url, TableServiceVersion serviceVersion,
-                            SerializerAdapter serializerAdapter) {
+        SerializerAdapter serializerAdapter) {
 
         try {
             final URI uri = URI.create(url);
@@ -262,8 +262,7 @@ public final class TableServiceClient {
             throw logger.logExceptionAsError(ex);
         }
 
-        this.implementation = new AzureTableImplBuilder()
-            .serializerAdapter(serializerAdapter)
+        this.implementation = new AzureTableImplBuilder().serializerAdapter(serializerAdapter)
             .url(url)
             .pipeline(pipeline)
             .version(serviceVersion.getVersion())
@@ -344,8 +343,7 @@ public final class TableServiceClient {
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
      */
     public TableClient getTableClient(String tableName) {
-        return new TableClientBuilder()
-            .pipeline(this.implementation.getHttpPipeline())
+        return new TableClientBuilder().pipeline(this.implementation.getHttpPipeline())
             .serviceVersion(this.getServiceVersion())
             .endpoint(this.getServiceEndpoint())
             .tableName(tableName)
@@ -412,8 +410,9 @@ public final class TableServiceClient {
     Response<TableClient> createTableWithResponse(String tableName, Context context) {
         final TableProperties properties = new TableProperties().setTableName(tableName);
 
-        return new SimpleResponse<>(implementation.getTables()
-            .createWithResponse(properties, null, ResponseFormat.RETURN_NO_CONTENT, null, context),
+        return new SimpleResponse<>(
+            implementation.getTables()
+                .createWithResponse(properties, null, ResponseFormat.RETURN_NO_CONTENT, null, context),
             getTableClient(tableName));
     }
 
@@ -471,18 +470,21 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableClient> createTableIfNotExistsWithResponse(String tableName, Duration timeout,
-                                                                    Context context) {
+        Context context) {
         Supplier<Response<TableClient>> callable = () -> createTableIfNotExistsWithResponse(tableName, context);
         Response<TableClient> returnedResponse = callWithOptionalTimeout(callable, timeout, logger, true);
-        return returnedResponse.getValue() == null ? new SimpleResponse<>(returnedResponse.getRequest(),
-            returnedResponse.getStatusCode(), returnedResponse.getHeaders(), getTableClient(tableName)) : returnedResponse;
+        return returnedResponse.getValue() == null
+            ? new SimpleResponse<>(returnedResponse.getRequest(), returnedResponse.getStatusCode(),
+                returnedResponse.getHeaders(), getTableClient(tableName))
+            : returnedResponse;
     }
 
     Response<TableClient> createTableIfNotExistsWithResponse(String tableName, Context context) {
         final TableProperties properties = new TableProperties().setTableName(tableName);
 
-        return new SimpleResponse<>(implementation.getTables()
-            .createWithResponse(properties, null, ResponseFormat.RETURN_NO_CONTENT, null, context),
+        return new SimpleResponse<>(
+            implementation.getTables()
+                .createWithResponse(properties, null, ResponseFormat.RETURN_NO_CONTENT, null, context),
             getTableClient(tableName));
     }
 
@@ -555,8 +557,7 @@ public final class TableServiceClient {
     }
 
     Response<Void> deleteTableWithResponse(String tableName, Context context) {
-        return new SimpleResponse<>(
-            implementation.getTables().deleteWithResponse(tableName, null, context), null);
+        return new SimpleResponse<>(implementation.getTables().deleteWithResponse(tableName, null, context), null);
     }
 
     /**
@@ -617,10 +618,8 @@ public final class TableServiceClient {
     }
 
     private PagedIterable<TableItem> listTables(ListTablesOptions options, Context context) {
-        return new PagedIterable<TableItem>(
-            () -> listTablesFirstPage(context, options),
-            token -> listTablesNextPage(token, context, options)
-        );
+        return new PagedIterable<TableItem>(() -> listTablesFirstPage(context, options),
+            token -> listTablesNextPage(token, context, options));
     }
 
     private PagedResponse<TableItem> listTablesFirstPage(Context context, ListTablesOptions options) {
@@ -632,13 +631,12 @@ public final class TableServiceClient {
     }
 
     private PagedResponse<TableItem> listTables(String nextTableName, Context context, ListTablesOptions options) {
-        QueryOptions queryOptions = new QueryOptions()
-            .setFilter(options.getFilter())
+        QueryOptions queryOptions = new QueryOptions().setFilter(options.getFilter())
             .setTop(options.getTop())
             .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
 
-        ResponseBase<TablesQueryHeaders, TableQueryResponse> response =
-            implementation.getTables().queryWithResponse(null, nextTableName, queryOptions, context);
+        ResponseBase<TablesQueryHeaders, TableQueryResponse> response
+            = implementation.getTables().queryWithResponse(null, nextTableName, queryOptions, context);
         TableQueryResponse tableQueryResponse = response.getValue();
 
         if (tableQueryResponse == null) {
@@ -651,12 +649,11 @@ public final class TableServiceClient {
             return null;
         }
 
-        final List<TableItem> tables = tableResponsePropertiesList.stream()
-            .map(TableItemAccessHelper::createItem).collect(Collectors.toList());
+        final List<TableItem> tables
+            = tableResponsePropertiesList.stream().map(TableItemAccessHelper::createItem).collect(Collectors.toList());
 
         return new TablePaged(response, tables, response.getDeserializedHeaders().getXMsContinuationNextTableName());
     }
-
 
     /**
      * Gets the properties of the account's Table service, including properties for Analytics and CORS (Cross-Origin
@@ -804,7 +801,7 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setPropertiesWithResponse(TableServiceProperties tableServiceProperties, Duration timeout,
-                                                    Context context) {
+        Context context) {
         Supplier<Response<Void>> callable = () -> setPropertiesWithResponse(tableServiceProperties, context);
         return callWithOptionalTimeout(callable, timeout, logger);
     }
@@ -871,7 +868,6 @@ public final class TableServiceClient {
         Supplier<Response<TableServiceStatistics>> callable = () -> getStatisticsWithResponse(context);
         return callWithOptionalTimeout(callable, timeout, logger);
     }
-
 
     Response<TableServiceStatistics> getStatisticsWithResponse(Context context) {
         return this.implementation.getServices().getStatisticsWithResponse(null, null, context);

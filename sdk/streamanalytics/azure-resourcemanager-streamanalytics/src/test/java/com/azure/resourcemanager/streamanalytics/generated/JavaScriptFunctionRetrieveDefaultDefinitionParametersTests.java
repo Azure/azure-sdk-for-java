@@ -13,19 +13,18 @@ public final class JavaScriptFunctionRetrieveDefaultDefinitionParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JavaScriptFunctionRetrieveDefaultDefinitionParameters model = BinaryData.fromString(
-            "{\"bindingType\":\"Microsoft.StreamAnalytics/JavascriptUdf\",\"bindingRetrievalProperties\":{\"script\":\"oygmift\",\"udfType\":\"Scalar\"}}")
+            "{\"bindingType\":\"Microsoft.StreamAnalytics/JavascriptUdf\",\"bindingRetrievalProperties\":{\"script\":\"g\",\"udfType\":\"Scalar\"}}")
             .toObject(JavaScriptFunctionRetrieveDefaultDefinitionParameters.class);
-        Assertions.assertEquals("oygmift", model.script());
+        Assertions.assertEquals("g", model.script());
         Assertions.assertEquals(UdfType.SCALAR, model.udfType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         JavaScriptFunctionRetrieveDefaultDefinitionParameters model
-            = new JavaScriptFunctionRetrieveDefaultDefinitionParameters().withScript("oygmift")
-                .withUdfType(UdfType.SCALAR);
+            = new JavaScriptFunctionRetrieveDefaultDefinitionParameters().withScript("g").withUdfType(UdfType.SCALAR);
         model = BinaryData.fromObject(model).toObject(JavaScriptFunctionRetrieveDefaultDefinitionParameters.class);
-        Assertions.assertEquals("oygmift", model.script());
+        Assertions.assertEquals("g", model.script());
         Assertions.assertEquals(UdfType.SCALAR, model.udfType());
     }
 }

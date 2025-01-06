@@ -57,19 +57,19 @@ public class ContainerRegistryCredentialPolicyTests {
     public void setup() {
         AccessToken accessToken = new AccessToken("tokenValue", OffsetDateTime.now().plusMinutes(30));
 
-        ContainerRegistryTokenService mockService = new ContainerRegistryTokenService(null, null,
-            new AzureContainerRegistryImpl("https://azure.com",
+        ContainerRegistryTokenService mockService
+            = new ContainerRegistryTokenService(null, null, new AzureContainerRegistryImpl("https://azure.com",
                 ContainerRegistryServiceVersion.getLatest().toString())) {
-            @Override
-            public Mono<AccessToken> getToken(TokenRequestContext request) {
-                return Mono.just(accessToken);
-            }
+                @Override
+                public Mono<AccessToken> getToken(TokenRequestContext request) {
+                    return Mono.just(accessToken);
+                }
 
-            @Override
-            public AccessToken getTokenSync(TokenRequestContext tokenRequestContext) {
-                return accessToken;
-            }
-        };
+                @Override
+                public AccessToken getTokenSync(TokenRequestContext tokenRequestContext) {
+                    return accessToken;
+                }
+            };
 
         AtomicReference<HttpPipelineCallContext> contextReference = new AtomicReference<>();
         new HttpPipelineBuilder().policies((httpPipelineCallContext, httpPipelineNextPolicy) -> {
@@ -111,10 +111,8 @@ public class ContainerRegistryCredentialPolicyTests {
             }
         };
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policy)
-            .httpClient(request -> Mono.just(successResponse))
-            .build();
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().policies(policy).httpClient(request -> Mono.just(successResponse)).build();
 
         SyncAsyncExtension.execute(() -> pipeline.sendSync(REQUEST, Context.NONE), () -> pipeline.send(REQUEST));
 
@@ -122,8 +120,7 @@ public class ContainerRegistryCredentialPolicyTests {
         assertEquals(0, asyncCallCount.get());
         assertEquals(0, syncCallCount.get());
 
-        HttpPipeline pipeline2 = new HttpPipelineBuilder()
-            .policies(policy)
+        HttpPipeline pipeline2 = new HttpPipelineBuilder().policies(policy)
             .httpClient(request -> Mono.just(unauthorizedHttpResponseWithoutHeader))
             .build();
 
@@ -158,8 +155,8 @@ public class ContainerRegistryCredentialPolicyTests {
         assertTrue(tokenValue.startsWith(BEARER));
 
         assertEquals(1, callCount.get());
-        ContainerRegistryTokenRequestContext requestContext = assertInstanceOf(
-            ContainerRegistryTokenRequestContext.class, contextReference.get());
+        ContainerRegistryTokenRequestContext requestContext
+            = assertInstanceOf(ContainerRegistryTokenRequestContext.class, contextReference.get());
         assertEquals(SERVICENAME, requestContext.getServiceName());
         assertEquals(SCOPENAME, requestContext.getScopes().get(0));
     }
@@ -188,8 +185,8 @@ public class ContainerRegistryCredentialPolicyTests {
         assertTrue(tokenValue.startsWith(BEARER));
 
         assertEquals(1, callCount.get());
-        ContainerRegistryTokenRequestContext requestContext = assertInstanceOf(
-            ContainerRegistryTokenRequestContext.class, contextReference.get());
+        ContainerRegistryTokenRequestContext requestContext
+            = assertInstanceOf(ContainerRegistryTokenRequestContext.class, contextReference.get());
         assertEquals(SERVICENAME, requestContext.getServiceName());
         assertEquals(SCOPENAME, requestContext.getScopes().get(0));
     }

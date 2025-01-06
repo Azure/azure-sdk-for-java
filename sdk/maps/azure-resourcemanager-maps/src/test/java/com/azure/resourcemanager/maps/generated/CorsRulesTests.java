@@ -13,15 +13,15 @@ import org.junit.jupiter.api.Assertions;
 public final class CorsRulesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CorsRules model =
-            BinaryData.fromString("{\"corsRules\":[{\"allowedOrigins\":[\"jcny\"]}]}").toObject(CorsRules.class);
+        CorsRules model
+            = BinaryData.fromString("{\"corsRules\":[{\"allowedOrigins\":[\"jcny\"]}]}").toObject(CorsRules.class);
         Assertions.assertEquals("jcny", model.corsRules().get(0).allowedOrigins().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CorsRules model =
-            new CorsRules().withCorsRules(Arrays.asList(new CorsRule().withAllowedOrigins(Arrays.asList("jcny"))));
+        CorsRules model
+            = new CorsRules().withCorsRules(Arrays.asList(new CorsRule().withAllowedOrigins(Arrays.asList("jcny"))));
         model = BinaryData.fromObject(model).toObject(CorsRules.class);
         Assertions.assertEquals("jcny", model.corsRules().get(0).allowedOrigins().get(0));
     }

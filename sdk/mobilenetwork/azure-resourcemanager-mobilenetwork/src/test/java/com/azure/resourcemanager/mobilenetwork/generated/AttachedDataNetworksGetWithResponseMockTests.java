@@ -22,7 +22,7 @@ public final class AttachedDataNetworksGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"userPlaneDataInterface\":{\"name\":\"sii\",\"ipv4Address\":\"mkzjvkviir\",\"ipv4Subnet\":\"fgrwsdpgratzvz\",\"ipv4Gateway\":\"lbyvictctbrxkjzw\",\"vlanId\":802199540,\"ipv4AddressList\":[\"mshkwfbkgo\"],\"bfdIpv4Endpoints\":[\"opdbydpizqac\",\"napxbiygnug\",\"knfsmfcttuxuuyil\"]},\"dnsAddresses\":[\"qoiquvrehmrnjhv\"],\"naptConfiguration\":{\"enabled\":\"Enabled\",\"portRange\":{\"minPort\":1736273064,\"maxPort\":11608921},\"portReuseHoldTime\":{\"tcp\":178479099,\"udp\":190807596},\"pinholeLimits\":1863941224,\"pinholeTimeouts\":{\"tcp\":1346405243,\"udp\":1524568479,\"icmp\":1207021610}},\"userEquipmentAddressPoolPrefix\":[\"tlxs\",\"rpddouifamo\"],\"userEquipmentStaticAddressPoolPrefix\":[\"iynknlq\"]},\"location\":\"dvpiwh\",\"tags\":{\"m\":\"zdtmaajquhuxylrj\",\"kfkyjp\":\"ygjbmzyospspsh\",\"pssdfppyogtie\":\"sp\"},\"id\":\"ujtv\",\"name\":\"zkc\",\"type\":\"yxrxmunj\"}";
+            = "{\"properties\":{\"provisioningState\":\"Accepted\",\"userPlaneDataInterface\":{\"name\":\"tuwkffdj\",\"ipv4Address\":\"sysidfvclglxnf\",\"ipv4Subnet\":\"jtkbusqogsfika\",\"ipv4Gateway\":\"ansharujtjiqxfz\",\"vlanId\":846546082,\"ipv4AddressList\":[\"vwkpqh\",\"penuy\",\"bqeqqekewvnqvcd\"],\"bfdIpv4Endpoints\":[\"a\",\"cmfdjwnlax\"]},\"dnsAddresses\":[\"njqikcz\"],\"naptConfiguration\":{\"enabled\":\"Enabled\",\"portRange\":{\"minPort\":422155037,\"maxPort\":1938868822},\"portReuseHoldTime\":{\"tcp\":1614916869,\"udp\":394245524},\"pinholeLimits\":196661330,\"pinholeTimeouts\":{\"tcp\":283921806,\"udp\":1164479404,\"icmp\":47746370}},\"userEquipmentAddressPoolPrefix\":[\"ntsj\",\"qrsxyp\",\"uuuybnchrsziz\"],\"userEquipmentStaticAddressPoolPrefix\":[\"elyetndnbf\",\"yggagflnlgmt\",\"wahzjmucftbyr\"]},\"location\":\"rohkpigqfusu\",\"tags\":{\"noxaxmqeqal\":\"mkwkl\"},\"id\":\"hjnhgwydyynfsvk\",\"name\":\"gbv\",\"type\":\"ta\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,29 +32,29 @@ public final class AttachedDataNetworksGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AttachedDataNetwork response = manager.attachedDataNetworks()
-            .getWithResponse("xuckpggqoweyir", "hlisngw", "lqqmpiz", "uwnpqxpxiwfcng", com.azure.core.util.Context.NONE)
+            .getWithResponse("razftxejwabmdujt", "vcopex", "m", "urbuhhlkyqltq", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("dvpiwh", response.location());
-        Assertions.assertEquals("zdtmaajquhuxylrj", response.tags().get("m"));
-        Assertions.assertEquals("sii", response.userPlaneDataInterface().name());
-        Assertions.assertEquals("mkzjvkviir", response.userPlaneDataInterface().ipv4Address());
-        Assertions.assertEquals("fgrwsdpgratzvz", response.userPlaneDataInterface().ipv4Subnet());
-        Assertions.assertEquals("lbyvictctbrxkjzw", response.userPlaneDataInterface().ipv4Gateway());
-        Assertions.assertEquals(802199540, response.userPlaneDataInterface().vlanId());
-        Assertions.assertEquals("mshkwfbkgo", response.userPlaneDataInterface().ipv4AddressList().get(0));
-        Assertions.assertEquals("opdbydpizqac", response.userPlaneDataInterface().bfdIpv4Endpoints().get(0));
-        Assertions.assertEquals("qoiquvrehmrnjhv", response.dnsAddresses().get(0));
+        Assertions.assertEquals("rohkpigqfusu", response.location());
+        Assertions.assertEquals("mkwkl", response.tags().get("noxaxmqeqal"));
+        Assertions.assertEquals("tuwkffdj", response.userPlaneDataInterface().name());
+        Assertions.assertEquals("sysidfvclglxnf", response.userPlaneDataInterface().ipv4Address());
+        Assertions.assertEquals("jtkbusqogsfika", response.userPlaneDataInterface().ipv4Subnet());
+        Assertions.assertEquals("ansharujtjiqxfz", response.userPlaneDataInterface().ipv4Gateway());
+        Assertions.assertEquals(846546082, response.userPlaneDataInterface().vlanId());
+        Assertions.assertEquals("vwkpqh", response.userPlaneDataInterface().ipv4AddressList().get(0));
+        Assertions.assertEquals("a", response.userPlaneDataInterface().bfdIpv4Endpoints().get(0));
+        Assertions.assertEquals("njqikcz", response.dnsAddresses().get(0));
         Assertions.assertEquals(NaptEnabled.ENABLED, response.naptConfiguration().enabled());
-        Assertions.assertEquals(1736273064, response.naptConfiguration().portRange().minPort());
-        Assertions.assertEquals(11608921, response.naptConfiguration().portRange().maxPort());
-        Assertions.assertEquals(178479099, response.naptConfiguration().portReuseHoldTime().tcp());
-        Assertions.assertEquals(190807596, response.naptConfiguration().portReuseHoldTime().udp());
-        Assertions.assertEquals(1863941224, response.naptConfiguration().pinholeLimits());
-        Assertions.assertEquals(1346405243, response.naptConfiguration().pinholeTimeouts().tcp());
-        Assertions.assertEquals(1524568479, response.naptConfiguration().pinholeTimeouts().udp());
-        Assertions.assertEquals(1207021610, response.naptConfiguration().pinholeTimeouts().icmp());
-        Assertions.assertEquals("tlxs", response.userEquipmentAddressPoolPrefix().get(0));
-        Assertions.assertEquals("iynknlq", response.userEquipmentStaticAddressPoolPrefix().get(0));
+        Assertions.assertEquals(422155037, response.naptConfiguration().portRange().minPort());
+        Assertions.assertEquals(1938868822, response.naptConfiguration().portRange().maxPort());
+        Assertions.assertEquals(1614916869, response.naptConfiguration().portReuseHoldTime().tcp());
+        Assertions.assertEquals(394245524, response.naptConfiguration().portReuseHoldTime().udp());
+        Assertions.assertEquals(196661330, response.naptConfiguration().pinholeLimits());
+        Assertions.assertEquals(283921806, response.naptConfiguration().pinholeTimeouts().tcp());
+        Assertions.assertEquals(1164479404, response.naptConfiguration().pinholeTimeouts().udp());
+        Assertions.assertEquals(47746370, response.naptConfiguration().pinholeTimeouts().icmp());
+        Assertions.assertEquals("ntsj", response.userEquipmentAddressPoolPrefix().get(0));
+        Assertions.assertEquals("elyetndnbf", response.userEquipmentStaticAddressPoolPrefix().get(0));
     }
 }

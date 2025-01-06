@@ -18,12 +18,7 @@ import java.time.OffsetDateTime;
 /** An immutable client-side representation of an Azure SQL Server Key. */
 @Fluent
 public interface SqlServerKey
-    extends HasId,
-        HasInnerModel<ServerKeyInner>,
-        HasName,
-        HasResourceGroup,
-        Indexable,
-        Refreshable<SqlServerKey> {
+    extends HasId, HasInnerModel<ServerKeyInner>, HasName, HasResourceGroup, Indexable, Refreshable<SqlServerKey> {
     /** @return name of the SQL Server to which this DNS alias belongs */
     String sqlServerName();
 

@@ -64,26 +64,23 @@ public class MessageSenderAsync extends ServiceBusScenario {
         span.setAttribute(AttributeKey.longKey("batchSize"), batchSize);
     }
 
-
     private Mono<Void> singleRun() {
-        Mono<Void> run = client.createMessageBatch()
-            .flatMap(b -> {
-                for (int i = 0; i < batchSize; i ++) {
-                    if (!b.tryAddMessage(new ServiceBusMessage(messagePayload))) {
-                        telemetryHelper.recordError("batch is full", "createBatch");
-                        break;
-                    }
+        Mono<Void> run = client.createMessageBatch().flatMap(b -> {
+            for (int i = 0; i < batchSize; i++) {
+                if (!b.tryAddMessage(new ServiceBusMessage(messagePayload))) {
+                    telemetryHelper.recordError("batch is full", "createBatch");
+                    break;
                 }
-                return client.sendMessages(b);
-            })
-            .onErrorResume(e -> {
-                telemetryHelper.recordError(e, "create and send batch");
-                return Mono.empty();
-            })
-            .doOnCancel(() -> telemetryHelper.recordError("cancelled", "create and send batch"));
+            }
+            return client.sendMessages(b);
+        }).onErrorResume(e -> {
+            telemetryHelper.recordError(e, "create and send batch");
+            return Mono.empty();
+        }).doOnCancel(() -> telemetryHelper.recordError("cancelled", "create and send batch"));
 
-        return Mono.usingWhen(rateLimiter.acquire(),
-            i -> run,
-            i -> { rateLimiter.release(); return Mono.empty(); });
+        return Mono.usingWhen(rateLimiter.acquire(), i -> run, i -> {
+            rateLimiter.release();
+            return Mono.empty();
+        });
     }
 }

@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 @Fluent
 public interface SqlFailoverGroupOperations
     extends SupportsCreating<SqlFailoverGroupOperations.DefinitionStages.WithSqlServer>,
-        SqlChildrenOperations<SqlFailoverGroup> {
+    SqlChildrenOperations<SqlFailoverGroup> {
 
     /**
      * Fails over from the current primary server to this server.
@@ -52,17 +52,16 @@ public interface SqlFailoverGroupOperations
      * @param failoverGroupName the name of the failover group
      * @return a representation of the deferred computation of this call returning the SqlFailoverGroup object
      */
-    Mono<SqlFailoverGroup> forceFailoverAllowDataLossAsync(
-        String resourceGroupName, String serverName, String failoverGroupName);
+    Mono<SqlFailoverGroup> forceFailoverAllowDataLossAsync(String resourceGroupName, String serverName,
+        String failoverGroupName);
 
     /** Container interface for all the definitions that need to be implemented. */
-    interface SqlFailoverGroupOperationsDefinition
-        extends SqlFailoverGroupOperations.DefinitionStages.WithSqlServer,
-            SqlFailoverGroupOperations.DefinitionStages.WithReadWriteEndpointPolicy,
-            SqlFailoverGroupOperations.DefinitionStages.WithReadOnlyEndpointPolicy,
-            SqlFailoverGroupOperations.DefinitionStages.WithPartnerServer,
-            SqlFailoverGroupOperations.DefinitionStages.WithDatabase,
-            SqlFailoverGroupOperations.DefinitionStages.WithCreate {
+    interface SqlFailoverGroupOperationsDefinition extends SqlFailoverGroupOperations.DefinitionStages.WithSqlServer,
+        SqlFailoverGroupOperations.DefinitionStages.WithReadWriteEndpointPolicy,
+        SqlFailoverGroupOperations.DefinitionStages.WithReadOnlyEndpointPolicy,
+        SqlFailoverGroupOperations.DefinitionStages.WithPartnerServer,
+        SqlFailoverGroupOperations.DefinitionStages.WithDatabase,
+        SqlFailoverGroupOperations.DefinitionStages.WithCreate {
     }
 
     /** Grouping of all the SQL Failover Group definition stages. */
@@ -77,8 +76,8 @@ public interface SqlFailoverGroupOperations
              * @param location the parent SQL server location
              * @return the next stage of the definition
              */
-            SqlFailoverGroupOperations.DefinitionStages.WithReadWriteEndpointPolicy withExistingSqlServer(
-                String resourceGroupName, String sqlServerName, String location);
+            SqlFailoverGroupOperations.DefinitionStages.WithReadWriteEndpointPolicy
+                withExistingSqlServer(String resourceGroupName, String sqlServerName, String location);
 
             /**
              * Sets the parent SQL server for the new Failover Group.
@@ -86,8 +85,8 @@ public interface SqlFailoverGroupOperations
              * @param sqlServer the parent SQL server
              * @return the next stage of the definition
              */
-            SqlFailoverGroupOperations.DefinitionStages.WithReadWriteEndpointPolicy withExistingSqlServer(
-                SqlServer sqlServer);
+            SqlFailoverGroupOperations.DefinitionStages.WithReadWriteEndpointPolicy
+                withExistingSqlServer(SqlServer sqlServer);
         }
 
         /** The SQL Failover Group definition to set the read-write endpoint failover policy. */
@@ -158,11 +157,10 @@ public interface SqlFailoverGroupOperations
         }
 
         /** The final stage of the SQL Failover Group definition. */
-        interface WithCreate
-            extends SqlFailoverGroupOperations.DefinitionStages.WithReadOnlyEndpointPolicy,
-                SqlFailoverGroupOperations.DefinitionStages.WithDatabase,
-                Resource.DefinitionWithTags<SqlFailoverGroupOperations.DefinitionStages.WithCreate>,
-                Creatable<SqlFailoverGroup> {
+        interface WithCreate extends SqlFailoverGroupOperations.DefinitionStages.WithReadOnlyEndpointPolicy,
+            SqlFailoverGroupOperations.DefinitionStages.WithDatabase,
+            Resource.DefinitionWithTags<SqlFailoverGroupOperations.DefinitionStages.WithCreate>,
+            Creatable<SqlFailoverGroup> {
         }
     }
 

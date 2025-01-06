@@ -28,7 +28,8 @@ public final class SqlDWSink extends CopySink {
     private Object preCopyScript;
 
     /*
-     * Indicates to use PolyBase to copy data into SQL Data Warehouse when applicable. Type: boolean (or Expression with resultType boolean).
+     * Indicates to use PolyBase to copy data into SQL Data Warehouse when applicable. Type: boolean (or Expression with
+     * resultType boolean).
      */
     private Object allowPolyBase;
 
@@ -38,7 +39,8 @@ public final class SqlDWSink extends CopySink {
     private PolybaseSettings polyBaseSettings;
 
     /*
-     * Indicates to use Copy Command to copy data into SQL Data Warehouse. Type: boolean (or Expression with resultType boolean).
+     * Indicates to use Copy Command to copy data into SQL Data Warehouse. Type: boolean (or Expression with resultType
+     * boolean).
      */
     private Object allowCopyCommand;
 
@@ -48,7 +50,8 @@ public final class SqlDWSink extends CopySink {
     private DWCopyCommandSettings copyCommandSettings;
 
     /*
-     * The option to handle sink table, such as autoCreate. For now only 'autoCreate' value is supported. Type: string (or Expression with resultType string).
+     * The option to handle sink table, such as autoCreate. For now only 'autoCreate' value is supported. Type: string
+     * (or Expression with resultType string).
      */
     private Object tableOption;
 

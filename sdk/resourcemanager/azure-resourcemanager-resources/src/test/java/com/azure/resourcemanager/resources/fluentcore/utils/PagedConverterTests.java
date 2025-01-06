@@ -88,7 +88,8 @@ public class PagedConverterTests {
     @Test
     public void testFlatMapPage() {
         PagedFlux<String> pagedFlux = mockPagedFlux("base", 0, 10, 4);
-        PagedFlux<String> convertedPagedFlux = PagedConverter.flatMapPage(pagedFlux, item -> Flux.just(item, item + "#"));
+        PagedFlux<String> convertedPagedFlux
+            = PagedConverter.flatMapPage(pagedFlux, item -> Flux.just(item, item + "#"));
         StepVerifier.create(convertedPagedFlux.byPage())
             .expectSubscription()
             .expectNextMatches(p -> p.getValue().size() == 8
@@ -105,7 +106,8 @@ public class PagedConverterTests {
     @Test
     public void testMergePagedFlux() {
         PagedFlux<String> pagedFlux = mockPagedFlux("base", 0, 3, 2);
-        PagedFlux<String> mergedPagedFlux = PagedConverter.mergePagedFlux(pagedFlux, item -> mockPagedFlux(item + "sub", 0, 10, 4));
+        PagedFlux<String> mergedPagedFlux
+            = PagedConverter.mergePagedFlux(pagedFlux, item -> mockPagedFlux(item + "sub", 0, 10, 4));
         StepVerifier.create(mergedPagedFlux.byPage())
             .expectSubscription()
             .expectNextMatches(p -> p.getValue().size() == 4
@@ -183,7 +185,8 @@ public class PagedConverterTests {
     public void testFlatMapPageOnePage() {
         AtomicInteger pageCount = new AtomicInteger(0);
         PagedFlux<String> pagedFlux = mockPagedFlux("base", 0, 10, 4, pageCount);
-        PagedFlux<String> convertedPagedFlux = PagedConverter.flatMapPage(pagedFlux, item -> Flux.just(item, item + "#"));
+        PagedFlux<String> convertedPagedFlux
+            = PagedConverter.flatMapPage(pagedFlux, item -> Flux.just(item, item + "#"));
         PagedIterable<String> pagedIterable = new PagedIterable<>(convertedPagedFlux);
 
         pagedIterable.stream().findFirst().get();
@@ -197,7 +200,8 @@ public class PagedConverterTests {
         AtomicInteger pageCountRoot = new AtomicInteger(0);
         AtomicInteger pageCount = new AtomicInteger(0);
         PagedFlux<String> pagedFlux = mockPagedFlux("base", 0, 3, 2, pageCountRoot);
-        PagedFlux<String> mergedPagedFlux = PagedConverter.mergePagedFlux(pagedFlux, item -> mockPagedFlux(item + "sub", 0, 10, 4, pageCount));
+        PagedFlux<String> mergedPagedFlux
+            = PagedConverter.mergePagedFlux(pagedFlux, item -> mockPagedFlux(item + "sub", 0, 10, 4, pageCount));
         PagedIterable<String> pagedIterable = new PagedIterable<>(mergedPagedFlux);
 
         pagedIterable.stream().findFirst().get();
@@ -207,17 +211,17 @@ public class PagedConverterTests {
     }
 
     private static PagedFlux<String> mockEmptyPagedFlux() {
-        PagedResponseBase<Void, String> emptyPage = new PagedResponseBase<>(null, 200, null,
-            Collections.emptyList(), null, null);
-        return new PagedFlux<>(() -> Mono.just(emptyPage),
-            continuationToken -> Mono.empty());
+        PagedResponseBase<Void, String> emptyPage
+            = new PagedResponseBase<>(null, 200, null, Collections.emptyList(), null, null);
+        return new PagedFlux<>(() -> Mono.just(emptyPage), continuationToken -> Mono.empty());
     }
 
     private static PagedFlux<String> mockPagedFlux(String prefix, int startInclusive, int stopExclusive, int pageSize) {
         return mockPagedFlux(prefix, startInclusive, stopExclusive, pageSize, new AtomicInteger(0));
     }
 
-    private static PagedFlux<String> mockPagedFlux(String prefix, int startInclusive, int stopExclusive, int pageSize, AtomicInteger pageCount) {
+    private static PagedFlux<String> mockPagedFlux(String prefix, int startInclusive, int stopExclusive, int pageSize,
+        AtomicInteger pageCount) {
         Iterator<Integer> iterator = IntStream.range(startInclusive, stopExclusive).iterator();
         Map<String, PagedResponse<String>> pages = new HashMap<>();
         String currentContinuationToken = prefix;
@@ -234,8 +238,7 @@ public class PagedConverterTests {
             }
 
             String newContinuationToken = iterator.hasNext() ? prefix + possibleNext : null;
-            PagedResponse<String> page = new PagedResponseBase<>(null, 200, null,
-                items, newContinuationToken, null);
+            PagedResponse<String> page = new PagedResponseBase<>(null, 200, null, items, newContinuationToken, null);
             pages.put(currentContinuationToken, page);
             currentContinuationToken = newContinuationToken;
         }

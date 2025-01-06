@@ -18,9 +18,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.implementation.Accep
 import java.util.function.Function;
 
 /** Implementation for {@link PublicIpAddresses}. */
-public class PublicIpAddressesImpl
-    extends TopLevelModifiableResourcesImpl<
-        PublicIpAddress, PublicIpAddressImpl, PublicIpAddressInner, PublicIpAddressesClient, NetworkManager>
+public class PublicIpAddressesImpl extends
+    TopLevelModifiableResourcesImpl<PublicIpAddress, PublicIpAddressImpl, PublicIpAddressInner, PublicIpAddressesClient, NetworkManager>
     implements PublicIpAddresses {
 
     private final ClientLogger logger = new ClientLogger(this.getClass());
@@ -62,15 +61,9 @@ public class PublicIpAddressesImpl
 
     @Override
     public Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name) {
-        return AcceptedImpl
-            .newAccepted(
-                logger,
-                this.manager().serviceClient().getHttpPipeline(),
-                this.manager().serviceClient().getDefaultPollInterval(),
-                () -> this.inner().deleteWithResponseAsync(resourceGroupName, name).block(),
-                Function.identity(),
-                Void.class,
-                null,
-                Context.NONE);
+        return AcceptedImpl.newAccepted(logger, this.manager().serviceClient().getHttpPipeline(),
+            this.manager().serviceClient().getDefaultPollInterval(),
+            () -> this.inner().deleteWithResponseAsync(resourceGroupName, name).block(), Function.identity(),
+            Void.class, null, Context.NONE);
     }
 }

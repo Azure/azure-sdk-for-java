@@ -12,9 +12,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
  * Type representing authorization rule defined for queue.
  */
 @Fluent
-public interface QueueAuthorizationRule extends
-    AuthorizationRule<QueueAuthorizationRule>,
-    Updatable<QueueAuthorizationRule.Update> {
+public interface QueueAuthorizationRule
+    extends AuthorizationRule<QueueAuthorizationRule>, Updatable<QueueAuthorizationRule.Update> {
     /**
      * @return the name of the namespace that the parent queue belongs to
      */
@@ -32,8 +31,8 @@ public interface QueueAuthorizationRule extends
         /**
          * The first stage of queue authorization rule definition.
          */
-        interface Blank extends AuthorizationRule.DefinitionStages.WithListenOrSendOrManage<
-            QueueAuthorizationRule.DefinitionStages.WithCreate> {
+        interface Blank extends
+            AuthorizationRule.DefinitionStages.WithListenOrSendOrManage<QueueAuthorizationRule.DefinitionStages.WithCreate> {
         }
 
         /**
@@ -48,16 +47,14 @@ public interface QueueAuthorizationRule extends
     /**
      * The entirety of the queue authorization rule definition.
      */
-    interface Definition extends
-            QueueAuthorizationRule.DefinitionStages.Blank,
-            QueueAuthorizationRule.DefinitionStages.WithCreate {
+    interface Definition
+        extends QueueAuthorizationRule.DefinitionStages.Blank, QueueAuthorizationRule.DefinitionStages.WithCreate {
     }
 
     /**
      * The entirety of the queue authorization rule update.
      */
-    interface Update extends
-        Appliable<QueueAuthorizationRule>,
+    interface Update extends Appliable<QueueAuthorizationRule>,
         AuthorizationRule.UpdateStages.WithListenOrSendOrManage<QueueAuthorizationRule.Update> {
     }
 }

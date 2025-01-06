@@ -5,49 +5,53 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines load balancer frontend IP configuration properties. */
+/**
+ * Defines load balancer frontend IP configuration properties.
+ */
 @Fluent
-public final class LBFrontendIpConfigurationResourceSettings {
+public final class LBFrontendIpConfigurationResourceSettings
+    implements JsonSerializable<LBFrontendIpConfigurationResourceSettings> {
     /*
      * Gets or sets the frontend IP configuration name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Gets or sets the IP address of the Load Balancer.This is only specified if a specific
      * private IP address shall be allocated from the subnet specified in subnetRef.
      */
-    @JsonProperty(value = "privateIpAddress")
     private String privateIpAddress;
 
     /*
      * Gets or sets PrivateIP allocation method (Static/Dynamic).
      */
-    @JsonProperty(value = "privateIpAllocationMethod")
     private String privateIpAllocationMethod;
 
     /*
      * Defines reference to subnet.
      */
-    @JsonProperty(value = "subnet")
     private SubnetReference subnet;
 
     /*
      * Gets or sets the csv list of zones.
      */
-    @JsonProperty(value = "zones")
     private String zones;
 
-    /** Creates an instance of LBFrontendIpConfigurationResourceSettings class. */
+    /**
+     * Creates an instance of LBFrontendIpConfigurationResourceSettings class.
+     */
     public LBFrontendIpConfigurationResourceSettings() {
     }
 
     /**
      * Get the name property: Gets or sets the frontend IP configuration name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -56,7 +60,7 @@ public final class LBFrontendIpConfigurationResourceSettings {
 
     /**
      * Set the name property: Gets or sets the frontend IP configuration name.
-     *
+     * 
      * @param name the name value to set.
      * @return the LBFrontendIpConfigurationResourceSettings object itself.
      */
@@ -67,8 +71,9 @@ public final class LBFrontendIpConfigurationResourceSettings {
 
     /**
      * Get the privateIpAddress property: Gets or sets the IP address of the Load Balancer.This is only specified if a
-     * specific private IP address shall be allocated from the subnet specified in subnetRef.
-     *
+     * specific
+     * private IP address shall be allocated from the subnet specified in subnetRef.
+     * 
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
@@ -77,8 +82,9 @@ public final class LBFrontendIpConfigurationResourceSettings {
 
     /**
      * Set the privateIpAddress property: Gets or sets the IP address of the Load Balancer.This is only specified if a
-     * specific private IP address shall be allocated from the subnet specified in subnetRef.
-     *
+     * specific
+     * private IP address shall be allocated from the subnet specified in subnetRef.
+     * 
      * @param privateIpAddress the privateIpAddress value to set.
      * @return the LBFrontendIpConfigurationResourceSettings object itself.
      */
@@ -89,7 +95,7 @@ public final class LBFrontendIpConfigurationResourceSettings {
 
     /**
      * Get the privateIpAllocationMethod property: Gets or sets PrivateIP allocation method (Static/Dynamic).
-     *
+     * 
      * @return the privateIpAllocationMethod value.
      */
     public String privateIpAllocationMethod() {
@@ -98,7 +104,7 @@ public final class LBFrontendIpConfigurationResourceSettings {
 
     /**
      * Set the privateIpAllocationMethod property: Gets or sets PrivateIP allocation method (Static/Dynamic).
-     *
+     * 
      * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
      * @return the LBFrontendIpConfigurationResourceSettings object itself.
      */
@@ -109,7 +115,7 @@ public final class LBFrontendIpConfigurationResourceSettings {
 
     /**
      * Get the subnet property: Defines reference to subnet.
-     *
+     * 
      * @return the subnet value.
      */
     public SubnetReference subnet() {
@@ -118,7 +124,7 @@ public final class LBFrontendIpConfigurationResourceSettings {
 
     /**
      * Set the subnet property: Defines reference to subnet.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the LBFrontendIpConfigurationResourceSettings object itself.
      */
@@ -129,7 +135,7 @@ public final class LBFrontendIpConfigurationResourceSettings {
 
     /**
      * Get the zones property: Gets or sets the csv list of zones.
-     *
+     * 
      * @return the zones value.
      */
     public String zones() {
@@ -138,7 +144,7 @@ public final class LBFrontendIpConfigurationResourceSettings {
 
     /**
      * Set the zones property: Gets or sets the csv list of zones.
-     *
+     * 
      * @param zones the zones value to set.
      * @return the LBFrontendIpConfigurationResourceSettings object itself.
      */
@@ -149,12 +155,62 @@ public final class LBFrontendIpConfigurationResourceSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (subnet() != null) {
             subnet().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("privateIpAddress", this.privateIpAddress);
+        jsonWriter.writeStringField("privateIpAllocationMethod", this.privateIpAllocationMethod);
+        jsonWriter.writeJsonField("subnet", this.subnet);
+        jsonWriter.writeStringField("zones", this.zones);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LBFrontendIpConfigurationResourceSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LBFrontendIpConfigurationResourceSettings if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LBFrontendIpConfigurationResourceSettings.
+     */
+    public static LBFrontendIpConfigurationResourceSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LBFrontendIpConfigurationResourceSettings deserializedLBFrontendIpConfigurationResourceSettings
+                = new LBFrontendIpConfigurationResourceSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedLBFrontendIpConfigurationResourceSettings.name = reader.getString();
+                } else if ("privateIpAddress".equals(fieldName)) {
+                    deserializedLBFrontendIpConfigurationResourceSettings.privateIpAddress = reader.getString();
+                } else if ("privateIpAllocationMethod".equals(fieldName)) {
+                    deserializedLBFrontendIpConfigurationResourceSettings.privateIpAllocationMethod
+                        = reader.getString();
+                } else if ("subnet".equals(fieldName)) {
+                    deserializedLBFrontendIpConfigurationResourceSettings.subnet = SubnetReference.fromJson(reader);
+                } else if ("zones".equals(fieldName)) {
+                    deserializedLBFrontendIpConfigurationResourceSettings.zones = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLBFrontendIpConfigurationResourceSettings;
+        });
     }
 }

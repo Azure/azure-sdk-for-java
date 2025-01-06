@@ -178,7 +178,7 @@ public final class FaceSessionAsyncClient {
      *                     isIdentical: boolean (Required)
      *                 }
      *                  (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *             }
      *             statusCode: int (Required)
@@ -308,7 +308,7 @@ public final class FaceSessionAsyncClient {
      *                     isIdentical: boolean (Required)
      *                 }
      *                  (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *             }
      *             statusCode: int (Required)
@@ -517,7 +517,7 @@ public final class FaceSessionAsyncClient {
      *                     isIdentical: boolean (Required)
      *                 }
      *                  (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *             }
      *             statusCode: int (Required)
@@ -649,7 +649,7 @@ public final class FaceSessionAsyncClient {
      *                     isIdentical: boolean (Required)
      *                 }
      *                  (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *             }
      *             statusCode: int (Required)

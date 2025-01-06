@@ -26,10 +26,9 @@ import java.util.regex.Pattern;
  * This class allows access to Visual Studio Code cached credential data.
  */
 public class VisualStudioCacheAccessor {
-    private static final String PLATFORM_NOT_SUPPORTED_ERROR = "Platform could not be determined for VS Code"
-        + " credential authentication.";
+    private static final String PLATFORM_NOT_SUPPORTED_ERROR
+        = "Platform could not be determined for VS Code" + " credential authentication.";
     private static final Pattern REFRESH_TOKEN_PATTERN = Pattern.compile("^[-_.a-zA-Z0-9]+$");
-
 
     public static String getSettingsPath() {
         String homeDir = System.getProperty("user.home");
@@ -37,8 +36,7 @@ public class VisualStudioCacheAccessor {
             if (Platform.isWindows()) {
                 return Paths.get(System.getenv("APPDATA"), "Code", "User", "settings.json").toString();
             } else if (Platform.isMac()) {
-                return Paths.get(homeDir, "Library", "Application Support", "Code", "User", "settings.json")
-                    .toString();
+                return Paths.get(homeDir, "Library", "Application Support", "Code", "User", "settings.json").toString();
             } else if (Platform.isLinux()) {
                 return Paths.get(homeDir, ".config", "Code", "User", "settings.json").toString();
             } else {
@@ -55,7 +53,8 @@ public class VisualStudioCacheAccessor {
      * @return a Map containing VS Code user settings
      */
     public Map<String, String> getUserSettingsDetails() {
-        try (JsonReader jsonReader = JsonProviders.createReader(Files.readAllBytes(Paths.get(getSettingsPath())), new JsonOptions().setJsoncSupported(true))) {
+        try (JsonReader jsonReader = JsonProviders.createReader(Files.readAllBytes(Paths.get(getSettingsPath())),
+            new JsonOptions().setJsoncSupported(true))) {
             return jsonReader.readObject(reader -> {
                 Map<String, String> result = new HashMap<>();
                 while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -79,7 +78,6 @@ public class VisualStudioCacheAccessor {
         }
     }
 
-
     /**
      * Get the credential for the specified service and account name.
      *
@@ -95,8 +93,8 @@ public class VisualStudioCacheAccessor {
             try {
                 credential = new WindowsCredentialAccessor(serviceName, accountName).read();
             } catch (Exception | Error e) {
-                throw new CredentialUnavailableException("Failed to read Vs Code credentials from"
-                    + " Windows Credential API.", e);
+                throw new CredentialUnavailableException(
+                    "Failed to read Vs Code credentials from" + " Windows Credential API.", e);
             }
 
         } else if (Platform.isMac()) {
@@ -107,16 +105,15 @@ public class VisualStudioCacheAccessor {
                 byte[] readCreds = keyChainAccessor.read();
                 credential = new String(readCreds, StandardCharsets.UTF_8);
             } catch (Exception | Error e) {
-                throw new CredentialUnavailableException("Failed to read Vs Code credentials"
-                    + " from Mac Native Key Chain.", e);
+                throw new CredentialUnavailableException(
+                    "Failed to read Vs Code credentials" + " from Mac Native Key Chain.", e);
             }
 
         } else if (Platform.isLinux()) {
 
             try {
-                LinuxKeyRingAccessor keyRingAccessor = new LinuxKeyRingAccessor(
-                    "org.freedesktop.Secret.Generic", "service",
-                    serviceName, "account", accountName);
+                LinuxKeyRingAccessor keyRingAccessor = new LinuxKeyRingAccessor("org.freedesktop.Secret.Generic",
+                    "service", serviceName, "account", accountName);
 
                 byte[] readCreds = keyRingAccessor.read();
                 credential = new String(readCreds, StandardCharsets.UTF_8);
@@ -148,12 +145,16 @@ public class VisualStudioCacheAccessor {
         switch (cloud) {
             case "AzureCloud":
                 return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
+
             case "AzureChina":
                 return AzureAuthorityHosts.AZURE_CHINA;
+
             case "AzureGermanCloud":
                 return AzureAuthorityHosts.AZURE_GERMANY;
+
             case "AzureUSGovernment":
                 return AzureAuthorityHosts.AZURE_GOVERNMENT;
+
             default:
                 return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
         }

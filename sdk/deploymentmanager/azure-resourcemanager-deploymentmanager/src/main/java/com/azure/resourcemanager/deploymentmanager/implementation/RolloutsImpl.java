@@ -23,21 +23,18 @@ public final class RolloutsImpl implements Rollouts {
 
     private final com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager;
 
-    public RolloutsImpl(
-        RolloutsClient innerClient, com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager) {
+    public RolloutsImpl(RolloutsClient innerClient,
+        com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<Rollout> getByResourceGroupWithResponse(
-        String resourceGroupName, String rolloutName, Integer retryAttempt, Context context) {
-        Response<RolloutInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, rolloutName, retryAttempt, context);
+    public Response<Rollout> getByResourceGroupWithResponse(String resourceGroupName, String rolloutName,
+        Integer retryAttempt, Context context) {
+        Response<RolloutInner> inner = this.serviceClient()
+            .getByResourceGroupWithResponse(resourceGroupName, rolloutName, retryAttempt, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RolloutImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -53,8 +50,8 @@ public final class RolloutsImpl implements Rollouts {
         }
     }
 
-    public Response<Void> deleteByResourceGroupWithResponse(
-        String resourceGroupName, String rolloutName, Context context) {
+    public Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String rolloutName,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, rolloutName, context);
     }
 
@@ -65,10 +62,7 @@ public final class RolloutsImpl implements Rollouts {
     public Response<Rollout> cancelWithResponse(String resourceGroupName, String rolloutName, Context context) {
         Response<RolloutInner> inner = this.serviceClient().cancelWithResponse(resourceGroupName, rolloutName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RolloutImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -84,15 +78,12 @@ public final class RolloutsImpl implements Rollouts {
         }
     }
 
-    public Response<Rollout> restartWithResponse(
-        String resourceGroupName, String rolloutName, Boolean skipSucceeded, Context context) {
-        Response<RolloutInner> inner =
-            this.serviceClient().restartWithResponse(resourceGroupName, rolloutName, skipSucceeded, context);
+    public Response<Rollout> restartWithResponse(String resourceGroupName, String rolloutName, Boolean skipSucceeded,
+        Context context) {
+        Response<RolloutInner> inner
+            = this.serviceClient().restartWithResponse(resourceGroupName, rolloutName, skipSucceeded, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RolloutImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -111,12 +102,8 @@ public final class RolloutsImpl implements Rollouts {
     public Response<List<Rollout>> listWithResponse(String resourceGroupName, Context context) {
         Response<List<RolloutInner>> inner = this.serviceClient().listWithResponse(resourceGroupName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                inner
-                    .getValue()
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                inner.getValue()
                     .stream()
                     .map(inner1 -> new RolloutImpl(inner1, this.manager()))
                     .collect(Collectors.toList()));
@@ -128,9 +115,8 @@ public final class RolloutsImpl implements Rollouts {
     public List<Rollout> list(String resourceGroupName) {
         List<RolloutInner> inner = this.serviceClient().list(resourceGroupName);
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner.stream().map(inner1 -> new RolloutImpl(inner1, this.manager())).collect(Collectors.toList()));
+            return Collections.unmodifiableList(
+                inner.stream().map(inner1 -> new RolloutImpl(inner1, this.manager())).collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -139,18 +125,13 @@ public final class RolloutsImpl implements Rollouts {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String rolloutName = Utils.getValueFromIdByName(id, "rollouts");
         if (rolloutName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'rollouts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'rollouts'.", id)));
         }
         this.deleteByResourceGroupWithResponse(resourceGroupName, rolloutName, Context.NONE);
     }
@@ -158,18 +139,13 @@ public final class RolloutsImpl implements Rollouts {
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String rolloutName = Utils.getValueFromIdByName(id, "rollouts");
         if (rolloutName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'rollouts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'rollouts'.", id)));
         }
         return this.deleteByResourceGroupWithResponse(resourceGroupName, rolloutName, context);
     }

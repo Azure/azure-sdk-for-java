@@ -65,7 +65,7 @@ public final class PhoneNumbersClient {
     }
 
     PhoneNumbersClient(PhoneNumberAdminClientImpl phoneNumberAdminClient, PhoneNumbersAsyncClient asyncClient,
-            String acceptLanguage) {
+        String acceptLanguage) {
         this.client = phoneNumberAdminClient.getPhoneNumbers();
         this.asyncClient = asyncClient;
         this.acceptLanguage = acceptLanguage;
@@ -237,10 +237,10 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
-            String countryCode, PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType,
-            PhoneNumberCapabilities capabilities) {
+        String countryCode, PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType,
+        PhoneNumberCapabilities capabilities) {
         return asyncClient.beginSearchAvailablePhoneNumbers(countryCode, phoneNumberType, assignmentType, capabilities)
-                .getSyncPoller();
+            .getSyncPoller();
     }
 
     /**
@@ -297,10 +297,12 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
-            String countryCode, PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType,
-            PhoneNumberCapabilities capabilities, PhoneNumberSearchOptions searchOptions, Context context) {
-        return asyncClient.beginSearchAvailablePhoneNumbers(countryCode, phoneNumberType, assignmentType, capabilities,
-                searchOptions, context).getSyncPoller();
+        String countryCode, PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType,
+        PhoneNumberCapabilities capabilities, PhoneNumberSearchOptions searchOptions, Context context) {
+        return asyncClient
+            .beginSearchAvailablePhoneNumbers(countryCode, phoneNumberType, assignmentType, capabilities, searchOptions,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -363,7 +365,7 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId,
-            Context context) {
+        Context context) {
         return asyncClient.beginPurchasePhoneNumbers(searchId, context).getSyncPoller();
     }
 
@@ -429,7 +431,7 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PhoneNumberOperation, ReleasePhoneNumberResult> beginReleasePhoneNumber(String phoneNumber,
-            Context context) {
+        Context context) {
         return asyncClient.beginReleasePhoneNumber(phoneNumber, context).getSyncPoller();
     }
 
@@ -477,7 +479,7 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PhoneNumberOperation, PurchasedPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber,
-            PhoneNumberCapabilities capabilities) {
+        PhoneNumberCapabilities capabilities) {
         return asyncClient.beginUpdatePhoneNumberCapabilities(phoneNumber, capabilities).getSyncPoller();
     }
 
@@ -528,7 +530,7 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PhoneNumberOperation, PurchasedPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber,
-            PhoneNumberCapabilities capabilities, Context context) {
+        PhoneNumberCapabilities capabilities, Context context) {
         return asyncClient.beginUpdatePhoneNumberCapabilities(phoneNumber, capabilities, context).getSyncPoller();
     }
 
@@ -568,7 +570,7 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PhoneNumberLocality> listAvailableLocalities(String countryCode,
-            String administrativeDivision) {
+        String administrativeDivision) {
         return this.listAvailableLocalities(countryCode, administrativeDivision, null);
     }
 
@@ -586,7 +588,7 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PhoneNumberLocality> listAvailableLocalities(String countryCode, String administrativeDivision,
-            Context context) {
+        Context context) {
         context = context == null ? Context.NONE : context;
         return client.listAvailableLocalities(countryCode, null, null, administrativeDivision, acceptLanguage, context);
     }
@@ -614,7 +616,7 @@ public final class PhoneNumbersClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PhoneNumberAreaCode> listAvailableTollFreeAreaCodes(String countryCode, Context context) {
         return client.listAreaCodes(countryCode, PhoneNumberType.TOLL_FREE, null, null,
-                PhoneNumberAssignmentType.APPLICATION, null, null, acceptLanguage);
+            PhoneNumberAssignmentType.APPLICATION, null, null, acceptLanguage);
     }
 
     /**
@@ -634,9 +636,9 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PhoneNumberAreaCode> listAvailableGeographicAreaCodes(String countryCode,
-            PhoneNumberAssignmentType assignmentType, String locality, String administrativeDivision) {
+        PhoneNumberAssignmentType assignmentType, String locality, String administrativeDivision) {
         return this.listAvailableGeographicAreaCodes(countryCode, assignmentType, locality, administrativeDivision,
-                null);
+            null);
     }
 
     /**
@@ -658,10 +660,10 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PhoneNumberAreaCode> listAvailableGeographicAreaCodes(String countryCode,
-            PhoneNumberAssignmentType assignmentType, String locality, String administrativeDivision, Context context) {
+        PhoneNumberAssignmentType assignmentType, String locality, String administrativeDivision, Context context) {
         context = context == null ? Context.NONE : context;
         return client.listAreaCodes(countryCode, PhoneNumberType.GEOGRAPHIC, null, null, assignmentType, locality,
-                administrativeDivision, acceptLanguage, context);
+            administrativeDivision, acceptLanguage, context);
     }
 
     /**
@@ -677,7 +679,7 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PhoneNumberOffering> listAvailableOfferings(String countryCode,
-            PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType) {
+        PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType) {
         return this.listAvailableOfferings(countryCode, phoneNumberType, assignmentType, null);
     }
 
@@ -695,7 +697,7 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PhoneNumberOffering> listAvailableOfferings(String countryCode,
-            PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType, Context context) {
+        PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType, Context context) {
         context = context == null ? Context.NONE : context;
         return client.listOfferings(countryCode, null, null, phoneNumberType, assignmentType, acceptLanguage, context);
     }
@@ -727,8 +729,7 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperatorInformationResult> searchOperatorInformationWithResponse(List<String> phoneNumbers,
-            OperatorInformationOptions requestOptions,
-            Context context) {
+        OperatorInformationOptions requestOptions, Context context) {
         context = context == null ? Context.NONE : context;
         OperatorInformationRequest request = new OperatorInformationRequest();
         request.setPhoneNumbers(phoneNumbers);

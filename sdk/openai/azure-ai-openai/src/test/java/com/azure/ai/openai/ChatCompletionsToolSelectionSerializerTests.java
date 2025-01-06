@@ -46,7 +46,8 @@ public class ChatCompletionsToolSelectionSerializerTests {
     @Test
     public void chatCompletionsOptionToolChoiceRequired() {
         ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(new ArrayList<>());
-        chatCompletionsOptions.setToolChoice(new ChatCompletionsToolSelection(ChatCompletionsToolSelectionPreset.REQUIRED));
+        chatCompletionsOptions
+            .setToolChoice(new ChatCompletionsToolSelection(ChatCompletionsToolSelectionPreset.REQUIRED));
         ChatCompletionsToolSelectionPreset preset = chatCompletionsOptions.getToolChoice().getPreset();
 
         BinaryData jsonBinaryData = BinaryData.fromObject(chatCompletionsOptions);
@@ -58,8 +59,8 @@ public class ChatCompletionsToolSelectionSerializerTests {
 
     @Test
     public void chatCompletionsOptionToolChoiceFunctionName() {
-        ChatCompletionsNamedToolSelection namedToolSelection = new ChatCompletionsNamedFunctionToolSelection(
-                        new ChatCompletionsFunctionToolSelection("my_function"));
+        ChatCompletionsNamedToolSelection namedToolSelection
+            = new ChatCompletionsNamedFunctionToolSelection(new ChatCompletionsFunctionToolSelection("my_function"));
         ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(new ArrayList<>());
         chatCompletionsOptions.setToolChoice(new ChatCompletionsToolSelection(namedToolSelection));
 
@@ -70,4 +71,3 @@ public class ChatCompletionsToolSelectionSerializerTests {
         assertTrue(json.contains("\"name\":\"my_function\""));
     }
 }
-

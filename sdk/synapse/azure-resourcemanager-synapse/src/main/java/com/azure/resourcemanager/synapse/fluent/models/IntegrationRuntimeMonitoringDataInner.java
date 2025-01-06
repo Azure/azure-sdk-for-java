@@ -5,32 +5,39 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeNodeMonitoringData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Get monitoring data response. */
+/**
+ * Get monitoring data response.
+ */
 @Fluent
-public final class IntegrationRuntimeMonitoringDataInner {
+public final class IntegrationRuntimeMonitoringDataInner
+    implements JsonSerializable<IntegrationRuntimeMonitoringDataInner> {
     /*
      * Integration runtime name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Integration runtime node monitoring data.
      */
-    @JsonProperty(value = "nodes")
     private List<IntegrationRuntimeNodeMonitoringData> nodes;
 
-    /** Creates an instance of IntegrationRuntimeMonitoringDataInner class. */
+    /**
+     * Creates an instance of IntegrationRuntimeMonitoringDataInner class.
+     */
     public IntegrationRuntimeMonitoringDataInner() {
     }
 
     /**
      * Get the name property: Integration runtime name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -39,7 +46,7 @@ public final class IntegrationRuntimeMonitoringDataInner {
 
     /**
      * Set the name property: Integration runtime name.
-     *
+     * 
      * @param name the name value to set.
      * @return the IntegrationRuntimeMonitoringDataInner object itself.
      */
@@ -50,7 +57,7 @@ public final class IntegrationRuntimeMonitoringDataInner {
 
     /**
      * Get the nodes property: Integration runtime node monitoring data.
-     *
+     * 
      * @return the nodes value.
      */
     public List<IntegrationRuntimeNodeMonitoringData> nodes() {
@@ -59,7 +66,7 @@ public final class IntegrationRuntimeMonitoringDataInner {
 
     /**
      * Set the nodes property: Integration runtime node monitoring data.
-     *
+     * 
      * @param nodes the nodes value to set.
      * @return the IntegrationRuntimeMonitoringDataInner object itself.
      */
@@ -70,12 +77,54 @@ public final class IntegrationRuntimeMonitoringDataInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (nodes() != null) {
             nodes().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("nodes", this.nodes, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationRuntimeMonitoringDataInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationRuntimeMonitoringDataInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IntegrationRuntimeMonitoringDataInner.
+     */
+    public static IntegrationRuntimeMonitoringDataInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationRuntimeMonitoringDataInner deserializedIntegrationRuntimeMonitoringDataInner
+                = new IntegrationRuntimeMonitoringDataInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedIntegrationRuntimeMonitoringDataInner.name = reader.getString();
+                } else if ("nodes".equals(fieldName)) {
+                    List<IntegrationRuntimeNodeMonitoringData> nodes
+                        = reader.readArray(reader1 -> IntegrationRuntimeNodeMonitoringData.fromJson(reader1));
+                    deserializedIntegrationRuntimeMonitoringDataInner.nodes = nodes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIntegrationRuntimeMonitoringDataInner;
+        });
     }
 }

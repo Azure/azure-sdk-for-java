@@ -49,10 +49,8 @@ public final class ListProvisioningTokenInput {
      */
     public void validate() {
         if (expirationDate() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property expirationDate in model ListProvisioningTokenInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property expirationDate in model ListProvisioningTokenInput"));
         }
     }
 

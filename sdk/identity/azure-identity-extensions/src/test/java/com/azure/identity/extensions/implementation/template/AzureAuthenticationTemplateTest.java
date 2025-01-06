@@ -12,10 +12,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
 import reactor.core.publisher.Mono;
 
+import java.lang.reflect.Field;
 import java.time.OffsetDateTime;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
+import static com.azure.identity.extensions.implementation.enums.AuthProperty.GET_TOKEN_TIMEOUT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -83,18 +85,18 @@ class AzureAuthenticationTemplateTest {
         int tokenExpireSeconds = 2;
         TokenCredential mockTokenCredential = mock(TokenCredential.class);
         OffsetDateTime offsetDateTime = OffsetDateTime.now().plusSeconds(tokenExpireSeconds);
-        when(mockTokenCredential.getToken(any()))
-            .thenAnswer(u -> {
-                if (OffsetDateTime.now().isBefore(offsetDateTime)) {
-                    return Mono.just(new AccessToken(token1, offsetDateTime));
-                } else {
-                    return Mono.just(new AccessToken(token2, offsetDateTime.plusSeconds(tokenExpireSeconds)));
-                }
-            });
+        when(mockTokenCredential.getToken(any())).thenAnswer(u -> {
+            if (OffsetDateTime.now().isBefore(offsetDateTime)) {
+                return Mono.just(new AccessToken(token1, offsetDateTime));
+            } else {
+                return Mono.just(new AccessToken(token2, offsetDateTime.plusSeconds(tokenExpireSeconds)));
+            }
+        });
         // mock
-        try (MockedConstruction<DefaultTokenCredentialProvider> identityClientMock = mockConstruction(DefaultTokenCredentialProvider.class, (defaultTokenCredentialProvider, context) -> {
-            when(defaultTokenCredentialProvider.get()).thenReturn(mockTokenCredential);
-        })) {
+        try (MockedConstruction<DefaultTokenCredentialProvider> identityClientMock
+            = mockConstruction(DefaultTokenCredentialProvider.class, (defaultTokenCredentialProvider, context) -> {
+                when(defaultTokenCredentialProvider.get()).thenReturn(mockTokenCredential);
+            })) {
             Properties properties = new Properties();
 
             AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
@@ -109,4 +111,25 @@ class AzureAuthenticationTemplateTest {
         }
     }
 
+    @Test
+    void useDefaultAccessTokenTimeout() throws NoSuchFieldException, IllegalAccessException {
+        AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
+        Properties properties = new Properties();
+        template.init(properties);
+        assertNotNull(template.getBlockTimeout());
+        Field defaultValueField = GET_TOKEN_TIMEOUT.getClass().getDeclaredField("defaultValue");
+        defaultValueField.setAccessible(true);
+        String defaultVault = (String) defaultValueField.get(GET_TOKEN_TIMEOUT);
+        assertEquals(template.getBlockTimeout().getSeconds() + "", defaultVault);
+    }
+
+    @Test
+    void useCustomAccessTokenTimeout() {
+        AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
+        Properties properties = new Properties();
+        properties.setProperty(AuthProperty.GET_TOKEN_TIMEOUT.getPropertyKey(), "35");
+        template.init(properties);
+        assertNotNull(template.getBlockTimeout());
+        assertEquals(template.getBlockTimeout().getSeconds(), 35);
+    }
 }

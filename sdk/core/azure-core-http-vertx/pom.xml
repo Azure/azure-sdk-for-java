@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-vertx</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.23</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;current} -->
+  <version>1.0.0-beta.25</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;current} -->
 
   <name>Microsoft Azure Vert.x HTTP Client Library</name>
   <description>This package contains the Vert.x HTTP client plugin for azure-core.</description>
@@ -64,7 +64,6 @@
 
     <spotbugs.skip>false</spotbugs.skip>
     <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
-    <spotless.skip>false</spotless.skip>
     <animal.sniffer.skip>false</animal.sniffer.skip>
   </properties>
 
@@ -79,7 +78,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.54.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.55.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <!-- Required to satisfy the -Xlint:classfile compiler option -->
@@ -100,7 +99,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.54.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.55.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
       <classifier>tests</classifier>
       <type>test-jar</type>
       <scope>test</scope>
@@ -178,7 +177,6 @@
               <includes>
                 <include>io.vertx:vertx-codegen:[4.5.10]</include> <!-- {x-include-update;io.vertx:vertx-codegen;external_dependency} -->
                 <include>io.vertx:vertx-core:[4.5.10]</include> <!-- {x-include-update;io.vertx:vertx-core;external_dependency} -->
-                <include>io.vertx:vertx-reactive-streams:[4.5.10]</include> <!-- {x-include-update;io.vertx:vertx-reactive-streams;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

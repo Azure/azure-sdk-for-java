@@ -19,8 +19,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(
         name = "#Microsoft.VideoAnalyzer.UsernamePasswordCredentials",
-        value = UsernamePasswordCredentials.class)
-})
+        value = UsernamePasswordCredentials.class) })
 @Immutable
 public class CredentialsBase {
     /**

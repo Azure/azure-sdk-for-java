@@ -15,8 +15,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public class AzuriteTests extends QueueTestBase {
     private static final String[] AZURITE_ENDPOINTS = new String[] {
-        "https://127.0.0.1:10000/devstoreaccount1", "https://azure-storage-emulator-azurite:10000/devstoreaccount1"
-    };
+        "https://127.0.0.1:10000/devstoreaccount1",
+        "https://azure-storage-emulator-azurite:10000/devstoreaccount1" };
 
     /*
      * The credential information for Azurite is static and documented in numerous locations, therefore it is okay to
@@ -67,8 +67,7 @@ public class AzuriteTests extends QueueTestBase {
     @ParameterizedTest
     @ValueSource(ints = { 0, 1 })
     public void azuriteUrlConstructingServiceClientWithDefaultAzureCredential(int index) {
-        QueueServiceClient serviceClient = new QueueServiceClientBuilder()
-            .endpoint(AZURITE_ENDPOINTS[index])
+        QueueServiceClient serviceClient = new QueueServiceClientBuilder().endpoint(AZURITE_ENDPOINTS[index])
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
@@ -79,8 +78,7 @@ public class AzuriteTests extends QueueTestBase {
     @ParameterizedTest
     @ValueSource(ints = { 0, 1 })
     public void azuriteUrlConstructingServiceClientWithCredential(int index) {
-        QueueServiceClient serviceClient = new QueueServiceClientBuilder()
-            .credential(AZURITE_CREDENTIAL)
+        QueueServiceClient serviceClient = new QueueServiceClientBuilder().credential(AZURITE_CREDENTIAL)
             .endpoint(AZURITE_ENDPOINTS[index])
             .buildClient();
 
@@ -104,10 +102,10 @@ public class AzuriteTests extends QueueTestBase {
     @ParameterizedTest
     @ValueSource(ints = { 0, 1 })
     public void azuriteUrlConstructingQueueClientWithConnectionString(int index) {
-        QueueClient queueClient = new QueueClientBuilder()
-            .connectionString(getAzuriteQueueConnectionString(AZURITE_ENDPOINTS[index]))
-            .queueName("queue")
-            .buildClient();
+        QueueClient queueClient
+            = new QueueClientBuilder().connectionString(getAzuriteQueueConnectionString(AZURITE_ENDPOINTS[index]))
+                .queueName("queue")
+                .buildClient();
 
         assertEquals("devstoreaccount1", queueClient.getAccountName());
         assertEquals("queue", queueClient.getQueueName());
@@ -117,8 +115,7 @@ public class AzuriteTests extends QueueTestBase {
     @ParameterizedTest
     @ValueSource(ints = { 0, 1 })
     public void azuriteUrlConstructingQueueClientWithDefaultAzureCredential(int index) {
-        QueueClient queueClient = new QueueClientBuilder()
-            .endpoint(AZURITE_ENDPOINTS[index])
+        QueueClient queueClient = new QueueClientBuilder().endpoint(AZURITE_ENDPOINTS[index])
             .credential(new DefaultAzureCredentialBuilder().build())
             .queueName("queue")
             .buildClient();
@@ -131,8 +128,7 @@ public class AzuriteTests extends QueueTestBase {
     @ParameterizedTest
     @ValueSource(ints = { 0, 1 })
     public void azuriteUrlConstructingQueueClientWithCredential(int index) {
-        QueueClient queueClient = new QueueClientBuilder()
-            .credential(AZURITE_CREDENTIAL)
+        QueueClient queueClient = new QueueClientBuilder().credential(AZURITE_CREDENTIAL)
             .endpoint(AZURITE_ENDPOINTS[index])
             .queueName("queue")
             .buildClient();

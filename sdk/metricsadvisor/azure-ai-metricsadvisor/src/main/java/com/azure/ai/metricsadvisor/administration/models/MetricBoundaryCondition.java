@@ -121,9 +121,8 @@ public final class MetricBoundaryCondition {
      * @param upperBoundary The upper boundary value.
      * @return The MetricBoundaryCondition object itself.
      */
-    public MetricBoundaryCondition setBoundary(BoundaryDirection direction,
-                                               Double lowerBoundary,
-                                               Double upperBoundary) {
+    public MetricBoundaryCondition setBoundary(BoundaryDirection direction, Double lowerBoundary,
+        Double upperBoundary) {
         this.lowerBoundary = lowerBoundary;
         this.upperBoundary = upperBoundary;
         this.boundaryDirection = direction;
@@ -159,8 +158,7 @@ public final class MetricBoundaryCondition {
      *
      * @return The MetricBoundaryCondition object itself.
      */
-    public MetricBoundaryCondition setCompanionMetricId(String companionMetricId,
-                                                        boolean alertIfMissing) {
+    public MetricBoundaryCondition setCompanionMetricId(String companionMetricId, boolean alertIfMissing) {
         this.companionMetricId = companionMetricId;
         this.alertIfMissing = alertIfMissing;
         return this;

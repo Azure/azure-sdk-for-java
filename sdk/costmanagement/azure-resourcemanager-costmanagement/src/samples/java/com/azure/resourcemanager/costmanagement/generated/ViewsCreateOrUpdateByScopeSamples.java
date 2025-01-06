@@ -23,20 +23,23 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Views CreateOrUpdateByScope. */
+/**
+ * Samples for Views CreateOrUpdateByScope.
+ */
 public final class ViewsCreateOrUpdateByScopeSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ViewCreateOrUpdateByResourceGroup.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * ViewCreateOrUpdateByResourceGroup.json
      */
     /**
      * Sample code: ResourceGroupCreateOrUpdateView.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void resourceGroupCreateOrUpdateView(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .views()
+    public static void
+        resourceGroupCreateOrUpdateView(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.views()
             .define("swaggerExample")
             .withExistingScope("subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG")
             .withEtag("\"1d4ff9fe66f1d10\"")
@@ -44,40 +47,26 @@ public final class ViewsCreateOrUpdateByScopeSamples {
             .withChart(ChartType.TABLE)
             .withAccumulated(AccumulatedType.TRUE)
             .withMetric(MetricType.ACTUAL_COST)
-            .withKpis(
-                Arrays
-                    .asList(
-                        new KpiProperties().withType(KpiType.FORECAST).withEnabled(true),
-                        new KpiProperties()
-                            .withType(KpiType.BUDGET)
-                            .withId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Consumption/budgets/swaggerDemo")
-                            .withEnabled(true)))
-            .withPivots(
-                Arrays
-                    .asList(
-                        new PivotProperties().withType(PivotType.DIMENSION).withName("ServiceName"),
-                        new PivotProperties().withType(PivotType.DIMENSION).withName("MeterCategory"),
-                        new PivotProperties().withType(PivotType.TAG_KEY).withName("swaggerTagKey")))
+            .withKpis(Arrays.asList(new KpiProperties().withType(KpiType.FORECAST).withEnabled(true),
+                new KpiProperties().withType(KpiType.BUDGET)
+                    .withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Consumption/budgets/swaggerDemo")
+                    .withEnabled(true)))
+            .withPivots(Arrays.asList(new PivotProperties().withType(PivotType.DIMENSION).withName("ServiceName"),
+                new PivotProperties().withType(PivotType.DIMENSION).withName("MeterCategory"),
+                new PivotProperties().withType(PivotType.TAG_KEY).withName("swaggerTagKey")))
             .withTypePropertiesType(ReportType.USAGE)
             .withTimeframe(ReportTimeframeType.MONTH_TO_DATE)
-            .withDataSet(
-                new ReportConfigDataset()
-                    .withGranularity(ReportGranularityType.DAILY)
-                    .withAggregation(
-                        mapOf(
-                            "totalCost",
-                            new ReportConfigAggregation().withName("PreTaxCost").withFunction(FunctionType.SUM)))
-                    .withGrouping(Arrays.asList())
-                    .withSorting(
-                        Arrays
-                            .asList(
-                                new ReportConfigSorting()
-                                    .withDirection(ReportConfigSortingType.ASCENDING)
-                                    .withName("UsageDate"))))
+            .withDataSet(new ReportConfigDataset().withGranularity(ReportGranularityType.DAILY)
+                .withAggregation(mapOf("totalCost",
+                    new ReportConfigAggregation().withName("PreTaxCost").withFunction(FunctionType.SUM)))
+                .withGrouping(Arrays.asList())
+                .withSorting(Arrays.asList(
+                    new ReportConfigSorting().withDirection(ReportConfigSortingType.ASCENDING).withName("UsageDate"))))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

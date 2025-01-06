@@ -72,7 +72,7 @@ public final class EmbeddingsAsyncClient {
      *     input_type: String(text/query/document) (Optional)
      *     model: String (Optional)
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }

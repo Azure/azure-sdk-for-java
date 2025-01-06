@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The estimated price info for using a VM of a particular OS type, tier, etc. */
 @Fluent
 public final class EstimatedVMPrice {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EstimatedVMPrice.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(EstimatedVMPrice.class);
 
     /*
      * The price charged for using the VM.
@@ -99,14 +100,12 @@ public final class EstimatedVMPrice {
      */
     public void validate() {
         if (osType() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property osType in model EstimatedVMPrice"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property osType in model EstimatedVMPrice"));
         }
         if (vmTier() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property vmTier in model EstimatedVMPrice"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property vmTier in model EstimatedVMPrice"));
         }
     }
 }

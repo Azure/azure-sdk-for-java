@@ -18,10 +18,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
  */
 @Fluent
 public interface ExpressRouteCrossConnectionPeering
-    extends IndependentChild<NetworkManager>,
-        HasInnerModel<ExpressRouteCrossConnectionPeeringInner>,
-        Refreshable<ExpressRouteCrossConnectionPeering>,
-        Updatable<ExpressRouteCrossConnectionPeering.Update> {
+    extends IndependentChild<NetworkManager>, HasInnerModel<ExpressRouteCrossConnectionPeeringInner>,
+    Refreshable<ExpressRouteCrossConnectionPeering>, Updatable<ExpressRouteCrossConnectionPeering.Update> {
     /** @return the peering type */
     ExpressRoutePeeringType peeringType();
 
@@ -68,16 +66,10 @@ public interface ExpressRouteCrossConnectionPeering
     Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig();
 
     /** The entirety of the express route Cross Connection peering definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithAdvertisedPublicPrefixes,
-            DefinitionStages.WithCustomerASN,
-            DefinitionStages.WithRoutingRegistryName,
-            DefinitionStages.WithPrimaryPeerAddressPrefix,
-            DefinitionStages.WithSecondaryPeerAddressPrefix,
-            DefinitionStages.WithVlanId,
-            DefinitionStages.WithPeerASN,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithAdvertisedPublicPrefixes,
+        DefinitionStages.WithCustomerASN, DefinitionStages.WithRoutingRegistryName,
+        DefinitionStages.WithPrimaryPeerAddressPrefix, DefinitionStages.WithSecondaryPeerAddressPrefix,
+        DefinitionStages.WithVlanId, DefinitionStages.WithPeerASN, DefinitionStages.WithCreate {
     }
 
     /** Grouping of express route Cross Connection peering definition stages. */
@@ -214,26 +206,16 @@ public interface ExpressRouteCrossConnectionPeering
          * The stage of the Express Route Cross Connection Peering definition which contains all the minimum required
          * inputs for the resource to be created, but also allows for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Creatable<ExpressRouteCrossConnectionPeering>,
-                DefinitionStages.WithSharedKey,
-                DefinitionStages.WithIpv6PeeringConfig,
-                DefinitionStages.WithState {
+        interface WithCreate extends Creatable<ExpressRouteCrossConnectionPeering>, DefinitionStages.WithSharedKey,
+            DefinitionStages.WithIpv6PeeringConfig, DefinitionStages.WithState {
         }
     }
 
     /** Grouping of express route cross connection peering update stages. */
-    interface Update
-        extends Appliable<ExpressRouteCrossConnectionPeering>,
-            UpdateStages.WithAdvertisedPublicPrefixes,
-            UpdateStages.WithCustomerASN,
-            UpdateStages.WithRoutingRegistryName,
-            UpdateStages.WithPrimaryPeerAddressPrefix,
-            UpdateStages.WithSecondaryPeerAddressPrefix,
-            UpdateStages.WithVlanId,
-            UpdateStages.WithPeerASN,
-            UpdateStages.WithIpv6PeeringConfig,
-            UpdateStages.WithState {
+    interface Update extends Appliable<ExpressRouteCrossConnectionPeering>, UpdateStages.WithAdvertisedPublicPrefixes,
+        UpdateStages.WithCustomerASN, UpdateStages.WithRoutingRegistryName, UpdateStages.WithPrimaryPeerAddressPrefix,
+        UpdateStages.WithSecondaryPeerAddressPrefix, UpdateStages.WithVlanId, UpdateStages.WithPeerASN,
+        UpdateStages.WithIpv6PeeringConfig, UpdateStages.WithState {
     }
 
     /**

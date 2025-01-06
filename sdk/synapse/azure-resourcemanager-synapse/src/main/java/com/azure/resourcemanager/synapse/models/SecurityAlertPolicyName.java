@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SecurityAlertPolicyName. */
+/**
+ * Defines values for SecurityAlertPolicyName.
+ */
 public final class SecurityAlertPolicyName extends ExpandableStringEnum<SecurityAlertPolicyName> {
-    /** Static value default for SecurityAlertPolicyName. */
+    /**
+     * Static value default for SecurityAlertPolicyName.
+     */
     public static final SecurityAlertPolicyName DEFAULT = fromString("default");
 
     /**
      * Creates a new instance of SecurityAlertPolicyName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class SecurityAlertPolicyName extends ExpandableStringEnum<Security
 
     /**
      * Creates or finds a SecurityAlertPolicyName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SecurityAlertPolicyName.
      */
-    @JsonCreator
     public static SecurityAlertPolicyName fromString(String name) {
         return fromString(name, SecurityAlertPolicyName.class);
     }
 
     /**
      * Gets known SecurityAlertPolicyName values.
-     *
+     * 
      * @return known SecurityAlertPolicyName values.
      */
     public static Collection<SecurityAlertPolicyName> values() {

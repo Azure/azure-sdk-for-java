@@ -1660,8 +1660,10 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
     public SyncPoller<PollResult<FabricInner>, FabricInner> beginReassociateGateway(String resourceName,
         String resourceGroupName, String fabricName, FailoverProcessServerRequest failoverProcessServerRequest,
         Context context) {
-        return this.beginReassociateGatewayAsync(resourceName, resourceGroupName, fabricName,
-            failoverProcessServerRequest, context).getSyncPoller();
+        return this
+            .beginReassociateGatewayAsync(resourceName, resourceGroupName, fabricName, failoverProcessServerRequest,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -1682,7 +1684,8 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
     private Mono<FabricInner> reassociateGatewayAsync(String resourceName, String resourceGroupName, String fabricName,
         FailoverProcessServerRequest failoverProcessServerRequest) {
         return beginReassociateGatewayAsync(resourceName, resourceGroupName, fabricName, failoverProcessServerRequest)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2485,9 +2488,7 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2512,9 +2513,7 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

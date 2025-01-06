@@ -30,7 +30,7 @@ autorest
 ## Configuration
 
 ```yaml
-use: '@autorest/java@4.1.22'
+use: '@autorest/java@4.1.42'
 output-folder: ../
 java: true
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8af9817c15d688c941cda106758045b5deb9a069/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.6-preview.1/secrets.json
@@ -39,13 +39,25 @@ namespace: com.azure.security.keyvault.secrets
 models-subpackage: implementation.models
 custom-types-subpackage: models
 enable-sync-stack: true
-generate-client-interfaces: false
 generate-client-as-impl: true
-service-interface-as-public: true
 license-header: MICROSOFT_MIT_SMALL
 disable-client-builder: true
-add-context-parameter: true
-context-client-method-parameter: true
-generic-response-type: true
-stream-style-serialization: true
+```
+
+### Rename SecretSetParameters.contentType and SecretUpdateParameters.contentType to secretContentType
+
+This solves an issue with generators after 4.1.29 (uncertain of which version as the update went from 4.1.29 to 4.1.42)
+where in the generated APIs using these types as parameters the previous constant for the request content type of
+`String contentType = "application/json"` was removed and replaced with the `contentType` value for `SecretSetParameters`
+or `SecretUpdateParameters`. Obtusely, this change causes the interface method to no longer add `@HeaderParam("Content-Type")`
+using the `contentType` from `SecretSetParameters` or `SecretUpdateParameters` as the value, but fixes the issue as the
+`@BodyParam` will set the content type to `application/json` as expected.
+
+```yaml
+directive:
+  - from: secrets.json
+    where: $.definitions
+    transform: >
+      $.SecretSetParameters.properties.contentType["x-ms-client-name"] = "secretContentType";
+      $.SecretUpdateParameters.properties.contentType["x-ms-client-name"] = "secretContentType";
 ```

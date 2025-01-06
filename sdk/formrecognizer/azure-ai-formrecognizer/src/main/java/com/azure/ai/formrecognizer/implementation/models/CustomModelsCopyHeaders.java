@@ -18,8 +18,6 @@ public final class CustomModelsCopyHeaders {
      */
     private String operationLocation;
 
-    private static final HttpHeaderName OPERATION_LOCATION = HttpHeaderName.fromString("Operation-Location");
-
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of CustomModelsCopyHeaders class.
@@ -27,7 +25,7 @@ public final class CustomModelsCopyHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public CustomModelsCopyHeaders(HttpHeaders rawHeaders) {
-        this.operationLocation = rawHeaders.getValue(OPERATION_LOCATION);
+        this.operationLocation = rawHeaders.getValue(HttpHeaderName.OPERATION_LOCATION);
     }
 
     /**

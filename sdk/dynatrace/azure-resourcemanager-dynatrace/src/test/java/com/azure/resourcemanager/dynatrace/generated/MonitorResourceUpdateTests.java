@@ -13,18 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class MonitorResourceUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MonitorResourceUpdate model =
-            BinaryData
-                .fromString("{\"tags\":{\"ofpdvh\":\"zitonpeqfpjkjl\",\"bkpodepooginuv\":\"fxxypininmayhuy\"}}")
+        MonitorResourceUpdate model
+            = BinaryData.fromString("{\"tags\":{\"ofpdvh\":\"zitonpeqfpjkjl\",\"bkpodepooginuv\":\"fxxypininmayhuy\"}}")
                 .toObject(MonitorResourceUpdate.class);
         Assertions.assertEquals("zitonpeqfpjkjl", model.tags().get("ofpdvh"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MonitorResourceUpdate model =
-            new MonitorResourceUpdate()
-                .withTags(mapOf("ofpdvh", "zitonpeqfpjkjl", "bkpodepooginuv", "fxxypininmayhuy"));
+        MonitorResourceUpdate model = new MonitorResourceUpdate()
+            .withTags(mapOf("ofpdvh", "zitonpeqfpjkjl", "bkpodepooginuv", "fxxypininmayhuy"));
         model = BinaryData.fromObject(model).toObject(MonitorResourceUpdate.class);
         Assertions.assertEquals("zitonpeqfpjkjl", model.tags().get("ofpdvh"));
     }

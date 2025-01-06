@@ -58,6 +58,9 @@ public final class RestoreOperationParameters implements JsonSerializable<Restor
         return this.folderToRestore;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -96,10 +99,7 @@ public final class RestoreOperationParameters implements JsonSerializable<Restor
                 }
             }
             if (sasTokenParametersFound && folderToRestoreFound) {
-                RestoreOperationParameters deserializedRestoreOperationParameters
-                    = new RestoreOperationParameters(sasTokenParameters, folderToRestore);
-
-                return deserializedRestoreOperationParameters;
+                return new RestoreOperationParameters(sasTokenParameters, folderToRestore);
             }
             List<String> missingProperties = new ArrayList<>();
             if (!sasTokenParametersFound) {

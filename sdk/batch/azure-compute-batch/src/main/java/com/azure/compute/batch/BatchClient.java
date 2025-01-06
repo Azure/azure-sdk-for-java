@@ -21,9 +21,11 @@ import com.azure.compute.batch.models.BatchJobScheduleUpdateContent;
 import com.azure.compute.batch.models.BatchJobTerminateContent;
 import com.azure.compute.batch.models.BatchJobUpdateContent;
 import com.azure.compute.batch.models.BatchNode;
+import com.azure.compute.batch.models.BatchNodeDeallocateContent;
 import com.azure.compute.batch.models.BatchNodeDisableSchedulingContent;
 import com.azure.compute.batch.models.BatchNodeFile;
 import com.azure.compute.batch.models.BatchNodeRebootContent;
+import com.azure.compute.batch.models.BatchNodeReimageContent;
 import com.azure.compute.batch.models.BatchNodeRemoteLoginSettings;
 import com.azure.compute.batch.models.BatchNodeRemoveContent;
 import com.azure.compute.batch.models.BatchNodeUserCreateContent;
@@ -52,6 +54,7 @@ import com.azure.compute.batch.models.CreateBatchNodeUserOptions;
 import com.azure.compute.batch.models.CreateBatchPoolOptions;
 import com.azure.compute.batch.models.CreateBatchTaskCollectionOptions;
 import com.azure.compute.batch.models.CreateBatchTaskOptions;
+import com.azure.compute.batch.models.DeallocateBatchNodeOptions;
 import com.azure.compute.batch.models.DeleteBatchJobOptions;
 import com.azure.compute.batch.models.DeleteBatchJobScheduleOptions;
 import com.azure.compute.batch.models.DeleteBatchNodeFileOptions;
@@ -99,6 +102,7 @@ import com.azure.compute.batch.models.ListBatchTasksOptions;
 import com.azure.compute.batch.models.ListSupportedBatchImagesOptions;
 import com.azure.compute.batch.models.ReactivateBatchTaskOptions;
 import com.azure.compute.batch.models.RebootBatchNodeOptions;
+import com.azure.compute.batch.models.ReimageBatchNodeOptions;
 import com.azure.compute.batch.models.RemoveBatchNodesOptions;
 import com.azure.compute.batch.models.ReplaceBatchJobOptions;
 import com.azure.compute.batch.models.ReplaceBatchJobScheduleOptions;
@@ -106,6 +110,7 @@ import com.azure.compute.batch.models.ReplaceBatchNodeUserOptions;
 import com.azure.compute.batch.models.ReplaceBatchPoolPropertiesOptions;
 import com.azure.compute.batch.models.ReplaceBatchTaskOptions;
 import com.azure.compute.batch.models.ResizeBatchPoolOptions;
+import com.azure.compute.batch.models.StartBatchNodeOptions;
 import com.azure.compute.batch.models.StopBatchPoolResizeOptions;
 import com.azure.compute.batch.models.TerminateBatchJobOptions;
 import com.azure.compute.batch.models.TerminateBatchJobScheduleOptions;
@@ -921,7 +926,7 @@ public final class BatchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteJob(String jobId, DeleteBatchJobOptions options) {
-        deleteJobInternal(jobId, options.getTimeOutInSeconds(), options.getRequestConditions());
+        deleteJobInternal(jobId, options.getTimeOutInSeconds(), options.getForce(), options.getRequestConditions());
     }
 
     /**
@@ -1190,7 +1195,8 @@ public final class BatchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void terminateJob(String jobId, TerminateBatchJobOptions options, BatchJobTerminateContent body) {
-        terminateJobInternal(jobId, options.getTimeOutInSeconds(), body, options.getRequestConditions());
+        terminateJobInternal(jobId, options.getTimeOutInSeconds(), options.getForce(), body,
+            options.getRequestConditions());
     }
 
     /**
@@ -1489,7 +1495,8 @@ public final class BatchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteJobSchedule(String jobScheduleId, DeleteBatchJobScheduleOptions options) {
-        deleteJobScheduleInternal(jobScheduleId, options.getTimeOutInSeconds(), options.getRequestConditions());
+        deleteJobScheduleInternal(jobScheduleId, options.getTimeOutInSeconds(), options.getForce(),
+            options.getRequestConditions());
     }
 
     /**
@@ -1711,7 +1718,8 @@ public final class BatchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void terminateJobSchedule(String jobScheduleId, TerminateBatchJobScheduleOptions options) {
-        terminateJobScheduleInternal(jobScheduleId, options.getTimeOutInSeconds(), options.getRequestConditions());
+        terminateJobScheduleInternal(jobScheduleId, options.getTimeOutInSeconds(), options.getForce(),
+            options.getRequestConditions());
     }
 
     /**
@@ -3338,7 +3346,7 @@ public final class BatchClient {
      * last aggregation interval currently available.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -3489,6 +3497,8 @@ public final class BatchClient {
      *             version: String (Optional)
      *             virtualMachineImageId: String (Optional)
      *             exactVersion: String (Optional)
+     *             sharedGalleryImageId: String (Optional)
+     *             communityGalleryImageId: String (Optional)
      *         }
      *         nodeAgentSKUId: String (Required)
      *         windowsConfiguration (Optional): {
@@ -3553,13 +3563,16 @@ public final class BatchClient {
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
      *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                 securityProfile (Optional): {
+     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                 }
      *             }
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
      *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch) (Required)
+     *             securityType: String(trustedLaunch/confidentialVM) (Required)
      *             uefiSettings (Required): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -3618,6 +3631,12 @@ public final class BatchClient {
      *             imageName: String (Required)
      *             registry (Optional): (recursive schema, see registry above)
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -4018,7 +4037,7 @@ public final class BatchClient {
     }
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -4031,7 +4050,7 @@ public final class BatchClient {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-pools.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-pools.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -4062,6 +4081,8 @@ public final class BatchClient {
      *             version: String (Optional)
      *             virtualMachineImageId: String (Optional)
      *             exactVersion: String (Optional)
+     *             sharedGalleryImageId: String (Optional)
+     *             communityGalleryImageId: String (Optional)
      *         }
      *         nodeAgentSKUId: String (Required)
      *         windowsConfiguration (Optional): {
@@ -4126,13 +4147,16 @@ public final class BatchClient {
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
      *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                 securityProfile (Optional): {
+     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                 }
      *             }
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
      *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch) (Required)
+     *             securityType: String(trustedLaunch/confidentialVM) (Required)
      *             uefiSettings (Required): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -4216,6 +4240,12 @@ public final class BatchClient {
      *             imageName: String (Required)
      *             registry (Optional): (recursive schema, see registry above)
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -5133,6 +5163,8 @@ public final class BatchClient {
      *             version: String (Optional)
      *             virtualMachineImageId: String (Optional)
      *             exactVersion: String (Optional)
+     *             sharedGalleryImageId: String (Optional)
+     *             communityGalleryImageId: String (Optional)
      *         }
      *         nodeAgentSKUId: String (Required)
      *         windowsConfiguration (Optional): {
@@ -5197,13 +5229,16 @@ public final class BatchClient {
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
      *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                 securityProfile (Optional): {
+     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                 }
      *             }
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
      *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch) (Required)
+     *             securityType: String(trustedLaunch/confidentialVM) (Required)
      *             uefiSettings (Required): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -5287,6 +5322,12 @@ public final class BatchClient {
      *             imageName: String (Required)
      *             registry (Optional): (recursive schema, see registry above)
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -5888,6 +5929,9 @@ public final class BatchClient {
      * <pre>
      * {@code
      * {
+     *     displayName: String (Optional)
+     *     vmSize: String (Optional)
+     *     enableInterNodeCommunication: Boolean (Optional)
      *     startTask (Optional): {
      *         commandLine: String (Required)
      *         containerSettings (Optional): {
@@ -5902,6 +5946,12 @@ public final class BatchClient {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -5942,7 +5992,197 @@ public final class BatchClient {
      *             value: String (Required)
      *         }
      *     ]
+     *     virtualMachineConfiguration (Optional): {
+     *         imageReference (Required): {
+     *             publisher: String (Optional)
+     *             offer: String (Optional)
+     *             sku: String (Optional)
+     *             version: String (Optional)
+     *             virtualMachineImageId: String (Optional)
+     *             exactVersion: String (Optional)
+     *             sharedGalleryImageId: String (Optional)
+     *             communityGalleryImageId: String (Optional)
+     *         }
+     *         nodeAgentSKUId: String (Required)
+     *         windowsConfiguration (Optional): {
+     *             enableAutomaticUpdates: Boolean (Optional)
+     *         }
+     *         dataDisks (Optional): [
+     *              (Optional){
+     *                 lun: int (Required)
+     *                 caching: String(none/readonly/readwrite) (Optional)
+     *                 diskSizeGB: int (Required)
+     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *             }
+     *         ]
+     *         licenseType: String (Optional)
+     *         containerConfiguration (Optional): {
+     *             type: String(dockerCompatible/criCompatible) (Required)
+     *             containerImageNames (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             containerRegistries (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *         diskEncryptionConfiguration (Optional): {
+     *             targets (Optional): [
+     *                 String(osdisk/temporarydisk) (Optional)
+     *             ]
+     *         }
+     *         nodePlacementConfiguration (Optional): {
+     *             policy: String(regional/zonal) (Optional)
+     *         }
+     *         extensions (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 publisher: String (Required)
+     *                 type: String (Required)
+     *                 typeHandlerVersion: String (Optional)
+     *                 autoUpgradeMinorVersion: Boolean (Optional)
+     *                 enableAutomaticUpgrade: Boolean (Optional)
+     *                 settings (Optional): {
+     *                     String: String (Required)
+     *                 }
+     *                 protectedSettings (Optional): {
+     *                     String: String (Required)
+     *                 }
+     *                 provisionAfterExtensions (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *             }
+     *         ]
+     *         osDisk (Optional): {
+     *             ephemeralOSDiskSettings (Optional): {
+     *                 placement: String(cachedisk) (Optional)
+     *             }
+     *             caching: String(none/readonly/readwrite) (Optional)
+     *             diskSizeGB: Integer (Optional)
+     *             managedDisk (Optional): {
+     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                 securityProfile (Optional): {
+     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                 }
+     *             }
+     *             writeAcceleratorEnabled: Boolean (Optional)
+     *         }
+     *         securityProfile (Optional): {
+     *             encryptionAtHost: boolean (Required)
+     *             securityType: String(trustedLaunch/confidentialVM) (Required)
+     *             uefiSettings (Required): {
+     *                 secureBootEnabled: Boolean (Optional)
+     *                 vTpmEnabled: Boolean (Optional)
+     *             }
+     *         }
+     *         serviceArtifactReference (Optional): {
+     *             id: String (Required)
+     *         }
+     *     }
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *     taskSlotsPerNode: Integer (Optional)
+     *     taskSchedulingPolicy (Optional): {
+     *         nodeFillType: String(spread/pack) (Required)
+     *     }
+     *     networkConfiguration (Optional): {
+     *         subnetId: String (Optional)
+     *         dynamicVNetAssignmentScope: String(none/job) (Optional)
+     *         endpointConfiguration (Optional): {
+     *             inboundNATPools (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     protocol: String(tcp/udp) (Required)
+     *                     backendPort: int (Required)
+     *                     frontendPortRangeStart: int (Required)
+     *                     frontendPortRangeEnd: int (Required)
+     *                     networkSecurityGroupRules (Optional): [
+     *                          (Optional){
+     *                             priority: int (Required)
+     *                             access: String(allow/deny) (Required)
+     *                             sourceAddressPrefix: String (Required)
+     *                             sourcePortRanges (Optional): [
+     *                                 String (Optional)
+     *                             ]
+     *                         }
+     *                     ]
+     *                 }
+     *             ]
+     *         }
+     *         publicIPAddressConfiguration (Optional): {
+     *             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *             ipAddressIds (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *         enableAcceleratedNetworking: Boolean (Optional)
+     *     }
+     *     resourceTags (Optional): {
+     *         String: String (Required)
+     *     }
+     *     userAccounts (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             password: String (Required)
+     *             elevationLevel: String(nonadmin/admin) (Optional)
+     *             linuxUserConfiguration (Optional): {
+     *                 uid: Integer (Optional)
+     *                 gid: Integer (Optional)
+     *                 sshPrivateKey: String (Optional)
+     *             }
+     *             windowsUserConfiguration (Optional): {
+     *                 loginMode: String(batch/interactive) (Optional)
+     *             }
+     *         }
+     *     ]
+     *     mountConfiguration (Optional): [
+     *          (Optional){
+     *             azureBlobFileSystemConfiguration (Optional): {
+     *                 accountName: String (Required)
+     *                 containerName: String (Required)
+     *                 accountKey: String (Optional)
+     *                 sasKey: String (Optional)
+     *                 blobfuseOptions: String (Optional)
+     *                 relativeMountPath: String (Required)
+     *                 identityReference (Optional): (recursive schema, see identityReference above)
+     *             }
+     *             nfsMountConfiguration (Optional): {
+     *                 source: String (Required)
+     *                 relativeMountPath: String (Required)
+     *                 mountOptions: String (Optional)
+     *             }
+     *             cifsMountConfiguration (Optional): {
+     *                 username: String (Required)
+     *                 source: String (Required)
+     *                 relativeMountPath: String (Required)
+     *                 mountOptions: String (Optional)
+     *                 password: String (Required)
+     *             }
+     *             azureFileShareConfiguration (Optional): {
+     *                 accountName: String (Required)
+     *                 azureFileUrl: String (Required)
+     *                 accountKey: String (Required)
+     *                 relativeMountPath: String (Required)
+     *                 mountOptions: String (Optional)
+     *             }
+     *         }
+     *     ]
+     *     upgradePolicy (Optional): {
+     *         mode: String(automatic/manual/rolling) (Required)
+     *         automaticOSUpgradePolicy (Optional): {
+     *             disableAutomaticRollback: Boolean (Optional)
+     *             enableAutomaticOSUpgrade: Boolean (Optional)
+     *             useRollingUpgradePolicy: Boolean (Optional)
+     *             osRollingUpgradeDeferral: Boolean (Optional)
+     *         }
+     *         rollingUpgradePolicy (Optional): {
+     *             enableCrossZoneUpgrade: Boolean (Optional)
+     *             maxBatchInstancePercent: Integer (Optional)
+     *             maxUnhealthyInstancePercent: Integer (Optional)
+     *             maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *             pauseTimeBetweenBatches: Duration (Optional)
+     *             prioritizeUnhealthyInstances: Boolean (Optional)
+     *             rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *         }
+     *     }
      * }
      * }
      * </pre>
@@ -6854,6 +7094,12 @@ public final class BatchClient {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -7210,7 +7456,7 @@ public final class BatchClient {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -7226,6 +7472,8 @@ public final class BatchClient {
      *         version: String (Optional)
      *         virtualMachineImageId: String (Optional)
      *         exactVersion: String (Optional)
+     *         sharedGalleryImageId: String (Optional)
+     *         communityGalleryImageId: String (Optional)
      *     }
      *     osType: String(linux/windows) (Required)
      *     capabilities (Optional): [
@@ -7342,7 +7590,7 @@ public final class BatchClient {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -7365,6 +7613,8 @@ public final class BatchClient {
      *         unknown: int (Required)
      *         unusable: int (Required)
      *         waitingForStartTask: int (Required)
+     *         deallocated: int (Required)
+     *         deallocating: int (Required)
      *         total: int (Required)
      *         upgradingOS: int (Required)
      *     }
@@ -7486,6 +7736,8 @@ public final class BatchClient {
      * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
+     * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will delete the Job even if the
+     * corresponding nodes have not fully processed the deletion. The default value is false.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -7694,6 +7946,12 @@ public final class BatchClient {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -7810,6 +8068,8 @@ public final class BatchClient {
      *                         version: String (Optional)
      *                         virtualMachineImageId: String (Optional)
      *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
      *                     }
      *                     nodeAgentSKUId: String (Required)
      *                     windowsConfiguration (Optional): {
@@ -7867,13 +8127,16 @@ public final class BatchClient {
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
      *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
      *                         }
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch) (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
      *                         uefiSettings (Required): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -8022,6 +8285,7 @@ public final class BatchClient {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -8620,6 +8884,8 @@ public final class BatchClient {
      *                         version: String (Optional)
      *                         virtualMachineImageId: String (Optional)
      *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
      *                     }
      *                     nodeAgentSKUId: String (Required)
      *                     windowsConfiguration (Optional): {
@@ -8684,13 +8950,16 @@ public final class BatchClient {
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
      *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
      *                         }
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch) (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
      *                         uefiSettings (Required): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -8751,6 +9020,12 @@ public final class BatchClient {
      *                         imageName: String (Required)
      *                         registry (Optional): (recursive schema, see registry above)
      *                         workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                         containerHostBatchBindMounts (Optional): [
+     *                              (Optional){
+     *                                 source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                                 isReadOnly: Boolean (Optional)
+     *                             }
+     *                         ]
      *                     }
      *                     resourceFiles (Optional): [
      *                          (Optional){
@@ -8864,6 +9139,10 @@ public final class BatchClient {
      *     metadata (Optional): [
      *         (recursive schema, see above)
      *     ]
+     *     networkConfiguration (Optional): {
+     *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
+     *     }
      * }
      * }
      * </pre>
@@ -9298,6 +9577,12 @@ public final class BatchClient {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -9414,6 +9699,8 @@ public final class BatchClient {
      *                         version: String (Optional)
      *                         virtualMachineImageId: String (Optional)
      *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
      *                     }
      *                     nodeAgentSKUId: String (Required)
      *                     windowsConfiguration (Optional): {
@@ -9471,13 +9758,16 @@ public final class BatchClient {
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
      *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
      *                         }
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch) (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
      *                         uefiSettings (Required): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -9626,6 +9916,7 @@ public final class BatchClient {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -10523,6 +10814,12 @@ public final class BatchClient {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -10639,6 +10936,8 @@ public final class BatchClient {
      *                         version: String (Optional)
      *                         virtualMachineImageId: String (Optional)
      *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
      *                     }
      *                     nodeAgentSKUId: String (Required)
      *                     windowsConfiguration (Optional): {
@@ -10696,13 +10995,16 @@ public final class BatchClient {
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
      *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
      *                         }
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch) (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
      *                         uefiSettings (Required): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -10851,6 +11153,7 @@ public final class BatchClient {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -11272,7 +11575,7 @@ public final class BatchClient {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -11318,6 +11621,12 @@ public final class BatchClient {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -11434,6 +11743,8 @@ public final class BatchClient {
      *                         version: String (Optional)
      *                         virtualMachineImageId: String (Optional)
      *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
      *                     }
      *                     nodeAgentSKUId: String (Required)
      *                     windowsConfiguration (Optional): {
@@ -11491,13 +11802,16 @@ public final class BatchClient {
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
      *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
      *                         }
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch) (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
      *                         uefiSettings (Required): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -11646,6 +11960,7 @@ public final class BatchClient {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -12184,7 +12499,7 @@ public final class BatchClient {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -12230,6 +12545,12 @@ public final class BatchClient {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -12346,6 +12667,8 @@ public final class BatchClient {
      *                         version: String (Optional)
      *                         virtualMachineImageId: String (Optional)
      *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
      *                     }
      *                     nodeAgentSKUId: String (Required)
      *                     windowsConfiguration (Optional): {
@@ -12403,13 +12726,16 @@ public final class BatchClient {
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
      *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
      *                         }
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch) (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
      *                         uefiSettings (Required): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -12558,6 +12884,7 @@ public final class BatchClient {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -13106,7 +13433,7 @@ public final class BatchClient {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * </table>
@@ -13578,6 +13905,8 @@ public final class BatchClient {
      * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
+     * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will delete the JobSchedule even if the
+     * corresponding nodes have not fully processed the deletion. The default value is false.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -13776,6 +14105,7 @@ public final class BatchClient {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
+     *             skipWithdrawFromVNet: boolean (Required)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -13797,6 +14127,12 @@ public final class BatchClient {
      *                     }
      *                 }
      *                 workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                 containerHostBatchBindMounts (Optional): [
+     *                      (Optional){
+     *                         source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                         isReadOnly: Boolean (Optional)
+     *                     }
+     *                 ]
      *             }
      *             resourceFiles (Optional): [
      *                  (Optional){
@@ -13913,6 +14249,8 @@ public final class BatchClient {
      *                             version: String (Optional)
      *                             virtualMachineImageId: String (Optional)
      *                             exactVersion: String (Optional)
+     *                             sharedGalleryImageId: String (Optional)
+     *                             communityGalleryImageId: String (Optional)
      *                         }
      *                         nodeAgentSKUId: String (Required)
      *                         windowsConfiguration (Optional): {
@@ -13970,13 +14308,16 @@ public final class BatchClient {
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
      *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
      *                             }
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch) (Required)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
      *                             uefiSettings (Required): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -14710,6 +15051,7 @@ public final class BatchClient {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
+     *             skipWithdrawFromVNet: boolean (Required)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -14731,6 +15073,12 @@ public final class BatchClient {
      *                     }
      *                 }
      *                 workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                 containerHostBatchBindMounts (Optional): [
+     *                      (Optional){
+     *                         source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                         isReadOnly: Boolean (Optional)
+     *                     }
+     *                 ]
      *             }
      *             resourceFiles (Optional): [
      *                  (Optional){
@@ -14847,6 +15195,8 @@ public final class BatchClient {
      *                             version: String (Optional)
      *                             virtualMachineImageId: String (Optional)
      *                             exactVersion: String (Optional)
+     *                             sharedGalleryImageId: String (Optional)
+     *                             communityGalleryImageId: String (Optional)
      *                         }
      *                         nodeAgentSKUId: String (Required)
      *                         windowsConfiguration (Optional): {
@@ -14904,13 +15254,16 @@ public final class BatchClient {
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
      *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
      *                             }
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch) (Required)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
      *                             uefiSettings (Required): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -15594,6 +15947,7 @@ public final class BatchClient {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
+     *             skipWithdrawFromVNet: boolean (Required)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -15615,6 +15969,12 @@ public final class BatchClient {
      *                     }
      *                 }
      *                 workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                 containerHostBatchBindMounts (Optional): [
+     *                      (Optional){
+     *                         source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                         isReadOnly: Boolean (Optional)
+     *                     }
+     *                 ]
      *             }
      *             resourceFiles (Optional): [
      *                  (Optional){
@@ -15731,6 +16091,8 @@ public final class BatchClient {
      *                             version: String (Optional)
      *                             virtualMachineImageId: String (Optional)
      *                             exactVersion: String (Optional)
+     *                             sharedGalleryImageId: String (Optional)
+     *                             communityGalleryImageId: String (Optional)
      *                         }
      *                         nodeAgentSKUId: String (Required)
      *                         windowsConfiguration (Optional): {
@@ -15788,13 +16150,16 @@ public final class BatchClient {
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
      *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
      *                             }
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch) (Required)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
      *                             uefiSettings (Required): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -16746,6 +17111,8 @@ public final class BatchClient {
      * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
+     * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will terminate the JobSchedule even if the
+     * corresponding nodes have not fully processed the termination. The default value is false.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -16904,6 +17271,7 @@ public final class BatchClient {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
+     *             skipWithdrawFromVNet: boolean (Required)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -16925,6 +17293,12 @@ public final class BatchClient {
      *                     }
      *                 }
      *                 workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                 containerHostBatchBindMounts (Optional): [
+     *                      (Optional){
+     *                         source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                         isReadOnly: Boolean (Optional)
+     *                     }
+     *                 ]
      *             }
      *             resourceFiles (Optional): [
      *                  (Optional){
@@ -17041,6 +17415,8 @@ public final class BatchClient {
      *                             version: String (Optional)
      *                             virtualMachineImageId: String (Optional)
      *                             exactVersion: String (Optional)
+     *                             sharedGalleryImageId: String (Optional)
+     *                             communityGalleryImageId: String (Optional)
      *                         }
      *                         nodeAgentSKUId: String (Required)
      *                         windowsConfiguration (Optional): {
@@ -17098,13 +17474,16 @@ public final class BatchClient {
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
      *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
      *                             }
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch) (Required)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
      *                             uefiSettings (Required): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -17677,7 +18056,7 @@ public final class BatchClient {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -17715,6 +18094,7 @@ public final class BatchClient {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
+     *             skipWithdrawFromVNet: boolean (Required)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -17736,6 +18116,12 @@ public final class BatchClient {
      *                     }
      *                 }
      *                 workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                 containerHostBatchBindMounts (Optional): [
+     *                      (Optional){
+     *                         source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                         isReadOnly: Boolean (Optional)
+     *                     }
+     *                 ]
      *             }
      *             resourceFiles (Optional): [
      *                  (Optional){
@@ -17852,6 +18238,8 @@ public final class BatchClient {
      *                             version: String (Optional)
      *                             virtualMachineImageId: String (Optional)
      *                             exactVersion: String (Optional)
+     *                             sharedGalleryImageId: String (Optional)
+     *                             communityGalleryImageId: String (Optional)
      *                         }
      *                         nodeAgentSKUId: String (Required)
      *                         windowsConfiguration (Optional): {
@@ -17909,13 +18297,16 @@ public final class BatchClient {
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
      *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
      *                             }
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch) (Required)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
      *                             uefiSettings (Required): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -18637,6 +19028,12 @@ public final class BatchClient {
      *             }
      *         }
      *         workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *         containerHostBatchBindMounts (Optional): [
+     *              (Optional){
+     *                 source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                 isReadOnly: Boolean (Optional)
+     *             }
+     *         ]
      *     }
      *     resourceFiles (Optional): [
      *          (Optional){
@@ -18931,7 +19328,7 @@ public final class BatchClient {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-tasks.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-tasks.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -18987,6 +19384,12 @@ public final class BatchClient {
      *             }
      *         }
      *         workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *         containerHostBatchBindMounts (Optional): [
+     *              (Optional){
+     *                 source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                 isReadOnly: Boolean (Optional)
+     *             }
+     *         ]
      *     }
      *     resourceFiles (Optional): [
      *          (Optional){
@@ -19456,6 +19859,12 @@ public final class BatchClient {
      *                     }
      *                 }
      *                 workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                 containerHostBatchBindMounts (Optional): [
+     *                      (Optional){
+     *                         source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                         isReadOnly: Boolean (Optional)
+     *                     }
+     *                 ]
      *             }
      *             resourceFiles (Optional): [
      *                  (Optional){
@@ -20047,6 +20456,12 @@ public final class BatchClient {
      *             }
      *         }
      *         workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *         containerHostBatchBindMounts (Optional): [
+     *              (Optional){
+     *                 source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                 isReadOnly: Boolean (Optional)
+     *             }
+     *         ]
      *     }
      *     resourceFiles (Optional): [
      *          (Optional){
@@ -20572,6 +20987,12 @@ public final class BatchClient {
      *             }
      *         }
      *         workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *         containerHostBatchBindMounts (Optional): [
+     *              (Optional){
+     *                 source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                 isReadOnly: Boolean (Optional)
+     *             }
+     *         ]
      *     }
      *     resourceFiles (Optional): [
      *          (Optional){
@@ -21646,7 +22067,7 @@ public final class BatchClient {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-task-files.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-task-files.</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of the Task directory. This
      * parameter can be used in
      * combination with the filter parameter to list specific type of files.</td></tr>
@@ -21663,7 +22084,7 @@ public final class BatchClient {
      *     properties (Optional): {
      *         creationTime: OffsetDateTime (Optional)
      *         lastModified: OffsetDateTime (Required)
-     *         contentLength: long (Required)
+     *         contentLength: String (Required)
      *         contentType: String (Optional)
      *         fileMode: String (Optional)
      *     }
@@ -22073,7 +22494,7 @@ public final class BatchClient {
      * {
      *     id: String (Optional)
      *     url: String (Optional)
-     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos) (Optional)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Optional)
      *     schedulingState: String(enabled/disabled) (Optional)
      *     stateTransitionTime: OffsetDateTime (Optional)
      *     lastBootTime: OffsetDateTime (Optional)
@@ -22134,6 +22555,12 @@ public final class BatchClient {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -22207,6 +22634,8 @@ public final class BatchClient {
      *             version: String (Optional)
      *             virtualMachineImageId: String (Optional)
      *             exactVersion: String (Optional)
+     *             sharedGalleryImageId: String (Optional)
+     *             communityGalleryImageId: String (Optional)
      *         }
      *         scaleSetVmResourceId: String (Optional)
      *     }
@@ -22499,9 +22928,8 @@ public final class BatchClient {
     /**
      * Gets the settings required for remote login to a Compute Node.
      *
-     * Before you can remotely login to a Compute Node using the remote login
-     * settings, you must create a user Account on the Compute Node. This API can be
-     * invoked only on Pools created with the virtual machine configuration property.
+     * Before you can remotely login to a Compute Node using the remote login settings,
+     * you must create a user Account on the Compute Node.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -22531,8 +22959,8 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the settings required for remote login to a Compute Node.
      *
-     * Before you can remotely login to a Compute Node using the remote login
-     * settings, you must create a user Account on the Compute Node along with {@link Response}.
+     * Before you can remotely login to a Compute Node using the remote login settings,
+     * you must create a user Account on the Compute Node along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -22747,7 +23175,7 @@ public final class BatchClient {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * </table>
@@ -22759,7 +23187,7 @@ public final class BatchClient {
      * {
      *     id: String (Optional)
      *     url: String (Optional)
-     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos) (Optional)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Optional)
      *     schedulingState: String(enabled/disabled) (Optional)
      *     stateTransitionTime: OffsetDateTime (Optional)
      *     lastBootTime: OffsetDateTime (Optional)
@@ -22820,6 +23248,12 @@ public final class BatchClient {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -22893,6 +23327,8 @@ public final class BatchClient {
      *             version: String (Optional)
      *             virtualMachineImageId: String (Optional)
      *             exactVersion: String (Optional)
+     *             sharedGalleryImageId: String (Optional)
+     *             communityGalleryImageId: String (Optional)
      *         }
      *         scaleSetVmResourceId: String (Optional)
      *     }
@@ -23803,7 +24239,7 @@ public final class BatchClient {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of a directory.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -23818,7 +24254,7 @@ public final class BatchClient {
      *     properties (Optional): {
      *         creationTime: OffsetDateTime (Optional)
      *         lastModified: OffsetDateTime (Required)
-     *         contentLength: long (Required)
+     *         contentLength: String (Required)
      *         contentType: String (Optional)
      *         fileMode: String (Optional)
      *     }
@@ -24040,7 +24476,7 @@ public final class BatchClient {
     }
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -24450,58 +24886,6 @@ public final class BatchClient {
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listPoolNodeCountsInternal(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchPoolNodeCounts.class));
-    }
-
-    /**
-     * Deletes a Job.
-     *
-     * Deleting a Job also deletes all Tasks that are part of that Job, and all Job
-     * statistics. This also overrides the retention period for Task data; that is, if
-     * the Job contains Tasks which are still retained on Compute Nodes, the Batch
-     * services deletes those Tasks' working directories and all their contents. When
-     * a Delete Job request is received, the Batch service sets the Job to the
-     * deleting state. All update operations on a Job that is in deleting state will
-     * fail with status code 409 (Conflict), with additional information indicating
-     * that the Job is being deleted.
-     *
-     * @param jobId The ID of the Job to delete.
-     * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
-     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteJobInternal(String jobId, Integer timeOutInSeconds, RequestConditions requestConditions) {
-        // Generated convenience method for deleteJobInternalWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        deleteJobInternalWithResponse(jobId, requestOptions).getValue();
     }
 
     /**
@@ -24968,56 +25352,6 @@ public final class BatchClient {
      * though they are still counted towards Account lifetime statistics.
      *
      * @param jobScheduleId The ID of the Job Schedule to delete.
-     * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
-     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteJobScheduleInternal(String jobScheduleId, Integer timeOutInSeconds,
-        RequestConditions requestConditions) {
-        // Generated convenience method for deleteJobScheduleInternalWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        deleteJobScheduleInternalWithResponse(jobScheduleId, requestOptions).getValue();
-    }
-
-    /**
-     * Deletes a Job Schedule from the specified Account.
-     *
-     * When you delete a Job Schedule, this also deletes all Jobs and Tasks under that
-     * schedule. When Tasks are deleted, all the files in their working directories on
-     * the Compute Nodes are also deleted (the retention period is ignored). The Job
-     * Schedule statistics are no longer accessible once the Job Schedule is deleted,
-     * though they are still counted towards Account lifetime statistics.
-     *
-     * @param jobScheduleId The ID of the Job Schedule to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -25323,50 +25657,6 @@ public final class BatchClient {
         // Generated convenience method for enableJobScheduleInternalWithResponse
         RequestOptions requestOptions = new RequestOptions();
         enableJobScheduleInternalWithResponse(jobScheduleId, requestOptions).getValue();
-    }
-
-    /**
-     * Terminates a Job Schedule.
-     *
-     * @param jobScheduleId The ID of the Job Schedule to terminates.
-     * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
-     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void terminateJobScheduleInternal(String jobScheduleId, Integer timeOutInSeconds,
-        RequestConditions requestConditions) {
-        // Generated convenience method for terminateJobScheduleInternalWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        terminateJobScheduleInternalWithResponse(jobScheduleId, requestOptions).getValue();
     }
 
     /**
@@ -26264,9 +26554,8 @@ public final class BatchClient {
     /**
      * Gets the settings required for remote login to a Compute Node.
      *
-     * Before you can remotely login to a Compute Node using the remote login
-     * settings, you must create a user Account on the Compute Node. This API can be
-     * invoked only on Pools created with the virtual machine configuration property.
+     * Before you can remotely login to a Compute Node using the remote login settings,
+     * you must create a user Account on the Compute Node.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
@@ -26280,8 +26569,8 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the settings required for remote login to a Compute Node.
      *
-     * Before you can remotely login to a Compute Node using the remote login
-     * settings, you must create a user Account on the Compute Node.
+     * Before you can remotely login to a Compute Node using the remote login settings,
+     * you must create a user Account on the Compute Node.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -26299,9 +26588,8 @@ public final class BatchClient {
     /**
      * Gets the settings required for remote login to a Compute Node.
      *
-     * Before you can remotely login to a Compute Node using the remote login
-     * settings, you must create a user Account on the Compute Node. This API can be
-     * invoked only on Pools created with the virtual machine configuration property.
+     * Before you can remotely login to a Compute Node using the remote login settings,
+     * you must create a user Account on the Compute Node.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
@@ -26313,8 +26601,8 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the settings required for remote login to a Compute Node.
      *
-     * Before you can remotely login to a Compute Node using the remote login
-     * settings, you must create a user Account on the Compute Node.
+     * Before you can remotely login to a Compute Node using the remote login settings,
+     * you must create a user Account on the Compute Node.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -26654,6 +26942,8 @@ public final class BatchClient {
      * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
+     * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will terminate the Job even if the
+     * corresponding nodes have not fully processed the termination. The default value is false.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -27286,14 +27576,14 @@ public final class BatchClient {
      *
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
-     * @param starttime The earliest time from which to include metrics. This must be at least two and
+     * @param startTime The earliest time from which to include metrics. This must be at least two and
      * a half hours before the current time. If not specified this defaults to the
      * start time of the last aggregation interval currently available.
      * @param endtime The latest time from which to include metrics. This must be at least two hours
      * before the current time. If not specified this defaults to the end time of the
      * last aggregation interval currently available.
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -27306,14 +27596,14 @@ public final class BatchClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BatchPoolUsageMetrics> listPoolUsageMetricsInternal(Integer timeOutInSeconds,
-        OffsetDateTime starttime, OffsetDateTime endtime, String filter) {
+        OffsetDateTime startTime, OffsetDateTime endtime, String filter) {
         // Generated convenience method for listPoolUsageMetricsInternal
         RequestOptions requestOptions = new RequestOptions();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
         }
-        if (starttime != null) {
-            requestOptions.addQueryParam("startTime", String.valueOf(starttime), false);
+        if (startTime != null) {
+            requestOptions.addQueryParam("startTime", String.valueOf(startTime), false);
         }
         if (endtime != null) {
             requestOptions.addQueryParam("endtime", String.valueOf(endtime), false);
@@ -27326,12 +27616,12 @@ public final class BatchClient {
     }
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-pools.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-pools.
      * @param select An OData $select clause.
      * @param expand An OData $expand clause.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27378,7 +27668,7 @@ public final class BatchClient {
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -27411,7 +27701,7 @@ public final class BatchClient {
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -27442,7 +27732,7 @@ public final class BatchClient {
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs.
      * @param select An OData $select clause.
      * @param expand An OData $expand clause.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27490,7 +27780,7 @@ public final class BatchClient {
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.
      * @param select An OData $select clause.
      * @param expand An OData $expand clause.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27546,7 +27836,7 @@ public final class BatchClient {
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.
      * @param select An OData $select clause.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -27586,7 +27876,7 @@ public final class BatchClient {
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.
      * @param select An OData $select clause.
      * @param expand An OData $expand clause.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27638,7 +27928,7 @@ public final class BatchClient {
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-tasks.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-tasks.
      * @param select An OData $select clause.
      * @param expand An OData $expand clause.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27687,7 +27977,7 @@ public final class BatchClient {
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-task-files.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-task-files.
      * @param recursive Whether to list children of the Task directory. This parameter can be used in
      * combination with the filter parameter to list specific type of files.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27725,7 +28015,7 @@ public final class BatchClient {
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.
      * @param select An OData $select clause.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -27803,7 +28093,7 @@ public final class BatchClient {
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.
      * @param recursive Whether to list children of a directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -28466,61 +28756,6 @@ public final class BatchClient {
     }
 
     /**
-     * Terminates the specified Job, marking it as completed.
-     *
-     * When a Terminate Job request is received, the Batch service sets the Job to the
-     * terminating state. The Batch service then terminates any running Tasks
-     * associated with the Job and runs any required Job release Tasks. Then the Job
-     * moves into the completed state. If there are any Tasks in the Job in the active
-     * state, they will remain in the active state. Once a Job is terminated, new
-     * Tasks cannot be added and any remaining active Tasks will not be scheduled.
-     *
-     * @param jobId The ID of the Job to terminate.
-     * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
-     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
-     * @param parameters The options to use for terminating the Job.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void terminateJobInternal(String jobId, Integer timeOutInSeconds, BatchJobTerminateContent parameters,
-        RequestConditions requestConditions) {
-        // Generated convenience method for terminateJobInternalWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (parameters != null) {
-            requestOptions.setBody(BinaryData.fromObject(parameters));
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        terminateJobInternalWithResponse(jobId, requestOptions).getValue();
-    }
-
-    /**
      * Creates a Job to the specified Account.
      *
      * The Batch service supports two ways to control the work done as part of a Job.
@@ -29097,5 +29332,807 @@ public final class BatchClient {
     @Generated
     BatchClient(BatchClientImpl serviceClient) {
         this.serviceClient = serviceClient;
+    }
+
+    /**
+     * Starts the specified Compute Node.
+     *
+     * <p>
+     * You can start a Compute Node only if it has been deallocated.
+     *
+     * <p>
+     * <strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>timeOut</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Sets the maximum time that the server can spend processing the request, in seconds. The default is 30
+     * seconds.</td>
+     * </tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to start.
+     * @param requestOptions The options to configure the HTTP request before the HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> startNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+        return this.startNodeInternalWithResponse(poolId, nodeId, requestOptions);
+    }
+
+    /**
+     * Starts the specified Compute Node.
+     *
+     * You can start a Compute Node only if it has been deallocated.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> startNodeInternalWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+        return this.serviceClient.startNodeInternalWithResponse(poolId, nodeId, requestOptions);
+    }
+
+    /**
+     * Reinstalls the operating system on the specified Compute Node.
+     *
+     * <p>
+     * You can reinstall the operating system on a Compute Node only if it is in an idle or running state. This API can
+     * be invoked only on Pools created with the cloud service configuration property.
+     *
+     * <p>
+     * <strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>timeOut</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Sets the maximum time that the server can spend processing the request, in seconds. The default is 30
+     * seconds.</td>
+     * </tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p>
+     * <strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>Content-Type</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The content type. Allowed values: "application/json; odata=minimalmetadata".</td>
+     * </tr>
+     * </table>
+     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     nodeReimageOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to reimage.
+     * @param requestOptions The options to configure the HTTP request before the HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> reimageNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+        return this.reimageNodeInternalWithResponse(poolId, nodeId, requestOptions);
+    }
+
+    /**
+     * Reinstalls the operating system on the specified Compute Node.
+     *
+     * You can reinstall the operating system on a Compute Node only if it is in an
+     * idle or running state. This API can be invoked only on Pools created with the
+     * cloud service configuration property.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json;
+     * odata=minimalmetadata".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     nodeReimageOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> reimageNodeInternalWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+        return this.serviceClient.reimageNodeInternalWithResponse(poolId, nodeId, requestOptions);
+    }
+
+    /**
+     * Deallocates the specified Compute Node.
+     *
+     * <p>
+     * You can deallocate a Compute Node only if it is in an idle or running state.
+     *
+     * <p>
+     * <strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>timeOut</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td>
+     * </tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     nodeDeallocateOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to deallocate.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deallocateNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+        return this.deallocateNodeInternalWithResponse(poolId, nodeId, requestOptions);
+    }
+
+    /**
+     * Deallocates the specified Compute Node.
+     *
+     * You can deallocate a Compute Node only if it is in an idle or running state.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json;
+     * odata=minimalmetadata".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     nodeDeallocateOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deallocateNodeInternalWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+        return this.serviceClient.deallocateNodeInternalWithResponse(poolId, nodeId, requestOptions);
+    }
+
+    /**
+     * Deletes a Job.
+     *
+     * Deleting a Job also deletes all Tasks that are part of that Job, and all Job
+     * statistics. This also overrides the retention period for Task data; that is, if
+     * the Job contains Tasks which are still retained on Compute Nodes, the Batch
+     * services deletes those Tasks' working directories and all their contents. When
+     * a Delete Job request is received, the Batch service sets the Job to the
+     * deleting state. All update operations on a Job that is in deleting state will
+     * fail with status code 409 (Conflict), with additional information indicating
+     * that the Job is being deleted.
+     *
+     * @param jobId The ID of the Job to delete.
+     * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     * @param force If true, the server will delete the Job even if the corresponding nodes have not fully processed the
+     * deletion. The default value is false.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteJobInternal(String jobId, Integer timeOutInSeconds, Boolean force, RequestConditions requestConditions) {
+        // Generated convenience method for deleteJobInternalWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (force != null) {
+            requestOptions.addQueryParam("force", String.valueOf(force), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        deleteJobInternalWithResponse(jobId, requestOptions).getValue();
+    }
+
+    /**
+     * Terminates the specified Job, marking it as completed.
+     *
+     * When a Terminate Job request is received, the Batch service sets the Job to the
+     * terminating state. The Batch service then terminates any running Tasks
+     * associated with the Job and runs any required Job release Tasks. Then the Job
+     * moves into the completed state. If there are any Tasks in the Job in the active
+     * state, they will remain in the active state. Once a Job is terminated, new
+     * Tasks cannot be added and any remaining active Tasks will not be scheduled.
+     *
+     * @param jobId The ID of the Job to terminate.
+     * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     * @param force If true, the server will terminate the Job even if the corresponding nodes have not fully processed
+     * the termination. The default value is false.
+     * @param parameters The options to use for terminating the Job.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void terminateJobInternal(String jobId, Integer timeOutInSeconds, Boolean force,
+        BatchJobTerminateContent parameters, RequestConditions requestConditions) {
+        // Generated convenience method for terminateJobInternalWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (force != null) {
+            requestOptions.addQueryParam("force", String.valueOf(force), false);
+        }
+        if (parameters != null) {
+            requestOptions.setBody(BinaryData.fromObject(parameters));
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        terminateJobInternalWithResponse(jobId, requestOptions).getValue();
+    }
+
+    /**
+     * Deletes a Job Schedule from the specified Account.
+     *
+     * When you delete a Job Schedule, this also deletes all Jobs and Tasks under that
+     * schedule. When Tasks are deleted, all the files in their working directories on
+     * the Compute Nodes are also deleted (the retention period is ignored). The Job
+     * Schedule statistics are no longer accessible once the Job Schedule is deleted,
+     * though they are still counted towards Account lifetime statistics.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to delete.
+     * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     * @param force If true, the server will delete the JobSchedule even if the corresponding nodes have not fully
+     * processed the deletion. The default value is false.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteJobScheduleInternal(String jobScheduleId, Integer timeOutInSeconds, Boolean force,
+        RequestConditions requestConditions) {
+        // Generated convenience method for deleteJobScheduleInternalWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (force != null) {
+            requestOptions.addQueryParam("force", String.valueOf(force), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        deleteJobScheduleInternalWithResponse(jobScheduleId, requestOptions).getValue();
+    }
+
+    /**
+     * Terminates a Job Schedule.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to terminates.
+     * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     * @param force If true, the server will terminate the JobSchedule even if the corresponding nodes have not fully
+     * processed the termination. The default value is false.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void terminateJobScheduleInternal(String jobScheduleId, Integer timeOutInSeconds, Boolean force,
+        RequestConditions requestConditions) {
+        // Generated convenience method for terminateJobScheduleInternalWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (force != null) {
+            requestOptions.addQueryParam("force", String.valueOf(force), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        terminateJobScheduleInternalWithResponse(jobScheduleId, requestOptions).getValue();
+    }
+
+    /**
+     * Starts the specified Compute Node.
+     *
+     * <p>
+     * You can start a Compute Node only if it has been deallocated.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to start.
+     * @param options A group containing optional parameters like timeOutInSeconds.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void startNode(String poolId, String nodeId, StartBatchNodeOptions options) {
+        startNodeInternal(poolId, nodeId, options.getTimeOutInSeconds());
+    }
+
+    /**
+     * Starts the specified Compute Node.
+     *
+     * You can start a Compute Node only if it has been deallocated.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void startNodeInternal(String poolId, String nodeId, Integer timeOutInSeconds) {
+        // Generated convenience method for startNodeInternalWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        startNodeInternalWithResponse(poolId, nodeId, requestOptions).getValue();
+    }
+
+    /**
+     * Starts the specified Compute Node.
+     *
+     * <p>
+     * You can start a Compute Node only if it has been deallocated.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to start.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void startNode(String poolId, String nodeId) {
+        startNodeInternal(poolId, nodeId);
+    }
+
+    /**
+     * Starts the specified Compute Node.
+     *
+     * You can start a Compute Node only if it has been deallocated.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void startNodeInternal(String poolId, String nodeId) {
+        // Generated convenience method for startNodeInternalWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        startNodeInternalWithResponse(poolId, nodeId, requestOptions).getValue();
+    }
+
+    /**
+     * Reinstalls the operating system on the specified Compute Node.
+     *
+     * <p>
+     * You can reinstall the operating system on a Compute Node only if it is in an idle or running state. This API can
+     * be invoked only on Pools created with the cloud service configuration property.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to reimage.
+     * @param options A group containing optional parameters like timeOutInSeconds.
+     * @param body The options to use for reimaging the Compute Node.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void reimageNode(String poolId, String nodeId, ReimageBatchNodeOptions options,
+        BatchNodeReimageContent body) {
+        reimageNodeInternal(poolId, nodeId, options.getTimeOutInSeconds(), body);
+    }
+
+    /**
+     * Reinstalls the operating system on the specified Compute Node.
+     *
+     * You can reinstall the operating system on a Compute Node only if it is in an
+     * idle or running state. This API can be invoked only on Pools created with the
+     * cloud service configuration property.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     * @param parameters The options to use for reimaging the Compute Node.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void reimageNodeInternal(String poolId, String nodeId, Integer timeOutInSeconds,
+        BatchNodeReimageContent parameters) {
+        // Generated convenience method for reimageNodeInternalWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (parameters != null) {
+            requestOptions.setBody(BinaryData.fromObject(parameters));
+        }
+        reimageNodeInternalWithResponse(poolId, nodeId, requestOptions).getValue();
+    }
+
+    /**
+     * Reinstalls the operating system on the specified Compute Node.
+     *
+     * <p>
+     * You can reinstall the operating system on a Compute Node only if it is in an idle or running state. This API can
+     * be invoked only on Pools created with the cloud service configuration property.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to reimage.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void reimageNode(String poolId, String nodeId) {
+        reimageNodeInternal(poolId, nodeId);
+    }
+
+    /**
+     * Reinstalls the operating system on the specified Compute Node.
+     *
+     * You can reinstall the operating system on a Compute Node only if it is in an
+     * idle or running state. This API can be invoked only on Pools created with the
+     * cloud service configuration property.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void reimageNodeInternal(String poolId, String nodeId) {
+        // Generated convenience method for reimageNodeInternalWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        reimageNodeInternalWithResponse(poolId, nodeId, requestOptions).getValue();
+    }
+
+    /**
+     * Deallocates the specified Compute Node.
+     *
+     * <p>
+     * You can deallocate a Compute Node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to deallocate.
+     * @param options A group containing optional parameters like timeOutInSeconds.
+     * @param body The options to use for deallocating the Compute Node.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deallocateNode(String poolId, String nodeId, DeallocateBatchNodeOptions options,
+        BatchNodeDeallocateContent body) {
+        deallocateNodeInternal(poolId, nodeId, options.getTimeOutInSeconds(), body);
+    }
+
+    /**
+     * Deallocates the specified Compute Node.
+     *
+     * You can deallocate a Compute Node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     * @param parameters The options to use for deallocating the Compute Node.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deallocateNodeInternal(String poolId, String nodeId, Integer timeOutInSeconds,
+        BatchNodeDeallocateContent parameters) {
+        // Generated convenience method for deallocateNodeInternalWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (parameters != null) {
+            requestOptions.setBody(BinaryData.fromObject(parameters));
+        }
+        deallocateNodeInternalWithResponse(poolId, nodeId, requestOptions).getValue();
+    }
+
+    /**
+     * Deallocates the specified Compute Node.
+     *
+     * <p>
+     * You can deallocate a Compute Node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to deallocate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deallocateNode(String poolId, String nodeId) {
+        deallocateNodeInternal(poolId, nodeId);
+    }
+
+    /**
+     * Deallocates the specified Compute Node.
+     *
+     * You can deallocate a Compute Node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deallocateNodeInternal(String poolId, String nodeId) {
+        // Generated convenience method for deallocateNodeInternalWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        deallocateNodeInternalWithResponse(poolId, nodeId, requestOptions).getValue();
     }
 }

@@ -64,83 +64,77 @@ public final class ManageVirtualMachineAsync {
             //
             final Date t1 = new Date();
 
-            final Creatable<Disk> dataDiskCreatable = azureResourceManager.disks().define(Utils.randomResourceName(azureResourceManager, "dsk-", 15))
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withData()
-                    .withSizeInGB(100);
+            final Creatable<Disk> dataDiskCreatable = azureResourceManager.disks()
+                .define(Utils.randomResourceName(azureResourceManager, "dsk-", 15))
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withData()
+                .withSizeInGB(100);
 
             // Create a data disk to attach to VM
             //
-            Mono<Disk> dataDiskMono = azureResourceManager.disks().define(Utils.randomResourceName(azureResourceManager, "dsk-", 15))
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName)
-                    .withData()
-                    .withSizeInGB(50)
-                    .createAsync();
+            Mono<Disk> dataDiskMono = azureResourceManager.disks()
+                .define(Utils.randomResourceName(azureResourceManager, "dsk-", 15))
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withData()
+                .withSizeInGB(50)
+                .createAsync();
 
             final Map<String, VirtualMachine> createdVms = new TreeMap<>();
 
-            Mono<Network> networkMono = azureResourceManager.networks().define(Utils.randomResourceName(azureResourceManager, "network", 20))
+            Mono<Network> networkMono = azureResourceManager.networks()
+                .define(Utils.randomResourceName(azureResourceManager, "network", 20))
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withAddressSpace("10.0.0.0/28")
                 .createAsync();
 
-            Mono.zip(dataDiskMono, networkMono)
-                .flatMapMany(
-                    tuple -> Flux.merge(
-                        Mono.defer(() -> {
-                            System.out.println("Creating a Windows VM");
-                            return azureResourceManager.virtualMachines().define(windowsVMName)
-                                .withRegion(region)
-                                .withExistingResourceGroup(rgName)
-                                .withExistingPrimaryNetwork(tuple.getT2())
-                                .withSubnet("subnet1") // Referencing the default subnet name when no name specified at creation
-                                .withPrimaryPrivateIPAddressDynamic()
-                                .withoutPrimaryPublicIPAddress()
-                                .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                                .withAdminUsername(userName)
-                                .withAdminPassword(password)
-                                .withNewDataDisk(10)
-                                .withNewDataDisk(dataDiskCreatable)
-                                .withExistingDataDisk(tuple.getT1())
-                                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                                .createAsync();
-                        }),
-                        Mono.defer(() -> {
-                            System.out.println("Creating a Linux VM in the same network");
-                            return azureResourceManager.virtualMachines().define(linuxVMName)
-                                .withRegion(region)
-                                .withExistingResourceGroup(rgName)
-                                .withExistingPrimaryNetwork(tuple.getT2())
-                                .withSubnet("subnet1") // Referencing the default subnet name when no name specified at creation
-                                .withPrimaryPrivateIPAddressDynamic()
-                                .withoutPrimaryPublicIPAddress()
-                                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                                .withRootUsername(userName)
-                                .withSsh(sshPublicKey)
-                                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                                .createAsync();
-                        })
-                    )
-            ).doOnNext(
-                virtualMachine -> {
-                    Date t2 = new Date();
-                    if (isWindowsVM(virtualMachine)) {
-                        createdVms.put(windowsVmKey, virtualMachine);
-                        System.out.println("Created Windows VM: "
-                            + virtualMachine.id());
-                    } else {
-                        createdVms.put(linuxVmKey, virtualMachine);
-                        System.out.println("Created a Linux VM (in the same virtual network): "
-                            + virtualMachine.id());
-                    }
-                    System.out.println("Virtual machine creation took "
-                        + ((t2.getTime() - t1.getTime()) / 1000)
-                        + " seconds");
+            Mono.zip(dataDiskMono, networkMono).flatMapMany(tuple -> Flux.merge(Mono.defer(() -> {
+                System.out.println("Creating a Windows VM");
+                return azureResourceManager.virtualMachines()
+                    .define(windowsVMName)
+                    .withRegion(region)
+                    .withExistingResourceGroup(rgName)
+                    .withExistingPrimaryNetwork(tuple.getT2())
+                    .withSubnet("subnet1") // Referencing the default subnet name when no name specified at creation
+                    .withPrimaryPrivateIPAddressDynamic()
+                    .withoutPrimaryPublicIPAddress()
+                    .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
+                    .withAdminUsername(userName)
+                    .withAdminPassword(password)
+                    .withNewDataDisk(10)
+                    .withNewDataDisk(dataDiskCreatable)
+                    .withExistingDataDisk(tuple.getT1())
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                    .createAsync();
+            }), Mono.defer(() -> {
+                System.out.println("Creating a Linux VM in the same network");
+                return azureResourceManager.virtualMachines()
+                    .define(linuxVMName)
+                    .withRegion(region)
+                    .withExistingResourceGroup(rgName)
+                    .withExistingPrimaryNetwork(tuple.getT2())
+                    .withSubnet("subnet1") // Referencing the default subnet name when no name specified at creation
+                    .withPrimaryPrivateIPAddressDynamic()
+                    .withoutPrimaryPublicIPAddress()
+                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                    .withRootUsername(userName)
+                    .withSsh(sshPublicKey)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                    .createAsync();
+            }))).doOnNext(virtualMachine -> {
+                Date t2 = new Date();
+                if (isWindowsVM(virtualMachine)) {
+                    createdVms.put(windowsVmKey, virtualMachine);
+                    System.out.println("Created Windows VM: " + virtualMachine.id());
+                } else {
+                    createdVms.put(linuxVmKey, virtualMachine);
+                    System.out.println("Created a Linux VM (in the same virtual network): " + virtualMachine.id());
                 }
-            ).blockLast();
+                System.out
+                    .println("Virtual machine creation took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds");
+            }).blockLast();
 
             final VirtualMachine windowsVM = createdVms.get(windowsVmKey);
             final VirtualMachine linuxVM = createdVms.get(linuxVmKey);
@@ -150,43 +144,36 @@ public final class ManageVirtualMachineAsync {
 
             // - Tag the virtual machine on Linux VM
             Mono<VirtualMachine> updateLinuxVMChain = linuxVM.update()
-                    .withTag("who-rocks-on-linux", "java")
-                    .withTag("where", "on azure")
-                    .applyAsync()
-                    .map(virtualMachine -> {
-                        System.out.println("Tagged Linux VM: " + virtualMachine.id());
-                        return virtualMachine;
-                    });
+                .withTag("who-rocks-on-linux", "java")
+                .withTag("where", "on azure")
+                .applyAsync()
+                .map(virtualMachine -> {
+                    System.out.println("Tagged Linux VM: " + virtualMachine.id());
+                    return virtualMachine;
+                });
 
             // - Add a data disk on Windows VM.
-            Mono<VirtualMachine> updateWindowsVMChain = windowsVM.update()
-                    .withNewDataDisk(200)
-                    .applyAsync();
+            Mono<VirtualMachine> updateWindowsVMChain = windowsVM.update().withNewDataDisk(200).applyAsync();
 
-            Flux.merge(updateLinuxVMChain, updateWindowsVMChain)
-                    .last().block();
+            Flux.merge(updateLinuxVMChain, updateWindowsVMChain).last().block();
 
             //=============================================================
             // List virtual machines and print details
-            azureResourceManager.virtualMachines().listByResourceGroupAsync(rgName)
-                    .map(virtualMachine -> {
-                        System.out.println("Retrieved details for VM: " + virtualMachine.id());
-                        return virtualMachine;
-                    }).last().block();
+            azureResourceManager.virtualMachines().listByResourceGroupAsync(rgName).map(virtualMachine -> {
+                System.out.println("Retrieved details for VM: " + virtualMachine.id());
+                return virtualMachine;
+            }).last().block();
 
             //=============================================================
             // Delete the virtual machines in parallel
-            Flux.merge(
-                    azureResourceManager.virtualMachines().deleteByIdAsync(windowsVM.id()),
-                    azureResourceManager.virtualMachines().deleteByIdAsync(linuxVM.id()))
-                    .singleOrEmpty().block();
+            Flux.merge(azureResourceManager.virtualMachines().deleteByIdAsync(windowsVM.id()),
+                azureResourceManager.virtualMachines().deleteByIdAsync(linuxVM.id())).singleOrEmpty().block();
 
             return true;
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azureResourceManager.resourceGroups().deleteByNameAsync(rgName)
-                        .block();
+                azureResourceManager.resourceGroups().deleteByNameAsync(rgName).block();
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -202,6 +189,7 @@ public final class ManageVirtualMachineAsync {
         }
         return false;
     }
+
     /**
      * Main entry point.
      * @param args the parameters
@@ -217,8 +205,7 @@ public final class ManageVirtualMachineAsync {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

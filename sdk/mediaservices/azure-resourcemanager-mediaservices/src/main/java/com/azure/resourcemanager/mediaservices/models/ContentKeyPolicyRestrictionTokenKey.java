@@ -5,39 +5,108 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Base class for Content Key Policy key for token validation. A derived class must be used to create a token key. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "@odata.type",
-    defaultImpl = ContentKeyPolicyRestrictionTokenKey.class)
-@JsonTypeName("ContentKeyPolicyRestrictionTokenKey")
-@JsonSubTypes({
-    @JsonSubTypes.Type(
-        name = "#Microsoft.Media.ContentKeyPolicySymmetricTokenKey",
-        value = ContentKeyPolicySymmetricTokenKey.class),
-    @JsonSubTypes.Type(
-        name = "#Microsoft.Media.ContentKeyPolicyRsaTokenKey",
-        value = ContentKeyPolicyRsaTokenKey.class),
-    @JsonSubTypes.Type(
-        name = "#Microsoft.Media.ContentKeyPolicyX509CertificateTokenKey",
-        value = ContentKeyPolicyX509CertificateTokenKey.class)
-})
+/**
+ * Base class for Content Key Policy key for token validation. A derived class must be used to create a token key.
+ */
 @Immutable
-public class ContentKeyPolicyRestrictionTokenKey {
-    /** Creates an instance of ContentKeyPolicyRestrictionTokenKey class. */
+public class ContentKeyPolicyRestrictionTokenKey implements JsonSerializable<ContentKeyPolicyRestrictionTokenKey> {
+    /*
+     * The discriminator for derived types.
+     */
+    private String odataType = "ContentKeyPolicyRestrictionTokenKey";
+
+    /**
+     * Creates an instance of ContentKeyPolicyRestrictionTokenKey class.
+     */
     public ContentKeyPolicyRestrictionTokenKey() {
     }
 
     /**
+     * Get the odataType property: The discriminator for derived types.
+     * 
+     * @return the odataType value.
+     */
+    public String odataType() {
+        return this.odataType;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContentKeyPolicyRestrictionTokenKey from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContentKeyPolicyRestrictionTokenKey if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContentKeyPolicyRestrictionTokenKey.
+     */
+    public static ContentKeyPolicyRestrictionTokenKey fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("@odata.type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("#Microsoft.Media.ContentKeyPolicySymmetricTokenKey".equals(discriminatorValue)) {
+                    return ContentKeyPolicySymmetricTokenKey.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.Media.ContentKeyPolicyRsaTokenKey".equals(discriminatorValue)) {
+                    return ContentKeyPolicyRsaTokenKey.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.Media.ContentKeyPolicyX509CertificateTokenKey".equals(discriminatorValue)) {
+                    return ContentKeyPolicyX509CertificateTokenKey.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ContentKeyPolicyRestrictionTokenKey fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContentKeyPolicyRestrictionTokenKey deserializedContentKeyPolicyRestrictionTokenKey
+                = new ContentKeyPolicyRestrictionTokenKey();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("@odata.type".equals(fieldName)) {
+                    deserializedContentKeyPolicyRestrictionTokenKey.odataType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContentKeyPolicyRestrictionTokenKey;
+        });
     }
 }

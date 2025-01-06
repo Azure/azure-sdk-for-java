@@ -12,29 +12,26 @@ import org.junit.jupiter.api.Assertions;
 public final class RecommendedSensitivityLabelUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecommendedSensitivityLabelUpdate model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"op\":\"disable\",\"schema\":\"hfwpracstwit\",\"table\":\"khevxccedc\",\"column\":\"nmdyodnwzxl\"},\"id\":\"jc\",\"name\":\"nhltiugcxn\",\"type\":\"vvwxqi\"}")
-                .toObject(RecommendedSensitivityLabelUpdate.class);
-        Assertions.assertEquals(RecommendedSensitivityLabelUpdateKind.DISABLE, model.op());
-        Assertions.assertEquals("hfwpracstwit", model.schema());
-        Assertions.assertEquals("khevxccedc", model.table());
-        Assertions.assertEquals("nmdyodnwzxl", model.column());
+        RecommendedSensitivityLabelUpdate model = BinaryData.fromString(
+            "{\"properties\":{\"op\":\"enable\",\"schema\":\"heafidlt\",\"table\":\"gsresmkssj\",\"column\":\"oiftxfkfwegprh\"},\"id\":\"tillucbiqtg\",\"name\":\"q\",\"type\":\"hm\"}")
+            .toObject(RecommendedSensitivityLabelUpdate.class);
+        Assertions.assertEquals(RecommendedSensitivityLabelUpdateKind.ENABLE, model.op());
+        Assertions.assertEquals("heafidlt", model.schema());
+        Assertions.assertEquals("gsresmkssj", model.table());
+        Assertions.assertEquals("oiftxfkfwegprh", model.column());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecommendedSensitivityLabelUpdate model =
-            new RecommendedSensitivityLabelUpdate()
-                .withOp(RecommendedSensitivityLabelUpdateKind.DISABLE)
-                .withSchema("hfwpracstwit")
-                .withTable("khevxccedc")
-                .withColumn("nmdyodnwzxl");
+        RecommendedSensitivityLabelUpdate model
+            = new RecommendedSensitivityLabelUpdate().withOp(RecommendedSensitivityLabelUpdateKind.ENABLE)
+                .withSchema("heafidlt")
+                .withTable("gsresmkssj")
+                .withColumn("oiftxfkfwegprh");
         model = BinaryData.fromObject(model).toObject(RecommendedSensitivityLabelUpdate.class);
-        Assertions.assertEquals(RecommendedSensitivityLabelUpdateKind.DISABLE, model.op());
-        Assertions.assertEquals("hfwpracstwit", model.schema());
-        Assertions.assertEquals("khevxccedc", model.table());
-        Assertions.assertEquals("nmdyodnwzxl", model.column());
+        Assertions.assertEquals(RecommendedSensitivityLabelUpdateKind.ENABLE, model.op());
+        Assertions.assertEquals("heafidlt", model.schema());
+        Assertions.assertEquals("gsresmkssj", model.table());
+        Assertions.assertEquals("oiftxfkfwegprh", model.column());
     }
 }

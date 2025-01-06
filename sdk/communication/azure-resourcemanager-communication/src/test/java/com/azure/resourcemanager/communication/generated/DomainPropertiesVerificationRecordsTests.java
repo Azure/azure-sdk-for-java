@@ -19,8 +19,11 @@ public final class DomainPropertiesVerificationRecordsTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DomainPropertiesVerificationRecords model
-            = new DomainPropertiesVerificationRecords().withDomain(new DnsRecord()).withSpf(new DnsRecord())
-                .withDkim(new DnsRecord()).withDkim2(new DnsRecord()).withDmarc(new DnsRecord());
+            = new DomainPropertiesVerificationRecords().withDomain(new DnsRecord())
+                .withSpf(new DnsRecord())
+                .withDkim(new DnsRecord())
+                .withDkim2(new DnsRecord())
+                .withDmarc(new DnsRecord());
         model = BinaryData.fromObject(model).toObject(DomainPropertiesVerificationRecords.class);
     }
 }

@@ -24,7 +24,8 @@ import static com.azure.communication.common.perf.FakeCredentialInTest.MOCK_KEY_
 public class HmacAuthenticationPolicyTest extends PerfStressTest<PerfStressOptions> {
 
     private final static ConcurrentHashMap<String, String> dateToSignature = new ConcurrentHashMap<>();
-    private final static HmacAuthenticationPolicy hmacAuthenticationPolicy = new HmacAuthenticationPolicy(new AzureKeyCredential(MOCK_KEY_PLACEHOLDER));
+    private final static HmacAuthenticationPolicy hmacAuthenticationPolicy
+        = new HmacAuthenticationPolicy(new AzureKeyCredential(MOCK_KEY_PLACEHOLDER));
 
     private final HttpPipeline pipeline;
     private final HttpRequest request;
@@ -39,10 +40,8 @@ public class HmacAuthenticationPolicyTest extends PerfStressTest<PerfStressOptio
 
     public HmacAuthenticationPolicyTest(PerfStressOptions options) throws MalformedURLException {
         super(options);
-        pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient())
-            .policies(hmacAuthenticationPolicy)
-            .build();
+        pipeline
+            = new HttpPipelineBuilder().httpClient(new NoOpHttpClient()).policies(hmacAuthenticationPolicy).build();
         request = new HttpRequest(HttpMethod.GET, new URL("https://test.com/"));
     }
 
@@ -56,25 +55,24 @@ public class HmacAuthenticationPolicyTest extends PerfStressTest<PerfStressOptio
 
     @Override
     public Mono<Void> runAsync() {
-        return pipeline.send(request)
-            .flatMap(response -> {
-                String date = response.getRequest().getHeaders().getValue("x-ms-date");
-                String signature = response.getRequest().getHeaders().getValue("Authorization");
-                try {
-                    checkSignatureCorrectness(date, signature);
-                } catch (Exception e) {
-                    return Mono.error(e);
-                }
-                return Mono.empty();
-            }).then();
+        return pipeline.send(request).flatMap(response -> {
+            String date = response.getRequest().getHeaders().getValue("x-ms-date");
+            String signature = response.getRequest().getHeaders().getValue("Authorization");
+            try {
+                checkSignatureCorrectness(date, signature);
+            } catch (Exception e) {
+                return Mono.error(e);
+            }
+            return Mono.empty();
+        }).then();
     }
 
-    private void checkSignatureCorrectness(String date, String signature){
-        if(!dateToSignature.containsKey(date))
+    private void checkSignatureCorrectness(String date, String signature) {
+        if (!dateToSignature.containsKey(date))
             dateToSignature.put(date, signature);
-        else if(!dateToSignature.get(date).contentEquals(signature)){
-            String warning = "Incorrectly computed signature:" + signature + " for " + date
-                + "\nExpected:" + dateToSignature.get(date);
+        else if (!dateToSignature.get(date).contentEquals(signature)) {
+            String warning = "Incorrectly computed signature:" + signature + " for " + date + "\nExpected:"
+                + dateToSignature.get(date);
             throw new IllegalStateException(warning);
         }
     }

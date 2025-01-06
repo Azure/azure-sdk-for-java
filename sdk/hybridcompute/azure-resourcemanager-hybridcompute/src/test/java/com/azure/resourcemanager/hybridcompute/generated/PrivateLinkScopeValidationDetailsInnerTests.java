@@ -15,18 +15,18 @@ public final class PrivateLinkScopeValidationDetailsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkScopeValidationDetailsInner model = BinaryData.fromString(
-            "{\"id\":\"sxtta\",\"publicNetworkAccess\":\"SecuredByPerimeter\",\"connectionDetails\":[{\"id\":\"aa\",\"privateIpAddress\":\"xdtnkdmkqjjlw\",\"linkIdentifier\":\"nvrk\",\"groupId\":\"ou\",\"memberName\":\"bre\"},{\"id\":\"aays\",\"privateIpAddress\":\"ixqtn\",\"linkIdentifier\":\"tezlwff\",\"groupId\":\"akpjpqqmtedlt\",\"memberName\":\"jihy\"},{\"id\":\"zphv\",\"privateIpAddress\":\"uyqncygupkvipmd\",\"linkIdentifier\":\"wx\",\"groupId\":\"pevzhfst\",\"memberName\":\"xhojuj\"},{\"id\":\"pelmcuvhixbjxyf\",\"privateIpAddress\":\"yl\",\"linkIdentifier\":\"ool\",\"groupId\":\"tpkiwkkbnujry\",\"memberName\":\"tylbfpncurdoiw\"}]}")
+            "{\"id\":\"kmnwqjnobaiyhddv\",\"publicNetworkAccess\":\"Enabled\",\"connectionDetails\":[{\"id\":\"n\",\"privateIpAddress\":\"tfpmvmemfnczdw\",\"linkIdentifier\":\"b\",\"groupId\":\"xlllchp\",\"memberName\":\"bzevwrd\"},{\"id\":\"fukuvsjcswsmystu\",\"privateIpAddress\":\"qypfcv\",\"linkIdentifier\":\"rchpqbmfpjbabwid\",\"groupId\":\"xsspuunnoxyhk\",\"memberName\":\"qddrihpfhoqcaae\"},{\"id\":\"aomdjvlpjxx\",\"privateIpAddress\":\"brm\",\"linkIdentifier\":\"eivsiykzkdnc\",\"groupId\":\"xonbzoggculapz\",\"memberName\":\"rpgogtqxep\"},{\"id\":\"lbfu\",\"privateIpAddress\":\"lyjt\",\"linkIdentifier\":\"of\",\"groupId\":\"hvfcibyfmow\",\"memberName\":\"rkjpvdwxfzwii\"}]}")
             .toObject(PrivateLinkScopeValidationDetailsInner.class);
-        Assertions.assertEquals(PublicNetworkAccessType.SECURED_BY_PERIMETER, model.publicNetworkAccess());
+        Assertions.assertEquals(PublicNetworkAccessType.ENABLED, model.publicNetworkAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkScopeValidationDetailsInner model = new PrivateLinkScopeValidationDetailsInner()
-            .withPublicNetworkAccess(PublicNetworkAccessType.SECURED_BY_PERIMETER)
-            .withConnectionDetails(Arrays.asList(new ConnectionDetail(), new ConnectionDetail(), new ConnectionDetail(),
-                new ConnectionDetail()));
+        PrivateLinkScopeValidationDetailsInner model
+            = new PrivateLinkScopeValidationDetailsInner().withPublicNetworkAccess(PublicNetworkAccessType.ENABLED)
+                .withConnectionDetails(Arrays.asList(new ConnectionDetail(), new ConnectionDetail(),
+                    new ConnectionDetail(), new ConnectionDetail()));
         model = BinaryData.fromObject(model).toObject(PrivateLinkScopeValidationDetailsInner.class);
-        Assertions.assertEquals(PublicNetworkAccessType.SECURED_BY_PERIMETER, model.publicNetworkAccess());
+        Assertions.assertEquals(PublicNetworkAccessType.ENABLED, model.publicNetworkAccess());
     }
 }

@@ -6,50 +6,32 @@ package com.azure.resourcemanager.storageactions.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.storageactions.StorageActionsManager;
 import com.azure.resourcemanager.storageactions.models.StorageTaskReportInstance;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class StorageTasksReportsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"taskAssignmentId\":\"dxbx\",\"storageAccountId\":\"kbogqxndlkzgx\",\"startTime\":\"ripl\",\"finishTime\":\"odxun\",\"objectsTargetedCount\":\"ebxmubyynt\",\"objectsOperatedOnCount\":\"rbqtkoie\",\"objectFailedCount\":\"eotg\",\"objectsSucceededCount\":\"l\",\"runStatusError\":\"muwlauwzizxbm\",\"runStatusEnum\":\"InProgress\",\"summaryReportPath\":\"efuzmuvpbttd\",\"taskId\":\"orppxebmnzbtb\",\"taskVersion\":\"pglkf\",\"runResult\":\"Failed\"},\"id\":\"neuelfphsdyhtoz\",\"name\":\"ikdowwquuvx\",\"type\":\"xclvit\"}]}";
+            = "{\"value\":[{\"properties\":{\"taskAssignmentId\":\"mx\",\"storageAccountId\":\"kv\",\"startTime\":\"elmqk\",\"finishTime\":\"ahvljuaha\",\"objectsTargetedCount\":\"hcdhmdual\",\"objectsOperatedOnCount\":\"xqpvfadmw\",\"objectFailedCount\":\"crgvxpvgom\",\"objectsSucceededCount\":\"fmisg\",\"runStatusError\":\"nbbelda\",\"runStatusEnum\":\"Finished\",\"summaryReportPath\":\"ali\",\"taskId\":\"rqhakauha\",\"taskVersion\":\"sfwxosowzxc\",\"runResult\":\"Succeeded\"},\"id\":\"jooxdjebw\",\"name\":\"ucww\",\"type\":\"vo\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        StorageActionsManager manager = StorageActionsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        StorageActionsManager manager = StorageActionsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<StorageTaskReportInstance> response = manager.storageTasksReports().list("onz", "nsikvmkqzeqqkdl",
-            "fzxmhhvhgureodkw", "bdagxt", com.azure.core.util.Context.NONE);
+        PagedIterable<StorageTaskReportInstance> response = manager.storageTasksReports()
+            .list("fkuwbcrnwbmehhse", "v", 421254098, "srtslhspkdeem", com.azure.core.util.Context.NONE);
 
     }
 }

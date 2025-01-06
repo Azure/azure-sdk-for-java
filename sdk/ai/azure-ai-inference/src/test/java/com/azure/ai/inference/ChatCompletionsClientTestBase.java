@@ -38,8 +38,7 @@ public abstract class ChatCompletionsClientTestBase extends TestProxyTestBase {
     private boolean sanitizersRemoved = false;
 
     ChatCompletionsClientBuilder getChatCompletionsClientBuilder(HttpClient httpClient) {
-        ChatCompletionsClientBuilder builder = new ChatCompletionsClientBuilder()
-                .httpClient(httpClient);
+        ChatCompletionsClientBuilder builder = new ChatCompletionsClientBuilder().httpClient(httpClient);
         TestMode testMode = getTestMode();
         if (testMode != TestMode.LIVE) {
             addTestRecordCustomSanitizers();
@@ -52,18 +51,14 @@ public abstract class ChatCompletionsClientTestBase extends TestProxyTestBase {
         }
 
         if (testMode == TestMode.PLAYBACK) {
-            builder
-                    .endpoint("https://localhost:8080")
-                    .credential(new AzureKeyCredential(FAKE_API_KEY));
+            builder.endpoint("https://localhost:8080").credential(new AzureKeyCredential(FAKE_API_KEY));
         } else if (testMode == TestMode.RECORD) {
-            builder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .endpoint(Configuration.getGlobalConfiguration().get("MODEL_ENDPOINT"))
-                    .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_API_KEY")));
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+                .endpoint(Configuration.getGlobalConfiguration().get("MODEL_ENDPOINT"))
+                .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_API_KEY")));
         } else {
-            builder
-                    .endpoint(Configuration.getGlobalConfiguration().get("MODEL_ENDPOINT"))
-                    .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_API_KEY")));
+            builder.endpoint(Configuration.getGlobalConfiguration().get("MODEL_ENDPOINT"))
+                .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_API_KEY")));
         }
         return builder;
     }
@@ -71,12 +66,12 @@ public abstract class ChatCompletionsClientTestBase extends TestProxyTestBase {
     private void addTestRecordCustomSanitizers() {
         String sanitizedRequestUri = "https://REDACTED/";
         String requestUriRegex = "https://.*/openai/deployments/.*?/";
-        interceptorManager.addSanitizers(Arrays.asList(
-                new TestProxySanitizer("$..key", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
+        interceptorManager.addSanitizers(
+            Arrays.asList(new TestProxySanitizer("$..key", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
                 new TestProxySanitizer("$..endpoint", requestUriRegex, sanitizedRequestUri, TestProxySanitizerType.URL),
-                new TestProxySanitizer("Content-Type", "(^multipart\\/form-data; boundary=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{2})",
-                        "multipart\\/form-data; boundary=BOUNDARY", TestProxySanitizerType.HEADER)
-        ));
+                new TestProxySanitizer("Content-Type",
+                    "(^multipart\\/form-data; boundary=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{2})",
+                    "multipart\\/form-data; boundary=BOUNDARY", TestProxySanitizerType.HEADER)));
     }
 
     private void addCustomMatchers() {
@@ -91,10 +86,9 @@ public abstract class ChatCompletionsClientTestBase extends TestProxyTestBase {
     }
 
     void getChatCompletionsFromOptionsRunner(Consumer<ChatCompletionsOptions> testRunner) {
-        List<ChatRequestMessage> chatMessages = Arrays.asList(
-            new ChatRequestSystemMessage("You are a helpful assistant."),
-            new ChatRequestUserMessage("What sort of clothing should I wear today in Berlin?\n")
-        );
+        List<ChatRequestMessage> chatMessages
+            = Arrays.asList(new ChatRequestSystemMessage("You are a helpful assistant."),
+                new ChatRequestUserMessage("What sort of clothing should I wear today in Berlin?\n"));
         ChatCompletionsOptions options = new ChatCompletionsOptions(chatMessages);
         testRunner.accept(options);
     }

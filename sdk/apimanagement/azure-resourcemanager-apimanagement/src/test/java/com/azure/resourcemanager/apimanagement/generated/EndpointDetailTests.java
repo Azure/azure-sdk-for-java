@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class EndpointDetailTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EndpointDetail model =
-            BinaryData.fromString("{\"port\":255809617,\"region\":\"hzic\"}").toObject(EndpointDetail.class);
+        EndpointDetail model
+            = BinaryData.fromString("{\"port\":255809617,\"region\":\"hzic\"}").toObject(EndpointDetail.class);
         Assertions.assertEquals(255809617, model.port());
         Assertions.assertEquals("hzic", model.region());
     }

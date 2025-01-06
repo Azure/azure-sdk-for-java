@@ -9,7 +9,6 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.securityinsights.fluent.models.EntityInner;
 import com.azure.resourcemanager.securityinsights.fluent.models.FileHashEntityProperties;
 import java.io.IOException;
 import java.util.Map;
@@ -18,11 +17,11 @@ import java.util.Map;
  * Represents a file hash entity.
  */
 @Immutable
-public final class FileHashEntity extends EntityInner {
+public final class FileHashEntity extends Entity {
     /*
      * The kind of the entity.
      */
-    private EntityKind kind = EntityKind.FILE_HASH;
+    private EntityKindEnum kind = EntityKindEnum.FILE_HASH;
 
     /*
      * FileHash entity properties
@@ -61,7 +60,7 @@ public final class FileHashEntity extends EntityInner {
      * @return the kind value.
      */
     @Override
-    public EntityKind kind() {
+    public EntityKindEnum kind() {
         return this.kind;
     }
 
@@ -200,7 +199,7 @@ public final class FileHashEntity extends EntityInner {
                 } else if ("systemData".equals(fieldName)) {
                     deserializedFileHashEntity.systemData = SystemData.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
-                    deserializedFileHashEntity.kind = EntityKind.fromString(reader.getString());
+                    deserializedFileHashEntity.kind = EntityKindEnum.fromString(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedFileHashEntity.innerProperties = FileHashEntityProperties.fromJson(reader);
                 } else {

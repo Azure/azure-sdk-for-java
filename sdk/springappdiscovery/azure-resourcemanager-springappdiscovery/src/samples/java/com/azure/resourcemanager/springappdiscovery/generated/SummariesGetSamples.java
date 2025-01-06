@@ -20,8 +20,9 @@ public final class SummariesGetSamples {
      */
     public static void
         summariesGetMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
-        manager.summaries().getWithResponse("rgspringbootdiscovery", "xxkzlvbihwxunadjcpjpjmghmhxrqyvghtpfps", "vjB",
-            com.azure.core.util.Context.NONE);
+        manager.summaries()
+            .getWithResponse("rgspringbootdiscovery", "xxkzlvbihwxunadjcpjpjmghmhxrqyvghtpfps", "vjB",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +37,8 @@ public final class SummariesGetSamples {
      */
     public static void
         summariesGetMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
-        manager.summaries().getWithResponse("rgspringbootdiscovery", "xxkzlvbihwxunadjcpjpjmghmhxrqyvghtpfps", "vjB",
-            com.azure.core.util.Context.NONE);
+        manager.summaries()
+            .getWithResponse("rgspringbootdiscovery", "xxkzlvbihwxunadjcpjpjmghmhxrqyvghtpfps", "vjB",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -81,13 +81,11 @@ public final class Providers<TProvider, TInstance> {
     }
 
     private String formatNoSpecificProviderErrorMessage(String selectedImplementation) {
-        return String.format("A request was made to use a specific "
-                + "%s but it wasn't found on the classpath. If you're using a dependency manager ensure you're "
-                + "including the dependency that provides the specific implementation. If you're including the "
-                + "specific implementation ensure that the %s service it supplies is being included in the "
-                + "'META-INF/services' file '%s'. The requested provider was: %s.",
-            providerClass.getSimpleName(), providerClass.getSimpleName(), providerClass.getName(),
-            selectedImplementation);
+        return "A request was made to use a specific " + providerClass.getSimpleName() + " but it wasn't found on the "
+            + "classpath. If you're using a dependency manager ensure you're including the dependency that provides "
+            + "the specific implementation. If you're including the specific implementation ensure that the "
+            + providerClass.getSimpleName() + " service it supplies is being included in the 'META-INF/services' file "
+            + "'" + providerClass.getName() + "'. The requested provider was: " + selectedImplementation + ".";
     }
 
     /**
@@ -105,7 +103,7 @@ public final class Providers<TProvider, TInstance> {
      * it returns are {@code null}.
      */
     public TInstance create(Function<TProvider, TInstance> createInstance, Supplier<TInstance> fallbackSupplier,
-                            Class<? extends TProvider> selectedImplementation) {
+        Class<? extends TProvider> selectedImplementation) {
         TProvider provider;
         String implementationName;
 
@@ -123,8 +121,8 @@ public final class Providers<TProvider, TInstance> {
                 return instance;
             }
         } else {
-            implementationName = selectedImplementation == null ? defaultImplementation
-                : selectedImplementation.getName();
+            implementationName
+                = selectedImplementation == null ? defaultImplementation : selectedImplementation.getName();
             provider = availableProviders.get(implementationName);
 
             if (provider == null) {

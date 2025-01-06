@@ -42,9 +42,7 @@ public final class FileSourceInternal implements JsonSerializable<FileSourceInte
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
-            .writeStringField("uri", uri)
-            .writeEndObject();
+        return jsonWriter.writeStartObject().writeStringField("uri", uri).writeEndObject();
     }
 
     /**

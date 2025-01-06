@@ -19,12 +19,20 @@ class EncryptionExtensionIdentifier {
     private static final String LINUX_ENCRYPTION_TYPE_NAME = "AzureDiskEncryptionForLinux";
     private static final String WINDOWS_ENCRYPTION_TYPE_NAME = "AzureDiskEncryption";
 
-    /** @return encryption extension publisher name */
+    /**
+     * Gets encryption extension publisher name.
+     *
+     * @return encryption extension publisher name
+     */
     static String publisherName() {
         return ENCRYPTION_EXTENSION_PUBLISHER;
     }
 
-    /** @return OS specific encryption extension type */
+    /**
+     * Gets OS specific encryption extension type.
+     *
+     * @return OS specific encryption extension type
+     */
     static String typeName(OperatingSystemTypes osType) {
         if (osType == OperatingSystemTypes.LINUX) {
             return LINUX_ENCRYPTION_TYPE_NAME;

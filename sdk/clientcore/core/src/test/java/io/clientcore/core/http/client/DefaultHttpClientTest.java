@@ -190,19 +190,19 @@ public class DefaultHttpClientTest {
         HttpHeaders headers = new HttpHeaders().set(singleValueHeaderName, singleValueHeaderValue)
             .set(multiValueHeaderName, multiValueHeaderValue);
 
-        try (Response<?> response = client.send(
-            new HttpRequest(HttpMethod.GET, uri(server, RETURN_HEADERS_AS_IS_PATH)).setHeaders(headers))) {
+        try (Response<?> response = client
+            .send(new HttpRequest(HttpMethod.GET, uri(server, RETURN_HEADERS_AS_IS_PATH)).setHeaders(headers))) {
             assertEquals(200, response.getStatusCode());
 
             HttpHeaders responseHeaders = response.getHeaders();
             HttpHeader singleValueHeader = responseHeaders.get(singleValueHeaderName);
 
-            assertEquals(singleValueHeaderName.getCaseSensitiveName(), singleValueHeader.getName().toString());
+            assertEquals(singleValueHeaderName.getCaseInsensitiveName(), singleValueHeader.getName().toString());
             assertEquals(singleValueHeaderValue, singleValueHeader.getValue());
 
             HttpHeader multiValueHeader = responseHeaders.get(multiValueHeaderName);
 
-            assertEquals(multiValueHeaderName.getCaseSensitiveName(), multiValueHeader.getName().toString());
+            assertEquals(multiValueHeaderName.getCaseInsensitiveName(), multiValueHeader.getName().toString());
             assertEquals(multiValueHeaderValue.size(), multiValueHeader.getValues().size());
             assertTrue(multiValueHeaderValue.containsAll(multiValueHeader.getValues()));
         }
@@ -232,7 +232,8 @@ public class DefaultHttpClientTest {
         String contentChunk = "abcdefgh";
         int repetitions = 1000;
         HttpRequest request = new HttpRequest(HttpMethod.POST, uri(server, "/shortPost"));
-        request.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentChunk.length() * (repetitions + 1)));
+        request.getHeaders()
+            .set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentChunk.length() * (repetitions + 1)));
         request.setBody(BinaryData.fromString(contentChunk));
 
         try (Response<?> response = client.send(request)) {
@@ -247,9 +248,7 @@ public class DefaultHttpClientTest {
         // Initialize the SSL context with a trust manager that trusts all certificates.
         sslContext.init(null, new TrustManager[] { new InsecureTrustManager() }, null);
 
-        HttpClient httpClient = new DefaultHttpClientBuilder()
-            .sslSocketFactory(sslContext.getSocketFactory())
-            .build();
+        HttpClient httpClient = new DefaultHttpClientBuilder().sslContext(sslContext).build();
 
         try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, httpsUri(server, "/short")))) {
             TestUtils.assertArraysEqual(SHORT_BODY, response.getBody().toBytes());

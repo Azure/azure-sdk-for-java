@@ -4,6 +4,8 @@
 
 package com.azure.analytics.purview.datamap.generated;
 
+import com.azure.core.util.BinaryData;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Disabled;
@@ -16,7 +18,7 @@ public final class EntityRemoveBusinessAttributeTests extends DataMapClientTestB
     public void testEntityRemoveBusinessAttributeTests() {
         // method invocation
         entityClient.removeBusinessMetadataAttributes("myBizMetaData1", "02c373fe-2823-4be3-97fa-55180a9faa06",
-            mapOf("bizAttr1", "bizAttr1"));
+            mapOf("bizAttr1", BinaryData.fromBytes("bizAttr1".getBytes(StandardCharsets.UTF_8))));
     }
 
     // Use "Map.of" if available

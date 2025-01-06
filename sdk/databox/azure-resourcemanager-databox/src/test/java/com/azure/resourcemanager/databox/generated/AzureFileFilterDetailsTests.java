@@ -12,26 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureFileFilterDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureFileFilterDetails model =
-            BinaryData
-                .fromString(
-                    "{\"filePrefixList\":[\"owgujjugwdkcglhs\"],\"filePathList\":[\"jdyggdtji\"],\"fileShareList\":[\"kuofqweykhme\"]}")
-                .toObject(AzureFileFilterDetails.class);
-        Assertions.assertEquals("owgujjugwdkcglhs", model.filePrefixList().get(0));
-        Assertions.assertEquals("jdyggdtji", model.filePathList().get(0));
-        Assertions.assertEquals("kuofqweykhme", model.fileShareList().get(0));
+        AzureFileFilterDetails model = BinaryData.fromString(
+            "{\"filePrefixList\":[\"jease\",\"pheoflokeyy\",\"enjbdlwtgrhp\",\"jp\"],\"filePathList\":[\"asxazjpqyegualhb\",\"xhejjzzvdud\",\"wdslfhotwmcy\",\"pwlbjnpg\"],\"fileShareList\":[\"tadehxnltyfsopp\",\"suesnzw\",\"ej\",\"avo\"]}")
+            .toObject(AzureFileFilterDetails.class);
+        Assertions.assertEquals("jease", model.filePrefixList().get(0));
+        Assertions.assertEquals("asxazjpqyegualhb", model.filePathList().get(0));
+        Assertions.assertEquals("tadehxnltyfsopp", model.fileShareList().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureFileFilterDetails model =
-            new AzureFileFilterDetails()
-                .withFilePrefixList(Arrays.asList("owgujjugwdkcglhs"))
-                .withFilePathList(Arrays.asList("jdyggdtji"))
-                .withFileShareList(Arrays.asList("kuofqweykhme"));
+        AzureFileFilterDetails model = new AzureFileFilterDetails()
+            .withFilePrefixList(Arrays.asList("jease", "pheoflokeyy", "enjbdlwtgrhp", "jp"))
+            .withFilePathList(Arrays.asList("asxazjpqyegualhb", "xhejjzzvdud", "wdslfhotwmcy", "pwlbjnpg"))
+            .withFileShareList(Arrays.asList("tadehxnltyfsopp", "suesnzw", "ej", "avo"));
         model = BinaryData.fromObject(model).toObject(AzureFileFilterDetails.class);
-        Assertions.assertEquals("owgujjugwdkcglhs", model.filePrefixList().get(0));
-        Assertions.assertEquals("jdyggdtji", model.filePathList().get(0));
-        Assertions.assertEquals("kuofqweykhme", model.fileShareList().get(0));
+        Assertions.assertEquals("jease", model.filePrefixList().get(0));
+        Assertions.assertEquals("asxazjpqyegualhb", model.filePathList().get(0));
+        Assertions.assertEquals("tadehxnltyfsopp", model.fileShareList().get(0));
     }
 }

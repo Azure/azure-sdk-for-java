@@ -13,24 +13,24 @@ public final class ClientInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClientInfo model = BinaryData.fromString(
-            "{\"email\":\"jfeusnh\",\"name\":\"je\",\"objectId\":\"68d5bf29-b172-4483-8492-cf3aeebd22ee\",\"userPrincipalName\":\"rl\"}")
+            "{\"email\":\"ypnddhsgcb\",\"name\":\"phejkotynqgoulz\",\"objectId\":\"e8d52ac3-8832-42e0-9085-4ca135c7369f\",\"userPrincipalName\":\"i\"}")
             .toObject(ClientInfo.class);
-        Assertions.assertEquals("jfeusnh", model.email());
-        Assertions.assertEquals("je", model.name());
-        Assertions.assertEquals(UUID.fromString("68d5bf29-b172-4483-8492-cf3aeebd22ee"), model.objectId());
-        Assertions.assertEquals("rl", model.userPrincipalName());
+        Assertions.assertEquals("ypnddhsgcb", model.email());
+        Assertions.assertEquals("phejkotynqgoulz", model.name());
+        Assertions.assertEquals(UUID.fromString("e8d52ac3-8832-42e0-9085-4ca135c7369f"), model.objectId());
+        Assertions.assertEquals("i", model.userPrincipalName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClientInfo model = new ClientInfo().withEmail("jfeusnh")
-            .withName("je")
-            .withObjectId(UUID.fromString("68d5bf29-b172-4483-8492-cf3aeebd22ee"))
-            .withUserPrincipalName("rl");
+        ClientInfo model = new ClientInfo().withEmail("ypnddhsgcb")
+            .withName("phejkotynqgoulz")
+            .withObjectId(UUID.fromString("e8d52ac3-8832-42e0-9085-4ca135c7369f"))
+            .withUserPrincipalName("i");
         model = BinaryData.fromObject(model).toObject(ClientInfo.class);
-        Assertions.assertEquals("jfeusnh", model.email());
-        Assertions.assertEquals("je", model.name());
-        Assertions.assertEquals(UUID.fromString("68d5bf29-b172-4483-8492-cf3aeebd22ee"), model.objectId());
-        Assertions.assertEquals("rl", model.userPrincipalName());
+        Assertions.assertEquals("ypnddhsgcb", model.email());
+        Assertions.assertEquals("phejkotynqgoulz", model.name());
+        Assertions.assertEquals(UUID.fromString("e8d52ac3-8832-42e0-9085-4ca135c7369f"), model.objectId());
+        Assertions.assertEquals("i", model.userPrincipalName());
     }
 }

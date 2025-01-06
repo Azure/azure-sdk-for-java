@@ -20,6 +20,28 @@ public final class LibraryResource extends SubResource {
      */
     private LibraryResourceProperties properties;
 
+    /*
+     * Resource Etag.
+     */
+    private String etag;
+
+    /*
+     * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+     */
+    private String type;
+
+    /*
+     * The name of the resource
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
+     * resourceType}/{resourceName}
+     */
+    private String id;
+
     /**
      * Creates an instance of LibraryResource class.
      */
@@ -44,6 +66,48 @@ public final class LibraryResource extends SubResource {
     public LibraryResource setProperties(LibraryResourceProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the etag property: Resource Etag.
+     * 
+     * @return the etag value.
+     */
+    @Override
+    public String getEtag() {
+        return this.etag;
+    }
+
+    /**
+     * Get the type property: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     * "Microsoft.Storage/storageAccounts".
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String getId() {
+        return this.id;
     }
 
     /**
@@ -73,13 +137,13 @@ public final class LibraryResource extends SubResource {
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedLibraryResource.setId(reader.getString());
+                    deserializedLibraryResource.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedLibraryResource.setName(reader.getString());
+                    deserializedLibraryResource.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedLibraryResource.setType(reader.getString());
+                    deserializedLibraryResource.type = reader.getString();
                 } else if ("etag".equals(fieldName)) {
-                    deserializedLibraryResource.setEtag(reader.getString());
+                    deserializedLibraryResource.etag = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedLibraryResource.properties = LibraryResourceProperties.fromJson(reader);
                 } else {

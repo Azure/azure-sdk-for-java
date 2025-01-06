@@ -5,30 +5,54 @@
 package com.azure.resourcemanager.timeseriesinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.timeseriesinsights.models.EventHubEventSourceCommonProperties;
 import com.azure.resourcemanager.timeseriesinsights.models.IngressStartAtType;
 import com.azure.resourcemanager.timeseriesinsights.models.LocalTimestamp;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.timeseriesinsights.models.ProvisioningState;
+import java.io.IOException;
+import java.time.OffsetDateTime;
 
-/** Properties of the EventHub event source that are required on create or update requests. */
+/**
+ * Properties of the EventHub event source that are required on create or update requests.
+ */
 @Fluent
 public final class EventHubEventSourceCreationProperties extends EventHubEventSourceCommonProperties {
     /*
      * The value of the shared access key that grants the Time Series Insights service read access to the event hub.
      * This property is not shown in event source responses.
      */
-    @JsonProperty(value = "sharedAccessKey", required = true)
     private String sharedAccessKey;
 
-    /** Creates an instance of EventHubEventSourceCreationProperties class. */
+    /*
+     * An object that contains the details about the starting point in time to ingest events.
+     */
+    private IngressStartAtProperties innerIngressStartAt;
+
+    /*
+     * The time the resource was created.
+     */
+    private OffsetDateTime creationTime;
+
+    /*
+     * Provisioning state of the resource.
+     */
+    private ProvisioningState provisioningState;
+
+    /**
+     * Creates an instance of EventHubEventSourceCreationProperties class.
+     */
     public EventHubEventSourceCreationProperties() {
     }
 
     /**
      * Get the sharedAccessKey property: The value of the shared access key that grants the Time Series Insights service
      * read access to the event hub. This property is not shown in event source responses.
-     *
+     * 
      * @return the sharedAccessKey value.
      */
     public String sharedAccessKey() {
@@ -38,7 +62,7 @@ public final class EventHubEventSourceCreationProperties extends EventHubEventSo
     /**
      * Set the sharedAccessKey property: The value of the shared access key that grants the Time Series Insights service
      * read access to the event hub. This property is not shown in event source responses.
-     *
+     * 
      * @param sharedAccessKey the sharedAccessKey value to set.
      * @return the EventHubEventSourceCreationProperties object itself.
      */
@@ -47,84 +71,263 @@ public final class EventHubEventSourceCreationProperties extends EventHubEventSo
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the innerIngressStartAt property: An object that contains the details about the starting point in time to
+     * ingest events.
+     * 
+     * @return the innerIngressStartAt value.
+     */
+    private IngressStartAtProperties innerIngressStartAt() {
+        return this.innerIngressStartAt;
+    }
+
+    /**
+     * Get the creationTime property: The time the resource was created.
+     * 
+     * @return the creationTime value.
+     */
+    @Override
+    public OffsetDateTime creationTime() {
+        return this.creationTime;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public ProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventHubEventSourceCreationProperties withServiceBusNamespace(String serviceBusNamespace) {
         super.withServiceBusNamespace(serviceBusNamespace);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventHubEventSourceCreationProperties withEventHubName(String eventHubName) {
         super.withEventHubName(eventHubName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventHubEventSourceCreationProperties withConsumerGroupName(String consumerGroupName) {
         super.withConsumerGroupName(consumerGroupName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventHubEventSourceCreationProperties withKeyName(String keyName) {
         super.withKeyName(keyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventHubEventSourceCreationProperties withEventSourceResourceId(String eventSourceResourceId) {
         super.withEventSourceResourceId(eventSourceResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventHubEventSourceCreationProperties withTimestampPropertyName(String timestampPropertyName) {
         super.withTimestampPropertyName(timestampPropertyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventHubEventSourceCreationProperties withLocalTimestamp(LocalTimestamp localTimestamp) {
         super.withLocalTimestamp(localTimestamp);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Get the type property: The type of the ingressStartAt, It can be "EarliestAvailable", "EventSourceCreationTime",
+     * "CustomEnqueuedTime".
+     * 
+     * @return the type value.
+     */
+    public IngressStartAtType type() {
+        return this.innerIngressStartAt() == null ? null : this.innerIngressStartAt().type();
+    }
+
+    /**
+     * Set the type property: The type of the ingressStartAt, It can be "EarliestAvailable", "EventSourceCreationTime",
+     * "CustomEnqueuedTime".
+     * 
+     * @param type the type value to set.
+     * @return the EventHubEventSourceCreationProperties object itself.
+     */
     public EventHubEventSourceCreationProperties withType(IngressStartAtType type) {
-        super.withType(type);
+        if (this.innerIngressStartAt() == null) {
+            this.innerIngressStartAt = new IngressStartAtProperties();
+        }
+        this.innerIngressStartAt().withType(type);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Get the time property: ISO8601 UTC datetime with seconds precision (milliseconds are optional), specifying the
+     * date and time that will be the starting point for Events to be consumed.
+     * 
+     * @return the time value.
+     */
+    public String time() {
+        return this.innerIngressStartAt() == null ? null : this.innerIngressStartAt().time();
+    }
+
+    /**
+     * Set the time property: ISO8601 UTC datetime with seconds precision (milliseconds are optional), specifying the
+     * date and time that will be the starting point for Events to be consumed.
+     * 
+     * @param time the time value to set.
+     * @return the EventHubEventSourceCreationProperties object itself.
+     */
     public EventHubEventSourceCreationProperties withTime(String time) {
-        super.withTime(time);
+        if (this.innerIngressStartAt() == null) {
+            this.innerIngressStartAt = new IngressStartAtProperties();
+        }
+        this.innerIngressStartAt().withTime(time);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (sharedAccessKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sharedAccessKey in model EventHubEventSourceCreationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sharedAccessKey in model EventHubEventSourceCreationProperties"));
+        }
+        if (localTimestamp() != null) {
+            localTimestamp().validate();
+        }
+        if (innerIngressStartAt() != null) {
+            innerIngressStartAt().validate();
+        }
+        if (eventSourceResourceId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property eventSourceResourceId in model EventHubEventSourceCreationProperties"));
+        }
+        if (serviceBusNamespace() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property serviceBusNamespace in model EventHubEventSourceCreationProperties"));
+        }
+        if (eventHubName() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property eventHubName in model EventHubEventSourceCreationProperties"));
+        }
+        if (consumerGroupName() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property consumerGroupName in model EventHubEventSourceCreationProperties"));
+        }
+        if (keyName() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property keyName in model EventHubEventSourceCreationProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EventHubEventSourceCreationProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("eventSourceResourceId", eventSourceResourceId());
+        jsonWriter.writeStringField("serviceBusNamespace", serviceBusNamespace());
+        jsonWriter.writeStringField("eventHubName", eventHubName());
+        jsonWriter.writeStringField("consumerGroupName", consumerGroupName());
+        jsonWriter.writeStringField("keyName", keyName());
+        jsonWriter.writeStringField("timestampPropertyName", timestampPropertyName());
+        jsonWriter.writeJsonField("localTimestamp", localTimestamp());
+        jsonWriter.writeJsonField("ingressStartAt", innerIngressStartAt());
+        jsonWriter.writeStringField("sharedAccessKey", this.sharedAccessKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventHubEventSourceCreationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventHubEventSourceCreationProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EventHubEventSourceCreationProperties.
+     */
+    public static EventHubEventSourceCreationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventHubEventSourceCreationProperties deserializedEventHubEventSourceCreationProperties
+                = new EventHubEventSourceCreationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("eventSourceResourceId".equals(fieldName)) {
+                    deserializedEventHubEventSourceCreationProperties.withEventSourceResourceId(reader.getString());
+                } else if ("serviceBusNamespace".equals(fieldName)) {
+                    deserializedEventHubEventSourceCreationProperties.withServiceBusNamespace(reader.getString());
+                } else if ("eventHubName".equals(fieldName)) {
+                    deserializedEventHubEventSourceCreationProperties.withEventHubName(reader.getString());
+                } else if ("consumerGroupName".equals(fieldName)) {
+                    deserializedEventHubEventSourceCreationProperties.withConsumerGroupName(reader.getString());
+                } else if ("keyName".equals(fieldName)) {
+                    deserializedEventHubEventSourceCreationProperties.withKeyName(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedEventHubEventSourceCreationProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedEventHubEventSourceCreationProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("timestampPropertyName".equals(fieldName)) {
+                    deserializedEventHubEventSourceCreationProperties.withTimestampPropertyName(reader.getString());
+                } else if ("localTimestamp".equals(fieldName)) {
+                    deserializedEventHubEventSourceCreationProperties
+                        .withLocalTimestamp(LocalTimestamp.fromJson(reader));
+                } else if ("ingressStartAt".equals(fieldName)) {
+                    deserializedEventHubEventSourceCreationProperties.innerIngressStartAt
+                        = IngressStartAtProperties.fromJson(reader);
+                } else if ("sharedAccessKey".equals(fieldName)) {
+                    deserializedEventHubEventSourceCreationProperties.sharedAccessKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventHubEventSourceCreationProperties;
+        });
+    }
 }

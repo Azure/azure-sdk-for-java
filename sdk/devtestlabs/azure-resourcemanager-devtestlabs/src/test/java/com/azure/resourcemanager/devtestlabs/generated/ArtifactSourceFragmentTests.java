@@ -13,17 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ArtifactSourceFragmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ArtifactSourceFragment model =
-            BinaryData
-                .fromString("{\"tags\":{\"lvithhqzonosgg\":\"zx\",\"ljuti\":\"hcohfwdsjnk\"}}")
+        ArtifactSourceFragment model
+            = BinaryData.fromString("{\"tags\":{\"lvithhqzonosgg\":\"zx\",\"ljuti\":\"hcohfwdsjnk\"}}")
                 .toObject(ArtifactSourceFragment.class);
         Assertions.assertEquals("zx", model.tags().get("lvithhqzonosgg"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArtifactSourceFragment model =
-            new ArtifactSourceFragment().withTags(mapOf("lvithhqzonosgg", "zx", "ljuti", "hcohfwdsjnk"));
+        ArtifactSourceFragment model
+            = new ArtifactSourceFragment().withTags(mapOf("lvithhqzonosgg", "zx", "ljuti", "hcohfwdsjnk"));
         model = BinaryData.fromObject(model).toObject(ArtifactSourceFragment.class);
         Assertions.assertEquals("zx", model.tags().get("lvithhqzonosgg"));
     }

@@ -50,20 +50,13 @@ public class CreateVirtualMachineWithTrustedLaunchFromGalleryImage {
         ResourceGroup resourceGroup = null;
         ResourceGroup newResourceGroup = null;
         try {
-            resourceGroup = azure.resourceGroups()
-                .define(rgName)
-                .withRegion(region)
-                .create();
-            newResourceGroup = azure.resourceGroups()
-                .define(newRgName)
-                .withRegion(newRegion)
-                .create();
+            resourceGroup = azure.resourceGroups().define(rgName).withRegion(region).create();
+            newResourceGroup = azure.resourceGroups().define(newRgName).withRegion(newRegion).create();
 
             //=============================================================
             // Create a managed virtual machine with TrustedLaunch from PIR image with two empty data disks
             final String trustedVmName = Utils.randomResourceName(azure, "vm", 15);
-            VirtualMachine trustedVMFromPirImage = azure
-                .virtualMachines()
+            VirtualMachine trustedVMFromPirImage = azure.virtualMachines()
                 .define(trustedVmName)
                 .withRegion(resourceGroup.region())
                 .withExistingResourceGroup(resourceGroup)
@@ -100,8 +93,7 @@ public class CreateVirtualMachineWithTrustedLaunchFromGalleryImage {
             //=============================================================
             // Create a gallery to hold gallery images
             final String galleryName = Utils.randomResourceName(azure, "jsim", 15);
-            Gallery gallery = azure
-                .galleries()
+            Gallery gallery = azure.galleries()
                 .define(galleryName)
                 .withRegion(Region.US_WEST_CENTRAL)
                 .withExistingResourceGroup(resourceGroup)
@@ -111,8 +103,7 @@ public class CreateVirtualMachineWithTrustedLaunchFromGalleryImage {
             //=============================================================
             // Create a gallery image in the gallery with hypervisor generation 2 and with TrustedLaunch feature
             final String galleryImageName = "SampleImages";
-            GalleryImage galleryImage = azure
-                .galleryImages()
+            GalleryImage galleryImage = azure.galleryImages()
                 .define(galleryImageName)
                 .withExistingGallery(gallery)
                 .withLocation(resourceGroup.region())
@@ -125,8 +116,7 @@ public class CreateVirtualMachineWithTrustedLaunchFromGalleryImage {
             //=============================================================
             // Create a gallery image version from the virtual machine custom image
             final String versionName = "0.0.1";
-            GalleryImageVersion imageVersion = azure
-                .galleryImageVersions()
+            GalleryImageVersion imageVersion = azure.galleryImageVersions()
                 .define(versionName)
                 .withExistingImage(resourceGroup.name(), gallery.name(), galleryImage.name())
                 .withLocation(resourceGroup.region())
@@ -137,24 +127,22 @@ public class CreateVirtualMachineWithTrustedLaunchFromGalleryImage {
             //=============================================================
             // Create a virtual machine with TrustedLaunch from the gallery image version
             final String vmFromImageName = Utils.randomResourceName(azure, "tlvm", 15);
-            VirtualMachine trustedVMFromGalleryImage =
-                azure
-                    .virtualMachines()
-                    .define(vmFromImageName)
-                    .withRegion(newRegion)
-                    .withExistingResourceGroup(newResourceGroup)
-                    .withNewPrimaryNetwork("10.0.1.0/28")
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withoutPrimaryPublicIPAddress()
-                    .withGeneralizedWindowsGalleryImageVersion(imageVersion.id())
-                    .withAdminUsername("jvuser")
-                    .withAdminPassword(Utils.password())
-                    .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
-                    // gallery images with 'TrustedLaunch` feature can only create VMs with 'TrustedLaunch' feature
-                    .withTrustedLaunch()
-                    .withSecureBoot()
-                    .withVTpm()
-                    .create();
+            VirtualMachine trustedVMFromGalleryImage = azure.virtualMachines()
+                .define(vmFromImageName)
+                .withRegion(newRegion)
+                .withExistingResourceGroup(newResourceGroup)
+                .withNewPrimaryNetwork("10.0.1.0/28")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
+                .withGeneralizedWindowsGalleryImageVersion(imageVersion.id())
+                .withAdminUsername("jvuser")
+                .withAdminPassword(Utils.password())
+                .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
+                // gallery images with 'TrustedLaunch` feature can only create VMs with 'TrustedLaunch' feature
+                .withTrustedLaunch()
+                .withSecureBoot()
+                .withVTpm()
+                .create();
             Utils.print(trustedVMFromGalleryImage);
 
             return true;
@@ -177,14 +165,10 @@ public class CreateVirtualMachineWithTrustedLaunchFromGalleryImage {
         virtualMachine.manager()
             .serviceClient()
             .getVirtualMachines()
-            .beginRunCommand(
-                virtualMachine.resourceGroupName(), virtualMachine.name(),
-                new RunCommandInput()
-                    .withCommandId("RunPowerShellScript")
-                    .withScript(Arrays.asList(
-                        "Remove-Item 'C:\\Windows\\Panther' -Recurse",
-                        "& $env:SystemRoot\\System32\\Sysprep\\Sysprep.exe /oobe /generalize /mode:vm /shutdown"
-                    )))
+            .beginRunCommand(virtualMachine.resourceGroupName(), virtualMachine.name(),
+                new RunCommandInput().withCommandId("RunPowerShellScript")
+                    .withScript(Arrays.asList("Remove-Item 'C:\\Windows\\Panther' -Recurse",
+                        "& $env:SystemRoot\\System32\\Sysprep\\Sysprep.exe /oobe /generalize /mode:vm /shutdown")))
             .waitForCompletion();
         System.out.println("De-provision finished");
     }
@@ -203,8 +187,7 @@ public class CreateVirtualMachineWithTrustedLaunchFromGalleryImage {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

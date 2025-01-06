@@ -15,11 +15,8 @@ import java.util.Set;
 
 /** Entry point for Local Network Gateway management API in Azure. */
 @Fluent
-public interface LocalNetworkGateway
-    extends GroupableResource<NetworkManager, LocalNetworkGatewayInner>,
-        Refreshable<LocalNetworkGateway>,
-        Updatable<LocalNetworkGateway.Update>,
-        UpdatableWithTags<LocalNetworkGateway> {
+public interface LocalNetworkGateway extends GroupableResource<NetworkManager, LocalNetworkGatewayInner>,
+    Refreshable<LocalNetworkGateway>, Updatable<LocalNetworkGateway.Update>, UpdatableWithTags<LocalNetworkGateway> {
 
     // Getters
 
@@ -36,11 +33,8 @@ public interface LocalNetworkGateway
     String provisioningState();
 
     /** The entirety of the local network gateway definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithIPAddress,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithIPAddress,
+        DefinitionStages.WithCreate {
     }
 
     /** Grouping of local network gateway definition stages. */
@@ -94,11 +88,8 @@ public interface LocalNetworkGateway
          * The stage of the local network gateway definition which contains all the minimum required inputs for the
          * resource to be created (via {@link WithCreate#create()}).
          */
-        interface WithCreate
-            extends Creatable<LocalNetworkGateway>,
-                Resource.DefinitionWithTags<WithCreate>,
-                DefinitionStages.WithAddressSpace,
-                DefinitionStages.WithBgp {
+        interface WithCreate extends Creatable<LocalNetworkGateway>, Resource.DefinitionWithTags<WithCreate>,
+            DefinitionStages.WithAddressSpace, DefinitionStages.WithBgp {
         }
     }
 
@@ -156,11 +147,7 @@ public interface LocalNetworkGateway
     }
 
     /** The template for a local network gateway update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<LocalNetworkGateway>,
-            Resource.UpdateWithTags<Update>,
-            UpdateStages.WithIPAddress,
-            UpdateStages.WithAddressSpace,
-            UpdateStages.WithBgp {
+    interface Update extends Appliable<LocalNetworkGateway>, Resource.UpdateWithTags<Update>,
+        UpdateStages.WithIPAddress, UpdateStages.WithAddressSpace, UpdateStages.WithBgp {
     }
 }

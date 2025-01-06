@@ -22,21 +22,18 @@ public final class SapLandscapeMonitorsImpl implements SapLandscapeMonitors {
 
     private final com.azure.resourcemanager.workloads.WorkloadsManager serviceManager;
 
-    public SapLandscapeMonitorsImpl(
-        SapLandscapeMonitorsClient innerClient, com.azure.resourcemanager.workloads.WorkloadsManager serviceManager) {
+    public SapLandscapeMonitorsImpl(SapLandscapeMonitorsClient innerClient,
+        com.azure.resourcemanager.workloads.WorkloadsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<SapLandscapeMonitor> getWithResponse(
-        String resourceGroupName, String monitorName, Context context) {
-        Response<SapLandscapeMonitorInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, monitorName, context);
+    public Response<SapLandscapeMonitor> getWithResponse(String resourceGroupName, String monitorName,
+        Context context) {
+        Response<SapLandscapeMonitorInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, monitorName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SapLandscapeMonitorImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -52,30 +49,22 @@ public final class SapLandscapeMonitorsImpl implements SapLandscapeMonitors {
         }
     }
 
-    public Response<SapLandscapeMonitor> createWithResponse(
-        String resourceGroupName,
-        String monitorName,
-        SapLandscapeMonitorInner sapLandscapeMonitorParameter,
-        Context context) {
-        Response<SapLandscapeMonitorInner> inner =
-            this
-                .serviceClient()
-                .createWithResponse(resourceGroupName, monitorName, sapLandscapeMonitorParameter, context);
+    public Response<SapLandscapeMonitor> createWithResponse(String resourceGroupName, String monitorName,
+        SapLandscapeMonitorInner sapLandscapeMonitorParameter, Context context) {
+        Response<SapLandscapeMonitorInner> inner = this.serviceClient()
+            .createWithResponse(resourceGroupName, monitorName, sapLandscapeMonitorParameter, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SapLandscapeMonitorImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public SapLandscapeMonitor create(
-        String resourceGroupName, String monitorName, SapLandscapeMonitorInner sapLandscapeMonitorParameter) {
-        SapLandscapeMonitorInner inner =
-            this.serviceClient().create(resourceGroupName, monitorName, sapLandscapeMonitorParameter);
+    public SapLandscapeMonitor create(String resourceGroupName, String monitorName,
+        SapLandscapeMonitorInner sapLandscapeMonitorParameter) {
+        SapLandscapeMonitorInner inner
+            = this.serviceClient().create(resourceGroupName, monitorName, sapLandscapeMonitorParameter);
         if (inner != null) {
             return new SapLandscapeMonitorImpl(inner, this.manager());
         } else {
@@ -83,8 +72,8 @@ public final class SapLandscapeMonitorsImpl implements SapLandscapeMonitors {
         }
     }
 
-    public Response<Void> deleteByResourceGroupWithResponse(
-        String resourceGroupName, String monitorName, Context context) {
+    public Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String monitorName,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, monitorName, context);
     }
 
@@ -92,30 +81,22 @@ public final class SapLandscapeMonitorsImpl implements SapLandscapeMonitors {
         this.serviceClient().delete(resourceGroupName, monitorName);
     }
 
-    public Response<SapLandscapeMonitor> updateWithResponse(
-        String resourceGroupName,
-        String monitorName,
-        SapLandscapeMonitorInner sapLandscapeMonitorParameter,
-        Context context) {
-        Response<SapLandscapeMonitorInner> inner =
-            this
-                .serviceClient()
-                .updateWithResponse(resourceGroupName, monitorName, sapLandscapeMonitorParameter, context);
+    public Response<SapLandscapeMonitor> updateWithResponse(String resourceGroupName, String monitorName,
+        SapLandscapeMonitorInner sapLandscapeMonitorParameter, Context context) {
+        Response<SapLandscapeMonitorInner> inner = this.serviceClient()
+            .updateWithResponse(resourceGroupName, monitorName, sapLandscapeMonitorParameter, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SapLandscapeMonitorImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public SapLandscapeMonitor update(
-        String resourceGroupName, String monitorName, SapLandscapeMonitorInner sapLandscapeMonitorParameter) {
-        SapLandscapeMonitorInner inner =
-            this.serviceClient().update(resourceGroupName, monitorName, sapLandscapeMonitorParameter);
+    public SapLandscapeMonitor update(String resourceGroupName, String monitorName,
+        SapLandscapeMonitorInner sapLandscapeMonitorParameter) {
+        SapLandscapeMonitorInner inner
+            = this.serviceClient().update(resourceGroupName, monitorName, sapLandscapeMonitorParameter);
         if (inner != null) {
             return new SapLandscapeMonitorImpl(inner, this.manager());
         } else {
@@ -123,15 +104,12 @@ public final class SapLandscapeMonitorsImpl implements SapLandscapeMonitors {
         }
     }
 
-    public Response<SapLandscapeMonitorListResult> listWithResponse(
-        String resourceGroupName, String monitorName, Context context) {
-        Response<SapLandscapeMonitorListResultInner> inner =
-            this.serviceClient().listWithResponse(resourceGroupName, monitorName, context);
+    public Response<SapLandscapeMonitorListResult> listWithResponse(String resourceGroupName, String monitorName,
+        Context context) {
+        Response<SapLandscapeMonitorListResultInner> inner
+            = this.serviceClient().listWithResponse(resourceGroupName, monitorName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SapLandscapeMonitorListResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;

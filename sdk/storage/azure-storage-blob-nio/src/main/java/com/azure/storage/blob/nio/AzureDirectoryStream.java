@@ -81,8 +81,8 @@ public final class AzureDirectoryStream implements DirectoryStream<Path> {
             directoryPaths = new HashSet<>();
 
             BlobContainerClient containerClient;
-            ListBlobsOptions listOptions = new ListBlobsOptions()
-                .setDetails(new BlobListDetails().setRetrieveMetadata(true));
+            ListBlobsOptions listOptions
+                = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveMetadata(true));
             if (path.isRoot()) {
                 String containerName = path.toString().substring(0, path.toString().length() - 1);
                 AzureFileSystem afs = ((AzureFileSystem) path.getFileSystem());
@@ -92,8 +92,8 @@ public final class AzureDirectoryStream implements DirectoryStream<Path> {
                 listOptions.setPrefix(azureResource.getBlobClient().getBlobName() + AzureFileSystem.PATH_SEPARATOR);
                 containerClient = azureResource.getContainerClient();
             }
-            this.blobIterator = containerClient
-                .listBlobsByHierarchy(AzureFileSystem.PATH_SEPARATOR, listOptions, null).iterator();
+            this.blobIterator
+                = containerClient.listBlobsByHierarchy(AzureFileSystem.PATH_SEPARATOR, listOptions, null).iterator();
         }
 
         @Override
@@ -152,8 +152,7 @@ public final class AzureDirectoryStream implements DirectoryStream<Path> {
             we relativize to remove it.
              */
             String blobName = blobItem.getName();
-            Path relativeResult = this.withoutRoot.relativize(
-                this.path.getFileSystem().getPath(blobName));
+            Path relativeResult = this.withoutRoot.relativize(this.path.getFileSystem().getPath(blobName));
 
             // Resolve the cleaned list result against the original path for the final result.
             return this.path.resolve(relativeResult);

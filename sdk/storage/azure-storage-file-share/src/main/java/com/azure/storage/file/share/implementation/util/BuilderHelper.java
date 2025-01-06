@@ -64,8 +64,8 @@ public final class BuilderHelper {
         CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
     }
 
-    private static final Pattern IP_URL_PATTERN = Pattern
-        .compile("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}|localhost");
+    private static final Pattern IP_URL_PATTERN
+        = Pattern.compile("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}|localhost");
 
     /**
      * Constructs a {@link HttpPipeline} from values passed from a builder.
@@ -93,8 +93,8 @@ public final class BuilderHelper {
         List<HttpPipelinePolicy> perRetryPolicies, Configuration configuration, ShareAudience audience,
         ClientLogger logger) {
 
-        CredentialValidator.validateSingleCredentialIsPresent(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken, logger);
+        CredentialValidator.validateSingleCredentialIsPresent(storageSharedKeyCredential, tokenCredential,
+            azureSasCredential, sasToken, logger);
 
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -118,18 +118,19 @@ public final class BuilderHelper {
 
         HttpPipelinePolicy credentialPolicy;
         if (storageSharedKeyCredential != null) {
-            credentialPolicy =  new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
+            credentialPolicy = new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
         } else if (tokenCredential != null) {
             httpsValidation(tokenCredential, "bearer token", endpoint, logger);
-            String scope = audience != null ? ((audience.toString().endsWith("/")
-                ? audience + ".default" : audience + "/.default")) : Constants.STORAGE_SCOPE;
-            credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential, scope);
+            String scope = audience != null
+                ? ((audience.toString().endsWith("/") ? audience + ".default" : audience + "/.default"))
+                : Constants.STORAGE_SCOPE;
+            credentialPolicy = new BearerTokenAuthenticationPolicy(tokenCredential, scope);
         } else if (azureSasCredential != null) {
             credentialPolicy = new AzureSasCredentialPolicy(azureSasCredential, false);
         } else if (sasToken != null) {
             credentialPolicy = new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false);
         } else {
-            credentialPolicy =  null;
+            credentialPolicy = null;
         }
 
         if (credentialPolicy != null) {
@@ -146,8 +147,7 @@ public final class BuilderHelper {
 
         policies.add(new ScrubEtagPolicy());
 
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .clientOptions(clientOptions)
             .tracer(createTracer(clientOptions))
@@ -188,9 +188,7 @@ public final class BuilderHelper {
      * @return The {@link ResponseValidationPolicyBuilder.ResponseValidationPolicy} for the module.
      */
     private static HttpPipelinePolicy getResponseValidationPolicy() {
-        return new ResponseValidationPolicyBuilder()
-            .addOptionalEcho(HttpHeaderName.X_MS_CLIENT_REQUEST_ID)
-            .build();
+        return new ResponseValidationPolicyBuilder().addOptionalEcho(HttpHeaderName.X_MS_CLIENT_REQUEST_ID).build();
     }
 
     /**
@@ -236,8 +234,8 @@ public final class BuilderHelper {
      */
     public static void httpsValidation(Object objectToCheck, String objectName, String endpoint, ClientLogger logger) {
         if (objectToCheck != null && !parseEndpoint(endpoint, logger).getScheme().equals(Constants.HTTPS)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "Using a(n) " + objectName + " requires https"));
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException("Using a(n) " + objectName + " requires https"));
         }
     }
 
@@ -296,8 +294,8 @@ public final class BuilderHelper {
             }
 
             // Attempt to get the SAS token from the URL passed
-            String sasToken = new CommonSasQueryParameters(
-                SasImplUtils.parseQueryString(url.getQuery()), false).encode();
+            String sasToken
+                = new CommonSasQueryParameters(SasImplUtils.parseQueryString(url.getQuery()), false).encode();
             if (!CoreUtils.isNullOrEmpty(sasToken)) {
                 parts.setSasToken(sasToken);
             }
@@ -317,7 +315,7 @@ public final class BuilderHelper {
      * @return Whether the authority is IP style.
      */
     public static boolean determineAuthorityIsIpStyle(String authority) throws MalformedURLException {
-        return new URL("http://" +  authority).getPort() != -1;
+        return new URL("http://" + authority).getPort() != -1;
     }
 
     /**

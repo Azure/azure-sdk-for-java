@@ -5,32 +5,39 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.providerhub.fluent.models.NotificationRegistrationInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The NotificationRegistrationArrayResponseWithContinuation model. */
+/**
+ * The NotificationRegistrationArrayResponseWithContinuation model.
+ */
 @Fluent
-public final class NotificationRegistrationArrayResponseWithContinuation {
+public final class NotificationRegistrationArrayResponseWithContinuation
+    implements JsonSerializable<NotificationRegistrationArrayResponseWithContinuation> {
     /*
      * The value property.
      */
-    @JsonProperty(value = "value")
     private List<NotificationRegistrationInner> value;
 
     /*
      * The URL to get to the next set of results, if there are any.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of NotificationRegistrationArrayResponseWithContinuation class. */
+    /**
+     * Creates an instance of NotificationRegistrationArrayResponseWithContinuation class.
+     */
     public NotificationRegistrationArrayResponseWithContinuation() {
     }
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public List<NotificationRegistrationInner> value() {
@@ -39,7 +46,7 @@ public final class NotificationRegistrationArrayResponseWithContinuation {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the NotificationRegistrationArrayResponseWithContinuation object itself.
      */
@@ -50,7 +57,7 @@ public final class NotificationRegistrationArrayResponseWithContinuation {
 
     /**
      * Get the nextLink property: The URL to get to the next set of results, if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +66,7 @@ public final class NotificationRegistrationArrayResponseWithContinuation {
 
     /**
      * Set the nextLink property: The URL to get to the next set of results, if there are any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the NotificationRegistrationArrayResponseWithContinuation object itself.
      */
@@ -70,12 +77,55 @@ public final class NotificationRegistrationArrayResponseWithContinuation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NotificationRegistrationArrayResponseWithContinuation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NotificationRegistrationArrayResponseWithContinuation if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NotificationRegistrationArrayResponseWithContinuation.
+     */
+    public static NotificationRegistrationArrayResponseWithContinuation fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            NotificationRegistrationArrayResponseWithContinuation deserializedNotificationRegistrationArrayResponseWithContinuation
+                = new NotificationRegistrationArrayResponseWithContinuation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<NotificationRegistrationInner> value
+                        = reader.readArray(reader1 -> NotificationRegistrationInner.fromJson(reader1));
+                    deserializedNotificationRegistrationArrayResponseWithContinuation.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedNotificationRegistrationArrayResponseWithContinuation.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNotificationRegistrationArrayResponseWithContinuation;
+        });
     }
 }

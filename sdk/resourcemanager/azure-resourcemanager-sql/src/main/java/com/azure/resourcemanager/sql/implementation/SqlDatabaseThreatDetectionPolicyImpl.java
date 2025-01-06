@@ -22,22 +22,18 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /** Implementation for SQL database threat detection policy. */
-public class SqlDatabaseThreatDetectionPolicyImpl
-    extends ExternalChildResourceImpl<
-        SqlDatabaseThreatDetectionPolicy, DatabaseSecurityAlertPolicyInner, SqlDatabaseImpl, SqlDatabase>
+public class SqlDatabaseThreatDetectionPolicyImpl extends
+    ExternalChildResourceImpl<SqlDatabaseThreatDetectionPolicy, DatabaseSecurityAlertPolicyInner, SqlDatabaseImpl, SqlDatabase>
     implements SqlDatabaseThreatDetectionPolicy,
-        SqlDatabaseThreatDetectionPolicy.SqlDatabaseThreatDetectionPolicyDefinition,
-        SqlDatabaseThreatDetectionPolicy.Update {
+    SqlDatabaseThreatDetectionPolicy.SqlDatabaseThreatDetectionPolicyDefinition,
+    SqlDatabaseThreatDetectionPolicy.Update {
     private SqlServerManager sqlServerManager;
     private String resourceGroupName;
     private String sqlServerName;
     private String policyName;
 
-    protected SqlDatabaseThreatDetectionPolicyImpl(
-        String name,
-        SqlDatabaseImpl parent,
-        DatabaseSecurityAlertPolicyInner innerObject,
-        SqlServerManager sqlServerManager) {
+    protected SqlDatabaseThreatDetectionPolicyImpl(String name, SqlDatabaseImpl parent,
+        DatabaseSecurityAlertPolicyInner innerObject, SqlServerManager sqlServerManager) {
         super(name, parent, innerObject);
         Objects.requireNonNull(parent);
         Objects.requireNonNull(innerObject);
@@ -75,7 +71,9 @@ public class SqlDatabaseThreatDetectionPolicyImpl
 
     @Override
     public SecurityAlertPolicyState currentState() {
-        return this.innerModel().state() == null ? null : SecurityAlertPolicyState.fromString(this.innerModel().state().toString());
+        return this.innerModel().state() == null
+            ? null
+            : SecurityAlertPolicyState.fromString(this.innerModel().state().toString());
     }
 
     @Override
@@ -137,33 +135,24 @@ public class SqlDatabaseThreatDetectionPolicyImpl
 
     @Override
     protected Mono<DatabaseSecurityAlertPolicyInner> getInnerAsync() {
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getDatabaseSecurityAlertPolicies()
-            .getAsync(
-                this.resourceGroupName, this.sqlServerName, this.parent().name(), SecurityAlertPolicyName.fromString(this.name()));
+            .getAsync(this.resourceGroupName, this.sqlServerName, this.parent().name(),
+                SecurityAlertPolicyName.fromString(this.name()));
     }
 
     @Override
     public Mono<SqlDatabaseThreatDetectionPolicy> createResourceAsync() {
         final SqlDatabaseThreatDetectionPolicyImpl self = this;
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getDatabaseSecurityAlertPolicies()
-            .createOrUpdateAsync(
-                this.resourceGroupName,
-                this.sqlServerName,
-                this.parent().name(),
-                SecurityAlertPolicyName.fromString(this.policyName),
-                this.innerModel())
-            .map(
-                databaseSecurityAlertPolicyInner -> {
-                    self.setInner(databaseSecurityAlertPolicyInner);
-                    this.policyName = databaseSecurityAlertPolicyInner.name();
-                    return self;
-                });
+            .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.parent().name(),
+                SecurityAlertPolicyName.fromString(this.policyName), this.innerModel())
+            .map(databaseSecurityAlertPolicyInner -> {
+                self.setInner(databaseSecurityAlertPolicyInner);
+                this.policyName = databaseSecurityAlertPolicyInner.name();
+                return self;
+            });
     }
 
     @Override
@@ -214,7 +203,8 @@ public class SqlDatabaseThreatDetectionPolicyImpl
     @Override
     public SqlDatabaseThreatDetectionPolicyImpl withAlertsFilter(String alertsFilter) {
         if (alertsFilter != null) {
-            this.innerModel().withDisabledAlerts(Stream.of(alertsFilter.split(Pattern.quote(";"))).collect(Collectors.toList()));
+            this.innerModel()
+                .withDisabledAlerts(Stream.of(alertsFilter.split(Pattern.quote(";"))).collect(Collectors.toList()));
         }
         return this;
     }
@@ -230,7 +220,8 @@ public class SqlDatabaseThreatDetectionPolicyImpl
     @Override
     public SqlDatabaseThreatDetectionPolicyImpl withEmailAddresses(String addresses) {
         if (addresses != null) {
-            this.innerModel().withEmailAddresses(Stream.of(addresses.split(Pattern.quote(";"))).collect(Collectors.toList()));
+            this.innerModel()
+                .withEmailAddresses(Stream.of(addresses.split(Pattern.quote(";"))).collect(Collectors.toList()));
         }
         return this;
     }

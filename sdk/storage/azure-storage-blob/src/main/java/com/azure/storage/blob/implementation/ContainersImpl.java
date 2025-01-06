@@ -50,6 +50,7 @@ import com.azure.storage.blob.implementation.models.FilterBlobSegment;
 import com.azure.storage.blob.implementation.models.FilterBlobsIncludeItem;
 import com.azure.storage.blob.implementation.models.ListBlobsFlatSegmentResponse;
 import com.azure.storage.blob.implementation.models.ListBlobsHierarchySegmentResponse;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.ListBlobsIncludeItem;
@@ -63,7 +64,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import com.azure.storage.blob.implementation.util.ModelHelper;
 
 /**
  * An instance of this class provides access to all the operations defined in Containers.
@@ -963,23 +963,9 @@ public final class ContainersImpl {
     public Mono<ResponseBase<ContainersCreateHeaders, Void>> createWithResponseAsync(String containerName,
         Integer timeout, Map<String, String> metadata, PublicAccessType access, String requestId,
         BlobContainerEncryptionScope blobContainerEncryptionScope) {
-        final String restype = "container";
-        final String accept = "application/xml";
-        String defaultEncryptionScopeInternal = null;
-        if (blobContainerEncryptionScope != null) {
-            defaultEncryptionScopeInternal = blobContainerEncryptionScope.getDefaultEncryptionScope();
-        }
-        String defaultEncryptionScope = defaultEncryptionScopeInternal;
-        Boolean encryptionScopeOverridePreventedInternal = null;
-        if (blobContainerEncryptionScope != null) {
-            encryptionScopeOverridePreventedInternal
-                = blobContainerEncryptionScope.isEncryptionScopeOverridePrevented();
-        }
-        Boolean encryptionScopeOverridePrevented = encryptionScopeOverridePreventedInternal;
         return FluxUtil
-            .withContext(context -> service.create(this.client.getUrl(), containerName, restype, timeout, metadata,
-                access, this.client.getVersion(), requestId, defaultEncryptionScope, encryptionScopeOverridePrevented,
-                accept, context))
+            .withContext(context -> createWithResponseAsync(containerName, timeout, metadata, access, requestId,
+                blobContainerEncryptionScope, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1058,8 +1044,8 @@ public final class ContainersImpl {
         PublicAccessType access, String requestId, BlobContainerEncryptionScope blobContainerEncryptionScope) {
         return createWithResponseAsync(containerName, timeout, metadata, access, requestId,
             blobContainerEncryptionScope)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1092,8 +1078,8 @@ public final class ContainersImpl {
         Context context) {
         return createWithResponseAsync(containerName, timeout, metadata, access, requestId,
             blobContainerEncryptionScope, context)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1123,23 +1109,9 @@ public final class ContainersImpl {
     public Mono<Response<Void>> createNoCustomHeadersWithResponseAsync(String containerName, Integer timeout,
         Map<String, String> metadata, PublicAccessType access, String requestId,
         BlobContainerEncryptionScope blobContainerEncryptionScope) {
-        final String restype = "container";
-        final String accept = "application/xml";
-        String defaultEncryptionScopeInternal = null;
-        if (blobContainerEncryptionScope != null) {
-            defaultEncryptionScopeInternal = blobContainerEncryptionScope.getDefaultEncryptionScope();
-        }
-        String defaultEncryptionScope = defaultEncryptionScopeInternal;
-        Boolean encryptionScopeOverridePreventedInternal = null;
-        if (blobContainerEncryptionScope != null) {
-            encryptionScopeOverridePreventedInternal
-                = blobContainerEncryptionScope.isEncryptionScopeOverridePrevented();
-        }
-        Boolean encryptionScopeOverridePrevented = encryptionScopeOverridePreventedInternal;
         return FluxUtil
-            .withContext(context -> service.createNoCustomHeaders(this.client.getUrl(), containerName, restype, timeout,
-                metadata, access, this.client.getVersion(), requestId, defaultEncryptionScope,
-                encryptionScopeOverridePrevented, accept, context))
+            .withContext(context -> createNoCustomHeadersWithResponseAsync(containerName, timeout, metadata, access,
+                requestId, blobContainerEncryptionScope, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1339,11 +1311,8 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ContainersGetPropertiesHeaders, Void>> getPropertiesWithResponseAsync(String containerName,
         Integer timeout, String leaseId, String requestId) {
-        final String restype = "container";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.getProperties(this.client.getUrl(), containerName, restype, timeout,
-                leaseId, this.client.getVersion(), requestId, accept, context))
+            .withContext(context -> getPropertiesWithResponseAsync(containerName, timeout, leaseId, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1442,11 +1411,9 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getPropertiesNoCustomHeadersWithResponseAsync(String containerName, Integer timeout,
         String leaseId, String requestId) {
-        final String restype = "container";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.getPropertiesNoCustomHeaders(this.client.getUrl(), containerName, restype,
-                timeout, leaseId, this.client.getVersion(), requestId, accept, context))
+            .withContext(context -> getPropertiesNoCustomHeadersWithResponseAsync(containerName, timeout, leaseId,
+                requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1582,15 +1549,10 @@ public final class ContainersImpl {
     public Mono<ResponseBase<ContainersDeleteHeaders, Void>> deleteWithResponseAsync(String containerName,
         Integer timeout, String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
         String requestId) {
-        final String restype = "container";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return FluxUtil.withContext(context -> service.delete(this.client.getUrl(), containerName, restype, timeout,
-            leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId, accept,
-            context)).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
+        return FluxUtil
+            .withContext(context -> deleteWithResponseAsync(containerName, timeout, leaseId, ifModifiedSince,
+                ifUnmodifiedSince, requestId, context))
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1684,7 +1646,7 @@ public final class ContainersImpl {
         OffsetDateTime ifUnmodifiedSince, String requestId, Context context) {
         return deleteWithResponseAsync(containerName, timeout, leaseId, ifModifiedSince, ifUnmodifiedSince, requestId,
             context).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1710,16 +1672,9 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteNoCustomHeadersWithResponseAsync(String containerName, Integer timeout,
         String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
-        final String restype = "container";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.deleteNoCustomHeaders(this.client.getUrl(), containerName, restype, timeout,
-                leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId,
-                accept, context))
+            .withContext(context -> deleteNoCustomHeadersWithResponseAsync(containerName, timeout, leaseId,
+                ifModifiedSince, ifUnmodifiedSince, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1891,14 +1846,9 @@ public final class ContainersImpl {
     public Mono<ResponseBase<ContainersSetMetadataHeaders, Void>> setMetadataWithResponseAsync(String containerName,
         Integer timeout, String leaseId, Map<String, String> metadata, OffsetDateTime ifModifiedSince,
         String requestId) {
-        final String restype = "container";
-        final String comp = "metadata";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         return FluxUtil
-            .withContext(context -> service.setMetadata(this.client.getUrl(), containerName, restype, comp, timeout,
-                leaseId, metadata, ifModifiedSinceConverted, this.client.getVersion(), requestId, accept, context))
+            .withContext(context -> setMetadataWithResponseAsync(containerName, timeout, leaseId, metadata,
+                ifModifiedSince, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2001,7 +1951,7 @@ public final class ContainersImpl {
         Map<String, String> metadata, OffsetDateTime ifModifiedSince, String requestId, Context context) {
         return setMetadataWithResponseAsync(containerName, timeout, leaseId, metadata, ifModifiedSince, requestId,
             context).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2030,15 +1980,9 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setMetadataNoCustomHeadersWithResponseAsync(String containerName, Integer timeout,
         String leaseId, Map<String, String> metadata, OffsetDateTime ifModifiedSince, String requestId) {
-        final String restype = "container";
-        final String comp = "metadata";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         return FluxUtil
-            .withContext(context -> service.setMetadataNoCustomHeaders(this.client.getUrl(), containerName, restype,
-                comp, timeout, leaseId, metadata, ifModifiedSinceConverted, this.client.getVersion(), requestId, accept,
-                context))
+            .withContext(context -> setMetadataNoCustomHeadersWithResponseAsync(containerName, timeout, leaseId,
+                metadata, ifModifiedSince, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2210,12 +2154,9 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ContainersGetAccessPolicyHeaders, BlobSignedIdentifierWrapper>>
         getAccessPolicyWithResponseAsync(String containerName, Integer timeout, String leaseId, String requestId) {
-        final String restype = "container";
-        final String comp = "acl";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.getAccessPolicy(this.client.getUrl(), containerName, restype, comp, timeout,
-                leaseId, this.client.getVersion(), requestId, accept, context))
+            .withContext(
+                context -> getAccessPolicyWithResponseAsync(containerName, timeout, leaseId, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2319,12 +2260,9 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlobSignedIdentifierWrapper>> getAccessPolicyNoCustomHeadersWithResponseAsync(
         String containerName, Integer timeout, String leaseId, String requestId) {
-        final String restype = "container";
-        final String comp = "acl";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.getAccessPolicyNoCustomHeaders(this.client.getUrl(), containerName, restype,
-                comp, timeout, leaseId, this.client.getVersion(), requestId, accept, context))
+            .withContext(context -> getAccessPolicyNoCustomHeadersWithResponseAsync(containerName, timeout, leaseId,
+                requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2472,18 +2410,9 @@ public final class ContainersImpl {
     public Mono<ResponseBase<ContainersSetAccessPolicyHeaders, Void>> setAccessPolicyWithResponseAsync(
         String containerName, Integer timeout, String leaseId, PublicAccessType access, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String requestId, List<BlobSignedIdentifier> containerAcl) {
-        final String restype = "container";
-        final String comp = "acl";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        BlobSignedIdentifierWrapper containerAclConverted = new BlobSignedIdentifierWrapper(containerAcl);
         return FluxUtil
-            .withContext(context -> service.setAccessPolicy(this.client.getUrl(), containerName, restype, comp, timeout,
-                leaseId, access, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(),
-                requestId, containerAclConverted, accept, context))
+            .withContext(context -> setAccessPolicyWithResponseAsync(containerName, timeout, leaseId, access,
+                ifModifiedSince, ifUnmodifiedSince, requestId, containerAcl, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2557,8 +2486,8 @@ public final class ContainersImpl {
         List<BlobSignedIdentifier> containerAcl) {
         return setAccessPolicyWithResponseAsync(containerName, timeout, leaseId, access, ifModifiedSince,
             ifUnmodifiedSince, requestId, containerAcl)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2590,8 +2519,8 @@ public final class ContainersImpl {
         List<BlobSignedIdentifier> containerAcl, Context context) {
         return setAccessPolicyWithResponseAsync(containerName, timeout, leaseId, access, ifModifiedSince,
             ifUnmodifiedSince, requestId, containerAcl, context)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2620,18 +2549,9 @@ public final class ContainersImpl {
     public Mono<Response<Void>> setAccessPolicyNoCustomHeadersWithResponseAsync(String containerName, Integer timeout,
         String leaseId, PublicAccessType access, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
         String requestId, List<BlobSignedIdentifier> containerAcl) {
-        final String restype = "container";
-        final String comp = "acl";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        BlobSignedIdentifierWrapper containerAclConverted = new BlobSignedIdentifierWrapper(containerAcl);
         return FluxUtil
-            .withContext(context -> service.setAccessPolicyNoCustomHeaders(this.client.getUrl(), containerName, restype,
-                comp, timeout, leaseId, access, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
-                this.client.getVersion(), requestId, containerAclConverted, accept, context))
+            .withContext(context -> setAccessPolicyNoCustomHeadersWithResponseAsync(containerName, timeout, leaseId,
+                access, ifModifiedSince, ifUnmodifiedSince, requestId, containerAcl, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2815,12 +2735,9 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ContainersRestoreHeaders, Void>> restoreWithResponseAsync(String containerName,
         Integer timeout, String requestId, String deletedContainerName, String deletedContainerVersion) {
-        final String restype = "container";
-        final String comp = "undelete";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.restore(this.client.getUrl(), containerName, restype, comp, timeout,
-                this.client.getVersion(), requestId, deletedContainerName, deletedContainerVersion, accept, context))
+            .withContext(context -> restoreWithResponseAsync(containerName, timeout, requestId, deletedContainerName,
+                deletedContainerVersion, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2879,8 +2796,8 @@ public final class ContainersImpl {
         String deletedContainerVersion) {
         return restoreWithResponseAsync(containerName, timeout, requestId, deletedContainerName,
             deletedContainerVersion)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2907,8 +2824,8 @@ public final class ContainersImpl {
         String deletedContainerVersion, Context context) {
         return restoreWithResponseAsync(containerName, timeout, requestId, deletedContainerName,
             deletedContainerVersion, context)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2932,12 +2849,9 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> restoreNoCustomHeadersWithResponseAsync(String containerName, Integer timeout,
         String requestId, String deletedContainerName, String deletedContainerVersion) {
-        final String restype = "container";
-        final String comp = "undelete";
-        final String accept = "application/xml";
-        return FluxUtil.withContext(
-            context -> service.restoreNoCustomHeaders(this.client.getUrl(), containerName, restype, comp, timeout,
-                this.client.getVersion(), requestId, deletedContainerName, deletedContainerVersion, accept, context))
+        return FluxUtil
+            .withContext(context -> restoreNoCustomHeadersWithResponseAsync(containerName, timeout, requestId,
+                deletedContainerName, deletedContainerVersion, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -3082,12 +2996,9 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ContainersRenameHeaders, Void>> renameWithResponseAsync(String containerName,
         String sourceContainerName, Integer timeout, String requestId, String sourceLeaseId) {
-        final String restype = "container";
-        final String comp = "rename";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.rename(this.client.getUrl(), containerName, restype, comp, timeout,
-                this.client.getVersion(), requestId, sourceContainerName, sourceLeaseId, accept, context))
+            .withContext(context -> renameWithResponseAsync(containerName, sourceContainerName, timeout, requestId,
+                sourceLeaseId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -3192,12 +3103,9 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameNoCustomHeadersWithResponseAsync(String containerName, String sourceContainerName,
         Integer timeout, String requestId, String sourceLeaseId) {
-        final String restype = "container";
-        final String comp = "rename";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.renameNoCustomHeaders(this.client.getUrl(), containerName, restype, comp,
-                timeout, this.client.getVersion(), requestId, sourceContainerName, sourceLeaseId, accept, context))
+            .withContext(context -> renameNoCustomHeadersWithResponseAsync(containerName, sourceContainerName, timeout,
+                requestId, sourceLeaseId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -3339,13 +3247,9 @@ public final class ContainersImpl {
     public Mono<ResponseBase<ContainersSubmitBatchHeaders, Flux<ByteBuffer>>> submitBatchWithResponseAsync(
         String containerName, long contentLength, String multipartContentType, Flux<ByteBuffer> body, Integer timeout,
         String requestId) {
-        final String restype = "container";
-        final String comp = "batch";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(
-                context -> service.submitBatch(this.client.getUrl(), containerName, restype, comp, contentLength,
-                    multipartContentType, timeout, this.client.getVersion(), requestId, body, accept, context))
+            .withContext(context -> submitBatchWithResponseAsync(containerName, contentLength, multipartContentType,
+                body, timeout, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -3404,7 +3308,7 @@ public final class ContainersImpl {
         Flux<ByteBuffer> body, Integer timeout, String requestId) {
         return submitBatchWithResponseAsync(containerName, contentLength, multipartContentType, body, timeout,
             requestId).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
+                .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
     }
 
     /**
@@ -3431,7 +3335,7 @@ public final class ContainersImpl {
         Flux<ByteBuffer> body, Integer timeout, String requestId, Context context) {
         return submitBatchWithResponseAsync(containerName, contentLength, multipartContentType, body, timeout,
             requestId, context).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
+                .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
     }
 
     /**
@@ -3455,12 +3359,10 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StreamResponse> submitBatchNoCustomHeadersWithResponseAsync(String containerName, long contentLength,
         String multipartContentType, Flux<ByteBuffer> body, Integer timeout, String requestId) {
-        final String restype = "container";
-        final String comp = "batch";
-        final String accept = "application/xml";
-        return FluxUtil.withContext(context -> service.submitBatchNoCustomHeaders(this.client.getUrl(), containerName,
-            restype, comp, contentLength, multipartContentType, timeout, this.client.getVersion(), requestId, body,
-            accept, context)).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
+        return FluxUtil
+            .withContext(context -> submitBatchNoCustomHeadersWithResponseAsync(containerName, contentLength,
+                multipartContentType, body, timeout, requestId, context))
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -3516,13 +3418,9 @@ public final class ContainersImpl {
     public Mono<ResponseBase<ContainersSubmitBatchHeaders, Flux<ByteBuffer>>> submitBatchWithResponseAsync(
         String containerName, long contentLength, String multipartContentType, BinaryData body, Integer timeout,
         String requestId) {
-        final String restype = "container";
-        final String comp = "batch";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(
-                context -> service.submitBatch(this.client.getUrl(), containerName, restype, comp, contentLength,
-                    multipartContentType, timeout, this.client.getVersion(), requestId, body, accept, context))
+            .withContext(context -> submitBatchWithResponseAsync(containerName, contentLength, multipartContentType,
+                body, timeout, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -3581,7 +3479,7 @@ public final class ContainersImpl {
         BinaryData body, Integer timeout, String requestId) {
         return submitBatchWithResponseAsync(containerName, contentLength, multipartContentType, body, timeout,
             requestId).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
+                .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
     }
 
     /**
@@ -3608,7 +3506,7 @@ public final class ContainersImpl {
         BinaryData body, Integer timeout, String requestId, Context context) {
         return submitBatchWithResponseAsync(containerName, contentLength, multipartContentType, body, timeout,
             requestId, context).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
+                .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
     }
 
     /**
@@ -3632,12 +3530,10 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StreamResponse> submitBatchNoCustomHeadersWithResponseAsync(String containerName, long contentLength,
         String multipartContentType, BinaryData body, Integer timeout, String requestId) {
-        final String restype = "container";
-        final String comp = "batch";
-        final String accept = "application/xml";
-        return FluxUtil.withContext(context -> service.submitBatchNoCustomHeaders(this.client.getUrl(), containerName,
-            restype, comp, contentLength, multipartContentType, timeout, this.client.getVersion(), requestId, body,
-            accept, context)).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
+        return FluxUtil
+            .withContext(context -> submitBatchNoCustomHeadersWithResponseAsync(containerName, contentLength,
+                multipartContentType, body, timeout, requestId, context))
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -3800,17 +3696,9 @@ public final class ContainersImpl {
     public Mono<ResponseBase<ContainersFilterBlobsHeaders, FilterBlobSegment>> filterBlobsWithResponseAsync(
         String containerName, Integer timeout, String requestId, String where, String marker, Integer maxresults,
         List<FilterBlobsIncludeItem> include) {
-        final String restype = "container";
-        final String comp = "blobs";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
         return FluxUtil
-            .withContext(context -> service.filterBlobs(this.client.getUrl(), containerName, restype, comp, timeout,
-                this.client.getVersion(), requestId, where, marker, maxresults, includeConverted, accept, context))
+            .withContext(context -> filterBlobsWithResponseAsync(containerName, timeout, requestId, where, marker,
+                maxresults, include, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -3929,7 +3817,7 @@ public final class ContainersImpl {
         String where, String marker, Integer maxresults, List<FilterBlobsIncludeItem> include, Context context) {
         return filterBlobsWithResponseAsync(containerName, timeout, requestId, where, marker, maxresults, include,
             context).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3964,17 +3852,9 @@ public final class ContainersImpl {
     public Mono<Response<FilterBlobSegment>> filterBlobsNoCustomHeadersWithResponseAsync(String containerName,
         Integer timeout, String requestId, String where, String marker, Integer maxresults,
         List<FilterBlobsIncludeItem> include) {
-        final String restype = "container";
-        final String comp = "blobs";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        return FluxUtil.withContext(
-            context -> service.filterBlobsNoCustomHeaders(this.client.getUrl(), containerName, restype, comp, timeout,
-                this.client.getVersion(), requestId, where, marker, maxresults, includeConverted, accept, context))
+        return FluxUtil
+            .withContext(context -> filterBlobsNoCustomHeadersWithResponseAsync(containerName, timeout, requestId,
+                where, marker, maxresults, include, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -4188,18 +4068,9 @@ public final class ContainersImpl {
     public Mono<ResponseBase<ContainersAcquireLeaseHeaders, Void>> acquireLeaseWithResponseAsync(String containerName,
         Integer timeout, Integer duration, String proposedLeaseId, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String requestId) {
-        final String comp = "lease";
-        final String restype = "container";
-        final String action = "acquire";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.acquireLease(this.client.getUrl(), containerName, comp, restype, action,
-                timeout, duration, proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
-                this.client.getVersion(), requestId, accept, context))
+            .withContext(context -> acquireLeaseWithResponseAsync(containerName, timeout, duration, proposedLeaseId,
+                ifModifiedSince, ifUnmodifiedSince, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -4278,8 +4149,8 @@ public final class ContainersImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
         return acquireLeaseWithResponseAsync(containerName, timeout, duration, proposedLeaseId, ifModifiedSince,
             ifUnmodifiedSince, requestId)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -4313,8 +4184,8 @@ public final class ContainersImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId, Context context) {
         return acquireLeaseWithResponseAsync(containerName, timeout, duration, proposedLeaseId, ifModifiedSince,
             ifUnmodifiedSince, requestId, context)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -4346,18 +4217,9 @@ public final class ContainersImpl {
     public Mono<Response<Void>> acquireLeaseNoCustomHeadersWithResponseAsync(String containerName, Integer timeout,
         Integer duration, String proposedLeaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
         String requestId) {
-        final String comp = "lease";
-        final String restype = "container";
-        final String action = "acquire";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.acquireLeaseNoCustomHeaders(this.client.getUrl(), containerName, comp,
-                restype, action, timeout, duration, proposedLeaseId, ifModifiedSinceConverted,
-                ifUnmodifiedSinceConverted, this.client.getVersion(), requestId, accept, context))
+            .withContext(context -> acquireLeaseNoCustomHeadersWithResponseAsync(containerName, timeout, duration,
+                proposedLeaseId, ifModifiedSince, ifUnmodifiedSince, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -4555,18 +4417,9 @@ public final class ContainersImpl {
     public Mono<ResponseBase<ContainersReleaseLeaseHeaders, Void>> releaseLeaseWithResponseAsync(String containerName,
         String leaseId, Integer timeout, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
         String requestId) {
-        final String comp = "lease";
-        final String restype = "container";
-        final String action = "release";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.releaseLease(this.client.getUrl(), containerName, comp, restype, action,
-                timeout, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(),
-                requestId, accept, context))
+            .withContext(context -> releaseLeaseWithResponseAsync(containerName, leaseId, timeout, ifModifiedSince,
+                ifUnmodifiedSince, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -4633,7 +4486,7 @@ public final class ContainersImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
         return releaseLeaseWithResponseAsync(containerName, leaseId, timeout, ifModifiedSince, ifUnmodifiedSince,
             requestId).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -4662,7 +4515,7 @@ public final class ContainersImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId, Context context) {
         return releaseLeaseWithResponseAsync(containerName, leaseId, timeout, ifModifiedSince, ifUnmodifiedSince,
             requestId, context).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -4688,18 +4541,9 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> releaseLeaseNoCustomHeadersWithResponseAsync(String containerName, String leaseId,
         Integer timeout, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
-        final String comp = "lease";
-        final String restype = "container";
-        final String action = "release";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.releaseLeaseNoCustomHeaders(this.client.getUrl(), containerName, comp,
-                restype, action, timeout, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
-                this.client.getVersion(), requestId, accept, context))
+            .withContext(context -> releaseLeaseNoCustomHeadersWithResponseAsync(containerName, leaseId, timeout,
+                ifModifiedSince, ifUnmodifiedSince, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -4876,18 +4720,9 @@ public final class ContainersImpl {
     public Mono<ResponseBase<ContainersRenewLeaseHeaders, Void>> renewLeaseWithResponseAsync(String containerName,
         String leaseId, Integer timeout, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
         String requestId) {
-        final String comp = "lease";
-        final String restype = "container";
-        final String action = "renew";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.renewLease(this.client.getUrl(), containerName, comp, restype, action,
-                timeout, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(),
-                requestId, accept, context))
+            .withContext(context -> renewLeaseWithResponseAsync(containerName, leaseId, timeout, ifModifiedSince,
+                ifUnmodifiedSince, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -4954,7 +4789,7 @@ public final class ContainersImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
         return renewLeaseWithResponseAsync(containerName, leaseId, timeout, ifModifiedSince, ifUnmodifiedSince,
             requestId).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -4983,7 +4818,7 @@ public final class ContainersImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId, Context context) {
         return renewLeaseWithResponseAsync(containerName, leaseId, timeout, ifModifiedSince, ifUnmodifiedSince,
             requestId, context).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -5009,18 +4844,9 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renewLeaseNoCustomHeadersWithResponseAsync(String containerName, String leaseId,
         Integer timeout, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
-        final String comp = "lease";
-        final String restype = "container";
-        final String action = "renew";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.renewLeaseNoCustomHeaders(this.client.getUrl(), containerName, comp,
-                restype, action, timeout, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
-                this.client.getVersion(), requestId, accept, context))
+            .withContext(context -> renewLeaseNoCustomHeadersWithResponseAsync(containerName, leaseId, timeout,
+                ifModifiedSince, ifUnmodifiedSince, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -5202,18 +5028,9 @@ public final class ContainersImpl {
     public Mono<ResponseBase<ContainersBreakLeaseHeaders, Void>> breakLeaseWithResponseAsync(String containerName,
         Integer timeout, Integer breakPeriod, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
         String requestId) {
-        final String comp = "lease";
-        final String restype = "container";
-        final String action = "break";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.breakLease(this.client.getUrl(), containerName, comp, restype, action,
-                timeout, breakPeriod, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(),
-                requestId, accept, context))
+            .withContext(context -> breakLeaseWithResponseAsync(containerName, timeout, breakPeriod, ifModifiedSince,
+                ifUnmodifiedSince, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -5290,7 +5107,7 @@ public final class ContainersImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
         return breakLeaseWithResponseAsync(containerName, timeout, breakPeriod, ifModifiedSince, ifUnmodifiedSince,
             requestId).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -5324,7 +5141,7 @@ public final class ContainersImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId, Context context) {
         return breakLeaseWithResponseAsync(containerName, timeout, breakPeriod, ifModifiedSince, ifUnmodifiedSince,
             requestId, context).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -5355,18 +5172,9 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> breakLeaseNoCustomHeadersWithResponseAsync(String containerName, Integer timeout,
         Integer breakPeriod, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
-        final String comp = "lease";
-        final String restype = "container";
-        final String action = "break";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.breakLeaseNoCustomHeaders(this.client.getUrl(), containerName, comp,
-                restype, action, timeout, breakPeriod, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
-                this.client.getVersion(), requestId, accept, context))
+            .withContext(context -> breakLeaseNoCustomHeadersWithResponseAsync(containerName, timeout, breakPeriod,
+                ifModifiedSince, ifUnmodifiedSince, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -5567,18 +5375,9 @@ public final class ContainersImpl {
     public Mono<ResponseBase<ContainersChangeLeaseHeaders, Void>> changeLeaseWithResponseAsync(String containerName,
         String leaseId, String proposedLeaseId, Integer timeout, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String requestId) {
-        final String comp = "lease";
-        final String restype = "container";
-        final String action = "change";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.changeLease(this.client.getUrl(), containerName, comp, restype, action,
-                timeout, leaseId, proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
-                this.client.getVersion(), requestId, accept, context))
+            .withContext(context -> changeLeaseWithResponseAsync(containerName, leaseId, proposedLeaseId, timeout,
+                ifModifiedSince, ifUnmodifiedSince, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -5653,8 +5452,8 @@ public final class ContainersImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
         return changeLeaseWithResponseAsync(containerName, leaseId, proposedLeaseId, timeout, ifModifiedSince,
             ifUnmodifiedSince, requestId)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -5686,8 +5485,8 @@ public final class ContainersImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId, Context context) {
         return changeLeaseWithResponseAsync(containerName, leaseId, proposedLeaseId, timeout, ifModifiedSince,
             ifUnmodifiedSince, requestId, context)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -5717,18 +5516,9 @@ public final class ContainersImpl {
     public Mono<Response<Void>> changeLeaseNoCustomHeadersWithResponseAsync(String containerName, String leaseId,
         String proposedLeaseId, Integer timeout, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
         String requestId) {
-        final String comp = "lease";
-        final String restype = "container";
-        final String action = "change";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.changeLeaseNoCustomHeaders(this.client.getUrl(), containerName, comp,
-                restype, action, timeout, leaseId, proposedLeaseId, ifModifiedSinceConverted,
-                ifUnmodifiedSinceConverted, this.client.getVersion(), requestId, accept, context))
+            .withContext(context -> changeLeaseNoCustomHeadersWithResponseAsync(containerName, leaseId, proposedLeaseId,
+                timeout, ifModifiedSince, ifUnmodifiedSince, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -5924,18 +5714,9 @@ public final class ContainersImpl {
     public Mono<ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse>>
         listBlobFlatSegmentWithResponseAsync(String containerName, String prefix, String marker, Integer maxresults,
             List<ListBlobsIncludeItem> include, Integer timeout, String requestId) {
-        final String restype = "container";
-        final String comp = "list";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
         return FluxUtil
-            .withContext(context -> service.listBlobFlatSegment(this.client.getUrl(), containerName, restype, comp,
-                prefix, marker, maxresults, includeConverted, timeout, this.client.getVersion(), requestId, accept,
-                context))
+            .withContext(context -> listBlobFlatSegmentWithResponseAsync(containerName, prefix, marker, maxresults,
+                include, timeout, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -6015,7 +5796,7 @@ public final class ContainersImpl {
         String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId) {
         return listBlobFlatSegmentWithResponseAsync(containerName, prefix, marker, maxresults, include, timeout,
             requestId).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -6051,7 +5832,7 @@ public final class ContainersImpl {
         Context context) {
         return listBlobFlatSegmentWithResponseAsync(containerName, prefix, marker, maxresults, include, timeout,
             requestId, context).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -6084,18 +5865,9 @@ public final class ContainersImpl {
     public Mono<Response<ListBlobsFlatSegmentResponse>> listBlobFlatSegmentNoCustomHeadersWithResponseAsync(
         String containerName, String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include,
         Integer timeout, String requestId) {
-        final String restype = "container";
-        final String comp = "list";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
         return FluxUtil
-            .withContext(context -> service.listBlobFlatSegmentNoCustomHeaders(this.client.getUrl(), containerName,
-                restype, comp, prefix, marker, maxresults, includeConverted, timeout, this.client.getVersion(),
-                requestId, accept, context))
+            .withContext(context -> listBlobFlatSegmentNoCustomHeadersWithResponseAsync(containerName, prefix, marker,
+                maxresults, include, timeout, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -6309,18 +6081,9 @@ public final class ContainersImpl {
     public Mono<ResponseBase<ContainersListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse>>
         listBlobHierarchySegmentWithResponseAsync(String containerName, String delimiter, String prefix, String marker,
             Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId) {
-        final String restype = "container";
-        final String comp = "list";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
         return FluxUtil
-            .withContext(context -> service.listBlobHierarchySegment(this.client.getUrl(), containerName, restype, comp,
-                prefix, delimiter, marker, maxresults, includeConverted, timeout, this.client.getVersion(), requestId,
-                accept, context))
+            .withContext(context -> listBlobHierarchySegmentWithResponseAsync(containerName, delimiter, prefix, marker,
+                maxresults, include, timeout, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -6408,7 +6171,7 @@ public final class ContainersImpl {
         String requestId) {
         return listBlobHierarchySegmentWithResponseAsync(containerName, delimiter, prefix, marker, maxresults, include,
             timeout, requestId).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -6447,8 +6210,8 @@ public final class ContainersImpl {
         String requestId, Context context) {
         return listBlobHierarchySegmentWithResponseAsync(containerName, delimiter, prefix, marker, maxresults, include,
             timeout, requestId, context)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -6484,18 +6247,9 @@ public final class ContainersImpl {
     public Mono<Response<ListBlobsHierarchySegmentResponse>> listBlobHierarchySegmentNoCustomHeadersWithResponseAsync(
         String containerName, String delimiter, String prefix, String marker, Integer maxresults,
         List<ListBlobsIncludeItem> include, Integer timeout, String requestId) {
-        final String restype = "container";
-        final String comp = "list";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
         return FluxUtil
-            .withContext(context -> service.listBlobHierarchySegmentNoCustomHeaders(this.client.getUrl(), containerName,
-                restype, comp, prefix, delimiter, marker, maxresults, includeConverted, timeout,
-                this.client.getVersion(), requestId, accept, context))
+            .withContext(context -> listBlobHierarchySegmentNoCustomHeadersWithResponseAsync(containerName, delimiter,
+                prefix, marker, maxresults, include, timeout, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -6709,12 +6463,8 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ContainersGetAccountInfoHeaders, Void>>
         getAccountInfoWithResponseAsync(String containerName, Integer timeout, String requestId) {
-        final String restype = "account";
-        final String comp = "properties";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.getAccountInfo(this.client.getUrl(), containerName, restype, comp, timeout,
-                this.client.getVersion(), requestId, accept, context))
+            .withContext(context -> getAccountInfoWithResponseAsync(containerName, timeout, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -6805,12 +6555,9 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getAccountInfoNoCustomHeadersWithResponseAsync(String containerName, Integer timeout,
         String requestId) {
-        final String restype = "account";
-        final String comp = "properties";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.getAccountInfoNoCustomHeaders(this.client.getUrl(), containerName, restype,
-                comp, timeout, this.client.getVersion(), requestId, accept, context))
+            .withContext(
+                context -> getAccountInfoNoCustomHeadersWithResponseAsync(containerName, timeout, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 

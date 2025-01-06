@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MonitoredResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MonitoredResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"whdsoifiyip\",\"sendingMetrics\":false,\"reasonForMetricsStatus\":\"wpgrjbzno\",\"sendingLogs\":true,\"reasonForLogsStatus\":\"vsnb\"}")
-                .toObject(MonitoredResourceInner.class);
+        MonitoredResourceInner model = BinaryData.fromString(
+            "{\"id\":\"whdsoifiyip\",\"sendingMetrics\":false,\"reasonForMetricsStatus\":\"wpgrjbzno\",\"sendingLogs\":true,\"reasonForLogsStatus\":\"vsnb\"}")
+            .toObject(MonitoredResourceInner.class);
         Assertions.assertEquals("whdsoifiyip", model.id());
         Assertions.assertEquals(false, model.sendingMetrics());
         Assertions.assertEquals("wpgrjbzno", model.reasonForMetricsStatus());
@@ -25,13 +23,11 @@ public final class MonitoredResourceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MonitoredResourceInner model =
-            new MonitoredResourceInner()
-                .withId("whdsoifiyip")
-                .withSendingMetrics(false)
-                .withReasonForMetricsStatus("wpgrjbzno")
-                .withSendingLogs(true)
-                .withReasonForLogsStatus("vsnb");
+        MonitoredResourceInner model = new MonitoredResourceInner().withId("whdsoifiyip")
+            .withSendingMetrics(false)
+            .withReasonForMetricsStatus("wpgrjbzno")
+            .withSendingLogs(true)
+            .withReasonForLogsStatus("vsnb");
         model = BinaryData.fromObject(model).toObject(MonitoredResourceInner.class);
         Assertions.assertEquals("whdsoifiyip", model.id());
         Assertions.assertEquals(false, model.sendingMetrics());

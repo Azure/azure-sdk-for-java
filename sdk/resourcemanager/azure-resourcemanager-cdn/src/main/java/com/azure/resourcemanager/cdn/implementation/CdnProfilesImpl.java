@@ -28,12 +28,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
  * Implementation for {@link CdnProfiles}.
  */
 public final class CdnProfilesImpl
-    extends TopLevelModifiableResourcesImpl<
-        CdnProfile,
-        CdnProfileImpl,
-        ProfileInner,
-        ProfilesClient,
-        CdnManager>
+    extends TopLevelModifiableResourcesImpl<CdnProfile, CdnProfileImpl, ProfileInner, ProfilesClient, CdnManager>
     implements CdnProfiles {
 
     public CdnProfilesImpl(final CdnManager cdnManager) {
@@ -47,7 +42,7 @@ public final class CdnProfilesImpl
 
     @Override
     protected CdnProfileImpl wrapModel(ProfileInner inner) {
-        if (inner ==  null) {
+        if (inner == null) {
             return null;
         }
         return new CdnProfileImpl(inner.name(), inner, this.manager());
@@ -60,8 +55,8 @@ public final class CdnProfilesImpl
 
     @Override
     public String generateSsoUri(String resourceGroupName, String profileName) {
-        SsoUriInner ssoUri = this.manager().serviceClient().getProfiles()
-            .generateSsoUri(resourceGroupName, profileName);
+        SsoUriInner ssoUri
+            = this.manager().serviceClient().getProfiles().generateSsoUri(resourceGroupName, profileName);
         if (ssoUri != null) {
             return ssoUri.ssoUriValue();
         }
@@ -75,29 +70,26 @@ public final class CdnProfilesImpl
 
     @Override
     public Mono<CheckNameAvailabilityResult> checkEndpointNameAvailabilityAsync(String name) {
-        return this.manager().serviceClient()
-            .checkNameAvailabilityAsync(new CheckNameAvailabilityInput()
-                .withName(name)
-                .withType(ResourceType.MICROSOFT_CDN_PROFILES_ENDPOINTS))
+        return this.manager()
+            .serviceClient()
+            .checkNameAvailabilityAsync(
+                new CheckNameAvailabilityInput().withName(name).withType(ResourceType.MICROSOFT_CDN_PROFILES_ENDPOINTS))
             .map(CheckNameAvailabilityResult::new);
     }
 
     @Override
     public PagedIterable<Operation> listOperations() {
-        return PagedConverter.mapPage(this.manager().serviceClient().getOperations().list(),
-            Operation::new);
+        return PagedConverter.mapPage(this.manager().serviceClient().getOperations().list(), Operation::new);
     }
 
     @Override
     public PagedIterable<ResourceUsage> listResourceUsage() {
-        return PagedConverter.mapPage(this.manager().serviceClient().getResourceUsages().list(),
-            ResourceUsage::new);
+        return PagedConverter.mapPage(this.manager().serviceClient().getResourceUsages().list(), ResourceUsage::new);
     }
 
     @Override
     public PagedIterable<EdgeNode> listEdgeNodes() {
-        return PagedConverter.mapPage(this.manager().serviceClient().getEdgeNodes().list(),
-            EdgeNode::new);
+        return PagedConverter.mapPage(this.manager().serviceClient().getEdgeNodes().list(), EdgeNode::new);
     }
 
     @Override
@@ -111,17 +103,21 @@ public final class CdnProfilesImpl
     }
 
     @Override
-    public void purgeEndpointContent(
-        String resourceGroupName, String profileName, String endpointName, List<String> contentPaths) {
-        this.manager().serviceClient().getEndpoints()
+    public void purgeEndpointContent(String resourceGroupName, String profileName, String endpointName,
+        List<String> contentPaths) {
+        this.manager()
+            .serviceClient()
+            .getEndpoints()
             .purgeContent(resourceGroupName, profileName, endpointName,
                 new PurgeParameters().withContentPaths(contentPaths));
     }
 
     @Override
-    public void loadEndpointContent(
-        String resourceGroupName, String profileName, String endpointName, List<String> contentPaths) {
-        this.manager().serviceClient().getEndpoints()
+    public void loadEndpointContent(String resourceGroupName, String profileName, String endpointName,
+        List<String> contentPaths) {
+        this.manager()
+            .serviceClient()
+            .getEndpoints()
             .loadContent(resourceGroupName, profileName, endpointName,
                 new LoadParameters().withContentPaths(contentPaths));
     }

@@ -30,7 +30,8 @@ public final class DeviceGroupUpdateTests {
     public void testSerialize() throws Exception {
         DeviceGroupUpdate model
             = new DeviceGroupUpdate().withProperties(new DeviceGroupUpdateProperties().withDescription("xquk")
-                .withOsFeedType(OSFeedType.RETAIL_EVAL).withUpdatePolicy(UpdatePolicy.NO3RD_PARTY_APP_UPDATES)
+                .withOsFeedType(OSFeedType.RETAIL_EVAL)
+                .withUpdatePolicy(UpdatePolicy.NO3RD_PARTY_APP_UPDATES)
                 .withAllowCrashDumpsCollection(AllowCrashDumpCollection.DISABLED)
                 .withRegionalDataBoundary(RegionalDataBoundary.EU));
         model = BinaryData.fromObject(model).toObject(DeviceGroupUpdate.class);

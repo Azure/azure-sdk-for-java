@@ -11,7 +11,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Model type for serializing the record file path passsed to the test proxy.
+ * Model type for serializing the record file path passed to the test proxy.
  */
 public class RecordFilePayload implements JsonSerializable<RecordFilePayload> {
 

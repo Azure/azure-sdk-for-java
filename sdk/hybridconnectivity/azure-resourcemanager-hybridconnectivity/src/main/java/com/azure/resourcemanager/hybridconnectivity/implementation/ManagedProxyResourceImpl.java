@@ -12,8 +12,7 @@ public final class ManagedProxyResourceImpl implements ManagedProxyResource {
 
     private final com.azure.resourcemanager.hybridconnectivity.HybridConnectivityManager serviceManager;
 
-    ManagedProxyResourceImpl(
-        ManagedProxyResourceInner innerObject,
+    ManagedProxyResourceImpl(ManagedProxyResourceInner innerObject,
         com.azure.resourcemanager.hybridconnectivity.HybridConnectivityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -39,9 +39,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * <p>
  * The result produced by the tasks in the group are of type {@link Indexable}.
  */
-public class TaskGroup
-        extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>>
-        implements Indexable {
+public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> implements Indexable {
     /**
      * The root task in this task group.
      */
@@ -89,8 +87,7 @@ public class TaskGroup
      * @param rootTaskItemId the id of the root task in the group
      * @param rootTaskItem the root task
      */
-    public TaskGroup(String rootTaskItemId,
-                     TaskItem rootTaskItem) {
+    public TaskGroup(String rootTaskItemId, TaskItem rootTaskItem) {
         this(new TaskGroupEntry<TaskItem>(rootTaskItemId, rootTaskItem));
     }
 
@@ -217,8 +214,8 @@ public class TaskGroup
      * @return key to be used as parameter to taskResult(string) method to retrieve result of
      * invocation of given task item.
      */
-    public String addPostRunDependent(
-        FunctionalTaskItem dependentTaskItem, ResourceManagerUtils.InternalRuntimeContext internalContext) {
+    public String addPostRunDependent(FunctionalTaskItem dependentTaskItem,
+        ResourceManagerUtils.InternalRuntimeContext internalContext) {
         IndexableTaskItem taskItem = IndexableTaskItem.create(dependentTaskItem, internalContext);
         this.addPostRunDependent(taskItem);
         return taskItem.key();
@@ -277,13 +274,12 @@ public class TaskGroup
      * @return the root result of task group.
      */
     public Mono<Indexable> invokeAsync() {
-        return invokeAsync(this.newInvocationContext())
-            .then(Mono.defer(() -> {
-                if (proxyTaskGroupWrapper.isActive()) {
-                    return Mono.just(proxyTaskGroupWrapper.taskGroup().root().taskResult());
-                }
-                return Mono.just(root().taskResult());
-            }));
+        return invokeAsync(this.newInvocationContext()).then(Mono.defer(() -> {
+            if (proxyTaskGroupWrapper.isActive()) {
+                return Mono.just(proxyTaskGroupWrapper.taskGroup().root().taskResult());
+            }
+            return Mono.just(root().taskResult());
+        }));
     }
 
     /**
@@ -323,12 +319,11 @@ public class TaskGroup
      *                                   before invoking them
      * @return an observable that emits the result of tasks in the order they finishes.
      */
-    private Flux<Indexable> invokeInternAsync(final InvocationContext context,
-                                              final boolean shouldRunBeforeGroupInvoke,
-                                              final Set<String> skipBeforeGroupInvoke) {
+    private Flux<Indexable> invokeInternAsync(final InvocationContext context, final boolean shouldRunBeforeGroupInvoke,
+        final Set<String> skipBeforeGroupInvoke) {
         if (!isPreparer()) {
-            return Flux.error(new IllegalStateException(
-                "invokeInternAsync(cxt) can be called only from root TaskGroup"));
+            return Flux
+                .error(new IllegalStateException("invokeInternAsync(cxt) can be called only from root TaskGroup"));
         }
         this.taskGroupTerminateOnErrorStrategy = context.terminateOnErrorStrategy();
         if (shouldRunBeforeGroupInvoke) {
@@ -401,7 +396,7 @@ public class TaskGroup
      */
     // Due to it takes approximate 3ms in flux for returning, it cannot be guaranteed to return in topological order.
     // One simply fix for guaranteeing the last element could be https://github.com/Azure/azure-sdk-for-java/pull/15074
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private Flux<Indexable> invokeReadyTasksAsync(final InvocationContext context) {
         TaskGroupEntry<TaskItem> readyTaskEntry = super.getNext();
         final List<Flux<Indexable>> observables = new ArrayList<>();
@@ -443,8 +438,8 @@ public class TaskGroup
             } else {
                 // Any cached result will be ignored for root resource
                 //
-                boolean ignoreCachedResult = isRootEntry(entry)
-                    || (entry.proxy() != null && isRootEntry(entry.proxy()));
+                boolean ignoreCachedResult
+                    = isRootEntry(entry) || (entry.proxy() != null && isRootEntry(entry.proxy()));
 
                 Mono<Indexable> taskObservable;
                 Object skipTasks = context.get(InvocationContext.KEY_SKIP_TASKS);
@@ -473,7 +468,7 @@ public class TaskGroup
      * result produced by actual TaskItem.
      */
     private Flux<Indexable> invokeAfterPostRunAsync(final TaskGroupEntry<TaskItem> entry,
-                                                    final InvocationContext context) {
+        final InvocationContext context) {
         return Flux.defer(() -> {
             final ProxyTaskItem proxyTaskItem = (ProxyTaskItem) entry.data();
             if (proxyTaskItem == null) {
@@ -482,22 +477,19 @@ public class TaskGroup
             final boolean isFaulted = entry.hasFaultedDescentDependencyTasks() || isGroupCancelled.get();
 
             return proxyTaskItem.invokeAfterPostRunAsync(isFaulted)
-                    .flatMapMany(indexable -> Flux.error(
-                        new IllegalStateException("This onNext should never be called")),
-                        (error) -> processFaultedTaskAsync(entry, error, context),
-                        () -> {
-                            if (isFaulted) {
-                                if (entry.hasFaultedDescentDependencyTasks()) {
-                                    return processFaultedTaskAsync(entry,
-                                        new ErroredDependencyTaskException(), context);
-                                } else {
-                                    return processFaultedTaskAsync(entry, taskCancelledException, context);
-                                }
+                .flatMapMany(indexable -> Flux.error(new IllegalStateException("This onNext should never be called")),
+                    (error) -> processFaultedTaskAsync(entry, error, context), () -> {
+                        if (isFaulted) {
+                            if (entry.hasFaultedDescentDependencyTasks()) {
+                                return processFaultedTaskAsync(entry, new ErroredDependencyTaskException(), context);
                             } else {
-                                return Flux.concat(Flux.just(proxyTaskItem.result()),
-                                        processCompletedTaskAsync(entry, context));
+                                return processFaultedTaskAsync(entry, taskCancelledException, context);
                             }
-                        });
+                        } else {
+                            return Flux.concat(Flux.just(proxyTaskItem.result()),
+                                processCompletedTaskAsync(entry, context));
+                        }
+                    });
 
         });
     }
@@ -512,7 +504,7 @@ public class TaskGroup
      * @return an observable represents asynchronous operation in the next stage
      */
     private Flux<Indexable> processCompletedTaskAsync(final TaskGroupEntry<TaskItem> completedEntry,
-                                                      final InvocationContext context) {
+        final InvocationContext context) {
         reportCompletion(completedEntry);
         if (isRootEntry(completedEntry)) {
             return Flux.empty();
@@ -530,8 +522,7 @@ public class TaskGroup
      * @return an observable represents asynchronous operation in the next stage
      */
     private Flux<Indexable> processFaultedTaskAsync(final TaskGroupEntry<TaskItem> faultedEntry,
-                                                    final Throwable throwable,
-                                                    final InvocationContext context) {
+        final Throwable throwable, final InvocationContext context) {
         markGroupAsCancelledIfTerminationStrategyIsIPTC();
         reportError(faultedEntry, throwable);
         if (isRootEntry(faultedEntry)) {
@@ -575,7 +566,7 @@ public class TaskGroup
      */
     private static boolean shouldPropagateException(Throwable throwable) {
         return (!(throwable instanceof ErroredDependencyTaskException)
-                && !(throwable instanceof TaskCancelledException));
+            && !(throwable instanceof TaskCancelledException));
     }
 
     /**
@@ -589,6 +580,8 @@ public class TaskGroup
     }
 
     /**
+     * Gets a new clean context instance.
+     *
      * @return a new clean context instance.
      */
     public InvocationContext newInvocationContext() {
@@ -600,6 +593,8 @@ public class TaskGroup
      */
     public interface HasTaskGroup {
         /**
+         * Gets the task group.
+         *
          * @return Gets the task group.
          */
         TaskGroup taskGroup();
@@ -629,6 +624,8 @@ public class TaskGroup
         }
 
         /**
+         * Gets the TaskGroup this invocation context associated with.
+         *
          * @return the TaskGroup this invocation context associated with.
          */
         public TaskGroup taskGroup() {
@@ -651,6 +648,8 @@ public class TaskGroup
         }
 
         /**
+         * Gets the termination strategy to use upon error during the current invocation of the TaskGroup.
+         *
          * @return the termination strategy to use upon error during the current invocation of the TaskGroup.
          */
         public TaskGroupTerminateOnErrorStrategy terminateOnErrorStrategy() {
@@ -769,8 +768,7 @@ public class TaskGroup
                 // it to "actual TaskGroup"'s root.
                 //
                 ProxyTaskItem proxyTaskItem = new ProxyTaskItem(this.actualTaskGroup.root().data());
-                this.proxyTaskGroup = new TaskGroup("proxy-" + this.actualTaskGroup.root().key(),
-                        proxyTaskItem);
+                this.proxyTaskGroup = new TaskGroup("proxy-" + this.actualTaskGroup.root().key(), proxyTaskItem);
 
                 if (this.actualTaskGroup.hasParents()) {
                     // Once "proxy TaskGroup" is enabled, all existing TaskGroups depends on "actual TaskGroup" should
@@ -810,7 +808,6 @@ public class TaskGroup
             return actualTaskItem.result();
         }
 
-
         @Override
         public void beforeGroupInvoke() {
             // NOP
@@ -829,11 +826,10 @@ public class TaskGroup
         @Override
         public Mono<Void> invokeAfterPostRunAsync(final boolean isGroupFaulted) {
             if (actualTaskItem.isHot()) {
-                return Mono.defer(() ->
-                    actualTaskItem.invokeAfterPostRunAsync(isGroupFaulted).subscribeOn(Schedulers.immediate()));
+                return Mono.defer(
+                    () -> actualTaskItem.invokeAfterPostRunAsync(isGroupFaulted).subscribeOn(Schedulers.immediate()));
             } else {
-                return this.actualTaskItem.invokeAfterPostRunAsync(isGroupFaulted)
-                        .subscribeOn(Schedulers.immediate());
+                return this.actualTaskItem.invokeAfterPostRunAsync(isGroupFaulted).subscribeOn(Schedulers.immediate());
             }
         }
     }

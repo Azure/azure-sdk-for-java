@@ -29,12 +29,10 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
             throw new IllegalStateException("Environment variable STORAGE_CONNECTION_STRING must be set");
         }
 
-        StorageConnectionString storageConnectionString
-            = StorageConnectionString.create(connectionString, null);
+        StorageConnectionString storageConnectionString = StorageConnectionString.create(connectionString, null);
         StorageEndpoint endpoint = storageConnectionString.getBlobEndpoint();
 
-        DataLakeServiceClientBuilder builder = new DataLakeServiceClientBuilder()
-            .endpoint(endpoint.getPrimaryUri())
+        DataLakeServiceClientBuilder builder = new DataLakeServiceClientBuilder().endpoint(endpoint.getPrimaryUri())
             .credential(new StorageSharedKeyCredential(storageConnectionString.getAccountName(),
                 storageConnectionString.getStorageAuthSettings().getAccount().getAccessKey()));
 

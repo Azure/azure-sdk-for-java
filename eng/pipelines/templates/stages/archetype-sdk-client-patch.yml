@@ -8,9 +8,6 @@ parameters:
 - name: SDKType
   type: string
   default: client
-- name: TargetDocRepoName
-  type: string
-  default: azure-docs-sdk-java
 - name: BuildParallelization
   type: string
   default: '2C'
@@ -162,7 +159,6 @@ extends:
                 filePath: $(Build.SourcesDirectory)/eng/scripts/Save-Package-Namespaces-Property.ps1
                 arguments: >
                   -ArtifactStagingDirectory $(Build.ArtifactStagingDirectory)
-                  -ArtifactsList ('$(ArtifactsJson)' | ConvertFrom-Json)
                 pwsh: true
                 workingDirectory: $(Pipeline.Workspace)
               displayName: Update package properties with namespaces
@@ -256,6 +252,11 @@ extends:
                 filePath: eng/versioning/pom_file_version_scanner.ps1
                 arguments: -Debug:$$(IsDebug)
 
+            - task: PythonScript@0
+              displayName: 'Verify version text files'
+              inputs:
+                scriptPath: eng/versioning/find_unused_dependencies.py
+
             # Do all the verifications for all the artifacts after the sparse-checkout.
             - pwsh: |
                 $ArtifactsList = $('$(ArtifactsJson)' | ConvertFrom-Json | Select-Object name, groupId)
@@ -323,4 +324,3 @@ extends:
             Artifacts: ${{ parameters.Artifacts }}
             TestPipeline: ${{ parameters.TestPipeline }}
             ArtifactName: packages
-            TargetDocRepoName: ${{ parameters.TargetDocRepoName }}

@@ -20,12 +20,9 @@ import java.util.List;
 /** A representation of the Azure SQL Database threat detection policy. */
 @Fluent
 public interface SqlDatabaseThreatDetectionPolicy
-    extends ExternalChildResource<SqlDatabaseThreatDetectionPolicy, SqlDatabase>,
-        HasParent<SqlDatabase>,
-        HasInnerModel<DatabaseSecurityAlertPolicyInner>,
-        HasResourceGroup,
-        Refreshable<SqlDatabaseThreatDetectionPolicy>,
-        Updatable<SqlDatabaseThreatDetectionPolicy.Update> {
+    extends ExternalChildResource<SqlDatabaseThreatDetectionPolicy, SqlDatabase>, HasParent<SqlDatabase>,
+    HasInnerModel<DatabaseSecurityAlertPolicyInner>, HasResourceGroup, Refreshable<SqlDatabaseThreatDetectionPolicy>,
+    Updatable<SqlDatabaseThreatDetectionPolicy.Update> {
 
     /** @return the geo-location where the resource lives */
     Region region();
@@ -93,14 +90,14 @@ public interface SqlDatabaseThreatDetectionPolicy
     /** Container interface for all the definitions that need to be implemented. */
     interface SqlDatabaseThreatDetectionPolicyDefinition
         extends SqlDatabaseThreatDetectionPolicy.DefinitionStages.Blank,
-            SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithSecurityAlertPolicyState,
-            SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithStorageEndpoint,
-            SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithStorageAccountAccessKey,
-            SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithAlertsFilter,
-            SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithEmailAddresses,
-            SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithRetentionDays,
-            SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithEmailToAccountAdmins,
-            SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithCreate {
+        SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithSecurityAlertPolicyState,
+        SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithStorageEndpoint,
+        SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithStorageAccountAccessKey,
+        SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithAlertsFilter,
+        SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithEmailAddresses,
+        SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithRetentionDays,
+        SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithEmailToAccountAdmins,
+        SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithCreate {
     }
 
     /** Grouping of all the SQL database threat detection policy definition stages. */
@@ -142,8 +139,8 @@ public interface SqlDatabaseThreatDetectionPolicy
              *     blob storage will hold all Threat Detection audit logs.
              * @return the next stage of the definition
              */
-            SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithStorageAccountAccessKey withStorageEndpoint(
-                String storageEndpoint);
+            SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithStorageAccountAccessKey
+                withStorageEndpoint(String storageEndpoint);
         }
 
         /** The SQL database threat detection policy definition to set the storage access key. */
@@ -154,8 +151,8 @@ public interface SqlDatabaseThreatDetectionPolicy
              * @param storageAccountAccessKey the storage access key
              * @return the next stage of the definition
              */
-            SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithCreate withStorageAccountAccessKey(
-                String storageAccountAccessKey);
+            SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithCreate
+                withStorageAccountAccessKey(String storageAccountAccessKey);
         }
 
         /**
@@ -243,14 +240,13 @@ public interface SqlDatabaseThreatDetectionPolicy
         }
 
         /** The final stage of the SQL database threat detection policy definition. */
-        interface WithCreate
-            extends SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithStorageEndpoint,
-                SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithStorageAccountAccessKey,
-                SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithAlertsFilter,
-                SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithEmailAddresses,
-                SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithRetentionDays,
-                SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithEmailToAccountAdmins,
-                Creatable<SqlDatabaseThreatDetectionPolicy> {
+        interface WithCreate extends SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithStorageEndpoint,
+            SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithStorageAccountAccessKey,
+            SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithAlertsFilter,
+            SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithEmailAddresses,
+            SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithRetentionDays,
+            SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithEmailToAccountAdmins,
+            Creatable<SqlDatabaseThreatDetectionPolicy> {
         }
     }
 
@@ -258,15 +254,10 @@ public interface SqlDatabaseThreatDetectionPolicy
      * The template for a SQL database threat detection policy update operation, containing all the settings that can be
      * modified.
      */
-    interface Update
-        extends UpdateStages.WithSecurityAlertPolicyState,
-            UpdateStages.WithStorageEndpoint,
-            UpdateStages.WithStorageAccountAccessKey,
-            UpdateStages.WithAlertsFilter,
-            UpdateStages.WithEmailAddresses,
-            UpdateStages.WithRetentionDays,
-            UpdateStages.WithEmailToAccountAdmins,
-            Appliable<SqlDatabaseThreatDetectionPolicy> {
+    interface Update extends UpdateStages.WithSecurityAlertPolicyState, UpdateStages.WithStorageEndpoint,
+        UpdateStages.WithStorageAccountAccessKey, UpdateStages.WithAlertsFilter, UpdateStages.WithEmailAddresses,
+        UpdateStages.WithRetentionDays, UpdateStages.WithEmailToAccountAdmins,
+        Appliable<SqlDatabaseThreatDetectionPolicy> {
     }
 
     /** Grouping of all the SQL database threat detection policy update stages. */

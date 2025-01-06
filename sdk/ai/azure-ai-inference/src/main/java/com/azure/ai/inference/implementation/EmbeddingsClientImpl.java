@@ -215,7 +215,7 @@ public final class EmbeddingsClientImpl {
      *     input_type: String(text/query/document) (Optional)
      *     model: String (Optional)
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -286,7 +286,7 @@ public final class EmbeddingsClientImpl {
      *     input_type: String(text/query/document) (Optional)
      *     model: String (Optional)
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }

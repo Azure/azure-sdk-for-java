@@ -5,9 +5,14 @@
 package com.azure.resourcemanager.mobilenetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mobilenetwork.models.PacketCaptureStatus;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -15,59 +20,51 @@ import java.util.List;
  * Packet capture session properties.
  */
 @Fluent
-public final class PacketCapturePropertiesFormat {
+public final class PacketCapturePropertiesFormat implements JsonSerializable<PacketCapturePropertiesFormat> {
     /*
      * The provisioning state of the packet capture session resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The status of the packet capture session.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private PacketCaptureStatus status;
 
     /*
      * The reason the current packet capture session state.
      */
-    @JsonProperty(value = "reason", access = JsonProperty.Access.WRITE_ONLY)
     private String reason;
 
     /*
      * The start time of the packet capture session.
      */
-    @JsonProperty(value = "captureStartTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime captureStartTime;
 
     /*
      * List of network interfaces to capture on.
      */
-    @JsonProperty(value = "networkInterfaces")
     private List<String> networkInterfaces;
 
     /*
-     * Number of bytes captured per packet, the remaining bytes are truncated. The default "0" means the entire packet is captured.
+     * Number of bytes captured per packet, the remaining bytes are truncated. The default "0" means the entire packet
+     * is captured.
      */
-    @JsonProperty(value = "bytesToCapturePerPacket")
     private Long bytesToCapturePerPacket;
 
     /*
      * Maximum size of the capture output.
      */
-    @JsonProperty(value = "totalBytesPerSession")
     private Long totalBytesPerSession;
 
     /*
      * Maximum duration of the capture session in seconds.
      */
-    @JsonProperty(value = "timeLimitInSeconds")
     private Integer timeLimitInSeconds;
 
     /*
      * The list of output files of a packet capture session.
      */
-    @JsonProperty(value = "outputFiles", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> outputFiles;
 
     /**
@@ -209,5 +206,70 @@ public final class PacketCapturePropertiesFormat {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("networkInterfaces", this.networkInterfaces,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("bytesToCapturePerPacket", this.bytesToCapturePerPacket);
+        jsonWriter.writeNumberField("totalBytesPerSession", this.totalBytesPerSession);
+        jsonWriter.writeNumberField("timeLimitInSeconds", this.timeLimitInSeconds);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PacketCapturePropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PacketCapturePropertiesFormat if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PacketCapturePropertiesFormat.
+     */
+    public static PacketCapturePropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PacketCapturePropertiesFormat deserializedPacketCapturePropertiesFormat
+                = new PacketCapturePropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedPacketCapturePropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedPacketCapturePropertiesFormat.status
+                        = PacketCaptureStatus.fromString(reader.getString());
+                } else if ("reason".equals(fieldName)) {
+                    deserializedPacketCapturePropertiesFormat.reason = reader.getString();
+                } else if ("captureStartTime".equals(fieldName)) {
+                    deserializedPacketCapturePropertiesFormat.captureStartTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("networkInterfaces".equals(fieldName)) {
+                    List<String> networkInterfaces = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPacketCapturePropertiesFormat.networkInterfaces = networkInterfaces;
+                } else if ("bytesToCapturePerPacket".equals(fieldName)) {
+                    deserializedPacketCapturePropertiesFormat.bytesToCapturePerPacket
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("totalBytesPerSession".equals(fieldName)) {
+                    deserializedPacketCapturePropertiesFormat.totalBytesPerSession
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("timeLimitInSeconds".equals(fieldName)) {
+                    deserializedPacketCapturePropertiesFormat.timeLimitInSeconds
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("outputFiles".equals(fieldName)) {
+                    List<String> outputFiles = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPacketCapturePropertiesFormat.outputFiles = outputFiles;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPacketCapturePropertiesFormat;
+        });
     }
 }

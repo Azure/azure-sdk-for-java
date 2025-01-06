@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The network tap destination properties. */
+/**
+ * The network tap destination properties.
+ */
 @Fluent
-public class DestinationProperties {
+public class DestinationProperties implements JsonSerializable<DestinationProperties> {
     /*
      * Destination name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Type of destination. Input can be IsolationDomain or Direct.
      */
-    @JsonProperty(value = "destinationType")
     private DestinationType destinationType;
 
     /*
      * The destination Id. ARM Resource ID of either NNI or Internal Networks.
      */
-    @JsonProperty(value = "destinationId")
     private String destinationId;
 
     /*
      * Isolation Domain Properties.
      */
-    @JsonProperty(value = "isolationDomainProperties")
     private IsolationDomainProperties isolationDomainProperties;
 
     /*
      * ARM Resource ID of destination Tap Rule that contains match configurations.
      */
-    @JsonProperty(value = "destinationTapRuleId")
     private String destinationTapRuleId;
 
-    /** Creates an instance of DestinationProperties class. */
+    /**
+     * Creates an instance of DestinationProperties class.
+     */
     public DestinationProperties() {
     }
 
     /**
      * Get the name property: Destination name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -55,7 +58,7 @@ public class DestinationProperties {
 
     /**
      * Set the name property: Destination name.
-     *
+     * 
      * @param name the name value to set.
      * @return the DestinationProperties object itself.
      */
@@ -66,7 +69,7 @@ public class DestinationProperties {
 
     /**
      * Get the destinationType property: Type of destination. Input can be IsolationDomain or Direct.
-     *
+     * 
      * @return the destinationType value.
      */
     public DestinationType destinationType() {
@@ -75,7 +78,7 @@ public class DestinationProperties {
 
     /**
      * Set the destinationType property: Type of destination. Input can be IsolationDomain or Direct.
-     *
+     * 
      * @param destinationType the destinationType value to set.
      * @return the DestinationProperties object itself.
      */
@@ -86,7 +89,7 @@ public class DestinationProperties {
 
     /**
      * Get the destinationId property: The destination Id. ARM Resource ID of either NNI or Internal Networks.
-     *
+     * 
      * @return the destinationId value.
      */
     public String destinationId() {
@@ -95,7 +98,7 @@ public class DestinationProperties {
 
     /**
      * Set the destinationId property: The destination Id. ARM Resource ID of either NNI or Internal Networks.
-     *
+     * 
      * @param destinationId the destinationId value to set.
      * @return the DestinationProperties object itself.
      */
@@ -106,7 +109,7 @@ public class DestinationProperties {
 
     /**
      * Get the isolationDomainProperties property: Isolation Domain Properties.
-     *
+     * 
      * @return the isolationDomainProperties value.
      */
     public IsolationDomainProperties isolationDomainProperties() {
@@ -115,7 +118,7 @@ public class DestinationProperties {
 
     /**
      * Set the isolationDomainProperties property: Isolation Domain Properties.
-     *
+     * 
      * @param isolationDomainProperties the isolationDomainProperties value to set.
      * @return the DestinationProperties object itself.
      */
@@ -127,7 +130,7 @@ public class DestinationProperties {
     /**
      * Get the destinationTapRuleId property: ARM Resource ID of destination Tap Rule that contains match
      * configurations.
-     *
+     * 
      * @return the destinationTapRuleId value.
      */
     public String destinationTapRuleId() {
@@ -137,7 +140,7 @@ public class DestinationProperties {
     /**
      * Set the destinationTapRuleId property: ARM Resource ID of destination Tap Rule that contains match
      * configurations.
-     *
+     * 
      * @param destinationTapRuleId the destinationTapRuleId value to set.
      * @return the DestinationProperties object itself.
      */
@@ -148,12 +151,62 @@ public class DestinationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (isolationDomainProperties() != null) {
             isolationDomainProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("destinationType",
+            this.destinationType == null ? null : this.destinationType.toString());
+        jsonWriter.writeStringField("destinationId", this.destinationId);
+        jsonWriter.writeJsonField("isolationDomainProperties", this.isolationDomainProperties);
+        jsonWriter.writeStringField("destinationTapRuleId", this.destinationTapRuleId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DestinationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DestinationProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DestinationProperties.
+     */
+    public static DestinationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DestinationProperties deserializedDestinationProperties = new DestinationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDestinationProperties.name = reader.getString();
+                } else if ("destinationType".equals(fieldName)) {
+                    deserializedDestinationProperties.destinationType = DestinationType.fromString(reader.getString());
+                } else if ("destinationId".equals(fieldName)) {
+                    deserializedDestinationProperties.destinationId = reader.getString();
+                } else if ("isolationDomainProperties".equals(fieldName)) {
+                    deserializedDestinationProperties.isolationDomainProperties
+                        = IsolationDomainProperties.fromJson(reader);
+                } else if ("destinationTapRuleId".equals(fieldName)) {
+                    deserializedDestinationProperties.destinationTapRuleId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDestinationProperties;
+        });
     }
 }

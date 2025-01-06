@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-security-keyvault-jca</artifactId>
-  <version>2.10.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
+  <version>2.11.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
   <name>JCA Provider for Azure Key Vault</name>
   <description>The Java Crypto Architecture (JCA) Provider for Azure Key Vault</description>
 
@@ -24,7 +24,10 @@
     <jacoco.min.linecoverage>0.05</jacoco.min.linecoverage>
     <codesnippet.skip>false</codesnippet.skip>
     <createSourcesJar>true</createSourcesJar>
-    <doclintMissingInclusion>-</doclintMissingInclusion>
+
+    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
+    <spotbugs.skip>false</spotbugs.skip>
+    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
 
   <dependencies>
@@ -32,6 +35,7 @@
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcpkix-lts8on</artifactId>
       <version>2.73.6</version> <!-- {x-version-update;org.bouncycastle:bcpkix-lts8on;external_dependency} -->
+      <optional>true</optional>
     </dependency>
     <!-- Apache HttpClient -->
     <dependency>
@@ -46,11 +50,11 @@
       <scope>provided</scope>
       <version>2.5.2</version> <!-- {x-version-update;org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
     </dependency>
-    <!-- Jackson Databind -->
+    <!-- Azure JSON -->
     <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>2.17.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+      <groupId>com.azure</groupId>
+      <artifactId>azure-json</artifactId>
+      <version>1.3.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
       <optional>true</optional>
     </dependency>
     <!-- SLF4j -->
@@ -90,7 +94,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.53.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.54.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- JUnit -->
@@ -132,6 +136,7 @@
         <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
         <executions>
           <execution>
+            <id>minimize-shade</id>
             <goals>
               <goal>shade</goal>
             </goals>
@@ -139,6 +144,12 @@
               <shadeTestJar>false</shadeTestJar>
               <createSourcesJar>${createSourcesJar}</createSourcesJar>
               <shadeSourcesContent>true</shadeSourcesContent>
+              <minimizeJar>true</minimizeJar>
+              <artifactSet>
+                <includes>
+                  <include>org.bouncycastle:*</include>
+                </includes>
+              </artifactSet>
               <filters>
                 <filter>
                   <artifact>org.bouncycastle:*</artifact>
@@ -152,15 +163,42 @@
               </filters>
               <relocations>
                 <relocation>
-                  <pattern>com.fasterxml.jackson</pattern>
-                  <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.com.fasterxml.jackson</shadedPattern>
-                  <excludes>
-                    <exclude>com/fasterxml/jackson/databind/jsonFormatVisitors/**</exclude> <!-- Avoid upper case in package name-->
-                  </excludes>
+                  <pattern>org.bouncycastle</pattern>
+                  <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.org.bouncycastle</shadedPattern>
                 </relocation>
+              </relocations>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+              </transformers>
+            </configuration>
+          </execution>
+          <execution>
+            <id>full-shade</id>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <shadeTestJar>false</shadeTestJar>
+              <createSourcesJar>${createSourcesJar}</createSourcesJar>
+              <shadeSourcesContent>true</shadeSourcesContent>
+              <artifactSet>
+                <excludes>
+                  <exclude>org.bouncycastle:*</exclude>
+                </excludes>
+              </artifactSet>
+              <filters>
+                <filter>
+                  <artifact>com.azure:azure-json</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+              <relocations>
                 <relocation>
-                  <pattern>com.fasterxml.jackson.databind.jsonFormatVisitors</pattern>
-                  <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.com.fasterxml.jackson.databind.json.format.visitors</shadedPattern> <!-- Avoid upper case in package name-->
+                  <pattern>com.azure.json</pattern>
+                  <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.com.azure.json</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>org.apache.commons</pattern>
@@ -177,10 +215,6 @@
                 <relocation>
                   <pattern>org.slf4j</pattern>
                   <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.org.slf4j</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>org.bouncycastle</pattern>
-                  <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.org.bouncycastle</shadedPattern>
                 </relocation>
               </relocations>
               <transformers>
@@ -241,7 +275,6 @@
             <bannedDependencies>
               <includes>
                 <include>org.bouncycastle:bcpkix-lts8on:[2.73.6]</include> <!-- {x-include-update;org.bouncycastle:bcpkix-lts8on;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-databind:[2.17.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>org.conscrypt:conscrypt-openjdk-uber:[2.5.2]</include> <!-- {x-include-update;org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
                 <include>org.apache.httpcomponents:httpclient:[4.5.14]</include> <!-- {x-include-update;org.apache.httpcomponents:httpclient;external_dependency} -->
                 <include>org.slf4j:slf4j-nop:[1.7.36]</include> <!-- {x-include-update;org.slf4j:slf4j-nop;external_dependency} -->

@@ -16,6 +16,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.resourcemanager.healthcareapis.models.*;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -34,16 +35,15 @@ public class HealthcareApisManagerTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        healthcareApisManager = HealthcareApisManager
-            .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile);
-
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
+
+        healthcareApisManager = HealthcareApisManager.configure()
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile);
 
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
@@ -51,10 +51,7 @@ public class HealthcareApisManagerTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -82,8 +79,13 @@ public class HealthcareApisManagerTests extends TestProxyTestBase {
             // @embedmeEnd
             workspace.refresh();
             Assertions.assertEquals(workspace.name(), workspaceName);
-            Assertions.assertEquals(workspace.name(), healthcareApisManager.workspaces().getById(workspace.id()).name());
-            Assertions.assertTrue(healthcareApisManager.workspaces().listByResourceGroup(resourceGroupName).stream().findAny().isPresent());
+            Assertions.assertEquals(workspace.name(),
+                healthcareApisManager.workspaces().getById(workspace.id()).name());
+            Assertions.assertTrue(healthcareApisManager.workspaces()
+                .listByResourceGroup(resourceGroupName)
+                .stream()
+                .findAny()
+                .isPresent());
         } finally {
             if (workspace != null) {
                 healthcareApisManager.workspaces().deleteById(workspace.id());

@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** An Image asset. */
 @Fluent
 public final class ImageAsset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageAsset.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ImageAsset.class);
 
     /*
      * The Asset Id.

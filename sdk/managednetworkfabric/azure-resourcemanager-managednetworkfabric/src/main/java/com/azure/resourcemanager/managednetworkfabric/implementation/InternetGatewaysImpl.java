@@ -21,22 +21,18 @@ public final class InternetGatewaysImpl implements InternetGateways {
 
     private final com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager;
 
-    public InternetGatewaysImpl(
-        InternetGatewaysClient innerClient,
+    public InternetGatewaysImpl(InternetGatewaysClient innerClient,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<InternetGateway> getByResourceGroupWithResponse(
-        String resourceGroupName, String internetGatewayName, Context context) {
-        Response<InternetGatewayInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, internetGatewayName, context);
+    public Response<InternetGateway> getByResourceGroupWithResponse(String resourceGroupName,
+        String internetGatewayName, Context context) {
+        Response<InternetGatewayInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, internetGatewayName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new InternetGatewayImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -62,105 +58,77 @@ public final class InternetGatewaysImpl implements InternetGateways {
 
     public PagedIterable<InternetGateway> listByResourceGroup(String resourceGroupName) {
         PagedIterable<InternetGatewayInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new InternetGatewayImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new InternetGatewayImpl(inner1, this.manager()));
     }
 
     public PagedIterable<InternetGateway> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<InternetGatewayInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new InternetGatewayImpl(inner1, this.manager()));
+        PagedIterable<InternetGatewayInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new InternetGatewayImpl(inner1, this.manager()));
     }
 
     public PagedIterable<InternetGateway> list() {
         PagedIterable<InternetGatewayInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new InternetGatewayImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new InternetGatewayImpl(inner1, this.manager()));
     }
 
     public PagedIterable<InternetGateway> list(Context context) {
         PagedIterable<InternetGatewayInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new InternetGatewayImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new InternetGatewayImpl(inner1, this.manager()));
     }
 
     public InternetGateway getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String internetGatewayName = Utils.getValueFromIdByName(id, "internetGateways");
+        String internetGatewayName = ResourceManagerUtils.getValueFromIdByName(id, "internetGateways");
         if (internetGatewayName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'internetGateways'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'internetGateways'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, internetGatewayName, Context.NONE).getValue();
     }
 
     public Response<InternetGateway> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String internetGatewayName = Utils.getValueFromIdByName(id, "internetGateways");
+        String internetGatewayName = ResourceManagerUtils.getValueFromIdByName(id, "internetGateways");
         if (internetGatewayName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'internetGateways'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'internetGateways'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, internetGatewayName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String internetGatewayName = Utils.getValueFromIdByName(id, "internetGateways");
+        String internetGatewayName = ResourceManagerUtils.getValueFromIdByName(id, "internetGateways");
         if (internetGatewayName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'internetGateways'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'internetGateways'.", id)));
         }
         this.delete(resourceGroupName, internetGatewayName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String internetGatewayName = Utils.getValueFromIdByName(id, "internetGateways");
+        String internetGatewayName = ResourceManagerUtils.getValueFromIdByName(id, "internetGateways");
         if (internetGatewayName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'internetGateways'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'internetGateways'.", id)));
         }
         this.delete(resourceGroupName, internetGatewayName, context);
     }

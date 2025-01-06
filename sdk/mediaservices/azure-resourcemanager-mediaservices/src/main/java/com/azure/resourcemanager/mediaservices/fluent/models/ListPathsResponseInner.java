@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.mediaservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mediaservices.models.StreamingPath;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Class of response for listPaths action. */
+/**
+ * Class of response for listPaths action.
+ */
 @Fluent
-public final class ListPathsResponseInner {
+public final class ListPathsResponseInner implements JsonSerializable<ListPathsResponseInner> {
     /*
      * Streaming Paths supported by current Streaming Locator
      */
-    @JsonProperty(value = "streamingPaths")
     private List<StreamingPath> streamingPaths;
 
     /*
      * Download Paths supported by current Streaming Locator
      */
-    @JsonProperty(value = "downloadPaths")
     private List<String> downloadPaths;
 
-    /** Creates an instance of ListPathsResponseInner class. */
+    /**
+     * Creates an instance of ListPathsResponseInner class.
+     */
     public ListPathsResponseInner() {
     }
 
     /**
      * Get the streamingPaths property: Streaming Paths supported by current Streaming Locator.
-     *
+     * 
      * @return the streamingPaths value.
      */
     public List<StreamingPath> streamingPaths() {
@@ -39,7 +45,7 @@ public final class ListPathsResponseInner {
 
     /**
      * Set the streamingPaths property: Streaming Paths supported by current Streaming Locator.
-     *
+     * 
      * @param streamingPaths the streamingPaths value to set.
      * @return the ListPathsResponseInner object itself.
      */
@@ -50,7 +56,7 @@ public final class ListPathsResponseInner {
 
     /**
      * Get the downloadPaths property: Download Paths supported by current Streaming Locator.
-     *
+     * 
      * @return the downloadPaths value.
      */
     public List<String> downloadPaths() {
@@ -59,7 +65,7 @@ public final class ListPathsResponseInner {
 
     /**
      * Set the downloadPaths property: Download Paths supported by current Streaming Locator.
-     *
+     * 
      * @param downloadPaths the downloadPaths value to set.
      * @return the ListPathsResponseInner object itself.
      */
@@ -70,12 +76,55 @@ public final class ListPathsResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (streamingPaths() != null) {
             streamingPaths().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("streamingPaths", this.streamingPaths,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("downloadPaths", this.downloadPaths,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ListPathsResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListPathsResponseInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ListPathsResponseInner.
+     */
+    public static ListPathsResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ListPathsResponseInner deserializedListPathsResponseInner = new ListPathsResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("streamingPaths".equals(fieldName)) {
+                    List<StreamingPath> streamingPaths = reader.readArray(reader1 -> StreamingPath.fromJson(reader1));
+                    deserializedListPathsResponseInner.streamingPaths = streamingPaths;
+                } else if ("downloadPaths".equals(fieldName)) {
+                    List<String> downloadPaths = reader.readArray(reader1 -> reader1.getString());
+                    deserializedListPathsResponseInner.downloadPaths = downloadPaths;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedListPathsResponseInner;
+        });
     }
 }

@@ -20,6 +20,7 @@
     <maven.compiler.testSource>${jdk-test.version}</maven.compiler.testSource>
     <maven.compiler.testTarget>${jdk-test.version}</maven.compiler.testTarget>
     <jacoco.skip>true</jacoco.skip> <!--Most of the tests are done in the spring-cloud-azure-starter-monitor-test module-->
+    <spotless.skip>true</spotless.skip>
   </properties>
 
   <groupId>com.azure.spring</groupId>
@@ -87,8 +88,8 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
-      <version>1.0.0-beta.31</version> <!-- {x-version-update;unreleased_com.azure:azure-monitor-opentelemetry-exporter;dependency} -->
+      <artifactId>azure-monitor-opentelemetry-autoconfigure</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-monitor-opentelemetry-autoconfigure;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
@@ -219,4 +220,24 @@
     </plugins>
   </build>
 
+  <profiles>
+    <!-- Library cannot build for Java 16 and below -->
+    <profile>
+      <id>below-java-17</id>
+      <activation>
+        <jdk>[,17)</jdk>
+      </activation>
+      <properties>
+        <jacoco.skip>true</jacoco.skip>
+        <skipCompile>true</skipCompile>
+        <skipTestCompile>true</skipTestCompile>
+        <codesnippet.skip>true</codesnippet.skip>
+        <checkstyle.skip>true</checkstyle.skip>
+        <spotbugs.skip>true</spotbugs.skip>
+        <revapi.skip>true</revapi.skip>
+        <maven.test.skip>true</maven.test.skip>
+        <maven.javadoc.skip>true</maven.javadoc.skip>
+      </properties>
+    </profile>
+  </profiles>
 </project>

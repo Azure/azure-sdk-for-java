@@ -18,10 +18,8 @@ import java.util.Collection;
 @Fluent
 public interface VirtualNetworkGatewayConnection
     extends IndependentChildResource<NetworkManager, VirtualNetworkGatewayConnectionInner>,
-        Refreshable<VirtualNetworkGatewayConnection>,
-        Updatable<VirtualNetworkGatewayConnection.Update>,
-        UpdatableWithTags<VirtualNetworkGatewayConnection>,
-        HasParent<VirtualNetworkGateway> {
+    Refreshable<VirtualNetworkGatewayConnection>, Updatable<VirtualNetworkGatewayConnection.Update>,
+    UpdatableWithTags<VirtualNetworkGatewayConnection>, HasParent<VirtualNetworkGateway> {
 
     /**
      * Get the authorizationKey value.
@@ -88,14 +86,9 @@ public interface VirtualNetworkGatewayConnection
     String provisioningState();
 
     /** The entirety of the virtual network gateway connection definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithConnectionType,
-            DefinitionStages.WithLocalNetworkGateway,
-            DefinitionStages.WithSecondVirtualNetworkGateway,
-            DefinitionStages.WithSharedKey,
-            DefinitionStages.WithAuthorization,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithConnectionType,
+        DefinitionStages.WithLocalNetworkGateway, DefinitionStages.WithSecondVirtualNetworkGateway,
+        DefinitionStages.WithSharedKey, DefinitionStages.WithAuthorization, DefinitionStages.WithCreate {
     }
 
     /** Grouping of virtual network gateway connection definition stages. */
@@ -192,21 +185,14 @@ public interface VirtualNetworkGatewayConnection
          * The stage of a virtual network gateway connection definition with sufficient inputs to create a new
          * connection in the cloud, but exposing additional optional settings to specify.
          */
-        interface WithCreate
-            extends Creatable<VirtualNetworkGatewayConnection>,
-                Resource.DefinitionWithTags<WithCreate>,
-                WithBgp,
-                WithAuthorization {
+        interface WithCreate extends Creatable<VirtualNetworkGatewayConnection>,
+            Resource.DefinitionWithTags<WithCreate>, WithBgp, WithAuthorization {
         }
     }
 
     /** Grouping of virtual network gateway connection update stages. */
-    interface Update
-        extends Appliable<VirtualNetworkGatewayConnection>,
-            Resource.UpdateWithTags<Update>,
-            UpdateStages.WithBgp,
-            UpdateStages.WithSharedKey,
-            UpdateStages.WithAuthorization {
+    interface Update extends Appliable<VirtualNetworkGatewayConnection>, Resource.UpdateWithTags<Update>,
+        UpdateStages.WithBgp, UpdateStages.WithSharedKey, UpdateStages.WithAuthorization {
     }
 
     /** Grouping of virtual network gateway connection update stages. */

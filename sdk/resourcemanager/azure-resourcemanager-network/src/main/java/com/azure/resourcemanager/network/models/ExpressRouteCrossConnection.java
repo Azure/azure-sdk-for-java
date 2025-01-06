@@ -14,11 +14,9 @@ import java.util.Map;
 
 /** Entry point for Express Route Cross Connection management API in Azure. */
 @Fluent
-public interface ExpressRouteCrossConnection
-    extends GroupableResource<NetworkManager, ExpressRouteCrossConnectionInner>,
-        Refreshable<ExpressRouteCrossConnection>,
-        Updatable<ExpressRouteCrossConnection.Update>,
-        UpdatableWithTags<ExpressRouteCrossConnection> {
+public interface ExpressRouteCrossConnection extends
+    GroupableResource<NetworkManager, ExpressRouteCrossConnectionInner>, Refreshable<ExpressRouteCrossConnection>,
+    Updatable<ExpressRouteCrossConnection.Update>, UpdatableWithTags<ExpressRouteCrossConnection> {
 
     /** @return entry point to manage express route peerings associated with express route circuit */
     ExpressRouteCrossConnectionPeerings peerings();
@@ -84,10 +82,7 @@ public interface ExpressRouteCrossConnection
      * The template for a express route cross connection update operation, containing all the settings that can be
      * modified.
      */
-    interface Update
-        extends Appliable<ExpressRouteCrossConnection>,
-            Resource.UpdateWithTags<Update>,
-            UpdateStages.WithServiceProviderProviosioningState,
-            UpdateStages.WithServiceProviderNotes {
+    interface Update extends Appliable<ExpressRouteCrossConnection>, Resource.UpdateWithTags<Update>,
+        UpdateStages.WithServiceProviderProviosioningState, UpdateStages.WithServiceProviderNotes {
     }
 }

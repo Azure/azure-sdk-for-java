@@ -34,14 +34,14 @@ import java.util.Map;
 
 public final class DeployUsingARMTemplateWithTags {
 
-
     /**
      * Main function which runs the actual sample.
      *
      * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException, IllegalAccessException {
+    public static boolean runSample(AzureResourceManager azureResourceManager)
+        throws IOException, IllegalAccessException {
         final String rgName = Utils.randomResourceName(azureResourceManager, "rgRSAT", 24);
         final String deploymentName = Utils.randomResourceName(azureResourceManager, "dpRSAT", 24);
         try {
@@ -52,12 +52,9 @@ public final class DeployUsingARMTemplateWithTags {
 
             System.out.println("Creating a resource group with name: " + rgName);
 
-            azureResourceManager.resourceGroups().define(rgName)
-                    .withRegion(Region.US_WEST)
-                    .create();
+            azureResourceManager.resourceGroups().define(rgName).withRegion(Region.US_WEST).create();
 
             System.out.println("Created a resource group with name: " + rgName);
-
 
             //=============================================================
             // Create a deployment for an Azure App Service via an ARM
@@ -65,12 +62,13 @@ public final class DeployUsingARMTemplateWithTags {
 
             System.out.println("Starting a deployment for an Azure App Service: " + deploymentName);
 
-            Deployment deployment = azureResourceManager.deployments().define(deploymentName)
-                    .withExistingResourceGroup(rgName)
-                    .withTemplate(templateJson)
-                    .withParameters("{}")
-                    .withMode(DeploymentMode.INCREMENTAL)
-                    .create();
+            Deployment deployment = azureResourceManager.deployments()
+                .define(deploymentName)
+                .withExistingResourceGroup(rgName)
+                .withTemplate(templateJson)
+                .withParameters("{}")
+                .withMode(DeploymentMode.INCREMENTAL)
+                .create();
 
             System.out.println("Finished a deployment for an Azure App Service: " + deploymentName);
 
@@ -80,23 +78,27 @@ public final class DeployUsingARMTemplateWithTags {
             // Getting created resources
             for (DeploymentOperation operation : operations) {
                 if (operation.targetResource() != null) {
-                    genericResources.add(azureResourceManager.genericResources().getById(operation.targetResource().id()));
+                    genericResources
+                        .add(azureResourceManager.genericResources().getById(operation.targetResource().id()));
                 }
             }
 
             System.out.println("Resource created during deployment: " + deploymentName);
             for (GenericResource genericResource : genericResources) {
-                System.out.println(genericResource.resourceProviderNamespace() + "/" + genericResource.resourceType() + ": " + genericResource.name());
+                System.out.println(genericResource.resourceProviderNamespace() + "/" + genericResource.resourceType()
+                    + ": " + genericResource.name());
                 Map<String, String> tags = new HashMap<>(genericResource.tags());
                 tags.put("label", "deploy1");
                 // Tag resource
                 azureResourceManager.tagOperations().updateTags(genericResource, tags);
             }
 
-            PagedIterable<GenericResource> listResources = azureResourceManager.genericResources().listByTag(rgName, "label", "deploy1");
+            PagedIterable<GenericResource> listResources
+                = azureResourceManager.genericResources().listByTag(rgName, "label", "deploy1");
             System.out.println("Tagged resources for deployment: " + deploymentName);
             for (GenericResource genericResource : listResources) {
-                System.out.println(genericResource.resourceProviderNamespace() + "/" + genericResource.resourceType() + ": " + genericResource.name());
+                System.out.println(genericResource.resourceProviderNamespace() + "/" + genericResource.resourceType()
+                    + ": " + genericResource.name());
             }
             return true;
         } finally {
@@ -129,8 +131,7 @@ public final class DeployUsingARMTemplateWithTags {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
@@ -142,11 +143,13 @@ public final class DeployUsingARMTemplateWithTags {
         }
     }
 
-    private static String getTemplate(AzureResourceManager azureResourceManager) throws IllegalAccessException, JsonProcessingException, IOException {
+    private static String getTemplate(AzureResourceManager azureResourceManager)
+        throws IllegalAccessException, JsonProcessingException, IOException {
         final String hostingPlanName = Utils.randomResourceName(azureResourceManager, "hpRSAT", 24);
         final String webappName = Utils.randomResourceName(azureResourceManager, "wnRSAT", 24);
 
-        try (InputStream embeddedTemplate = DeployUsingARMTemplateWithTags.class.getResourceAsStream("/templateValue.json")) {
+        try (InputStream embeddedTemplate
+            = DeployUsingARMTemplateWithTags.class.getResourceAsStream("/templateValue.json")) {
 
             final ObjectMapper mapper = new ObjectMapper();
             final JsonNode tmp = mapper.readTree(embeddedTemplate);
@@ -161,7 +164,7 @@ public final class DeployUsingARMTemplateWithTags {
     }
 
     private static void validateAndAddFieldValue(String type, String fieldValue, String fieldName, String errorMessage,
-                                                 JsonNode tmp) throws IllegalAccessException {
+        JsonNode tmp) throws IllegalAccessException {
         // Add count variable for loop....
         final ObjectMapper mapper = new ObjectMapper();
         final ObjectNode parameter = mapper.createObjectNode();

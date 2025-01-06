@@ -28,8 +28,7 @@ public abstract class CryptographyTest<TOptions extends PerfStressOptions> exten
         KeyVaultKey key = keyClient.createKey(keyName, KeyType.RSA);
 
         // Setup the service client
-        CryptographyClientBuilder builder = new CryptographyClientBuilder()
-            .keyIdentifier(key.getId())
+        CryptographyClientBuilder builder = new CryptographyClientBuilder().keyIdentifier(key.getId())
             .credential(new DefaultAzureCredentialBuilder().build());
 
         cryptographyClient = builder.buildClient();

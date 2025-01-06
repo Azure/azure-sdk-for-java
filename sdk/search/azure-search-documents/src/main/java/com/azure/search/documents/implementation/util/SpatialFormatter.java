@@ -42,9 +42,7 @@ public final class SpatialFormatter {
     public static String encodePoint(double longitude, double latitude) {
         StringBuilder builder = new StringBuilder(POINT_EXPRESSION_IDENTIFIER_LENGTH + LONGITUDE_LATITUDE_MAX_LENGTH);
 
-        return addPoint(builder.append("geography'POINT("), longitude, latitude)
-            .append(")'")
-            .toString();
+        return addPoint(builder.append("geography'POINT("), longitude, latitude).append(")'").toString();
     }
 
     /**
@@ -93,20 +91,18 @@ public final class SpatialFormatter {
         Objects.requireNonNull(polygon, "'polygon' cannot be null.");
 
         if (polygon.getRings().size() != 1) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "'polygon' must have exactly one ring to form a searchable polygon."));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'polygon' must have exactly one ring to form a searchable polygon."));
         }
 
         return encodePolygon(polygon.getOuterRing().getCoordinates());
     }
 
     private static String encodePolygon(List<GeoPosition> ring) {
-        int approximateODataExpressionSize = POLYGON_EXPRESSION_IDENTIFIER_LENGTH
-            + ring.size() * LONGITUDE_LATITUDE_MAX_LENGTH
-            + ring.size();
+        int approximateODataExpressionSize
+            = POLYGON_EXPRESSION_IDENTIFIER_LENGTH + ring.size() * LONGITUDE_LATITUDE_MAX_LENGTH + ring.size();
 
-        StringBuilder builder = new StringBuilder(approximateODataExpressionSize)
-            .append("geography'POLYGON((");
+        StringBuilder builder = new StringBuilder(approximateODataExpressionSize).append("geography'POLYGON((");
 
         boolean first = true;
         for (GeoPosition position : ring) {
@@ -119,8 +115,7 @@ public final class SpatialFormatter {
             addPoint(builder, position.getLongitude(), position.getLatitude());
         }
 
-        return builder.append("))'")
-            .toString();
+        return builder.append("))'").toString();
     }
 
     private static StringBuilder addPoint(StringBuilder builder, double longitude, double latitude) {

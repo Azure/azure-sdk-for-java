@@ -14,13 +14,15 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.InternetGatewayInner;
 import com.azure.resourcemanager.managednetworkfabric.models.InternetGatewayPatch;
 
-/** An instance of this class provides access to all the operations defined in InternetGatewaysClient. */
+/**
+ * An instance of this class provides access to all the operations defined in InternetGatewaysClient.
+ */
 public interface InternetGatewaysClient {
     /**
      * Create a Network Fabric Service Internet Gateway.
-     *
-     * <p>Creates a Network Fabric Service Internet Gateway resource instance.
-     *
+     * 
+     * Creates a Network Fabric Service Internet Gateway resource instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body Request payload.
@@ -30,14 +32,14 @@ public interface InternetGatewaysClient {
      * @return the {@link SyncPoller} for polling of the Internet Gateway resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<InternetGatewayInner>, InternetGatewayInner> beginCreate(
-        String resourceGroupName, String internetGatewayName, InternetGatewayInner body);
+    SyncPoller<PollResult<InternetGatewayInner>, InternetGatewayInner> beginCreate(String resourceGroupName,
+        String internetGatewayName, InternetGatewayInner body);
 
     /**
      * Create a Network Fabric Service Internet Gateway.
-     *
-     * <p>Creates a Network Fabric Service Internet Gateway resource instance.
-     *
+     * 
+     * Creates a Network Fabric Service Internet Gateway resource instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body Request payload.
@@ -48,14 +50,14 @@ public interface InternetGatewaysClient {
      * @return the {@link SyncPoller} for polling of the Internet Gateway resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<InternetGatewayInner>, InternetGatewayInner> beginCreate(
-        String resourceGroupName, String internetGatewayName, InternetGatewayInner body, Context context);
+    SyncPoller<PollResult<InternetGatewayInner>, InternetGatewayInner> beginCreate(String resourceGroupName,
+        String internetGatewayName, InternetGatewayInner body, Context context);
 
     /**
      * Create a Network Fabric Service Internet Gateway.
-     *
-     * <p>Creates a Network Fabric Service Internet Gateway resource instance.
-     *
+     * 
+     * Creates a Network Fabric Service Internet Gateway resource instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body Request payload.
@@ -69,9 +71,9 @@ public interface InternetGatewaysClient {
 
     /**
      * Create a Network Fabric Service Internet Gateway.
-     *
-     * <p>Creates a Network Fabric Service Internet Gateway resource instance.
-     *
+     * 
+     * Creates a Network Fabric Service Internet Gateway resource instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body Request payload.
@@ -82,14 +84,14 @@ public interface InternetGatewaysClient {
      * @return the Internet Gateway resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    InternetGatewayInner create(
-        String resourceGroupName, String internetGatewayName, InternetGatewayInner body, Context context);
+    InternetGatewayInner create(String resourceGroupName, String internetGatewayName, InternetGatewayInner body,
+        Context context);
 
     /**
      * Retrieves details of Network Fabric Service Internet Gateway.
-     *
-     * <p>Implements Gateway GET method.
-     *
+     * 
+     * Implements Gateway GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param context The context to associate with this operation.
@@ -99,14 +101,14 @@ public interface InternetGatewaysClient {
      * @return the Internet Gateway resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<InternetGatewayInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String internetGatewayName, Context context);
+    Response<InternetGatewayInner> getByResourceGroupWithResponse(String resourceGroupName, String internetGatewayName,
+        Context context);
 
     /**
      * Retrieves details of Network Fabric Service Internet Gateway.
-     *
-     * <p>Implements Gateway GET method.
-     *
+     * 
+     * Implements Gateway GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -119,9 +121,9 @@ public interface InternetGatewaysClient {
 
     /**
      * Updates a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute patch on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute patch on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -131,14 +133,14 @@ public interface InternetGatewaysClient {
      * @return the {@link SyncPoller} for polling of the Internet Gateway resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<InternetGatewayInner>, InternetGatewayInner> beginUpdate(
-        String resourceGroupName, String internetGatewayName, InternetGatewayPatch body);
+    SyncPoller<PollResult<InternetGatewayInner>, InternetGatewayInner> beginUpdate(String resourceGroupName,
+        String internetGatewayName, InternetGatewayPatch body);
 
     /**
      * Updates a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute patch on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute patch on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -149,14 +151,14 @@ public interface InternetGatewaysClient {
      * @return the {@link SyncPoller} for polling of the Internet Gateway resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<InternetGatewayInner>, InternetGatewayInner> beginUpdate(
-        String resourceGroupName, String internetGatewayName, InternetGatewayPatch body, Context context);
+    SyncPoller<PollResult<InternetGatewayInner>, InternetGatewayInner> beginUpdate(String resourceGroupName,
+        String internetGatewayName, InternetGatewayPatch body, Context context);
 
     /**
      * Updates a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute patch on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute patch on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -170,9 +172,9 @@ public interface InternetGatewaysClient {
 
     /**
      * Updates a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute patch on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute patch on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -183,14 +185,14 @@ public interface InternetGatewaysClient {
      * @return the Internet Gateway resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    InternetGatewayInner update(
-        String resourceGroupName, String internetGatewayName, InternetGatewayPatch body, Context context);
+    InternetGatewayInner update(String resourceGroupName, String internetGatewayName, InternetGatewayPatch body,
+        Context context);
 
     /**
      * Deletes a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute a delete on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute a delete on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -203,9 +205,9 @@ public interface InternetGatewaysClient {
 
     /**
      * Deletes a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute a delete on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute a delete on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param context The context to associate with this operation.
@@ -215,14 +217,14 @@ public interface InternetGatewaysClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String internetGatewayName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String internetGatewayName,
+        Context context);
 
     /**
      * Deletes a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute a delete on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute a delete on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -234,9 +236,9 @@ public interface InternetGatewaysClient {
 
     /**
      * Deletes a Network Fabric Service Internet Gateway.
-     *
-     * <p>Execute a delete on Network Fabric Service Internet Gateway.
-     *
+     * 
+     * Execute a delete on Network Fabric Service Internet Gateway.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayName Name of the Internet Gateway.
      * @param context The context to associate with this operation.
@@ -249,9 +251,9 @@ public interface InternetGatewaysClient {
 
     /**
      * List Internet Gateways by resource group.
-     *
-     * <p>Displays Internet Gateways list by resource group GET method.
-     *
+     * 
+     * Displays Internet Gateways list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -263,9 +265,9 @@ public interface InternetGatewaysClient {
 
     /**
      * List Internet Gateways by resource group.
-     *
-     * <p>Displays Internet Gateways list by resource group GET method.
-     *
+     * 
+     * Displays Internet Gateways list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -278,9 +280,9 @@ public interface InternetGatewaysClient {
 
     /**
      * List Internet Gateways by subscription.
-     *
-     * <p>Displays Internet Gateways list by subscription GET method.
-     *
+     * 
+     * Displays Internet Gateways list by subscription GET method.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of InternetGateways as paginated response with {@link PagedIterable}.
@@ -290,9 +292,9 @@ public interface InternetGatewaysClient {
 
     /**
      * List Internet Gateways by subscription.
-     *
-     * <p>Displays Internet Gateways list by subscription GET method.
-     *
+     * 
+     * Displays Internet Gateways list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

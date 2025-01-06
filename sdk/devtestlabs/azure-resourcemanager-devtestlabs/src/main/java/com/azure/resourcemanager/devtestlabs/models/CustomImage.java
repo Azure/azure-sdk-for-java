@@ -11,102 +11,104 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** An immutable client-side representation of CustomImage. */
+/**
+ * An immutable client-side representation of CustomImage.
+ */
 public interface CustomImage {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the vm property: The virtual machine from which the image is to be created.
-     *
+     * 
      * @return the vm value.
      */
     CustomImagePropertiesFromVm vm();
 
     /**
      * Gets the vhd property: The VHD from which the image is to be created.
-     *
+     * 
      * @return the vhd value.
      */
     CustomImagePropertiesCustom vhd();
 
     /**
      * Gets the description property: The description of the custom image.
-     *
+     * 
      * @return the description value.
      */
     String description();
 
     /**
      * Gets the author property: The author of the custom image.
-     *
+     * 
      * @return the author value.
      */
     String author();
 
     /**
      * Gets the creationDate property: The creation date of the custom image.
-     *
+     * 
      * @return the creationDate value.
      */
     OffsetDateTime creationDate();
 
     /**
      * Gets the managedImageId property: The Managed Image Id backing the custom image.
-     *
+     * 
      * @return the managedImageId value.
      */
     String managedImageId();
 
     /**
      * Gets the managedSnapshotId property: The Managed Snapshot Id backing the custom image.
-     *
+     * 
      * @return the managedSnapshotId value.
      */
     String managedSnapshotId();
 
     /**
      * Gets the dataDiskStorageInfo property: Storage information about the data disks present in the custom image.
-     *
+     * 
      * @return the dataDiskStorageInfo value.
      */
     List<DataDiskStorageTypeInfo> dataDiskStorageInfo();
 
     /**
      * Gets the customImagePlan property: Storage information about the plan related to this custom image.
-     *
+     * 
      * @return the customImagePlan value.
      */
     CustomImagePropertiesFromPlan customImagePlan();
@@ -114,72 +116,77 @@ public interface CustomImage {
     /**
      * Gets the isPlanAuthorized property: Whether or not the custom images underlying offer/plan has been enabled for
      * programmatic deployment.
-     *
+     * 
      * @return the isPlanAuthorized value.
      */
     Boolean isPlanAuthorized();
 
     /**
      * Gets the provisioningState property: The provisioning status of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     String provisioningState();
 
     /**
      * Gets the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
+     * 
      * @return the uniqueIdentifier value.
      */
     String uniqueIdentifier();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.devtestlabs.fluent.models.CustomImageInner object.
-     *
+     * 
      * @return the inner object.
      */
     CustomImageInner innerModel();
 
-    /** The entirety of the CustomImage definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the CustomImage definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The CustomImage definition stages. */
+    /**
+     * The CustomImage definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the CustomImage definition. */
+        /**
+         * The first stage of the CustomImage definition.
+         */
         interface Blank extends WithLocation {
         }
 
-        /** The stage of the CustomImage definition allowing to specify location. */
+        /**
+         * The stage of the CustomImage definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -187,18 +194,20 @@ public interface CustomImage {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
             WithParentResource withRegion(String location);
         }
 
-        /** The stage of the CustomImage definition allowing to specify parent resource. */
+        /**
+         * The stage of the CustomImage definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, labName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group.
              * @param labName The name of the lab.
              * @return the next definition stage.
@@ -210,141 +219,154 @@ public interface CustomImage {
          * The stage of the CustomImage definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithVm,
-                DefinitionStages.WithVhd,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithAuthor,
-                DefinitionStages.WithManagedImageId,
-                DefinitionStages.WithManagedSnapshotId,
-                DefinitionStages.WithDataDiskStorageInfo,
-                DefinitionStages.WithCustomImagePlan,
-                DefinitionStages.WithIsPlanAuthorized {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithVm, DefinitionStages.WithVhd,
+            DefinitionStages.WithDescription, DefinitionStages.WithAuthor, DefinitionStages.WithManagedImageId,
+            DefinitionStages.WithManagedSnapshotId, DefinitionStages.WithDataDiskStorageInfo,
+            DefinitionStages.WithCustomImagePlan, DefinitionStages.WithIsPlanAuthorized {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             CustomImage create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             CustomImage create(Context context);
         }
 
-        /** The stage of the CustomImage definition allowing to specify tags. */
+        /**
+         * The stage of the CustomImage definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
 
-        /** The stage of the CustomImage definition allowing to specify vm. */
+        /**
+         * The stage of the CustomImage definition allowing to specify vm.
+         */
         interface WithVm {
             /**
              * Specifies the vm property: The virtual machine from which the image is to be created..
-             *
+             * 
              * @param vm The virtual machine from which the image is to be created.
              * @return the next definition stage.
              */
             WithCreate withVm(CustomImagePropertiesFromVm vm);
         }
 
-        /** The stage of the CustomImage definition allowing to specify vhd. */
+        /**
+         * The stage of the CustomImage definition allowing to specify vhd.
+         */
         interface WithVhd {
             /**
              * Specifies the vhd property: The VHD from which the image is to be created..
-             *
+             * 
              * @param vhd The VHD from which the image is to be created.
              * @return the next definition stage.
              */
             WithCreate withVhd(CustomImagePropertiesCustom vhd);
         }
 
-        /** The stage of the CustomImage definition allowing to specify description. */
+        /**
+         * The stage of the CustomImage definition allowing to specify description.
+         */
         interface WithDescription {
             /**
              * Specifies the description property: The description of the custom image..
-             *
+             * 
              * @param description The description of the custom image.
              * @return the next definition stage.
              */
             WithCreate withDescription(String description);
         }
 
-        /** The stage of the CustomImage definition allowing to specify author. */
+        /**
+         * The stage of the CustomImage definition allowing to specify author.
+         */
         interface WithAuthor {
             /**
              * Specifies the author property: The author of the custom image..
-             *
+             * 
              * @param author The author of the custom image.
              * @return the next definition stage.
              */
             WithCreate withAuthor(String author);
         }
 
-        /** The stage of the CustomImage definition allowing to specify managedImageId. */
+        /**
+         * The stage of the CustomImage definition allowing to specify managedImageId.
+         */
         interface WithManagedImageId {
             /**
              * Specifies the managedImageId property: The Managed Image Id backing the custom image..
-             *
+             * 
              * @param managedImageId The Managed Image Id backing the custom image.
              * @return the next definition stage.
              */
             WithCreate withManagedImageId(String managedImageId);
         }
 
-        /** The stage of the CustomImage definition allowing to specify managedSnapshotId. */
+        /**
+         * The stage of the CustomImage definition allowing to specify managedSnapshotId.
+         */
         interface WithManagedSnapshotId {
             /**
              * Specifies the managedSnapshotId property: The Managed Snapshot Id backing the custom image..
-             *
+             * 
              * @param managedSnapshotId The Managed Snapshot Id backing the custom image.
              * @return the next definition stage.
              */
             WithCreate withManagedSnapshotId(String managedSnapshotId);
         }
 
-        /** The stage of the CustomImage definition allowing to specify dataDiskStorageInfo. */
+        /**
+         * The stage of the CustomImage definition allowing to specify dataDiskStorageInfo.
+         */
         interface WithDataDiskStorageInfo {
             /**
              * Specifies the dataDiskStorageInfo property: Storage information about the data disks present in the
              * custom image.
-             *
+             * 
              * @param dataDiskStorageInfo Storage information about the data disks present in the custom image.
              * @return the next definition stage.
              */
             WithCreate withDataDiskStorageInfo(List<DataDiskStorageTypeInfo> dataDiskStorageInfo);
         }
 
-        /** The stage of the CustomImage definition allowing to specify customImagePlan. */
+        /**
+         * The stage of the CustomImage definition allowing to specify customImagePlan.
+         */
         interface WithCustomImagePlan {
             /**
              * Specifies the customImagePlan property: Storage information about the plan related to this custom image.
-             *
+             * 
              * @param customImagePlan Storage information about the plan related to this custom image.
              * @return the next definition stage.
              */
             WithCreate withCustomImagePlan(CustomImagePropertiesFromPlan customImagePlan);
         }
 
-        /** The stage of the CustomImage definition allowing to specify isPlanAuthorized. */
+        /**
+         * The stage of the CustomImage definition allowing to specify isPlanAuthorized.
+         */
         interface WithIsPlanAuthorized {
             /**
              * Specifies the isPlanAuthorized property: Whether or not the custom images underlying offer/plan has been
              * enabled for programmatic deployment.
-             *
+             * 
              * @param isPlanAuthorized Whether or not the custom images underlying offer/plan has been enabled for
-             *     programmatic deployment.
+             * programmatic deployment.
              * @return the next definition stage.
              */
             WithCreate withIsPlanAuthorized(Boolean isPlanAuthorized);
@@ -353,36 +375,42 @@ public interface CustomImage {
 
     /**
      * Begins update for the CustomImage resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     CustomImage.Update update();
 
-    /** The template for CustomImage update. */
+    /**
+     * The template for CustomImage update.
+     */
     interface Update extends UpdateStages.WithTags {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         CustomImage apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         CustomImage apply(Context context);
     }
 
-    /** The CustomImage update stages. */
+    /**
+     * The CustomImage update stages.
+     */
     interface UpdateStages {
-        /** The stage of the CustomImage update allowing to specify tags. */
+        /**
+         * The stage of the CustomImage update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: The tags of the resource..
-             *
+             * 
              * @param tags The tags of the resource.
              * @return the next definition stage.
              */
@@ -392,14 +420,14 @@ public interface CustomImage {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     CustomImage refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

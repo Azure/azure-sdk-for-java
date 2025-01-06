@@ -15,27 +15,38 @@ import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 public interface VirtualNetworkLink
     extends ExternalChildResource<VirtualNetworkLink, PrivateDnsZone>, HasInnerModel<VirtualNetworkLinkInner> {
     /**
+     * Gets the ETag of the virtual network link.
+     *
      * @return the ETag of the virtual network link.
      */
     String etag();
 
     /**
+     * Gets the id of referenced virtual network.
+     *
      * @return the id of referenced virtual network.
      */
     String referencedVirtualNetworkId();
 
     /**
+     * Checks whether auto-registration of virtual machine records in the virtual network
+     * gets enabled in the private DNS zone.
+     *
      * @return whether auto-registration of virtual machine records in the virtual network
      * gets enabled in the private DNS zone.
      */
     boolean isAutoRegistrationEnabled();
 
     /**
+     * Gets the status of the virtual network link to the private DNS zone.
+     *
      * @return the status of the virtual network link to the private DNS zone.
      */
     VirtualNetworkLinkState virtualNetworkLinkState();
 
     /**
+     * Gets the provisioning state of the virtual network link.
+     *
      * @return the provisioning state of the virtual network link.
      */
     ProvisioningState provisioningState();
@@ -45,9 +56,7 @@ public interface VirtualNetworkLink
      *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithAttach<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of virtual network link definition stages as a part of parent DNS zone definition. */
@@ -120,12 +129,9 @@ public interface VirtualNetworkLink
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAttach<ParentT>
-            extends Attachable.InDefinition<ParentT>,
-                DefinitionStages.WithAutoRegistration<ParentT>,
-                DefinitionStages.WithReferencedVirtualNetwork<ParentT>,
-                DefinitionStages.WithETagCheck<ParentT>,
-                Resource.DefinitionWithRegion<WithAttach<ParentT>>,
-                Resource.DefinitionWithTags<WithAttach<ParentT>> {
+            extends Attachable.InDefinition<ParentT>, DefinitionStages.WithAutoRegistration<ParentT>,
+            DefinitionStages.WithReferencedVirtualNetwork<ParentT>, DefinitionStages.WithETagCheck<ParentT>,
+            Resource.DefinitionWithRegion<WithAttach<ParentT>>, Resource.DefinitionWithTags<WithAttach<ParentT>> {
         }
     }
 
@@ -135,8 +141,7 @@ public interface VirtualNetworkLink
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
     interface UpdateDefinition<ParentT>
-        extends UpdateDefinitionStages.Blank<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT> {
+        extends UpdateDefinitionStages.Blank<ParentT>, UpdateDefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of DNS zone record set definition stages as a part of parent DNS zone update. */
@@ -209,8 +214,7 @@ public interface VirtualNetworkLink
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAttach<ParentT>
-            extends Attachable.InUpdate<ParentT>,
-            UpdateDefinitionStages.WithAutoRegistration<ParentT>,
+            extends Attachable.InUpdate<ParentT>, UpdateDefinitionStages.WithAutoRegistration<ParentT>,
             UpdateDefinitionStages.WithReferencedVirtualNetwork<ParentT>,
             UpdateDefinitionStages.WithETagCheck<ParentT> {
         }
@@ -219,11 +223,8 @@ public interface VirtualNetworkLink
     /**
      * the set of configurations that can be updated for virtual network link.
      */
-    interface Update
-        extends Settable<PrivateDnsZone.Update>,
-            UpdateStages.WithAutoRegistration,
-            UpdateStages.WithETagCheck,
-            Resource.UpdateWithTags<Update> {
+    interface Update extends Settable<PrivateDnsZone.Update>, UpdateStages.WithAutoRegistration,
+        UpdateStages.WithETagCheck, Resource.UpdateWithTags<Update> {
     }
 
     /** Grouping of virtual network link update stages. */

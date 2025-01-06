@@ -14,12 +14,8 @@ import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure SQL database's TransparentDataEncryption. */
 @Fluent
-public interface TransparentDataEncryption
-    extends Refreshable<TransparentDataEncryption>,
-        HasInnerModel<LogicalDatabaseTransparentDataEncryptionInner>,
-        HasResourceGroup,
-        HasName,
-        HasId {
+public interface TransparentDataEncryption extends Refreshable<TransparentDataEncryption>,
+    HasInnerModel<LogicalDatabaseTransparentDataEncryptionInner>, HasResourceGroup, HasName, HasId {
     /** @return name of the SQL Server to which this replication belongs */
     String sqlServerName();
 

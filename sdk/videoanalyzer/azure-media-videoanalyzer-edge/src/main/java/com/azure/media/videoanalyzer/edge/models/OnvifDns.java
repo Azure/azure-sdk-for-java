@@ -5,33 +5,42 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The ONVIF device DNS properties. */
+/**
+ * The ONVIF device DNS properties.
+ */
 @Fluent
-public final class OnvifDns {
+public final class OnvifDns implements JsonSerializable<OnvifDns> {
     /*
      * Result value showing if the ONVIF device is configured to use DHCP.
      */
-    @JsonProperty(value = "fromDhcp")
     private Boolean fromDhcp;
 
     /*
      * An array of IPv4 address for the discovered ONVIF device.
      */
-    @JsonProperty(value = "ipv4Address")
     private List<String> ipv4Address;
 
     /*
      * An array of IPv6 address for the discovered ONVIF device.
      */
-    @JsonProperty(value = "ipv6Address")
     private List<String> ipv6Address;
 
     /**
+     * Creates an instance of OnvifDns class.
+     */
+    public OnvifDns() {
+    }
+
+    /**
      * Get the fromDhcp property: Result value showing if the ONVIF device is configured to use DHCP.
-     *
+     * 
      * @return the fromDhcp value.
      */
     public Boolean isFromDhcp() {
@@ -40,7 +49,7 @@ public final class OnvifDns {
 
     /**
      * Set the fromDhcp property: Result value showing if the ONVIF device is configured to use DHCP.
-     *
+     * 
      * @param fromDhcp the fromDhcp value to set.
      * @return the OnvifDns object itself.
      */
@@ -51,7 +60,7 @@ public final class OnvifDns {
 
     /**
      * Get the ipv4Address property: An array of IPv4 address for the discovered ONVIF device.
-     *
+     * 
      * @return the ipv4Address value.
      */
     public List<String> getIpv4Address() {
@@ -60,7 +69,7 @@ public final class OnvifDns {
 
     /**
      * Set the ipv4Address property: An array of IPv4 address for the discovered ONVIF device.
-     *
+     * 
      * @param ipv4Address the ipv4Address value to set.
      * @return the OnvifDns object itself.
      */
@@ -71,7 +80,7 @@ public final class OnvifDns {
 
     /**
      * Get the ipv6Address property: An array of IPv6 address for the discovered ONVIF device.
-     *
+     * 
      * @return the ipv6Address value.
      */
     public List<String> getIpv6Address() {
@@ -80,12 +89,56 @@ public final class OnvifDns {
 
     /**
      * Set the ipv6Address property: An array of IPv6 address for the discovered ONVIF device.
-     *
+     * 
      * @param ipv6Address the ipv6Address value to set.
      * @return the OnvifDns object itself.
      */
     public OnvifDns setIpv6Address(List<String> ipv6Address) {
         this.ipv6Address = ipv6Address;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("fromDhcp", this.fromDhcp);
+        jsonWriter.writeArrayField("ipv4Address", this.ipv4Address, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("ipv6Address", this.ipv6Address, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OnvifDns from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OnvifDns if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the OnvifDns.
+     */
+    public static OnvifDns fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OnvifDns deserializedOnvifDns = new OnvifDns();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("fromDhcp".equals(fieldName)) {
+                    deserializedOnvifDns.fromDhcp = reader.getNullable(JsonReader::getBoolean);
+                } else if ("ipv4Address".equals(fieldName)) {
+                    List<String> ipv4Address = reader.readArray(reader1 -> reader1.getString());
+                    deserializedOnvifDns.ipv4Address = ipv4Address;
+                } else if ("ipv6Address".equals(fieldName)) {
+                    List<String> ipv6Address = reader.readArray(reader1 -> reader1.getString());
+                    deserializedOnvifDns.ipv6Address = ipv6Address;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOnvifDns;
+        });
     }
 }

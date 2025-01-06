@@ -20,11 +20,11 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class DeviceManagementClientTests extends TestProxyTestBase {
     private DeviceManagementAsyncClient createClient() {
-        DeviceManagementClientBuilder clientBuilder = new DeviceManagementClientBuilder()
-            .endpoint(TestData.ACCOUNT_ENDPOINT)
-            .instanceId(TestData.INSTANCE_ID)
-            .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+        DeviceManagementClientBuilder clientBuilder
+            = new DeviceManagementClientBuilder().endpoint(TestData.ACCOUNT_ENDPOINT)
+                .instanceId(TestData.INSTANCE_ID)
+                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         if (interceptorManager.isPlaybackMode()) {
             clientBuilder.httpClient(interceptorManager.getPlaybackClient());
         } else if (interceptorManager.isRecordMode()) {

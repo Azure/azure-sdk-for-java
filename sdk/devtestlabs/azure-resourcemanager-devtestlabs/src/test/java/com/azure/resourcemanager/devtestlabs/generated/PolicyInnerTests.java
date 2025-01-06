@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PolicyInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PolicyInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"description\":\"xvd\",\"status\":\"Disabled\",\"factName\":\"UserOwnedLabVmCountInSubnet\",\"factData\":\"qrouda\",\"threshold\":\"avehhrvkbunzo\",\"evaluatorType\":\"MaxValuePolicy\",\"createdDate\":\"2021-10-22T01:37:19Z\",\"provisioningState\":\"gkmoyxcdyuibhmfd\",\"uniqueIdentifier\":\"zydvfvf\"},\"location\":\"jnaeois\",\"tags\":{\"w\":\"mgorffukisc\",\"tg\":\"zhwplefaxvxilc\",\"qxtjjfzqlqhyca\":\"hnze\",\"beesmieknlra\":\"odggx\"},\"id\":\"iaa\",\"name\":\"iuagydwqfbylyrfg\",\"type\":\"agt\"}")
-                .toObject(PolicyInner.class);
+        PolicyInner model = BinaryData.fromString(
+            "{\"properties\":{\"description\":\"xvd\",\"status\":\"Disabled\",\"factName\":\"UserOwnedLabVmCountInSubnet\",\"factData\":\"qrouda\",\"threshold\":\"avehhrvkbunzo\",\"evaluatorType\":\"MaxValuePolicy\",\"createdDate\":\"2021-10-22T01:37:19Z\",\"provisioningState\":\"gkmoyxcdyuibhmfd\",\"uniqueIdentifier\":\"zydvfvf\"},\"location\":\"jnaeois\",\"tags\":{\"w\":\"mgorffukisc\",\"tg\":\"zhwplefaxvxilc\",\"qxtjjfzqlqhyca\":\"hnze\",\"beesmieknlra\":\"odggx\"},\"id\":\"iaa\",\"name\":\"iuagydwqfbylyrfg\",\"type\":\"agt\"}")
+            .toObject(PolicyInner.class);
         Assertions.assertEquals("jnaeois", model.location());
         Assertions.assertEquals("mgorffukisc", model.tags().get("w"));
         Assertions.assertEquals("xvd", model.description());
@@ -33,18 +31,15 @@ public final class PolicyInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PolicyInner model =
-            new PolicyInner()
-                .withLocation("jnaeois")
-                .withTags(
-                    mapOf(
-                        "w", "mgorffukisc", "tg", "zhwplefaxvxilc", "qxtjjfzqlqhyca", "hnze", "beesmieknlra", "odggx"))
-                .withDescription("xvd")
-                .withStatus(PolicyStatus.DISABLED)
-                .withFactName(PolicyFactName.USER_OWNED_LAB_VM_COUNT_IN_SUBNET)
-                .withFactData("qrouda")
-                .withThreshold("avehhrvkbunzo")
-                .withEvaluatorType(PolicyEvaluatorType.MAX_VALUE_POLICY);
+        PolicyInner model = new PolicyInner().withLocation("jnaeois")
+            .withTags(
+                mapOf("w", "mgorffukisc", "tg", "zhwplefaxvxilc", "qxtjjfzqlqhyca", "hnze", "beesmieknlra", "odggx"))
+            .withDescription("xvd")
+            .withStatus(PolicyStatus.DISABLED)
+            .withFactName(PolicyFactName.USER_OWNED_LAB_VM_COUNT_IN_SUBNET)
+            .withFactData("qrouda")
+            .withThreshold("avehhrvkbunzo")
+            .withEvaluatorType(PolicyEvaluatorType.MAX_VALUE_POLICY);
         model = BinaryData.fromObject(model).toObject(PolicyInner.class);
         Assertions.assertEquals("jnaeois", model.location());
         Assertions.assertEquals("mgorffukisc", model.tags().get("w"));

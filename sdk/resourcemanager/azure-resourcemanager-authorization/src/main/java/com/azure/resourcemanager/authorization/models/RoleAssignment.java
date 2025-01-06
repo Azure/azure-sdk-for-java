@@ -19,13 +19,25 @@ import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 @Fluent
 public interface RoleAssignment
     extends Indexable, HasInnerModel<RoleAssignmentInner>, HasId, HasName, HasManager<AuthorizationManager> {
-    /** @return the role assignment scope */
+    /**
+     * Gets the role assignment scope.
+     *
+     * @return the role assignment scope
+     */
     String scope();
 
-    /** @return the role definition ID */
+    /**
+     * Gets the role definition ID.
+     *
+     * @return the role definition ID
+     */
     String roleDefinitionId();
 
-    /** @return the principal ID */
+    /**
+     * Gets the principal ID.
+     *
+     * @return the principal ID
+     */
     String principalId();
 
     /**
@@ -49,11 +61,8 @@ public interface RoleAssignment
      **************************************************************/
 
     /** Container interface for all the definitions that need to be implemented. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithRole,
-            DefinitionStages.WithScope,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithRole, DefinitionStages.WithScope,
+        DefinitionStages.WithCreate {
     }
 
     /** Grouping of all the role assignment definition stages. */
@@ -122,6 +131,7 @@ public interface RoleAssignment
              * @return the next stage in role assignment definition
              */
             WithScope withBuiltInRole(BuiltInRole role);
+
             /**
              * Specifies the ID of the custom role for this assignment.
              *

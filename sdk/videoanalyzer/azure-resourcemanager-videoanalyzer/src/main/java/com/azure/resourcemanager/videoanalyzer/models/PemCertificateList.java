@@ -51,9 +51,8 @@ public final class PemCertificateList extends CertificateSource {
     public void validate() {
         super.validate();
         if (certificates() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property certificates in model PemCertificateList"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property certificates in model PemCertificateList"));
         }
     }
 

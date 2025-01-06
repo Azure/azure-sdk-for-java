@@ -12,13 +12,9 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 
 /** Entry point for express route cross connection peerings management API in Azure. */
 @Fluent
-public interface ExpressRouteCrossConnectionPeerings
-    extends SupportsListing<ExpressRouteCrossConnectionPeering>,
-        SupportsGettingByName<ExpressRouteCrossConnectionPeering>,
-        SupportsGettingById<ExpressRouteCrossConnectionPeering>,
-        SupportsDeletingByName,
-        SupportsDeletingById,
-        HasParent<ExpressRouteCrossConnection> {
+public interface ExpressRouteCrossConnectionPeerings extends SupportsListing<ExpressRouteCrossConnectionPeering>,
+    SupportsGettingByName<ExpressRouteCrossConnectionPeering>, SupportsGettingById<ExpressRouteCrossConnectionPeering>,
+    SupportsDeletingByName, SupportsDeletingById, HasParent<ExpressRouteCrossConnection> {
     /**
      * Begins definition of Azure private peering.
      *

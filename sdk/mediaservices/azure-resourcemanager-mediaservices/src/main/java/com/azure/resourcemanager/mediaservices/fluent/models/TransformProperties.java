@@ -5,46 +5,51 @@
 package com.azure.resourcemanager.mediaservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mediaservices.models.TransformOutput;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** A Transform. */
+/**
+ * A Transform.
+ */
 @Fluent
-public final class TransformProperties {
+public final class TransformProperties implements JsonSerializable<TransformProperties> {
     /*
      * The UTC date and time when the Transform was created, in 'YYYY-MM-DDThh:mm:ssZ' format.
      */
-    @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime created;
 
     /*
      * An optional verbose description of the Transform.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The UTC date and time when the Transform was last updated, in 'YYYY-MM-DDThh:mm:ssZ' format.
      */
-    @JsonProperty(value = "lastModified", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModified;
 
     /*
      * An array of one or more TransformOutputs that the Transform should generate.
      */
-    @JsonProperty(value = "outputs", required = true)
     private List<TransformOutput> outputs;
 
-    /** Creates an instance of TransformProperties class. */
+    /**
+     * Creates an instance of TransformProperties class.
+     */
     public TransformProperties() {
     }
 
     /**
      * Get the created property: The UTC date and time when the Transform was created, in 'YYYY-MM-DDThh:mm:ssZ' format.
-     *
+     * 
      * @return the created value.
      */
     public OffsetDateTime created() {
@@ -53,7 +58,7 @@ public final class TransformProperties {
 
     /**
      * Get the description property: An optional verbose description of the Transform.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -62,7 +67,7 @@ public final class TransformProperties {
 
     /**
      * Set the description property: An optional verbose description of the Transform.
-     *
+     * 
      * @param description the description value to set.
      * @return the TransformProperties object itself.
      */
@@ -74,7 +79,7 @@ public final class TransformProperties {
     /**
      * Get the lastModified property: The UTC date and time when the Transform was last updated, in
      * 'YYYY-MM-DDThh:mm:ssZ' format.
-     *
+     * 
      * @return the lastModified value.
      */
     public OffsetDateTime lastModified() {
@@ -83,7 +88,7 @@ public final class TransformProperties {
 
     /**
      * Get the outputs property: An array of one or more TransformOutputs that the Transform should generate.
-     *
+     * 
      * @return the outputs value.
      */
     public List<TransformOutput> outputs() {
@@ -92,7 +97,7 @@ public final class TransformProperties {
 
     /**
      * Set the outputs property: An array of one or more TransformOutputs that the Transform should generate.
-     *
+     * 
      * @param outputs the outputs value to set.
      * @return the TransformProperties object itself.
      */
@@ -103,18 +108,64 @@ public final class TransformProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (outputs() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property outputs in model TransformProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property outputs in model TransformProperties"));
         } else {
             outputs().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TransformProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("outputs", this.outputs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TransformProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TransformProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TransformProperties.
+     */
+    public static TransformProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TransformProperties deserializedTransformProperties = new TransformProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("outputs".equals(fieldName)) {
+                    List<TransformOutput> outputs = reader.readArray(reader1 -> TransformOutput.fromJson(reader1));
+                    deserializedTransformProperties.outputs = outputs;
+                } else if ("created".equals(fieldName)) {
+                    deserializedTransformProperties.created = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedTransformProperties.description = reader.getString();
+                } else if ("lastModified".equals(fieldName)) {
+                    deserializedTransformProperties.lastModified = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTransformProperties;
+        });
+    }
 }

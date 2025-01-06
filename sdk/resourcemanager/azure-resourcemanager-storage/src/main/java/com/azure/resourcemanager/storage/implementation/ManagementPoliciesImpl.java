@@ -39,7 +39,8 @@ public class ManagementPoliciesImpl extends WrapperImpl<ManagementPoliciesClient
 
     @Override
     public Mono<ManagementPolicy> getAsync(String resourceGroupName, String accountName) {
-        return this.innerModel().getAsync(resourceGroupName, accountName, ManagementPolicyName.DEFAULT)
+        return this.innerModel()
+            .getAsync(resourceGroupName, accountName, ManagementPolicyName.DEFAULT)
             .map(inner -> wrapModel(inner));
     }
 

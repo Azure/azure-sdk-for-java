@@ -5,42 +5,47 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Network and credential configuration currently applied on terminal server. */
+/**
+ * Network and credential configuration currently applied on terminal server.
+ */
 @Fluent
-public final class VpnConfigurationPatchableProperties {
+public final class VpnConfigurationPatchableProperties
+    implements JsonSerializable<VpnConfigurationPatchableProperties> {
     /*
      * ARM Resource ID of the Network To Network Interconnect.
      */
-    @JsonProperty(value = "networkToNetworkInterconnectId")
     private String networkToNetworkInterconnectId;
 
     /*
      * Peering option list.
      */
-    @JsonProperty(value = "peeringOption")
     private PeeringOption peeringOption;
 
     /*
      * option B properties
      */
-    @JsonProperty(value = "optionBProperties")
     private OptionBProperties optionBProperties;
 
     /*
      * option A properties
      */
-    @JsonProperty(value = "optionAProperties")
     private VpnConfigurationPatchablePropertiesOptionAProperties optionAProperties;
 
-    /** Creates an instance of VpnConfigurationPatchableProperties class. */
+    /**
+     * Creates an instance of VpnConfigurationPatchableProperties class.
+     */
     public VpnConfigurationPatchableProperties() {
     }
 
     /**
      * Get the networkToNetworkInterconnectId property: ARM Resource ID of the Network To Network Interconnect.
-     *
+     * 
      * @return the networkToNetworkInterconnectId value.
      */
     public String networkToNetworkInterconnectId() {
@@ -49,19 +54,19 @@ public final class VpnConfigurationPatchableProperties {
 
     /**
      * Set the networkToNetworkInterconnectId property: ARM Resource ID of the Network To Network Interconnect.
-     *
+     * 
      * @param networkToNetworkInterconnectId the networkToNetworkInterconnectId value to set.
      * @return the VpnConfigurationPatchableProperties object itself.
      */
-    public VpnConfigurationPatchableProperties withNetworkToNetworkInterconnectId(
-        String networkToNetworkInterconnectId) {
+    public VpnConfigurationPatchableProperties
+        withNetworkToNetworkInterconnectId(String networkToNetworkInterconnectId) {
         this.networkToNetworkInterconnectId = networkToNetworkInterconnectId;
         return this;
     }
 
     /**
      * Get the peeringOption property: Peering option list.
-     *
+     * 
      * @return the peeringOption value.
      */
     public PeeringOption peeringOption() {
@@ -70,7 +75,7 @@ public final class VpnConfigurationPatchableProperties {
 
     /**
      * Set the peeringOption property: Peering option list.
-     *
+     * 
      * @param peeringOption the peeringOption value to set.
      * @return the VpnConfigurationPatchableProperties object itself.
      */
@@ -81,7 +86,7 @@ public final class VpnConfigurationPatchableProperties {
 
     /**
      * Get the optionBProperties property: option B properties.
-     *
+     * 
      * @return the optionBProperties value.
      */
     public OptionBProperties optionBProperties() {
@@ -90,7 +95,7 @@ public final class VpnConfigurationPatchableProperties {
 
     /**
      * Set the optionBProperties property: option B properties.
-     *
+     * 
      * @param optionBProperties the optionBProperties value to set.
      * @return the VpnConfigurationPatchableProperties object itself.
      */
@@ -101,7 +106,7 @@ public final class VpnConfigurationPatchableProperties {
 
     /**
      * Get the optionAProperties property: option A properties.
-     *
+     * 
      * @return the optionAProperties value.
      */
     public VpnConfigurationPatchablePropertiesOptionAProperties optionAProperties() {
@@ -110,19 +115,19 @@ public final class VpnConfigurationPatchableProperties {
 
     /**
      * Set the optionAProperties property: option A properties.
-     *
+     * 
      * @param optionAProperties the optionAProperties value to set.
      * @return the VpnConfigurationPatchableProperties object itself.
      */
-    public VpnConfigurationPatchableProperties withOptionAProperties(
-        VpnConfigurationPatchablePropertiesOptionAProperties optionAProperties) {
+    public VpnConfigurationPatchableProperties
+        withOptionAProperties(VpnConfigurationPatchablePropertiesOptionAProperties optionAProperties) {
         this.optionAProperties = optionAProperties;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -132,5 +137,54 @@ public final class VpnConfigurationPatchableProperties {
         if (optionAProperties() != null) {
             optionAProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("networkToNetworkInterconnectId", this.networkToNetworkInterconnectId);
+        jsonWriter.writeStringField("peeringOption", this.peeringOption == null ? null : this.peeringOption.toString());
+        jsonWriter.writeJsonField("optionBProperties", this.optionBProperties);
+        jsonWriter.writeJsonField("optionAProperties", this.optionAProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VpnConfigurationPatchableProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VpnConfigurationPatchableProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VpnConfigurationPatchableProperties.
+     */
+    public static VpnConfigurationPatchableProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VpnConfigurationPatchableProperties deserializedVpnConfigurationPatchableProperties
+                = new VpnConfigurationPatchableProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("networkToNetworkInterconnectId".equals(fieldName)) {
+                    deserializedVpnConfigurationPatchableProperties.networkToNetworkInterconnectId = reader.getString();
+                } else if ("peeringOption".equals(fieldName)) {
+                    deserializedVpnConfigurationPatchableProperties.peeringOption
+                        = PeeringOption.fromString(reader.getString());
+                } else if ("optionBProperties".equals(fieldName)) {
+                    deserializedVpnConfigurationPatchableProperties.optionBProperties
+                        = OptionBProperties.fromJson(reader);
+                } else if ("optionAProperties".equals(fieldName)) {
+                    deserializedVpnConfigurationPatchableProperties.optionAProperties
+                        = VpnConfigurationPatchablePropertiesOptionAProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVpnConfigurationPatchableProperties;
+        });
     }
 }

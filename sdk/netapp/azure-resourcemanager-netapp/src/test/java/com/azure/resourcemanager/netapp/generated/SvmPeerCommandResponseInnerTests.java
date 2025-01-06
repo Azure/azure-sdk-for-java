@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class SvmPeerCommandResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SvmPeerCommandResponseInner model
-            = BinaryData.fromString("{\"svmPeeringCommand\":\"uu\"}").toObject(SvmPeerCommandResponseInner.class);
-        Assertions.assertEquals("uu", model.svmPeeringCommand());
+        SvmPeerCommandResponseInner model = BinaryData.fromString("{\"svmPeeringCommand\":\"hyxxrwlycoduhpk\"}")
+            .toObject(SvmPeerCommandResponseInner.class);
+        Assertions.assertEquals("hyxxrwlycoduhpk", model.svmPeeringCommand());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SvmPeerCommandResponseInner model = new SvmPeerCommandResponseInner().withSvmPeeringCommand("uu");
+        SvmPeerCommandResponseInner model = new SvmPeerCommandResponseInner().withSvmPeeringCommand("hyxxrwlycoduhpk");
         model = BinaryData.fromObject(model).toObject(SvmPeerCommandResponseInner.class);
-        Assertions.assertEquals("uu", model.svmPeeringCommand());
+        Assertions.assertEquals("hyxxrwlycoduhpk", model.svmPeeringCommand());
     }
 }

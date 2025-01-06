@@ -12,12 +12,24 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.IndependentChil
 @Fluent
 public interface AppServiceCertificateKeyVaultBinding
     extends IndependentChildResource<AppServiceManager, AppServiceCertificateResourceInner> {
-    /** @return the key vault resource Id */
+    /**
+     * Gets the key vault resource Id.
+     *
+     * @return the key vault resource Id
+     */
     String keyVaultId();
 
-    /** @return the key vault secret name */
+    /**
+     * Gets the key vault secret name.
+     *
+     * @return the key vault secret name
+     */
     String keyVaultSecretName();
 
-    /** @return the status of the Key Vault secret */
+    /**
+     * Gets the status of the Key Vault secret.
+     *
+     * @return the status of the Key Vault secret
+     */
     KeyVaultSecretStatus provisioningState();
 }

@@ -15,8 +15,8 @@ public final class ReplicationLinkImpl implements ReplicationLink {
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    ReplicationLinkImpl(
-        ReplicationLinkInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    ReplicationLinkImpl(ReplicationLinkInner innerObject,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

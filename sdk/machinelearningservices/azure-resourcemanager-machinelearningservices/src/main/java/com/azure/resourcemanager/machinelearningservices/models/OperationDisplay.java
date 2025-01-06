@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Display name of operation. */
 @Fluent
 public final class OperationDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
 
     /*
      * The resource provider name: Microsoft.MachineLearningExperimentation

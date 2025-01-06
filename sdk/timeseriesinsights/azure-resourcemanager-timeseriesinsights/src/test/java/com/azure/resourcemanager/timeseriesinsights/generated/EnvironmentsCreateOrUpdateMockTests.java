@@ -6,82 +6,49 @@ package com.azure.resourcemanager.timeseriesinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager;
 import com.azure.resourcemanager.timeseriesinsights.models.EnvironmentCreateOrUpdateParameters;
 import com.azure.resourcemanager.timeseriesinsights.models.EnvironmentResource;
 import com.azure.resourcemanager.timeseriesinsights.models.Sku;
 import com.azure.resourcemanager.timeseriesinsights.models.SkuName;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class EnvironmentsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"kind\":\"EnvironmentResource\",\"sku\":{\"name\":\"L1\",\"capacity\":228938566},\"location\":\"xmhhvhgureo\",\"tags\":{\"wakbogqxndl\":\"obdagxtibqdxb\",\"uriplbpodxunkb\":\"zgx\",\"lrb\":\"bxmubyynt\",\"l\":\"tkoievseotgq\"},\"id\":\"tmuwlauwzi\",\"name\":\"xbmp\",\"type\":\"cjefuzmu\"}";
 
-        String responseStr =
-            "{\"kind\":\"EnvironmentResource\",\"sku\":{\"name\":\"S1\",\"capacity\":1098465372},\"location\":\"klwndnhjdauwhv\",\"tags\":{\"xujznbmpowu\":\"zbtd\",\"lupj\":\"przqlveu\"},\"id\":\"khfxobbcswsrt\",\"name\":\"riplrbpbewtg\",\"type\":\"fgb\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        TimeSeriesInsightsManager manager = TimeSeriesInsightsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        EnvironmentResource response = manager.environments()
+            .createOrUpdate("ofz", "yqsemwa",
+                new EnvironmentCreateOrUpdateParameters().withLocation("tshhszhedp")
+                    .withTags(mapOf("wtppjflcxogaoko", "iwubmwmbesldnk", "nsikvmkqzeqqkdl", "z"))
+                    .withSku(new Sku().withName(SkuName.S1).withCapacity(792180038)),
+                com.azure.core.util.Context.NONE);
 
-        TimeSeriesInsightsManager manager =
-            TimeSeriesInsightsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        EnvironmentResource response =
-            manager
-                .environments()
-                .createOrUpdate(
-                    "jueiotwmcdytd",
-                    "wit",
-                    new EnvironmentCreateOrUpdateParameters()
-                        .withLocation("jawgqwg")
-                        .withTags(mapOf("fbkp", "isk"))
-                        .withSku(new Sku().withName(SkuName.P1).withCapacity(1070997174)),
-                    com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("klwndnhjdauwhv", response.location());
-        Assertions.assertEquals("zbtd", response.tags().get("xujznbmpowu"));
-        Assertions.assertEquals(SkuName.S1, response.sku().name());
-        Assertions.assertEquals(1098465372, response.sku().capacity());
+        Assertions.assertEquals("xmhhvhgureo", response.location());
+        Assertions.assertEquals("obdagxtibqdxb", response.tags().get("wakbogqxndl"));
+        Assertions.assertEquals(SkuName.L1, response.sku().name());
+        Assertions.assertEquals(228938566, response.sku().capacity());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

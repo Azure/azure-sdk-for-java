@@ -25,9 +25,8 @@ public final class InstrumentationScope implements AutoCloseable {
     private AutoCloseable spanScope;
     private volatile boolean closed = false;
 
-    public InstrumentationScope(EventHubsTracer tracer,
-                                EventHubsMetricsProvider meter,
-                                BiConsumer<EventHubsMetricsProvider, InstrumentationScope> reportMetricsCallback) {
+    public InstrumentationScope(EventHubsTracer tracer, EventHubsMetricsProvider meter,
+        BiConsumer<EventHubsMetricsProvider, InstrumentationScope> reportMetricsCallback) {
         this.tracer = tracer;
         this.meter = meter;
         this.isEnabled = (tracer != null && tracer.isEnabled()) || (meter != null && meter.isEnabled());

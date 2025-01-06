@@ -131,10 +131,10 @@ public final class PageBlobClient extends BlobClientBase {
      * @param versionId The version identifier for the blob, pass {@code null} to interact with the latest blob version.
      */
     PageBlobClient(PageBlobAsyncClient pageBlobAsyncClient, HttpPipeline pipeline, String url,
-        BlobServiceVersion serviceVersion, String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
-        EncryptionScope encryptionScope, String versionId) {
-        super(pageBlobAsyncClient, pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
-            encryptionScope, versionId);
+        BlobServiceVersion serviceVersion, String accountName, String containerName, String blobName, String snapshot,
+        CpkInfo customerProvidedKey, EncryptionScope encryptionScope, String versionId) {
+        super(pageBlobAsyncClient, pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot,
+            customerProvidedKey, encryptionScope, versionId);
         this.pageBlobAsyncClient = pageBlobAsyncClient;
     }
 
@@ -151,9 +151,9 @@ public final class PageBlobClient extends BlobClientBase {
             finalEncryptionScope = new EncryptionScope().setEncryptionScope(encryptionScope);
         }
         PageBlobAsyncClient asyncClient = pageBlobAsyncClient.getEncryptionScopeAsyncClient(encryptionScope);
-        return new PageBlobClient(asyncClient, getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
-            getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(), finalEncryptionScope,
-            getVersionId());
+        return new PageBlobClient(asyncClient, getHttpPipeline(), getAccountUrl(), getServiceVersion(),
+            getAccountName(), getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(),
+            finalEncryptionScope, getVersionId());
     }
 
     /**
@@ -167,15 +167,14 @@ public final class PageBlobClient extends BlobClientBase {
     public PageBlobClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
         CpkInfo finalCustomerProvidedKey = null;
         if (customerProvidedKey != null) {
-            finalCustomerProvidedKey = new CpkInfo()
-                .setEncryptionKey(customerProvidedKey.getKey())
+            finalCustomerProvidedKey = new CpkInfo().setEncryptionKey(customerProvidedKey.getKey())
                 .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
                 .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
         }
         PageBlobAsyncClient asyncClient = pageBlobAsyncClient.getCustomerProvidedKeyAsyncClient(customerProvidedKey);
-        return new PageBlobClient(asyncClient, getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
-            getContainerName(), getBlobName(), getSnapshotId(), finalCustomerProvidedKey, encryptionScope,
-            getVersionId());
+        return new PageBlobClient(asyncClient, getHttpPipeline(), getAccountUrl(), getServiceVersion(),
+            getAccountName(), getContainerName(), getBlobName(), getSnapshotId(), finalCustomerProvidedKey,
+            encryptionScope, getVersionId());
     }
 
     /**
@@ -301,8 +300,9 @@ public final class PageBlobClient extends BlobClientBase {
     public Response<PageBlobItem> createWithResponse(long size, Long sequenceNumber, BlobHttpHeaders headers,
         Map<String, String> metadata, BlobRequestConditions requestConditions, Duration timeout, Context context) {
         return this.createWithResponse(new PageBlobCreateOptions(size).setSequenceNumber(sequenceNumber)
-            .setHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions), timeout,
-            context);
+            .setHeaders(headers)
+            .setMetadata(metadata)
+            .setRequestConditions(requestConditions), timeout, context);
     }
 
     /**
@@ -342,8 +342,8 @@ public final class PageBlobClient extends BlobClientBase {
     public Response<PageBlobItem> createWithResponse(PageBlobCreateOptions options, Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("options", options);
         Context finalContext = context == null ? Context.NONE : context;
-        BlobRequestConditions requestConditions = options.getRequestConditions() == null ? new BlobRequestConditions()
-            : options.getRequestConditions();
+        BlobRequestConditions requestConditions
+            = options.getRequestConditions() == null ? new BlobRequestConditions() : options.getRequestConditions();
 
         if (options.getSize() % PAGE_BYTES != 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
@@ -357,24 +357,24 @@ public final class PageBlobClient extends BlobClientBase {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("SequenceNumber must be greater than or equal to 0."));
         }
-        BlobImmutabilityPolicy immutabilityPolicy = options.getImmutabilityPolicy() == null
-            ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
+        BlobImmutabilityPolicy immutabilityPolicy
+            = options.getImmutabilityPolicy() == null ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
 
-        Callable<ResponseBase<PageBlobsCreateHeaders, Void>> operation = () ->
-            this.azureBlobStorage.getPageBlobs().createWithResponse(containerName, blobName, 0, options.getSize(), null,
-                null, options.getMetadata(), requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
+        Callable<ResponseBase<PageBlobsCreateHeaders, Void>> operation = () -> this.azureBlobStorage.getPageBlobs()
+            .createWithResponse(containerName, blobName, 0, options.getSize(), null, null, options.getMetadata(),
+                requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
                 requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
                 requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), options.getSequenceNumber(),
                 null, ModelHelper.tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(),
                 immutabilityPolicy.getPolicyMode(), options.isLegalHold(), options.getHeaders(),
                 getCustomerProvidedKey(), encryptionScope, finalContext);
 
-        ResponseBase<PageBlobsCreateHeaders, Void> response = sendRequest(operation, timeout,
-            BlobStorageException.class);
+        ResponseBase<PageBlobsCreateHeaders, Void> response
+            = sendRequest(operation, timeout, BlobStorageException.class);
         PageBlobsCreateHeaders hd = response.getDeserializedHeaders();
-        PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-            hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
-            null, hd.getXMsVersionId());
+        PageBlobItem item
+            = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(), hd.isXMsRequestServerEncrypted(),
+                hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(), null, hd.getXMsVersionId());
         return new SimpleResponse<>(response, item);
     }
 
@@ -632,7 +632,8 @@ public final class PageBlobClient extends BlobClientBase {
 
         return uploadPagesFromUrlWithResponse(
             new PageBlobUploadPagesFromUrlOptions(range, sourceUrl).setSourceOffset(sourceOffset)
-                .setSourceContentMd5(sourceContentMd5).setDestinationRequestConditions(destRequestConditions)
+                .setSourceContentMd5(sourceContentMd5)
+                .setDestinationRequestConditions(destRequestConditions)
                 .setSourceRequestConditions(sourceRequestConditions),
             timeout, context);
     }
@@ -673,8 +674,8 @@ public final class PageBlobClient extends BlobClientBase {
      * @throws IllegalArgumentException If {@code sourceUrl} is a malformed {@link URL}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PageBlobItem> uploadPagesFromUrlWithResponse(PageBlobUploadPagesFromUrlOptions options, Duration timeout,
-        Context context) {
+    public Response<PageBlobItem> uploadPagesFromUrlWithResponse(PageBlobUploadPagesFromUrlOptions options,
+        Duration timeout, Context context) {
 
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesFromUrlWithResponse(options, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
@@ -740,8 +741,8 @@ public final class PageBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PageBlobItem> clearPagesWithResponse(PageRange pageRange,
         PageBlobRequestConditions pageBlobRequestConditions, Duration timeout, Context context) {
-        PageBlobRequestConditions finalPageBlobRequestConditions = pageBlobRequestConditions == null
-            ? new PageBlobRequestConditions() : pageBlobRequestConditions;
+        PageBlobRequestConditions finalPageBlobRequestConditions
+            = pageBlobRequestConditions == null ? new PageBlobRequestConditions() : pageBlobRequestConditions;
         if (pageRange == null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
@@ -749,9 +750,9 @@ public final class PageBlobClient extends BlobClientBase {
         }
         String pageRangeStr = ModelHelper.pageRangeToString(pageRange);
         Context finalContext = context == null ? Context.NONE : context;
-        Callable<ResponseBase<PageBlobsClearPagesHeaders, Void>> operation = () ->
-            this.azureBlobStorage.getPageBlobs().clearPagesWithResponse(containerName, blobName, 0, null,
-                pageRangeStr, finalPageBlobRequestConditions.getLeaseId(),
+        Callable<ResponseBase<PageBlobsClearPagesHeaders, Void>> operation = () -> this.azureBlobStorage.getPageBlobs()
+            .clearPagesWithResponse(containerName, blobName, 0, null, pageRangeStr,
+                finalPageBlobRequestConditions.getLeaseId(),
                 finalPageBlobRequestConditions.getIfSequenceNumberLessThanOrEqualTo(),
                 finalPageBlobRequestConditions.getIfSequenceNumberLessThan(),
                 finalPageBlobRequestConditions.getIfSequenceNumberEqualTo(),
@@ -759,12 +760,11 @@ public final class PageBlobClient extends BlobClientBase {
                 finalPageBlobRequestConditions.getIfUnmodifiedSince(), finalPageBlobRequestConditions.getIfMatch(),
                 finalPageBlobRequestConditions.getIfNoneMatch(), finalPageBlobRequestConditions.getTagsConditions(),
                 null, getCustomerProvidedKey(), encryptionScope, finalContext);
-        ResponseBase<PageBlobsClearPagesHeaders, Void> response = sendRequest(operation, timeout,
-            BlobStorageException.class);
+        ResponseBase<PageBlobsClearPagesHeaders, Void> response
+            = sendRequest(operation, timeout, BlobStorageException.class);
         PageBlobsClearPagesHeaders hd = response.getDeserializedHeaders();
         PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-            hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), null,
-            hd.getXMsBlobSequenceNumber());
+            hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), null, hd.getXMsBlobSequenceNumber());
         return new SimpleResponse<>(response, item);
     }
 
@@ -830,17 +830,19 @@ public final class PageBlobClient extends BlobClientBase {
     public Response<PageList> getPageRangesWithResponse(BlobRange blobRange, BlobRequestConditions requestConditions,
         Duration timeout, Context context) {
         BlobRange finalBlobRange = blobRange == null ? new BlobRange(0) : blobRange;
-        BlobRequestConditions finalRequestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        BlobRequestConditions finalRequestConditions
+            = requestConditions == null ? new BlobRequestConditions() : requestConditions;
         Context finalContext = context == null ? Context.NONE : context;
 
-        Callable<ResponseBase<PageBlobsGetPageRangesHeaders, PageList>> operation = () ->
-                this.azureBlobStorage.getPageBlobs().getPageRangesWithResponse(containerName, blobName, getSnapshotId(),
-                    null, finalBlobRange.toHeaderValue(), finalRequestConditions.getLeaseId(),
+        Callable<ResponseBase<PageBlobsGetPageRangesHeaders, PageList>> operation
+            = () -> this.azureBlobStorage.getPageBlobs()
+                .getPageRangesWithResponse(containerName, blobName, getSnapshotId(), null,
+                    finalBlobRange.toHeaderValue(), finalRequestConditions.getLeaseId(),
                     finalRequestConditions.getIfModifiedSince(), finalRequestConditions.getIfUnmodifiedSince(),
                     finalRequestConditions.getIfMatch(), finalRequestConditions.getIfNoneMatch(),
                     finalRequestConditions.getTagsConditions(), null, null, null, finalContext);
-        ResponseBase<PageBlobsGetPageRangesHeaders, PageList> response = sendRequest(operation, timeout,
-            BlobStorageException.class);
+        ResponseBase<PageBlobsGetPageRangesHeaders, PageList> response
+            = sendRequest(operation, timeout, BlobStorageException.class);
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
             response.getValue());
     }
@@ -911,29 +913,25 @@ public final class PageBlobClient extends BlobClientBase {
 
         // Helper function to retrieve a page of items
         BiFunction<String, Integer, PagedResponse<PageRangeItem>> pageRetriever = (continuationToken, pageSize) -> {
-            BlobRequestConditions requestConditions = options.getRequestConditions() == null
-                ? new BlobRequestConditions() : options.getRequestConditions();
+            BlobRequestConditions requestConditions
+                = options.getRequestConditions() == null ? new BlobRequestConditions() : options.getRequestConditions();
             Integer finalPageSize = pageSize == null ? options.getMaxResultsPerPage() : pageSize;
 
             // Call the synchronous service method
-            Callable<ResponseBase<PageBlobsGetPageRangesHeaders, PageList>> operation = () ->
-                this.azureBlobStorage.getPageBlobs().getPageRangesWithResponse(containerName, blobName, getSnapshotId(),
-                    null, options.getRange().toHeaderValue(), requestConditions.getLeaseId(),
-                    requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
-                    requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
-                    requestConditions.getTagsConditions(), null, continuationToken, finalPageSize, finalContext);
+            Callable<ResponseBase<PageBlobsGetPageRangesHeaders, PageList>> operation
+                = () -> this.azureBlobStorage.getPageBlobs()
+                    .getPageRangesWithResponse(containerName, blobName, getSnapshotId(), null,
+                        options.getRange().toHeaderValue(), requestConditions.getLeaseId(),
+                        requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                        requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
+                        requestConditions.getTagsConditions(), null, continuationToken, finalPageSize, finalContext);
 
-            ResponseBase<PageBlobsGetPageRangesHeaders, PageList> response = sendRequest(operation, timeout,
-                BlobStorageException.class);
+            ResponseBase<PageBlobsGetPageRangesHeaders, PageList> response
+                = sendRequest(operation, timeout, BlobStorageException.class);
             List<PageRangeItem> value = parsePageRangeItems(response.getValue());
 
-            return new PagedResponseBase<>(
-                response.getRequest(),
-                response.getStatusCode(),
-                response.getHeaders(),
-                value,
-                PageListHelper.getNextMarker(response.getValue()),
-                response.getDeserializedHeaders());
+            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                value, PageListHelper.getNextMarker(response.getValue()), response.getDeserializedHeaders());
         };
         return new PagedIterable<>(pageSize -> pageRetriever.apply(null, pageSize), pageRetriever);
     }
@@ -942,10 +940,10 @@ public final class PageBlobClient extends BlobClientBase {
         if (pageList == null) {
             return Collections.emptyList();
         }
-        return Stream.concat(
-            pageList.getPageRange().stream().map(this::toPageBlobRange),
-            pageList.getClearRange().stream().map(this::toPageBlobRange)
-        ).collect(Collectors.toList());
+        return Stream
+            .concat(pageList.getPageRange().stream().map(this::toPageBlobRange),
+                pageList.getClearRange().stream().map(this::toPageBlobRange))
+            .collect(Collectors.toList());
     }
 
     private PageRangeItem toPageBlobRange(PageRange range) {
@@ -1029,22 +1027,23 @@ public final class PageBlobClient extends BlobClientBase {
     public Response<PageList> getPageRangesDiffWithResponse(BlobRange blobRange, String prevSnapshot,
         BlobRequestConditions requestConditions, Duration timeout, Context context) {
         BlobRange finalBlobRange = blobRange == null ? new BlobRange(0) : blobRange;
-        BlobRequestConditions finalRequestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        BlobRequestConditions finalRequestConditions
+            = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
         if (prevSnapshot == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("prevSnapshot cannot be null"));
         }
         Context finalContext = context == null ? Context.NONE : context;
 
-        Callable<ResponseBase<PageBlobsGetPageRangesDiffHeaders, PageList>> operation = () ->
-                this.azureBlobStorage.getPageBlobs().getPageRangesDiffWithResponse(containerName, blobName,
-                    getSnapshotId(), null, prevSnapshot, null, finalBlobRange.toHeaderValue(),
-                    finalRequestConditions.getLeaseId(), finalRequestConditions.getIfModifiedSince(),
-                    finalRequestConditions.getIfUnmodifiedSince(), finalRequestConditions.getIfMatch(),
-                    finalRequestConditions.getIfNoneMatch(), finalRequestConditions.getTagsConditions(), null, null,
-                    null, finalContext);
-        ResponseBase<PageBlobsGetPageRangesDiffHeaders, PageList> response = sendRequest(operation, timeout,
-            BlobStorageException.class);
+        Callable<ResponseBase<PageBlobsGetPageRangesDiffHeaders, PageList>> operation
+            = () -> this.azureBlobStorage.getPageBlobs()
+                .getPageRangesDiffWithResponse(containerName, blobName, getSnapshotId(), null, prevSnapshot, null,
+                    finalBlobRange.toHeaderValue(), finalRequestConditions.getLeaseId(),
+                    finalRequestConditions.getIfModifiedSince(), finalRequestConditions.getIfUnmodifiedSince(),
+                    finalRequestConditions.getIfMatch(), finalRequestConditions.getIfNoneMatch(),
+                    finalRequestConditions.getTagsConditions(), null, null, null, finalContext);
+        ResponseBase<PageBlobsGetPageRangesDiffHeaders, PageList> response
+            = sendRequest(operation, timeout, BlobStorageException.class);
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
             response.getValue());
     }
@@ -1121,31 +1120,27 @@ public final class PageBlobClient extends BlobClientBase {
         Context finalContext = context == null ? Context.NONE : context;
 
         BiFunction<String, Integer, PagedResponse<PageRangeItem>> pageRetriever = (continuationToken, pageSize) -> {
-            BlobRequestConditions requestConditions = options.getRequestConditions() == null
-                ? new BlobRequestConditions() : options.getRequestConditions();
+            BlobRequestConditions requestConditions
+                = options.getRequestConditions() == null ? new BlobRequestConditions() : options.getRequestConditions();
 
             // Dynamically use pageSize provided during the iteration if available
             Integer finalPageSize = pageSize != null ? pageSize : options.getMaxResultsPerPage();
 
-            Callable<ResponseBase<PageBlobsGetPageRangesDiffHeaders, PageList>> operation = () ->
-                this.azureBlobStorage.getPageBlobs().getPageRangesDiffWithResponse(containerName, blobName,
-                    getSnapshotId(), null, options.getPreviousSnapshot(), null, options.getRange().toHeaderValue(),
-                    requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
-                    requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-                    requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, continuationToken,
-                    finalPageSize, finalContext);
+            Callable<ResponseBase<PageBlobsGetPageRangesDiffHeaders, PageList>> operation
+                = () -> this.azureBlobStorage.getPageBlobs()
+                    .getPageRangesDiffWithResponse(containerName, blobName, getSnapshotId(), null,
+                        options.getPreviousSnapshot(), null, options.getRange().toHeaderValue(),
+                        requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
+                        requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
+                        requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
+                        continuationToken, finalPageSize, finalContext);
 
-            ResponseBase<PageBlobsGetPageRangesDiffHeaders, PageList> response = sendRequest(operation, timeout,
-                BlobStorageException.class);
+            ResponseBase<PageBlobsGetPageRangesDiffHeaders, PageList> response
+                = sendRequest(operation, timeout, BlobStorageException.class);
             List<PageRangeItem> value = parsePageRangeItems(response.getValue());
 
-            return new PagedResponseBase<>(
-                response.getRequest(),
-                response.getStatusCode(),
-                response.getHeaders(),
-                value,
-                PageListHelper.getNextMarker(response.getValue()),
-                response.getDeserializedHeaders());
+            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                value, PageListHelper.getNextMarker(response.getValue()), response.getDeserializedHeaders());
         };
         return new PagedIterable<>(pageSize -> pageRetriever.apply(null, pageSize), pageRetriever);
     }
@@ -1223,7 +1218,8 @@ public final class PageBlobClient extends BlobClientBase {
     public Response<PageList> getManagedDiskPageRangesDiffWithResponse(BlobRange blobRange, String prevSnapshotUrl,
         BlobRequestConditions requestConditions, Duration timeout, Context context) {
         BlobRange finalBlobRange = blobRange == null ? new BlobRange(0) : blobRange;
-        BlobRequestConditions finalRequestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        BlobRequestConditions finalRequestConditions
+            = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
         if (prevSnapshotUrl == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("prevSnapshot cannot be null"));
@@ -1235,17 +1231,17 @@ public final class PageBlobClient extends BlobClientBase {
         }
         Context finalContext = context == null ? Context.NONE : context;
 
-        Callable<ResponseBase<PageBlobsGetPageRangesDiffHeaders, PageList>> operation = () ->
-                this.azureBlobStorage.getPageBlobs().getPageRangesDiffWithResponse(containerName, blobName,
-                    getSnapshotId(), null, null, prevSnapshotUrl, finalBlobRange.toHeaderValue(),
-                    finalRequestConditions.getLeaseId(), finalRequestConditions.getIfModifiedSince(),
-                    finalRequestConditions.getIfUnmodifiedSince(), finalRequestConditions.getIfMatch(),
-                    finalRequestConditions.getIfNoneMatch(), finalRequestConditions.getTagsConditions(), null, null,
-                    null, finalContext);
-        ResponseBase<PageBlobsGetPageRangesDiffHeaders, PageList> response = sendRequest(operation, timeout,
-            BlobStorageException.class);
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), response.getValue());
+        Callable<ResponseBase<PageBlobsGetPageRangesDiffHeaders, PageList>> operation
+            = () -> this.azureBlobStorage.getPageBlobs()
+                .getPageRangesDiffWithResponse(containerName, blobName, getSnapshotId(), null, null, prevSnapshotUrl,
+                    finalBlobRange.toHeaderValue(), finalRequestConditions.getLeaseId(),
+                    finalRequestConditions.getIfModifiedSince(), finalRequestConditions.getIfUnmodifiedSince(),
+                    finalRequestConditions.getIfMatch(), finalRequestConditions.getIfNoneMatch(),
+                    finalRequestConditions.getTagsConditions(), null, null, null, finalContext);
+        ResponseBase<PageBlobsGetPageRangesDiffHeaders, PageList> response
+            = sendRequest(operation, timeout, BlobStorageException.class);
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            response.getValue());
     }
 
     /**
@@ -1303,17 +1299,18 @@ public final class PageBlobClient extends BlobClientBase {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("size must be a multiple of PageBlobAsyncClient.PAGE_BYTES."));
         }
-        BlobRequestConditions finalRequestConditions = requestConditions == null ? new BlobRequestConditions()
-            : requestConditions;
+        BlobRequestConditions finalRequestConditions
+            = requestConditions == null ? new BlobRequestConditions() : requestConditions;
         Context finalContext = context == null ? Context.NONE : context;
 
-        Callable<ResponseBase<PageBlobsResizeHeaders, Void>> operation = () ->
-            this.azureBlobStorage.getPageBlobs().resizeWithResponse(containerName, blobName, size, null,
-                finalRequestConditions.getLeaseId(), finalRequestConditions.getIfModifiedSince(),
-                finalRequestConditions.getIfUnmodifiedSince(), finalRequestConditions.getIfMatch(),
-                finalRequestConditions.getIfNoneMatch(), finalRequestConditions.getTagsConditions(), null,
-                getCustomerProvidedKey(), encryptionScope, finalContext);
-        ResponseBase<PageBlobsResizeHeaders, Void> response = sendRequest(operation, timeout, BlobStorageException.class);
+        Callable<ResponseBase<PageBlobsResizeHeaders, Void>> operation = () -> this.azureBlobStorage.getPageBlobs()
+            .resizeWithResponse(containerName, blobName, size, null, finalRequestConditions.getLeaseId(),
+                finalRequestConditions.getIfModifiedSince(), finalRequestConditions.getIfUnmodifiedSince(),
+                finalRequestConditions.getIfMatch(), finalRequestConditions.getIfNoneMatch(),
+                finalRequestConditions.getTagsConditions(), null, getCustomerProvidedKey(), encryptionScope,
+                finalContext);
+        ResponseBase<PageBlobsResizeHeaders, Void> response
+            = sendRequest(operation, timeout, BlobStorageException.class);
 
         PageBlobsResizeHeaders hd = response.getDeserializedHeaders();
         PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), null, null, null, null,
@@ -1341,8 +1338,7 @@ public final class PageBlobClient extends BlobClientBase {
      * @return The updated page blob.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PageBlobItem updateSequenceNumber(SequenceNumberActionType action,
-        Long sequenceNumber) {
+    public PageBlobItem updateSequenceNumber(SequenceNumberActionType action, Long sequenceNumber) {
         return updateSequenceNumberWithResponse(action, sequenceNumber, null, null, Context.NONE).getValue();
     }
 
@@ -1373,26 +1369,29 @@ public final class PageBlobClient extends BlobClientBase {
      * @return The updated page blob.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PageBlobItem> updateSequenceNumberWithResponse(SequenceNumberActionType action,
-        Long sequenceNumber, BlobRequestConditions requestConditions, Duration timeout, Context context) {
+    public Response<PageBlobItem> updateSequenceNumberWithResponse(SequenceNumberActionType action, Long sequenceNumber,
+        BlobRequestConditions requestConditions, Duration timeout, Context context) {
         if (sequenceNumber != null && sequenceNumber < 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("SequenceNumber must be greater than or equal to 0."));
         }
-        BlobRequestConditions finalRequestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        BlobRequestConditions finalRequestConditions
+            = requestConditions == null ? new BlobRequestConditions() : requestConditions;
         Long finalSequenceNumber = action == SequenceNumberActionType.INCREMENT ? null : sequenceNumber;
         Context finalContext = context == null ? Context.NONE : context;
 
-        Callable<ResponseBase<PageBlobsUpdateSequenceNumberHeaders, Void>> operation = () ->
-            this.azureBlobStorage.getPageBlobs().updateSequenceNumberWithResponse(containerName, blobName, action, null,
-                finalRequestConditions.getLeaseId(), finalRequestConditions.getIfModifiedSince(),
-                finalRequestConditions.getIfUnmodifiedSince(), finalRequestConditions.getIfMatch(),
-                finalRequestConditions.getIfNoneMatch(), finalRequestConditions.getTagsConditions(),
-                finalSequenceNumber, null, finalContext);
+        Callable<ResponseBase<PageBlobsUpdateSequenceNumberHeaders, Void>> operation
+            = () -> this.azureBlobStorage.getPageBlobs()
+                .updateSequenceNumberWithResponse(containerName, blobName, action, null,
+                    finalRequestConditions.getLeaseId(), finalRequestConditions.getIfModifiedSince(),
+                    finalRequestConditions.getIfUnmodifiedSince(), finalRequestConditions.getIfMatch(),
+                    finalRequestConditions.getIfNoneMatch(), finalRequestConditions.getTagsConditions(),
+                    finalSequenceNumber, null, finalContext);
 
-        ResponseBase<PageBlobsUpdateSequenceNumberHeaders, Void> response = sendRequest(operation, timeout, BlobStorageException.class);
+        ResponseBase<PageBlobsUpdateSequenceNumberHeaders, Void> response
+            = sendRequest(operation, timeout, BlobStorageException.class);
         PageBlobsUpdateSequenceNumberHeaders hd = response.getDeserializedHeaders();
         PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), null, null, null, null,
             hd.getXMsBlobSequenceNumber());
@@ -1495,10 +1494,8 @@ public final class PageBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CopyStatusType> copyIncrementalWithResponse(String source, String snapshot,
         RequestConditions modifiedRequestConditions, Duration timeout, Context context) {
-        return copyIncrementalWithResponse(new PageBlobCopyIncrementalOptions(source, snapshot)
-            .setRequestConditions(
-                ModelHelper.populateBlobDestinationRequestConditions(modifiedRequestConditions)),
-            timeout, context);
+        return copyIncrementalWithResponse(new PageBlobCopyIncrementalOptions(source, snapshot).setRequestConditions(
+            ModelHelper.populateBlobDestinationRequestConditions(modifiedRequestConditions)), timeout, context);
     }
 
     /**
@@ -1554,7 +1551,8 @@ public final class PageBlobClient extends BlobClientBase {
         UrlBuilder builder = UrlBuilder.parse(options.getSource());
         builder.setQueryParameter(Constants.UrlConstants.SNAPSHOT_QUERY_PARAMETER, options.getSnapshot());
         PageBlobCopyIncrementalRequestConditions modifiedRequestConditions = (options.getRequestConditions() == null)
-            ? new PageBlobCopyIncrementalRequestConditions() : options.getRequestConditions();
+            ? new PageBlobCopyIncrementalRequestConditions()
+            : options.getRequestConditions();
 
         try {
             builder.toUrl();
@@ -1564,14 +1562,14 @@ public final class PageBlobClient extends BlobClientBase {
         }
         Context finalContext = context == null ? Context.NONE : context;
 
-        Callable<ResponseBase<PageBlobsCopyIncrementalHeaders, Void>> operation = () ->
-                this.azureBlobStorage.getPageBlobs().copyIncrementalWithResponse(containerName, blobName,
-                    builder.toString(), null, modifiedRequestConditions.getIfModifiedSince(),
-                modifiedRequestConditions.getIfUnmodifiedSince(), modifiedRequestConditions.getIfMatch(),
-                modifiedRequestConditions.getIfNoneMatch(), modifiedRequestConditions.getTagsConditions(), null,
-                    finalContext);
-        ResponseBase<PageBlobsCopyIncrementalHeaders, Void> response = sendRequest(operation, timeout,
-            BlobStorageException.class);
+        Callable<ResponseBase<PageBlobsCopyIncrementalHeaders, Void>> operation
+            = () -> this.azureBlobStorage.getPageBlobs()
+                .copyIncrementalWithResponse(containerName, blobName, builder.toString(), null,
+                    modifiedRequestConditions.getIfModifiedSince(), modifiedRequestConditions.getIfUnmodifiedSince(),
+                    modifiedRequestConditions.getIfMatch(), modifiedRequestConditions.getIfNoneMatch(),
+                    modifiedRequestConditions.getTagsConditions(), null, finalContext);
+        ResponseBase<PageBlobsCopyIncrementalHeaders, Void> response
+            = sendRequest(operation, timeout, BlobStorageException.class);
         return new SimpleResponse<>(response, response.getDeserializedHeaders().getXMsCopyStatus());
     }
 }

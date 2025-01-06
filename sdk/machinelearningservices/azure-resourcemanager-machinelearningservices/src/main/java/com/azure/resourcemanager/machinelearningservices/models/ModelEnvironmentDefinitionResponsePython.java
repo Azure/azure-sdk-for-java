@@ -11,7 +11,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /** Settings for a Python environment. */
 @Immutable
 public final class ModelEnvironmentDefinitionResponsePython extends ModelPythonSection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ModelEnvironmentDefinitionResponsePython.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ModelEnvironmentDefinitionResponsePython.class);
 
     /** {@inheritDoc} */
     @Override

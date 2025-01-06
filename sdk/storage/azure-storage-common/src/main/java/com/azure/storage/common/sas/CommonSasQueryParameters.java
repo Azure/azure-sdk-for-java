@@ -54,8 +54,8 @@ public class CommonSasQueryParameters {
      * queryParamsMap
      */
     public CommonSasQueryParameters(Map<String, String[]> queryParamsMap, boolean removeSasParametersFromMap) {
-        this.version = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SERVICE_VERSION,
-            removeSasParametersFromMap);
+        this.version
+            = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SERVICE_VERSION, removeSasParametersFromMap);
         this.protocol = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_PROTOCOL,
             removeSasParametersFromMap, SasProtocol::parse);
         this.startTime = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_START_TIME,
@@ -66,12 +66,12 @@ public class CommonSasQueryParameters {
             removeSasParametersFromMap, SasIpRange::parse);
         this.permissions = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_PERMISSIONS,
             removeSasParametersFromMap);
-        this.signature = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNATURE,
-            removeSasParametersFromMap);
-        this.resourceTypes = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_RESOURCES_TYPES,
-            removeSasParametersFromMap);
-        this.services = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SERVICES,
-            removeSasParametersFromMap);
+        this.signature
+            = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNATURE, removeSasParametersFromMap);
+        this.resourceTypes
+            = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_RESOURCES_TYPES, removeSasParametersFromMap);
+        this.services
+            = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SERVICES, removeSasParametersFromMap);
         this.identifier = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_IDENTIFIER,
             removeSasParametersFromMap);
         this.keyObjectId = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_OBJECT_ID,
@@ -86,24 +86,24 @@ public class CommonSasQueryParameters {
             removeSasParametersFromMap);
         this.keyVersion = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_KEY_VERSION,
             removeSasParametersFromMap);
-        this.resource = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_RESOURCE,
-            removeSasParametersFromMap);
-        this.cacheControl = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CACHE_CONTROL,
-            removeSasParametersFromMap);
+        this.resource
+            = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_RESOURCE, removeSasParametersFromMap);
+        this.cacheControl
+            = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CACHE_CONTROL, removeSasParametersFromMap);
         this.contentDisposition = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CONTENT_DISPOSITION,
             removeSasParametersFromMap);
         this.contentEncoding = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CONTENT_ENCODING,
             removeSasParametersFromMap);
         this.contentLanguage = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CONTENT_LANGUAGE,
             removeSasParametersFromMap);
-        this.contentType = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CONTENT_TYPE,
-            removeSasParametersFromMap);
+        this.contentType
+            = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CONTENT_TYPE, removeSasParametersFromMap);
         this.authorizedObjectId = getQueryParameter(queryParamsMap,
             Constants.UrlConstants.SAS_PREAUTHORIZED_AGENT_OBJECT_ID, removeSasParametersFromMap);
-        this.unauthorizedObjectId = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_AGENT_OBJECT_ID,
-            removeSasParametersFromMap);
-        this.correlationId = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CORRELATION_ID,
-            removeSasParametersFromMap);
+        this.unauthorizedObjectId
+            = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_AGENT_OBJECT_ID, removeSasParametersFromMap);
+        this.correlationId
+            = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CORRELATION_ID, removeSasParametersFromMap);
         this.directoryDepth = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_DIRECTORY_DEPTH,
             removeSasParametersFromMap, Integer::parseInt);
         this.encryptionScope = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_ENCRYPTION_SCOPE,

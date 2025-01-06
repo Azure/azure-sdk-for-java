@@ -12,9 +12,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import reactor.core.publisher.Mono;
 
 /** Implementation of DnsZones. */
-public class DnsZonesImpl
-    extends TopLevelModifiableResourcesImpl<DnsZone, DnsZoneImpl, ZoneInner, ZonesClient, DnsZoneManager>
-    implements DnsZones {
+public class DnsZonesImpl extends
+    TopLevelModifiableResourcesImpl<DnsZone, DnsZoneImpl, ZoneInner, ZonesClient, DnsZoneManager> implements DnsZones {
 
     public DnsZonesImpl(final DnsZoneManager dnsZoneManager) {
         super(dnsZoneManager.serviceClient().getZones(), dnsZoneManager);
@@ -56,14 +55,14 @@ public class DnsZonesImpl
 
     @Override
     public Mono<Void> deleteByIdAsync(String id) {
-        return deleteByResourceGroupNameAsync(
-            ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
+        return deleteByResourceGroupNameAsync(ResourceUtils.groupFromResourceId(id),
+            ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
     public Mono<Void> deleteByIdAsync(String id, String eTagValue) {
-        return deleteByResourceGroupNameAsync(
-            ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id), eTagValue);
+        return deleteByResourceGroupNameAsync(ResourceUtils.groupFromResourceId(id),
+            ResourceUtils.nameFromResourceId(id), eTagValue);
     }
 
     @Override

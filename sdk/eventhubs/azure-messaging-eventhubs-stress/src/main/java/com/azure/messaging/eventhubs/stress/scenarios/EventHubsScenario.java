@@ -3,10 +3,7 @@
 
 package com.azure.messaging.eventhubs.stress.scenarios;
 
-import com.azure.core.util.Configuration;
-import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.stress.util.ScenarioOptions;
 import com.azure.messaging.eventhubs.stress.util.TelemetryHelper;
 import io.opentelemetry.api.trace.Span;

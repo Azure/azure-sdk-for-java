@@ -71,8 +71,7 @@ public class ChunkTests {
     @Test
     public void getEventsMinShard0Chunk0() {
         /* Cursor on shard 0, chunk 0 - basically when you first encounter a chunk in a shard. */
-        ChangefeedCursor chunkCursor = new ChangefeedCursor(URL_HOST, END_TIME)
-            .toSegmentCursor(SEGMENT_PATH, null)
+        ChangefeedCursor chunkCursor = new ChangefeedCursor(URL_HOST, END_TIME).toSegmentCursor(SEGMENT_PATH, null)
             .toShardCursor(CURRENT_SHARD_PATH0);
         when(mockAvroReaderFactory.getAvroReader(any())).thenReturn(mockAvroReader);
 
@@ -101,8 +100,7 @@ public class ChunkTests {
     @Test
     public void getEventsMinShard0Chunk1() {
         /* Cursor on shard 0, chunk 1 - basically when you encounter a chunk in a shard after having already encountered a different chunk. */
-        ChangefeedCursor chunkCursor = new ChangefeedCursor(URL_HOST, END_TIME)
-            .toSegmentCursor(SEGMENT_PATH, null)
+        ChangefeedCursor chunkCursor = new ChangefeedCursor(URL_HOST, END_TIME).toSegmentCursor(SEGMENT_PATH, null)
             .toShardCursor(CURRENT_SHARD_PATH0)
             .toEventCursor(CHUNK_PATH0, 9109, 1);
         when(mockAvroReaderFactory.getAvroReader(any())).thenReturn(mockAvroReader);
@@ -132,8 +130,7 @@ public class ChunkTests {
     @Test
     public void getEventsMinShard1Chunk0() {
         /* Cursor on shard 1, chunk 0 - basically when you encounter a chunk in a shard after having already encountered a different shard. */
-        ChangefeedCursor chunkCursor = new ChangefeedCursor(URL_HOST, END_TIME)
-            .toSegmentCursor(SEGMENT_PATH, null)
+        ChangefeedCursor chunkCursor = new ChangefeedCursor(URL_HOST, END_TIME).toSegmentCursor(SEGMENT_PATH, null)
             .toShardCursor(CURRENT_SHARD_PATH0)
             .toEventCursor(CHUNK_PATH0, 9109, 1)
             .toShardCursor(CURRENT_SHARD_PATH1);
@@ -163,14 +160,12 @@ public class ChunkTests {
 
     /* Tests user cursor. Tests that a chunk can properly read events with the user cursor information. */
     @ParameterizedTest
-    @CsvSource({"1234,0", "1234,1", "1234,2", "1234,3", "5678,0", "5678,1", "5678,2", "5678,3", "9101,0", "9101,1"})
+    @CsvSource({ "1234,0", "1234,1", "1234,2", "1234,3", "5678,0", "5678,1", "5678,2", "5678,3", "9101,0", "9101,1" })
     public void getEventsCursor(long blockOffset, long eventIndex) {
         /* Default chunk cursor on shard 0. */
-        ChangefeedCursor chunkCursor = new ChangefeedCursor(URL_HOST, END_TIME)
-            .toSegmentCursor(SEGMENT_PATH, null)
+        ChangefeedCursor chunkCursor = new ChangefeedCursor(URL_HOST, END_TIME).toSegmentCursor(SEGMENT_PATH, null)
             .toShardCursor(CURRENT_SHARD_PATH0);
-        when(mockAvroReaderFactory.getAvroReader(any(), any(), anyLong(), anyLong()))
-            .thenReturn(mockAvroReader);
+        when(mockAvroReaderFactory.getAvroReader(any(), any(), anyLong(), anyLong())).thenReturn(mockAvroReader);
         when(mockBlobLazyDownloaderFactory.getBlobLazyDownloader(anyString(), anyLong()))
             .thenReturn(mockBlobLazyDownloader);
 
@@ -191,7 +186,8 @@ public class ChunkTests {
             .verifyComplete();
 
         verify(mockBlobLazyDownloaderFactory).getBlobLazyDownloader(CHUNK_PATH0, ChunkFactory.DEFAULT_HEADER_SIZE);
-        verify(mockBlobLazyDownloaderFactory).getBlobLazyDownloader(CHUNK_PATH0, ChunkFactory.DEFAULT_BODY_SIZE, blockOffset);
+        verify(mockBlobLazyDownloaderFactory).getBlobLazyDownloader(CHUNK_PATH0, ChunkFactory.DEFAULT_BODY_SIZE,
+            blockOffset);
         verify(mockBlobLazyDownloader, times(2)).download();
         verify(mockAvroReaderFactory).getAvroReader(Flux.empty(), Flux.empty(), blockOffset, eventIndex);
         verify(mockAvroReader).read();
@@ -200,12 +196,10 @@ public class ChunkTests {
     @Test
     public void getEventsInvalidBlockOffset() {
         /* Default chunk cursor on shard 0. */
-        ChangefeedCursor chunkCursor = new ChangefeedCursor(URL_HOST, END_TIME)
-            .toSegmentCursor(SEGMENT_PATH, null)
+        ChangefeedCursor chunkCursor = new ChangefeedCursor(URL_HOST, END_TIME).toSegmentCursor(SEGMENT_PATH, null)
             .toShardCursor(CURRENT_SHARD_PATH0);
 
         ChunkFactory factory = new ChunkFactory(mockAvroReaderFactory, mockBlobLazyDownloaderFactory);
-
 
         RuntimeException e = assertThrows(IllegalArgumentException.class,
             () -> factory.getChunk(CHUNK_PATH0, 1000, chunkCursor, 1001, 3));
@@ -215,8 +209,7 @@ public class ChunkTests {
     @Test
     public void getEventsBlockOffsetAtEnd() {
         /* Default chunk cursor on shard 0. */
-        ChangefeedCursor chunkCursor = new ChangefeedCursor(URL_HOST, END_TIME)
-            .toSegmentCursor(SEGMENT_PATH, null)
+        ChangefeedCursor chunkCursor = new ChangefeedCursor(URL_HOST, END_TIME).toSegmentCursor(SEGMENT_PATH, null)
             .toShardCursor(CURRENT_SHARD_PATH0);
 
         ChunkFactory factory = new ChunkFactory(mockAvroReaderFactory, mockBlobLazyDownloaderFactory);
@@ -225,33 +218,41 @@ public class ChunkTests {
         StepVerifier.create(chunk.getEvents().index()).verifyComplete(); /* Chunk should complete with 0 events. */
     }
 
-    private void verifyWrapperShard0(BlobChangefeedEventWrapper wrapper, long index, String chunkPath,
-        long blockOffset, long blockIndex) {
+    private void verifyWrapperShard0(BlobChangefeedEventWrapper wrapper, long index, String chunkPath, long blockOffset,
+        long blockIndex) {
         assertEquals(URL_HOST, wrapper.getCursor().getUrlHost());
         assertEquals(END_TIME, wrapper.getCursor().getEndTime());
         assertEquals(SEGMENT_PATH, wrapper.getCursor().getCurrentSegmentCursor().getSegmentPath());
         assertEquals(CURRENT_SHARD_PATH0, wrapper.getCursor().getCurrentSegmentCursor().getCurrentShardPath());
         assertNotNull(wrapper.getCursor().getCurrentSegmentCursor().getShardCursors());
         assertEquals(1, wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().size());
-        assertEquals(chunkPath, wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().get(0).getCurrentChunkPath());
-        assertEquals(blockOffset, wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().get(0).getBlockOffset());
-        assertEquals(blockIndex, wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().get(0).getEventIndex());
+        assertEquals(chunkPath,
+            wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().get(0).getCurrentChunkPath());
+        assertEquals(blockOffset,
+            wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().get(0).getBlockOffset());
+        assertEquals(blockIndex,
+            wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().get(0).getEventIndex());
         /* Make sure the event in the wrapper is what was expected. */
         assertEquals(mockEvents.get((int) index), wrapper.getEvent());
     }
 
-    private void verifyWrapperShard1(BlobChangefeedEventWrapper wrapper, long index, long blockOffset, long blockIndex) {
+    private void verifyWrapperShard1(BlobChangefeedEventWrapper wrapper, long index, long blockOffset,
+        long blockIndex) {
         assertEquals(END_TIME, wrapper.getCursor().getEndTime());
         assertEquals(SEGMENT_PATH, wrapper.getCursor().getCurrentSegmentCursor().getSegmentPath());
         assertEquals(CURRENT_SHARD_PATH1, wrapper.getCursor().getCurrentSegmentCursor().getCurrentShardPath());
         assertNotNull(wrapper.getCursor().getCurrentSegmentCursor().getShardCursors());
         assertEquals(2, wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().size());
-        assertEquals(CHUNK_PATH0, wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().get(0).getCurrentChunkPath());
+        assertEquals(CHUNK_PATH0,
+            wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().get(0).getCurrentChunkPath());
         assertEquals(9109, wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().get(0).getBlockOffset());
         assertEquals(1, wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().get(0).getEventIndex());
-        assertEquals(CHUNK_PATH2, wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().get(1).getCurrentChunkPath());
-        assertEquals(blockOffset, wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().get(1).getBlockOffset());
-        assertEquals(blockIndex, wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().get(1).getEventIndex());
+        assertEquals(CHUNK_PATH2,
+            wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().get(1).getCurrentChunkPath());
+        assertEquals(blockOffset,
+            wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().get(1).getBlockOffset());
+        assertEquals(blockIndex,
+            wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().get(1).getEventIndex());
         /* Make sure the event in the wrapper is what was expected. */
         assertEquals(mockEvents.get((int) index), wrapper.getEvent());
     }

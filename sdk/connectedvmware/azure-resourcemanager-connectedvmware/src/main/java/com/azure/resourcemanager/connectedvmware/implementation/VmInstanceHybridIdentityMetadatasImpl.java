@@ -21,21 +21,17 @@ public final class VmInstanceHybridIdentityMetadatasImpl implements VmInstanceHy
 
     private final com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager;
 
-    public VmInstanceHybridIdentityMetadatasImpl(
-        VmInstanceHybridIdentityMetadatasClient innerClient,
+    public VmInstanceHybridIdentityMetadatasImpl(VmInstanceHybridIdentityMetadatasClient innerClient,
         com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public Response<VmInstanceHybridIdentityMetadata> getWithResponse(String resourceUri, Context context) {
-        Response<VmInstanceHybridIdentityMetadataInner> inner =
-            this.serviceClient().getWithResponse(resourceUri, context);
+        Response<VmInstanceHybridIdentityMetadataInner> inner
+            = this.serviceClient().getWithResponse(resourceUri, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new VmInstanceHybridIdentityMetadataImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -53,12 +49,14 @@ public final class VmInstanceHybridIdentityMetadatasImpl implements VmInstanceHy
 
     public PagedIterable<VmInstanceHybridIdentityMetadata> list(String resourceUri) {
         PagedIterable<VmInstanceHybridIdentityMetadataInner> inner = this.serviceClient().list(resourceUri);
-        return Utils.mapPage(inner, inner1 -> new VmInstanceHybridIdentityMetadataImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new VmInstanceHybridIdentityMetadataImpl(inner1, this.manager()));
     }
 
     public PagedIterable<VmInstanceHybridIdentityMetadata> list(String resourceUri, Context context) {
         PagedIterable<VmInstanceHybridIdentityMetadataInner> inner = this.serviceClient().list(resourceUri, context);
-        return Utils.mapPage(inner, inner1 -> new VmInstanceHybridIdentityMetadataImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new VmInstanceHybridIdentityMetadataImpl(inner1, this.manager()));
     }
 
     private VmInstanceHybridIdentityMetadatasClient serviceClient() {

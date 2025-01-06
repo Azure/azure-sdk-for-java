@@ -84,8 +84,8 @@ public final class QueueServiceClient {
      * message is received or peaked from the queue but cannot be decoded.
      */
     QueueServiceClient(AzureQueueStorageImpl azureQueueStorage, String accountName, QueueServiceVersion serviceVersion,
-        QueueMessageEncoding messageEncoding, Function<QueueMessageDecodingError,
-        Mono<Void>> processMessageDecodingErrorAsyncHandler,
+        QueueMessageEncoding messageEncoding,
+        Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler,
         Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler) {
         this.azureQueueStorage = azureQueueStorage;
         this.accountName = accountName;
@@ -131,9 +131,9 @@ public final class QueueServiceClient {
      * @return QueueClient that interacts with the specified queue
      */
     public QueueClient getQueueClient(String queueName) {
-        QueueAsyncClient queueAsyncClient = new QueueAsyncClient(this.azureQueueStorage, queueName, accountName,
-            serviceVersion, messageEncoding, processMessageDecodingErrorAsyncHandler,
-            processMessageDecodingErrorHandler, null);
+        QueueAsyncClient queueAsyncClient
+            = new QueueAsyncClient(this.azureQueueStorage, queueName, accountName, serviceVersion, messageEncoding,
+                processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler, null);
         return new QueueClient(this.azureQueueStorage, queueName, accountName, serviceVersion, messageEncoding,
             processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler, queueAsyncClient);
     }
@@ -393,8 +393,8 @@ public final class QueueServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Supplier<Response<QueueServiceProperties>> operation = () -> this.azureQueueStorage.getServices()
-            .getPropertiesWithResponse(null, null, finalContext);
+        Supplier<Response<QueueServiceProperties>> operation
+            = () -> this.azureQueueStorage.getServices().getPropertiesWithResponse(null, null, finalContext);
 
         return submitThreadPool(operation, LOGGER, timeout);
     }
@@ -591,7 +591,6 @@ public final class QueueServiceClient {
         return submitThreadPool(operation, LOGGER, timeout);
     }
 
-
     /**
      * Get associated account name.
      *
@@ -600,7 +599,6 @@ public final class QueueServiceClient {
     public String getAccountName() {
         return accountName;
     }
-
 
     /**
      * Gets the {@link HttpPipeline} powering this client.

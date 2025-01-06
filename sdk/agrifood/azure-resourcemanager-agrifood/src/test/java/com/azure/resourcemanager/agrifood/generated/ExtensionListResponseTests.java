@@ -8,22 +8,18 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.agrifood.fluent.models.ExtensionInner;
 import com.azure.resourcemanager.agrifood.models.ExtensionListResponse;
 import java.util.Arrays;
-import org.junit.jupiter.api.Test;
 
 public final class ExtensionListResponseTests {
-    @Test
-    public void testDeserialize() {
-        ExtensionListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"extensionId\":\"ifsqesaagdfmg\",\"extensionCategory\":\"lhjxr\",\"installedExtensionVersion\":\"kwm\",\"extensionAuthLink\":\"ktsizntocipaou\",\"extensionApiDocsLink\":\"psqucmpoyf\"},\"eTag\":\"fogknygjofjdde\",\"id\":\"s\",\"name\":\"deupewnwrei\",\"type\":\"jzyflu\"},{\"properties\":{\"extensionId\":\"hmofc\",\"extensionCategory\":\"smy\",\"installedExtensionVersion\":\"kdtmlxhekuk\",\"extensionAuthLink\":\"txukcdmp\",\"extensionApiDocsLink\":\"cryuan\"},\"eTag\":\"uxzdxtay\",\"id\":\"lhmwhfpmrqobm\",\"name\":\"u\",\"type\":\"knryrtihfxtij\"}],\"nextLink\":\"zvgnwzs\"}")
-                .toObject(ExtensionListResponse.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ExtensionListResponse model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"extensionId\":\"deupewnwrei\",\"extensionCategory\":\"zyf\",\"installedExtensionVersion\":\"sarhmofc\",\"extensionAuthLink\":\"smy\",\"extensionApiDocsLink\":\"kdtmlxhekuk\",\"additionalApiProperties\":{\"kc\":{\"apiFreshnessTimeInMinutes\":1983903346},\"arcryuanzwuxzdxt\":{\"apiFreshnessTimeInMinutes\":1422058480}}},\"eTag\":\"rlhm\",\"id\":\"fp\",\"name\":\"rqobmtuk\",\"type\":\"nryrtihf\"}],\"nextLink\":\"ijbpzvgnwzsymgl\"}")
+            .toObject(ExtensionListResponse.class);
     }
 
-    @Test
-    public void testSerialize() {
-        ExtensionListResponse model =
-            new ExtensionListResponse().withValue(Arrays.asList(new ExtensionInner(), new ExtensionInner()));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ExtensionListResponse model = new ExtensionListResponse().withValue(Arrays.asList(new ExtensionInner()));
         model = BinaryData.fromObject(model).toObject(ExtensionListResponse.class);
     }
 }

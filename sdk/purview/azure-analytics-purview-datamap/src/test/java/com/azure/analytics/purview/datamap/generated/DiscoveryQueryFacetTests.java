@@ -12,9 +12,8 @@ import com.azure.analytics.purview.datamap.models.SearchFacetItemValue;
 import com.azure.analytics.purview.datamap.models.SearchFacetResultValue;
 import com.azure.analytics.purview.datamap.models.SearchResultValue;
 import com.azure.analytics.purview.datamap.models.TermSearchResultValue;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
-import java.io.IOException;
+import com.azure.core.util.BinaryData;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -25,11 +24,10 @@ import org.junit.jupiter.api.Test;
 public final class DiscoveryQueryFacetTests extends DataMapClientTestBase {
     @Test
     @Disabled
-    public void testDiscoveryQueryFacetTests() throws IOException {
+    public void testDiscoveryQueryFacetTests() {
         // method invocation
         QueryResult response = discoveryClient.query(new QueryOptions().setLimit(10)
-            .setFilter(JacksonAdapter.createDefaultSerializerAdapter()
-                .deserialize("{\"objectType\":\"Tables\"}", Object.class, SerializerEncoding.JSON))
+            .setFilter(BinaryData.fromBytes("{objectType=Tables}".getBytes(StandardCharsets.UTF_8)))
             .setFacets(Arrays.asList(new SearchFacetItem().setCount(10).setFacet("assetType"),
                 new SearchFacetItem().setCount(10).setFacet("classification"),
                 new SearchFacetItem().setCount(10).setFacet("term"),

@@ -42,9 +42,7 @@ public final class PhoneNumberIdentifierModel implements JsonSerializable<PhoneN
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
-            .writeStringField("value", value)
-            .writeEndObject();
+        return jsonWriter.writeStartObject().writeStringField("value", value).writeEndObject();
     }
 
     /**

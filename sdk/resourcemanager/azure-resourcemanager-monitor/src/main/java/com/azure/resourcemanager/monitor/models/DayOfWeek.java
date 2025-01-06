@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.monitor.models;
 
-
 /** Defines values for DayOfWeek. */
 public enum DayOfWeek {
     /** Enum value Monday. */

@@ -45,28 +45,27 @@ public class ManageCdnWithCustomDomain {
         String customDomain = cnameRecordName + "." + domainName;
 
         try {
-            azureResourceManager.resourceGroups().define(rgName)
-                .withRegion(region)
-                .create();
+            azureResourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
             //============================================================
             // Purchase a domain
 
             System.out.println("Purchasing a domain " + domainName + "...");
-            AppServiceDomain domain = azureResourceManager.appServiceDomains().define(domainName)
+            AppServiceDomain domain = azureResourceManager.appServiceDomains()
+                .define(domainName)
                 .withExistingResourceGroup(rgName)
                 .defineRegistrantContact()
-                    .withFirstName("Jon")
-                    .withLastName("Doe")
-                    .withEmail("jondoe@contoso.com")
-                    .withAddressLine1("123 4th Ave")
-                    .withCity("Redmond")
-                    .withStateOrProvince("WA")
-                    .withCountry(CountryIsoCode.UNITED_STATES)
-                    .withPostalCode("98052")
-                    .withPhoneCountryCode(CountryPhoneCode.UNITED_STATES)
-                    .withPhoneNumber("4258828080")
-                    .attach()
+                .withFirstName("Jon")
+                .withLastName("Doe")
+                .withEmail("jondoe@contoso.com")
+                .withAddressLine1("123 4th Ave")
+                .withCity("Redmond")
+                .withStateOrProvince("WA")
+                .withCountry(CountryIsoCode.UNITED_STATES)
+                .withPostalCode("98052")
+                .withPhoneCountryCode(CountryPhoneCode.UNITED_STATES)
+                .withPhoneNumber("4258828080")
+                .attach()
                 .withDomainPrivacyEnabled(true)
                 .withAutoRenewEnabled(false)
                 .create();
@@ -76,25 +75,23 @@ public class ManageCdnWithCustomDomain {
             // Create root DNS zone
 
             System.out.println("Creating root DNS zone " + domainName + "...");
-            DnsZone dnsZone = azureResourceManager.dnsZones().define(domainName)
-                .withExistingResourceGroup(rgName)
-                .create();
+            DnsZone dnsZone
+                = azureResourceManager.dnsZones().define(domainName).withExistingResourceGroup(rgName).create();
             System.out.println("Created root DNS zone " + dnsZone.name());
 
             //============================================================
             // Create CNAME DNS record
 
             System.out.println("Creating CNAME DNS record " + cnameRecordName + "...");
-            dnsZone.update()
-                .withCNameRecordSet(cnameRecordName, cdnEndpointName + ".azureedge.net")
-                .apply();
+            dnsZone.update().withCNameRecordSet(cnameRecordName, cdnEndpointName + ".azureedge.net").apply();
             System.out.println("Created CNAME DNS record");
 
             //============================================================
             // Create CDN profile
 
             System.out.println("Creating CDN profile " + cdnProfileName + "...");
-            CdnProfile cdnProfile = azureResourceManager.cdnProfiles().define(cdnProfileName)
+            CdnProfile cdnProfile = azureResourceManager.cdnProfiles()
+                .define(cdnProfileName)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
                 .withStandardMicrosoftSku()
@@ -107,10 +104,10 @@ public class ManageCdnWithCustomDomain {
             System.out.println("Creating CDN endpoint " + cdnEndpointName + "...");
             cdnProfile.update()
                 .defineNewEndpoint(cdnEndpointName)
-                    .withOrigin("origin1", "www.someDomain.net")
-                    .withHttpAllowed(true)
-                    .withHttpsAllowed(true)
-                    .attach()
+                .withOrigin("origin1", "www.someDomain.net")
+                .withHttpAllowed(true)
+                .withHttpsAllowed(true)
+                .attach()
                 .apply();
 
             Map<String, CdnEndpoint> cdnEndpoints = cdnProfile.endpoints();
@@ -121,11 +118,7 @@ public class ManageCdnWithCustomDomain {
             // Associate the custom domain with CDN endpoint
 
             System.out.println("Associating the custom domain with CDN endpoint " + cdnEndpoint.name());
-            cdnProfile.update()
-                .updateEndpoint(cdnEndpointName)
-                    .withCustomDomain(customDomain)
-                    .parent()
-                .apply();
+            cdnProfile.update().updateEndpoint(cdnEndpointName).withCustomDomain(customDomain).parent().apply();
             cdnEndpoints = cdnProfile.endpoints();
             cdnEndpoint = cdnEndpoints.get(cdnEndpointName);
             System.out.println("Associated the custom domain with CDN endpoint " + cdnEndpoint.name());
@@ -160,11 +153,9 @@ public class ManageCdnWithCustomDomain {
             // Authenticate
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
-            final TokenCredential credential = new DefaultAzureCredentialBuilder()
-                .build();
+            final TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

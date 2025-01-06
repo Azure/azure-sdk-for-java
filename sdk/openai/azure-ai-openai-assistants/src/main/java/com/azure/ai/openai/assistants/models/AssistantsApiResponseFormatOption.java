@@ -86,7 +86,8 @@ public final class AssistantsApiResponseFormatOption {
                 return new AssistantsApiResponseFormatOption(format);
             }
         } catch (UncheckedIOException e) {
-            AssistantsApiResponseFormatMode mode = responseFormatBinaryData.toObject(AssistantsApiResponseFormatMode.class);
+            AssistantsApiResponseFormatMode mode
+                = responseFormatBinaryData.toObject(AssistantsApiResponseFormatMode.class);
             // AssistantsApiResponseFormatMode is an expandable union, so if we get `null` as result, that will be returned as a new string value variant.
             if (AssistantsApiResponseFormatMode.values().contains(mode)) {
                 return new AssistantsApiResponseFormatOption(mode);

@@ -15,49 +15,32 @@ import org.junit.jupiter.api.Assertions;
 public final class ForecastResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ForecastResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"nextLink\":\"awgqwgxhni\",\"columns\":[{\"name\":\"bkpyc\",\"type\":\"lwn\"}],\"rows\":[[\"datadauwhvylwzbtd\",\"dataxujznbmpowu\"],[\"datarzqlveu\",\"datalupj\"],[\"datahfxobbcswsrtj\",\"dataiplrbpbewtghfgb\",\"datac\",\"datawxzvlvqhjkb\"]]},\"sku\":\"ibtnmxiebwwaloay\",\"eTag\":\"gwrtzju\",\"location\":\"gwyzm\",\"tags\":{\"jcbpwxqpsrknft\":\"ongmtsa\",\"yvxqtayriwwroy\":\"uvriuhprwm\",\"bycnojvkn\":\"bexrmcq\",\"qsgzvahapj\":\"e\"},\"id\":\"zhpvgqzcjrvxd\",\"name\":\"zlmwlxkvugfhz\",\"type\":\"vawjvzunlu\"}")
-                .toObject(ForecastResultInner.class);
-        Assertions.assertEquals("gwyzm", model.location());
-        Assertions.assertEquals("ongmtsa", model.tags().get("jcbpwxqpsrknft"));
-        Assertions.assertEquals("awgqwgxhni", model.nextLink());
-        Assertions.assertEquals("bkpyc", model.columns().get(0).name());
-        Assertions.assertEquals("lwn", model.columns().get(0).type());
+        ForecastResultInner model = BinaryData.fromString(
+            "{\"properties\":{\"nextLink\":\"klnsrmffey\",\"columns\":[{\"name\":\"tpiymerteea\",\"type\":\"xqiekkkzddrtk\"}],\"rows\":[[\"databmxva\",\"datarefdee\",\"datavecuijpx\"],[\"datas\"]]},\"sku\":\"prtujwsawdd\",\"eTag\":\"babxvitit\",\"location\":\"tzeexav\",\"tags\":{\"pqtgsfjac\":\"fglecdmdqbwp\",\"d\":\"slhhxudbxv\"},\"id\":\"tnsi\",\"name\":\"ud\",\"type\":\"z\"}")
+            .toObject(ForecastResultInner.class);
+        Assertions.assertEquals("tzeexav", model.location());
+        Assertions.assertEquals("fglecdmdqbwp", model.tags().get("pqtgsfjac"));
+        Assertions.assertEquals("klnsrmffey", model.nextLink());
+        Assertions.assertEquals("tpiymerteea", model.columns().get(0).name());
+        Assertions.assertEquals("xqiekkkzddrtk", model.columns().get(0).type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ForecastResultInner model =
-            new ForecastResultInner()
-                .withLocation("gwyzm")
-                .withTags(
-                    mapOf(
-                        "jcbpwxqpsrknft",
-                        "ongmtsa",
-                        "yvxqtayriwwroy",
-                        "uvriuhprwm",
-                        "bycnojvkn",
-                        "bexrmcq",
-                        "qsgzvahapj",
-                        "e"))
-                .withNextLink("awgqwgxhni")
-                .withColumns(Arrays.asList(new ForecastColumn().withName("bkpyc").withType("lwn")))
-                .withRows(
-                    Arrays
-                        .asList(
-                            Arrays.asList("datadauwhvylwzbtd", "dataxujznbmpowu"),
-                            Arrays.asList("datarzqlveu", "datalupj"),
-                            Arrays.asList("datahfxobbcswsrtj", "dataiplrbpbewtghfgb", "datac", "datawxzvlvqhjkb")));
+        ForecastResultInner model = new ForecastResultInner().withLocation("tzeexav")
+            .withTags(mapOf("pqtgsfjac", "fglecdmdqbwp", "d", "slhhxudbxv"))
+            .withNextLink("klnsrmffey")
+            .withColumns(Arrays.asList(new ForecastColumn().withName("tpiymerteea").withType("xqiekkkzddrtk")))
+            .withRows(Arrays.asList(Arrays.asList("databmxva", "datarefdee", "datavecuijpx"), Arrays.asList("datas")));
         model = BinaryData.fromObject(model).toObject(ForecastResultInner.class);
-        Assertions.assertEquals("gwyzm", model.location());
-        Assertions.assertEquals("ongmtsa", model.tags().get("jcbpwxqpsrknft"));
-        Assertions.assertEquals("awgqwgxhni", model.nextLink());
-        Assertions.assertEquals("bkpyc", model.columns().get(0).name());
-        Assertions.assertEquals("lwn", model.columns().get(0).type());
+        Assertions.assertEquals("tzeexav", model.location());
+        Assertions.assertEquals("fglecdmdqbwp", model.tags().get("pqtgsfjac"));
+        Assertions.assertEquals("klnsrmffey", model.nextLink());
+        Assertions.assertEquals("tpiymerteea", model.columns().get(0).name());
+        Assertions.assertEquals("xqiekkkzddrtk", model.columns().get(0).type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

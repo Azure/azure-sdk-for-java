@@ -20,7 +20,8 @@ public final class ReplicationLogicalNetworksGetSamples {
      */
     public static void getsALogicalNetworkWithSpecifiedServerIdAndLogicalNetworkName(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationLogicalNetworks().getWithResponse("vault1", "resourceGroupPS1", "cloud1",
-            "87ab394f-165f-4aa9-bd84-b018500b4509", com.azure.core.util.Context.NONE);
+        manager.replicationLogicalNetworks()
+            .getWithResponse("vault1", "resourceGroupPS1", "cloud1", "87ab394f-165f-4aa9-bd84-b018500b4509",
+                com.azure.core.util.Context.NONE);
     }
 }

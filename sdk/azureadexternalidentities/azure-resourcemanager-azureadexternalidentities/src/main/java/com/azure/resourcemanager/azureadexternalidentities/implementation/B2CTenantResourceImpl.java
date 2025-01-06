@@ -20,8 +20,7 @@ public final class B2CTenantResourceImpl
     implements B2CTenantResource, B2CTenantResource.Definition, B2CTenantResource.Update {
     private B2CTenantResourceInner innerObject;
 
-    private final com.azure.resourcemanager.azureadexternalidentities.ExternalIdentitiesConfigurationManager
-        serviceManager;
+    private final com.azure.resourcemanager.azureadexternalidentities.ExternalIdentitiesConfigurationManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -94,25 +93,20 @@ public final class B2CTenantResourceImpl
     }
 
     public B2CTenantResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getB2CTenants()
-                .create(resourceGroupName, resourceName, createCreateTenantRequestBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getB2CTenants()
+            .create(resourceGroupName, resourceName, createCreateTenantRequestBody, Context.NONE);
         return this;
     }
 
     public B2CTenantResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getB2CTenants()
-                .create(resourceGroupName, resourceName, createCreateTenantRequestBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getB2CTenants()
+            .create(resourceGroupName, resourceName, createCreateTenantRequestBody, context);
         return this;
     }
 
-    B2CTenantResourceImpl(
-        String name,
+    B2CTenantResourceImpl(String name,
         com.azure.resourcemanager.azureadexternalidentities.ExternalIdentitiesConfigurationManager serviceManager) {
         this.innerObject = new B2CTenantResourceInner();
         this.serviceManager = serviceManager;
@@ -126,27 +120,22 @@ public final class B2CTenantResourceImpl
     }
 
     public B2CTenantResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getB2CTenants()
-                .updateWithResponse(resourceGroupName, resourceName, updateUpdateTenantRequestBody, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getB2CTenants()
+            .updateWithResponse(resourceGroupName, resourceName, updateUpdateTenantRequestBody, Context.NONE)
+            .getValue();
         return this;
     }
 
     public B2CTenantResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getB2CTenants()
-                .updateWithResponse(resourceGroupName, resourceName, updateUpdateTenantRequestBody, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getB2CTenants()
+            .updateWithResponse(resourceGroupName, resourceName, updateUpdateTenantRequestBody, context)
+            .getValue();
         return this;
     }
 
-    B2CTenantResourceImpl(
-        B2CTenantResourceInner innerObject,
+    B2CTenantResourceImpl(B2CTenantResourceInner innerObject,
         com.azure.resourcemanager.azureadexternalidentities.ExternalIdentitiesConfigurationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -155,22 +144,18 @@ public final class B2CTenantResourceImpl
     }
 
     public B2CTenantResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getB2CTenants()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getB2CTenants()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public B2CTenantResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getB2CTenants()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getB2CTenants()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
+            .getValue();
         return this;
     }
 

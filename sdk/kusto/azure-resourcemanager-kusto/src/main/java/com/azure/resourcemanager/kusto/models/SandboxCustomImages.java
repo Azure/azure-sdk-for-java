@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of SandboxCustomImages. */
+/**
+ * Resource collection API of SandboxCustomImages.
+ */
 public interface SandboxCustomImages {
     /**
      * Returns the list of the existing sandbox custom images of the given Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface SandboxCustomImages {
 
     /**
      * Returns the list of the existing sandbox custom images of the given Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -37,7 +39,7 @@ public interface SandboxCustomImages {
 
     /**
      * Returns a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -47,12 +49,12 @@ public interface SandboxCustomImages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Kusto sandbox custom image along with {@link Response}.
      */
-    Response<SandboxCustomImage> getWithResponse(
-        String resourceGroupName, String clusterName, String sandboxCustomImageName, Context context);
+    Response<SandboxCustomImage> getWithResponse(String resourceGroupName, String clusterName,
+        String sandboxCustomImageName, Context context);
 
     /**
      * Returns a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -65,7 +67,7 @@ public interface SandboxCustomImages {
 
     /**
      * Deletes a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -77,7 +79,7 @@ public interface SandboxCustomImages {
 
     /**
      * Deletes a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -90,7 +92,7 @@ public interface SandboxCustomImages {
 
     /**
      * Checks that the sandbox custom image resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
@@ -100,15 +102,12 @@ public interface SandboxCustomImages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response}.
      */
-    Response<CheckNameResult> checkNameAvailabilityWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        SandboxCustomImagesCheckNameRequest resourceName,
-        Context context);
+    Response<CheckNameResult> checkNameAvailabilityWithResponse(String resourceGroupName, String clusterName,
+        SandboxCustomImagesCheckNameRequest resourceName, Context context);
 
     /**
      * Checks that the sandbox custom image resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
@@ -117,12 +116,12 @@ public interface SandboxCustomImages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request.
      */
-    CheckNameResult checkNameAvailability(
-        String resourceGroupName, String clusterName, SandboxCustomImagesCheckNameRequest resourceName);
+    CheckNameResult checkNameAvailability(String resourceGroupName, String clusterName,
+        SandboxCustomImagesCheckNameRequest resourceName);
 
     /**
      * Returns a sandbox custom image.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -133,7 +132,7 @@ public interface SandboxCustomImages {
 
     /**
      * Returns a sandbox custom image.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -145,7 +144,7 @@ public interface SandboxCustomImages {
 
     /**
      * Deletes a sandbox custom image.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -155,7 +154,7 @@ public interface SandboxCustomImages {
 
     /**
      * Deletes a sandbox custom image.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -166,7 +165,7 @@ public interface SandboxCustomImages {
 
     /**
      * Begins definition for a new SandboxCustomImage resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new SandboxCustomImage definition.
      */

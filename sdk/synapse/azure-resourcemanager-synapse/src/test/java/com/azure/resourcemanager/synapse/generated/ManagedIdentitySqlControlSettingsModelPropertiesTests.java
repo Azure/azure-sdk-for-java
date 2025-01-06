@@ -6,29 +6,31 @@ package com.azure.resourcemanager.synapse.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.synapse.fluent.models.ManagedIdentitySqlControlSettingsModelProperties;
-import com.azure.resourcemanager.synapse.models.DesiredState;
 import com.azure.resourcemanager.synapse.models.ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity;
+import com.azure.resourcemanager.synapse.models.ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityDesiredState;
 import org.junit.jupiter.api.Assertions;
 
 public final class ManagedIdentitySqlControlSettingsModelPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedIdentitySqlControlSettingsModelProperties model =
-            BinaryData
-                .fromString(
-                    "{\"grantSqlControlToManagedIdentity\":{\"desiredState\":\"Enabled\",\"actualState\":\"Disabled\"}}")
-                .toObject(ManagedIdentitySqlControlSettingsModelProperties.class);
-        Assertions.assertEquals(DesiredState.ENABLED, model.grantSqlControlToManagedIdentity().desiredState());
+        ManagedIdentitySqlControlSettingsModelProperties model = BinaryData
+            .fromString(
+                "{\"grantSqlControlToManagedIdentity\":{\"desiredState\":\"Enabled\",\"actualState\":\"Disabled\"}}")
+            .toObject(ManagedIdentitySqlControlSettingsModelProperties.class);
+        Assertions.assertEquals(
+            ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityDesiredState.ENABLED,
+            model.grantSqlControlToManagedIdentity().desiredState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedIdentitySqlControlSettingsModelProperties model =
-            new ManagedIdentitySqlControlSettingsModelProperties()
-                .withGrantSqlControlToManagedIdentity(
-                    new ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity()
-                        .withDesiredState(DesiredState.ENABLED));
+        ManagedIdentitySqlControlSettingsModelProperties model
+            = new ManagedIdentitySqlControlSettingsModelProperties().withGrantSqlControlToManagedIdentity(
+                new ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity().withDesiredState(
+                    ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityDesiredState.ENABLED));
         model = BinaryData.fromObject(model).toObject(ManagedIdentitySqlControlSettingsModelProperties.class);
-        Assertions.assertEquals(DesiredState.ENABLED, model.grantSqlControlToManagedIdentity().desiredState());
+        Assertions.assertEquals(
+            ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityDesiredState.ENABLED,
+            model.grantSqlControlToManagedIdentity().desiredState());
     }
 }

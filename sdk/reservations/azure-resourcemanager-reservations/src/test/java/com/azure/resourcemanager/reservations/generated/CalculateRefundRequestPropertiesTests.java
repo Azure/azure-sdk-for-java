@@ -12,25 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class CalculateRefundRequestPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CalculateRefundRequestProperties model =
-            BinaryData
-                .fromString(
-                    "{\"scope\":\"bglaocqxtccm\",\"reservationToReturn\":{\"reservationId\":\"dxyt\",\"quantity\":2080912340}}")
-                .toObject(CalculateRefundRequestProperties.class);
-        Assertions.assertEquals("bglaocqxtccm", model.scope());
-        Assertions.assertEquals("dxyt", model.reservationToReturn().reservationId());
-        Assertions.assertEquals(2080912340, model.reservationToReturn().quantity());
+        CalculateRefundRequestProperties model = BinaryData.fromString(
+            "{\"scope\":\"smx\",\"reservationToReturn\":{\"reservationId\":\"mpvecxgodebfqk\",\"quantity\":897407586}}")
+            .toObject(CalculateRefundRequestProperties.class);
+        Assertions.assertEquals("smx", model.scope());
+        Assertions.assertEquals("mpvecxgodebfqk", model.reservationToReturn().reservationId());
+        Assertions.assertEquals(897407586, model.reservationToReturn().quantity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CalculateRefundRequestProperties model =
-            new CalculateRefundRequestProperties()
-                .withScope("bglaocqxtccm")
-                .withReservationToReturn(new ReservationToReturn().withReservationId("dxyt").withQuantity(2080912340));
+        CalculateRefundRequestProperties model = new CalculateRefundRequestProperties().withScope("smx")
+            .withReservationToReturn(
+                new ReservationToReturn().withReservationId("mpvecxgodebfqk").withQuantity(897407586));
         model = BinaryData.fromObject(model).toObject(CalculateRefundRequestProperties.class);
-        Assertions.assertEquals("bglaocqxtccm", model.scope());
-        Assertions.assertEquals("dxyt", model.reservationToReturn().reservationId());
-        Assertions.assertEquals(2080912340, model.reservationToReturn().quantity());
+        Assertions.assertEquals("smx", model.scope());
+        Assertions.assertEquals("mpvecxgodebfqk", model.reservationToReturn().reservationId());
+        Assertions.assertEquals(897407586, model.reservationToReturn().quantity());
     }
 }

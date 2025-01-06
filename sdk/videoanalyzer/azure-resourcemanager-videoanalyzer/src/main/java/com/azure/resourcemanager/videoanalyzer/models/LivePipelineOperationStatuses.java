@@ -21,8 +21,8 @@ public interface LivePipelineOperationStatuses {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the operation status of a live pipeline.
      */
-    LivePipelineOperationStatus get(
-        String resourceGroupName, String accountName, String livePipelineName, String operationId);
+    LivePipelineOperationStatus get(String resourceGroupName, String accountName, String livePipelineName,
+        String operationId);
 
     /**
      * Get the operation status of a live pipeline.
@@ -37,6 +37,6 @@ public interface LivePipelineOperationStatuses {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the operation status of a live pipeline along with {@link Response}.
      */
-    Response<LivePipelineOperationStatus> getWithResponse(
-        String resourceGroupName, String accountName, String livePipelineName, String operationId, Context context);
+    Response<LivePipelineOperationStatus> getWithResponse(String resourceGroupName, String accountName,
+        String livePipelineName, String operationId, Context context);
 }

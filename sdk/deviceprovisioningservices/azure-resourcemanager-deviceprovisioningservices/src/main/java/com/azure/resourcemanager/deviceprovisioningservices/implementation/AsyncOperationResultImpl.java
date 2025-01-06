@@ -13,8 +13,7 @@ public final class AsyncOperationResultImpl implements AsyncOperationResult {
 
     private final com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager serviceManager;
 
-    AsyncOperationResultImpl(
-        AsyncOperationResultInner innerObject,
+    AsyncOperationResultImpl(AsyncOperationResultInner innerObject,
         com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

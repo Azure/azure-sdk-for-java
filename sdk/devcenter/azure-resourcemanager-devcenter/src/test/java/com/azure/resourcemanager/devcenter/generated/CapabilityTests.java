@@ -11,7 +11,7 @@ public final class CapabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Capability model
-            = BinaryData.fromString("{\"name\":\"rqttbajlkatnw\",\"value\":\"iopid\"}").toObject(Capability.class);
+            = BinaryData.fromString("{\"name\":\"krlgnyhm\",\"value\":\"sxkkg\"}").toObject(Capability.class);
     }
 
     @org.junit.jupiter.api.Test

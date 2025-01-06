@@ -41,10 +41,13 @@ parameters:
   - name: ServiceConnection
     type: string
     default: ''
+  - name: PreTestRunSteps
+    type: object
+    default: [ ]
 
 steps:
   - task: Maven@4
-    ${{ if ne(parameters.VersionOverride, '') }}:
+    ${{ if eq(parameters.TestVersionSupport, 'true') }}:
       displayName: '${{ parameters.VersionOverride }} - Build for non-From Source run'
     ${{ else }}:
       displayName: 'Build for non-From Source run'
@@ -83,6 +86,8 @@ steps:
       AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
     condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
 
+  - ${{ parameters.PreTestRunSteps }}
+
   - ${{ if eq('true', parameters.UseFederatedAuth) }}:
     # Remove preceeding "1." in the version specified by $(JavaTestVersion)
     # e.g. 1.8 -> 8
@@ -97,7 +102,7 @@ steps:
 
     - task: AzurePowerShell@5
       condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
-      ${{ if ne(parameters.VersionOverride, '') }}:
+      ${{ if eq(parameters.TestVersionSupport, 'true') }}:
         displayName: '${{ parameters.VersionOverride }} - Run tests (Federated Auth)'
       ${{ else }}:
         displayName: 'Run tests (Federated Auth)'
@@ -122,7 +127,7 @@ steps:
   - ${{ else }}:
     - task: Maven@4
       condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
-      ${{ if ne(parameters.VersionOverride, '') }}:
+      ${{ if eq(parameters.TestVersionSupport, 'true') }}:
         displayName: '${{ parameters.VersionOverride }} - Run tests'
       ${{ else }}:
         displayName: 'Run tests'
@@ -175,6 +180,8 @@ steps:
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
+
+  - ${{ parameters.PreTestRunSteps }}
 
   - ${{ if eq('true', parameters.UseFederatedAuth) }}:
     - ${{ if eq(parameters.IsLiveTest, 'true') }}:
@@ -233,7 +240,7 @@ steps:
       env: ${{ parameters.TestEnvVars }}
       condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
-  - ${{ if ne(parameters.VersionOverride, '') }}:
+  - ${{ if eq(parameters.TestVersionSupport, 'true') }}:
     - template: /eng/pipelines/templates/steps/retain-test-logs.yml
       parameters:
         TestLogsArtifactName: 'test-logs-vo-${{ parameters.VersionOverride }}'
@@ -245,6 +252,23 @@ steps:
     - template: /eng/pipelines/templates/steps/retain-test-logs.yml
     - template: /eng/pipelines/templates/steps/retain-heap-dump-hprofs.yml
 
+  # The name of a test case in the results file isn't helpful in the web view.
+  # Update it to include the breadcrumb namespace and the type.
+  - pwsh: |
+      echo "Current directory: $(get-location)"
+      Get-ChildItem "TEST-*.xml" -Recurse | ForEach-Object {
+      echo "Updating $($_.Name)"
+      [xml]$xml = Get-Content $_.FullName
+      $xml.SelectNodes("//testcase") | ForEach-Object {
+          $parts = $_.classname -split '\.'
+          $shortClassname = (($parts[0..($parts.Length -2)] | ForEach-Object { $_[0] }) -join ".") + ".$($parts[-1])"
+          $_.name = "$shortClassname.$($_.name)"
+          }
+          $xml.Save($_.FullName)
+      }
+    displayName: 'Update test case names for reporting'
+    workingDirectory: $(System.DefaultWorkingDirectory)/sdk
+
   - task: PublishTestResults@2
     condition: always()
     inputs:
@@ -252,7 +276,7 @@ steps:
       testResultsFiles: '**/TEST-*.xml'
       searchFolder: '$(System.DefaultWorkingDirectory)/sdk'
       mergeTestResults: true
-      ${{ if ne(parameters.VersionOverride, '') }}:
+      ${{ if eq(parameters.TestVersionSupport, 'true') }}:
         testRunTitle: '$(Agent.JobName)_vo_${{ parameters.VersionOverride }}_attempt_$(System.JobAttempt)'
       ${{ else }}:
         testRunTitle: '$(Agent.JobName)_attempt_$(System.JobAttempt)'

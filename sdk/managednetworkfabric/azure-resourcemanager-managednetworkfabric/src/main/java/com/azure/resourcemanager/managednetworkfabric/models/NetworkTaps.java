@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of NetworkTaps. */
+/**
+ * Resource collection API of NetworkTaps.
+ */
 public interface NetworkTaps {
     /**
      * Gets a Network Tap.
-     *
-     * <p>Retrieves details of this Network Tap.
-     *
+     * 
+     * Retrieves details of this Network Tap.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param context The context to associate with this operation.
@@ -23,14 +25,14 @@ public interface NetworkTaps {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Network Tap resource definition along with {@link Response}.
      */
-    Response<NetworkTap> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkTapName, Context context);
+    Response<NetworkTap> getByResourceGroupWithResponse(String resourceGroupName, String networkTapName,
+        Context context);
 
     /**
      * Gets a Network Tap.
-     *
-     * <p>Retrieves details of this Network Tap.
-     *
+     * 
+     * Retrieves details of this Network Tap.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,9 +44,9 @@ public interface NetworkTaps {
 
     /**
      * Deletes a Network Tap.
-     *
-     * <p>Deletes Network Tap.
-     *
+     * 
+     * Deletes Network Tap.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,9 +57,9 @@ public interface NetworkTaps {
 
     /**
      * Deletes a Network Tap.
-     *
-     * <p>Deletes Network Tap.
-     *
+     * 
+     * Deletes Network Tap.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param context The context to associate with this operation.
@@ -69,9 +71,9 @@ public interface NetworkTaps {
 
     /**
      * List Network Taps by resource group.
-     *
-     * <p>Displays Network Taps list by resource group GET method.
-     *
+     * 
+     * Displays Network Taps list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -82,9 +84,9 @@ public interface NetworkTaps {
 
     /**
      * List Network Taps by resource group.
-     *
-     * <p>Displays Network Taps list by resource group GET method.
-     *
+     * 
+     * Displays Network Taps list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -96,9 +98,9 @@ public interface NetworkTaps {
 
     /**
      * List Network Taps by subscription.
-     *
-     * <p>Displays Network Taps list by subscription GET method.
-     *
+     * 
+     * Displays Network Taps list by subscription GET method.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of NetworkTaps as paginated response with {@link PagedIterable}.
@@ -107,9 +109,9 @@ public interface NetworkTaps {
 
     /**
      * List Network Taps by subscription.
-     *
-     * <p>Displays Network Taps list by subscription GET method.
-     *
+     * 
+     * Displays Network Taps list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -120,9 +122,9 @@ public interface NetworkTaps {
 
     /**
      * Updates administrative state of Network Tap.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param body Request payload.
@@ -131,14 +133,14 @@ public interface NetworkTaps {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for device updates.
      */
-    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
-        String resourceGroupName, String networkTapName, UpdateAdministrativeState body);
+    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(String resourceGroupName, String networkTapName,
+        UpdateAdministrativeState body);
 
     /**
      * Updates administrative state of Network Tap.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param body Request payload.
@@ -148,14 +150,14 @@ public interface NetworkTaps {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for device updates.
      */
-    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
-        String resourceGroupName, String networkTapName, UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(String resourceGroupName, String networkTapName,
+        UpdateAdministrativeState body, Context context);
 
     /**
      * Resync operation on the Network Tap.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -167,9 +169,9 @@ public interface NetworkTaps {
 
     /**
      * Resync operation on the Network Tap.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param context The context to associate with this operation.
@@ -182,9 +184,9 @@ public interface NetworkTaps {
 
     /**
      * Gets a Network Tap.
-     *
-     * <p>Retrieves details of this Network Tap.
-     *
+     * 
+     * Retrieves details of this Network Tap.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -195,9 +197,9 @@ public interface NetworkTaps {
 
     /**
      * Gets a Network Tap.
-     *
-     * <p>Retrieves details of this Network Tap.
-     *
+     * 
+     * Retrieves details of this Network Tap.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -209,9 +211,9 @@ public interface NetworkTaps {
 
     /**
      * Deletes a Network Tap.
-     *
-     * <p>Deletes Network Tap.
-     *
+     * 
+     * Deletes Network Tap.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -221,9 +223,9 @@ public interface NetworkTaps {
 
     /**
      * Deletes a Network Tap.
-     *
-     * <p>Deletes Network Tap.
-     *
+     * 
+     * Deletes Network Tap.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -234,7 +236,7 @@ public interface NetworkTaps {
 
     /**
      * Begins definition for a new NetworkTap resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new NetworkTap definition.
      */

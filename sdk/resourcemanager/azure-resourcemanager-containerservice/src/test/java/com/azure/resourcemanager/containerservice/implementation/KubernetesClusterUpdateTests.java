@@ -39,7 +39,8 @@ public class KubernetesClusterUpdateTests extends ContainerServiceManagementTest
         private int countOfPut = 0;
 
         @Override
-        public Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext, HttpPipelineNextPolicy httpPipelineNextPolicy) {
+        public Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext,
+            HttpPipelineNextPolicy httpPipelineNextPolicy) {
             HttpRequest request = httpPipelineCallContext.getHttpRequest();
             if (request.getHttpMethod() == HttpMethod.PUT && request.getHeaders().get(HEADER_NAME) != null) {
                 ++countOfPut;
@@ -56,12 +57,8 @@ public class KubernetesClusterUpdateTests extends ContainerServiceManagementTest
     private final ValidationPipeline validationPipeline = new ValidationPipeline();
 
     @Override
-    protected HttpPipeline buildHttpPipeline(
-        TokenCredential credential,
-        AzureProfile profile,
-        HttpLogOptions httpLogOptions,
-        List<HttpPipelinePolicy> policies,
-        HttpClient httpClient) {
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile,
+        HttpLogOptions httpLogOptions, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
 
         policies.add(validationPipeline);
         return super.buildHttpPipeline(credential, profile, httpLogOptions, policies, httpClient);
@@ -74,18 +71,19 @@ public class KubernetesClusterUpdateTests extends ContainerServiceManagementTest
         String agentPoolName = generateRandomResourceName("ap0", 10);
         String agentPoolName1 = generateRandomResourceName("ap1", 10);
 
-        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters().define(aksName)
+        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
+            .define(aksName)
             .withRegion(Region.US_SOUTH_CENTRAL)
             .withExistingResourceGroup(rgName)
             .withDefaultVersion()
             .withSystemAssignedManagedServiceIdentity()
             .defineAgentPool(agentPoolName)
-                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
-                .withAgentPoolVirtualMachineCount(1)
-                .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
-                .withAgentPoolMode(AgentPoolMode.SYSTEM)
-                .withAutoScaling(1, 3)
-                .attach()
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .withAutoScaling(1, 3)
+            .attach()
             .withDnsPrefix("mp1" + dnsPrefix)
             .create();
         Assertions.assertTrue(kubernetesCluster.agentPools().get(agentPoolName).isAutoScalingEnabled());
@@ -93,43 +91,31 @@ public class KubernetesClusterUpdateTests extends ContainerServiceManagementTest
         KubernetesCluster.Update clusterUpdate = kubernetesCluster.update();
         Assertions.assertFalse(isClusterModifiedDuringUpdate(kubernetesCluster));
 
-        clusterUpdate = clusterUpdate
-            .defineAgentPool(agentPoolName1)
-                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
-                .withAgentPoolVirtualMachineCount(1)
-                .attach();
+        clusterUpdate = clusterUpdate.defineAgentPool(agentPoolName1)
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .attach();
         Assertions.assertFalse(isClusterModifiedDuringUpdate(kubernetesCluster));
         Assertions.assertEquals(2, kubernetesCluster.innerModel().agentPoolProfiles().size());
 
-        clusterUpdate = clusterUpdate
-            .updateAgentPool(agentPoolName)
-                .withoutAutoScaling()
-                .parent();
+        clusterUpdate = clusterUpdate.updateAgentPool(agentPoolName).withoutAutoScaling().parent();
         Assertions.assertTrue(isClusterModifiedDuringUpdate(kubernetesCluster));
 
-        clusterUpdate = clusterUpdate
-            .updateAgentPool(agentPoolName)
-                .withAutoScaling(1, 3)
-                .parent();
+        clusterUpdate = clusterUpdate.updateAgentPool(agentPoolName).withAutoScaling(1, 3).parent();
         Assertions.assertFalse(isClusterModifiedDuringUpdate(kubernetesCluster));
         Assertions.assertEquals(2, kubernetesCluster.innerModel().agentPoolProfiles().size());
 
         // this should not send PUT to ManagedClustersClient
-        kubernetesCluster = clusterUpdate.apply(
-            new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY,
-                new HttpHeaders().set(ValidationPipeline.HEADER_NAME, "createOrUpdate")));
+        kubernetesCluster = clusterUpdate.apply(new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY,
+            new HttpHeaders().set(ValidationPipeline.HEADER_NAME, "createOrUpdate")));
         Assertions.assertEquals(2, kubernetesCluster.agentPools().size());
         Assertions.assertEquals(1, validationPipeline.countOfPut);
 
-        clusterUpdate = clusterUpdate
-            .withoutAgentPool(agentPoolName1);
+        clusterUpdate = clusterUpdate.withoutAgentPool(agentPoolName1);
         Assertions.assertFalse(isClusterModifiedDuringUpdate(kubernetesCluster));
         Assertions.assertEquals(1, kubernetesCluster.innerModel().agentPoolProfiles().size());
 
-        clusterUpdate = clusterUpdate
-            .updateAgentPool(agentPoolName)
-                .withoutAutoScaling()
-                .parent();
+        clusterUpdate = clusterUpdate.updateAgentPool(agentPoolName).withoutAutoScaling().parent();
         Assertions.assertTrue(isClusterModifiedDuringUpdate(kubernetesCluster));
 
         kubernetesCluster = clusterUpdate.apply();

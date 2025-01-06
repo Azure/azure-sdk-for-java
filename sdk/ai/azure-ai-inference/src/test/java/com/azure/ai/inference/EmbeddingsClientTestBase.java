@@ -33,8 +33,7 @@ public abstract class EmbeddingsClientTestBase extends TestProxyTestBase {
     private boolean sanitizersRemoved = false;
 
     EmbeddingsClientBuilder getEmbeddingsClientBuilder(HttpClient httpClient) {
-        EmbeddingsClientBuilder builder = new EmbeddingsClientBuilder()
-                .httpClient(httpClient);
+        EmbeddingsClientBuilder builder = new EmbeddingsClientBuilder().httpClient(httpClient);
         TestMode testMode = getTestMode();
         if (testMode != TestMode.LIVE) {
             addTestRecordCustomSanitizers();
@@ -47,25 +46,20 @@ public abstract class EmbeddingsClientTestBase extends TestProxyTestBase {
         }
 
         if (testMode == TestMode.PLAYBACK) {
-            builder
-                    .endpoint("https://localhost:8080")
-                    .credential(new AzureKeyCredential(FAKE_API_KEY));
+            builder.endpoint("https://localhost:8080").credential(new AzureKeyCredential(FAKE_API_KEY));
         } else if (testMode == TestMode.RECORD) {
-            builder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .endpoint(Configuration.getGlobalConfiguration().get("EMBEDDINGS_MODEL_ENDPOINT"))
-                    .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_EMBEDDINGS_KEY")));
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+                .endpoint(Configuration.getGlobalConfiguration().get("EMBEDDINGS_MODEL_ENDPOINT"))
+                .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_EMBEDDINGS_KEY")));
         } else {
-            builder
-                    .endpoint(Configuration.getGlobalConfiguration().get("EMBEDDINGS_MODEL_ENDPOINT"))
-                    .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_EMBEDDINGS_KEY")));
+            builder.endpoint(Configuration.getGlobalConfiguration().get("EMBEDDINGS_MODEL_ENDPOINT"))
+                .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_EMBEDDINGS_KEY")));
         }
         return builder;
     }
 
     ImageEmbeddingsClientBuilder getImageEmbeddingsClientBuilder(HttpClient httpClient) {
-        ImageEmbeddingsClientBuilder builder = new ImageEmbeddingsClientBuilder()
-                .httpClient(httpClient);
+        ImageEmbeddingsClientBuilder builder = new ImageEmbeddingsClientBuilder().httpClient(httpClient);
         TestMode testMode = getTestMode();
         if (testMode != TestMode.LIVE) {
             addTestRecordCustomSanitizers();
@@ -78,18 +72,14 @@ public abstract class EmbeddingsClientTestBase extends TestProxyTestBase {
         }
 
         if (testMode == TestMode.PLAYBACK) {
-            builder
-                    .endpoint("https://localhost:8080")
-                    .credential(new AzureKeyCredential(FAKE_API_KEY));
+            builder.endpoint("https://localhost:8080").credential(new AzureKeyCredential(FAKE_API_KEY));
         } else if (testMode == TestMode.RECORD) {
-            builder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .endpoint(Configuration.getGlobalConfiguration().get("EMBEDDINGS_MODEL_ENDPOINT"))
-                    .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_EMBEDDINGS_KEY")));
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+                .endpoint(Configuration.getGlobalConfiguration().get("EMBEDDINGS_MODEL_ENDPOINT"))
+                .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_EMBEDDINGS_KEY")));
         } else {
-            builder
-                    .endpoint(Configuration.getGlobalConfiguration().get("EMBEDDINGS_MODEL_ENDPOINT"))
-                    .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_EMBEDDINGS_KEY")));
+            builder.endpoint(Configuration.getGlobalConfiguration().get("EMBEDDINGS_MODEL_ENDPOINT"))
+                .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_EMBEDDINGS_KEY")));
         }
         return builder;
     }
@@ -97,12 +87,12 @@ public abstract class EmbeddingsClientTestBase extends TestProxyTestBase {
     private void addTestRecordCustomSanitizers() {
         String sanitizedRequestUri = "https://REDACTED/";
         String requestUriRegex = "https://.*/openai/deployments/.*?/";
-        interceptorManager.addSanitizers(Arrays.asList(
-                new TestProxySanitizer("$..key", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
+        interceptorManager.addSanitizers(
+            Arrays.asList(new TestProxySanitizer("$..key", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
                 new TestProxySanitizer("$..endpoint", requestUriRegex, sanitizedRequestUri, TestProxySanitizerType.URL),
-                new TestProxySanitizer("Content-Type", "(^multipart\\/form-data; boundary=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{2})",
-                        "multipart\\/form-data; boundary=BOUNDARY", TestProxySanitizerType.HEADER)
-        ));
+                new TestProxySanitizer("Content-Type",
+                    "(^multipart\\/form-data; boundary=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{2})",
+                    "multipart\\/form-data; boundary=BOUNDARY", TestProxySanitizerType.HEADER)));
     }
 
     private void addCustomMatchers() {

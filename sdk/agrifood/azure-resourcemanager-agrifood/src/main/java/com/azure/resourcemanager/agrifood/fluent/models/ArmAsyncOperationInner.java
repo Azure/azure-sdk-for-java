@@ -5,23 +5,41 @@
 package com.azure.resourcemanager.agrifood.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.agrifood.models.ArmAsyncOperationError;
+import java.io.IOException;
 
 /**
- * Arm async operation class. Ref:
- * https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/async-operations.
+ * Arm async operation class.
+ * Ref: https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/async-operations.
  */
 @Fluent
-public final class ArmAsyncOperationInner {
+public final class ArmAsyncOperationInner implements JsonSerializable<ArmAsyncOperationInner> {
     /*
      * Status of the async operation.
      */
-    @JsonProperty(value = "status")
     private String status;
+
+    /*
+     * Arm async operation error class.
+     * Ref:
+     * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/async-api-reference.md#azure-asyncoperation-
+     * resource-format.
+     */
+    private ArmAsyncOperationError error;
+
+    /**
+     * Creates an instance of ArmAsyncOperationInner class.
+     */
+    public ArmAsyncOperationInner() {
+    }
 
     /**
      * Get the status property: Status of the async operation.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -30,7 +48,7 @@ public final class ArmAsyncOperationInner {
 
     /**
      * Set the status property: Status of the async operation.
-     *
+     * 
      * @param status the status value to set.
      * @return the ArmAsyncOperationInner object itself.
      */
@@ -40,10 +58,76 @@ public final class ArmAsyncOperationInner {
     }
 
     /**
+     * Get the error property: Arm async operation error class.
+     * Ref:
+     * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/async-api-reference.md#azure-asyncoperation-resource-format.
+     * 
+     * @return the error value.
+     */
+    public ArmAsyncOperationError error() {
+        return this.error;
+    }
+
+    /**
+     * Set the error property: Arm async operation error class.
+     * Ref:
+     * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/async-api-reference.md#azure-asyncoperation-resource-format.
+     * 
+     * @param error the error value to set.
+     * @return the ArmAsyncOperationInner object itself.
+     */
+    public ArmAsyncOperationInner withError(ArmAsyncOperationError error) {
+        this.error = error;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (error() != null) {
+            error().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ArmAsyncOperationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ArmAsyncOperationInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ArmAsyncOperationInner.
+     */
+    public static ArmAsyncOperationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ArmAsyncOperationInner deserializedArmAsyncOperationInner = new ArmAsyncOperationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedArmAsyncOperationInner.status = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedArmAsyncOperationInner.error = ArmAsyncOperationError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedArmAsyncOperationInner;
+        });
     }
 }

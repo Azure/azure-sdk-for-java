@@ -19,7 +19,10 @@ public class PerfStressOptions {
     @Parameter(names = { "--insecure" }, description = "Allow untrusted SSL server certs")
     private boolean insecure = false;
 
-    @Parameter(names = { "-x", "--test-proxies" }, splitter = SemiColonSplitter.class, description = "URIs of TestProxy Servers (separated by ';')")
+    @Parameter(
+        names = { "-x", "--test-proxies" },
+        splitter = SemiColonSplitter.class,
+        description = "URIs of TestProxy Servers (separated by ';')")
     private List<URI> testProxies;
 
     @Parameter(names = { "-i", "--iterations" }, description = "Number of iterations of main test loop")
@@ -43,16 +46,27 @@ public class PerfStressOptions {
     @Parameter(names = { "-c", "--count" }, description = "Number of items")
     private int count = 10;
 
-    @Parameter(names = { "--http-client" }, description = "The http client to use. Can be netty, okhttp, jdk, vertx or a full name of HttpClientProvider implementation class.")
+    @Parameter(
+        names = { "--http-client" },
+        description = "The http client to use. Can be netty, okhttp, jdk, vertx or a full name of HttpClientProvider implementation class.")
     private String httpClient = HttpClientType.NETTY.toString();
 
-    @Parameter(names = { "--completeablefuture" }, help = true, description = "Runs the performance test asynchronously as a CompletableFuture.")
+    @Parameter(
+        names = { "--completeablefuture" },
+        help = true,
+        description = "Runs the performance test asynchronously as a CompletableFuture.")
     private boolean completeablefuture = false;
 
-    @Parameter(names = { "--executorservice" }, help = true, description = "Runs the performance test asynchronously with an ExecutorService.")
+    @Parameter(
+        names = { "--executorservice" },
+        help = true,
+        description = "Runs the performance test asynchronously with an ExecutorService.")
     private boolean executorservice = false;
 
-    @Parameter(names = { "--virtualthread" }, help = true, description = "Runs the performance test asynchronously with a virtual thread.")
+    @Parameter(
+        names = { "--virtualthread" },
+        help = true,
+        description = "Runs the performance test asynchronously with a virtual thread.")
     private boolean virtualthread = false;
 
     /**

@@ -6,41 +6,56 @@ package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Select audio tracks from the input by specifying an attribute and an attribute filter. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Media.SelectAudioTrackByAttribute")
+/**
+ * Select audio tracks from the input by specifying an attribute and an attribute filter.
+ */
 @Fluent
 public final class SelectAudioTrackByAttribute extends AudioTrackDescriptor {
     /*
+     * The discriminator for derived types.
+     */
+    private String odataType = "#Microsoft.Media.SelectAudioTrackByAttribute";
+
+    /*
      * The TrackAttribute to filter the tracks by.
      */
-    @JsonProperty(value = "attribute", required = true)
     private TrackAttribute attribute;
 
     /*
      * The type of AttributeFilter to apply to the TrackAttribute in order to select the tracks.
      */
-    @JsonProperty(value = "filter", required = true)
     private AttributeFilter filter;
 
     /*
-     * The value to filter the tracks by.  Only used when AttributeFilter.ValueEquals is specified for the Filter
+     * The value to filter the tracks by. Only used when AttributeFilter.ValueEquals is specified for the Filter
      * property.
      */
-    @JsonProperty(value = "filterValue")
     private String filterValue;
 
-    /** Creates an instance of SelectAudioTrackByAttribute class. */
+    /**
+     * Creates an instance of SelectAudioTrackByAttribute class.
+     */
     public SelectAudioTrackByAttribute() {
     }
 
     /**
+     * Get the odataType property: The discriminator for derived types.
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public String odataType() {
+        return this.odataType;
+    }
+
+    /**
      * Get the attribute property: The TrackAttribute to filter the tracks by.
-     *
+     * 
      * @return the attribute value.
      */
     public TrackAttribute attribute() {
@@ -49,7 +64,7 @@ public final class SelectAudioTrackByAttribute extends AudioTrackDescriptor {
 
     /**
      * Set the attribute property: The TrackAttribute to filter the tracks by.
-     *
+     * 
      * @param attribute the attribute value to set.
      * @return the SelectAudioTrackByAttribute object itself.
      */
@@ -61,7 +76,7 @@ public final class SelectAudioTrackByAttribute extends AudioTrackDescriptor {
     /**
      * Get the filter property: The type of AttributeFilter to apply to the TrackAttribute in order to select the
      * tracks.
-     *
+     * 
      * @return the filter value.
      */
     public AttributeFilter filter() {
@@ -71,7 +86,7 @@ public final class SelectAudioTrackByAttribute extends AudioTrackDescriptor {
     /**
      * Set the filter property: The type of AttributeFilter to apply to the TrackAttribute in order to select the
      * tracks.
-     *
+     * 
      * @param filter the filter value to set.
      * @return the SelectAudioTrackByAttribute object itself.
      */
@@ -83,7 +98,7 @@ public final class SelectAudioTrackByAttribute extends AudioTrackDescriptor {
     /**
      * Get the filterValue property: The value to filter the tracks by. Only used when AttributeFilter.ValueEquals is
      * specified for the Filter property.
-     *
+     * 
      * @return the filterValue value.
      */
     public String filterValue() {
@@ -93,7 +108,7 @@ public final class SelectAudioTrackByAttribute extends AudioTrackDescriptor {
     /**
      * Set the filterValue property: The value to filter the tracks by. Only used when AttributeFilter.ValueEquals is
      * specified for the Filter property.
-     *
+     * 
      * @param filterValue the filterValue value to set.
      * @return the SelectAudioTrackByAttribute object itself.
      */
@@ -102,7 +117,9 @@ public final class SelectAudioTrackByAttribute extends AudioTrackDescriptor {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SelectAudioTrackByAttribute withChannelMapping(ChannelMapping channelMapping) {
         super.withChannelMapping(channelMapping);
@@ -111,25 +128,72 @@ public final class SelectAudioTrackByAttribute extends AudioTrackDescriptor {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (attribute() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property attribute in model SelectAudioTrackByAttribute"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property attribute in model SelectAudioTrackByAttribute"));
         }
         if (filter() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property filter in model SelectAudioTrackByAttribute"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property filter in model SelectAudioTrackByAttribute"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SelectAudioTrackByAttribute.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("channelMapping", channelMapping() == null ? null : channelMapping().toString());
+        jsonWriter.writeStringField("attribute", this.attribute == null ? null : this.attribute.toString());
+        jsonWriter.writeStringField("filter", this.filter == null ? null : this.filter.toString());
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        jsonWriter.writeStringField("filterValue", this.filterValue);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SelectAudioTrackByAttribute from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SelectAudioTrackByAttribute if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SelectAudioTrackByAttribute.
+     */
+    public static SelectAudioTrackByAttribute fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SelectAudioTrackByAttribute deserializedSelectAudioTrackByAttribute = new SelectAudioTrackByAttribute();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("channelMapping".equals(fieldName)) {
+                    deserializedSelectAudioTrackByAttribute
+                        .withChannelMapping(ChannelMapping.fromString(reader.getString()));
+                } else if ("attribute".equals(fieldName)) {
+                    deserializedSelectAudioTrackByAttribute.attribute = TrackAttribute.fromString(reader.getString());
+                } else if ("filter".equals(fieldName)) {
+                    deserializedSelectAudioTrackByAttribute.filter = AttributeFilter.fromString(reader.getString());
+                } else if ("@odata.type".equals(fieldName)) {
+                    deserializedSelectAudioTrackByAttribute.odataType = reader.getString();
+                } else if ("filterValue".equals(fieldName)) {
+                    deserializedSelectAudioTrackByAttribute.filterValue = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSelectAudioTrackByAttribute;
+        });
+    }
 }

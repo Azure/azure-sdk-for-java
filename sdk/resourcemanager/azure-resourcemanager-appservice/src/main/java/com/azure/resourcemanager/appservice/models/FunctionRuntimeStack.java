@@ -11,16 +11,13 @@ import java.util.Objects;
 public class FunctionRuntimeStack {
 
     /** JAVA 8. */
-    public static final FunctionRuntimeStack JAVA_8 = new FunctionRuntimeStack("java", "~3",
-        "java|8");
+    public static final FunctionRuntimeStack JAVA_8 = new FunctionRuntimeStack("java", "~3", "java|8");
 
     /** JAVA 11. */
-    public static final FunctionRuntimeStack JAVA_11 = new FunctionRuntimeStack("java", "~3",
-        "java|11");
+    public static final FunctionRuntimeStack JAVA_11 = new FunctionRuntimeStack("java", "~3", "java|11");
 
     /** JAVA 17. */
-    public static final FunctionRuntimeStack JAVA_17 = new FunctionRuntimeStack("java", "~4",
-        "java|17");
+    public static final FunctionRuntimeStack JAVA_17 = new FunctionRuntimeStack("java", "~4", "java|17");
 
     private final String runtime;
     private final String version;
@@ -34,22 +31,27 @@ public class FunctionRuntimeStack {
      * @param version the language runtime version
      * @param linuxFxVersion the LinuxFxVersion property value
      */
-    public FunctionRuntimeStack(
-        String runtime,
-        String version,
-        String linuxFxVersion) {
+    public FunctionRuntimeStack(String runtime, String version, String linuxFxVersion) {
         this.runtime = Objects.requireNonNull(runtime);
         this.version = Objects.requireNonNull(version);
 
         this.linuxFxVersion = Objects.requireNonNull(linuxFxVersion);
     }
 
-    /** @return the name of the language runtime */
+    /**
+     * Gets the name of the language runtime.
+     *
+     * @return the name of the language runtime
+     */
     public String runtime() {
         return runtime;
     }
 
-    /** @return the version of the Language runtime */
+    /**
+     * Gets the version of the Language runtime.
+     *
+     * @return the version of the Language runtime
+     */
     public String version() {
         return version;
     }

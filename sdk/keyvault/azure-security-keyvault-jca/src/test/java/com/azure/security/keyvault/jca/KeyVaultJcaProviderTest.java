@@ -16,7 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class KeyVaultJcaProviderTest {
 
-
     /**
      * Test getting a certificate using the Provider.
      *
@@ -27,7 +26,7 @@ public class KeyVaultJcaProviderTest {
         PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca();
         PropertyConvertorUtils.addKeyVaultJcaProvider();
         KeyStore keystore = PropertyConvertorUtils.getKeyVaultKeyStore();
-        assertNotNull(keystore.getCertificate(
-            PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CERTIFICATE_NAME")));
+        assertNotNull(
+            keystore.getCertificate(PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CERTIFICATE_NAME")));
     }
 }

@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Replica Role in availability group. */
+/**
+ * Replica Role in availability group.
+ */
 public final class Role extends ExpandableStringEnum<Role> {
-    /** Static value PRIMARY for Role. */
+    /**
+     * Static value PRIMARY for Role.
+     */
     public static final Role PRIMARY = fromString("PRIMARY");
 
-    /** Static value SECONDARY for Role. */
+    /**
+     * Static value SECONDARY for Role.
+     */
     public static final Role SECONDARY = fromString("SECONDARY");
 
     /**
      * Creates a new instance of Role value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class Role extends ExpandableStringEnum<Role> {
 
     /**
      * Creates or finds a Role from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Role.
      */
-    @JsonCreator
     public static Role fromString(String name) {
         return fromString(name, Role.class);
     }
 
     /**
      * Gets known Role values.
-     *
+     * 
      * @return known Role values.
      */
     public static Collection<Role> values() {

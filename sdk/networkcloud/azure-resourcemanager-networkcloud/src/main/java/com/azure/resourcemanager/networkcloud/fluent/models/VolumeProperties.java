@@ -5,58 +5,60 @@
 package com.azure.resourcemanager.networkcloud.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.models.VolumeDetailedStatus;
 import com.azure.resourcemanager.networkcloud.models.VolumeProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** VolumeProperties represents properties of the volume resource. */
+/**
+ * VolumeProperties represents properties of the volume resource.
+ */
 @Fluent
-public final class VolumeProperties {
+public final class VolumeProperties implements JsonSerializable<VolumeProperties> {
     /*
      * The list of resource IDs that attach the volume. It may include virtual machines and Hybrid AKS clusters.
      */
-    @JsonProperty(value = "attachedTo", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> attachedTo;
 
     /*
      * The more detailed status of the volume.
      */
-    @JsonProperty(value = "detailedStatus", access = JsonProperty.Access.WRITE_ONLY)
     private VolumeDetailedStatus detailedStatus;
 
     /*
      * The descriptive message about the current detailed status.
      */
-    @JsonProperty(value = "detailedStatusMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String detailedStatusMessage;
 
     /*
      * The provisioning state of the volume.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private VolumeProvisioningState provisioningState;
 
     /*
      * The unique identifier of the volume.
      */
-    @JsonProperty(value = "serialNumber", access = JsonProperty.Access.WRITE_ONLY)
     private String serialNumber;
 
     /*
      * The size of the allocation for this volume in Mebibytes.
      */
-    @JsonProperty(value = "sizeMiB", required = true)
     private long sizeMiB;
 
-    /** Creates an instance of VolumeProperties class. */
+    /**
+     * Creates an instance of VolumeProperties class.
+     */
     public VolumeProperties() {
     }
 
     /**
      * Get the attachedTo property: The list of resource IDs that attach the volume. It may include virtual machines and
      * Hybrid AKS clusters.
-     *
+     * 
      * @return the attachedTo value.
      */
     public List<String> attachedTo() {
@@ -65,7 +67,7 @@ public final class VolumeProperties {
 
     /**
      * Get the detailedStatus property: The more detailed status of the volume.
-     *
+     * 
      * @return the detailedStatus value.
      */
     public VolumeDetailedStatus detailedStatus() {
@@ -74,7 +76,7 @@ public final class VolumeProperties {
 
     /**
      * Get the detailedStatusMessage property: The descriptive message about the current detailed status.
-     *
+     * 
      * @return the detailedStatusMessage value.
      */
     public String detailedStatusMessage() {
@@ -83,7 +85,7 @@ public final class VolumeProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the volume.
-     *
+     * 
      * @return the provisioningState value.
      */
     public VolumeProvisioningState provisioningState() {
@@ -92,7 +94,7 @@ public final class VolumeProperties {
 
     /**
      * Get the serialNumber property: The unique identifier of the volume.
-     *
+     * 
      * @return the serialNumber value.
      */
     public String serialNumber() {
@@ -101,7 +103,7 @@ public final class VolumeProperties {
 
     /**
      * Get the sizeMiB property: The size of the allocation for this volume in Mebibytes.
-     *
+     * 
      * @return the sizeMiB value.
      */
     public long sizeMiB() {
@@ -110,7 +112,7 @@ public final class VolumeProperties {
 
     /**
      * Set the sizeMiB property: The size of the allocation for this volume in Mebibytes.
-     *
+     * 
      * @param sizeMiB the sizeMiB value to set.
      * @return the VolumeProperties object itself.
      */
@@ -121,9 +123,58 @@ public final class VolumeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeLongField("sizeMiB", this.sizeMiB);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VolumeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VolumeProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VolumeProperties.
+     */
+    public static VolumeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VolumeProperties deserializedVolumeProperties = new VolumeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sizeMiB".equals(fieldName)) {
+                    deserializedVolumeProperties.sizeMiB = reader.getLong();
+                } else if ("attachedTo".equals(fieldName)) {
+                    List<String> attachedTo = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVolumeProperties.attachedTo = attachedTo;
+                } else if ("detailedStatus".equals(fieldName)) {
+                    deserializedVolumeProperties.detailedStatus = VolumeDetailedStatus.fromString(reader.getString());
+                } else if ("detailedStatusMessage".equals(fieldName)) {
+                    deserializedVolumeProperties.detailedStatusMessage = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVolumeProperties.provisioningState
+                        = VolumeProvisioningState.fromString(reader.getString());
+                } else if ("serialNumber".equals(fieldName)) {
+                    deserializedVolumeProperties.serialNumber = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVolumeProperties;
+        });
     }
 }

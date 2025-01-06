@@ -341,7 +341,8 @@ public final class MongoDBChatExtensionParameters implements JsonSerializable<Mo
         jsonWriter.writeStringField("app_name", this.appName);
         jsonWriter.writeStringField("index_name", this.indexName);
         jsonWriter.writeJsonField("fields_mapping", this.fieldsMapping);
-        jsonWriter.writeUntypedField("embedding_dependency", this.embeddingDependency.toObject(Object.class));
+        jsonWriter.writeFieldName("embedding_dependency");
+        this.embeddingDependency.writeTo(jsonWriter);
         jsonWriter.writeNumberField("top_n_documents", this.topNDocuments);
         jsonWriter.writeBooleanField("in_scope", this.inScope);
         jsonWriter.writeNumberField("strictness", this.strictness);

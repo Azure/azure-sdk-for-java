@@ -271,7 +271,7 @@ public final class ImageAnalysisAsyncClient {
         return analyzeFromUrlWithResponse(visualFeatures.stream()
             .map(paramItemValue -> Objects.toString(paramItemValue, ""))
             .collect(Collectors.toList()), BinaryData.fromObject(imageUrl), requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ImageAnalysisResult.class));
+                .map(protocolMethodData -> protocolMethodData.toObject(ImageAnalysisResult.class));
     }
 
     /**
@@ -297,7 +297,7 @@ public final class ImageAnalysisAsyncClient {
         return analyzeFromUrlWithResponse(visualFeatures.stream()
             .map(paramItemValue -> Objects.toString(paramItemValue, ""))
             .collect(Collectors.toList()), BinaryData.fromObject(imageUrl), requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ImageAnalysisResult.class));
+                .map(protocolMethodData -> protocolMethodData.toObject(ImageAnalysisResult.class));
     }
 
     /**
@@ -499,7 +499,7 @@ public final class ImageAnalysisAsyncClient {
         return analyzeFromImageDataWithResponse(visualFeatures.stream()
             .map(paramItemValue -> Objects.toString(paramItemValue, ""))
             .collect(Collectors.toList()), imageData, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ImageAnalysisResult.class));
+                .map(protocolMethodData -> protocolMethodData.toObject(ImageAnalysisResult.class));
     }
 
     /**
@@ -525,7 +525,7 @@ public final class ImageAnalysisAsyncClient {
         return analyzeFromImageDataWithResponse(visualFeatures.stream()
             .map(paramItemValue -> Objects.toString(paramItemValue, ""))
             .collect(Collectors.toList()), imageData, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ImageAnalysisResult.class));
+                .map(protocolMethodData -> protocolMethodData.toObject(ImageAnalysisResult.class));
     }
 
     /**

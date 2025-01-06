@@ -18,7 +18,8 @@ import com.azure.resourcemanager.batchai.models.RemoteLoginInformation;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ClustersImpl implements Clusters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClustersImpl.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ClustersImpl.class);
 
     private final ClustersClient innerClient;
 
@@ -46,32 +47,29 @@ public final class ClustersImpl implements Clusters {
         }
     }
 
-    public Response<Cluster> getWithResponse(
-        String resourceGroupName, String workspaceName, String clusterName, Context context) {
-        Response<ClusterInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, clusterName, context);
+    public Response<Cluster> getWithResponse(String resourceGroupName, String workspaceName, String clusterName,
+        Context context) {
+        Response<ClusterInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, clusterName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ClusterImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public PagedIterable<RemoteLoginInformation> listRemoteLoginInformation(
-        String resourceGroupName, String workspaceName, String clusterName) {
-        PagedIterable<RemoteLoginInformationInner> inner =
-            this.serviceClient().listRemoteLoginInformation(resourceGroupName, workspaceName, clusterName);
+    public PagedIterable<RemoteLoginInformation> listRemoteLoginInformation(String resourceGroupName,
+        String workspaceName, String clusterName) {
+        PagedIterable<RemoteLoginInformationInner> inner
+            = this.serviceClient().listRemoteLoginInformation(resourceGroupName, workspaceName, clusterName);
         return Utils.mapPage(inner, inner1 -> new RemoteLoginInformationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<RemoteLoginInformation> listRemoteLoginInformation(
-        String resourceGroupName, String workspaceName, String clusterName, Context context) {
-        PagedIterable<RemoteLoginInformationInner> inner =
-            this.serviceClient().listRemoteLoginInformation(resourceGroupName, workspaceName, clusterName, context);
+    public PagedIterable<RemoteLoginInformation> listRemoteLoginInformation(String resourceGroupName,
+        String workspaceName, String clusterName, Context context) {
+        PagedIterable<RemoteLoginInformationInner> inner
+            = this.serviceClient().listRemoteLoginInformation(resourceGroupName, workspaceName, clusterName, context);
         return Utils.mapPage(inner, inner1 -> new RemoteLoginInformationImpl(inner1, this.manager()));
     }
 
@@ -80,35 +78,28 @@ public final class ClustersImpl implements Clusters {
         return Utils.mapPage(inner, inner1 -> new ClusterImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Cluster> listByWorkspace(
-        String resourceGroupName, String workspaceName, Integer maxResults, Context context) {
-        PagedIterable<ClusterInner> inner =
-            this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, maxResults, context);
+    public PagedIterable<Cluster> listByWorkspace(String resourceGroupName, String workspaceName, Integer maxResults,
+        Context context) {
+        PagedIterable<ClusterInner> inner
+            = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, maxResults, context);
         return Utils.mapPage(inner, inner1 -> new ClusterImpl(inner1, this.manager()));
     }
 
     public Cluster getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, clusterName, Context.NONE).getValue();
     }
@@ -116,25 +107,18 @@ public final class ClustersImpl implements Clusters {
     public Response<Cluster> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, clusterName, context);
     }
@@ -142,25 +126,18 @@ public final class ClustersImpl implements Clusters {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         this.delete(resourceGroupName, workspaceName, clusterName, Context.NONE);
     }
@@ -168,25 +145,18 @@ public final class ClustersImpl implements Clusters {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         this.delete(resourceGroupName, workspaceName, clusterName, context);
     }

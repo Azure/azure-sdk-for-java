@@ -26,9 +26,11 @@ public class RegistryCredentialsImpl extends WrapperImpl<RegistryListCredentials
                     case PASSWORD:
                         this.accessKeys.put(AccessKeyType.PRIMARY, registryPassword.value());
                         break;
+
                     case PASSWORD2:
                         this.accessKeys.put(AccessKeyType.SECONDARY, registryPassword.value());
                         break;
+
                     default:
                         break;
                 }

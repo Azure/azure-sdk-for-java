@@ -29,7 +29,6 @@ public final class ChatCompletionsFunctionToolCall extends ChatCompletionsToolCa
     @Generated
     private FunctionCall function;
 
-
     /**
      * Creates an instance of ChatCompletionsFunctionToolCall class.
      *

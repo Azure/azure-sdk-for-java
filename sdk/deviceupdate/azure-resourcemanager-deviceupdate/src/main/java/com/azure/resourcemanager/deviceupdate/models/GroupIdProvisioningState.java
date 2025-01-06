@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.deviceupdate.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class GroupIdProvisioningState extends ExpandableStringEnum<GroupId
      * @param name a name to look for.
      * @return the corresponding GroupIdProvisioningState.
      */
-    @JsonCreator
     public static GroupIdProvisioningState fromString(String name) {
         return fromString(name, GroupIdProvisioningState.class);
     }

@@ -119,8 +119,8 @@ public class ClientSecretCredentialBuilder extends AadCredentialBuilderBase<Clie
      * @param tokenCachePersistenceOptions the token cache configuration options
      * @return An updated instance of this builder with the token cache options configured.
      */
-    public ClientSecretCredentialBuilder tokenCachePersistenceOptions(TokenCachePersistenceOptions
-                                                                                tokenCachePersistenceOptions) {
+    public ClientSecretCredentialBuilder
+        tokenCachePersistenceOptions(TokenCachePersistenceOptions tokenCachePersistenceOptions) {
         this.identityClientOptions.setTokenCacheOptions(tokenCachePersistenceOptions);
         return this;
     }
@@ -131,8 +131,8 @@ public class ClientSecretCredentialBuilder extends AadCredentialBuilderBase<Clie
      * @return a {@link ClientSecretCredentialBuilder} with the current configurations.
      */
     public ClientSecretCredential build() {
-        ValidationUtil.validate(CLASS_NAME, LOGGER, "clientId", clientId, "tenantId", tenantId,
-            "clientSecret", clientSecret);
+        ValidationUtil.validate(CLASS_NAME, LOGGER, "clientId", clientId, "tenantId", tenantId, "clientSecret",
+            clientSecret);
 
         return new ClientSecretCredential(tenantId, clientId, clientSecret, identityClientOptions);
     }

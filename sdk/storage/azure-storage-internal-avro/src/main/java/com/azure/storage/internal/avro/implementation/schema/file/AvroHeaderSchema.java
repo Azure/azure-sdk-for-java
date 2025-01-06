@@ -30,13 +30,11 @@ public class AvroHeaderSchema extends AvroCompositeSchema {
 
     private static final ClientLogger LOGGER = new ClientLogger(AvroHeaderSchema.class);
 
-    private static final String HEADER_SCHEMA =
-        "{\"type\": \"record\", \"name\": \"org.apache.avro.file.Header\",\n"
-            + " \"fields\" : [\n"
+    private static final String HEADER_SCHEMA
+        = "{\"type\": \"record\", \"name\": \"org.apache.avro.file.Header\",\n" + " \"fields\" : [\n"
             + "   {\"name\": \"magic\", \"type\": {\"type\": \"fixed\", \"name\": \"Magic\", \"size\": 4}},\n"
             + "   {\"name\": \"meta\", \"type\": {\"type\": \"map\", \"values\": \"string\"}},\n"
-            + "   {\"name\": \"sync\", \"type\": {\"type\": \"fixed\", \"name\": \"Sync\", \"size\": 16}}\n"
-            + "  ]\n"
+            + "   {\"name\": \"sync\", \"type\": {\"type\": \"fixed\", \"name\": \"Sync\", \"size\": 16}}\n" + "  ]\n"
             + "}";
 
     /**
@@ -53,11 +51,7 @@ public class AvroHeaderSchema extends AvroCompositeSchema {
     public void pushToStack() {
         this.state.pushToStack(this);
         AvroType headerType = AvroType.getType(HEADER_SCHEMA);
-        AvroSchema headerSchema = AvroSchema.getSchema(
-            headerType,
-            this.state,
-            this::onHeader
-        );
+        AvroSchema headerSchema = AvroSchema.getSchema(headerType, this.state, this::onHeader);
         headerSchema.pushToStack();
     }
 
