@@ -34,7 +34,9 @@ public final class VersionGenerator {
     }
 
     private static String getResourceProvider() {
-        if (!Strings.isNullOrEmpty(System.getenv("WEBSITE_SITE_NAME"))) {
+        if ("java".equals(System.getenv("FUNCTIONS_WORKER_RUNTIME"))) {
+            return "f";
+        } else if (!Strings.isNullOrEmpty(System.getenv("WEBSITE_SITE_NAME"))) {
             return "a";
         } else if (!Strings.isNullOrEmpty(System.getenv("APPLICATIONINSIGHTS_SPRINGCLOUD_SERVICE_ID"))) {
             return "s";
