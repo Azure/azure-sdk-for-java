@@ -185,22 +185,22 @@ public class Slf4jLoggerShim {
             try {
                 switch (logLevel) {
                     case VERBOSE:
-                        LOGGER_VERBOSE.invokeWithArguments(localSlf4jLogger, message, throwable);
+                        LOGGER_VERBOSE.invoke(localSlf4jLogger, message, throwable);
 
                         break;
 
                     case INFORMATIONAL:
-                        LOGGER_INFO.invokeWithArguments(localSlf4jLogger, message, throwable);
+                        LOGGER_INFO.invoke(localSlf4jLogger, message, throwable);
 
                         break;
 
                     case WARNING:
-                        LOGGER_WARN.invokeWithArguments(localSlf4jLogger, message, throwable);
+                        LOGGER_WARN.invoke(localSlf4jLogger, message, throwable);
 
                         break;
 
                     case ERROR:
-                        LOGGER_ERROR.invokeWithArguments(localSlf4jLogger, message, throwable);
+                        LOGGER_ERROR.invoke(localSlf4jLogger, message, throwable);
 
                         break;
 

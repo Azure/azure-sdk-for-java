@@ -810,6 +810,7 @@ public class ClientLoggerTests {
         LogLevel loggedLevel) {
         if (loggedLevel.compareTo(configuredLevel) >= 0) {
             // remove date/time/level/etc from fullMessage
+
             String messageJson = fullLog.substring(fullLog.indexOf(" - ") + 3);
             System.out.println(messageJson);
             Map<String, Object> message = fromJson(messageJson);

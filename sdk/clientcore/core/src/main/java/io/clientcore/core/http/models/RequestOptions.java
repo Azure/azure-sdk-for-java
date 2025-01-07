@@ -324,6 +324,26 @@ public final class RequestOptions {
     }
 
     /**
+     * Adds a key-value pair to the request context associated with this request.
+     *
+     * @param key The key to add to the context.
+     * @param value The value to add to the context.
+     * @return The updated {@link RequestOptions} object.
+     *
+     * @see #setContext(Context)
+     */
+    public RequestOptions putContext(Object key, Object value) {
+        if (locked) {
+            throw LOGGER.logThrowableAsError(
+                new IllegalStateException("This instance of RequestOptions is immutable. Cannot set context."));
+        }
+
+        this.context = this.context.put(key, value);
+
+        return this;
+    }
+
+    /**
      * Sets the configuration indicating how the body of the resulting HTTP response should be handled. If {@code null},
      * the response body will be handled based on the content type of the response.
      *
