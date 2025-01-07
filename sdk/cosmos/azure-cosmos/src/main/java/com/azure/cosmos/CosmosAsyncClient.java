@@ -30,6 +30,7 @@ import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
+import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
@@ -89,6 +90,9 @@ public final class CosmosAsyncClient implements Closeable {
         .CosmosClientTelemetryConfigHelper
         .getCosmosClientTelemetryConfigAccessor();
 
+    private final static Function<CosmosAsyncContainer, CosmosAsyncContainer> DEFAULT_CONTAINER_FACTORY =
+        (originalContainer) -> originalContainer;
+
     private final AsyncDocumentClient asyncDocumentClient;
     private final String serviceEndpoint;
     private final ConnectionPolicy connectionPolicy;
@@ -107,6 +111,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final WriteRetryPolicy nonIdempotentWriteRetryPolicy;
     private final List<CosmosOperationPolicy> requestPolicies;
     private final CosmosItemSerializer defaultCustomSerializer;
+    private final java.util.function.Function<CosmosAsyncContainer, CosmosAsyncContainer> containerFactory;
 
     CosmosAsyncClient(CosmosClientBuilder builder) {
         // Async Cosmos client wrapper
@@ -125,6 +130,11 @@ public final class CosmosAsyncClient implements Closeable {
         this.nonIdempotentWriteRetryPolicy = builder.getNonIdempotentWriteRetryPolicy();
         this.requestPolicies = builder.getOperationPolicies();
         this.defaultCustomSerializer = builder.getCustomItemSerializer();
+        if (builder.containerCreationInterceptor() != null) {
+            this.containerFactory = builder.containerCreationInterceptor();
+        } else {
+            this.containerFactory = DEFAULT_CONTAINER_FACTORY;
+        }
         CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig = builder.getEndToEndOperationConfig();
         SessionRetryOptions sessionRetryOptions = builder.getSessionRetryOptions();
 
@@ -807,6 +817,10 @@ public final class CosmosAsyncClient implements Closeable {
 
     String getUserAgent() {
         return this.asyncDocumentClient.getUserAgent();
+    }
+
+    java.util.function.Function<CosmosAsyncContainer, CosmosAsyncContainer> getContainerCreationInterceptor() {
+        return this.containerFactory;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////

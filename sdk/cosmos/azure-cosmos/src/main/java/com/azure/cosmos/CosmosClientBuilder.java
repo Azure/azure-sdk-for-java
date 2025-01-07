@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper;
@@ -152,6 +153,8 @@ public class CosmosClientBuilder implements
     private boolean isRegionScopedSessionCapturingEnabled = false;
     private boolean serverCertValidationDisabled = false;
 
+    private Function<CosmosAsyncContainer, CosmosAsyncContainer> containerFactory = null;
+
     /**
      * Instantiates a new Cosmos client builder.
      */
@@ -173,6 +176,28 @@ public class CosmosClientBuilder implements
 
     CosmosClientMetadataCachesSnapshot metadataCaches() {
         return this.state;
+    }
+
+    /**
+     * Gets the container creation interceptor.
+     * @return the function that should be invoked to allow wrapping containers - or null if no interceptor is defined.
+     */
+    Function<CosmosAsyncContainer, CosmosAsyncContainer> containerCreationInterceptor() {
+        return this.containerFactory;
+    }
+
+    /**
+     * Sets a function that allows intercepting container creation - for example to wrap the original
+     * Cosmos(Async)Container in an extended custom class to add diagnostics, custom validations or behavior.
+     * @param factory - the factory method allowing to wrap the original container in a custom class.
+     * @return current {@link CosmosClientBuilder}
+     */
+    public CosmosClientBuilder containerCreationInterceptor(
+        Function<CosmosAsyncContainer, CosmosAsyncContainer> factory) {
+
+        this.containerFactory = factory;
+
+        return this;
     }
 
     /**
