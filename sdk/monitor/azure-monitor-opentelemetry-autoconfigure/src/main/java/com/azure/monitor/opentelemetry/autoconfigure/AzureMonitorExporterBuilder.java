@@ -128,7 +128,7 @@ class AzureMonitorExporterBuilder {
             builder.setResource(resource);
             builder.addTag(ContextTagKeys.AI_INTERNAL_SDK_VERSION.toString(), VersionGenerator.getSdkVersion());
             // TODO (trask) unify these
-            resourceParser.updateRoleNameAndInstance(builder, resource);
+            resourceParser.updateRoleNameAndInstanceAndVersion(builder, resource);
         };
     }
 
