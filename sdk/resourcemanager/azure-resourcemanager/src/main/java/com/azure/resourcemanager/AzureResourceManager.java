@@ -1184,27 +1184,27 @@ public final class AzureResourceManager {
     }
 
     /**
-     * Gets entry point to manage compute galleries.
+     * Gets entry point to managing compute galleries.
      *
-     * @return entry point to manage compute galleries.
+     * @return entry point to managing compute galleries.
      */
     public Galleries galleries() {
         return this.computeManager.galleries();
     }
 
     /**
-     * Gets entry point to manage compute gallery images.
+     * Gets entry point to managing compute gallery images.
      *
-     * @return entry point to manage compute gallery images.
+     * @return entry point to managing compute gallery images.
      */
     public GalleryImages galleryImages() {
         return this.computeManager.galleryImages();
     }
 
     /**
-     * Gets entry point to manage compute gallery image versions.
+     * Gets entry point to managing compute gallery image versions.
      *
-     * @return entry point to manage compute gallery image versions.
+     * @return entry point to managing compute gallery image versions.
      */
     public GalleryImageVersions galleryImageVersions() {
         return this.computeManager.galleryImageVersions();
@@ -1280,9 +1280,9 @@ public final class AzureResourceManager {
     }
 
     /**
-     * Gets entry point to tag management management.
+     * Gets entry point to tag management.
      *
-     * @return entry point to tag management management
+     * @return entry point to tag management
      */
     public TagOperations tagOperations() {
         return this.resourceManager.tagOperations();
