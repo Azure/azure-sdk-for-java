@@ -50,22 +50,23 @@ public class PagedIterableTests {
     }
 
     private PagedIterable<TodoItem> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return new PagedIterable<>((context) -> listSinglePage(null),
+            (context, nextLink) -> listNextSinglePage(null, nextLink));
     }
 
-    private PagedResponse<TodoItem> listSinglePage() {
-        Response<TodoPage> res = listSync();
+    private PagedResponse<TodoItem> listSinglePage(PagingOptions pagingOptions) {
+        Response<TodoPage> res = listSync(pagingOptions);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
             res.getValue().getItems(), res.getValue().getNextLink());
     }
 
-    private PagedResponse<TodoItem> listNextSinglePage(String nextLink) {
-        Response<TodoPage> res = listNextSync(nextLink);
+    private PagedResponse<TodoItem> listNextSinglePage(PagingOptions pagingOptions, String nextLink) {
+        Response<TodoPage> res = (nextLink == null) ? listSync(pagingOptions) : listNextSync(nextLink);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
             res.getValue().getItems(), res.getValue().getNextLink());
     }
 
-    private Response<TodoPage> listSync() {
+    private Response<TodoPage> listSync(PagingOptions pagingOptions) {
         // mock request on first page
         return new HttpResponse<>(null, 200, null, new TodoPage(List.of(new TodoItem(), new TodoItem()), "nextLink1"));
     }

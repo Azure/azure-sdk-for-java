@@ -10,8 +10,8 @@ import java.util.NoSuchElementException;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -23,7 +23,7 @@ import java.util.stream.StreamSupport;
  */
 public final class PagedIterable<T> implements Iterable<T> {
 
-    private final Function<String, PagedResponse<T>> pageRetriever;
+    private final Function<PagingContext, PagedResponse<T>> pageRetriever;
 
     /**
      * Creates an instance of {@link PagedIterable} that consists of only a single page. This constructor takes a {@code
@@ -31,7 +31,7 @@ public final class PagedIterable<T> implements Iterable<T> {
      *
      * @param firstPageRetriever Supplier that retrieves the first page.
      */
-    public PagedIterable(Supplier<PagedResponse<T>> firstPageRetriever) {
+    public PagedIterable(Function<PagingOptions, PagedResponse<T>> firstPageRetriever) {
         this(firstPageRetriever, null);
     }
 
@@ -43,11 +43,11 @@ public final class PagedIterable<T> implements Iterable<T> {
      * @param firstPageRetriever Supplier that retrieves the first page.
      * @param nextPageRetriever Function that retrieves the next page given a continuation token
      */
-    public PagedIterable(Supplier<PagedResponse<T>> firstPageRetriever,
-        Function<String, PagedResponse<T>> nextPageRetriever) {
-        this.pageRetriever = (continuationToken) -> (continuationToken == null)
-            ? firstPageRetriever.get()
-            : nextPageRetriever.apply(continuationToken);
+    public PagedIterable(Function<PagingOptions, PagedResponse<T>> firstPageRetriever,
+        BiFunction<PagingOptions, String, PagedResponse<T>> nextPageRetriever) {
+        this.pageRetriever = (context) -> (context.getNextLink() == null)
+            ? firstPageRetriever.apply(context.getPagingOptions())
+            : nextPageRetriever.apply(context.getPagingOptions(), context.getNextLink());
     }
 
     /**
@@ -85,6 +85,24 @@ public final class PagedIterable<T> implements Iterable<T> {
      */
     public Stream<PagedResponse<T>> streamByPage() {
         return StreamSupport.stream(iterableByPage().spliterator(), false);
+    }
+
+    private static class PagingContext {
+        private final PagingOptions pagingOptions;
+        private final String nextLink;
+
+        private PagingContext(PagingOptions pagingOptions, String nextLink) {
+            this.pagingOptions = pagingOptions;
+            this.nextLink = nextLink;
+        }
+
+        private PagingOptions getPagingOptions() {
+            return pagingOptions;
+        }
+
+        private String getNextLink() {
+            return nextLink;
+        }
     }
 
     private Iterable<T> iterableByItemInternal() {
@@ -152,11 +170,12 @@ public final class PagedIterable<T> implements Iterable<T> {
     private abstract static class PagedIterator<T, E> implements Iterator<E> {
         private static final ClientLogger LOGGER = new ClientLogger(PagedIterator.class);
 
-        private final Function<String, PagedResponse<T>> pageRetriever;
+        private final Function<PagingContext, PagedResponse<T>> pageRetriever;
+        private volatile String nextLink;
         private volatile String continuationToken;
         private volatile boolean done;
 
-        PagedIterator(Function<String, PagedResponse<T>> pageRetriever) {
+        PagedIterator(Function<PagingContext, PagedResponse<T>> pageRetriever) {
             this.pageRetriever = pageRetriever;
         }
 
@@ -187,7 +206,11 @@ public final class PagedIterable<T> implements Iterable<T> {
 
         synchronized void requestPage() {
             AtomicBoolean receivedPages = new AtomicBoolean(false);
-            PagedResponse<T> page = pageRetriever.apply(continuationToken);
+            PagingOptions pagingOptions = new PagingOptions();
+            if (continuationToken != null) {
+                pagingOptions.setContinuationToken(continuationToken);
+            }
+            PagedResponse<T> page = pageRetriever.apply(new PagingContext(pagingOptions, nextLink));
             if (page != null) {
                 receivePage(receivedPages, page);
             }
@@ -205,8 +228,10 @@ public final class PagedIterable<T> implements Iterable<T> {
             receivedPages.set(true);
             addPage(page);
 
-            continuationToken = page.getNextLink();
-            this.done = continuationToken == null || continuationToken.isEmpty();
+            nextLink = page.getNextLink();
+            continuationToken = page.getContinuationToken();
+            this.done = (nextLink == null || nextLink.isEmpty())
+                && (continuationToken == null || continuationToken.isEmpty());
         }
     }
 }
