@@ -79,6 +79,8 @@ public final class DiagnosticsProvider {
     private static final
         ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
             ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+    private static final ImplementationBridgeHelpers.CosmosBatchResponseHelper.CosmosBatchResponseAccessor cosmosBatchResponseAccessor
+        = ImplementationBridgeHelpers.CosmosBatchResponseHelper.getCosmosBatchResponseAccessor();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DiagnosticsProvider.class);
     private static final ObjectMapper mapper = new ObjectMapper();
@@ -631,10 +633,10 @@ public final class DiagnosticsProvider {
 
                 return diagnostics;
             },
-            CosmosBatchResponse::getOpCountPerEvaluation,
-            CosmosBatchResponse::getRetriedOpCountPerEvaluation,
-            CosmosBatchResponse::getGlobalOpCount,
-            CosmosBatchResponse::getTargetMaxMicroBatchSize,
+            cosmosBatchResponseAccessor::getOpCountPerEvaluation,
+            cosmosBatchResponseAccessor::getRetriedOpCountPerEvaluation,
+            cosmosBatchResponseAccessor::getGlobalOpCount,
+            cosmosBatchResponseAccessor::getTargetMaxMicroBatchSize,
             requestOptions,
             null);
     }

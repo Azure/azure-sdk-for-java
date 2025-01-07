@@ -1052,7 +1052,7 @@ public final class ClientTelemetryMetrics {
 
                 CosmosMeterOptions opCountPerEvaluationOptions = clientAccessor.getMeterOptions(
                   client,
-                  CosmosMetricName.REQUEST_SUMMARY_DIRECT_OP_COUNT_PER_EVALUATION
+                  CosmosMetricName.REQUEST_SUMMARY_DIRECT_BULK_OP_COUNT_PER_EVALUATION
                 );
 
                 if (opCountPerEvaluationOptions.isEnabled()
@@ -1071,7 +1071,7 @@ public final class ClientTelemetryMetrics {
 
                 CosmosMeterOptions opRetriedCountPerEvaluationOptions = clientAccessor.getMeterOptions(
                     client,
-                    CosmosMetricName.REQUEST_SUMMARY_DIRECT_OP_RETRIED_COUNT_PER_EVALUATION
+                    CosmosMetricName.REQUEST_SUMMARY_DIRECT_BULK_OP_RETRIED_COUNT_PER_EVALUATION
                 );
 
                 if (opRetriedCountPerEvaluationOptions.isEnabled()
@@ -1090,7 +1090,7 @@ public final class ClientTelemetryMetrics {
 
                 CosmosMeterOptions globalOpCountOptions = clientAccessor.getMeterOptions(
                     client,
-                    CosmosMetricName.REQUEST_SUMMARY_DIRECT_GLOBAL_OP_COUNT
+                    CosmosMetricName.REQUEST_SUMMARY_DIRECT_BULK_GLOBAL_OP_COUNT
                 );
 
                 if (globalOpCountOptions.isEnabled()
@@ -1110,7 +1110,7 @@ public final class ClientTelemetryMetrics {
 
                 CosmosMeterOptions targetMaxMicroBatchSizeOptions = clientAccessor.getMeterOptions(
                     client,
-                    CosmosMetricName.REQUEST_SUMMARY_DIRECT_TARGET_MAX_MICRO_BATCH_SIZE
+                    CosmosMetricName.REQUEST_SUMMARY_DIRECT_BULK_TARGET_MAX_MICRO_BATCH_SIZE
                 );
 
                 if (targetMaxMicroBatchSizeOptions.isEnabled()
@@ -1265,7 +1265,7 @@ public final class ClientTelemetryMetrics {
 
                 CosmosMeterOptions opCountPerEvaluationOptions = clientAccessor.getMeterOptions(
                     client,
-                    CosmosMetricName.REQUEST_SUMMARY_GATEWAY_OP_COUNT_PER_EVALUATION
+                    CosmosMetricName.REQUEST_SUMMARY_GATEWAY_BULK_OP_COUNT_PER_EVALUATION
                 );
 
                 if (opCountPerEvaluationOptions.isEnabled()
@@ -1284,7 +1284,7 @@ public final class ClientTelemetryMetrics {
 
                 CosmosMeterOptions opRetriedCountPerEvaluationOptions = clientAccessor.getMeterOptions(
                     client,
-                    CosmosMetricName.REQUEST_SUMMARY_GATEWAY_OP_RETRIED_COUNT_PER_EVALUATION
+                    CosmosMetricName.REQUEST_SUMMARY_GATEWAY_BULK_OP_RETRIED_COUNT_PER_EVALUATION
                 );
 
                 if (opRetriedCountPerEvaluationOptions.isEnabled()
@@ -1303,7 +1303,7 @@ public final class ClientTelemetryMetrics {
 
                 CosmosMeterOptions globalOpCountOptions = clientAccessor.getMeterOptions(
                     client,
-                    CosmosMetricName.REQUEST_SUMMARY_GATEWAY_GLOBAL_OP_COUNT
+                    CosmosMetricName.REQUEST_SUMMARY_GATEWAY_BULK_GLOBAL_OP_COUNT
                 );
 
                 if (globalOpCountOptions.isEnabled()
@@ -1322,7 +1322,7 @@ public final class ClientTelemetryMetrics {
 
                 CosmosMeterOptions targetMaxMicroBatchSizeOptions = clientAccessor.getMeterOptions(
                     client,
-                    CosmosMetricName.REQUEST_SUMMARY_GATEWAY_TARGET_MAX_MICRO_BATCH_SIZE
+                    CosmosMetricName.REQUEST_SUMMARY_GATEWAY_BULK_TARGET_MAX_MICRO_BATCH_SIZE
                 );
 
                 if (targetMaxMicroBatchSizeOptions.isEnabled()

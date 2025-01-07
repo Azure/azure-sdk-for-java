@@ -1345,14 +1345,14 @@ public class ClientMetricsTest extends BatchTestBase {
         assertThat(CosmosMetricName.fromString("cosmos.client.req.rntbd.actualITemCount"))
             .isSameAs(CosmosMetricName.REQUEST_SUMMARY_DIRECT_ACTUAL_ITEM_COUNT);
 
-        assertThat(CosmosMetricName.fromString("cosmos.client.req.rntbd.opCountPerEvaluation"))
-            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_DIRECT_OP_COUNT_PER_EVALUATION);
-        assertThat(CosmosMetricName.fromString("cosmos.client.req.rntbd.opRetriedCountPerEvaluation"))
-            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_DIRECT_OP_RETRIED_COUNT_PER_EVALUATION);
-        assertThat(CosmosMetricName.fromString("cosmos.client.req.rntbd.globalOpCount"))
-            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_DIRECT_GLOBAL_OP_COUNT);
-        assertThat(CosmosMetricName.fromString("cosmos.client.req.rntbd.targetMaxMicroBatchSize"))
-            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_DIRECT_TARGET_MAX_MICRO_BATCH_SIZE);
+        assertThat(CosmosMetricName.fromString("cosmos.client.req.rntbd.bulkOpCountPerEvaluation"))
+            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_DIRECT_BULK_OP_COUNT_PER_EVALUATION);
+        assertThat(CosmosMetricName.fromString("cosmos.client.req.rntbd.bulkOpRetriedCountPerEvaluation"))
+            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_DIRECT_BULK_OP_RETRIED_COUNT_PER_EVALUATION);
+        assertThat(CosmosMetricName.fromString("cosmos.client.req.rntbd.bulkGlobalOpCount"))
+            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_DIRECT_BULK_GLOBAL_OP_COUNT);
+        assertThat(CosmosMetricName.fromString("cosmos.client.req.rntbd.bulkTargetMaxMicroBatchSize"))
+            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_DIRECT_BULK_TARGET_MAX_MICRO_BATCH_SIZE);
 
         assertThat(CosmosMetricName.fromString("cosmos.CLIENT.req.gw.LAtency"))
             .isSameAs(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_LATENCY);
@@ -1367,14 +1367,14 @@ public class ClientMetricsTest extends BatchTestBase {
         assertThat(CosmosMetricName.fromString("cosmos.client.req.gw.actualITemCount"))
             .isSameAs(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_ACTUAL_ITEM_COUNT);
 
-        assertThat(CosmosMetricName.fromString("cosmos.client.req.gw.opCountPerEvaluation"))
-            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_OP_COUNT_PER_EVALUATION);
-        assertThat(CosmosMetricName.fromString("cosmos.client.req.gw.opRetriedCountPerEvaluation"))
-            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_OP_RETRIED_COUNT_PER_EVALUATION);
-        assertThat(CosmosMetricName.fromString("cosmos.client.req.gw.globalOpCount"))
-            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_GLOBAL_OP_COUNT);
-        assertThat(CosmosMetricName.fromString("cosmos.client.req.gw.targetMaxMicroBatchSize"))
-            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_TARGET_MAX_MICRO_BATCH_SIZE);
+        assertThat(CosmosMetricName.fromString("cosmos.client.req.gw.bulkOpCountPerEvaluation"))
+            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_BULK_OP_COUNT_PER_EVALUATION);
+        assertThat(CosmosMetricName.fromString("cosmos.client.req.gw.bulkOpRetriedCountPerEvaluation"))
+            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_BULK_OP_RETRIED_COUNT_PER_EVALUATION);
+        assertThat(CosmosMetricName.fromString("cosmos.client.req.gw.bulkGlobalOpCount"))
+            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_BULK_GLOBAL_OP_COUNT);
+        assertThat(CosmosMetricName.fromString("cosmos.client.req.gw.bulkTargetMaxMicroBatchSize"))
+            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_BULK_TARGET_MAX_MICRO_BATCH_SIZE);
 
         assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.addressResolution.latency"))
             .isSameAs(CosmosMetricName.DIRECT_ADDRESS_RESOLUTION_LATENCY);
@@ -1524,11 +1524,11 @@ public class ClientMetricsTest extends BatchTestBase {
         if (this.getEffectiveMetricCategories().contains(MetricCategory.RequestSummary)) {
             if (this.client.asyncClient().getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
                 for (Tag expectedRequestTag : expectedRequestTags) {
-                    this.assertMetrics("cosmos.client.req.rntbd.opCountPerEvaluation", true, expectedRequestTag);
+                    this.assertMetrics("cosmos.client.req.rntbd.bulkOpCountPerEvaluation", true, expectedRequestTag);
                 }
             } else {
                 for (Tag expectedRequestTag : expectedRequestTags) {
-                    this.assertMetrics("cosmos.client.req.gw.opCountPerEvaluation", true, expectedRequestTag);
+                    this.assertMetrics("cosmos.client.req.gw.bulkOpCountPerEvaluation", true, expectedRequestTag);
                 }
             }
         }
@@ -1538,11 +1538,11 @@ public class ClientMetricsTest extends BatchTestBase {
         if (this.getEffectiveMetricCategories().contains(MetricCategory.RequestSummary)) {
             if (this.client.asyncClient().getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
                 for (Tag expectedRequestTag : expectedRequestTags) {
-                    this.assertMetrics("cosmos.client.req.rntbd.opRetriedCountPerEvaluation", true, expectedRequestTag);
+                    this.assertMetrics("cosmos.client.req.rntbd.bulkOpRetriedCountPerEvaluation", true, expectedRequestTag);
                 }
             } else {
                 for (Tag expectedRequestTag : expectedRequestTags) {
-                    this.assertMetrics("cosmos.client.req.gw.opRetriedCountPerEvaluation", true, expectedRequestTag);
+                    this.assertMetrics("cosmos.client.req.gw.bulkOpRetriedCountPerEvaluation", true, expectedRequestTag);
                 }
             }
         }
@@ -1552,11 +1552,11 @@ public class ClientMetricsTest extends BatchTestBase {
         if (this.getEffectiveMetricCategories().contains(MetricCategory.RequestSummary)) {
             if (this.client.asyncClient().getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
                 for (Tag expectedRequestTag : expectedRequestTags) {
-                    this.assertMetrics("cosmos.client.req.rntbd.globalOpCount", true, expectedRequestTag);
+                    this.assertMetrics("cosmos.client.req.rntbd.bulkGlobalOpCount", true, expectedRequestTag);
                 }
             } else {
                 for (Tag expectedRequestTag : expectedRequestTags) {
-                    this.assertMetrics("cosmos.client.req.gw.globalOpCount", true, expectedRequestTag);
+                    this.assertMetrics("cosmos.client.req.gw.bulkGlobalOpCount", true, expectedRequestTag);
                 }
             }
         }
@@ -1566,11 +1566,11 @@ public class ClientMetricsTest extends BatchTestBase {
         if (this.getEffectiveMetricCategories().contains(MetricCategory.RequestSummary)) {
             if (this.client.asyncClient().getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
                 for (Tag expectedRequestTag : expectedRequestTags) {
-                    this.assertMetrics("cosmos.client.req.rntbd.targetMaxMicroBatchSize", true, expectedRequestTag);
+                    this.assertMetrics("cosmos.client.req.rntbd.bulkTargetMaxMicroBatchSize", true, expectedRequestTag);
                 }
             } else {
                 for (Tag expectedRequestTag : expectedRequestTags) {
-                    this.assertMetrics("cosmos.client.req.gw.targetMaxMicroBatchSize", true, expectedRequestTag);
+                    this.assertMetrics("cosmos.client.req.gw.bulkTargetMaxMicroBatchSize", true, expectedRequestTag);
                 }
             }
         }

@@ -1339,6 +1339,14 @@ public class ImplementationBridgeHelpers {
             void setRetriedOpCountPerEvaluation(CosmosBatchResponse cosmosBatchResponse, long retriedOpCountPerEvaluation);
 
             void setTargetMaxMicroBatchSize(CosmosBatchResponse cosmosBatchResponse, int targetMaxMicroBatchSize);
+
+            long getOpCountPerEvaluation(CosmosBatchResponse cosmosBatchResponse);
+
+            long getGlobalOpCount(CosmosBatchResponse cosmosBatchResponse);
+
+            long getRetriedOpCountPerEvaluation(CosmosBatchResponse cosmosBatchResponse);
+
+            int getTargetMaxMicroBatchSize(CosmosBatchResponse cosmosBatchResponse);
         }
     }
 

@@ -201,12 +201,20 @@ public final class CosmosBatchResponse {
         this.opCountPerEvaluation = opCountPerEvaluation;
     }
 
+    long getOpCountPerEvaluation() {
+        return this.opCountPerEvaluation;
+    }
+
     /**
      * Set global operation count
      * @param globalOpCount  Global operation count
      * */
     void setGlobalOpCount(long globalOpCount) {
         this.globalOpCount = globalOpCount;
+    }
+
+    long getGlobalOpCount() {
+        return this.globalOpCount;
     }
 
     /**
@@ -217,6 +225,10 @@ public final class CosmosBatchResponse {
         this.retriedOpCountPerEvaluation = retriedOpCountPerEvaluation;
     }
 
+    long getRetriedOpCountPerEvaluation() {
+        return this.retriedOpCountPerEvaluation;
+    }
+
     /**
      * Set target max micro batch size
      * @param targetMaxMicroBatchSize  target max micro batch size
@@ -225,6 +237,9 @@ public final class CosmosBatchResponse {
         this.targetMaxMicroBatchSize = targetMaxMicroBatchSize;
     }
 
+    int getTargetMaxMicroBatchSize() {
+        return this.targetMaxMicroBatchSize;
+    }
 
     void addAll(List<? extends CosmosBatchOperationResult> collection) {
         this.results.addAll(collection);
@@ -258,6 +273,26 @@ public final class CosmosBatchResponse {
             @Override
             public void setTargetMaxMicroBatchSize(CosmosBatchResponse cosmosBatchResponse, int targetMaxMicroBatchSize) {
                 cosmosBatchResponse.setTargetMaxMicroBatchSize(targetMaxMicroBatchSize);
+            }
+
+            @Override
+            public long getOpCountPerEvaluation(CosmosBatchResponse cosmosBatchResponse) {
+                return cosmosBatchResponse.getOpCountPerEvaluation();
+            }
+
+            @Override
+            public long getGlobalOpCount(CosmosBatchResponse cosmosBatchResponse) {
+                return cosmosBatchResponse.getGlobalOpCount();
+            }
+
+            @Override
+            public long getRetriedOpCountPerEvaluation(CosmosBatchResponse cosmosBatchResponse) {
+                return cosmosBatchResponse.getRetriedOpCountPerEvaluation();
+            }
+
+            @Override
+            public int getTargetMaxMicroBatchSize(CosmosBatchResponse cosmosBatchResponse) {
+                return cosmosBatchResponse.getTargetMaxMicroBatchSize();
             }
         });
     }
