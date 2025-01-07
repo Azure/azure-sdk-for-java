@@ -4,13 +4,6 @@
 package com.azure.openai.tests;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.util.Context;
 import com.azure.identity.AuthenticationUtil;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.azure.AzureOpenAIServiceVersion;
@@ -44,7 +37,6 @@ import java.util.function.Supplier;
 
 import static com.openai.models.ChatCompletionContentPartImage.Type.IMAGE_URL;
 import static com.openai.models.ChatCompletionContentPartText.Type.TEXT;
-import static com.openai.models.ChatCompletionToolChoiceOption.UnionMember0.AUTO;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -54,8 +46,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class OpenAIOkHttpClientTestBase {
     static final String ASSISTANT_CONTENT =
             "Don't make assumptions about what values to plug into functions. Ask for clarification if a user request is ambiguous.";
-    static final AzureOpenAIServiceVersion AZURE_OPENAI_SERVICE_VERSION_GA = AzureOpenAIServiceVersion.V2024_06_01.INSTANCE;
-    static final AzureOpenAIServiceVersion AZURE_OPENAI_SERVICE_VERSION_PREVIEW = AzureOpenAIServiceVersion.V2024_08_01_PREVIEW.INSTANCE;
+    static final AzureOpenAIServiceVersion AZURE_OPENAI_SERVICE_VERSION_GA = AzureOpenAIServiceVersion.getV2024_06_01();
+    static final AzureOpenAIServiceVersion AZURE_OPENAI_SERVICE_VERSION_PREVIEW = AzureOpenAIServiceVersion.getV2024_08_01_PREVIEW();
     static final String USER_CONTENT = "Who won the world series in 2020?";
 
     // This method will be removed when Azure Identity library supports Azure TokenCredential as a Supplier of String
@@ -172,7 +164,7 @@ public class OpenAIOkHttpClientTestBase {
                 .messages(asList(createSystemMessageParam(), createUserMessageParam(userMessage)))
                 .model(testModel)
                 .tools(asList(chatCompletionTool))
-                .toolChoice(AUTO)
+//                .toolChoice(AUTO)
                 .build();
     }
 

@@ -11,7 +11,6 @@ import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.core.JsonValue;
 import com.openai.credential.BearerTokenCredential;
-import com.openai.errors.BadRequestException;
 import com.openai.models.ChatCompletion;
 import com.openai.models.ChatCompletionCreateParams;
 import com.openai.models.ChatCompletionMessage;
@@ -35,9 +34,7 @@ import static com.openai.models.ResponseFormatJsonObject.Type.JSON_OBJECT;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     private OpenAIClient client;
@@ -58,10 +55,10 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         OpenAIOkHttpClient.Builder clientBuilder = OpenAIOkHttpClient.builder();
         if (AZURE_OPEN_AI.equals(apiType)) {
             setAzureServiceApiVersion(clientBuilder, apiVersion)
-                .credential(new AzureApiKeyCredential(System.getenv("AZURE_OPENAI_KEY")))
+                .credential(AzureApiKeyCredential.create(System.getenv("AZURE_OPENAI_KEY")))
                 .baseUrl(System.getenv("AZURE_OPENAI_ENDPOINT"));
         } else if (OPEN_AI.equals(apiType)) {
-            clientBuilder.credential(new BearerTokenCredential(System.getenv("NON_AZURE_OPENAI_KEY")));
+            clientBuilder.credential(BearerTokenCredential.create(System.getenv("NON_AZURE_OPENAI_KEY")));
         } else {
             throw new IllegalArgumentException("Invalid API type");
         }
@@ -98,7 +95,7 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
             setAzureServiceApiVersion(clientBuilder, apiVersion)
                 .baseUrl(System.getenv("AZURE_OPENAI_ENDPOINT"))
                 // This requires `azure-identity` dependency.
-                .credential(new BearerTokenCredential(getBearerTokenCredentialProvider(new DefaultAzureCredentialBuilder().build())));
+                .credential(BearerTokenCredential.create(getBearerTokenCredentialProvider(new DefaultAzureCredentialBuilder().build())));
         } else {
             throw new IllegalArgumentException("Invalid API type");
         }

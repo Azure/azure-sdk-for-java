@@ -62,10 +62,10 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
         OpenAIOkHttpClientAsync.Builder clientBuilder = OpenAIOkHttpClientAsync.builder();
         if (AZURE_OPEN_AI.equals(apiType)) {
             setAzureServiceApiVersion(clientBuilder, apiVersion)
-                    .credential(new AzureApiKeyCredential(System.getenv("AZURE_OPENAI_KEY")))
+                    .credential(AzureApiKeyCredential.create(System.getenv("AZURE_OPENAI_KEY")))
                     .baseUrl(System.getenv("AZURE_OPENAI_ENDPOINT"));
         } else if (OPEN_AI.equals(apiType)) {
-            clientBuilder.credential(new BearerTokenCredential(System.getenv("NON_AZURE_OPENAI_KEY")));
+            clientBuilder.credential(BearerTokenCredential.create(System.getenv("NON_AZURE_OPENAI_KEY")));
         } else {
             throw new IllegalArgumentException("Invalid API type");
         }
@@ -101,7 +101,7 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
             setAzureServiceApiVersion(clientBuilder, apiVersion)
                 .baseUrl(System.getenv("AZURE_OPENAI_ENDPOINT"))
                 // This requires `azure-identity` dependency.
-                .credential(new BearerTokenCredential(getBearerTokenCredentialProvider(new DefaultAzureCredentialBuilder().build())));
+                .credential(BearerTokenCredential.create(getBearerTokenCredentialProvider(new DefaultAzureCredentialBuilder().build())));
         } else {
             throw new IllegalArgumentException("Invalid API type");
         }

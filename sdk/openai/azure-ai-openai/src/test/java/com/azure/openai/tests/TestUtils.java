@@ -52,8 +52,8 @@ public class TestUtils {
 
     static Stream<String[]> azureOnlyClient() {
         return Stream.of(new String[][] {
-            {AZURE_OPEN_AI, GA, GPT_35_TURBO_1106},
-            {AZURE_OPEN_AI, PREVIEW, GPT_35_TURBO_1106}
+            {AZURE_OPEN_AI, GA, GPT_4O},
+            {AZURE_OPEN_AI, PREVIEW, GPT_4O}
         });
     }
 
