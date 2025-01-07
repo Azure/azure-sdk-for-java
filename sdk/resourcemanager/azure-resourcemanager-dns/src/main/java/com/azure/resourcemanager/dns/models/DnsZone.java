@@ -19,7 +19,7 @@ import java.util.List;
 public interface DnsZone
     extends GroupableResource<DnsZoneManager, ZoneInner>, Refreshable<DnsZone>, Updatable<DnsZone.Update> {
     /**
-     * Gets the maximum number of record sets that can be created in this zone..
+     * Gets the maximum number of record sets that can be created in this zone.
      *
      * @return the maximum number of record sets that can be created in this zone.
      */

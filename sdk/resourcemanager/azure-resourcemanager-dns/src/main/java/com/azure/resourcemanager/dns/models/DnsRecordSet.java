@@ -30,14 +30,14 @@ public interface DnsRecordSet extends ExternalChildResource<DnsRecordSet, DnsZon
     long timeToLive();
 
     /**
-     * Gets the metadata associated with this record set..
+     * Gets the metadata associated with this record set.
      *
      * @return the metadata associated with this record set.
      */
     Map<String, String> metadata();
 
     /**
-     * Gets the fully qualified domain name of the record set..
+     * Gets the fully qualified domain name of the record set.
      *
      * @return the fully qualified domain name of the record set.
      */
