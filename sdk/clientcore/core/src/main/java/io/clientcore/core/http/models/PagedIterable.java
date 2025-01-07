@@ -88,7 +88,7 @@ public final class PagedIterable<T> implements Iterable<T> {
     }
 
     private Iterable<T> iterableByItemInternal() {
-        return () -> new PagedByIterator<>(pageRetriever) {
+        return () -> new PagedIterator<>(pageRetriever) {
 
             private final Queue<Iterator<T>> pages = new ConcurrentLinkedQueue<>();
             private volatile Iterator<T> currentPage;
@@ -123,7 +123,7 @@ public final class PagedIterable<T> implements Iterable<T> {
     }
 
     private Iterable<PagedResponse<T>> iterableByPageInternal() {
-        return () -> new PagedByIterator<T, PagedResponse<T>>(pageRetriever) {
+        return () -> new PagedIterator<T, PagedResponse<T>>(pageRetriever) {
 
             private final Queue<PagedResponse<T>> pages = new ConcurrentLinkedQueue<>();
 
@@ -149,14 +149,14 @@ public final class PagedIterable<T> implements Iterable<T> {
         };
     }
 
-    private abstract static class PagedByIterator<T, E> implements Iterator<E> {
-        private static final ClientLogger LOGGER = new ClientLogger(PagedByIterator.class);
+    private abstract static class PagedIterator<T, E> implements Iterator<E> {
+        private static final ClientLogger LOGGER = new ClientLogger(PagedIterator.class);
 
         private final Function<String, PagedResponse<T>> pageRetriever;
         private volatile String continuationToken;
         private volatile boolean done;
 
-        PagedByIterator(Function<String, PagedResponse<T>> pageRetriever) {
+        PagedIterator(Function<String, PagedResponse<T>> pageRetriever) {
             this.pageRetriever = pageRetriever;
         }
 
