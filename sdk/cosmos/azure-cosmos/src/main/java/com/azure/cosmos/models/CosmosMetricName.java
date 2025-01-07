@@ -116,7 +116,8 @@ public final class CosmosMetricName {
 
     /**
      * The count of batch operations per evaluation cycle per physical partition executed through {@link com.azure.cosmos.CosmosContainer#executeBulkOperations} or {@link com.azure.cosmos.CosmosAsyncContainer#executeBulkOperations}.
-     * In every evaluation cycle the no. of items to touch per batch I/O operation is computed to reasonably saturate provisioned throughput without getting throttled.
+     * <p>
+     * In every evaluation cycle the no. of items to touch per batch I/O operation is recomputed to reasonably saturate provisioned throughput without getting throttled.
      * <p>
      * NOTE: No percentiles or histogram supported.
      * */
@@ -126,7 +127,8 @@ public final class CosmosMetricName {
 
     /**
      * The count of batch operations retried per evaluation cycle per physical partition executed through {@link com.azure.cosmos.CosmosContainer#executeBulkOperations} or {@link com.azure.cosmos.CosmosAsyncContainer#executeBulkOperations}.
-     * In every evaluation cycle the no. of items to touch per batch I/O operation is computed to reasonably saturate provisioned throughput without getting throttled.
+     * <p>
+     * In every evaluation cycle the no. of items to touch per batch I/O operation is recomputed to reasonably saturate provisioned throughput without getting throttled.
      * <p>
      * NOTE: No percentiles or histogram supported.
      * */
@@ -186,6 +188,7 @@ public final class CosmosMetricName {
 
     /**
      * The count of batch operations per evaluation cycle per physical partition executed through {@link com.azure.cosmos.CosmosContainer#executeBulkOperations} or {@link com.azure.cosmos.CosmosAsyncContainer#executeBulkOperations}.
+     * <p>
      * In every evaluation cycle the no. of items to touch per batch I/O operation is computed to reasonably saturate provisioned throughput without getting throttled.
      * <p>
      * NOTE: No percentiles or histogram supported.
@@ -196,7 +199,8 @@ public final class CosmosMetricName {
 
     /**
      * The count of batch operations retried per evaluation cycle per physical partition executed through {@link com.azure.cosmos.CosmosContainer#executeBulkOperations} or {@link com.azure.cosmos.CosmosAsyncContainer#executeBulkOperations}.
-     * In every evaluation cycle the no. of items to touch per batch I/O operation is computed to reasonably saturate provisioned throughput without getting throttled.
+     * <p>
+     * In every evaluation cycle the no. of items to touch per batch I/O operation is recomputed to reasonably saturate provisioned throughput without getting throttled.
      * <p>
      * NOTE: No percentiles or histogram supported.
      * */
