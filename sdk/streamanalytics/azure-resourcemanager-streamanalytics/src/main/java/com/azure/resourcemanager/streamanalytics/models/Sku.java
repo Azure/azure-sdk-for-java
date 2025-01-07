@@ -21,11 +21,6 @@ public final class Sku implements JsonSerializable<Sku> {
      */
     private SkuName name;
 
-    /*
-     * The capacity of the SKU.
-     */
-    private Integer capacity;
-
     /**
      * Creates an instance of Sku class.
      */
@@ -53,26 +48,6 @@ public final class Sku implements JsonSerializable<Sku> {
     }
 
     /**
-     * Get the capacity property: The capacity of the SKU.
-     * 
-     * @return the capacity value.
-     */
-    public Integer capacity() {
-        return this.capacity;
-    }
-
-    /**
-     * Set the capacity property: The capacity of the SKU.
-     * 
-     * @param capacity the capacity value to set.
-     * @return the Sku object itself.
-     */
-    public Sku withCapacity(Integer capacity) {
-        this.capacity = capacity;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -87,7 +62,6 @@ public final class Sku implements JsonSerializable<Sku> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
-        jsonWriter.writeNumberField("capacity", this.capacity);
         return jsonWriter.writeEndObject();
     }
 
@@ -108,8 +82,6 @@ public final class Sku implements JsonSerializable<Sku> {
 
                 if ("name".equals(fieldName)) {
                     deserializedSku.name = SkuName.fromString(reader.getString());
-                } else if ("capacity".equals(fieldName)) {
-                    deserializedSku.capacity = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }

@@ -27,7 +27,7 @@ public final class BookmarksDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.bookmarks().deleteWithResponse("wulkr", "bpaevy", "byjecrq", com.azure.core.util.Context.NONE);
+        manager.bookmarks().deleteWithResponse("smzhhkuuipldqqct", "kva", "blhtjq", com.azure.core.util.Context.NONE);
 
     }
 }

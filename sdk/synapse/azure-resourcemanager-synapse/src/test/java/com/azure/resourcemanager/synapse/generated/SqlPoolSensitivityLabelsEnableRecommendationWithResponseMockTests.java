@@ -28,8 +28,8 @@ public final class SqlPoolSensitivityLabelsEnableRecommendationWithResponseMockT
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.sqlPoolSensitivityLabels()
-            .enableRecommendationWithResponse("dnox", "xn", "qaqotnn", "xolousdv", "g", "tqm",
-                com.azure.core.util.Context.NONE);
+            .enableRecommendationWithResponse("zamicb", "gwcd", "zseznuxkeuairaa", "m", "lqjbedpfixlhupmo",
+                "ihzbdnpxpk", com.azure.core.util.Context.NONE);
 
     }
 }

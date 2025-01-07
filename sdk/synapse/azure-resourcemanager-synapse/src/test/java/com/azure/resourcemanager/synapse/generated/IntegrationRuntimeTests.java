@@ -14,17 +14,17 @@ public final class IntegrationRuntimeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IntegrationRuntime model = BinaryData.fromString(
-            "{\"type\":\"IntegrationRuntime\",\"description\":\"cmfdjwnlax\",\"\":{\"czvvit\":\"datajqi\",\"fcsserxhtvsox\":\"datacgx\"}}")
+            "{\"type\":\"IntegrationRuntime\",\"description\":\"odsfcpkvxodpuozm\",\"\":{\"twhrdxwzywqsm\":\"datadagfuaxbezyiuok\",\"moryocfsfksym\":\"datasurex\",\"o\":\"datadystkiiuxhqyud\"}}")
             .toObject(IntegrationRuntime.class);
-        Assertions.assertEquals("cmfdjwnlax", model.description());
+        Assertions.assertEquals("odsfcpkvxodpuozm", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntime model = new IntegrationRuntime().withDescription("cmfdjwnlax")
+        IntegrationRuntime model = new IntegrationRuntime().withDescription("odsfcpkvxodpuozm")
             .withAdditionalProperties(mapOf("type", "IntegrationRuntime"));
         model = BinaryData.fromObject(model).toObject(IntegrationRuntime.class);
-        Assertions.assertEquals("cmfdjwnlax", model.description());
+        Assertions.assertEquals("odsfcpkvxodpuozm", model.description());
     }
 
     // Use "Map.of" if available

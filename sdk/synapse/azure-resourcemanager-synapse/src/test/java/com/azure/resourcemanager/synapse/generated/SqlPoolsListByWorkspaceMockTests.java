@@ -24,7 +24,7 @@ public final class SqlPoolsListByWorkspaceMockTests {
     @Test
     public void testListByWorkspace() throws Exception {
         String responseStr
-            = "{\"value\":[{\"sku\":{\"tier\":\"bdaombwi\",\"name\":\"jdllwktle\",\"capacity\":2136761436},\"properties\":{\"maxSizeBytes\":1207794170823919039,\"collation\":\"uajgcqwulynk\",\"sourceDatabaseId\":\"cfdruwsikxx\",\"recoverableDatabaseId\":\"lhuulriqb\",\"provisioningState\":\"kvjgbzs\",\"status\":\"br\",\"restorePointInTime\":\"2021-06-18T17:18:19Z\",\"createMode\":\"PointInTimeRestore\",\"creationDate\":\"2021-09-16T01:07:28Z\",\"storageAccountType\":\"GRS\",\"sourceDatabaseDeletionDate\":\"2021-08-19T00:40:55Z\"},\"location\":\"suoardnagttp\",\"tags\":{\"xiplkysolsyj\":\"bpgnrholhujbf\",\"tbbzj\":\"rxslwhdmcv\",\"huwzbxpcqzgi\":\"f\",\"rskapbxwieexu\":\"otjecohmxvvl\"},\"id\":\"aderltfokyk\",\"name\":\"yimyccgrvk\",\"type\":\"xzznnui\"}]}";
+            = "{\"value\":[{\"sku\":{\"tier\":\"ilaywkdcwm\",\"name\":\"yrilmhxdqaolf\",\"capacity\":2119969330},\"properties\":{\"maxSizeBytes\":8273826460703438414,\"collation\":\"jvlywl\",\"sourceDatabaseId\":\"fwobb\",\"recoverableDatabaseId\":\"hlwyjfnqzocrd\",\"provisioningState\":\"czeuntgx\",\"status\":\"ca\",\"restorePointInTime\":\"2021-02-28T23:34:05Z\",\"createMode\":\"Restore\",\"creationDate\":\"2021-10-09T15:57:20Z\",\"storageAccountType\":\"LRS\"},\"location\":\"uvny\",\"tags\":{\"yri\":\"gix\",\"lqtxnrflkndrn\":\"lgmgbe\",\"hdaqotwfhipxwg\":\"pgfjo\",\"zuu\":\"abvcipowzaf\"},\"id\":\"ljcirvpefycdvei\",\"name\":\"itjn\",\"type\":\"xzajlnsjhwjuyxxb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,23 +34,24 @@ public final class SqlPoolsListByWorkspaceMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SqlPool> response
-            = manager.sqlPools().listByWorkspace("uiadhbatecaatsdo", "zn", com.azure.core.util.Context.NONE);
+            = manager.sqlPools().listByWorkspace("laohoqkp", "t", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("suoardnagttp", response.iterator().next().location());
-        Assertions.assertEquals("bpgnrholhujbf", response.iterator().next().tags().get("xiplkysolsyj"));
-        Assertions.assertEquals("bdaombwi", response.iterator().next().sku().tier());
-        Assertions.assertEquals("jdllwktle", response.iterator().next().sku().name());
-        Assertions.assertEquals(2136761436, response.iterator().next().sku().capacity());
-        Assertions.assertEquals(1207794170823919039L, response.iterator().next().maxSizeBytes());
-        Assertions.assertEquals("uajgcqwulynk", response.iterator().next().collation());
-        Assertions.assertEquals("cfdruwsikxx", response.iterator().next().sourceDatabaseId());
-        Assertions.assertEquals("lhuulriqb", response.iterator().next().recoverableDatabaseId());
-        Assertions.assertEquals("kvjgbzs", response.iterator().next().provisioningState());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-18T17:18:19Z"),
+        Assertions.assertEquals("uvny", response.iterator().next().location());
+        Assertions.assertEquals("gix", response.iterator().next().tags().get("yri"));
+        Assertions.assertEquals("ilaywkdcwm", response.iterator().next().sku().tier());
+        Assertions.assertEquals("yrilmhxdqaolf", response.iterator().next().sku().name());
+        Assertions.assertEquals(2119969330, response.iterator().next().sku().capacity());
+        Assertions.assertEquals(8273826460703438414L, response.iterator().next().maxSizeBytes());
+        Assertions.assertEquals("jvlywl", response.iterator().next().collation());
+        Assertions.assertEquals("fwobb", response.iterator().next().sourceDatabaseId());
+        Assertions.assertEquals("hlwyjfnqzocrd", response.iterator().next().recoverableDatabaseId());
+        Assertions.assertEquals("czeuntgx", response.iterator().next().provisioningState());
+        Assertions.assertEquals("ca", response.iterator().next().status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-28T23:34:05Z"),
             response.iterator().next().restorePointInTime());
-        Assertions.assertEquals(CreateMode.POINT_IN_TIME_RESTORE, response.iterator().next().createMode());
-        Assertions.assertEquals(StorageAccountType.GRS, response.iterator().next().storageAccountType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-19T00:40:55Z"),
-            response.iterator().next().sourceDatabaseDeletionDate());
+        Assertions.assertEquals(CreateMode.RESTORE, response.iterator().next().createMode());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-09T15:57:20Z"),
+            response.iterator().next().creationDate());
+        Assertions.assertEquals(StorageAccountType.LRS, response.iterator().next().storageAccountType());
     }
 }

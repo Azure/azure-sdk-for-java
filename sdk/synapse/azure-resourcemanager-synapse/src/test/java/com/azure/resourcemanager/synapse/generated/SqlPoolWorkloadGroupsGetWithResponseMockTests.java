@@ -21,7 +21,7 @@ public final class SqlPoolWorkloadGroupsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"minResourcePercent\":1518766637,\"maxResourcePercent\":1643198710,\"minResourcePercentPerRequest\":18.202032298846227,\"maxResourcePercentPerRequest\":85.92328199984041,\"importance\":\"uvjhxmnrqstjc\",\"queryExecutionTimeout\":1223754124},\"id\":\"wmlgicvnpv\",\"name\":\"dhgjnaqyqi\",\"type\":\"slz\"}";
+            = "{\"properties\":{\"minResourcePercent\":399252436,\"maxResourcePercent\":164724572,\"minResourcePercentPerRequest\":90.82031338914143,\"maxResourcePercentPerRequest\":26.39726268452598,\"importance\":\"y\",\"queryExecutionTimeout\":969990707},\"id\":\"wmpftmfoe\",\"name\":\"jogsyx\",\"type\":\"etamfddrvlkpzwb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,14 +31,14 @@ public final class SqlPoolWorkloadGroupsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkloadGroup response = manager.sqlPoolWorkloadGroups()
-            .getWithResponse("gzrujlqc", "ny", "lleiq", "cbgvsbt", com.azure.core.util.Context.NONE)
+            .getWithResponse("xwjnfcz", "nniixyxvqba", "os", "tgirnb", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(1518766637, response.minResourcePercent());
-        Assertions.assertEquals(1643198710, response.maxResourcePercent());
-        Assertions.assertEquals(18.202032298846227, response.minResourcePercentPerRequest());
-        Assertions.assertEquals(85.92328199984041D, response.maxResourcePercentPerRequest());
-        Assertions.assertEquals("uvjhxmnrqstjc", response.importance());
-        Assertions.assertEquals(1223754124, response.queryExecutionTimeout());
+        Assertions.assertEquals(399252436, response.minResourcePercent());
+        Assertions.assertEquals(164724572, response.maxResourcePercent());
+        Assertions.assertEquals(90.82031338914143, response.minResourcePercentPerRequest());
+        Assertions.assertEquals(26.39726268452598D, response.maxResourcePercentPerRequest());
+        Assertions.assertEquals("y", response.importance());
+        Assertions.assertEquals(969990707, response.queryExecutionTimeout());
     }
 }

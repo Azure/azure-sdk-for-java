@@ -12,25 +12,22 @@ public final class EndpointDetailTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EndpointDetail model = BinaryData
-            .fromString(
-                "{\"ipAddress\":\"nedgfbc\",\"port\":720554896,\"protocol\":\"q\",\"description\":\"keqdcvdrhvoods\"}")
+            .fromString("{\"ipAddress\":\"c\",\"port\":1704525857,\"protocol\":\"nbacfi\",\"description\":\"l\"}")
             .toObject(EndpointDetail.class);
-        Assertions.assertEquals("nedgfbc", model.ipAddress());
-        Assertions.assertEquals(720554896, model.port());
-        Assertions.assertEquals("q", model.protocol());
-        Assertions.assertEquals("keqdcvdrhvoods", model.description());
+        Assertions.assertEquals("c", model.ipAddress());
+        Assertions.assertEquals(1704525857, model.port());
+        Assertions.assertEquals("nbacfi", model.protocol());
+        Assertions.assertEquals("l", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EndpointDetail model = new EndpointDetail().withIpAddress("nedgfbc")
-            .withPort(720554896)
-            .withProtocol("q")
-            .withDescription("keqdcvdrhvoods");
+        EndpointDetail model
+            = new EndpointDetail().withIpAddress("c").withPort(1704525857).withProtocol("nbacfi").withDescription("l");
         model = BinaryData.fromObject(model).toObject(EndpointDetail.class);
-        Assertions.assertEquals("nedgfbc", model.ipAddress());
-        Assertions.assertEquals(720554896, model.port());
-        Assertions.assertEquals("q", model.protocol());
-        Assertions.assertEquals("keqdcvdrhvoods", model.description());
+        Assertions.assertEquals("c", model.ipAddress());
+        Assertions.assertEquals(1704525857, model.port());
+        Assertions.assertEquals("nbacfi", model.protocol());
+        Assertions.assertEquals("l", model.description());
     }
 }

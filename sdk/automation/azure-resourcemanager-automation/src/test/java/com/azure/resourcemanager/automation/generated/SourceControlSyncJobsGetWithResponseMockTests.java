@@ -35,7 +35,7 @@ public final class SourceControlSyncJobsGetWithResponseMockTests {
 
         SourceControlSyncJobById response = manager.sourceControlSyncJobs()
             .getWithResponse("pftxudqyeme", "unaucm", "irtneemmjau",
-                UUID.fromString("c51df58c-7c91-4bee-af17-f8cf960114ff"), com.azure.core.util.Context.NONE)
+                UUID.fromString("46b6f3fa-d932-4166-acc5-5b9f3c260b70"), com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals("gxef", response.id());

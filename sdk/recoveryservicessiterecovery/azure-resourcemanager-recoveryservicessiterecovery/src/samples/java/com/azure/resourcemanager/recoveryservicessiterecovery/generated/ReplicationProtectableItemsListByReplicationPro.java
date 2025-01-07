@@ -20,7 +20,8 @@ public final class ReplicationProtectableItemsListByReplicationPro {
      */
     public static void getsTheListOfProtectableItems(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationProtectableItems().listByReplicationProtectionContainers("vault1", "resourceGroupPS1",
-            "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", null, null, null, com.azure.core.util.Context.NONE);
+        manager.replicationProtectableItems()
+            .listByReplicationProtectionContainers("vault1", "resourceGroupPS1", "cloud1",
+                "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", null, null, null, com.azure.core.util.Context.NONE);
     }
 }

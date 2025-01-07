@@ -23,7 +23,7 @@ public final class NetworkExperimentProfilesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"resourceState\":\"Enabled\",\"enabledState\":\"Enabled\"},\"etag\":\"rbxrblmliowxihsp\",\"location\":\"xwqagnepzw\",\"tags\":{\"qqqagwwrxaomzi\":\"sbs\"},\"id\":\"glrrczez\",\"name\":\"hhltnjadhqo\",\"type\":\"wjqo\"}]}";
+            = "{\"value\":[{\"properties\":{\"resourceState\":\"Creating\",\"enabledState\":\"Disabled\"},\"etag\":\"dnwqapfg\",\"location\":\"dpcve\",\"tags\":{\"ekvalblhtjq\":\"zhhkuuipldqqc\",\"eh\":\"qyv\",\"mxhzzysevus\":\"a\",\"yzatvfuzkaft\":\"ivzrrryveimipsk\"},\"id\":\"vvruxwi\",\"name\":\"syeipqd\",\"type\":\"mjtgrqg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,9 +34,9 @@ public final class NetworkExperimentProfilesListMockTests {
 
         PagedIterable<Profile> response = manager.networkExperimentProfiles().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xwqagnepzw", response.iterator().next().location());
-        Assertions.assertEquals("sbs", response.iterator().next().tags().get("qqqagwwrxaomzi"));
-        Assertions.assertEquals("rbxrblmliowxihsp", response.iterator().next().etag());
-        Assertions.assertEquals(State.ENABLED, response.iterator().next().enabledState());
+        Assertions.assertEquals("dpcve", response.iterator().next().location());
+        Assertions.assertEquals("zhhkuuipldqqc", response.iterator().next().tags().get("ekvalblhtjq"));
+        Assertions.assertEquals("dnwqapfg", response.iterator().next().etag());
+        Assertions.assertEquals(State.DISABLED, response.iterator().next().enabledState());
     }
 }

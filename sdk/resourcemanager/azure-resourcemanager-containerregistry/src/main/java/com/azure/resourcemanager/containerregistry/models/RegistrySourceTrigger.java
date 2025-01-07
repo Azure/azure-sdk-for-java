@@ -12,19 +12,39 @@ import java.util.List;
 @Fluent()
 public interface RegistrySourceTrigger extends HasInnerModel<SourceTrigger> {
 
-    /** @return Returns the type of source control this trigger uses. I.e., Github, AzureDevOps etc. */
+    /**
+     * Gets the type of source control this trigger uses.
+     *
+     * @return Returns the type of source control this trigger uses. I.e., Github, AzureDevOps etc.
+     */
     SourceControlType sourceControlType();
 
-    /** @return the URL of the repository used as source control. */
+    /**
+     * Gets the URL of the repository used as source control.
+     *
+     * @return the URL of the repository used as source control.
+     */
     String sourceControlRepositoryUrl();
 
-    /** @return the list of actions that trigger an event. I.e., a commit, a pull request etc. */
+    /**
+     * Gets the list of actions that trigger an event.
+     *
+     * @return the list of actions that trigger an event. I.e., a commit, a pull request etc.
+     */
     List<SourceTriggerEvent> sourceTriggerEvents();
 
-    /** @return the branch of the repository that is being used as source control. I.e., master. */
+    /**
+     * Gets the branch of the repository that is being used as source control.
+     *
+     * @return the branch of the repository that is being used as source control. I.e., master.
+     */
     String sourceControlBranch();
 
-    /** @return the source trigger status. I.e., enabled, disabled. */
+    /**
+     * Gets the source trigger status.
+     *
+     * @return the source trigger status. I.e., enabled, disabled.
+     */
     TriggerStatus status();
 
     /** Container interface for all of the definitions related to a container registry source trigger. */

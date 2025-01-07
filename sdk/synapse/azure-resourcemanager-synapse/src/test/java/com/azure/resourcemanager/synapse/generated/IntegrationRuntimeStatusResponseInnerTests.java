@@ -14,7 +14,7 @@ public final class IntegrationRuntimeStatusResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IntegrationRuntimeStatusResponseInner model = BinaryData.fromString(
-            "{\"name\":\"ycjimryvwgcwwpbm\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"w\",\"state\":\"Stopping\",\"\":{\"leallklm\":\"dataxwefohecbvopwndy\",\"rdfjmzsyzfhotl\":\"datakhlowkxxpv\"}}}")
+            "{\"name\":\"rbirphxe\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"yva\",\"state\":\"AccessDenied\",\"\":{\"ljyoxgvcltb\":\"datakyqxjvuujqgidokg\"}}}")
             .toObject(IntegrationRuntimeStatusResponseInner.class);
     }
 
@@ -22,7 +22,7 @@ public final class IntegrationRuntimeStatusResponseInnerTests {
     public void testSerialize() throws Exception {
         IntegrationRuntimeStatusResponseInner model = new IntegrationRuntimeStatusResponseInner()
             .withProperties(new IntegrationRuntimeStatus().withAdditionalProperties(
-                mapOf("dataFactoryName", "w", "state", "Stopping", "type", "IntegrationRuntimeStatus")));
+                mapOf("dataFactoryName", "yva", "state", "AccessDenied", "type", "IntegrationRuntimeStatus")));
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeStatusResponseInner.class);
     }
 

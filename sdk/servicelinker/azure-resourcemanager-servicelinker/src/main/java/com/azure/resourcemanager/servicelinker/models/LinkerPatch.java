@@ -13,7 +13,7 @@ import com.azure.resourcemanager.servicelinker.fluent.models.LinkerProperties;
 import java.io.IOException;
 
 /**
- * A Linker to be updated.
+ * A linker to be updated.
  */
 @Fluent
 public final class LinkerPatch implements JsonSerializable<LinkerPatch> {
@@ -181,54 +181,6 @@ public final class LinkerPatch implements JsonSerializable<LinkerPatch> {
             this.innerProperties = new LinkerProperties();
         }
         this.innerProperties().withScope(scope);
-        return this;
-    }
-
-    /**
-     * Get the publicNetworkSolution property: The network solution.
-     * 
-     * @return the publicNetworkSolution value.
-     */
-    public PublicNetworkSolution publicNetworkSolution() {
-        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkSolution();
-    }
-
-    /**
-     * Set the publicNetworkSolution property: The network solution.
-     * 
-     * @param publicNetworkSolution the publicNetworkSolution value to set.
-     * @return the LinkerPatch object itself.
-     */
-    public LinkerPatch withPublicNetworkSolution(PublicNetworkSolution publicNetworkSolution) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new LinkerProperties();
-        }
-        this.innerProperties().withPublicNetworkSolution(publicNetworkSolution);
-        return this;
-    }
-
-    /**
-     * Get the configurationInfo property: The connection information consumed by applications, including secrets,
-     * connection strings.
-     * 
-     * @return the configurationInfo value.
-     */
-    public ConfigurationInfo configurationInfo() {
-        return this.innerProperties() == null ? null : this.innerProperties().configurationInfo();
-    }
-
-    /**
-     * Set the configurationInfo property: The connection information consumed by applications, including secrets,
-     * connection strings.
-     * 
-     * @param configurationInfo the configurationInfo value to set.
-     * @return the LinkerPatch object itself.
-     */
-    public LinkerPatch withConfigurationInfo(ConfigurationInfo configurationInfo) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new LinkerProperties();
-        }
-        this.innerProperties().withConfigurationInfo(configurationInfo);
         return this;
     }
 

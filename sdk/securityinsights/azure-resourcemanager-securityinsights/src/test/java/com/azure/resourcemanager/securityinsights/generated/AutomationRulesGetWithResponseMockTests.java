@@ -23,7 +23,7 @@ public final class AutomationRulesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"qtlfoz\",\"order\":1923772072,\"triggeringLogic\":{\"isEnabled\":false,\"expirationTimeUtc\":\"2021-10-27T06:43:47Z\",\"triggersOn\":\"Incidents\",\"triggersWhen\":\"Updated\",\"conditions\":[{\"conditionType\":\"AutomationRuleCondition\"},{\"conditionType\":\"AutomationRuleCondition\"},{\"conditionType\":\"AutomationRuleCondition\"}]},\"actions\":[{\"actionType\":\"AutomationRuleAction\",\"order\":948560497}],\"lastModifiedTimeUtc\":\"2021-05-24T12:37:52Z\",\"createdTimeUtc\":\"2021-07-27T13:23:57Z\",\"lastModifiedBy\":{\"email\":\"xz\",\"name\":\"mkanbc\",\"objectId\":\"0e935fed-bb45-4fe8-a5d7-6884833253cf\",\"userPrincipalName\":\"ofmex\"},\"createdBy\":{\"email\":\"mas\",\"name\":\"anydsc\",\"objectId\":\"d519e9b6-c159-432c-b473-60563e42a131\",\"userPrincipalName\":\"w\"}},\"etag\":\"wj\",\"id\":\"haahntofelfhpfi\",\"name\":\"oskkz\",\"type\":\"fivsujybsr\"}";
+            = "{\"properties\":{\"displayName\":\"jxcjrmmuabwib\",\"order\":1982955250,\"triggeringLogic\":{\"isEnabled\":false,\"expirationTimeUtc\":\"2021-03-07T23:51:24Z\",\"triggersOn\":\"Alerts\",\"triggersWhen\":\"Created\",\"conditions\":[{\"conditionType\":\"AutomationRuleCondition\"},{\"conditionType\":\"AutomationRuleCondition\"},{\"conditionType\":\"AutomationRuleCondition\"},{\"conditionType\":\"AutomationRuleCondition\"}]},\"actions\":[{\"actionType\":\"AutomationRuleAction\",\"order\":164118392},{\"actionType\":\"AutomationRuleAction\",\"order\":1088019488},{\"actionType\":\"AutomationRuleAction\",\"order\":1568139443},{\"actionType\":\"AutomationRuleAction\",\"order\":45684576}],\"lastModifiedTimeUtc\":\"2021-02-25T08:15:11Z\",\"createdTimeUtc\":\"2021-05-22T21:47:24Z\",\"lastModifiedBy\":{\"email\":\"neo\",\"name\":\"fkak\",\"objectId\":\"8774f628-4738-484b-88a7-fc5f3f291ba1\",\"userPrincipalName\":\"dt\"},\"createdBy\":{\"email\":\"boclzhzjknyuxgv\",\"name\":\"xpn\",\"objectId\":\"3e3e771d-9638-4784-813a-c986e2b726c0\",\"userPrincipalName\":\"zaamrdixtrekid\"}},\"etag\":\"yskbruff\",\"id\":\"lukkutvlxhrpqhvm\",\"name\":\"lcouqehbhbcdszir\",\"type\":\"randoypmb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,17 +33,17 @@ public final class AutomationRulesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AutomationRule response = manager.automationRules()
-            .getWithResponse("rexw", "onbexft", "daubheeggzgr", com.azure.core.util.Context.NONE)
+            .getWithResponse("mbtsuahxsg", "jcmmzrrscub", "wsdrnpxqwodif", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("wj", response.etag());
-        Assertions.assertEquals("qtlfoz", response.displayName());
-        Assertions.assertEquals(1923772072, response.order());
+        Assertions.assertEquals("yskbruff", response.etag());
+        Assertions.assertEquals("jxcjrmmuabwib", response.displayName());
+        Assertions.assertEquals(1982955250, response.order());
         Assertions.assertEquals(false, response.triggeringLogic().isEnabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-27T06:43:47Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-07T23:51:24Z"),
             response.triggeringLogic().expirationTimeUtc());
-        Assertions.assertEquals(TriggersOn.INCIDENTS, response.triggeringLogic().triggersOn());
-        Assertions.assertEquals(TriggersWhen.UPDATED, response.triggeringLogic().triggersWhen());
-        Assertions.assertEquals(948560497, response.actions().get(0).order());
+        Assertions.assertEquals(TriggersOn.ALERTS, response.triggeringLogic().triggersOn());
+        Assertions.assertEquals(TriggersWhen.CREATED, response.triggeringLogic().triggersWhen());
+        Assertions.assertEquals(164118392, response.actions().get(0).order());
     }
 }

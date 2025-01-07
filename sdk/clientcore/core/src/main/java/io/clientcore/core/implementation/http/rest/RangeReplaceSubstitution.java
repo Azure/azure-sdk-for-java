@@ -11,7 +11,7 @@ import java.util.Objects;
  * A range replace substitution is a substitution that replaces a range of characters in a String with the supplied
  * value. This type of substitution is commonly used for host and path replacements where the Swagger interface will
  * have a definition such as {@code @Host("{uri}")} which will be replaced with a value such as
- * {@code https://myhost.com}.
+ * {@code https://somecloud.com}.
  * <p>
  * Before the introduction of this replacement {@link String#replace(CharSequence, CharSequence)} was used which would
  * generate a {@code Pattern} to perform replacing.

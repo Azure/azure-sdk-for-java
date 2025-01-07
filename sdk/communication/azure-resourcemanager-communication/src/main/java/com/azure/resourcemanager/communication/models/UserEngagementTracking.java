@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.communication.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class UserEngagementTracking extends ExpandableStringEnum<UserEngag
      * @param name a name to look for.
      * @return the corresponding UserEngagementTracking.
      */
-    @JsonCreator
     public static UserEngagementTracking fromString(String name) {
         return fromString(name, UserEngagementTracking.class);
     }

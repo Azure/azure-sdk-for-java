@@ -10,7 +10,7 @@ package com.azure.resourcemanager.synapse.generated;
 public final class SqlPoolOperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListSqlPoolOperations.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/ListSqlPoolOperations.json
      */
     /**
      * Sample code: List the Sql Analytics pool management operations.

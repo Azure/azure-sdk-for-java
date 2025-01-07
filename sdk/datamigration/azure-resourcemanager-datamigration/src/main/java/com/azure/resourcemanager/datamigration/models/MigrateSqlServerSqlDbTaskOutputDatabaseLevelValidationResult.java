@@ -68,11 +68,6 @@ public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult
      */
     private ValidationStatus status;
 
-    /*
-     * Result identifier
-     */
-    private String id;
-
     /**
      * Creates an instance of MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult class.
      */
@@ -173,16 +168,6 @@ public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult
     }
 
     /**
-     * Get the id property: Result identifier.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -229,7 +214,7 @@ public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult.id = reader.getString();
+                    deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult.withId(reader.getString());
                 } else if ("resultType".equals(fieldName)) {
                     deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult.resultType
                         = reader.getString();

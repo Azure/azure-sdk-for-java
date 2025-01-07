@@ -87,15 +87,6 @@ public final class EventHubOutputDataSourceProperties extends EventHubDataSource
      * {@inheritDoc}
      */
     @Override
-    public EventHubOutputDataSourceProperties withPartitionCount(Integer partitionCount) {
-        super.withPartitionCount(partitionCount);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public EventHubOutputDataSourceProperties withServiceBusNamespace(String serviceBusNamespace) {
         super.withServiceBusNamespace(serviceBusNamespace);
         return this;
@@ -149,7 +140,6 @@ public final class EventHubOutputDataSourceProperties extends EventHubDataSource
         jsonWriter.writeStringField("authenticationMode",
             authenticationMode() == null ? null : authenticationMode().toString());
         jsonWriter.writeStringField("eventHubName", eventHubName());
-        jsonWriter.writeNumberField("partitionCount", partitionCount());
         jsonWriter.writeStringField("partitionKey", this.partitionKey);
         jsonWriter.writeArrayField("propertyColumns", this.propertyColumns,
             (writer, element) -> writer.writeString(element));
@@ -183,9 +173,6 @@ public final class EventHubOutputDataSourceProperties extends EventHubDataSource
                         .withAuthenticationMode(AuthenticationMode.fromString(reader.getString()));
                 } else if ("eventHubName".equals(fieldName)) {
                     deserializedEventHubOutputDataSourceProperties.withEventHubName(reader.getString());
-                } else if ("partitionCount".equals(fieldName)) {
-                    deserializedEventHubOutputDataSourceProperties
-                        .withPartitionCount(reader.getNullable(JsonReader::getInt));
                 } else if ("partitionKey".equals(fieldName)) {
                     deserializedEventHubOutputDataSourceProperties.partitionKey = reader.getString();
                 } else if ("propertyColumns".equals(fieldName)) {

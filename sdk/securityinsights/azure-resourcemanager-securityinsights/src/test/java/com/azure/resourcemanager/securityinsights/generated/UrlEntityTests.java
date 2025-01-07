@@ -11,7 +11,7 @@ public final class UrlEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UrlEntity model = BinaryData.fromString(
-            "{\"kind\":\"Url\",\"properties\":{\"url\":\"oclannmxynlsuq\",\"additionalData\":{\"ktfinfhoksmmculw\":\"datastrktgvpatrgj\",\"cru\":\"dataq\",\"flsgaoj\":\"dataokr\",\"mcdsgxcelujisw\":\"datatqpqsdoctpzpujzf\"},\"friendlyName\":\"uunxh\"},\"id\":\"lfxzfwuge\",\"name\":\"pc\",\"type\":\"necexkgrvfps\"}")
+            "{\"kind\":\"Url\",\"properties\":{\"url\":\"md\",\"additionalData\":{\"remj\":\"datacbq\",\"hdbvqvwzkjop\":\"datalaqacigele\",\"bxcea\":\"databeonrlkwzdq\"},\"friendlyName\":\"cptsoqfyiase\"},\"id\":\"hkrttzrazis\",\"name\":\"ykiue\",\"type\":\"vanbwzohmnrxxbs\"}")
             .toObject(UrlEntity.class);
     }
 

@@ -26,7 +26,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.baremetalinfrastructure.fluent.OperationsClient;
 import com.azure.resourcemanager.baremetalinfrastructure.fluent.models.OperationInner;
-import com.azure.resourcemanager.baremetalinfrastructure.models.OperationListResult;
+import com.azure.resourcemanager.baremetalinfrastructure.models.OperationList;
 import reactor.core.publisher.Mono;
 
 /**
@@ -65,13 +65,11 @@ public final class OperationsClientImpl implements OperationsClient {
         @Get("/providers/Microsoft.BareMetalInfrastructure/operations")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OperationListResult>> list(@HostParam("$host") String endpoint,
+        Mono<Response<OperationList>> list(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * Lists all of the available consumption REST API operations.
-     * 
      * Gets a list of AzureBareMetal management operations.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
@@ -95,8 +93,6 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Lists all of the available consumption REST API operations.
-     * 
      * Gets a list of AzureBareMetal management operations.
      * 
      * @param context The context to associate with this operation.
@@ -120,8 +116,6 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Lists all of the available consumption REST API operations.
-     * 
      * Gets a list of AzureBareMetal management operations.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
@@ -134,8 +128,6 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Lists all of the available consumption REST API operations.
-     * 
      * Gets a list of AzureBareMetal management operations.
      * 
      * @param context The context to associate with this operation.
@@ -150,8 +142,6 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Lists all of the available consumption REST API operations.
-     * 
      * Gets a list of AzureBareMetal management operations.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
@@ -164,8 +154,6 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Lists all of the available consumption REST API operations.
-     * 
      * Gets a list of AzureBareMetal management operations.
      * 
      * @param context The context to associate with this operation.

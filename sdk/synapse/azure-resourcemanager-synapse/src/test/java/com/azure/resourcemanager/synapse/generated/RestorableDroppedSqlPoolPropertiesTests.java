@@ -11,7 +11,7 @@ public final class RestorableDroppedSqlPoolPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestorableDroppedSqlPoolProperties model = BinaryData.fromString(
-            "{\"databaseName\":\"qfrddgam\",\"edition\":\"hiosrsjuiv\",\"maxSizeBytes\":\"disyirnxz\",\"serviceLevelObjective\":\"zexrxzbujrt\",\"elasticPoolName\":\"qvwre\",\"creationDate\":\"2021-02-22T04:42:50Z\",\"deletionDate\":\"2021-05-28T10:31:50Z\",\"earliestRestoreDate\":\"2021-05-29T18:46:57Z\"}")
+            "{\"databaseName\":\"yoxoy\",\"edition\":\"k\",\"maxSizeBytes\":\"aimmoiroqb\",\"serviceLevelObjective\":\"hbragapyyr\",\"elasticPoolName\":\"svbpavbopfppdbwn\",\"creationDate\":\"2020-12-31T10:46:47Z\",\"deletionDate\":\"2021-06-30T02:41:40Z\",\"earliestRestoreDate\":\"2021-01-01T09:29:45Z\"}")
             .toObject(RestorableDroppedSqlPoolProperties.class);
     }
 

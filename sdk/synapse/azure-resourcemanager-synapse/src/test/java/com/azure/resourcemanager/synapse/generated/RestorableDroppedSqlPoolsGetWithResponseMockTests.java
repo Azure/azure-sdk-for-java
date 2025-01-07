@@ -20,7 +20,7 @@ public final class RestorableDroppedSqlPoolsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"location\":\"jlvkrkegtyczupp\",\"properties\":{\"databaseName\":\"lzmiyddeeq\",\"edition\":\"vab\",\"maxSizeBytes\":\"vsexduetb\",\"serviceLevelObjective\":\"fcze\",\"elasticPoolName\":\"trlq\",\"creationDate\":\"2021-09-12T20:33:39Z\",\"deletionDate\":\"2021-03-17T23:28:38Z\",\"earliestRestoreDate\":\"2021-03-31T17:53:33Z\"},\"id\":\"jpir\",\"name\":\"zxvbczwhyegbthms\",\"type\":\"i\"}";
+            = "{\"location\":\"azbkocbygvthrmxk\",\"properties\":{\"databaseName\":\"wwdxomrawp\",\"edition\":\"eboozflyacagaed\",\"maxSizeBytes\":\"i\",\"serviceLevelObjective\":\"lm\",\"elasticPoolName\":\"twgabdx\",\"creationDate\":\"2021-02-21T09:11:08Z\",\"deletionDate\":\"2021-10-20T15:04:31Z\",\"earliestRestoreDate\":\"2021-06-04T19:53:38Z\"},\"id\":\"ecooyvhtuqbp\",\"name\":\"lniibncg\",\"type\":\"gdvcdqhftz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class RestorableDroppedSqlPoolsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         RestorableDroppedSqlPool response = manager.restorableDroppedSqlPools()
-            .getWithResponse("cfasfodropal", "ngtwyuskwgq", "ntaumd", com.azure.core.util.Context.NONE)
+            .getWithResponse("wawonoehrguql", "fwafbjz", "pyrgu", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

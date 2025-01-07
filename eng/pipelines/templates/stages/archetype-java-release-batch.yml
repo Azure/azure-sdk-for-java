@@ -266,6 +266,7 @@ stages:
                       Paths:
                         - '${{ parameters.ServiceDirectory }}'
                         - '**/*.xml'
+                        - '**/*.md'
                         - '!sdk/**/test-recordings'
                         - '!sdk/**/session-records'
 
@@ -275,7 +276,7 @@ stages:
                       versionSpec: $(PythonVersion)
 
                   # Apply the version increment to each library, which only updates the version_client.txt file,
-                  # and then call to update_versions will then apply all of the updates.
+                  # and then call to update_versions will then apply all the updates.
                   - pwsh: |
                       $ArtifactsList = $('$(ArtifactsJson)' | ConvertFrom-Json | Select-Object name, groupId)
                       $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host

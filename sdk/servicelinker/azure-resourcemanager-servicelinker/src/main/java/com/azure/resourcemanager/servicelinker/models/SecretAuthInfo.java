@@ -87,15 +87,6 @@ public final class SecretAuthInfo extends AuthInfoBase {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public SecretAuthInfo withAuthMode(AuthMode authMode) {
-        super.withAuthMode(authMode);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -113,7 +104,6 @@ public final class SecretAuthInfo extends AuthInfoBase {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("authMode", authMode() == null ? null : authMode().toString());
         jsonWriter.writeStringField("authType", this.authType == null ? null : this.authType.toString());
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeJsonField("secretInfo", this.secretInfo);
@@ -135,9 +125,7 @@ public final class SecretAuthInfo extends AuthInfoBase {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("authMode".equals(fieldName)) {
-                    deserializedSecretAuthInfo.withAuthMode(AuthMode.fromString(reader.getString()));
-                } else if ("authType".equals(fieldName)) {
+                if ("authType".equals(fieldName)) {
                     deserializedSecretAuthInfo.authType = AuthType.fromString(reader.getString());
                 } else if ("name".equals(fieldName)) {
                     deserializedSecretAuthInfo.name = reader.getString();

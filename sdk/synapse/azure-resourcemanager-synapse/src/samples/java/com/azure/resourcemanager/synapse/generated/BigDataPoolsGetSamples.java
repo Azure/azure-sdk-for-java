@@ -10,7 +10,7 @@ package com.azure.resourcemanager.synapse.generated;
 public final class BigDataPoolsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/GetBigDataPool.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/GetBigDataPool.json
      */
     /**
      * Sample code: Get a Big Data pool.

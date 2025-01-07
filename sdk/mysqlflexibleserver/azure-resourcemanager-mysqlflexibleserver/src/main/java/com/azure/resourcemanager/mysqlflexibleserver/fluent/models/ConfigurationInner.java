@@ -27,7 +27,7 @@ public final class ConfigurationInner extends ProxyResource {
     private ConfigurationProperties innerProperties;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * The system metadata relating to this resource.
      */
     private SystemData systemData;
 
@@ -62,7 +62,7 @@ public final class ConfigurationInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * Get the systemData property: The system metadata relating to this resource.
      * 
      * @return the systemData value.
      */
@@ -124,44 +124,12 @@ public final class ConfigurationInner extends ProxyResource {
     }
 
     /**
-     * Get the currentValue property: Current value of the configuration.
-     * 
-     * @return the currentValue value.
-     */
-    public String currentValue() {
-        return this.innerProperties() == null ? null : this.innerProperties().currentValue();
-    }
-
-    /**
-     * Set the currentValue property: Current value of the configuration.
-     * 
-     * @param currentValue the currentValue value to set.
-     * @return the ConfigurationInner object itself.
-     */
-    public ConfigurationInner withCurrentValue(String currentValue) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ConfigurationProperties();
-        }
-        this.innerProperties().withCurrentValue(currentValue);
-        return this;
-    }
-
-    /**
      * Get the description property: Description of the configuration.
      * 
      * @return the description value.
      */
     public String description() {
         return this.innerProperties() == null ? null : this.innerProperties().description();
-    }
-
-    /**
-     * Get the documentationLink property: The link used to get the document from community or Azure site.
-     * 
-     * @return the documentationLink value.
-     */
-    public String documentationLink() {
-        return this.innerProperties() == null ? null : this.innerProperties().documentationLink();
     }
 
     /**

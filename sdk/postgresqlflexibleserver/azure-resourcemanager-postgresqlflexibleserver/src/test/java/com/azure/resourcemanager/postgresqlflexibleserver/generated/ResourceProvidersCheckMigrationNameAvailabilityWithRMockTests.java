@@ -22,7 +22,7 @@ public final class ResourceProvidersCheckMigrationNameAvailabilityWithRMockTests
     @Test
     public void testCheckMigrationNameAvailabilityWithResponse() throws Exception {
         String responseStr
-            = "{\"name\":\"fa\",\"type\":\"owa\",\"nameAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"lqwzdvpiwhxqsz\"}";
+            = "{\"name\":\"tqyryuzcbmqqv\",\"type\":\"mv\",\"nameAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"xo\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class ResourceProvidersCheckMigrationNameAvailabilityWithRMockTests
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         MigrationNameAvailabilityResource response = manager.resourceProviders()
-            .checkMigrationNameAvailabilityWithResponse("uyilflqoiquvrehm", "njhvsujztc", "ytqj",
-                new MigrationNameAvailabilityResourceInner().withName("w").withType("auunfprnjletlx"),
+            .checkMigrationNameAvailabilityWithResponse("qscazuawxtz", "puamwabzxr", "xcushs",
+                new MigrationNameAvailabilityResourceInner().withName("haivm").withType("yasflvgsgzwy"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("fa", response.name());
-        Assertions.assertEquals("owa", response.type());
+        Assertions.assertEquals("tqyryuzcbmqqv", response.name());
+        Assertions.assertEquals("mv", response.type());
     }
 }

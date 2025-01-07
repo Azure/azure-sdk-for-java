@@ -10,7 +10,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * The authentication info when authType is servicePrincipal secret.
@@ -36,21 +35,6 @@ public final class ServicePrincipalSecretAuthInfo extends AuthInfoBase {
      * Secret for servicePrincipal auth.
      */
     private String secret;
-
-    /*
-     * Indicates whether to clean up previous operation when Linker is updating or deleting
-     */
-    private DeleteOrUpdateBehavior deleteOrUpdateBehavior;
-
-    /*
-     * Optional, this value specifies the Azure roles to be assigned. Automatically
-     */
-    private List<String> roles;
-
-    /*
-     * Username created in the database which is mapped to a user in AAD.
-     */
-    private String username;
 
     /**
      * Creates an instance of ServicePrincipalSecretAuthInfo class.
@@ -129,77 +113,6 @@ public final class ServicePrincipalSecretAuthInfo extends AuthInfoBase {
     }
 
     /**
-     * Get the deleteOrUpdateBehavior property: Indicates whether to clean up previous operation when Linker is updating
-     * or deleting.
-     * 
-     * @return the deleteOrUpdateBehavior value.
-     */
-    public DeleteOrUpdateBehavior deleteOrUpdateBehavior() {
-        return this.deleteOrUpdateBehavior;
-    }
-
-    /**
-     * Set the deleteOrUpdateBehavior property: Indicates whether to clean up previous operation when Linker is updating
-     * or deleting.
-     * 
-     * @param deleteOrUpdateBehavior the deleteOrUpdateBehavior value to set.
-     * @return the ServicePrincipalSecretAuthInfo object itself.
-     */
-    public ServicePrincipalSecretAuthInfo withDeleteOrUpdateBehavior(DeleteOrUpdateBehavior deleteOrUpdateBehavior) {
-        this.deleteOrUpdateBehavior = deleteOrUpdateBehavior;
-        return this;
-    }
-
-    /**
-     * Get the roles property: Optional, this value specifies the Azure roles to be assigned. Automatically.
-     * 
-     * @return the roles value.
-     */
-    public List<String> roles() {
-        return this.roles;
-    }
-
-    /**
-     * Set the roles property: Optional, this value specifies the Azure roles to be assigned. Automatically.
-     * 
-     * @param roles the roles value to set.
-     * @return the ServicePrincipalSecretAuthInfo object itself.
-     */
-    public ServicePrincipalSecretAuthInfo withRoles(List<String> roles) {
-        this.roles = roles;
-        return this;
-    }
-
-    /**
-     * Get the username property: Username created in the database which is mapped to a user in AAD.
-     * 
-     * @return the username value.
-     */
-    public String username() {
-        return this.username;
-    }
-
-    /**
-     * Set the username property: Username created in the database which is mapped to a user in AAD.
-     * 
-     * @param username the username value to set.
-     * @return the ServicePrincipalSecretAuthInfo object itself.
-     */
-    public ServicePrincipalSecretAuthInfo withUsername(String username) {
-        this.username = username;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ServicePrincipalSecretAuthInfo withAuthMode(AuthMode authMode) {
-        super.withAuthMode(authMode);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -231,15 +144,10 @@ public final class ServicePrincipalSecretAuthInfo extends AuthInfoBase {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("authMode", authMode() == null ? null : authMode().toString());
         jsonWriter.writeStringField("clientId", this.clientId);
         jsonWriter.writeStringField("principalId", this.principalId);
         jsonWriter.writeStringField("secret", this.secret);
         jsonWriter.writeStringField("authType", this.authType == null ? null : this.authType.toString());
-        jsonWriter.writeStringField("deleteOrUpdateBehavior",
-            this.deleteOrUpdateBehavior == null ? null : this.deleteOrUpdateBehavior.toString());
-        jsonWriter.writeArrayField("roles", this.roles, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("userName", this.username);
         return jsonWriter.writeEndObject();
     }
 
@@ -260,9 +168,7 @@ public final class ServicePrincipalSecretAuthInfo extends AuthInfoBase {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("authMode".equals(fieldName)) {
-                    deserializedServicePrincipalSecretAuthInfo.withAuthMode(AuthMode.fromString(reader.getString()));
-                } else if ("clientId".equals(fieldName)) {
+                if ("clientId".equals(fieldName)) {
                     deserializedServicePrincipalSecretAuthInfo.clientId = reader.getString();
                 } else if ("principalId".equals(fieldName)) {
                     deserializedServicePrincipalSecretAuthInfo.principalId = reader.getString();
@@ -270,14 +176,6 @@ public final class ServicePrincipalSecretAuthInfo extends AuthInfoBase {
                     deserializedServicePrincipalSecretAuthInfo.secret = reader.getString();
                 } else if ("authType".equals(fieldName)) {
                     deserializedServicePrincipalSecretAuthInfo.authType = AuthType.fromString(reader.getString());
-                } else if ("deleteOrUpdateBehavior".equals(fieldName)) {
-                    deserializedServicePrincipalSecretAuthInfo.deleteOrUpdateBehavior
-                        = DeleteOrUpdateBehavior.fromString(reader.getString());
-                } else if ("roles".equals(fieldName)) {
-                    List<String> roles = reader.readArray(reader1 -> reader1.getString());
-                    deserializedServicePrincipalSecretAuthInfo.roles = roles;
-                } else if ("userName".equals(fieldName)) {
-                    deserializedServicePrincipalSecretAuthInfo.username = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

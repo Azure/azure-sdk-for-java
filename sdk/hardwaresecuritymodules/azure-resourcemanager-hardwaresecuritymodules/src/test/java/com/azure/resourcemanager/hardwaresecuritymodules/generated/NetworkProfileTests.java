@@ -15,21 +15,19 @@ public final class NetworkProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkProfile model = BinaryData.fromString(
-            "{\"subnet\":{\"resourceId\":\"zqlveualupjmkhf\"},\"networkInterfaces\":[{\"resourceId\":\"cswsrtjri\",\"privateIpAddress\":\"rbpbewtghfgblcg\"},{\"resourceId\":\"zvlvqhjkbegib\",\"privateIpAddress\":\"mxiebw\"},{\"resourceId\":\"loayqcgw\",\"privateIpAddress\":\"zjuzgwyz\"}]}")
+            "{\"subnet\":{\"id\":\"iqihn\"},\"networkInterfaces\":[{\"id\":\"bwjzr\",\"privateIpAddress\":\"ygxgispemvtz\"},{\"id\":\"ufubl\",\"privateIpAddress\":\"fxqeof\"}]}")
             .toObject(NetworkProfile.class);
-        Assertions.assertEquals("zqlveualupjmkhf", model.subnet().resourceId());
-        Assertions.assertEquals("rbpbewtghfgblcg", model.networkInterfaces().get(0).privateIpAddress());
+        Assertions.assertEquals("iqihn", model.subnet().id());
+        Assertions.assertEquals("ygxgispemvtz", model.networkInterfaces().get(0).privateIpAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkProfile model
-            = new NetworkProfile().withSubnet(new ApiEntityReference().withResourceId("zqlveualupjmkhf"))
-                .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("rbpbewtghfgblcg"),
-                    new NetworkInterface().withPrivateIpAddress("mxiebw"),
-                    new NetworkInterface().withPrivateIpAddress("zjuzgwyz")));
+        NetworkProfile model = new NetworkProfile().withSubnet(new ApiEntityReference().withId("iqihn"))
+            .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("ygxgispemvtz"),
+                new NetworkInterface().withPrivateIpAddress("fxqeof")));
         model = BinaryData.fromObject(model).toObject(NetworkProfile.class);
-        Assertions.assertEquals("zqlveualupjmkhf", model.subnet().resourceId());
-        Assertions.assertEquals("rbpbewtghfgblcg", model.networkInterfaces().get(0).privateIpAddress());
+        Assertions.assertEquals("iqihn", model.subnet().id());
+        Assertions.assertEquals("ygxgispemvtz", model.networkInterfaces().get(0).privateIpAddress());
     }
 }

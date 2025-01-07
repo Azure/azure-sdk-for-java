@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -57,7 +56,6 @@ public final class NetworkExperimentResourceState extends ExpandableStringEnum<N
      * @param name a name to look for.
      * @return the corresponding NetworkExperimentResourceState.
      */
-    @JsonCreator
     public static NetworkExperimentResourceState fromString(String name) {
         return fromString(name, NetworkExperimentResourceState.class);
     }

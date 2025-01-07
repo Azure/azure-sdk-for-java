@@ -28,7 +28,7 @@ public final class NotificationHubsDeleteAuthorizationRuleWithResponseMockTests 
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.notificationHubs()
-            .deleteAuthorizationRuleWithResponse("apvhelxprgly", "tddckcb", "uejrjxgc", "qibrhosxsdqrhzoy",
+            .deleteAuthorizationRuleWithResponse("vshqjohxcr", "bfovasrruvwbhsq", "sub", "gjb",
                 com.azure.core.util.Context.NONE);
 
     }

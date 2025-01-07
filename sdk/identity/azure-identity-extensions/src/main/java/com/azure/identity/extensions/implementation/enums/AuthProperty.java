@@ -67,7 +67,7 @@ public enum AuthProperty {
     /**
      * Max time to get an access token.
      */
-    GET_TOKEN_TIMEOUT("azure.accessTokenTimeoutInSeconds", "Max time to get an access token.", false),
+    GET_TOKEN_TIMEOUT("azure.accessTokenTimeoutInSeconds", "30", "Max time to get an access token.", false),
     /**
      * The canonical class name of a class that implements 'TokenCredentialProvider'.
      */

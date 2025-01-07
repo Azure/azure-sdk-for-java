@@ -24,7 +24,7 @@ public final class ThreatIntelligenceSortingCriteria implements JsonSerializable
     /*
      * Sorting order (ascending/descending/unsorted).
      */
-    private ThreatIntelligenceSortingCriteriaEnum sortOrder;
+    private ThreatIntelligenceSortingOrder sortOrder;
 
     /**
      * Creates an instance of ThreatIntelligenceSortingCriteria class.
@@ -57,7 +57,7 @@ public final class ThreatIntelligenceSortingCriteria implements JsonSerializable
      * 
      * @return the sortOrder value.
      */
-    public ThreatIntelligenceSortingCriteriaEnum sortOrder() {
+    public ThreatIntelligenceSortingOrder sortOrder() {
         return this.sortOrder;
     }
 
@@ -67,7 +67,7 @@ public final class ThreatIntelligenceSortingCriteria implements JsonSerializable
      * @param sortOrder the sortOrder value to set.
      * @return the ThreatIntelligenceSortingCriteria object itself.
      */
-    public ThreatIntelligenceSortingCriteria withSortOrder(ThreatIntelligenceSortingCriteriaEnum sortOrder) {
+    public ThreatIntelligenceSortingCriteria withSortOrder(ThreatIntelligenceSortingOrder sortOrder) {
         this.sortOrder = sortOrder;
         return this;
     }
@@ -111,7 +111,7 @@ public final class ThreatIntelligenceSortingCriteria implements JsonSerializable
                     deserializedThreatIntelligenceSortingCriteria.itemKey = reader.getString();
                 } else if ("sortOrder".equals(fieldName)) {
                     deserializedThreatIntelligenceSortingCriteria.sortOrder
-                        = ThreatIntelligenceSortingCriteriaEnum.fromString(reader.getString());
+                        = ThreatIntelligenceSortingOrder.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -20,7 +20,7 @@ public final class ReplicationRecoveryServicesProvidersListSamples {
      */
     public static void getsTheListOfRegisteredRecoveryServicesProvidersInTheVaultThisIsAViewOnlyApi(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationRecoveryServicesProviders().list("vault1", "resourceGroupPS1",
-            com.azure.core.util.Context.NONE);
+        manager.replicationRecoveryServicesProviders()
+            .list("vault1", "resourceGroupPS1", com.azure.core.util.Context.NONE);
     }
 }

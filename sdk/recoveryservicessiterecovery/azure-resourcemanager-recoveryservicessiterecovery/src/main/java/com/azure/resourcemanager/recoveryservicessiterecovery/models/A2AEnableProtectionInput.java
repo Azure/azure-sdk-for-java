@@ -6,136 +6,131 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A2A enable protection input.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("A2A")
 @Fluent
 public final class A2AEnableProtectionInput extends EnableProtectionProviderSpecificInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "A2A";
+
+    /*
      * The fabric specific object Id of the virtual machine.
      */
-    @JsonProperty(value = "fabricObjectId", required = true)
     private String fabricObjectId;
 
     /*
      * The recovery container Id.
      */
-    @JsonProperty(value = "recoveryContainerId")
     private String recoveryContainerId;
 
     /*
      * The recovery resource group Id. Valid for V2 scenarios.
      */
-    @JsonProperty(value = "recoveryResourceGroupId")
     private String recoveryResourceGroupId;
 
     /*
      * The recovery cloud service Id. Valid for V1 scenarios.
      */
-    @JsonProperty(value = "recoveryCloudServiceId")
     private String recoveryCloudServiceId;
 
     /*
      * The recovery availability set Id.
      */
-    @JsonProperty(value = "recoveryAvailabilitySetId")
     private String recoveryAvailabilitySetId;
 
     /*
      * The recovery proximity placement group Id.
      */
-    @JsonProperty(value = "recoveryProximityPlacementGroupId")
     private String recoveryProximityPlacementGroupId;
 
     /*
      * The list of vm disk details.
      */
-    @JsonProperty(value = "vmDisks")
     private List<A2AVmDiskInputDetails> vmDisks;
 
     /*
      * The list of vm managed disk details.
      */
-    @JsonProperty(value = "vmManagedDisks")
     private List<A2AVmManagedDiskInputDetails> vmManagedDisks;
 
     /*
      * The multi vm group name.
      */
-    @JsonProperty(value = "multiVmGroupName")
     private String multiVmGroupName;
 
     /*
      * The multi vm group id.
      */
-    @JsonProperty(value = "multiVmGroupId")
     private String multiVmGroupId;
 
     /*
      * The boot diagnostic storage account.
      */
-    @JsonProperty(value = "recoveryBootDiagStorageAccountId")
     private String recoveryBootDiagStorageAccountId;
 
     /*
      * The recovery disk encryption information (for two pass flows).
      */
-    @JsonProperty(value = "diskEncryptionInfo")
     private DiskEncryptionInfo diskEncryptionInfo;
 
     /*
      * The recovery availability zone.
      */
-    @JsonProperty(value = "recoveryAvailabilityZone")
     private String recoveryAvailabilityZone;
 
     /*
      * The recovery extended location.
      */
-    @JsonProperty(value = "recoveryExtendedLocation")
     private ExtendedLocation recoveryExtendedLocation;
 
     /*
      * The recovery Azure virtual network ARM id.
      */
-    @JsonProperty(value = "recoveryAzureNetworkId")
     private String recoveryAzureNetworkId;
 
     /*
      * The recovery subnet name.
      */
-    @JsonProperty(value = "recoverySubnetName")
     private String recoverySubnetName;
 
     /*
      * The virtual machine scale set Id.
      */
-    @JsonProperty(value = "recoveryVirtualMachineScaleSetId")
     private String recoveryVirtualMachineScaleSetId;
 
     /*
      * The recovery capacity reservation group Id.
      */
-    @JsonProperty(value = "recoveryCapacityReservationGroupId")
     private String recoveryCapacityReservationGroupId;
 
     /*
      * A value indicating whether the auto protection is enabled.
      */
-    @JsonProperty(value = "autoProtectionOfDataDisk")
     private AutoProtectionOfDataDisk autoProtectionOfDataDisk;
 
     /**
      * Creates an instance of A2AEnableProtectionInput class.
      */
     public A2AEnableProtectionInput() {
+    }
+
+    /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -525,10 +520,10 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
      */
     @Override
     public void validate() {
-        super.validate();
         if (fabricObjectId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property fabricObjectId in model A2AEnableProtectionInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property fabricObjectId in model A2AEnableProtectionInput"));
         }
         if (vmDisks() != null) {
             vmDisks().forEach(e -> e.validate());
@@ -545,4 +540,105 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(A2AEnableProtectionInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("fabricObjectId", this.fabricObjectId);
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("recoveryContainerId", this.recoveryContainerId);
+        jsonWriter.writeStringField("recoveryResourceGroupId", this.recoveryResourceGroupId);
+        jsonWriter.writeStringField("recoveryCloudServiceId", this.recoveryCloudServiceId);
+        jsonWriter.writeStringField("recoveryAvailabilitySetId", this.recoveryAvailabilitySetId);
+        jsonWriter.writeStringField("recoveryProximityPlacementGroupId", this.recoveryProximityPlacementGroupId);
+        jsonWriter.writeArrayField("vmDisks", this.vmDisks, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("vmManagedDisks", this.vmManagedDisks,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("multiVmGroupName", this.multiVmGroupName);
+        jsonWriter.writeStringField("multiVmGroupId", this.multiVmGroupId);
+        jsonWriter.writeStringField("recoveryBootDiagStorageAccountId", this.recoveryBootDiagStorageAccountId);
+        jsonWriter.writeJsonField("diskEncryptionInfo", this.diskEncryptionInfo);
+        jsonWriter.writeStringField("recoveryAvailabilityZone", this.recoveryAvailabilityZone);
+        jsonWriter.writeJsonField("recoveryExtendedLocation", this.recoveryExtendedLocation);
+        jsonWriter.writeStringField("recoveryAzureNetworkId", this.recoveryAzureNetworkId);
+        jsonWriter.writeStringField("recoverySubnetName", this.recoverySubnetName);
+        jsonWriter.writeStringField("recoveryVirtualMachineScaleSetId", this.recoveryVirtualMachineScaleSetId);
+        jsonWriter.writeStringField("recoveryCapacityReservationGroupId", this.recoveryCapacityReservationGroupId);
+        jsonWriter.writeStringField("autoProtectionOfDataDisk",
+            this.autoProtectionOfDataDisk == null ? null : this.autoProtectionOfDataDisk.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of A2AEnableProtectionInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of A2AEnableProtectionInput if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the A2AEnableProtectionInput.
+     */
+    public static A2AEnableProtectionInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            A2AEnableProtectionInput deserializedA2AEnableProtectionInput = new A2AEnableProtectionInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("fabricObjectId".equals(fieldName)) {
+                    deserializedA2AEnableProtectionInput.fabricObjectId = reader.getString();
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedA2AEnableProtectionInput.instanceType = reader.getString();
+                } else if ("recoveryContainerId".equals(fieldName)) {
+                    deserializedA2AEnableProtectionInput.recoveryContainerId = reader.getString();
+                } else if ("recoveryResourceGroupId".equals(fieldName)) {
+                    deserializedA2AEnableProtectionInput.recoveryResourceGroupId = reader.getString();
+                } else if ("recoveryCloudServiceId".equals(fieldName)) {
+                    deserializedA2AEnableProtectionInput.recoveryCloudServiceId = reader.getString();
+                } else if ("recoveryAvailabilitySetId".equals(fieldName)) {
+                    deserializedA2AEnableProtectionInput.recoveryAvailabilitySetId = reader.getString();
+                } else if ("recoveryProximityPlacementGroupId".equals(fieldName)) {
+                    deserializedA2AEnableProtectionInput.recoveryProximityPlacementGroupId = reader.getString();
+                } else if ("vmDisks".equals(fieldName)) {
+                    List<A2AVmDiskInputDetails> vmDisks
+                        = reader.readArray(reader1 -> A2AVmDiskInputDetails.fromJson(reader1));
+                    deserializedA2AEnableProtectionInput.vmDisks = vmDisks;
+                } else if ("vmManagedDisks".equals(fieldName)) {
+                    List<A2AVmManagedDiskInputDetails> vmManagedDisks
+                        = reader.readArray(reader1 -> A2AVmManagedDiskInputDetails.fromJson(reader1));
+                    deserializedA2AEnableProtectionInput.vmManagedDisks = vmManagedDisks;
+                } else if ("multiVmGroupName".equals(fieldName)) {
+                    deserializedA2AEnableProtectionInput.multiVmGroupName = reader.getString();
+                } else if ("multiVmGroupId".equals(fieldName)) {
+                    deserializedA2AEnableProtectionInput.multiVmGroupId = reader.getString();
+                } else if ("recoveryBootDiagStorageAccountId".equals(fieldName)) {
+                    deserializedA2AEnableProtectionInput.recoveryBootDiagStorageAccountId = reader.getString();
+                } else if ("diskEncryptionInfo".equals(fieldName)) {
+                    deserializedA2AEnableProtectionInput.diskEncryptionInfo = DiskEncryptionInfo.fromJson(reader);
+                } else if ("recoveryAvailabilityZone".equals(fieldName)) {
+                    deserializedA2AEnableProtectionInput.recoveryAvailabilityZone = reader.getString();
+                } else if ("recoveryExtendedLocation".equals(fieldName)) {
+                    deserializedA2AEnableProtectionInput.recoveryExtendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("recoveryAzureNetworkId".equals(fieldName)) {
+                    deserializedA2AEnableProtectionInput.recoveryAzureNetworkId = reader.getString();
+                } else if ("recoverySubnetName".equals(fieldName)) {
+                    deserializedA2AEnableProtectionInput.recoverySubnetName = reader.getString();
+                } else if ("recoveryVirtualMachineScaleSetId".equals(fieldName)) {
+                    deserializedA2AEnableProtectionInput.recoveryVirtualMachineScaleSetId = reader.getString();
+                } else if ("recoveryCapacityReservationGroupId".equals(fieldName)) {
+                    deserializedA2AEnableProtectionInput.recoveryCapacityReservationGroupId = reader.getString();
+                } else if ("autoProtectionOfDataDisk".equals(fieldName)) {
+                    deserializedA2AEnableProtectionInput.autoProtectionOfDataDisk
+                        = AutoProtectionOfDataDisk.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedA2AEnableProtectionInput;
+        });
+    }
 }

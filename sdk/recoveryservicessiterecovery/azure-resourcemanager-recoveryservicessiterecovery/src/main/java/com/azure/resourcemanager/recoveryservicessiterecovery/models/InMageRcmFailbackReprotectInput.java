@@ -6,39 +6,50 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * InMageRcmFailback specific provider input.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("InMageRcmFailback")
 @Fluent
 public final class InMageRcmFailbackReprotectInput extends ReverseReplicationProviderSpecificInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "InMageRcmFailback";
+
+    /*
      * The process server Id.
      */
-    @JsonProperty(value = "processServerId", required = true)
     private String processServerId;
 
     /*
      * The run as account Id.
      */
-    @JsonProperty(value = "runAsAccountId")
     private String runAsAccountId;
 
     /*
      * The Policy Id.
      */
-    @JsonProperty(value = "policyId", required = true)
     private String policyId;
 
     /**
      * Creates an instance of InMageRcmFailbackReprotectInput class.
      */
     public InMageRcmFailbackReprotectInput() {
+    }
+
+    /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -108,16 +119,64 @@ public final class InMageRcmFailbackReprotectInput extends ReverseReplicationPro
      */
     @Override
     public void validate() {
-        super.validate();
         if (processServerId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property processServerId in model InMageRcmFailbackReprotectInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property processServerId in model InMageRcmFailbackReprotectInput"));
         }
         if (policyId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property policyId in model InMageRcmFailbackReprotectInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property policyId in model InMageRcmFailbackReprotectInput"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(InMageRcmFailbackReprotectInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("processServerId", this.processServerId);
+        jsonWriter.writeStringField("policyId", this.policyId);
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("runAsAccountId", this.runAsAccountId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageRcmFailbackReprotectInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageRcmFailbackReprotectInput if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InMageRcmFailbackReprotectInput.
+     */
+    public static InMageRcmFailbackReprotectInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageRcmFailbackReprotectInput deserializedInMageRcmFailbackReprotectInput
+                = new InMageRcmFailbackReprotectInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("processServerId".equals(fieldName)) {
+                    deserializedInMageRcmFailbackReprotectInput.processServerId = reader.getString();
+                } else if ("policyId".equals(fieldName)) {
+                    deserializedInMageRcmFailbackReprotectInput.policyId = reader.getString();
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedInMageRcmFailbackReprotectInput.instanceType = reader.getString();
+                } else if ("runAsAccountId".equals(fieldName)) {
+                    deserializedInMageRcmFailbackReprotectInput.runAsAccountId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageRcmFailbackReprotectInput;
+        });
+    }
 }

@@ -278,6 +278,11 @@ jobs:
           filePath: $(Build.SourcesDirectory)/eng/versioning/pom_file_version_scanner.ps1
           arguments: -Debug:$$(IsDebug)
 
+      - task: PythonScript@0
+        displayName: 'Verify version text files'
+        inputs:
+          scriptPath: eng/versioning/find_unused_dependencies.py
+
       - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
           JobType: 'Analyze'

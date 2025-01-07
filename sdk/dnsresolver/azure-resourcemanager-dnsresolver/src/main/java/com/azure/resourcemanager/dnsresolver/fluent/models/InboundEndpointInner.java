@@ -33,7 +33,7 @@ public final class InboundEndpointInner extends Resource {
     private InboundEndpointProperties innerProperties = new InboundEndpointProperties();
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * Metadata pertaining to creation and last modification of the resource.
      */
     private SystemData systemData;
 
@@ -77,7 +77,7 @@ public final class InboundEndpointInner extends Resource {
     }
 
     /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
      * 
      * @return the systemData value.
      */

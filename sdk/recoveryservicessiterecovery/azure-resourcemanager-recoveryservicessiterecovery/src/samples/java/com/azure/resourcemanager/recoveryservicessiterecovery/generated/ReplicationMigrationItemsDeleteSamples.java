@@ -20,7 +20,8 @@ public final class ReplicationMigrationItemsDeleteSamples {
      */
     public static void
         deleteTheMigrationItem(com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationMigrationItems().delete("migrationvault", "resourcegroup1", "vmwarefabric1",
-            "vmwareContainer1", "virtualmachine1", null, com.azure.core.util.Context.NONE);
+        manager.replicationMigrationItems()
+            .delete("migrationvault", "resourcegroup1", "vmwarefabric1", "vmwareContainer1", "virtualmachine1", null,
+                com.azure.core.util.Context.NONE);
     }
 }

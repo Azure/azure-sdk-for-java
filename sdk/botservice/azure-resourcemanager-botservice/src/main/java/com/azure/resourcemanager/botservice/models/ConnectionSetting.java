@@ -244,7 +244,7 @@ public interface ConnectionSetting {
          */
         interface WithEtag {
             /**
-             * Specifies the etag property: Entity Tag..
+             * Specifies the etag property: Entity Tag.
              * 
              * @param etag Entity Tag.
              * @return the next definition stage.
@@ -342,7 +342,7 @@ public interface ConnectionSetting {
          */
         interface WithEtag {
             /**
-             * Specifies the etag property: Entity Tag..
+             * Specifies the etag property: Entity Tag.
              * 
              * @param etag Entity Tag.
              * @return the next definition stage.

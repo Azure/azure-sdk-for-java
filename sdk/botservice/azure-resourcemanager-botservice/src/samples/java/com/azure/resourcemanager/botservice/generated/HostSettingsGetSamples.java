@@ -10,8 +10,7 @@ package com.azure.resourcemanager.botservice.generated;
 public final class HostSettingsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/
-     * GetHostSettings.json
+     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/GetHostSettings.json
      */
     /**
      * Sample code: Get Bot Host Settings.

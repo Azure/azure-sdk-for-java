@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
 public final class StreamingJobsStartSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * StreamingJob_Start_JobStartTime.json
      */
     /**
@@ -32,7 +32,7 @@ public final class StreamingJobsStartSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * StreamingJob_Start_CustomTime.json
      */
     /**
@@ -51,7 +51,7 @@ public final class StreamingJobsStartSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * StreamingJob_Start_LastOutputEventTime.json
      */
     /**
