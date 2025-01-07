@@ -73,6 +73,7 @@
       <Class name="io.clientcore.core.implementation.http.rest.SwaggerMethodParser" />
       <Class name="io.clientcore.core.serialization.json.implementation.jackson.core.util.RequestPayload" />
       <Class name="io.clientcore.core.util.ClientLogger" />
+      <Class name="io.clientcore.core.implementation.instrumentation.otel.OTelInstrumentation" />
     </Or>
   </Match>
   <Match>
@@ -123,6 +124,7 @@
       <Class name="io.clientcore.core.shared.HttpClientTests" />
       <Class name="io.clientcore.core.shared.HttpClientTestsServer" />
       <Class name="io.clientcore.core.util.ClientLoggerTests" />
+      <Class name="io.clientcore.core.util.HttpLoggingPolicyTests" />
       <Class name="io.clientcore.core.util.binarydata.BinaryDataTest" />
       <Class name="io.clientcore.core.util.serializer.JsonSerializerTests" />
     </Or>
@@ -238,7 +240,10 @@
   </Match>
   <Match>
     <Bug pattern="OS_OPEN_STREAM" />
-    <Class name="io.clientcore.core.serialization.json.implementation.StringBuilderWriterTests" />
+    <Or>
+      <Class name="io.clientcore.core.serialization.json.implementation.StringBuilderWriterTests" />
+      <Class name="io.clientcore.core.util.HttpLoggingPolicyTests" />
+    </Or>
   </Match>
   <Match>
     <Bug pattern="PATH_TRAVERSAL_IN" />
@@ -388,5 +393,13 @@
   <Match>
     <Bug pattern="XXE_XMLSTREAMREADER" />
     <Class name="io.clientcore.core.serialization.xml.XmlReader" />
+  </Match>
+  <Match>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE" />
+    <Class name="io.clientcore.core.http.pipeline.HttpInstrumentationPolicy" />
+  </Match>
+  <Match>
+    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE" />
+    <Class name="io.clientcore.core.http.pipeline.HttpInstrumentationPolicy" />
   </Match>
 </FindBugsFilter>

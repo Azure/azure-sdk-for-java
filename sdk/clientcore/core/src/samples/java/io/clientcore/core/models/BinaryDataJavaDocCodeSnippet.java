@@ -342,7 +342,7 @@ public class BinaryDataJavaDocCodeSnippet {
         // no-op
     }
 
-    public static class MyJsonSerializer implements JsonSerializer {
+    public static class MyJsonSerializer extends JsonSerializer {
         private static final ClientLogger LOGGER = new ClientLogger(MyJsonSerializer.class);
 
         @Override

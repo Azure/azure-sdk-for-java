@@ -6,6 +6,7 @@ package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.streamanalytics.fluent.models.PrivateEndpointInner;
+import java.util.List;
 
 /**
  * An immutable client-side representation of PrivateEndpoint.
@@ -33,13 +34,6 @@ public interface PrivateEndpoint {
     String type();
 
     /**
-     * Gets the properties property: The properties associated with a private endpoint.
-     * 
-     * @return the properties value.
-     */
-    PrivateEndpointProperties properties();
-
-    /**
      * Gets the etag property: Unique opaque string (generally a GUID) that represents the metadata state of the
      * resource (private endpoint) and changes whenever the resource is updated. Required on PUT (CreateOrUpdate)
      * requests.
@@ -47,6 +41,21 @@ public interface PrivateEndpoint {
      * @return the etag value.
      */
     String etag();
+
+    /**
+     * Gets the createdDate property: The date when this private endpoint was created.
+     * 
+     * @return the createdDate value.
+     */
+    String createdDate();
+
+    /**
+     * Gets the manualPrivateLinkServiceConnections property: A list of connections to the remote resource. Immutable
+     * after it is set.
+     * 
+     * @return the manualPrivateLinkServiceConnections value.
+     */
+    List<PrivateLinkServiceConnection> manualPrivateLinkServiceConnections();
 
     /**
      * Gets the name of the resource group.
@@ -97,8 +106,8 @@ public interface PrivateEndpoint {
          * The stage of the PrivateEndpoint definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithProperties, DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
+        interface WithCreate extends DefinitionStages.WithManualPrivateLinkServiceConnections,
+            DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
             /**
              * Executes the create request.
              * 
@@ -116,16 +125,19 @@ public interface PrivateEndpoint {
         }
 
         /**
-         * The stage of the PrivateEndpoint definition allowing to specify properties.
+         * The stage of the PrivateEndpoint definition allowing to specify manualPrivateLinkServiceConnections.
          */
-        interface WithProperties {
+        interface WithManualPrivateLinkServiceConnections {
             /**
-             * Specifies the properties property: The properties associated with a private endpoint..
+             * Specifies the manualPrivateLinkServiceConnections property: A list of connections to the remote resource.
+             * Immutable after it is set..
              * 
-             * @param properties The properties associated with a private endpoint.
+             * @param manualPrivateLinkServiceConnections A list of connections to the remote resource. Immutable after
+             * it is set.
              * @return the next definition stage.
              */
-            WithCreate withProperties(PrivateEndpointProperties properties);
+            WithCreate withManualPrivateLinkServiceConnections(
+                List<PrivateLinkServiceConnection> manualPrivateLinkServiceConnections);
         }
 
         /**
@@ -169,7 +181,8 @@ public interface PrivateEndpoint {
     /**
      * The template for PrivateEndpoint update.
      */
-    interface Update extends UpdateStages.WithProperties, UpdateStages.WithIfMatch, UpdateStages.WithIfNoneMatch {
+    interface Update extends UpdateStages.WithManualPrivateLinkServiceConnections, UpdateStages.WithIfMatch,
+        UpdateStages.WithIfNoneMatch {
         /**
          * Executes the update request.
          * 
@@ -191,16 +204,19 @@ public interface PrivateEndpoint {
      */
     interface UpdateStages {
         /**
-         * The stage of the PrivateEndpoint update allowing to specify properties.
+         * The stage of the PrivateEndpoint update allowing to specify manualPrivateLinkServiceConnections.
          */
-        interface WithProperties {
+        interface WithManualPrivateLinkServiceConnections {
             /**
-             * Specifies the properties property: The properties associated with a private endpoint..
+             * Specifies the manualPrivateLinkServiceConnections property: A list of connections to the remote resource.
+             * Immutable after it is set..
              * 
-             * @param properties The properties associated with a private endpoint.
+             * @param manualPrivateLinkServiceConnections A list of connections to the remote resource. Immutable after
+             * it is set.
              * @return the next definition stage.
              */
-            Update withProperties(PrivateEndpointProperties properties);
+            Update withManualPrivateLinkServiceConnections(
+                List<PrivateLinkServiceConnection> manualPrivateLinkServiceConnections);
         }
 
         /**

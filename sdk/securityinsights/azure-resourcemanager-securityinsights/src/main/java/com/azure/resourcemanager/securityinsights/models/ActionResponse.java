@@ -34,7 +34,7 @@ public interface ActionResponse {
     String type();
 
     /**
-     * Gets the etag property: Etag of the azure resource.
+     * Gets the etag property: Etag of the action.
      * 
      * @return the etag value.
      */

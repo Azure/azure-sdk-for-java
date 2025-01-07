@@ -26,7 +26,7 @@ public final class CheckNameAvailabilityParameters implements JsonSerializable<C
      * The resource type. Note: This should not be set by the user, as the constant value is
      * Microsoft.DataLakeAnalytics/accounts
      */
-    private String type = "Microsoft.DataLakeAnalytics/accounts";
+    private final String type = "Microsoft.DataLakeAnalytics/accounts";
 
     /**
      * Creates an instance of CheckNameAvailabilityParameters class.
@@ -62,18 +62,6 @@ public final class CheckNameAvailabilityParameters implements JsonSerializable<C
      */
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Set the type property: The resource type. Note: This should not be set by the user, as the constant value is
-     * Microsoft.DataLakeAnalytics/accounts.
-     * 
-     * @param type the type value to set.
-     * @return the CheckNameAvailabilityParameters object itself.
-     */
-    public CheckNameAvailabilityParameters withType(String type) {
-        this.type = type;
-        return this;
     }
 
     /**

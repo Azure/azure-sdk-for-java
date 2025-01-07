@@ -22,7 +22,7 @@ public final class ForwardingRulesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"etag\":\"ngitvgbmhrixkwm\",\"properties\":{\"domainName\":\"ijejvegrhbpn\",\"targetDnsServers\":[{\"ipAddress\":\"xexccbdreaxhcexd\",\"port\":894068250},{\"ipAddress\":\"qahqkghtpwijn\",\"port\":1759061120}],\"metadata\":{\"cxzbfvoowvr\":\"f\",\"qp\":\"mtg\"},\"forwardingRuleState\":\"Enabled\",\"provisioningState\":\"Creating\"},\"id\":\"on\",\"name\":\"myhgfipnsxkmc\",\"type\":\"a\"}";
+            = "{\"etag\":\"rjaltolmncw\",\"properties\":{\"domainName\":\"obqwcsdbnwdcfh\",\"targetDnsServers\":[{\"ipAddress\":\"qdpfuvglsbjjca\",\"port\":1995846414},{\"ipAddress\":\"bvtvudutncormr\",\"port\":1360670450}],\"metadata\":{\"dknnqvsazn\":\"cofudflvkgjub\",\"orudsgsa\":\"n\"},\"forwardingRuleState\":\"Disabled\",\"provisioningState\":\"Creating\"},\"id\":\"rauwjuetaebu\",\"name\":\"u\",\"type\":\"dmovsm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class ForwardingRulesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ForwardingRule response = manager.forwardingRules()
-            .getWithResponse("wz", "bnhlmc", "l", com.azure.core.util.Context.NONE)
+            .getWithResponse("fz", "whxxbuyqax", "feqztppriol", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ijejvegrhbpn", response.domainName());
-        Assertions.assertEquals("xexccbdreaxhcexd", response.targetDnsServers().get(0).ipAddress());
-        Assertions.assertEquals(894068250, response.targetDnsServers().get(0).port());
-        Assertions.assertEquals("f", response.metadata().get("cxzbfvoowvr"));
-        Assertions.assertEquals(ForwardingRuleState.ENABLED, response.forwardingRuleState());
+        Assertions.assertEquals("obqwcsdbnwdcfh", response.domainName());
+        Assertions.assertEquals("qdpfuvglsbjjca", response.targetDnsServers().get(0).ipAddress());
+        Assertions.assertEquals(1995846414, response.targetDnsServers().get(0).port());
+        Assertions.assertEquals("cofudflvkgjub", response.metadata().get("dknnqvsazn"));
+        Assertions.assertEquals(ForwardingRuleState.DISABLED, response.forwardingRuleState());
     }
 }

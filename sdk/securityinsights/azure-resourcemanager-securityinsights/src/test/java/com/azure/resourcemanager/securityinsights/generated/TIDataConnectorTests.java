@@ -16,25 +16,25 @@ public final class TIDataConnectorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TIDataConnector model = BinaryData.fromString(
-            "{\"kind\":\"ThreatIntelligence\",\"properties\":{\"tipLookbackPeriod\":\"2021-02-03T11:09:59Z\",\"dataTypes\":{\"indicators\":{\"state\":\"Disabled\"}},\"tenantId\":\"bnbmxlxm\"},\"etag\":\"ygeqzusito\",\"id\":\"ahfsgb\",\"name\":\"mlree\",\"type\":\"rfwss\"}")
+            "{\"kind\":\"ThreatIntelligence\",\"properties\":{\"tenantId\":\"znuciqdsm\",\"tipLookbackPeriod\":\"2021-05-19T04:46:27Z\",\"dataTypes\":{\"indicators\":{\"state\":\"Disabled\"}}},\"etag\":\"xtyasiibmiyb\",\"id\":\"ustgnljhnmgixhc\",\"name\":\"avmqfoudor\",\"type\":\"cgyypro\"}")
             .toObject(TIDataConnector.class);
-        Assertions.assertEquals("ygeqzusito", model.etag());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-03T11:09:59Z"), model.tipLookbackPeriod());
+        Assertions.assertEquals("xtyasiibmiyb", model.etag());
+        Assertions.assertEquals("znuciqdsm", model.tenantId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-19T04:46:27Z"), model.tipLookbackPeriod());
         Assertions.assertEquals(DataTypeState.DISABLED, model.dataTypes().indicators().state());
-        Assertions.assertEquals("bnbmxlxm", model.tenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TIDataConnector model = new TIDataConnector().withEtag("ygeqzusito")
-            .withTipLookbackPeriod(OffsetDateTime.parse("2021-02-03T11:09:59Z"))
+        TIDataConnector model = new TIDataConnector().withEtag("xtyasiibmiyb")
+            .withTenantId("znuciqdsm")
+            .withTipLookbackPeriod(OffsetDateTime.parse("2021-05-19T04:46:27Z"))
             .withDataTypes(new TIDataConnectorDataTypes()
-                .withIndicators(new TIDataConnectorDataTypesIndicators().withState(DataTypeState.DISABLED)))
-            .withTenantId("bnbmxlxm");
+                .withIndicators(new TIDataConnectorDataTypesIndicators().withState(DataTypeState.DISABLED)));
         model = BinaryData.fromObject(model).toObject(TIDataConnector.class);
-        Assertions.assertEquals("ygeqzusito", model.etag());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-03T11:09:59Z"), model.tipLookbackPeriod());
+        Assertions.assertEquals("xtyasiibmiyb", model.etag());
+        Assertions.assertEquals("znuciqdsm", model.tenantId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-19T04:46:27Z"), model.tipLookbackPeriod());
         Assertions.assertEquals(DataTypeState.DISABLED, model.dataTypes().indicators().state());
-        Assertions.assertEquals("bnbmxlxm", model.tenantId());
     }
 }

@@ -14,7 +14,6 @@ import com.azure.resourcemanager.streamanalytics.models.ClusterInfo;
 import com.azure.resourcemanager.streamanalytics.models.CompatibilityLevel;
 import com.azure.resourcemanager.streamanalytics.models.ContentStoragePolicy;
 import com.azure.resourcemanager.streamanalytics.models.EventsOutOfOrderPolicy;
-import com.azure.resourcemanager.streamanalytics.models.External;
 import com.azure.resourcemanager.streamanalytics.models.JobStorageAccount;
 import com.azure.resourcemanager.streamanalytics.models.JobType;
 import com.azure.resourcemanager.streamanalytics.models.OutputErrorPolicy;
@@ -162,11 +161,6 @@ public final class StreamingJobPropertiesInner implements JsonSerializable<Strea
      * specify jobStorageAccount property. .
      */
     private ContentStoragePolicy contentStoragePolicy;
-
-    /*
-     * The storage account where the custom code artifacts are located.
-     */
-    private External externals;
 
     /*
      * The cluster which streaming jobs will run on.
@@ -610,26 +604,6 @@ public final class StreamingJobPropertiesInner implements JsonSerializable<Strea
     }
 
     /**
-     * Get the externals property: The storage account where the custom code artifacts are located.
-     * 
-     * @return the externals value.
-     */
-    public External externals() {
-        return this.externals;
-    }
-
-    /**
-     * Set the externals property: The storage account where the custom code artifacts are located.
-     * 
-     * @param externals the externals value to set.
-     * @return the StreamingJobPropertiesInner object itself.
-     */
-    public StreamingJobPropertiesInner withExternals(External externals) {
-        this.externals = externals;
-        return this;
-    }
-
-    /**
      * Get the cluster property: The cluster which streaming jobs will run on.
      * 
      * @return the cluster value.
@@ -673,9 +647,6 @@ public final class StreamingJobPropertiesInner implements JsonSerializable<Strea
         if (jobStorageAccount() != null) {
             jobStorageAccount().validate();
         }
-        if (externals() != null) {
-            externals().validate();
-        }
         if (cluster() != null) {
             cluster().validate();
         }
@@ -709,7 +680,6 @@ public final class StreamingJobPropertiesInner implements JsonSerializable<Strea
         jsonWriter.writeJsonField("jobStorageAccount", this.jobStorageAccount);
         jsonWriter.writeStringField("contentStoragePolicy",
             this.contentStoragePolicy == null ? null : this.contentStoragePolicy.toString());
-        jsonWriter.writeJsonField("externals", this.externals);
         jsonWriter.writeJsonField("cluster", this.cluster);
         return jsonWriter.writeEndObject();
     }
@@ -786,8 +756,6 @@ public final class StreamingJobPropertiesInner implements JsonSerializable<Strea
                 } else if ("contentStoragePolicy".equals(fieldName)) {
                     deserializedStreamingJobPropertiesInner.contentStoragePolicy
                         = ContentStoragePolicy.fromString(reader.getString());
-                } else if ("externals".equals(fieldName)) {
-                    deserializedStreamingJobPropertiesInner.externals = External.fromJson(reader);
                 } else if ("cluster".equals(fieldName)) {
                     deserializedStreamingJobPropertiesInner.cluster = ClusterInfo.fromJson(reader);
                 } else {

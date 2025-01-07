@@ -15,22 +15,22 @@ public final class McasDataConnectorPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         McasDataConnectorProperties model = BinaryData.fromString(
-            "{\"dataTypes\":{\"discoveryLogs\":{\"state\":\"Disabled\"},\"alerts\":{\"state\":\"Disabled\"}},\"tenantId\":\"ckqiawzlzk\"}")
+            "{\"tenantId\":\"q\",\"dataTypes\":{\"discoveryLogs\":{\"state\":\"Disabled\"},\"alerts\":{\"state\":\"Enabled\"}}}")
             .toObject(McasDataConnectorProperties.class);
-        Assertions.assertEquals("ckqiawzlzk", model.tenantId());
-        Assertions.assertEquals(DataTypeState.DISABLED, model.dataTypes().alerts().state());
+        Assertions.assertEquals("q", model.tenantId());
+        Assertions.assertEquals(DataTypeState.ENABLED, model.dataTypes().alerts().state());
         Assertions.assertEquals(DataTypeState.DISABLED, model.dataTypes().discoveryLogs().state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        McasDataConnectorProperties model = new McasDataConnectorProperties().withTenantId("ckqiawzlzk")
+        McasDataConnectorProperties model = new McasDataConnectorProperties().withTenantId("q")
             .withDataTypes(new McasDataConnectorDataTypes()
-                .withAlerts(new DataConnectorDataTypeCommon().withState(DataTypeState.DISABLED))
+                .withAlerts(new DataConnectorDataTypeCommon().withState(DataTypeState.ENABLED))
                 .withDiscoveryLogs(new DataConnectorDataTypeCommon().withState(DataTypeState.DISABLED)));
         model = BinaryData.fromObject(model).toObject(McasDataConnectorProperties.class);
-        Assertions.assertEquals("ckqiawzlzk", model.tenantId());
-        Assertions.assertEquals(DataTypeState.DISABLED, model.dataTypes().alerts().state());
+        Assertions.assertEquals("q", model.tenantId());
+        Assertions.assertEquals(DataTypeState.ENABLED, model.dataTypes().alerts().state());
         Assertions.assertEquals(DataTypeState.DISABLED, model.dataTypes().discoveryLogs().state());
     }
 }

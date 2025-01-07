@@ -50,7 +50,7 @@ public final class FileReferenceInputDataSource extends ReferenceInputDataSource
      * 
      * @return the innerProperties value.
      */
-    private FileReferenceInputDataSourceProperties innerProperties() {
+    FileReferenceInputDataSourceProperties innerProperties() {
         return this.innerProperties;
     }
 
