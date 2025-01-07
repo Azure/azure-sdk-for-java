@@ -191,6 +191,12 @@ public final class PagedIterable<T> implements Iterable<T> {
             if (page != null) {
                 receivePage(receivedPages, page);
             }
+
+            /*
+             * In the scenario when the subscription completes without emitting an element indicate we are done by checking
+             * if we have any additional elements to return.
+             */
+            this.done = done || (!receivedPages.get() && !isNextAvailable());
         }
 
         abstract void addPage(PagedResponse<T> page);
