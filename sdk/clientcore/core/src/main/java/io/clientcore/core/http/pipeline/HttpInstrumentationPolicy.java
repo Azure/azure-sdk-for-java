@@ -244,9 +244,9 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
 
         span.setAttribute(HTTP_RESPONSE_STATUS_CODE, (long) response.getStatusCode());
 
-        int retryCount = HttpRequestAccessHelper.getRetryCount(request);
-        if (retryCount > 1) {
-            span.setAttribute(HTTP_REQUEST_RESEND_COUNT, (long) HttpRequestAccessHelper.getRetryCount(request) - 1);
+        int tryCount = HttpRequestAccessHelper.getTryCount(request);
+        if (tryCount > 0) {
+            span.setAttribute(HTTP_REQUEST_RESEND_COUNT, (long) tryCount);
         }
 
         String userAgent = request.getHeaders().getValue(HttpHeaderName.USER_AGENT);
