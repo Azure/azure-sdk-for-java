@@ -89,6 +89,14 @@ public class PathBuilder {
             result = result.substring(0, result.length() - 4);
         }
 
+        // Check for missing or incorrect braces
+        long openingBracesCount = rawHost.chars().filter(ch -> ch == '{').count();
+        long closingBracesCount = rawHost.chars().filter(ch -> ch == '}').count();
+
+        if (openingBracesCount != closingBracesCount) {
+            throw new MissingSubstitutionException("Mismatched braces in raw host: " + rawHost);
+        }
+
         return result;
     }
 }

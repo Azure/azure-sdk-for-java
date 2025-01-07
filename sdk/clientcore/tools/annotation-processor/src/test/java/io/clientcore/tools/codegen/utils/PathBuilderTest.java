@@ -11,6 +11,9 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+/**
+ * Tests for the PathBuilder class.
+ */
 public class PathBuilderTest {
 
     @Test
@@ -336,36 +339,36 @@ public class PathBuilderTest {
         assertEquals("\"https://\" + myEndpoint* + \"/keys\"", result);
     }
 
-//    @Test
-//    public void buildsPathWithNestedSubstitutions() {
-//        HttpRequestContext context = new HttpRequestContext();
-//        context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-//        context.addSubstitution(new Substitution("path", "myPath"));
-//        assertThrows(MissingSubstitutionException.class, () -> PathBuilder.buildPath("https://{{endpoint}/keys/{path}", context));
-//    }
+    @Test
+    public void buildsPathWithNestedSubstitutions() {
+        HttpRequestContext context = new HttpRequestContext();
+        context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
+        context.addSubstitution(new Substitution("path", "myPath"));
+        assertThrows(MissingSubstitutionException.class, () -> PathBuilder.buildPath("https://{{endpoint}/keys/{path}", context));
+    }
 
-//    @Test
-//    public void buildsPathWithMissingClosingBrace() {
-//        HttpRequestContext context = new HttpRequestContext();
-//        context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-//        context.addSubstitution(new Substitution("path", "myPath"));
-//        assertThrows(MissingSubstitutionException.class, () -> PathBuilder.buildPath("https://{endpoint/keys/{path}", context));
-//    }
+    @Test
+    public void buildsPathWithMissingClosingBrace() {
+        HttpRequestContext context = new HttpRequestContext();
+        context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
+        context.addSubstitution(new Substitution("path", "myPath"));
+        assertThrows(MissingSubstitutionException.class, () -> PathBuilder.buildPath("https://{endpoint/keys/{path}", context));
+    }
 
-//    @Test
-//    public void buildsPathWithMissingOpeningBrace() {
-//        HttpRequestContext context = new HttpRequestContext();
-//        context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-//        context.addSubstitution(new Substitution("path", "myPath"));
-//        assertThrows(MissingSubstitutionException.class, () -> PathBuilder.buildPath("https://endpoint}/keys/{path}", context));
-//    }
+    @Test
+    public void buildsPathWithMissingOpeningBrace() {
+        HttpRequestContext context = new HttpRequestContext();
+        context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
+        context.addSubstitution(new Substitution("path", "myPath"));
+        assertThrows(MissingSubstitutionException.class, () -> PathBuilder.buildPath("https://endpoint}/keys/{path}", context));
+    }
 
-//    @Test
-//    public void buildsPathWithSubstitutionContainingOpeningBrace() {
-//        HttpRequestContext context = new HttpRequestContext();
-//        context.addSubstitution(new Substitution("endpoint{", "myEndpoint"));
-//        assertThrows(MissingSubstitutionException.class, () -> PathBuilder.buildPath("https://{endpoint{/keys", context));
-//    }
+    @Test
+    public void buildsPathWithSubstitutionContainingOpeningBrace() {
+        HttpRequestContext context = new HttpRequestContext();
+        context.addSubstitution(new Substitution("endpoint{", "myEndpoint"));
+        assertThrows(MissingSubstitutionException.class, () -> PathBuilder.buildPath("https://{endpoint{/keys", context));
+    }
 
     @Test
     public void buildsPathWithSubstitutionContainingClosingBrace() {
