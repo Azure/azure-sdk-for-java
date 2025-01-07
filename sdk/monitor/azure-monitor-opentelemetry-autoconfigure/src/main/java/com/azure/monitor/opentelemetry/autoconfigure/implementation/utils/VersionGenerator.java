@@ -39,6 +39,7 @@ public final class VersionGenerator {
         } else if (!Strings.isNullOrEmpty(System.getenv("WEBSITE_SITE_NAME"))) {
             return "a";
         } else if (!Strings.isNullOrEmpty(System.getenv("APPLICATIONINSIGHTS_SPRINGCLOUD_SERVICE_ID"))) {
+            // Spring Cloud needs to be checked before AKS since it runs on AKS
             return "s";
         } else if (!Strings.isNullOrEmpty(System.getenv("AKS_ARM_NAMESPACE_ID"))) {
             return "k";
