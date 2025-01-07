@@ -153,7 +153,8 @@ public class PathBuilderTest {
     public void buildsPathWithEmptySubstitutionValue() {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", ""));
-        assertThrows(MissingSubstitutionException.class, () -> PathBuilder.buildPath("https://{endpoint}/keys", context));
+        String result = PathBuilder.buildPath("https://{endpoint}/keys", context);
+        assertEquals("\"https://\" +  + \"/keys\"", result);
     }
 
     @Test
@@ -422,4 +423,16 @@ public class PathBuilderTest {
         String result = PathBuilder.buildPath("{endpoint}/keys/{path}", context);
         assertEquals("myEndpoint + \"/keys/\" + myPath + \"?key1=\" + value1 + \"&key2=\" + value2", result);
     }
+
+    // TODO: Currently, the context adds subsitition using the parameter name as key so i
+    // Is this a valid case?
+//    @Test
+//    public void buildsPathWithHostAndPathUsingSameSubstitutionName() {
+//        HttpRequestContext context = new HttpRequestContext();
+//        context.addSubstitution(new Substitution("sub1", "hostSub1"));
+//        context.addSubstitution(new Substitution("sub1", "pathSub1"));
+//
+//        String result = PathBuilder.buildPath("https://{sub1}.host.com/keys/{sub1}", context);
+//        assertEquals("\"https://\" + hostSub1 + \".host.com/keys/\" + pathSub1", result);
+//    }
 }

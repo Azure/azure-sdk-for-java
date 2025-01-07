@@ -3,11 +3,6 @@
 
 package io.clientcore.tools.codegen;
 
-import io.clientcore.tools.codegen.models.HttpRequestContext;
-import io.clientcore.tools.codegen.models.Substitution;
-import io.clientcore.tools.codegen.models.TemplateInput;
-import io.clientcore.tools.codegen.templating.TemplateProcessor;
-import io.clientcore.tools.codegen.utils.PathBuilder;
 import io.clientcore.core.annotation.ServiceInterface;
 import io.clientcore.core.http.annotation.BodyParam;
 import io.clientcore.core.http.annotation.HeaderParam;
@@ -15,8 +10,22 @@ import io.clientcore.core.http.annotation.HostParam;
 import io.clientcore.core.http.annotation.HttpRequestInformation;
 import io.clientcore.core.http.annotation.PathParam;
 import io.clientcore.core.http.annotation.QueryParam;
-
 import io.clientcore.core.http.annotation.UnexpectedResponseExceptionDetail;
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.models.HttpMethod;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.HttpResponse;
+import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.util.Context;
+import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.tools.codegen.models.HttpRequestContext;
+import io.clientcore.tools.codegen.models.Substitution;
+import io.clientcore.tools.codegen.models.TemplateInput;
+import io.clientcore.tools.codegen.templating.TemplateProcessor;
+import io.clientcore.tools.codegen.utils.PathBuilder;
+
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
@@ -26,6 +35,12 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -53,16 +68,16 @@ public class AnnotationProcessor extends AbstractProcessor {
 
 
     private void processServiceInterface(Element serviceInterface) {
+        if (serviceInterface == null || serviceInterface.getKind() != ElementKind.INTERFACE) {
+            throw new IllegalArgumentException("Invalid service interface provided.");
+        }
+
         TemplateInput templateInput = new TemplateInput();
 
-        // work out some global details about this service interface
+        // Determine the fully qualified name (FQN) and package name
         final String serviceInterfaceFQN = serviceInterface.asType().toString();
-
-        String packageName = null;
         int lastDot = serviceInterfaceFQN.lastIndexOf('.');
-        if (lastDot > 0) {
-            packageName = serviceInterfaceFQN.substring(0, lastDot);
-        }
+        String packageName = (lastDot > 0) ? serviceInterfaceFQN.substring(0, lastDot) : "default.generated";
 
         final String serviceInterfaceShortName = serviceInterfaceFQN.substring(lastDot + 1);
         final String serviceInterfaceImplFQN = serviceInterfaceFQN + "Impl";
@@ -73,51 +88,55 @@ public class AnnotationProcessor extends AbstractProcessor {
         templateInput.setServiceInterfaceShortName(serviceInterfaceShortName);
         templateInput.setServiceInterfaceImplShortName(serviceInterfaceImplShortName);
 
-        // Read ServiceInterface.host() value from any enclosed interfaces
-        if (serviceInterface.getAnnotation(ServiceInterface.class) != null) {
-            templateInput.setHost(serviceInterface.getAnnotation(ServiceInterface.class).host());
+        // Read the ServiceInterface.host() value from annotations
+        ServiceInterface annotation = serviceInterface.getAnnotation(ServiceInterface.class);
+        if (annotation != null && annotation.host() != null) {
+            templateInput.setHost(annotation.host());
         }
 
-        // add all imports
+        // Add all required imports
         addImports(templateInput);
 
-        // iterate through all methods in the interface, collecting all that are @HttpRequestInformation
-        // and then generating a method implementation for each one
-        templateInput.setHttpRequestContexts(serviceInterface.getEnclosedElements().stream()
-                .filter(element -> element.getKind() == ElementKind.METHOD)
-                .filter(element -> element.getAnnotation(HttpRequestInformation.class) != null)
-                .map(ExecutableElement.class::cast)
-                .map(e -> createHttpRequestContext(e, templateInput))
-                .collect(Collectors.toList()));
+        // Collect methods annotated with @HttpRequestInformation
+        List<ExecutableElement> httpRequestMethods = serviceInterface.getEnclosedElements().stream()
+            .filter(element -> element.getKind() == ElementKind.METHOD)
+            .filter(element -> element.getAnnotation(HttpRequestInformation.class) != null)
+            .map(ExecutableElement.class::cast)
+            .collect(Collectors.toList());
 
-        // template input set UnexpectedResponseExceptionDetails
-        templateInput.setUnexpectedResponseExceptionDetails(serviceInterface.getEnclosedElements().stream()
-                .filter(element -> element.getKind() == ElementKind.METHOD)
-                .filter(element -> element.getAnnotation(HttpRequestInformation.class) != null)
-                .map(ExecutableElement.class::cast)
-                .map(e -> e.getAnnotation(UnexpectedResponseExceptionDetail.class))
-                .collect(Collectors.toList()));
+        // Generate HTTP request contexts
+        templateInput.setHttpRequestContexts(httpRequestMethods.stream()
+            .map(e -> createHttpRequestContext(e, templateInput))
+            .filter(Objects::nonNull) // Exclude null contexts
+            .collect(Collectors.toList()));
 
+        // Set UnexpectedResponseExceptionDetails
+        templateInput.setUnexpectedResponseExceptionDetails(httpRequestMethods.stream()
+            .map(e -> e.getAnnotation(UnexpectedResponseExceptionDetail.class))
+            .filter(Objects::nonNull) // Exclude null annotations
+            .collect(Collectors.toList()));
+
+        // Process the template
         TemplateProcessor.getInstance().process(templateInput, processingEnv);
 
-        // format the generated code
+        // Additional formatting or logging if necessary
     }
 
     private void addImports(TemplateInput templateInput) {
-        templateInput.addImport("io.clientcore.core.util.Context");
-        templateInput.addImport("io.clientcore.core.util.binarydata.BinaryData");
-        templateInput.addImport("io.clientcore.core.http.models.HttpHeaders");
-        templateInput.addImport("io.clientcore.core.http.pipeline.HttpPipeline");
-        templateInput.addImport("io.clientcore.core.http.models.HttpHeaderName");
-        templateInput.addImport("io.clientcore.core.http.models.HttpMethod");
-        templateInput.addImport("io.clientcore.core.http.models.HttpResponse");
-        templateInput.addImport("io.clientcore.core.http.models.HttpRequest");
-        templateInput.addImport("io.clientcore.core.http.models.Response");
-        templateInput.addImport("java.util.Map");
-        templateInput.addImport("java.util.HashMap");
-        templateInput.addImport("java.util.Arrays");
-        templateInput.addImport("java.lang.Void");
-        templateInput.addImport("java.util.List");
+        templateInput.addImport(Context.class.getName());
+        templateInput.addImport(BinaryData.class.getName());
+        templateInput.addImport(HttpHeaders.class.getName());
+        templateInput.addImport(HttpPipeline.class.getName());
+        templateInput.addImport(HttpHeaderName.class.getName());
+        templateInput.addImport(HttpMethod.class.getName());
+        templateInput.addImport(HttpResponse.class.getName());
+        templateInput.addImport(HttpRequest.class.getName());
+        templateInput.addImport(Response.class.getName());
+        templateInput.addImport(Map.class.getName());
+        templateInput.addImport(HashMap.class.getName());
+        templateInput.addImport(Arrays.class.getName());
+        templateInput.addImport(Void.class.getName());
+        templateInput.addImport(List.class.getName());
     }
 
     private HttpRequestContext createHttpRequestContext(ExecutableElement requestMethod, TemplateInput templateInput) {
@@ -125,65 +144,55 @@ public class AnnotationProcessor extends AbstractProcessor {
         method.setHost(templateInput.getHost());
         method.setMethodName(requestMethod.getSimpleName().toString());
 
+        // Extract @HttpRequestInformation annotation details
         final HttpRequestInformation httpRequestInfo = requestMethod.getAnnotation(HttpRequestInformation.class);
         method.setPath(httpRequestInfo.path());
         method.setHttpMethod(httpRequestInfo.method());
         method.setExpectedStatusCodes(httpRequestInfo.expectedStatusCodes());
 
-        templateInput.addImport(requestMethod.getReturnType());
-        method.setMethodReturnType(requestMethod.getReturnType().toString());
-        requestMethod.getParameters().forEach(param -> {
+        // Add return type as an import
+        String returnTypeShortName = templateInput.addImport(requestMethod.getReturnType());
+        method.setMethodReturnType(returnTypeShortName);
+
+        // Process parameters
+        for (VariableElement param : requestMethod.getParameters()) {
+            // Cache annotations for each parameter
             HostParam hostParam = param.getAnnotation(HostParam.class);
             PathParam pathParam = param.getAnnotation(PathParam.class);
             HeaderParam headerParam = param.getAnnotation(HeaderParam.class);
             QueryParam queryParam = param.getAnnotation(QueryParam.class);
             BodyParam bodyParam = param.getAnnotation(BodyParam.class);
 
-            // check if the parameter has an annotation, and if so, add it to the appropriate list
+            // Switch based on annotations
             if (hostParam != null) {
-                // a HostParam is a substitution into the global @Host value. Depending on the @Host value,
-                // there may be zero or more {} delimited substitutions, so we need to handle this
-                // appropriately
                 method.addSubstitution(new Substitution(
-                        hostParam.value(),
-                        param.getSimpleName().toString(),
-                        hostParam.encoded()));
+                    hostParam.value(),
+                    param.getSimpleName().toString(),
+                    hostParam.encoded()));
             } else if (pathParam != null) {
-                // a PathParam is a substitution into the path value. Depending on the path value,
-                // there may be zero or more {} delimited substitutions, so we need to handle this
-                // appropriately
                 method.addSubstitution(new Substitution(
-                        pathParam.value(),
-                        param.getSimpleName().toString(),
-                        pathParam.encoded()));
+                    pathParam.value(),
+                    param.getSimpleName().toString(),
+                    pathParam.encoded()));
             } else if (headerParam != null) {
                 method.addHeader(headerParam.value(), param.getSimpleName().toString());
             } else if (queryParam != null) {
-                // we do not support query param substitutions, so we just add the query param name and value
                 method.addQueryParam(queryParam.value(), param.getSimpleName().toString());
-            } else if (false) {
-                // TODO support FormParam
+                // TODO: Add support for multipleQueryParams and encoded handling
             } else if (bodyParam != null) {
-                // This is the content type as specified in the @BodyParam annotation
-                String contentType = bodyParam.value();
-
-                // This is the type of the parameter that has been annotated with @BodyParam.
-                // This is used to determine which setBody method to call on HttpRequest.
-                String parameterType = param.asType().toString();
-
-                // This is the parameter name, so we can refer to it when setting the body on the HttpRequest.
-                String parameterName = param.getSimpleName().toString();
-
-                method.setBody(new HttpRequestContext.Body(contentType, parameterType, parameterName));
+                method.setBody(new HttpRequestContext.Body(
+                    bodyParam.value(),
+                    param.asType().toString(),
+                    param.getSimpleName().toString()));
             }
 
-            String shortImportName = templateInput.addImport(param.asType());
-            method.addParameter(new HttpRequestContext.MethodParameter(param.asType(), shortImportName, param.getSimpleName().toString()));
-        });
+            // Add parameter details to method context
+            String shortParamName = templateInput.addImport(param.asType());
+            method.addParameter(new HttpRequestContext.MethodParameter(param.asType(), shortParamName, param.getSimpleName().toString()));
+        }
 
-        // we can reduce the amount of regex matching on the host by doing as many substitutions as possible here
-        String rawHost = getHost(templateInput, method);
-        method.setHost(rawHost);
+        // Pre-compute host substitutions
+        method.setHost(getHost(templateInput, method));
 
         return method;
     }

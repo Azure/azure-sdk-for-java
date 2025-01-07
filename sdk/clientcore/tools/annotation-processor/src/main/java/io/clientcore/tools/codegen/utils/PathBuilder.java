@@ -7,7 +7,7 @@ import io.clientcore.tools.codegen.exceptions.MissingSubstitutionException;
 import io.clientcore.tools.codegen.models.HttpRequestContext;
 import io.clientcore.tools.codegen.models.Substitution;
 
-import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,8 +25,9 @@ public class PathBuilder {
             throw new NullPointerException("method cannot be null");
         }
 
-        final boolean hasQueryParams = !method.getQueryParams().isEmpty();
+        boolean hasQueryParams = !method.getQueryParams().isEmpty();
 
+        // Pattern for substitution placeholders
         Pattern pattern = Pattern.compile("\\{(.+?)\\}");
         Matcher matcher = pattern.matcher(rawHost);
         StringBuffer buffer = new StringBuffer();
@@ -34,52 +35,59 @@ public class PathBuilder {
         while (matcher.find()) {
             String paramName = matcher.group(1);
             Substitution substitution = method.getSubstitution(paramName);
-            if (substitution != null && !substitution.getParameterVariableName().isEmpty()) {
-                matcher.appendReplacement(buffer, "");
 
+            if (substitution != null) {
+                String substitutionValue = substitution.getParameterVariableName();
+                String replacementValue = substitutionValue != null
+                    ? Objects.toString(substitutionValue, "null")
+                    : "";
+
+                matcher.appendReplacement(buffer, "");
                 if (buffer.length() != 0) {
                     buffer.append("\" + ");
                 }
-                buffer.append(substitution.getParameterVariableName()).append(" + \"");
+                buffer.append(replacementValue).append(" + \"");
             } else {
                 throw new MissingSubstitutionException("Could not find substitution for '" + paramName + "' in method '" + method.getMethodName() + "'");
             }
         }
 
-        // Remove the last " + \""
-        if (matcher.hitEnd()) {
-            matcher.appendTail(buffer);
-
-            if (!hasQueryParams) {
-                buffer.append("\"");
-            }
-        }
+        matcher.appendTail(buffer);
 
         if (hasQueryParams) {
             buffer.append("?");
-            for (Map.Entry<String, String> entry : method.getQueryParams().entrySet()) {
-                final String key = entry.getKey();
-                final String value = entry.getValue();
+
+            method.getQueryParams().forEach((key, value) -> {
                 if (key.isEmpty() || value.isEmpty()) {
                     throw new IllegalArgumentException("Query parameter key and value must not be empty");
                 }
-                buffer.append(entry.getKey()).append("=\" + ").append(entry.getValue()).append(" + \"&");
-            }
-            // Remove the last "&\""
-            buffer.delete(buffer.length() - 5, buffer.length());
+                buffer.append(key).append("=\" + ").append(Objects.toString(value, "null")).append(" + \"&");
+            });
+
+            // Remove the trailing '&'
+            buffer.setLength(buffer.length() - 1);
         }
 
-        // Add opening and closing quotes if they are not present and the first/last part is not a substitution
-        if (buffer.charAt(0) != '\"' && !rawHost.startsWith("{")) {
-            buffer.insert(0, '\"');
+        // Ensure the output is properly quoted
+        if (buffer.charAt(0) != '"' && !rawHost.startsWith("{")) {
+            buffer.insert(0, '"');
         }
-        if (!hasQueryParams && buffer.charAt(buffer.length() - 1) != '\"' && !rawHost.endsWith("}")) {
-            buffer.append('\"');
+        if (!hasQueryParams && buffer.charAt(buffer.length() - 1) != '"' && !rawHost.endsWith("}")) {
+            buffer.append('"');
         }
 
-        // strip out unnecessary `+ ""` in the buffer
-        String result = buffer.toString();
-        result = result.replaceAll(" \\+ \"\"", "");
+        // Clean unnecessary `+ ""` in the buffer
+        String result = buffer.toString().replaceAll(" \\+ \"\"", "");
+
+        // Remove trailing ' + ' if it exists
+        if (result.endsWith(" + ")) {
+            result = result.substring(0, result.length() - 3);
+        }
+
+        // Remove trailing ' + "' if it exists
+        if (result.endsWith(" + \"")) {
+            result = result.substring(0, result.length() - 4);
+        }
 
         return result;
     }
