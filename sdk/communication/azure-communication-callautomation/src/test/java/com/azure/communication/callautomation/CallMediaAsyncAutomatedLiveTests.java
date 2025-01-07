@@ -28,6 +28,7 @@ import com.azure.communication.callautomation.models.MediaStreamingAudioChannel;
 import com.azure.communication.callautomation.models.MediaStreamingContent;
 import com.azure.communication.callautomation.models.MediaStreamingOptions;
 import com.azure.communication.callautomation.models.MediaStreamingTransport;
+import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.TranscriptionOptions;
 import com.azure.communication.callautomation.models.StartMediaStreamingOptions;
 import com.azure.communication.callautomation.models.StopMediaStreamingOptions;
@@ -1412,9 +1413,10 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             List<PlaySource> playFileSources = new ArrayList<PlaySource>();
             playFileSources.add(new FileSource().setUrl(MEDIA_SOURCE));
             playFileSources.add(new FileSource().setUrl(MEDIA_SOURCE));
-
+            PlayOptions playOptions = new PlayOptions(playFileSources, targets);
+            playOptions.setInterruptHoldAudio(true);
             // Play multiple files sources
-            callMediaAsync.play(playFileSources, targets).block();
+            callMediaAsync.playWithResponse(playOptions).block();
             HoldAudioPaused holdAudioPaused = waitForEvent(HoldAudioPaused.class, callerConnectionId, Duration.ofSeconds(20));
             assertNotNull(holdAudioPaused);
 
