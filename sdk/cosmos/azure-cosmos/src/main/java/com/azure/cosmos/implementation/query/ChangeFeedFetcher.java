@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -210,7 +211,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         private MetadataDiagnosticsContext diagnosticsContext;
         private final RetryContext retryContext;
         private final Supplier<String> operationContextTextProvider;
-        private RxCollectionCache rxCollectionCache;
+        private final RxCollectionCache rxCollectionCache;
         private int staleContainerRetryCount;
         private RxDocumentServiceRequest request;
 
@@ -250,6 +251,9 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
             return this.nextRetryPolicy.shouldRetry(e).flatMap(shouldRetryResult -> {
                 if (!shouldRetryResult.shouldRetry) {
                     if (!(e instanceof GoneException)) {
+                        if (isStaleContainerException(e)) {
+                            return this.handleStaleContainerException(e);
+                        }
                         LOGGER.warn(
                             "Exception not applicable - will fail the request. Context: {}",
                             this.operationContextTextProvider.get(),
@@ -346,10 +350,14 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
             if (this.rxCollectionCache == null || this.staleContainerRetryCount > 1) {
                 return Mono.just(ShouldRetryResult.noRetry());
             }
-
             return this.rxCollectionCache
-                .refreshAsync(null, this.request)
-                .then(Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO)));
+                .resolveCollectionAsync(null, this.request)
+                .flatMap(collection -> {
+                    checkNotNull(collection, "Argument 'collection' cannot be null!");
+                    checkNotNull(collection.v, "Argument 'collection.v' cannot be null!");
+
+                    return Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO));
+                });
         }
     }
 
