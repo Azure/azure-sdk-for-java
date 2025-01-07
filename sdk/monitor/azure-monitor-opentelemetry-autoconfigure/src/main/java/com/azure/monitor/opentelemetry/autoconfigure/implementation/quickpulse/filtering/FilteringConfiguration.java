@@ -2,14 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering;
 
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DerivedMetricInfo;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterConjunctionGroupInfo;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationInfo;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentStreamInfo;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentFilterConjunctionGroupInfo;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.AggregationType;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.TelemetryType;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationErrorType;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.*;
 
 import java.util.Set;
 import java.util.List;
@@ -73,6 +66,10 @@ public class FilteringConfiguration {
         return new HashMap<>(validProjectionInfo);
     }
 
+    public List<CollectionConfigurationError> getErrors() {
+        return validator.getErrors();
+    }
+
     private Map<TelemetryType, Map<String, List<FilterConjunctionGroupInfo>>>
         parseDocumentFilterConfiguration(CollectionConfigurationInfo configuration) {
         Map<TelemetryType, Map<String, List<FilterConjunctionGroupInfo>>> result = new HashMap<>();
@@ -82,7 +79,7 @@ public class FilteringConfiguration {
                 .getDocumentFilterGroups()) {
                 TelemetryType telemetryType = documentFilterGroupInfo.getTelemetryType();
                 FilterConjunctionGroupInfo filterGroup = documentFilterGroupInfo.getFilters();
-                if (validator.isValidDocConjunctionGroupInfo(documentFilterGroupInfo)) {
+                if (validator.isValidDocConjunctionGroupInfo(documentFilterGroupInfo, configuration.getETag(), documentStreamId)) {
                     if (!result.containsKey(telemetryType)) {
                         result.put(telemetryType, new HashMap<>());
                     }
@@ -111,7 +108,7 @@ public class FilteringConfiguration {
 
             if (!seenMetricIds.contains(id)) {
                 seenMetricIds.add(id);
-                if (validator.isValidDerivedMetricInfo(derivedMetricInfo)) {
+                if (validator.isValidDerivedMetricInfo(derivedMetricInfo, configuration.getETag())) {
                     if (result.containsKey(telemetryType)) {
                         result.get(telemetryType).add(derivedMetricInfo);
                     } else {
