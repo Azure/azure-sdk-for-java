@@ -821,7 +821,7 @@ public final class CoreUtils {
      *
      * @param authenticateHeader The authenticate header to be parsed.
      * @return A list of authenticate challenges.
-     * @throws IllegalArgumentException If the authenticate header has syntax errors.
+     * @throws IllegalArgumentException If the {@code authenticateHeader} has syntax errors.
      */
     public static List<AuthenticateChallenge> parseAuthenticateHeader(String authenticateHeader) {
         if (isNullOrEmpty(authenticateHeader)) {
