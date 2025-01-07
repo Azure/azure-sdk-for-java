@@ -1331,6 +1331,14 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosBatchResponseAccessor {
             List<CosmosBatchOperationResult> getResults(CosmosBatchResponse cosmosBatchResponse);
+
+            void setOpCountPerEvaluation(CosmosBatchResponse cosmosBatchResponse, long opCountPerEvaluation);
+
+            void setGlobalOpCount(CosmosBatchResponse cosmosBatchResponse, long globalOpCount);
+
+            void setRetriedOpCountPerEvaluation(CosmosBatchResponse cosmosBatchResponse, long retriedOpCountPerEvaluation);
+
+            void setTargetMaxMicroBatchSize(CosmosBatchResponse cosmosBatchResponse, int targetMaxMicroBatchSize);
         }
     }
 

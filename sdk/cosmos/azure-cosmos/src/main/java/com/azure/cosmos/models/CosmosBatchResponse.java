@@ -194,66 +194,34 @@ public final class CosmosBatchResponse {
     }
 
     /**
-     * Get operation count per evaluation
-     * @return Operation count per evaluation
-     * */
-    public long getOpCountPerEvaluation() {
-        return opCountPerEvaluation;
-    }
-
-    /**
      * Set operation count per evaluation
      * @param opCountPerEvaluation  Operation count per evaluation
      * */
-    public void setOpCountPerEvaluation(long opCountPerEvaluation) {
+    void setOpCountPerEvaluation(long opCountPerEvaluation) {
         this.opCountPerEvaluation = opCountPerEvaluation;
-    }
-
-    /**
-     * Get global operation count
-     * @return Global operation count
-     * */
-    public long getGlobalOpCount() {
-        return this.globalOpCount;
     }
 
     /**
      * Set global operation count
      * @param globalOpCount  Global operation count
      * */
-    public void setGlobalOpCount(long globalOpCount) {
+    void setGlobalOpCount(long globalOpCount) {
         this.globalOpCount = globalOpCount;
-    }
-
-    /**
-     * Get retried operation count per evaluation
-     * @return retried operation count per evaluation
-     * */
-    public long getRetriedOpCountPerEvaluation() {
-        return retriedOpCountPerEvaluation;
     }
 
     /**
      * Set retried operation count per evaluation
      * @param retriedOpCountPerEvaluation  retried operation count per evaluation
      * */
-    public void setRetriedOpCountPerEvaluation(long retriedOpCountPerEvaluation) {
+    void setRetriedOpCountPerEvaluation(long retriedOpCountPerEvaluation) {
         this.retriedOpCountPerEvaluation = retriedOpCountPerEvaluation;
-    }
-
-    /**
-     * Get target max micro batch size
-     * @return target max micro batch size
-     * */
-    public int getTargetMaxMicroBatchSize() {
-        return this.targetMaxMicroBatchSize;
     }
 
     /**
      * Set target max micro batch size
      * @param targetMaxMicroBatchSize  target max micro batch size
      * */
-    public void setTargetMaxMicroBatchSize(int targetMaxMicroBatchSize) {
+    void setTargetMaxMicroBatchSize(int targetMaxMicroBatchSize) {
         this.targetMaxMicroBatchSize = targetMaxMicroBatchSize;
     }
 
@@ -266,8 +234,32 @@ public final class CosmosBatchResponse {
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
     static void initialize() {
-        ImplementationBridgeHelpers.CosmosBatchResponseHelper.setCosmosBatchResponseAccessor(
-            cosmosBatchResponse -> cosmosBatchResponse.results);
+        ImplementationBridgeHelpers.CosmosBatchResponseHelper.setCosmosBatchResponseAccessor(new ImplementationBridgeHelpers.CosmosBatchResponseHelper.CosmosBatchResponseAccessor() {
+            @Override
+            public List<CosmosBatchOperationResult> getResults(CosmosBatchResponse cosmosBatchResponse) {
+                return cosmosBatchResponse.results;
+            }
+
+            @Override
+            public void setOpCountPerEvaluation(CosmosBatchResponse cosmosBatchResponse, long opCountPerEvaluation) {
+                cosmosBatchResponse.setOpCountPerEvaluation(opCountPerEvaluation);
+            }
+
+            @Override
+            public void setGlobalOpCount(CosmosBatchResponse cosmosBatchResponse, long globalOpCount) {
+                cosmosBatchResponse.setGlobalOpCount(globalOpCount);
+            }
+
+            @Override
+            public void setRetriedOpCountPerEvaluation(CosmosBatchResponse cosmosBatchResponse, long retriedOpCountPerEvaluation) {
+                cosmosBatchResponse.setRetriedOpCountPerEvaluation(retriedOpCountPerEvaluation);
+            }
+
+            @Override
+            public void setTargetMaxMicroBatchSize(CosmosBatchResponse cosmosBatchResponse, int targetMaxMicroBatchSize) {
+                cosmosBatchResponse.setTargetMaxMicroBatchSize(targetMaxMicroBatchSize);
+            }
+        });
     }
 
     static { initialize(); }

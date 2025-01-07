@@ -86,6 +86,8 @@ public final class BulkExecutor<TContext> implements Disposable {
     private final static AtomicLong instanceCount = new AtomicLong(0);
     private static final ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor clientAccessor =
         ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
+    private static final ImplementationBridgeHelpers.CosmosBatchResponseHelper.CosmosBatchResponseAccessor cosmosBatchResponseAccessor =
+        ImplementationBridgeHelpers.CosmosBatchResponseHelper.getCosmosBatchResponseAccessor();
 
     private final CosmosAsyncContainer container;
     private final int maxMicroBatchPayloadSizeInBytes;
@@ -893,14 +895,18 @@ public final class BulkExecutor<TContext> implements Disposable {
                 BridgeInternal.getLink(this.container), serverRequest, options, false)
                 .flatMap(cosmosBatchResponse -> {
 
-                    cosmosBatchResponse.setGlobalOpCount(partitionScopeThresholds.getTotalOperationCountSnapshot());
+                    cosmosBatchResponseAccessor.setGlobalOpCount(
+                        cosmosBatchResponse, partitionScopeThresholds.getTotalOperationCountSnapshot());
 
                     PartitionScopeThresholds.CurrentIntervalThresholds currentIntervalThresholdsSnapshot
                         = partitionScopeThresholds.getCurrentThresholds();
 
-                    cosmosBatchResponse.setOpCountPerEvaluation(currentIntervalThresholdsSnapshot.currentOperationCount.get());
-                    cosmosBatchResponse.setRetriedOpCountPerEvaluation(currentIntervalThresholdsSnapshot.currentRetriedOperationCount.get());
-                    cosmosBatchResponse.setTargetMaxMicroBatchSize(partitionScopeThresholds.getTargetMicroBatchSizeSnapshot());
+                    cosmosBatchResponseAccessor.setOpCountPerEvaluation(
+                        cosmosBatchResponse, currentIntervalThresholdsSnapshot.currentOperationCount.get());
+                    cosmosBatchResponseAccessor.setRetriedOpCountPerEvaluation(
+                        cosmosBatchResponse, currentIntervalThresholdsSnapshot.currentRetriedOperationCount.get());
+                    cosmosBatchResponseAccessor.setTargetMaxMicroBatchSize(
+                        cosmosBatchResponse, partitionScopeThresholds.getTargetMicroBatchSizeSnapshot());
 
                     return Mono.just(cosmosBatchResponse);
                 });
