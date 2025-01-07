@@ -4,7 +4,7 @@
 
 ### Features Added
 
-Setting the v2 stack as the default. (todo-pr-link)
+Setting the v2 stack as the default. ([43725](https://github.com/Azure/azure-sdk-for-java/pull/43725))
 
 ### Breaking Changes
 
