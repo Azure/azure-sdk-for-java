@@ -115,8 +115,8 @@ public final class CosmosBulkPatchItemRequestOptions {
 
     /**
      * Gets the If-Match (ETag) associated with the operation in {@link CosmosItemOperation}.
-     * Most commonly used with replace and delete requests.
-     * This will be ignored if specified for create requests.
+     * Most commonly used with replace, upsert and delete requests.
+     * This will be ignored if specified for create requests or for upsert requests if the item doesn't exist.
      * For more details, refer to <a href="https://learn.microsoft.com/azure/cosmos-db/nosql/database-transactions-optimistic-concurrency#implementing-optimistic-concurrency-control-using-etag-and-http-headers">optimistic concurrency control documentation</a>
      *
      * @return ifMatchETag the ifMatchETag associated with the request.
@@ -127,8 +127,8 @@ public final class CosmosBulkPatchItemRequestOptions {
 
     /**
      * Sets the If-Match (ETag) associated with the operation in {@link CosmosItemOperation}.
-     * Most commonly used with replace and delete requests.
-     * This will be ignored if specified for create requests.
+     * Most commonly used with replace, upsert and delete requests.
+     * This will be ignored if specified for create requests or for upsert requests if the item doesn't exist.
      * For more details, refer to <a href="https://learn.microsoft.com/azure/cosmos-db/nosql/database-transactions-optimistic-concurrency#implementing-optimistic-concurrency-control-using-etag-and-http-headers">optimistic concurrency control documentation</a>
      *
      * @param ifMatchETag the ifMatchETag associated with the request.
