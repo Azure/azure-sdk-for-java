@@ -20,9 +20,11 @@ public final class PagedResponse<T> implements Response<List<T>> {
     private final HttpRequest request;
     private final int statusCode;
     private final HttpHeaders headers;
+    private final BinaryData body;
+
     private final List<T> items;
     private final String nextLink;
-    private final BinaryData body;
+    //private final String continuationToken;
 
     /**
      * Creates a new instance of the PagedResponse type.
@@ -43,22 +45,31 @@ public final class PagedResponse<T> implements Response<List<T>> {
         this.body = body;
         this.items = items;
         this.nextLink = nextLink;
+        //this.continuationToken = null;
     }
 
     /**
      * Gets the reference to the next page.
      *
-     * @return The next page reference or null if there isn't a next page.
+     * @return The next page reference, or null if there isn't a next page.
      */
     public String getNextLink() {
         return nextLink;
     }
 
+    /**
+     * Gets the continuation token.
+     *
+     * @return The continuation token, or null if there isn't a next page.
+     */
+    public String getContinuationToken() {
+        return null;
+    }
+
     // TODO
-    // public String getContinuationToken() {}
-    // public String getPreviousLink() {}
-    // public String getFirstLink() {}
-    // public String getLastLink() {}
+    //public String getPreviousLink() {}
+    //public String getFirstLink() {}
+    //public String getLastLink() {}
 
     /**
      * {@inheritDoc}
