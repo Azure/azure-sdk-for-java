@@ -75,7 +75,7 @@ public interface Instrumentation {
      * Retrieves the instrumentation context from the given context. The type of the context is determined by the
      * instrumentation implementation.
      * <p>
-     * For OpenTelemetry, the context can be a {@code io.opentelemetry.api.trace.Span}, {@code io.opentelemetry.api.trace.SpanContext},
+     * When using OpenTelemetry, the context can be a {@code io.opentelemetry.api.trace.Span}, {@code io.opentelemetry.api.trace.SpanContext},
      * {@code io.opentelemetry.context.Context} or any implementation of {@link InstrumentationContext}.
      * <!-- src_embed io.clientcore.core.telemetry.fallback.correlationwithexplicitcontext -->
      * <pre>
@@ -86,6 +86,27 @@ public interface Instrumentation {
      *     .setInstrumentationContext&#40;new MyInstrumentationContext&#40;&quot;e4eaaaf2d48f4bf3b299a8a2a2a77ad7&quot;, &quot;5e0c63257de34c56&quot;&#41;&#41;;
      *
      * &#47;&#47; run on another thread
+     * client.clientCall&#40;options&#41;;
+     *
+     * </pre>
+     * <!-- end io.clientcore.core.telemetry.fallback.correlationwithexplicitcontext -->
+     *
+     * <!-- src_embed io.clientcore.core.telemetry.correlationwithexplicitcontext -->
+     * <pre>
+     *
+     * Tracer tracer = GlobalOpenTelemetry.getTracer&#40;&quot;sample&quot;&#41;;
+     * Span span = tracer.spanBuilder&#40;&quot;my-operation&quot;&#41;
+     *     .startSpan&#40;&#41;;
+     * SampleClient client = new SampleClientBuilder&#40;&#41;.build&#40;&#41;;
+     *
+     * &#47;&#47; Propagating context implicitly is preferred way in synchronous code.
+     * &#47;&#47; However, in asynchronous code, context may need to be propagated explicitly using RequestOptions
+     * &#47;&#47; and explicit io.clientcore.core.util.Context.
+     *
+     * RequestOptions options = new RequestOptions&#40;&#41;
+     *     .setInstrumentationContext&#40;Instrumentation.createInstrumentationContext&#40;span&#41;&#41;;
+     *
+     * &#47;&#47; run on another thread - all telemetry will be correlated with the span created above
      * client.clientCall&#40;options&#41;;
      *
      * </pre>
