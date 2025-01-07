@@ -4,6 +4,8 @@
 
 ### Features Added
 
+Setting the v2 stack as the default. (todo-pr-link)
+
 ### Breaking Changes
 
 - Do not remove `x-opt-partition-key` message annotation when publishing events. 
