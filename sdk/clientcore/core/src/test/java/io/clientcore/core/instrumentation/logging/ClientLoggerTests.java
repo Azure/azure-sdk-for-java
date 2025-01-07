@@ -759,7 +759,7 @@ public class ClientLoggerTests {
     public void logWithContext() {
         ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL);
         InstrumentationContext context = createRandomInstrumentationContext();
-        logger.atInfo().setContext(context).addKeyValue("connectionId", "foo").log("message");
+        logger.atInfo().setInstrumentationContext(context).addKeyValue("connectionId", "foo").log("message");
 
         Map<String, Object> expectedMessage = new HashMap<>();
         expectedMessage.put("message", "message");
@@ -775,7 +775,7 @@ public class ClientLoggerTests {
     public void logWithInvalidContext() {
         ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL);
         logger.atInfo()
-            .setContext(createInvalidInstrumentationContext())
+            .setInstrumentationContext(createInvalidInstrumentationContext())
             .addKeyValue("connectionId", "foo")
             .log("message");
 

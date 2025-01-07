@@ -180,7 +180,7 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
 
     private void logRedirect(ClientLogger logger, boolean lastAttempt, String redirectUri, int tryCount,
         HttpMethod method, String message, InstrumentationContext context) {
-        ClientLogger.LoggingEventBuilder log = lastAttempt ? logger.atWarning() : logger.atVerbose();
+        ClientLogger.LoggingEvent log = lastAttempt ? logger.atWarning() : logger.atVerbose();
         if (log.isEnabled()) {
             log.addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount)
                 .addKeyValue(RETRY_MAX_ATTEMPT_COUNT_KEY, maxAttempts)
@@ -188,7 +188,7 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
                 .addKeyValue(HTTP_RESPONSE_HEADER_LOCATION_KEY, redactUri(redirectUri))
                 .addKeyValue(RETRY_WAS_LAST_ATTEMPT_KEY, lastAttempt)
                 .setEventName(HTTP_REDIRECT_EVENT_NAME)
-                .setContext(context)
+                .setInstrumentationContext(context)
                 .log(message);
         }
     }

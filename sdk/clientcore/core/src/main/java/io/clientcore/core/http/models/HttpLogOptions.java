@@ -22,9 +22,9 @@ public final class HttpLogOptions {
     private Set<HttpHeaderName> allowedHeaderNames;
     private Set<String> allowedQueryParamNames;
     private static final List<HttpHeaderName> DEFAULT_HEADERS_ALLOWLIST
-        = Arrays.asList(HttpHeaderName.ACCEPT, HttpHeaderName.CACHE_CONTROL, HttpHeaderName.CONNECTION,
-            HttpHeaderName.CONTENT_LENGTH, HttpHeaderName.CONTENT_TYPE, HttpHeaderName.DATE, HttpHeaderName.ETAG,
-            HttpHeaderName.EXPIRES, HttpHeaderName.IF_MATCH, HttpHeaderName.IF_MODIFIED_SINCE,
+        = Arrays.asList(HttpHeaderName.TRACEPARENT, HttpHeaderName.ACCEPT, HttpHeaderName.CACHE_CONTROL,
+            HttpHeaderName.CONNECTION, HttpHeaderName.CONTENT_LENGTH, HttpHeaderName.CONTENT_TYPE, HttpHeaderName.DATE,
+            HttpHeaderName.ETAG, HttpHeaderName.EXPIRES, HttpHeaderName.IF_MATCH, HttpHeaderName.IF_MODIFIED_SINCE,
             HttpHeaderName.IF_NONE_MATCH, HttpHeaderName.IF_UNMODIFIED_SINCE, HttpHeaderName.LAST_MODIFIED,
             HttpHeaderName.PRAGMA, HttpHeaderName.RETRY_AFTER, HttpHeaderName.SERVER, HttpHeaderName.TRANSFER_ENCODING,
             HttpHeaderName.USER_AGENT, HttpHeaderName.WWW_AUTHENTICATE);

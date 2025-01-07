@@ -67,19 +67,8 @@ public class ClientLogger {
      * @throws RuntimeException when logging configuration is invalid depending on SLF4J implementation.
      */
     public ClientLogger(String className) {
-        this(className, null);
-    }
-
-    /**
-     * Retrieves a logger for the passed class name.
-     *
-     * @param className Class name creating the logger.
-     * @param context Context to be populated on every log record written with this logger.
-     * @throws RuntimeException when logging configuration is invalid depending on SLF4J implementation.
-     */
-    public ClientLogger(String className, Map<String, Object> context) {
         logger = new Slf4jLoggerShim(getClassPathFromClassName(className));
-        globalContext = context == null ? null : Collections.unmodifiableMap(context);
+        globalContext = null;
     }
 
     /**
@@ -456,7 +445,7 @@ public class ClientLogger {
          * @param context operation context.
          * @return The updated {@code LoggingEventBuilder} object.
          */
-        public LoggingEvent setContext(InstrumentationContext context) {
+        public LoggingEvent setInstrumentationContext(InstrumentationContext context) {
             this.context = context;
             return this;
         }
@@ -504,23 +493,18 @@ public class ClientLogger {
         public <T extends Throwable> T log(String message, T throwable) {
             if (this.isEnabled) {
                 boolean isDebugEnabled = logger.canLogAtLevel(LogLevel.VERBOSE);
-                setThrowableInternal(throwable, isDebugEnabled);
-                // TODO: we should not trace-id/span-id (by default) when otel is enabled?
+                if (throwable != null) {
+                    addKeyValueInternal(EXCEPTION_TYPE_KEY, throwable.getClass().getCanonicalName());
+                    addKeyValueInternal(EXCEPTION_MESSAGE_KEY, throwable.getMessage());
+                    if (isDebugEnabled) {
+                        StringBuilder stackTrace = new StringBuilder();
+                        DefaultLogger.appendThrowable(stackTrace, throwable);
+                        addKeyValue(EXCEPTION_STACKTRACE_KEY, stackTrace.toString());
+                    }
+                }
                 logger.performLogging(level, getMessageWithContext(message), isDebugEnabled ? throwable : null);
             }
             return throwable;
-        }
-
-        private void setThrowableInternal(Throwable throwable, boolean isDebugEnabled) {
-            if (throwable != null) {
-                addKeyValueInternal(EXCEPTION_TYPE_KEY, throwable.getClass().getCanonicalName());
-                addKeyValueInternal(EXCEPTION_MESSAGE_KEY, throwable.getMessage());
-                if (isDebugEnabled) {
-                    StringBuilder stackTrace = new StringBuilder();
-                    DefaultLogger.appendThrowable(stackTrace, throwable);
-                    addKeyValue(EXCEPTION_STACKTRACE_KEY, stackTrace.toString());
-                }
-            }
         }
 
         private String getMessageWithContext(String message) {
@@ -528,8 +512,11 @@ public class ClientLogger {
                 message = "";
             }
 
-            // TODO (limolkova) set context from implicit current span
             if (this.context != null && this.context.isValid()) {
+                // TODO (limolkova) we can set context from implicit current span
+                // we should also support OTel as a logging provider and avoid adding redundant
+                // traceId and spanId to the logs
+
                 addKeyValue(TRACE_ID_KEY, context.getTraceId());
                 addKeyValue(SPAN_ID_KEY, context.getSpanId());
             }
@@ -554,7 +541,7 @@ public class ClientLogger {
                 }
 
                 if (eventName != null) {
-                    jsonWriter.writeStringField("event.name", eventName);
+                    jsonWriter.writeStringField(EVENT_NAME_KEY, eventName);
                 }
 
                 jsonWriter.writeEndObject().flush();

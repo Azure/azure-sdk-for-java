@@ -20,7 +20,6 @@ module io.clientcore.http.stress {
     requires io.opentelemetry.sdk.autoconfigure;
     requires io.opentelemetry.sdk.autoconfigure.spi;
     requires io.opentelemetry.sdk.trace;
-    requires java.instrument;
 
     exports io.clientcore.http.stress;
     exports io.clientcore.http.stress.util;

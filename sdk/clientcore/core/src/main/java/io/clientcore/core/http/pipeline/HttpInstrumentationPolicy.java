@@ -66,7 +66,7 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
  * It propagates context to the downstream service following <a href="https://www.w3.org/TR/trace-context-1/">W3C Trace Context</a> specification.
  * <p>
  * The {@link HttpInstrumentationPolicy} should be added to the HTTP pipeline by client libraries. It should be added after
- * {@link HttpRetryPolicy} and {@link HttpRedirectPolicy} so that it's executed on each try (redirect), and logging happens
+ * {@link HttpRetryPolicy} and {@link HttpRedirectPolicy} so that it's executed on each try or redirect and logging happens
  * in the scope of the span.
  * <p>
  * The policy supports basic customizations using {@link InstrumentationOptions} and {@link HttpLogOptions}.
@@ -136,7 +136,7 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
  */
 public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(HttpInstrumentationPolicy.class);
-    private static final HttpLogOptions DEFAULT_HTTP_LOG_OPTIONS = new HttpLogOptions();
+    private static final HttpLogOptions DEFAULT_LOG_OPTIONS = new HttpLogOptions();
     private static final String LIBRARY_NAME;
     private static final String LIBRARY_VERSION;
     private static final LibraryInstrumentationOptions LIBRARY_OPTIONS;
@@ -183,7 +183,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         this.tracer = instrumentation.getTracer();
         this.traceContextPropagator = instrumentation.getW3CTraceContextPropagator();
 
-        HttpLogOptions logOptionsToUse = logOptions == null ? DEFAULT_HTTP_LOG_OPTIONS : logOptions;
+        HttpLogOptions logOptionsToUse = logOptions == null ? DEFAULT_LOG_OPTIONS : logOptions;
         this.httpLogDetailLevel = logOptionsToUse.getLogLevel();
         this.allowedHeaderNames = logOptionsToUse.getAllowedHeaderNames();
         this.allowedQueryParameterNames = logOptionsToUse.getAllowedQueryParamNames()
@@ -209,29 +209,33 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         int tryCount = HttpRequestAccessHelper.getTryCount(request);
         final long requestContentLength = getContentLength(logger, request.getBody(), request.getHeaders(), true);
 
-        InstrumentationContext context
+        InstrumentationContext instrumentationContext
             = request.getRequestOptions() == null ? null : request.getRequestOptions().getInstrumentationContext();
         Span span = Span.noop();
         if (isTracingEnabled) {
-            span = startHttpSpan(request, redactedUrl, context);
-            context = span.getInstrumentationContext();
-            request.getRequestOptions().setInstrumentationContext(context);
+            if (request.getRequestOptions() == null || request.getRequestOptions() == RequestOptions.none()) {
+                request.setRequestOptions(new RequestOptions());
+            }
+
+            span = startHttpSpan(request, redactedUrl, instrumentationContext);
+            instrumentationContext = span.getInstrumentationContext();
+            request.getRequestOptions().setInstrumentationContext(instrumentationContext);
         }
 
-        // even if tracing is disabled, we could have valid context to propagate
-        // explicitly provided by the application.
-        if (context != null && context.isValid()) {
-            traceContextPropagator.inject(context, request.getHeaders(), SETTER);
+        // even if tracing is disabled, we could have a valid context to propagate
+        // if it was provided by the application explicitly.
+        if (instrumentationContext != null && instrumentationContext.isValid()) {
+            traceContextPropagator.inject(instrumentationContext, request.getHeaders(), SETTER);
         }
 
-        logRequest(logger, request, startNs, requestContentLength, redactedUrl, tryCount, context);
+        logRequest(logger, request, startNs, requestContentLength, redactedUrl, tryCount, instrumentationContext);
 
         try (TracingScope scope = span.makeCurrent()) {
             Response<?> response = next.process();
 
             if (response == null) {
                 LOGGER.atError()
-                    .setContext(span.getInstrumentationContext())
+                    .setInstrumentationContext(span.getInstrumentationContext())
                     .addKeyValue(HTTP_REQUEST_METHOD_KEY, request.getHttpMethod())
                     .addKeyValue(URL_FULL_KEY, redactedUrl)
                     .log(
@@ -241,22 +245,19 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
             }
 
             addDetails(request, response, tryCount, span);
-            response = logResponse(logger, response, startNs, requestContentLength, redactedUrl, tryCount, context);
+            response = logResponse(logger, response, startNs, requestContentLength, redactedUrl, tryCount,
+                instrumentationContext);
             span.end();
             return response;
         } catch (RuntimeException t) {
-            var ex = logException(logger, request, null, t, startNs, null, requestContentLength, redactedUrl, tryCount,
-                context);
             span.end(unwrap(t));
-            throw ex;
+            // TODO (limolkova) test otel scope still covers this
+            throw logException(logger, request, null, t, startNs, null, requestContentLength, redactedUrl, tryCount,
+                instrumentationContext);
         }
     }
 
     private Span startHttpSpan(HttpRequest request, String sanitizedUrl, InstrumentationContext context) {
-        if (request.getRequestOptions() == null || request.getRequestOptions() == RequestOptions.none()) {
-            request.setRequestOptions(new RequestOptions());
-        }
-
         SpanBuilder spanBuilder = tracer.spanBuilder(request.getHttpMethod().toString(), CLIENT, context)
             .setAttribute(HTTP_REQUEST_METHOD_KEY, request.getHttpMethod().toString())
             .setAttribute(URL_FULL_KEY, sanitizedUrl)
@@ -352,14 +353,14 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
     }
 
     private void logRequest(ClientLogger logger, HttpRequest request, long startNanoTime, long requestContentLength,
-                            String redactedUrl, int tryCount, InstrumentationContext context) {
+        String redactedUrl, int tryCount, InstrumentationContext context) {
         ClientLogger.LoggingEvent logBuilder = logger.atLevel(HTTP_REQUEST_LOG_LEVEL);
         if (!logBuilder.isEnabled() || httpLogDetailLevel == HttpLogOptions.HttpLogDetailLevel.NONE) {
             return;
         }
 
         logBuilder.setEventName(HTTP_REQUEST_EVENT_NAME)
-            .setContext(context)
+            .setInstrumentationContext(context)
             .addKeyValue(HTTP_REQUEST_METHOD_KEY, request.getHttpMethod())
             .addKeyValue(URL_FULL_KEY, redactedUrl)
             .addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount)
@@ -383,7 +384,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
     }
 
     private Response<?> logResponse(ClientLogger logger, Response<?> response, long startNanoTime,
-                                    long requestContentLength, String redactedUrl, int tryCount, InstrumentationContext context) {
+        long requestContentLength, String redactedUrl, int tryCount, InstrumentationContext context) {
         ClientLogger.LoggingEvent logBuilder = logger.atLevel(HTTP_RESPONSE_LOG_LEVEL);
         if (httpLogDetailLevel == HttpLogOptions.HttpLogDetailLevel.NONE) {
             return response;
@@ -394,7 +395,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         // response may be disabled, but we still need to log the exception if an exception occurs during stream reading.
         if (logBuilder.isEnabled()) {
             logBuilder.setEventName(HTTP_RESPONSE_EVENT_NAME)
-                .setContext(context)
+                .setInstrumentationContext(context)
                 .addKeyValue(HTTP_REQUEST_METHOD_KEY, response.getRequest().getHttpMethod())
                 .addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount)
                 .addKeyValue(URL_FULL_KEY, redactedUrl)
@@ -426,8 +427,8 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
     }
 
     private <T extends Throwable> T logException(ClientLogger logger, HttpRequest request, Response<?> response,
-                                                 T throwable, long startNanoTime, Long responseStartNanoTime, long requestContentLength, String redactedUrl,
-                                                 int tryCount, InstrumentationContext context) {
+        T throwable, long startNanoTime, Long responseStartNanoTime, long requestContentLength, String redactedUrl,
+        int tryCount, InstrumentationContext context) {
 
         ClientLogger.LoggingEvent log = logger.atLevel(ClientLogger.LogLevel.WARNING);
         if (!log.isEnabled() || httpLogDetailLevel == HttpLogOptions.HttpLogDetailLevel.NONE) {
@@ -435,23 +436,21 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         }
 
         log.setEventName(HTTP_RESPONSE_EVENT_NAME)
-                .setContext(context)
-                .addKeyValue(HTTP_REQUEST_METHOD_KEY, request.getHttpMethod())
-                .addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount)
-                .addKeyValue(URL_FULL_KEY, redactedUrl)
-                .addKeyValue(HTTP_REQUEST_BODY_SIZE_KEY, requestContentLength)
-                .addKeyValue(HTTP_REQUEST_DURATION_KEY, getDurationMs(startNanoTime, System.nanoTime()));
+            .setInstrumentationContext(context)
+            .addKeyValue(HTTP_REQUEST_METHOD_KEY, request.getHttpMethod())
+            .addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount)
+            .addKeyValue(URL_FULL_KEY, redactedUrl)
+            .addKeyValue(HTTP_REQUEST_BODY_SIZE_KEY, requestContentLength)
+            .addKeyValue(HTTP_REQUEST_DURATION_KEY, getDurationMs(startNanoTime, System.nanoTime()));
 
         if (response != null) {
             addHeadersToLogMessage(response.getHeaders(), log);
-            log
-                    .addKeyValue(HTTP_RESPONSE_BODY_SIZE_KEY,
-                            getContentLength(logger, response.getBody(), response.getHeaders(), false))
-                    .addKeyValue(HTTP_RESPONSE_STATUS_CODE_KEY, response.getStatusCode());
+            log.addKeyValue(HTTP_RESPONSE_BODY_SIZE_KEY,
+                getContentLength(logger, response.getBody(), response.getHeaders(), false))
+                .addKeyValue(HTTP_RESPONSE_STATUS_CODE_KEY, response.getStatusCode());
 
             if (responseStartNanoTime != null) {
-                log.addKeyValue(HTTP_REQUEST_TIME_TO_RESPONSE_KEY,
-                        getDurationMs(startNanoTime, responseStartNanoTime));
+                log.addKeyValue(HTTP_REQUEST_TIME_TO_RESPONSE_KEY, getDurationMs(startNanoTime, responseStartNanoTime));
             }
         }
 

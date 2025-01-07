@@ -15,12 +15,12 @@ import static io.clientcore.core.implementation.instrumentation.AttributeKeys.TR
 import static io.clientcore.core.implementation.instrumentation.LoggingEventNames.SPAN_ENDED_EVENT_NAME;
 
 final class FallbackSpan implements Span {
-    private final ClientLogger.LoggingEventBuilder log;
+    private final ClientLogger.LoggingEvent log;
     private final long startTime;
     private final FallbackSpanContext spanContext;
     private String errorType;
 
-    FallbackSpan(ClientLogger.LoggingEventBuilder log, FallbackSpanContext parentSpanContext, boolean isRecording) {
+    FallbackSpan(ClientLogger.LoggingEvent log, FallbackSpanContext parentSpanContext, boolean isRecording) {
         this.log = log;
         this.startTime = isRecording ? System.nanoTime() : 0;
         this.spanContext = FallbackSpanContext.fromParent(parentSpanContext, isRecording, this);

@@ -189,20 +189,6 @@ public class TracerTests {
         assertEquals(parentData.getSpanId(), childData.getParentSpanId());
     }
 
-    @Test
-    public void explicitParentWrongType() {
-        /*RequestOptions requestOptions
-            = new RequestOptions().putContext(TRACE_CONTEXT_KEY, "This is not a valid trace context");
-        Span child = tracer.spanBuilder("child", INTERNAL, requestOptions).startSpan();
-        child.end();
-        
-        assertEquals(1, exporter.getFinishedSpanItems().size());
-        SpanData childData = exporter.getFinishedSpanItems().get(0);
-        
-        assertEquals("child", childData.getName());
-        assertFalse(childData.getParentSpanContext().isValid());*/
-    }
-
     public static Stream<Arguments> kindSource() {
         return Stream.of(Arguments.of(SpanKind.INTERNAL, io.opentelemetry.api.trace.SpanKind.INTERNAL),
             Arguments.of(SpanKind.CLIENT, io.opentelemetry.api.trace.SpanKind.CLIENT),

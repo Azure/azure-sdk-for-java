@@ -15,7 +15,7 @@ import static io.clientcore.core.implementation.instrumentation.AttributeKeys.SP
 
 final class FallbackSpanBuilder implements SpanBuilder {
     static final FallbackSpanBuilder NOOP = new FallbackSpanBuilder();
-    private final ClientLogger.LoggingEventBuilder log;
+    private final ClientLogger.LoggingEvent log;
     private final FallbackSpanContext parentSpanContext;
 
     private FallbackSpanBuilder() {

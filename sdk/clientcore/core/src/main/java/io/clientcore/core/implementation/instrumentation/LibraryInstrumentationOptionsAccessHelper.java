@@ -60,5 +60,4 @@ public final class LibraryInstrumentationOptionsAccessHelper {
 
     private LibraryInstrumentationOptionsAccessHelper() {
     }
-
 }

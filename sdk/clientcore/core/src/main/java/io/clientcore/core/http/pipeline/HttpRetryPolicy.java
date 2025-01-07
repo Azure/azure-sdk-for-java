@@ -216,7 +216,7 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
             return attempt(httpRequest, next, tryCount + 1, suppressed);
         } else {
             if (tryCount >= maxRetries) {
-                // TODO (limolkova): do we have better heuristic to determine if we're not retrying because of error
+                // TODO (limolkova): do we have better heuristic to determine if we're retrying because of error
                 // or because we got successful response?
                 logRetry(logger.atWarning(), tryCount, null, null, true, instrumentationContext);
             }
@@ -283,14 +283,14 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
         return false;
     }
 
-    private void logRetry(ClientLogger.LoggingEvent log, int tryCount, Duration delayDuration,
-        Throwable throwable, boolean lastTry, InstrumentationContext context) {
+    private void logRetry(ClientLogger.LoggingEvent log, int tryCount, Duration delayDuration, Throwable throwable,
+        boolean lastTry, InstrumentationContext context) {
         if (log.isEnabled()) {
             log.addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount)
                 .addKeyValue(RETRY_MAX_ATTEMPT_COUNT_KEY, maxRetries)
                 .addKeyValue(RETRY_WAS_LAST_ATTEMPT_KEY, lastTry)
                 .setEventName(HTTP_RETRY_EVENT_NAME)
-                .setContext(context);
+                .setInstrumentationContext(context);
 
             if (delayDuration != null) {
                 log.addKeyValue(RETRY_DELAY_KEY, delayDuration.toMillis());
