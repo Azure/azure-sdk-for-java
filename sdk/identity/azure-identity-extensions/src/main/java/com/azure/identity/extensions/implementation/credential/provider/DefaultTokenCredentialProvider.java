@@ -44,7 +44,6 @@ public class DefaultTokenCredentialProvider implements TokenCredentialProvider {
         return resolveTokenCredential(options);
     }
 
-    @SuppressWarnings("deprecation")
     private TokenCredential resolveTokenCredential(TokenCredentialProviderOptions options) {
         final String tenantId = options.getTenantId();
         final String clientId = options.getClientId();
@@ -68,7 +67,8 @@ public class DefaultTokenCredentialProvider implements TokenCredentialProvider {
                         .clientId(clientId);
 
                 if (hasText(options.getClientCertificatePassword())) {
-                    builder.pfxCertificate(clientCertificatePath, options.getClientCertificatePassword());
+                    builder.pfxCertificate(clientCertificatePath)
+                           .clientCertificatePassword(options.getClientCertificatePassword());
                 } else {
                     builder.pemCertificate(clientCertificatePath);
                 }

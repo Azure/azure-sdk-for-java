@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class CachingTokenCredentialProviderTest {
 
     @Test
-    void cacheTokenCredentialUsingDefaultOptions() {
+    void returnCacheUsingDefaultAuthMethodViaDifferentProviderInstances() {
         DefaultTokenCredentialProvider defaultTokenCredentialProvider1 = new DefaultTokenCredentialProvider(null);
         CachingTokenCredentialProvider provider1
             = new CachingTokenCredentialProvider(null, defaultTokenCredentialProvider1);
@@ -31,7 +31,7 @@ class CachingTokenCredentialProviderTest {
     }
 
     @Test
-    void cacheTokenCredentialUsingCustomOptions() {
+    void returnCacheUsingSameAuthMethodViaDifferentProviderInstances() {
         TokenCredentialProviderOptions customOptions = getSystemManagedIdentityCredentialProviderOptions();
 
         DefaultTokenCredentialProvider defaultTokenCredentialProvider1
@@ -53,7 +53,7 @@ class CachingTokenCredentialProviderTest {
     }
 
     @Test
-    void cacheTokenCredentialViaDifferentGetMethods() {
+    void returnCacheUsingSameAuthMethodAndInvokingDifferentGetMethods() {
         TokenCredentialProviderOptions customOptions = getSystemManagedIdentityCredentialProviderOptions();
 
         DefaultTokenCredentialProvider defaultTokenCredentialProvider1
@@ -75,7 +75,7 @@ class CachingTokenCredentialProviderTest {
     }
 
     @Test
-    void cacheTokenCredentialViaDifferentProviderOptions() {
+    void returnDifferentCachesUsingDifferentAuthenticationMethods() {
         TokenCredentialProviderOptions customOptions = getSystemManagedIdentityCredentialProviderOptions();
 
         DefaultTokenCredentialProvider defaultTokenCredentialProvider1
