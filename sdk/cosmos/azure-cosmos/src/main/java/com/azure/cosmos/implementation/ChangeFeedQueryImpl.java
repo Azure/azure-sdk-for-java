@@ -144,28 +144,6 @@ class ChangeFeedQueryImpl<T> {
 
         // always populate the collectionRid header
         // in case of container has been recreated, this will allow correct error being returned to SDK
-//        Mono<String> collectionRidMono = this.client
-//                .getCollectionCache()
-//                .resolveByNameAsync(
-//                        null,
-//                        this.getLinkWithoutTrailingSlash(),
-//                        null)
-//                .flatMap(
-//                        collection -> {
-//                            if (collection == null) {
-//                                return Mono.error(new IllegalStateException("Collection cannot be null"));
-//                            }
-//                            return Mono.just(collection.getResourceId());
-//                        });
-//
-//        collectionRidMono.subscribe(collectionRid -> {
-//
-//            if (!collectionRid.equals(this.changeFeedState.getContainerRid())) {
-//                throw new BadRequestException("Incorrect continuation token for this collection.",
-//                        HttpConstants.SubStatusCodes.INCORRECT_CONTAINER_RID_SUB_STATUS);
-//            }
-//            headers.put(HttpConstants.HttpHeaders.INTENDED_COLLECTION_RID_HEADER, collectionRid);
-//        });
         headers.put(HttpConstants.HttpHeaders.INTENDED_COLLECTION_RID_HEADER, this.changeFeedState.getContainerRid());
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(clientContext,
@@ -183,14 +161,6 @@ class ChangeFeedQueryImpl<T> {
         }
 
         return request;
-    }
-
-    String getLinkWithoutTrailingSlash() {
-        if (this.collectionLink.startsWith("/")) {
-            return this.collectionLink.substring(1);
-        }
-
-        return this.collectionLink;
     }
 
     private Mono<FeedResponse<T>> executeRequestAsync(RxDocumentServiceRequest request) {
