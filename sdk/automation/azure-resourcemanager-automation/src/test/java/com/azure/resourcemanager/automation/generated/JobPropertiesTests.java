@@ -19,12 +19,12 @@ public final class JobPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JobProperties model = BinaryData.fromString(
-            "{\"runbook\":{\"name\":\"ebwtswb\"},\"startedBy\":\"wfmdurage\",\"runOn\":\"zvcjfelisdjubggb\",\"jobId\":\"846af5ec-76bf-4eb9-aaf6-012d9e73f915\",\"creationTime\":\"2021-06-16T20:01:36Z\",\"status\":\"Stopping\",\"statusDetails\":\"sazgakgacyrcmj\",\"startTime\":\"2021-08-10T12:23:06Z\",\"endTime\":\"2021-01-21T21:08:17Z\",\"exception\":\"apvu\",\"lastModifiedTime\":\"2021-02-26T20:45:53Z\",\"lastStatusModifiedTime\":\"2021-03-18T05:33:07Z\",\"parameters\":{\"st\":\"frzgbzjed\",\"nsnvpd\":\"vnlvxbcuiiznktwf\"},\"provisioningState\":\"Failed\"}")
+            "{\"runbook\":{\"name\":\"ebwtswb\"},\"startedBy\":\"wfmdurage\",\"runOn\":\"zvcjfelisdjubggb\",\"jobId\":\"083ea107-f494-41c5-b2a0-51caee167aa2\",\"creationTime\":\"2021-06-16T20:01:36Z\",\"status\":\"Stopping\",\"statusDetails\":\"sazgakgacyrcmj\",\"startTime\":\"2021-08-10T12:23:06Z\",\"endTime\":\"2021-01-21T21:08:17Z\",\"exception\":\"apvu\",\"lastModifiedTime\":\"2021-02-26T20:45:53Z\",\"lastStatusModifiedTime\":\"2021-03-18T05:33:07Z\",\"parameters\":{\"st\":\"frzgbzjed\",\"nsnvpd\":\"vnlvxbcuiiznktwf\"},\"provisioningState\":\"Failed\"}")
             .toObject(JobProperties.class);
         Assertions.assertEquals("ebwtswb", model.runbook().name());
         Assertions.assertEquals("wfmdurage", model.startedBy());
         Assertions.assertEquals("zvcjfelisdjubggb", model.runOn());
-        Assertions.assertEquals(UUID.fromString("846af5ec-76bf-4eb9-aaf6-012d9e73f915"), model.jobId());
+        Assertions.assertEquals(UUID.fromString("083ea107-f494-41c5-b2a0-51caee167aa2"), model.jobId());
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-16T20:01:36Z"), model.creationTime());
         Assertions.assertEquals(JobStatus.STOPPING, model.status());
         Assertions.assertEquals("sazgakgacyrcmj", model.statusDetails());
@@ -42,7 +42,7 @@ public final class JobPropertiesTests {
         JobProperties model = new JobProperties().withRunbook(new RunbookAssociationProperty().withName("ebwtswb"))
             .withStartedBy("wfmdurage")
             .withRunOn("zvcjfelisdjubggb")
-            .withJobId(UUID.fromString("846af5ec-76bf-4eb9-aaf6-012d9e73f915"))
+            .withJobId(UUID.fromString("083ea107-f494-41c5-b2a0-51caee167aa2"))
             .withCreationTime(OffsetDateTime.parse("2021-06-16T20:01:36Z"))
             .withStatus(JobStatus.STOPPING)
             .withStatusDetails("sazgakgacyrcmj")
@@ -57,7 +57,7 @@ public final class JobPropertiesTests {
         Assertions.assertEquals("ebwtswb", model.runbook().name());
         Assertions.assertEquals("wfmdurage", model.startedBy());
         Assertions.assertEquals("zvcjfelisdjubggb", model.runOn());
-        Assertions.assertEquals(UUID.fromString("846af5ec-76bf-4eb9-aaf6-012d9e73f915"), model.jobId());
+        Assertions.assertEquals(UUID.fromString("083ea107-f494-41c5-b2a0-51caee167aa2"), model.jobId());
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-16T20:01:36Z"), model.creationTime());
         Assertions.assertEquals(JobStatus.STOPPING, model.status());
         Assertions.assertEquals("sazgakgacyrcmj", model.statusDetails());

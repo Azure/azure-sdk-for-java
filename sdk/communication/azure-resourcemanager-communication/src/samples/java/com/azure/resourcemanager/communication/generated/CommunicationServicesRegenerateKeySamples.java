@@ -22,7 +22,8 @@ public final class CommunicationServicesRegenerateKeySamples {
      * @param manager Entry point to CommunicationManager.
      */
     public static void regenerateKey(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.communicationServices().regenerateKeyWithResponse("MyResourceGroup", "MyCommunicationResource",
-            new RegenerateKeyParameters().withKeyType(KeyType.PRIMARY), com.azure.core.util.Context.NONE);
+        manager.communicationServices()
+            .regenerateKeyWithResponse("MyResourceGroup", "MyCommunicationResource",
+                new RegenerateKeyParameters().withKeyType(KeyType.PRIMARY), com.azure.core.util.Context.NONE);
     }
 }

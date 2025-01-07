@@ -21,7 +21,7 @@ public final class LibrariesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"name\":\"kchkapit\",\"path\":\"shfyf\",\"containerName\":\"ibjepzwhj\",\"uploadedTimestamp\":\"2021-08-24T15:34:55Z\",\"type\":\"gbggcjx\",\"provisioningStatus\":\"blivw\",\"creatorId\":\"sudy\"},\"etag\":\"mbhdo\",\"id\":\"m\",\"name\":\"ngkqlgxzduvxd\",\"type\":\"xexatmdmnrs\"}";
+            = "{\"properties\":{\"name\":\"zxlhdjzqdcadwv\",\"path\":\"ozjiihj\",\"containerName\":\"ybmrzoepnxwd\",\"uploadedTimestamp\":\"2021-01-21T04:01:58Z\",\"type\":\"kgvfnmxaursqf\",\"provisioningStatus\":\"btyi\",\"creatorId\":\"yvp\"},\"etag\":\"fqjpnqno\",\"id\":\"w\",\"name\":\"bedenrexkx\",\"type\":\"hxvucnu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class LibrariesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         LibraryResource response = manager.libraries()
-            .getWithResponse("pnbn", "gyweo", "bepgcmahiwfry", com.azure.core.util.Context.NONE)
+            .getWithResponse("xomeikjclwzacn", "wpfsuqtaaz", "qbxyxoyfpuqqi", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("kchkapit", response.namePropertiesName());
-        Assertions.assertEquals("shfyf", response.path());
-        Assertions.assertEquals("ibjepzwhj", response.containerName());
-        Assertions.assertEquals("gbggcjx", response.typePropertiesType());
+        Assertions.assertEquals("zxlhdjzqdcadwv", response.namePropertiesName());
+        Assertions.assertEquals("ozjiihj", response.path());
+        Assertions.assertEquals("ybmrzoepnxwd", response.containerName());
+        Assertions.assertEquals("kgvfnmxaursqf", response.typePropertiesType());
     }
 }

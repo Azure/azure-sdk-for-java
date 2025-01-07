@@ -21,7 +21,7 @@ public final class SqlPoolDataWarehouseUserActivitiesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"activeQueriesCount\":1146435634},\"id\":\"noejhqlfmsibz\",\"name\":\"yrfgxkyd\",\"type\":\"mypgfqvmty\"}";
+            = "{\"properties\":{\"activeQueriesCount\":678626206},\"id\":\"jmueza\",\"name\":\"ovribq\",\"type\":\"otokhtvwtaznk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class SqlPoolDataWarehouseUserActivitiesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DataWarehouseUserActivities response = manager.sqlPoolDataWarehouseUserActivities()
-            .getWithResponse("yvrmkjm", "it", "chwudlxee", DataWarehouseUserActivityName.CURRENT,
+            .getWithResponse("jlf", "ecominxojjluxxd", "ilz", DataWarehouseUserActivityName.CURRENT,
                 com.azure.core.util.Context.NONE)
             .getValue();
 

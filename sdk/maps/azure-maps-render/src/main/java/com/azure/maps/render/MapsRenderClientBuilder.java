@@ -10,7 +10,9 @@ import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
+import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
@@ -28,6 +30,7 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.policy.AzureSasCredentialPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -78,7 +81,8 @@ import java.util.Objects;
  * <!-- end com.azure.maps.render.sync.builder.ad.instantiation -->
  */
 @ServiceClientBuilder(serviceClients = { MapsRenderClient.class, MapsRenderAsyncClient.class })
-public final class MapsRenderClientBuilder implements AzureKeyCredentialTrait<MapsRenderClientBuilder>,
+public final class MapsRenderClientBuilder
+    implements AzureKeyCredentialTrait<MapsRenderClientBuilder>, AzureSasCredentialTrait<MapsRenderClientBuilder>,
     TokenCredentialTrait<MapsRenderClientBuilder>, HttpTrait<MapsRenderClientBuilder>,
     ConfigurationTrait<MapsRenderClientBuilder>, EndpointTrait<MapsRenderClientBuilder> {
 
@@ -142,6 +146,7 @@ public final class MapsRenderClientBuilder implements AzureKeyCredentialTrait<Ma
     // credentials
     private AzureKeyCredential keyCredential;
     private TokenCredential tokenCredential;
+    private AzureSasCredential sasCredential;
 
     /**
      * Sets the Azure Maps client id for use with Azure AD Authentication. This client id
@@ -298,6 +303,19 @@ public final class MapsRenderClientBuilder implements AzureKeyCredentialTrait<Ma
     }
 
     /**
+     * Sets the {@link AzureSasCredential} used to authenticate HTTP requests.
+     *
+     * @param sasCredential The {@link AzureSasCredential} used to authenticate HTTP requests.
+     * @return The updated {@link MapsRenderClientBuilder} object.
+     * @throws NullPointerException If {@code sasCredential} is null.
+     */
+    @Override
+    public MapsRenderClientBuilder credential(AzureSasCredential sasCredential) {
+        this.sasCredential = Objects.requireNonNull(sasCredential, "'sasCredential' cannot be null.");
+        return this;
+    }
+
+    /**
      * Builds an instance of RenderClientImpl with the provided parameters.
      *
      * @return an instance of RenderClientImpl.
@@ -361,6 +379,8 @@ public final class MapsRenderClientBuilder implements AzureKeyCredentialTrait<Ma
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         } else if (keyCredential != null) {
             policies.add(new AzureKeyCredentialPolicy(RENDER_SUBSCRIPTION_KEY, keyCredential));
+        } else if (sasCredential != null) {
+            policies.add(new AzureSasCredentialPolicy(sasCredential));
         } else {
             // Throw exception that credential and tokenCredential cannot be null
             throw LOGGER.logExceptionAsError(

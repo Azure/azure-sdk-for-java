@@ -21,7 +21,7 @@ public final class TransformationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"streamingUnits\":263453714,\"validStreamingUnits\":[576086700,1953823594],\"query\":\"sgbdhuz\",\"etag\":\"njdgkynscliq\"},\"name\":\"vhxnk\",\"type\":\"tkubotppn\",\"id\":\"xz\"}";
+            = "{\"properties\":{\"streamingUnits\":1674447280,\"validStreamingUnits\":[479037464,831606659],\"query\":\"sl\",\"etag\":\"adcy\"},\"name\":\"ukyhejhzis\",\"type\":\"fpel\",\"id\":\"p\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +31,13 @@ public final class TransformationsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Transformation response = manager.transformations()
-            .getWithResponse("auy", "vluwmncsttij", "y", com.azure.core.util.Context.NONE)
+            .getWithResponse("mkttlstvlzywem", "zrncsdt", "lusiy", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("xz", response.id());
-        Assertions.assertEquals("vhxnk", response.name());
-        Assertions.assertEquals(263453714, response.streamingUnits());
-        Assertions.assertEquals(576086700, response.validStreamingUnits().get(0));
-        Assertions.assertEquals("sgbdhuz", response.query());
+        Assertions.assertEquals("p", response.id());
+        Assertions.assertEquals("ukyhejhzis", response.name());
+        Assertions.assertEquals(1674447280, response.streamingUnits());
+        Assertions.assertEquals(479037464, response.validStreamingUnits().get(0));
+        Assertions.assertEquals("sl", response.query());
     }
 }

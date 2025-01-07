@@ -15,36 +15,36 @@ public final class MailMessageEntityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MailMessageEntityProperties model = BinaryData.fromString(
-            "{\"fileEntityIds\":[\"jbuiggru\",\"ozfvualjt\",\"oivsdwsngkrf\"],\"recipient\":\"sc\",\"urls\":[\"kmhzbh\",\"a\"],\"threats\":[\"wihbnnxemv\",\"nuqqkotauratnicp\",\"fzs\",\"le\"],\"p1Sender\":\"rletndqlmf\",\"p1SenderDisplayName\":\"gnbbuypwovvvsfle\",\"p1SenderDomain\":\"noqayrehjuqwvap\",\"senderIP\":\"lzhpzihacenq\",\"p2Sender\":\"lxnqzubfonfdbgmk\",\"p2SenderDisplayName\":\"mjcwtewfhxwyrkbr\",\"p2SenderDomain\":\"zl\",\"receiveDate\":\"2021-03-13T20:36:02Z\",\"networkMessageId\":\"bf7991f6-0098-43dd-ad1d-36c8f59b397d\",\"internetMessageId\":\"chamkaeplraju\",\"subject\":\"wuyw\",\"language\":\"tjrieikm\",\"threatDetectionMethods\":[\"oklf\",\"isyxgucbmtredsc\"],\"bodyFingerprintBin1\":734310827,\"bodyFingerprintBin2\":1734452787,\"bodyFingerprintBin3\":1501821237,\"bodyFingerprintBin4\":849541809,\"bodyFingerprintBin5\":203022215,\"antispamDirection\":\"Unknown\",\"deliveryAction\":\"Blocked\",\"deliveryLocation\":\"JunkFolder\",\"additionalData\":{\"hy\":\"datacwwtzqzclo\",\"wbyorjplbchych\":\"datapgidhzgyresgzsdt\"},\"friendlyName\":\"vyrfbqvum\"}")
+            "{\"fileEntityIds\":[\"lanrupdwvnp\",\"cnzqtpjhmqr\",\"v\",\"hlaiwd\"],\"recipient\":\"smlzzhzdtxetlgy\",\"urls\":[\"qvlnnpxybafiqgea\",\"rbgjekglkl\",\"yulidwcwvm\",\"eg\"],\"threats\":[\"fhjirwgdnqzbrfk\",\"pzhz\",\"tk\",\"jcitdigsxcdglj\"],\"p1Sender\":\"keuachtomf\",\"p1SenderDisplayName\":\"ytswfp\",\"p1SenderDomain\":\"dgycxnmskwhqjjy\",\"senderIP\":\"urlpshh\",\"p2Sender\":\"pedwqsl\",\"p2SenderDisplayName\":\"hmpqvw\",\"p2SenderDomain\":\"kondcb\",\"receiveDate\":\"2021-03-14T03:56:56Z\",\"networkMessageId\":\"2f4e80f2-f3c5-4da4-aa46-c2ee2adf52ce\",\"internetMessageId\":\"vqejosovy\",\"subject\":\"leaesi\",\"language\":\"qtljqobbpihehc\",\"threatDetectionMethods\":[\"bmrqbrjbbmp\",\"dlvykfrex\",\"rseqwjksghudgz\"],\"bodyFingerprintBin1\":1903316554,\"bodyFingerprintBin2\":1557581128,\"bodyFingerprintBin3\":770792528,\"bodyFingerprintBin4\":1356644601,\"bodyFingerprintBin5\":210376116,\"antispamDirection\":\"Inbound\",\"deliveryAction\":\"Delivered\",\"deliveryLocation\":\"JunkFolder\",\"additionalData\":{\"y\":\"datahrkmdyomkxfbvfbh\",\"gddeimaw\":\"datarhpw\",\"gkkumuikjcj\":\"datao\"},\"friendlyName\":\"ztbws\"}")
             .toObject(MailMessageEntityProperties.class);
-        Assertions.assertEquals(734310827, model.bodyFingerprintBin1());
-        Assertions.assertEquals(1734452787, model.bodyFingerprintBin2());
-        Assertions.assertEquals(1501821237, model.bodyFingerprintBin3());
-        Assertions.assertEquals(849541809, model.bodyFingerprintBin4());
-        Assertions.assertEquals(203022215, model.bodyFingerprintBin5());
-        Assertions.assertEquals(AntispamMailDirection.UNKNOWN, model.antispamDirection());
-        Assertions.assertEquals(DeliveryAction.BLOCKED, model.deliveryAction());
+        Assertions.assertEquals(1903316554, model.bodyFingerprintBin1());
+        Assertions.assertEquals(1557581128, model.bodyFingerprintBin2());
+        Assertions.assertEquals(770792528, model.bodyFingerprintBin3());
+        Assertions.assertEquals(1356644601, model.bodyFingerprintBin4());
+        Assertions.assertEquals(210376116, model.bodyFingerprintBin5());
+        Assertions.assertEquals(AntispamMailDirection.INBOUND, model.antispamDirection());
+        Assertions.assertEquals(DeliveryAction.DELIVERED, model.deliveryAction());
         Assertions.assertEquals(DeliveryLocation.JUNK_FOLDER, model.deliveryLocation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MailMessageEntityProperties model = new MailMessageEntityProperties().withBodyFingerprintBin1(734310827)
-            .withBodyFingerprintBin2(1734452787)
-            .withBodyFingerprintBin3(1501821237)
-            .withBodyFingerprintBin4(849541809)
-            .withBodyFingerprintBin5(203022215)
-            .withAntispamDirection(AntispamMailDirection.UNKNOWN)
-            .withDeliveryAction(DeliveryAction.BLOCKED)
+        MailMessageEntityProperties model = new MailMessageEntityProperties().withBodyFingerprintBin1(1903316554)
+            .withBodyFingerprintBin2(1557581128)
+            .withBodyFingerprintBin3(770792528)
+            .withBodyFingerprintBin4(1356644601)
+            .withBodyFingerprintBin5(210376116)
+            .withAntispamDirection(AntispamMailDirection.INBOUND)
+            .withDeliveryAction(DeliveryAction.DELIVERED)
             .withDeliveryLocation(DeliveryLocation.JUNK_FOLDER);
         model = BinaryData.fromObject(model).toObject(MailMessageEntityProperties.class);
-        Assertions.assertEquals(734310827, model.bodyFingerprintBin1());
-        Assertions.assertEquals(1734452787, model.bodyFingerprintBin2());
-        Assertions.assertEquals(1501821237, model.bodyFingerprintBin3());
-        Assertions.assertEquals(849541809, model.bodyFingerprintBin4());
-        Assertions.assertEquals(203022215, model.bodyFingerprintBin5());
-        Assertions.assertEquals(AntispamMailDirection.UNKNOWN, model.antispamDirection());
-        Assertions.assertEquals(DeliveryAction.BLOCKED, model.deliveryAction());
+        Assertions.assertEquals(1903316554, model.bodyFingerprintBin1());
+        Assertions.assertEquals(1557581128, model.bodyFingerprintBin2());
+        Assertions.assertEquals(770792528, model.bodyFingerprintBin3());
+        Assertions.assertEquals(1356644601, model.bodyFingerprintBin4());
+        Assertions.assertEquals(210376116, model.bodyFingerprintBin5());
+        Assertions.assertEquals(AntispamMailDirection.INBOUND, model.antispamDirection());
+        Assertions.assertEquals(DeliveryAction.DELIVERED, model.deliveryAction());
         Assertions.assertEquals(DeliveryLocation.JUNK_FOLDER, model.deliveryLocation());
     }
 }

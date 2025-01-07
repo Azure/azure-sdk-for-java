@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.streamanalytics.generated;
 
-import com.azure.resourcemanager.streamanalytics.models.PrivateEndpointProperties;
 import com.azure.resourcemanager.streamanalytics.models.PrivateLinkServiceConnection;
 import java.util.Arrays;
 
@@ -14,7 +13,7 @@ import java.util.Arrays;
 public final class PrivateEndpointsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2020-03-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * PrivateEndpoint_Create.json
      */
     /**
@@ -27,10 +26,10 @@ public final class PrivateEndpointsCreateOrUpdateSamples {
         manager.privateEndpoints()
             .define("testpe")
             .withExistingCluster("sjrg", "testcluster")
-            .withProperties(new PrivateEndpointProperties().withManualPrivateLinkServiceConnections(
-                Arrays.asList(new PrivateLinkServiceConnection().withPrivateLinkServiceId(
+            .withManualPrivateLinkServiceConnections(Arrays.asList(new PrivateLinkServiceConnection()
+                .withPrivateLinkServiceId(
                     "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls")
-                    .withGroupIds(Arrays.asList("groupIdFromResource")))))
+                .withGroupIds(Arrays.asList("groupIdFromResource"))))
             .create();
     }
 }

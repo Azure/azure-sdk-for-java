@@ -20,37 +20,81 @@ import java.util.Map;
 public interface RegistryTask
     extends Resource, HasInnerModel<TaskInner>, Refreshable<RegistryTask>, Updatable<RegistryTask.Update> {
 
-    /** @return the name of the resource's resource group */
+    /**
+     * Gets the name of the resource's resource group.
+     *
+     * @return the name of the resource's resource group
+     */
     String resourceGroupName();
 
-    /** @return the parent ID of this resource */
+    /**
+     * Gets the parent ID of this resource.
+     *
+     * @return the parent ID of this resource
+     */
     String parentRegistryId();
 
-    /** @return the provisioning state of the build task */
+    /**
+     * Gets the provisioning state of the build task.
+     *
+     * @return the provisioning state of the build task
+     */
     ProvisioningState provisioningState();
 
-    /** @return the creation date of build task */
+    /**
+     * Gets the creation date of build task.
+     *
+     * @return the creation date of build task
+     */
     OffsetDateTime creationDate();
 
-    /** @return the current status of build task */
+    /**
+     * Gets the current status of build task.
+     *
+     * @return the current status of build task
+     */
     TaskStatus status();
 
-    /** @return the RegistryTaskStep of the current task */
+    /**
+     * Gets the RegistryTaskStep of the current task.
+     *
+     * @return the RegistryTaskStep of the current task
+     */
     RegistryTaskStep registryTaskStep();
 
-    /** @return the build timeout settings in seconds */
+    /**
+     * Gets the build timeout settings in seconds.
+     *
+     * @return the build timeout settings in seconds
+     */
     int timeout();
 
-    /** @return the build timeout settings in seconds */
+    /**
+     * Gets the build timeout settings in seconds.
+     *
+     * @return the build timeout settings in seconds
+     */
     PlatformProperties platform();
 
-    /** @return the CPU count */
+    /**
+     * Gets the count of CPUs.
+     *
+     * @return the CPU count
+     */
     int cpuCount();
 
-    /** @return the trigger of the task */
+    /**
+     * Gets the trigger of the task.
+     *
+     * @return the trigger of the task
+     */
     TriggerProperties trigger();
 
-    /** @return the source triggers of the task. */
+    /**
+     * Gets the source triggers of the task.
+     *
+     * @return the source triggers of the task.
+     */
     Map<String, RegistrySourceTrigger> sourceTriggers();
 
     /** Container interface for all the definitions related to a registry task. */

@@ -2,11 +2,52 @@
 
 ## 1.2.0-beta.2 (Unreleased)
 
+#### Bugs Fixed
+- Fix the issue where the token acquisition timeout is not set via the property `azure.accessTokenTimeoutInSeconds`. [#43512](https://github.com/Azure/azure-sdk-for-java/issues/43512).
+
 ### Other Changes
 
 #### Dependency Updates
 
-- Upgraded `mysql-connector-j` from `8.0.33` to version `9.0.0`.
+## 1.1.22 (2024-12-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.14.0` to version `1.14.2`.
+
+## 1.1.21 (2024-10-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.13.3` to version `1.14.0`.
+
+## 1.1.20 (2024-09-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.13.2` to version `1.13.3`.
+
+## 1.1.19 (2024-08-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.13.1` to version `1.13.2`.
+
+## 1.1.18 (2024-07-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.13.0` to version `1.13.1`.
 
 ## 1.1.17 (2024-06-25)
 
@@ -152,6 +193,14 @@
 ### Others
 
 - Improve the performance of DefaultTokenCredentialProvider's `get()` method.
+
+## 1.2.0-beta.1 (2023-02-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `mysql-connector-j` from `8.0.33` to version `9.0.0`.
 
 ## 1.2.0-beta.1 (2023-02-06)
 

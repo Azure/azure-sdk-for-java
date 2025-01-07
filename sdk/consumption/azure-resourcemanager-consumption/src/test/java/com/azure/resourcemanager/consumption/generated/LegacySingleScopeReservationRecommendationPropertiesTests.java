@@ -11,7 +11,7 @@ public final class LegacySingleScopeReservationRecommendationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LegacySingleScopeReservationRecommendationProperties model = BinaryData.fromString(
-            "{\"scope\":\"Single\",\"subscriptionId\":\"852d7226-302f-464f-b497-980e7f2a5a88\",\"lookBackPeriod\":\"ox\",\"instanceFlexibilityRatio\":4.6153727,\"instanceFlexibilityGroup\":\"dbxiqx\",\"normalizedSize\":\"iqbi\",\"recommendedQuantityNormalized\":28.257286,\"meterId\":\"970d9819-e432-4a91-b21a-928054fab0e5\",\"resourceType\":\"winhehfqpo\",\"term\":\"wbcb\",\"firstUsageDate\":\"2021-10-16T10:47:10Z\",\"skuProperties\":[{\"name\":\"vxkdivqihebwtswb\",\"value\":\"wfmdurage\"},{\"name\":\"zvcjfelisdjubggb\",\"value\":\"gkxkbsazgakg\"}]}")
+            "{\"scope\":\"Single\",\"subscriptionId\":\"9adbe8ea-b121-48bf-b05b-35db13592b1a\",\"lookBackPeriod\":\"ox\",\"instanceFlexibilityRatio\":4.6153727,\"instanceFlexibilityGroup\":\"dbxiqx\",\"normalizedSize\":\"iqbi\",\"recommendedQuantityNormalized\":28.257286,\"meterId\":\"2c9745f1-7945-4350-8270-bbd21af70aa1\",\"resourceType\":\"winhehfqpo\",\"term\":\"wbcb\",\"firstUsageDate\":\"2021-10-16T10:47:10Z\",\"skuProperties\":[{\"name\":\"vxkdivqihebwtswb\",\"value\":\"wfmdurage\"},{\"name\":\"zvcjfelisdjubggb\",\"value\":\"gkxkbsazgakg\"}]}")
             .toObject(LegacySingleScopeReservationRecommendationProperties.class);
     }
 

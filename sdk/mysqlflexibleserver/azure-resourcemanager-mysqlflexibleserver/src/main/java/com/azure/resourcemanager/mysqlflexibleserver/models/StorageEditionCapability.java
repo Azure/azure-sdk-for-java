@@ -41,16 +41,6 @@ public final class StorageEditionCapability implements JsonSerializable<StorageE
      */
     private Long maxBackupRetentionDays;
 
-    /*
-     * Minimal backup interval hours
-     */
-    private Long minBackupIntervalHours;
-
-    /*
-     * Maximum backup interval hours
-     */
-    private Long maxBackupIntervalHours;
-
     /**
      * Creates an instance of StorageEditionCapability class.
      */
@@ -103,24 +93,6 @@ public final class StorageEditionCapability implements JsonSerializable<StorageE
     }
 
     /**
-     * Get the minBackupIntervalHours property: Minimal backup interval hours.
-     * 
-     * @return the minBackupIntervalHours value.
-     */
-    public Long minBackupIntervalHours() {
-        return this.minBackupIntervalHours;
-    }
-
-    /**
-     * Get the maxBackupIntervalHours property: Maximum backup interval hours.
-     * 
-     * @return the maxBackupIntervalHours value.
-     */
-    public Long maxBackupIntervalHours() {
-        return this.maxBackupIntervalHours;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -163,12 +135,6 @@ public final class StorageEditionCapability implements JsonSerializable<StorageE
                         = reader.getNullable(JsonReader::getLong);
                 } else if ("maxBackupRetentionDays".equals(fieldName)) {
                     deserializedStorageEditionCapability.maxBackupRetentionDays
-                        = reader.getNullable(JsonReader::getLong);
-                } else if ("minBackupIntervalHours".equals(fieldName)) {
-                    deserializedStorageEditionCapability.minBackupIntervalHours
-                        = reader.getNullable(JsonReader::getLong);
-                } else if ("maxBackupIntervalHours".equals(fieldName)) {
-                    deserializedStorageEditionCapability.maxBackupIntervalHours
                         = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();

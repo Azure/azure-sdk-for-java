@@ -33,7 +33,7 @@ public final class DefaultAccountsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DefaultAccountPayload response = manager.defaultAccounts()
-            .getWithResponse(UUID.fromString("a2f3262c-6042-4b0e-af83-179caf215e91"), ScopeType.SUBSCRIPTION, "pfcqdp",
+            .getWithResponse(UUID.fromString("035f32b2-fcf6-485b-96e7-1aa23cfcc235"), ScopeType.SUBSCRIPTION, "pfcqdp",
                 com.azure.core.util.Context.NONE)
             .getValue();
 

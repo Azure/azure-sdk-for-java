@@ -15,25 +15,30 @@ public final class RecommendedSensitivityLabelUpdateListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecommendedSensitivityLabelUpdateList model = BinaryData.fromString(
-            "{\"operations\":[{\"properties\":{\"op\":\"enable\",\"schema\":\"nhlmctlpdng\",\"table\":\"tvgbmhrixkwmy\",\"column\":\"jejveg\"},\"id\":\"hbpnaixexccbd\",\"name\":\"eaxhcexdrrvqahqk\",\"type\":\"htpwij\"}]}")
+            "{\"operations\":[{\"properties\":{\"op\":\"disable\",\"schema\":\"lcdisd\",\"table\":\"sfjbjsvg\",\"column\":\"rwhryvycytd\"},\"id\":\"lxgccknfnwmbtm\",\"name\":\"pdvjdhttzaefedx\",\"type\":\"hchrphkmcrjdqn\"},{\"properties\":{\"op\":\"disable\",\"schema\":\"zpbgtgkylkdg\",\"table\":\"rjeuut\",\"column\":\"wxezwzhok\"},\"id\":\"bwnhhtql\",\"name\":\"ehgpp\",\"type\":\"pifhpfeoajvgcxtx\"}]}")
             .toObject(RecommendedSensitivityLabelUpdateList.class);
-        Assertions.assertEquals(RecommendedSensitivityLabelUpdateKind.ENABLE, model.operations().get(0).op());
-        Assertions.assertEquals("nhlmctlpdng", model.operations().get(0).schema());
-        Assertions.assertEquals("tvgbmhrixkwmy", model.operations().get(0).table());
-        Assertions.assertEquals("jejveg", model.operations().get(0).column());
+        Assertions.assertEquals(RecommendedSensitivityLabelUpdateKind.DISABLE, model.operations().get(0).op());
+        Assertions.assertEquals("lcdisd", model.operations().get(0).schema());
+        Assertions.assertEquals("sfjbjsvg", model.operations().get(0).table());
+        Assertions.assertEquals("rwhryvycytd", model.operations().get(0).column());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecommendedSensitivityLabelUpdateList model = new RecommendedSensitivityLabelUpdateList().withOperations(
-            Arrays.asList(new RecommendedSensitivityLabelUpdate().withOp(RecommendedSensitivityLabelUpdateKind.ENABLE)
-                .withSchema("nhlmctlpdng")
-                .withTable("tvgbmhrixkwmy")
-                .withColumn("jejveg")));
+        RecommendedSensitivityLabelUpdateList model
+            = new RecommendedSensitivityLabelUpdateList().withOperations(Arrays.asList(
+                new RecommendedSensitivityLabelUpdate().withOp(RecommendedSensitivityLabelUpdateKind.DISABLE)
+                    .withSchema("lcdisd")
+                    .withTable("sfjbjsvg")
+                    .withColumn("rwhryvycytd"),
+                new RecommendedSensitivityLabelUpdate().withOp(RecommendedSensitivityLabelUpdateKind.DISABLE)
+                    .withSchema("zpbgtgkylkdg")
+                    .withTable("rjeuut")
+                    .withColumn("wxezwzhok")));
         model = BinaryData.fromObject(model).toObject(RecommendedSensitivityLabelUpdateList.class);
-        Assertions.assertEquals(RecommendedSensitivityLabelUpdateKind.ENABLE, model.operations().get(0).op());
-        Assertions.assertEquals("nhlmctlpdng", model.operations().get(0).schema());
-        Assertions.assertEquals("tvgbmhrixkwmy", model.operations().get(0).table());
-        Assertions.assertEquals("jejveg", model.operations().get(0).column());
+        Assertions.assertEquals(RecommendedSensitivityLabelUpdateKind.DISABLE, model.operations().get(0).op());
+        Assertions.assertEquals("lcdisd", model.operations().get(0).schema());
+        Assertions.assertEquals("sfjbjsvg", model.operations().get(0).table());
+        Assertions.assertEquals("rwhryvycytd", model.operations().get(0).column());
     }
 }

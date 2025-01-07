@@ -27,7 +27,7 @@ public final class IntegrationRuntimesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.integrationRuntimes().delete("nq", "lct", "wp", com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes().delete("kcvtl", "bse", "kvcuartrhunl", com.azure.core.util.Context.NONE);
 
     }
 }

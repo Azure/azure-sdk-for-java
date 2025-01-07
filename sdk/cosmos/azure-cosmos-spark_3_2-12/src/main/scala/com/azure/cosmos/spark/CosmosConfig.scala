@@ -89,6 +89,7 @@ private[spark] object CosmosConfigNames {
   val WriteBulkEnabled = "spark.cosmos.write.bulk.enabled"
   val WriteBulkMaxPendingOperations = "spark.cosmos.write.bulk.maxPendingOperations"
   val WriteBulkMaxBatchSize = "spark.cosmos.write.bulk.maxBatchSize"
+  val WriteBulkMinTargetBatchSize = "spark.cosmos.write.bulk.minTargetBatchSize"
   val WriteBulkMaxConcurrentPartitions = "spark.cosmos.write.bulk.maxConcurrentCosmosPartitions"
   val WriteBulkPayloadSizeInBytes = "spark.cosmos.write.bulk.targetedPayloadSizeInBytes"
   val WriteBulkInitialBatchSize = "spark.cosmos.write.bulk.initialBatchSize"
@@ -195,6 +196,7 @@ private[spark] object CosmosConfigNames {
     WriteBulkPayloadSizeInBytes,
     WriteBulkInitialBatchSize,
     WriteBulkMaxBatchSize,
+    WriteBulkMinTargetBatchSize,
     WritePointMaxConcurrency,
     WritePatchDefaultOperationType,
     WritePatchColumnConfigs,
@@ -1162,6 +1164,7 @@ private case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy,
                                      maxMicroBatchPayloadSizeInBytes: Option[Int] = None,
                                      initialMicroBatchSize: Option[Int] = None,
                                      maxMicroBatchSize: Option[Int] = None,
+                                     minTargetMicroBatchSize: Option[Int] = None,
                                      flushCloseIntervalInSeconds: Int = 60,
                                      maxNoProgressIntervalInSeconds: Int = 180,
                                      maxRetryNoProgressIntervalInSeconds: Int = 45 * 60,
@@ -1206,6 +1209,15 @@ private object CosmosWriteConfig {
       "max micro batch size is 100. Reduce this when you want to avoid that requests consume " +
       "too many RUs and you cannot enable thoughput control. NOTE: using throuhgput control is preferred and will." +
       "result in better throughput while still limiting the RU/s used.")
+
+  private val minTargetMicroBatchSize = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteBulkMinTargetBatchSize,
+    defaultValue = Option.apply(Configs.getMinTargetBulkMicroBatchSize),
+    mandatory = false,
+    parseFromStringFunction = minTargetBatchSizeString => Math.min(minTargetBatchSizeString.toInt, Configs.getMinTargetBulkMicroBatchSize),
+    helpMessage = "Cosmos DB min. target bulk micro batch size - a micro batch will be flushed to the backend " +
+      "when the number of documents enqueued exceeds the target micro batch size. The target micro batch size is " +
+      "calculated based on the throttling rate. This setting can be used to force the target batch size to have " +
+      " at least a certain size. NOTE: This should only be modified in rare edge cases.")
 
   private val bulkMaxPendingOperations = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteBulkMaxPendingOperations,
     mandatory = false,
@@ -1445,6 +1457,7 @@ private object CosmosWriteConfig {
     val microBatchPayloadSizeInBytesOpt = CosmosConfigEntry.parse(cfg, microBatchPayloadSizeInBytes)
     val initialBatchSizeOpt = CosmosConfigEntry.parse(cfg, initialMicroBatchSize)
     val maxBatchSizeOpt = CosmosConfigEntry.parse(cfg, maxMicroBatchSize)
+    val minTargetBatchSizeOpt = CosmosConfigEntry.parse(cfg, minTargetMicroBatchSize)
     val writeRetryCommitInterceptor = CosmosConfigEntry
       .parse(cfg, writeOnRetryCommitInterceptor).flatten
 
@@ -1477,6 +1490,7 @@ private object CosmosWriteConfig {
       maxMicroBatchPayloadSizeInBytes = microBatchPayloadSizeInBytesOpt,
       initialMicroBatchSize = initialBatchSizeOpt,
       maxMicroBatchSize = maxBatchSizeOpt,
+      minTargetMicroBatchSize = minTargetBatchSizeOpt,
       flushCloseIntervalInSeconds = CosmosConfigEntry.parse(cfg, flushCloseIntervalInSeconds).get,
       maxNoProgressIntervalInSeconds = CosmosConfigEntry.parse(cfg, maxNoProgressIntervalInSeconds).get,
       maxRetryNoProgressIntervalInSeconds = CosmosConfigEntry.parse(cfg, maxRetryNoProgressIntervalInSeconds).get,

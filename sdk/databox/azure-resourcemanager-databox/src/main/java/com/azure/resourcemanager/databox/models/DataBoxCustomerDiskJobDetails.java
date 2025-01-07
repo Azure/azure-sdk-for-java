@@ -53,61 +53,6 @@ public final class DataBoxCustomerDiskJobDetails extends JobDetails {
      */
     private Boolean enableManifestBackup;
 
-    /*
-     * DataCenter code.
-     */
-    private DataCenterCode dataCenterCode;
-
-    /*
-     * Datacenter address to ship to, for the given sku and storage location.
-     */
-    private DatacenterAddressResponse datacenterAddress;
-
-    /*
-     * Last mitigation action performed on the job.
-     */
-    private LastMitigationActionOnJob lastMitigationActionOnJob;
-
-    /*
-     * Available actions on the job.
-     */
-    private List<CustomerResolutionCode> actions;
-
-    /*
-     * Holds device data erasure details
-     */
-    private DeviceErasureDetails deviceErasureDetails;
-
-    /*
-     * Shared access key to download the chain of custody logs
-     */
-    private String chainOfCustodySasKey;
-
-    /*
-     * Shared access key to download the return shipment label
-     */
-    private String reverseShipmentLabelSasKey;
-
-    /*
-     * List of copy log details.
-     */
-    private List<CopyLogDetails> copyLogDetails;
-
-    /*
-     * Return package shipping details.
-     */
-    private PackageShippingDetails returnPackage;
-
-    /*
-     * Delivery package shipping details.
-     */
-    private PackageShippingDetails deliveryPackage;
-
-    /*
-     * List of stages that run in the job.
-     */
-    private List<JobStages> jobStages;
-
     /**
      * Creates an instance of DataBoxCustomerDiskJobDetails class.
      */
@@ -216,116 +161,6 @@ public final class DataBoxCustomerDiskJobDetails extends JobDetails {
     public DataBoxCustomerDiskJobDetails withEnableManifestBackup(Boolean enableManifestBackup) {
         this.enableManifestBackup = enableManifestBackup;
         return this;
-    }
-
-    /**
-     * Get the dataCenterCode property: DataCenter code.
-     * 
-     * @return the dataCenterCode value.
-     */
-    @Override
-    public DataCenterCode dataCenterCode() {
-        return this.dataCenterCode;
-    }
-
-    /**
-     * Get the datacenterAddress property: Datacenter address to ship to, for the given sku and storage location.
-     * 
-     * @return the datacenterAddress value.
-     */
-    @Override
-    public DatacenterAddressResponse datacenterAddress() {
-        return this.datacenterAddress;
-    }
-
-    /**
-     * Get the lastMitigationActionOnJob property: Last mitigation action performed on the job.
-     * 
-     * @return the lastMitigationActionOnJob value.
-     */
-    @Override
-    public LastMitigationActionOnJob lastMitigationActionOnJob() {
-        return this.lastMitigationActionOnJob;
-    }
-
-    /**
-     * Get the actions property: Available actions on the job.
-     * 
-     * @return the actions value.
-     */
-    @Override
-    public List<CustomerResolutionCode> actions() {
-        return this.actions;
-    }
-
-    /**
-     * Get the deviceErasureDetails property: Holds device data erasure details.
-     * 
-     * @return the deviceErasureDetails value.
-     */
-    @Override
-    public DeviceErasureDetails deviceErasureDetails() {
-        return this.deviceErasureDetails;
-    }
-
-    /**
-     * Get the chainOfCustodySasKey property: Shared access key to download the chain of custody logs.
-     * 
-     * @return the chainOfCustodySasKey value.
-     */
-    @Override
-    public String chainOfCustodySasKey() {
-        return this.chainOfCustodySasKey;
-    }
-
-    /**
-     * Get the reverseShipmentLabelSasKey property: Shared access key to download the return shipment label.
-     * 
-     * @return the reverseShipmentLabelSasKey value.
-     */
-    @Override
-    public String reverseShipmentLabelSasKey() {
-        return this.reverseShipmentLabelSasKey;
-    }
-
-    /**
-     * Get the copyLogDetails property: List of copy log details.
-     * 
-     * @return the copyLogDetails value.
-     */
-    @Override
-    public List<CopyLogDetails> copyLogDetails() {
-        return this.copyLogDetails;
-    }
-
-    /**
-     * Get the returnPackage property: Return package shipping details.
-     * 
-     * @return the returnPackage value.
-     */
-    @Override
-    public PackageShippingDetails returnPackage() {
-        return this.returnPackage;
-    }
-
-    /**
-     * Get the deliveryPackage property: Delivery package shipping details.
-     * 
-     * @return the deliveryPackage value.
-     */
-    @Override
-    public PackageShippingDetails deliveryPackage() {
-        return this.deliveryPackage;
-    }
-
-    /**
-     * Get the jobStages property: List of stages that run in the job.
-     * 
-     * @return the jobStages value.
-     */
-    @Override
-    public List<JobStages> jobStages() {
-        return this.jobStages;
     }
 
     /**
@@ -530,13 +365,15 @@ public final class DataBoxCustomerDiskJobDetails extends JobDetails {
                     deserializedDataBoxCustomerDiskJobDetails.withContactDetails(ContactDetails.fromJson(reader));
                 } else if ("jobStages".equals(fieldName)) {
                     List<JobStages> jobStages = reader.readArray(reader1 -> JobStages.fromJson(reader1));
-                    deserializedDataBoxCustomerDiskJobDetails.jobStages = jobStages;
+                    deserializedDataBoxCustomerDiskJobDetails.withJobStages(jobStages);
                 } else if ("shippingAddress".equals(fieldName)) {
                     deserializedDataBoxCustomerDiskJobDetails.withShippingAddress(ShippingAddress.fromJson(reader));
                 } else if ("deliveryPackage".equals(fieldName)) {
-                    deserializedDataBoxCustomerDiskJobDetails.deliveryPackage = PackageShippingDetails.fromJson(reader);
+                    deserializedDataBoxCustomerDiskJobDetails
+                        .withDeliveryPackage(PackageShippingDetails.fromJson(reader));
                 } else if ("returnPackage".equals(fieldName)) {
-                    deserializedDataBoxCustomerDiskJobDetails.returnPackage = PackageShippingDetails.fromJson(reader);
+                    deserializedDataBoxCustomerDiskJobDetails
+                        .withReturnPackage(PackageShippingDetails.fromJson(reader));
                 } else if ("dataImportDetails".equals(fieldName)) {
                     List<DataImportDetails> dataImportDetails
                         = reader.readArray(reader1 -> DataImportDetails.fromJson(reader1));
@@ -552,14 +389,14 @@ public final class DataBoxCustomerDiskJobDetails extends JobDetails {
                         .withReverseShippingDetails(ReverseShippingDetails.fromJson(reader));
                 } else if ("copyLogDetails".equals(fieldName)) {
                     List<CopyLogDetails> copyLogDetails = reader.readArray(reader1 -> CopyLogDetails.fromJson(reader1));
-                    deserializedDataBoxCustomerDiskJobDetails.copyLogDetails = copyLogDetails;
+                    deserializedDataBoxCustomerDiskJobDetails.withCopyLogDetails(copyLogDetails);
                 } else if ("reverseShipmentLabelSasKey".equals(fieldName)) {
-                    deserializedDataBoxCustomerDiskJobDetails.reverseShipmentLabelSasKey = reader.getString();
+                    deserializedDataBoxCustomerDiskJobDetails.withReverseShipmentLabelSasKey(reader.getString());
                 } else if ("chainOfCustodySasKey".equals(fieldName)) {
-                    deserializedDataBoxCustomerDiskJobDetails.chainOfCustodySasKey = reader.getString();
+                    deserializedDataBoxCustomerDiskJobDetails.withChainOfCustodySasKey(reader.getString());
                 } else if ("deviceErasureDetails".equals(fieldName)) {
-                    deserializedDataBoxCustomerDiskJobDetails.deviceErasureDetails
-                        = DeviceErasureDetails.fromJson(reader);
+                    deserializedDataBoxCustomerDiskJobDetails
+                        .withDeviceErasureDetails(DeviceErasureDetails.fromJson(reader));
                 } else if ("keyEncryptionKey".equals(fieldName)) {
                     deserializedDataBoxCustomerDiskJobDetails.withKeyEncryptionKey(KeyEncryptionKey.fromJson(reader));
                 } else if ("expectedDataSizeInTeraBytes".equals(fieldName)) {
@@ -568,16 +405,16 @@ public final class DataBoxCustomerDiskJobDetails extends JobDetails {
                 } else if ("actions".equals(fieldName)) {
                     List<CustomerResolutionCode> actions
                         = reader.readArray(reader1 -> CustomerResolutionCode.fromString(reader1.getString()));
-                    deserializedDataBoxCustomerDiskJobDetails.actions = actions;
+                    deserializedDataBoxCustomerDiskJobDetails.withActions(actions);
                 } else if ("lastMitigationActionOnJob".equals(fieldName)) {
-                    deserializedDataBoxCustomerDiskJobDetails.lastMitigationActionOnJob
-                        = LastMitigationActionOnJob.fromJson(reader);
+                    deserializedDataBoxCustomerDiskJobDetails
+                        .withLastMitigationActionOnJob(LastMitigationActionOnJob.fromJson(reader));
                 } else if ("datacenterAddress".equals(fieldName)) {
-                    deserializedDataBoxCustomerDiskJobDetails.datacenterAddress
-                        = DatacenterAddressResponse.fromJson(reader);
+                    deserializedDataBoxCustomerDiskJobDetails
+                        .withDatacenterAddress(DatacenterAddressResponse.fromJson(reader));
                 } else if ("dataCenterCode".equals(fieldName)) {
-                    deserializedDataBoxCustomerDiskJobDetails.dataCenterCode
-                        = DataCenterCode.fromString(reader.getString());
+                    deserializedDataBoxCustomerDiskJobDetails
+                        .withDataCenterCode(DataCenterCode.fromString(reader.getString()));
                 } else if ("returnToCustomerPackageDetails".equals(fieldName)) {
                     deserializedDataBoxCustomerDiskJobDetails.returnToCustomerPackageDetails
                         = PackageCarrierDetails.fromJson(reader);

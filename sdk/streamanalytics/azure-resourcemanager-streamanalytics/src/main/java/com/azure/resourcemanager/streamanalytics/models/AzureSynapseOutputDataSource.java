@@ -49,7 +49,7 @@ public final class AzureSynapseOutputDataSource extends OutputDataSource {
      * 
      * @return the innerProperties value.
      */
-    private AzureSynapseOutputDataSourceProperties innerProperties() {
+    AzureSynapseOutputDataSourceProperties innerProperties() {
         return this.innerProperties;
     }
 
@@ -173,29 +173,6 @@ public final class AzureSynapseOutputDataSource extends OutputDataSource {
             this.innerProperties = new AzureSynapseOutputDataSourceProperties();
         }
         this.innerProperties().withPassword(password);
-        return this;
-    }
-
-    /**
-     * Get the authenticationMode property: Authentication Mode.
-     * 
-     * @return the authenticationMode value.
-     */
-    public AuthenticationMode authenticationMode() {
-        return this.innerProperties() == null ? null : this.innerProperties().authenticationMode();
-    }
-
-    /**
-     * Set the authenticationMode property: Authentication Mode.
-     * 
-     * @param authenticationMode the authenticationMode value to set.
-     * @return the AzureSynapseOutputDataSource object itself.
-     */
-    public AzureSynapseOutputDataSource withAuthenticationMode(AuthenticationMode authenticationMode) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AzureSynapseOutputDataSourceProperties();
-        }
-        this.innerProperties().withAuthenticationMode(authenticationMode);
         return this;
     }
 

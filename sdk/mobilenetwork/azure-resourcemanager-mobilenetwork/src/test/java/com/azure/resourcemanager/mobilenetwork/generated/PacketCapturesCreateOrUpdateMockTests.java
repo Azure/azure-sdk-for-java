@@ -22,7 +22,7 @@ public final class PacketCapturesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":\"Stopped\",\"reason\":\"srlzknmzlan\",\"captureStartTime\":\"2021-05-03T02:08:16Z\",\"networkInterfaces\":[\"vnphc\",\"zqtpjhmq\"],\"bytesToCapturePerPacket\":623266900390465958,\"totalBytesPerSession\":4724246192491470595,\"timeLimitInSeconds\":574931701,\"outputFiles\":[\"xsmlz\"]},\"id\":\"zdtxetlgyd\",\"name\":\"hqvlnnpxybafiqg\",\"type\":\"aarbgjekg\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":\"Error\",\"reason\":\"ohhoucqpqojxcxz\",\"captureStartTime\":\"2021-07-20T00:10:21Z\",\"networkInterfaces\":[\"dzbenri\",\"cawetzqddt\"],\"bytesToCapturePerPacket\":2874714863507739239,\"totalBytesPerSession\":2672571811626083007,\"timeLimitInSeconds\":1441548942,\"outputFiles\":[\"uatmzwcjjncqtj\",\"mizvgbgatzuuvbx\",\"grebwggahttzlsw\"]},\"id\":\"jqfutlxj\",\"name\":\"qzasunwqrjzfrgqh\",\"type\":\"ohcmbu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,17 +32,17 @@ public final class PacketCapturesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PacketCapture response = manager.packetCaptures()
-            .define("vhqjwtrhtgvg")
-            .withExistingPacketCoreControlPlane("tjklntikyjuzk", "bqzolxr")
-            .withNetworkInterfaces(Arrays.asList("yjaf", "tlhguynuchl", "mltx"))
-            .withBytesToCapturePerPacket(4026171526314677739L)
-            .withTotalBytesPerSession(4255131406127462111L)
-            .withTimeLimitInSeconds(1986885457)
+            .define("d")
+            .withExistingPacketCoreControlPlane("nmbscbbx", "gdhxi")
+            .withNetworkInterfaces(Arrays.asList("bmdnafcbqwre", "jelaqacigele", "hdbvqvwzkjop", "beonrlkwzdq"))
+            .withBytesToCapturePerPacket(242190518706221422L)
+            .withTotalBytesPerSession(8133324851660913956L)
+            .withTimeLimitInSeconds(915634222)
             .create();
 
-        Assertions.assertEquals("vnphc", response.networkInterfaces().get(0));
-        Assertions.assertEquals(623266900390465958L, response.bytesToCapturePerPacket());
-        Assertions.assertEquals(4724246192491470595L, response.totalBytesPerSession());
-        Assertions.assertEquals(574931701, response.timeLimitInSeconds());
+        Assertions.assertEquals("dzbenri", response.networkInterfaces().get(0));
+        Assertions.assertEquals(2874714863507739239L, response.bytesToCapturePerPacket());
+        Assertions.assertEquals(2672571811626083007L, response.totalBytesPerSession());
+        Assertions.assertEquals(1441548942, response.timeLimitInSeconds());
     }
 }

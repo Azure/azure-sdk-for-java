@@ -13,18 +13,18 @@ public final class CustomDomainInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomDomainInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Failed\",\"domainName\":\"aehvbbxuri\",\"customCertificate\":{\"id\":\"tfnhtbaxkgxywr\"}},\"id\":\"pyklyhpluodpvru\",\"name\":\"dlgzibthostgkt\",\"type\":\"tvdxeclzedqb\"}")
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"domainName\":\"rn\",\"customCertificate\":{\"id\":\"x\"}},\"id\":\"huwrykqgaifm\",\"name\":\"iklbydvkhb\",\"type\":\"jdz\"}")
             .toObject(CustomDomainInner.class);
-        Assertions.assertEquals("aehvbbxuri", model.domainName());
-        Assertions.assertEquals("tfnhtbaxkgxywr", model.customCertificate().id());
+        Assertions.assertEquals("rn", model.domainName());
+        Assertions.assertEquals("x", model.customCertificate().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomDomainInner model = new CustomDomainInner().withDomainName("aehvbbxuri")
-            .withCustomCertificate(new ResourceReference().withId("tfnhtbaxkgxywr"));
+        CustomDomainInner model
+            = new CustomDomainInner().withDomainName("rn").withCustomCertificate(new ResourceReference().withId("x"));
         model = BinaryData.fromObject(model).toObject(CustomDomainInner.class);
-        Assertions.assertEquals("aehvbbxuri", model.domainName());
-        Assertions.assertEquals("tfnhtbaxkgxywr", model.customCertificate().id());
+        Assertions.assertEquals("rn", model.domainName());
+        Assertions.assertEquals("x", model.customCertificate().id());
     }
 }

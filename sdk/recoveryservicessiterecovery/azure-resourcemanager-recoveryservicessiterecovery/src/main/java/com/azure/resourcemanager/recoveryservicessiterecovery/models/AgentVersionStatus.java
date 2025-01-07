@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -52,7 +51,6 @@ public final class AgentVersionStatus extends ExpandableStringEnum<AgentVersionS
      * @param name a name to look for.
      * @return the corresponding AgentVersionStatus.
      */
-    @JsonCreator
     public static AgentVersionStatus fromString(String name) {
         return fromString(name, AgentVersionStatus.class);
     }

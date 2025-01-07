@@ -25,11 +25,6 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputError extends Migrat
      */
     private ReportableException error;
 
-    /*
-     * Result identifier
-     */
-    private String id;
-
     /**
      * Creates an instance of MigrateMySqlAzureDbForMySqlSyncTaskOutputError class.
      */
@@ -53,16 +48,6 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputError extends Migrat
      */
     public ReportableException error() {
         return this.error;
-    }
-
-    /**
-     * Get the id property: Result identifier.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
     }
 
     /**
@@ -104,7 +89,7 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputError extends Migrat
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputError.id = reader.getString();
+                    deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputError.withId(reader.getString());
                 } else if ("resultType".equals(fieldName)) {
                     deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputError.resultType = reader.getString();
                 } else if ("error".equals(fieldName)) {

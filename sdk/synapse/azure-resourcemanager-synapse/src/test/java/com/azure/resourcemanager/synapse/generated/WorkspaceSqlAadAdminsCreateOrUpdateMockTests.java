@@ -22,7 +22,7 @@ public final class WorkspaceSqlAadAdminsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"tenantId\":\"qcs\",\"login\":\"qjmxpt\",\"administratorType\":\"ipuugkwdrqmr\",\"sid\":\"huuonjkkxukg\"},\"id\":\"e\",\"name\":\"vvpxjoeg\",\"type\":\"jojlle\"}";
+            = "{\"properties\":{\"tenantId\":\"zzxezmnrkj\",\"login\":\"jeuxsphlo\",\"administratorType\":\"pmijp\",\"sid\":\"zvfbhwbdquf\"},\"id\":\"cgnrglaqrwy\",\"name\":\"mbhbafebzxf\",\"type\":\"jqut\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,16 +32,16 @@ public final class WorkspaceSqlAadAdminsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkspaceAadAdminInfo response = manager.workspaceSqlAadAdmins()
-            .createOrUpdate("mcarm", "yfxxkwykuqdnd",
-                new WorkspaceAadAdminInfoInner().withTenantId("kh")
-                    .withLogin("gapvdgtfpeerscdx")
-                    .withAdministratorType("rnjr")
-                    .withSid("fmbgacn"),
+            .createOrUpdate("iikmoxrezsvavlrx", "kj",
+                new WorkspaceAadAdminInfoInner().withTenantId("wlunpipcwybs")
+                    .withLogin("ncnpat")
+                    .withAdministratorType("tsaebwfwhxorpwa")
+                    .withSid("zwuge"),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qcs", response.tenantId());
-        Assertions.assertEquals("qjmxpt", response.login());
-        Assertions.assertEquals("ipuugkwdrqmr", response.administratorType());
-        Assertions.assertEquals("huuonjkkxukg", response.sid());
+        Assertions.assertEquals("zzxezmnrkj", response.tenantId());
+        Assertions.assertEquals("jeuxsphlo", response.login());
+        Assertions.assertEquals("pmijp", response.administratorType());
+        Assertions.assertEquals("zvfbhwbdquf", response.sid());
     }
 }

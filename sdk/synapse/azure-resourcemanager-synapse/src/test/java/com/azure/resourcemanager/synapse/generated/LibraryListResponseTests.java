@@ -14,40 +14,36 @@ public final class LibraryListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LibraryListResponse model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"name\":\"pubowsepdfg\",\"path\":\"tdherngbtcjuahok\",\"containerName\":\"obkauxofsh\",\"uploadedTimestamp\":\"2021-10-19T08:31:07Z\",\"type\":\"pnulaiywzej\",\"provisioningStatus\":\"hs\",\"creatorId\":\"koj\"},\"etag\":\"l\",\"id\":\"dnpdwrpqaf\",\"name\":\"fugsnnfhyetefy\",\"type\":\"oc\"},{\"properties\":{\"name\":\"tfjgt\",\"path\":\"rjvzuyt\",\"containerName\":\"mlmuowol\",\"uploadedTimestamp\":\"2021-10-18T09:49:12Z\",\"type\":\"ropions\",\"provisioningStatus\":\"nw\",\"creatorId\":\"gajinnixjawrtmj\"},\"etag\":\"myccx\",\"id\":\"zhcoxovnekhe\",\"name\":\"lusfnrdtjxtxrdcq\",\"type\":\"jvidttge\"},{\"properties\":{\"name\":\"slvyjtcvuwkasi\",\"path\":\"esfuught\",\"containerName\":\"fecjxeygtuhx\",\"uploadedTimestamp\":\"2021-01-12T18:06:14Z\",\"type\":\"uewmrswnjlxuzrhw\",\"provisioningStatus\":\"sxjb\",\"creatorId\":\"ehgpdohzjqatu\"},\"etag\":\"igebxncnwfepb\",\"id\":\"wgfmx\",\"name\":\"gcgbjb\",\"type\":\"dlfgtdysnaq\"},{\"properties\":{\"name\":\"lqbctqhamzjrw\",\"path\":\"qzeqyjleziunjxdf\",\"containerName\":\"ntkwcegy\",\"uploadedTimestamp\":\"2021-02-09T22:26:38Z\",\"type\":\"nseqacjjvp\",\"provisioningStatus\":\"guooqjagmdit\",\"creatorId\":\"eiookjbsah\"},\"etag\":\"dt\",\"id\":\"delqacslmoto\",\"name\":\"bnfxofvc\",\"type\":\"k\"}],\"nextLink\":\"irazftxejwabmd\"}")
+            "{\"value\":[{\"properties\":{\"name\":\"jawgqwg\",\"path\":\"ni\",\"containerName\":\"x\",\"uploadedTimestamp\":\"2021-09-13T09:37:01Z\",\"type\":\"y\",\"provisioningStatus\":\"klwndnhjdauwhv\",\"creatorId\":\"wzbtdhxu\"},\"etag\":\"nbmpowuwprzq\",\"id\":\"veual\",\"name\":\"pjmkhfxobbc\",\"type\":\"wsrtjriplrbpbe\"},{\"properties\":{\"name\":\"ghfg\",\"path\":\"c\",\"containerName\":\"xzvlvqhjkbegib\",\"uploadedTimestamp\":\"2021-07-17T08:56:43Z\",\"type\":\"iebwwaloayqcgwrt\",\"provisioningStatus\":\"uzgwyzmhtx\",\"creatorId\":\"gmtsavjcbpwxqpsr\"},\"etag\":\"ftguv\",\"id\":\"iuhprwmdyvxqta\",\"name\":\"riwwroy\",\"type\":\"bexrmcq\"},{\"properties\":{\"name\":\"ycnojvknmefqsg\",\"path\":\"ah\",\"containerName\":\"jyzhpvgq\",\"uploadedTimestamp\":\"2021-04-06T16:15:02Z\",\"type\":\"vxdjzlmwlxkvugf\",\"provisioningStatus\":\"ovawjvzunlu\",\"creatorId\":\"nnprn\"},\"etag\":\"peilpjzuaejxdu\",\"id\":\"tskzbbtdzumveek\",\"name\":\"pwo\",\"type\":\"uh\"}],\"nextLink\":\"p\"}")
             .toObject(LibraryListResponse.class);
-        Assertions.assertEquals("pubowsepdfg", model.value().get(0).namePropertiesName());
-        Assertions.assertEquals("tdherngbtcjuahok", model.value().get(0).path());
-        Assertions.assertEquals("obkauxofsh", model.value().get(0).containerName());
-        Assertions.assertEquals("pnulaiywzej", model.value().get(0).typePropertiesType());
-        Assertions.assertEquals("irazftxejwabmd", model.nextLink());
+        Assertions.assertEquals("jawgqwg", model.value().get(0).namePropertiesName());
+        Assertions.assertEquals("ni", model.value().get(0).path());
+        Assertions.assertEquals("x", model.value().get(0).containerName());
+        Assertions.assertEquals("y", model.value().get(0).typePropertiesType());
+        Assertions.assertEquals("p", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LibraryListResponse model = new LibraryListResponse().withValue(Arrays.asList(
-            new LibraryResourceInner().withNamePropertiesName("pubowsepdfg")
-                .withPath("tdherngbtcjuahok")
-                .withContainerName("obkauxofsh")
-                .withTypePropertiesType("pnulaiywzej"),
-            new LibraryResourceInner().withNamePropertiesName("tfjgt")
-                .withPath("rjvzuyt")
-                .withContainerName("mlmuowol")
-                .withTypePropertiesType("ropions"),
-            new LibraryResourceInner().withNamePropertiesName("slvyjtcvuwkasi")
-                .withPath("esfuught")
-                .withContainerName("fecjxeygtuhx")
-                .withTypePropertiesType("uewmrswnjlxuzrhw"),
-            new LibraryResourceInner().withNamePropertiesName("lqbctqhamzjrw")
-                .withPath("qzeqyjleziunjxdf")
-                .withContainerName("ntkwcegy")
-                .withTypePropertiesType("nseqacjjvp")))
-            .withNextLink("irazftxejwabmd");
+            new LibraryResourceInner().withNamePropertiesName("jawgqwg")
+                .withPath("ni")
+                .withContainerName("x")
+                .withTypePropertiesType("y"),
+            new LibraryResourceInner().withNamePropertiesName("ghfg")
+                .withPath("c")
+                .withContainerName("xzvlvqhjkbegib")
+                .withTypePropertiesType("iebwwaloayqcgwrt"),
+            new LibraryResourceInner().withNamePropertiesName("ycnojvknmefqsg")
+                .withPath("ah")
+                .withContainerName("jyzhpvgq")
+                .withTypePropertiesType("vxdjzlmwlxkvugf")))
+            .withNextLink("p");
         model = BinaryData.fromObject(model).toObject(LibraryListResponse.class);
-        Assertions.assertEquals("pubowsepdfg", model.value().get(0).namePropertiesName());
-        Assertions.assertEquals("tdherngbtcjuahok", model.value().get(0).path());
-        Assertions.assertEquals("obkauxofsh", model.value().get(0).containerName());
-        Assertions.assertEquals("pnulaiywzej", model.value().get(0).typePropertiesType());
-        Assertions.assertEquals("irazftxejwabmd", model.nextLink());
+        Assertions.assertEquals("jawgqwg", model.value().get(0).namePropertiesName());
+        Assertions.assertEquals("ni", model.value().get(0).path());
+        Assertions.assertEquals("x", model.value().get(0).containerName());
+        Assertions.assertEquals("y", model.value().get(0).typePropertiesType());
+        Assertions.assertEquals("p", model.nextLink());
     }
 }

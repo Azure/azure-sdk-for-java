@@ -64,18 +64,6 @@ public final class AutomationRulePropertyConditionSupportedProperty
         = fromString("IncidentUpdatedBySource");
 
     /**
-     * Static value IncidentCustomDetailsKey for AutomationRulePropertyConditionSupportedProperty.
-     */
-    public static final AutomationRulePropertyConditionSupportedProperty INCIDENT_CUSTOM_DETAILS_KEY
-        = fromString("IncidentCustomDetailsKey");
-
-    /**
-     * Static value IncidentCustomDetailsValue for AutomationRulePropertyConditionSupportedProperty.
-     */
-    public static final AutomationRulePropertyConditionSupportedProperty INCIDENT_CUSTOM_DETAILS_VALUE
-        = fromString("IncidentCustomDetailsValue");
-
-    /**
      * Static value AccountAadTenantId for AutomationRulePropertyConditionSupportedProperty.
      */
     public static final AutomationRulePropertyConditionSupportedProperty ACCOUNT_AAD_TENANT_ID

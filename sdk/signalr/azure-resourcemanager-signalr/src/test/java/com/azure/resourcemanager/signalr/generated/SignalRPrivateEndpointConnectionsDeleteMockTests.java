@@ -28,7 +28,7 @@ public final class SignalRPrivateEndpointConnectionsDeleteMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.signalRPrivateEndpointConnections()
-            .delete("afcbqw", "e", "jelaqacigele", com.azure.core.util.Context.NONE);
+            .delete("pvmjcdoewbid", "vteo", "xvgpiude", com.azure.core.util.Context.NONE);
 
     }
 }

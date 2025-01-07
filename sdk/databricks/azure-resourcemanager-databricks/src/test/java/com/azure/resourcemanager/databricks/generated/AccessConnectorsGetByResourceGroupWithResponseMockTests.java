@@ -22,7 +22,7 @@ public final class AccessConnectorsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"identity\":{\"principalId\":\"8c22fe2a-dcbb-487b-9ab7-9dc1e0052475\",\"tenantId\":\"70e499d4-cf19-4830-b124-7222fbb2fd0b\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"yat\":{\"principalId\":\"02b19d20-873d-4681-859d-9757ff6c9228\",\"clientId\":\"de7ef414-4aab-40b3-8167-d7162abc9f6f\"}}},\"properties\":{\"provisioningState\":\"Deleting\"},\"location\":\"bcuejrjxgci\",\"tags\":{\"sdqrhzoymibmrq\":\"rhos\"},\"id\":\"ibahwflus\",\"name\":\"dtmhrkwofyyvoqa\",\"type\":\"piexpbtgiw\"}";
+            = "{\"identity\":{\"principalId\":\"69c7cc86-abaa-4998-b57f-787d236d504b\",\"tenantId\":\"83e61623-b38d-440b-9ed7-6adc3db3a914\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"yat\":{\"principalId\":\"1cd6f544-de95-4fca-a4a6-b6a73362e3a2\",\"clientId\":\"30ea4e13-6e5d-4fc6-a435-20d58b0f4392\"}}},\"properties\":{\"provisioningState\":\"Deleting\"},\"location\":\"bcuejrjxgci\",\"tags\":{\"sdqrhzoymibmrq\":\"rhos\"},\"id\":\"ibahwflus\",\"name\":\"dtmhrkwofyyvoqa\",\"type\":\"piexpbtgiw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

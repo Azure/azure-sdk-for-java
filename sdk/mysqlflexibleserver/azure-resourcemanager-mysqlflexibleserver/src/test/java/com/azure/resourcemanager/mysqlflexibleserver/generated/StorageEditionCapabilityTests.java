@@ -11,7 +11,7 @@ public final class StorageEditionCapabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageEditionCapability model = BinaryData.fromString(
-            "{\"name\":\"rqjbhckfrl\",\"minStorageSize\":1577557266863245679,\"maxStorageSize\":3255446735265573328,\"minBackupRetentionDays\":2043714136567231871,\"maxBackupRetentionDays\":5237668963644708788,\"minBackupIntervalHours\":458941391738986155,\"maxBackupIntervalHours\":3134416927851785351}")
+            "{\"name\":\"b\",\"minStorageSize\":4998269354671391171,\"maxStorageSize\":7180856606235016018,\"minBackupRetentionDays\":246259275856309822,\"maxBackupRetentionDays\":1303050182193014003}")
             .toObject(StorageEditionCapability.class);
     }
 

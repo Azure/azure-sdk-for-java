@@ -6,10 +6,11 @@ package io.clientcore.core.http;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.http.rest.RestProxyImpl;
-import io.clientcore.core.implementation.http.rest.RestProxyUtils;
 import io.clientcore.core.implementation.http.rest.SwaggerInterfaceParser;
 import io.clientcore.core.implementation.http.rest.SwaggerMethodParser;
+import io.clientcore.core.implementation.util.JsonSerializer;
 import io.clientcore.core.util.serializer.ObjectSerializer;
+import io.clientcore.core.implementation.util.XmlSerializer;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -29,13 +30,14 @@ public final class RestProxy implements InvocationHandler {
      * Create a RestProxy.
      *
      * @param httpPipeline the HttpPipelinePolicy and HttpClient httpPipeline that will be used to send HTTP requests.
-     * @param serializer the serializer that will be used to convert response bodies to POJOs.
      * @param interfaceParser the parser that contains information about the interface describing REST API methods that
      * this RestProxy "implements".
+     * @param serializers the serializers that will be used to convert response bodies to POJOs.
      */
-    private RestProxy(HttpPipeline httpPipeline, ObjectSerializer serializer, SwaggerInterfaceParser interfaceParser) {
+    private RestProxy(HttpPipeline httpPipeline, SwaggerInterfaceParser interfaceParser,
+        ObjectSerializer... serializers) {
         this.interfaceParser = interfaceParser;
-        this.restProxyImpl = new RestProxyImpl(httpPipeline, serializer, interfaceParser);
+        this.restProxyImpl = new RestProxyImpl(httpPipeline, interfaceParser, serializers);
     }
 
     /**
@@ -68,24 +70,30 @@ public final class RestProxy implements InvocationHandler {
      * @param <A> the type of the Swagger interface
      * @return a proxy implementation of the provided Swagger interface
      */
+    @SuppressWarnings("unchecked")
     public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline) {
-        return create(swaggerInterface, httpPipeline, RestProxyUtils.createDefaultSerializer());
+        final SwaggerInterfaceParser interfaceParser = SwaggerInterfaceParser.getInstance(swaggerInterface);
+        final RestProxy restProxy
+            = new RestProxy(httpPipeline, interfaceParser, new JsonSerializer(), new XmlSerializer());
+
+        return (A) Proxy.newProxyInstance(swaggerInterface.getClassLoader(), new Class<?>[] { swaggerInterface },
+            restProxy);
     }
 
     /**
      * Create a proxy implementation of the provided Swagger interface.
      *
      * @param swaggerInterface the Swagger interface to provide a proxy implementation for
-     * @param httpPipeline the HttpPipelinePolicy and HttpClient pipline that will be used to send Http requests
-     * @param serializer the serializer that will be used to convert POJOs to and from request and response bodies
+     * @param httpPipeline the HttpPipelinePolicy and HttpClient pipeline that will be used to send Http requests
+     * @param serializers the serializers that will be used to convert POJOs to and from request and response bodies
      * @param <A> the type of the Swagger interface.
-     *
      * @return a proxy implementation of the provided Swagger interface
+     * @throws IllegalArgumentException If {@code serializers} is null or empty.
      */
     @SuppressWarnings("unchecked")
-    public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline, ObjectSerializer serializer) {
+    public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline, ObjectSerializer... serializers) {
         final SwaggerInterfaceParser interfaceParser = SwaggerInterfaceParser.getInstance(swaggerInterface);
-        final RestProxy restProxy = new RestProxy(httpPipeline, serializer, interfaceParser);
+        final RestProxy restProxy = new RestProxy(httpPipeline, interfaceParser, serializers);
 
         return (A) Proxy.newProxyInstance(swaggerInterface.getClassLoader(), new Class<?>[] { swaggerInterface },
             restProxy);

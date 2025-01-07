@@ -11,7 +11,7 @@ public final class ServerVersionCapabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServerVersionCapability model = BinaryData.fromString(
-            "{\"name\":\"fkuwbcrnwbmehhse\",\"supportedSkus\":[{\"name\":\"srtslhspkdeem\",\"vCores\":1895836308961796190,\"supportedIops\":1461011233299690621,\"supportedMemoryPerVCoreMB\":1611861407793999607},{\"name\":\"elmqk\",\"vCores\":1137087157004223817,\"supportedIops\":3537949876650802706,\"supportedMemoryPerVCoreMB\":6307575147417814600},{\"name\":\"quhcdhmduala\",\"vCores\":2370990403210221685,\"supportedIops\":6851389169185127110,\"supportedMemoryPerVCoreMB\":4668891538540973425}]}")
+            "{\"name\":\"dslfhotwmcy\",\"supportedSkus\":[{\"name\":\"bjnpg\",\"vCores\":4922956716051761075,\"supportedIops\":6035975843137126951,\"supportedMemoryPerVCoreMB\":3248442344635598539},{\"name\":\"tyfsoppusuesn\",\"vCores\":7855206837791929967,\"supportedIops\":3766133720110583726,\"supportedMemoryPerVCoreMB\":7285729349641498197},{\"name\":\"zdmohctbqvu\",\"vCores\":2681919302417118526,\"supportedIops\":6410833982728127894,\"supportedMemoryPerVCoreMB\":9105261119317264049},{\"name\":\"ujjugwdkcglh\",\"vCores\":8375339089906225801,\"supportedIops\":5666209214569048838,\"supportedMemoryPerVCoreMB\":8619828940500740984}]}")
             .toObject(ServerVersionCapability.class);
     }
 

@@ -11,7 +11,7 @@ public final class RestorePointPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestorePointProperties model = BinaryData.fromString(
-            "{\"restorePointType\":\"CONTINUOUS\",\"earliestRestoreDate\":\"2020-12-27T20:37:24Z\",\"restorePointCreationDate\":\"2021-12-04T12:00:18Z\",\"restorePointLabel\":\"wqapnedgfbcvk\"}")
+            "{\"restorePointType\":\"DISCRETE\",\"earliestRestoreDate\":\"2021-05-29T05:18:31Z\",\"restorePointCreationDate\":\"2021-10-06T22:19:27Z\",\"restorePointLabel\":\"isavok\"}")
             .toObject(RestorePointProperties.class);
     }
 

@@ -25,11 +25,6 @@ public final class SkuAvailabilityValidationResponseProperties extends Validatio
      */
     private ValidationStatus status;
 
-    /*
-     * Error code and message of validation response.
-     */
-    private CloudError error;
-
     /**
      * Creates an instance of SkuAvailabilityValidationResponseProperties class.
      */
@@ -53,16 +48,6 @@ public final class SkuAvailabilityValidationResponseProperties extends Validatio
      */
     public ValidationStatus status() {
         return this.status;
-    }
-
-    /**
-     * Get the error property: Error code and message of validation response.
-     * 
-     * @return the error value.
-     */
-    @Override
-    public CloudError error() {
-        return this.error;
     }
 
     /**
@@ -105,7 +90,7 @@ public final class SkuAvailabilityValidationResponseProperties extends Validatio
                 reader.nextToken();
 
                 if ("error".equals(fieldName)) {
-                    deserializedSkuAvailabilityValidationResponseProperties.error = CloudError.fromJson(reader);
+                    deserializedSkuAvailabilityValidationResponseProperties.withError(CloudError.fromJson(reader));
                 } else if ("validationType".equals(fieldName)) {
                     deserializedSkuAvailabilityValidationResponseProperties.validationType
                         = ValidationInputDiscriminator.fromString(reader.getString());

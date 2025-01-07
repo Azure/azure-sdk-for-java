@@ -24,6 +24,15 @@ public final class ApplicationAccountType extends ExpandableStringEnum<Applicati
     public static final ApplicationAccountType PERSONAL_MICROSOFT_ACCOUNT = fromString("PersonalMicrosoftAccount");
 
     /**
+     * Creates a new instance of ApplicationAccountType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApplicationAccountType() {
+    }
+
+    /**
      * Creates or finds a ApplicationAccountType from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class ApplicationAccountType extends ExpandableStringEnum<Applicati
         return fromString(name, ApplicationAccountType.class);
     }
 
-    /** @return known ApplicationAccountType values. */
+    /**
+     * Gets known ApplicationAccountType values.
+     *
+     * @return known ApplicationAccountType values.
+     */
     public static Collection<ApplicationAccountType> values() {
         return values(ApplicationAccountType.class);
     }

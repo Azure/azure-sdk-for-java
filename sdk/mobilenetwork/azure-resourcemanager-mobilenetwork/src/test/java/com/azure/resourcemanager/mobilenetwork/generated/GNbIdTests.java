@@ -12,16 +12,16 @@ public final class GNbIdTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GNbId model
-            = BinaryData.fromString("{\"bitLength\":866421840,\"gNBValue\":\"uxswqrntvl\"}").toObject(GNbId.class);
-        Assertions.assertEquals(866421840, model.bitLength());
-        Assertions.assertEquals("uxswqrntvl", model.gNBValue());
+            = BinaryData.fromString("{\"bitLength\":1611878916,\"gNBValue\":\"rygznmmaxriz\"}").toObject(GNbId.class);
+        Assertions.assertEquals(1611878916, model.bitLength());
+        Assertions.assertEquals("rygznmmaxriz", model.gNBValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GNbId model = new GNbId().withBitLength(866421840).withGNBValue("uxswqrntvl");
+        GNbId model = new GNbId().withBitLength(1611878916).withGNBValue("rygznmmaxriz");
         model = BinaryData.fromObject(model).toObject(GNbId.class);
-        Assertions.assertEquals(866421840, model.bitLength());
-        Assertions.assertEquals("uxswqrntvl", model.gNBValue());
+        Assertions.assertEquals(1611878916, model.bitLength());
+        Assertions.assertEquals("rygznmmaxriz", model.gNBValue());
     }
 }

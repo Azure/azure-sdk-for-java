@@ -188,7 +188,11 @@ public interface ActionGroup extends GroupableResource<MonitorManager, ActionGro
         ParentT attach();
     }
 
-    /** The entirety of a Action Group definition. */
+    /**
+     * The entirety of a Action Group definition.
+     *
+     * @param <T> the next stage of the definition
+     */
     interface Definition<T> extends DefinitionStages.Blank, ActionDefinition<T>, DefinitionStages.WithCreate {
     }
 

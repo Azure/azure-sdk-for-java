@@ -5,43 +5,42 @@
 package com.azure.resourcemanager.newrelicobservability.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.newrelicobservability.models.SendingLogsStatus;
 import com.azure.resourcemanager.newrelicobservability.models.SendingMetricsStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Details of resource being monitored by NewRelic monitor resource.
  */
 @Fluent
-public final class MonitoredResourceInner {
+public final class MonitoredResourceInner implements JsonSerializable<MonitoredResourceInner> {
     /*
      * The ARM id of the resource.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Flag indicating if resource is sending metrics to NewRelic.
      */
-    @JsonProperty(value = "sendingMetrics")
     private SendingMetricsStatus sendingMetrics;
 
     /*
      * Reason for why the resource is sending metrics (or why it is not sending).
      */
-    @JsonProperty(value = "reasonForMetricsStatus")
     private String reasonForMetricsStatus;
 
     /*
      * Flag indicating if resource is sending logs to NewRelic.
      */
-    @JsonProperty(value = "sendingLogs")
     private SendingLogsStatus sendingLogs;
 
     /*
      * Reason for why the resource is sending logs (or why it is not sending).
      */
-    @JsonProperty(value = "reasonForLogsStatus")
     private String reasonForLogsStatus;
 
     /**
@@ -158,5 +157,55 @@ public final class MonitoredResourceInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("sendingMetrics",
+            this.sendingMetrics == null ? null : this.sendingMetrics.toString());
+        jsonWriter.writeStringField("reasonForMetricsStatus", this.reasonForMetricsStatus);
+        jsonWriter.writeStringField("sendingLogs", this.sendingLogs == null ? null : this.sendingLogs.toString());
+        jsonWriter.writeStringField("reasonForLogsStatus", this.reasonForLogsStatus);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MonitoredResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MonitoredResourceInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MonitoredResourceInner.
+     */
+    public static MonitoredResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MonitoredResourceInner deserializedMonitoredResourceInner = new MonitoredResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMonitoredResourceInner.id = reader.getString();
+                } else if ("sendingMetrics".equals(fieldName)) {
+                    deserializedMonitoredResourceInner.sendingMetrics
+                        = SendingMetricsStatus.fromString(reader.getString());
+                } else if ("reasonForMetricsStatus".equals(fieldName)) {
+                    deserializedMonitoredResourceInner.reasonForMetricsStatus = reader.getString();
+                } else if ("sendingLogs".equals(fieldName)) {
+                    deserializedMonitoredResourceInner.sendingLogs = SendingLogsStatus.fromString(reader.getString());
+                } else if ("reasonForLogsStatus".equals(fieldName)) {
+                    deserializedMonitoredResourceInner.reasonForLogsStatus = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMonitoredResourceInner;
+        });
     }
 }

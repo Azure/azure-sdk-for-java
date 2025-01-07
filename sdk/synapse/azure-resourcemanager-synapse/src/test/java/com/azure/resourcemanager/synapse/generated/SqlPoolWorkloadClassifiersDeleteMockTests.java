@@ -28,7 +28,7 @@ public final class SqlPoolWorkloadClassifiersDeleteMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.sqlPoolWorkloadClassifiers()
-            .delete("vyztxlno", "fpbjc", "egvyieztkutnj", "llukkreh", "htmjo", com.azure.core.util.Context.NONE);
+            .delete("fetwi", "y", "zox", "dxqlfrolq", "wnk", com.azure.core.util.Context.NONE);
 
     }
 }

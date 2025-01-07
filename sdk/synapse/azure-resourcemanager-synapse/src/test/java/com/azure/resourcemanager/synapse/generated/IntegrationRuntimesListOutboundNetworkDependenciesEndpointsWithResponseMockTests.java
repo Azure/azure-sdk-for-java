@@ -21,7 +21,7 @@ public final class IntegrationRuntimesListOutboundNetworkDependenciesEndpointsWi
     @Test
     public void testListOutboundNetworkDependenciesEndpointsWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"category\":\"kpaxnlsfg\",\"endpoints\":[{\"domainName\":\"accptbzetxy\",\"endpointDetails\":[{}]},{\"domainName\":\"ceecvjwyu\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"mpzzwahd\",\"endpointDetails\":[{},{},{}]}]},{\"category\":\"aztkxbivzfgxmbr\",\"endpoints\":[{\"domainName\":\"ibio\",\"endpointDetails\":[{},{}]}]},{\"category\":\"ykqfdqwdrtx\",\"endpoints\":[{\"domainName\":\"glmrcokzze\",\"endpointDetails\":[{},{}]},{\"domainName\":\"unzsiywhubym\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"ikze\",\"endpointDetails\":[{}]}]}]}";
+            = "{\"value\":[{\"category\":\"afygzmxieqvds\",\"endpoints\":[{\"domainName\":\"ixqcahyhxalybxaw\",\"endpointDetails\":[{},{}]},{\"domainName\":\"o\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"xpkk\",\"endpointDetails\":[{},{}]},{\"domainName\":\"odqhyk\",\"endpointDetails\":[{}]}]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class IntegrationRuntimesListOutboundNetworkDependenciesEndpointsWi
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse response = manager.integrationRuntimes()
-            .listOutboundNetworkDependenciesEndpointsWithResponse("xoqxtdnzujsj", "rkrpskcjhmmofb", "ivd",
+            .listOutboundNetworkDependenciesEndpointsWithResponse("ufanray", "fueqfrojs", "dgrhydkygywezs",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("kpaxnlsfg", response.value().get(0).category());
-        Assertions.assertEquals("accptbzetxy", response.value().get(0).endpoints().get(0).domainName());
+        Assertions.assertEquals("afygzmxieqvds", response.value().get(0).category());
+        Assertions.assertEquals("ixqcahyhxalybxaw", response.value().get(0).endpoints().get(0).domainName());
     }
 }

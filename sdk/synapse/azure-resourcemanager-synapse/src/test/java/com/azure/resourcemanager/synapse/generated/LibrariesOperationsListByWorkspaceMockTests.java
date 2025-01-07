@@ -22,7 +22,7 @@ public final class LibrariesOperationsListByWorkspaceMockTests {
     @Test
     public void testListByWorkspace() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"name\":\"zsoxznntwgk\",\"path\":\"oh\",\"containerName\":\"apzupz\",\"uploadedTimestamp\":\"2021-11-05T19:38:44Z\",\"type\":\"bdjzghximkg\",\"provisioningStatus\":\"xpqkjnpy\",\"creatorId\":\"wntotcxmmqmt\"},\"etag\":\"ky\",\"id\":\"rexw\",\"name\":\"onbexft\",\"type\":\"daubheeggzgr\"}]}";
+            = "{\"value\":[{\"properties\":{\"name\":\"kskmqozzkivyhjrl\",\"path\":\"zji\",\"containerName\":\"qfhefkwabsol\",\"uploadedTimestamp\":\"2020-12-25T14:58:24Z\",\"type\":\"qlmgnlqxsjxt\",\"provisioningStatus\":\"exhvuqbozoolz\",\"creatorId\":\"carkuzlb\"},\"etag\":\"ndtsnxawqytll\",\"id\":\"dyz\",\"name\":\"yckzex\",\"type\":\"xak\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class LibrariesOperationsListByWorkspaceMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<LibraryResource> response
-            = manager.librariesOperations().listByWorkspace("nxoirxy", "dmiplois", com.azure.core.util.Context.NONE);
+            = manager.librariesOperations().listByWorkspace("gmnhjevd", "znfaj", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zsoxznntwgk", response.iterator().next().namePropertiesName());
-        Assertions.assertEquals("oh", response.iterator().next().path());
-        Assertions.assertEquals("apzupz", response.iterator().next().containerName());
-        Assertions.assertEquals("bdjzghximkg", response.iterator().next().typePropertiesType());
+        Assertions.assertEquals("kskmqozzkivyhjrl", response.iterator().next().namePropertiesName());
+        Assertions.assertEquals("zji", response.iterator().next().path());
+        Assertions.assertEquals("qfhefkwabsol", response.iterator().next().containerName());
+        Assertions.assertEquals("qlmgnlqxsjxt", response.iterator().next().typePropertiesType());
     }
 }
