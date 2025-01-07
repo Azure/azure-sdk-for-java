@@ -3,11 +3,11 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.communication.common.CommunicationIdentifier;
-import com.azure.core.annotation.Fluent;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.core.annotation.Fluent;
 
 /** The PlayOptions model. */
 @Fluent
@@ -38,6 +38,11 @@ public final class PlayOptions {
      * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      */
     private String operationCallbackUrl;
+
+    /*
+    * If set, hold audio will be interrupted, then this request will be played, and then the hold audio will be resumed.
+    */
+    private Boolean interruptHoldAudio;
 
     /**
      * Constructor
@@ -136,6 +141,26 @@ public final class PlayOptions {
      */
     public PlayOptions setOperationCallbackUrl(String operationCallbackUrl) {
         this.operationCallbackUrl = operationCallbackUrl;
+        return this;
+    }
+
+    /**
+     * Get the interruptHoldAudio property.
+     *
+     * @return the interruptHoldAudio value.
+     */
+    public boolean isInterruptHoldAudio() {
+        return this.interruptHoldAudio;
+    }
+
+    /**
+     * Set the interruptHoldAudio property
+     *
+     * @param interruptHoldAudio the interruptHoldAudio value to set.
+     * @return the PlayOptions object itself.
+     */
+    public PlayOptions setInterruptHoldAudio(boolean interruptHoldAudio) {
+        this.interruptHoldAudio = interruptHoldAudio;
         return this;
     }
 }
