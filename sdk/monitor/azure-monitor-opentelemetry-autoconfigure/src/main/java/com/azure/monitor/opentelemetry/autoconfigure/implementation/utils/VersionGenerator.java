@@ -25,19 +25,32 @@ public final class VersionGenerator {
         artifactName = properties.get("name");
         artifactVersion = properties.get("version");
 
-        sdkVersionString = getResourceProvider() + "java" + getJavaVersion() + getJavaRuntime() + ":" + "otel"
+        sdkVersionString = getPrefix() + "java" + getJavaVersion() + getJavaRuntime() + ":" + "otel"
             + getOpenTelemetryApiVersion() + ":" + "ext" + artifactVersion;
+    }
+
+    private static String getPrefix() {
+        return getResourceProvider() + getOs() + "_";
     }
 
     private static String getResourceProvider() {
         if (!Strings.isNullOrEmpty(System.getenv("WEBSITE_SITE_NAME"))) {
-            return "a_";
+            return "a";
         } else if (!Strings.isNullOrEmpty(System.getenv("APPLICATIONINSIGHTS_SPRINGCLOUD_SERVICE_ID"))) {
-            return "s_";
+            return "s";
         } else if (!Strings.isNullOrEmpty(System.getenv("AKS_ARM_NAMESPACE_ID"))) {
-            return "k_";
+            return "k";
         }
-        return "";
+        return "u";
+    }
+
+    private static String getOs() {
+        if (SystemInformation.isWindows()) {
+            return "w";
+        } else if (SystemInformation.isLinux()) {
+            return "l";
+        }
+        return "u";
     }
 
     /**
