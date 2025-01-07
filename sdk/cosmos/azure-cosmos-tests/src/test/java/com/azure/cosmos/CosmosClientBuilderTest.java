@@ -11,6 +11,9 @@ import com.azure.cosmos.implementation.SessionContainer;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import org.testng.SkipException;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -266,6 +269,71 @@ public class CosmosClientBuilderTest {
             assertThat(sessionContainer.getDisableSessionCapturing()).isEqualTo(false);
         } finally {
             System.clearProperty("COSMOS.SESSION_CAPTURING_TYPE");
+        }
+    }
+
+    @Test(groups = "unit")
+    public void validateContainerCreationInterceptor() {
+        CosmosClient clientWithoutInterceptor = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .userAgentSuffix("noInterceptor")
+            .buildClient();
+
+        CosmosClient clientWithInterceptor = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .userAgentSuffix("withInterceptor")
+            .containerCreationInterceptor(originalContainer -> new DisallowQueriesContainer(originalContainer))
+            .buildClient();
+
+        CosmosAsyncClient asyncClientWithInterceptor = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .userAgentSuffix("withInterceptor")
+            .containerCreationInterceptor(originalContainer -> new DisallowQueriesContainer(originalContainer))
+            .buildAsyncClient();
+
+        CosmosContainer normalContainer = clientWithoutInterceptor
+            .getDatabase("TestDB")
+            .getContainer("TestContainer");
+        assertThat(normalContainer).isNotNull();
+        assertThat(normalContainer.getClass()).isEqualTo(CosmosContainer.class);
+        assertThat(normalContainer.asyncContainer.getClass()).isEqualTo(CosmosAsyncContainer.class);
+
+        CosmosContainer customSyncContainer = clientWithInterceptor
+            .getDatabase("TestDB")
+            .getContainer("TestContainer");
+        assertThat(customSyncContainer).isNotNull();
+        assertThat(customSyncContainer.getClass()).isEqualTo(CosmosContainer.class);
+        assertThat(customSyncContainer.asyncContainer.getClass()).isEqualTo(DisallowQueriesContainer.class);
+
+        CosmosAsyncContainer customAsyncContainer = asyncClientWithInterceptor
+            .getDatabase("TestDB")
+            .getContainer("TestContainer");
+        assertThat(customAsyncContainer).isNotNull();
+        assertThat(customAsyncContainer.getClass()).isEqualTo(DisallowQueriesContainer.class);
+    }
+
+    private static class DisallowQueriesContainer extends CosmosAsyncContainer {
+
+        protected DisallowQueriesContainer(CosmosAsyncContainer toBeWrappedContainer) {
+            super(toBeWrappedContainer);
+        }
+
+        @Override
+        public <T> CosmosPagedFlux<T> queryItems(String query, CosmosQueryRequestOptions options, Class<T> classType) {
+            throw new IllegalStateException("No queries allowed. Use point reads or readMany instead.");
+        }
+
+        @Override
+        public <T> CosmosPagedFlux<T> queryItems(SqlQuerySpec querySpec, Class<T> classType) {
+            throw new IllegalStateException("No queries allowed. Use point reads or readMany instead.");
+        }
+
+        @Override
+        public <T> CosmosPagedFlux<T> queryItems(String query, Class<T> classType) {
+            throw new IllegalStateException("No queries allowed. Use point reads or readMany instead.");
         }
     }
 }

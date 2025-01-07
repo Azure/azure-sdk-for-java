@@ -188,7 +188,7 @@ public class CosmosClientBuilder implements
 
     /**
      * Sets a function that allows intercepting container creation - for example to wrap the original
-     * Cosmos(Async)Container in an extended custom class to add diagnostics, custom validations or behavior.
+     * CosmosAsyncContainer in an extended custom class to add diagnostics, custom validations or behavior.
      * @param factory - the factory method allowing to wrap the original container in a custom class.
      * @return current {@link CosmosClientBuilder}
      */
