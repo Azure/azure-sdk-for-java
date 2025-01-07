@@ -196,9 +196,9 @@ public class TelemetryHelper {
     private void trackFailure(Instant start, Throwable e, Span span) {
         Throwable unwrapped = Exceptions.unwrap(e);
 
-        // Check if the message contains "NativeIoException" and the unwrapped exception is not already a NativeIoException
-
         // Check if the unwrapped exception is a RuntimeException
+        // Check if the message contains "NativeIoException" or TimeoutException and the unwrapped exception is not
+        // already a NativeIoException/TimeoutException
         if (unwrapped instanceof RuntimeException) {
             String message = unwrapped.getMessage();
             if (message.contains("NativeIoException")) {
@@ -206,12 +206,11 @@ public class TelemetryHelper {
             } else if (message.contains("TimeoutException")) {
                 unwrapped = new TimeoutException(message);
             }
-            // may need to add more known exceptions here
         }
 
         span.recordException(unwrapped);
         span.setAttribute(ERROR_TYPE_ATTRIBUTE, unwrapped.getClass().getName());
-        span.setStatus(StatusCode.ERROR, unwrapped.getMessage()); // add check here to see if its a connection reset exception/NativeIoException
+        span.setStatus(StatusCode.ERROR, unwrapped.getMessage());
 
         String errorType = unwrapped.getClass().getName();
         logger.atError()
