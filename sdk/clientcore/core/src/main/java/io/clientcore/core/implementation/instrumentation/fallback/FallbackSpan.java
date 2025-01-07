@@ -74,11 +74,7 @@ final class FallbackSpan implements Span {
         }
 
         log.setEventName(SPAN_ENDED_EVENT_NAME);
-        if (error != null) {
-            log.log(null, error);
-        } else {
-            log.log(null);
-        }
+        log.log(null);
     }
 
     /**

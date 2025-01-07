@@ -67,8 +67,20 @@ public class ClientLogger {
      * @throws RuntimeException when logging configuration is invalid depending on SLF4J implementation.
      */
     public ClientLogger(String className) {
+        this(className, null);
+    }
+
+    /**
+     * Retrieves a logger for the passed class name.
+     *
+     * @param className Class name creating the logger.
+     * @param context Context to be populated on every log record written with this logger.
+     * Objects are serialized with {@code toString()} method.
+     * @throws RuntimeException when logging configuration is invalid depending on SLF4J implementation.
+     */
+    public ClientLogger(String className, Map<String, Object> context) {
         logger = new Slf4jLoggerShim(getClassPathFromClassName(className));
-        globalContext = null;
+        globalContext = context == null ? null : Collections.unmodifiableMap(context);
     }
 
     /**
@@ -508,10 +520,6 @@ public class ClientLogger {
         }
 
         private String getMessageWithContext(String message) {
-            if (message == null) {
-                message = "";
-            }
-
             if (this.context != null && this.context.isValid()) {
                 // TODO (limolkova) we can set context from implicit current span
                 // we should also support OTel as a logging provider and avoid adding redundant
@@ -523,10 +531,16 @@ public class ClientLogger {
 
             int pairsCount
                 = (keyValuePairs == null ? 0 : keyValuePairs.size()) + (globalPairs == null ? 0 : globalPairs.size());
-            int speculatedSize = 20 + pairsCount * 20 + message.length();
+
+            int messageLength = message == null ? 0 : message.length();
+            int speculatedSize = 20 + pairsCount * 20 + messageLength;
             try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream(speculatedSize);
                 JsonWriter jsonWriter = DefaultJsonWriter.toStream(outputStream, null)) {
-                jsonWriter.writeStartObject().writeStringField("message", message);
+                jsonWriter.writeStartObject();
+
+                if (message != null) {
+                    jsonWriter.writeStringField("message", message);
+                }
 
                 if (globalPairs != null) {
                     for (Map.Entry<String, Object> kvp : globalPairs.entrySet()) {

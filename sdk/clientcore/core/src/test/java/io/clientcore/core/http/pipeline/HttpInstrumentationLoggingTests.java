@@ -108,10 +108,10 @@ public class HttpInstrumentationLoggingTests {
         assertEquals(2, logMessages.size());
 
         assertRequestLog(logMessages.get(0), expectedUri, request, null, 0);
-        assertEquals(8, logMessages.get(0).size());
+        assertEquals(7, logMessages.get(0).size());
 
         assertResponseLog(logMessages.get(1), expectedUri, response, 0);
-        assertEquals(12, logMessages.get(1).size());
+        assertEquals(11, logMessages.get(1).size());
     }
 
     @Test
@@ -130,10 +130,10 @@ public class HttpInstrumentationLoggingTests {
         assertEquals(2, logMessages.size());
 
         assertRequestLog(logMessages.get(0), request);
-        assertEquals(6, logMessages.get(0).size());
+        assertEquals(5, logMessages.get(0).size());
 
         assertResponseLog(logMessages.get(1), response);
-        assertEquals(10, logMessages.get(1).size());
+        assertEquals(9, logMessages.get(1).size());
     }
 
     @Test
@@ -155,10 +155,10 @@ public class HttpInstrumentationLoggingTests {
         assertEquals(2, logMessages.size());
 
         assertRequestLog(logMessages.get(0), request);
-        assertEquals(8, logMessages.get(0).size());
+        assertEquals(7, logMessages.get(0).size());
 
         assertResponseLog(logMessages.get(1), response);
-        assertEquals(12, logMessages.get(1).size());
+        assertEquals(11, logMessages.get(1).size());
     }
 
     @Test
@@ -306,7 +306,7 @@ public class HttpInstrumentationLoggingTests {
         assertEquals(1, logMessages.size());
 
         assertResponseLog(logMessages.get(0), expectedUri, response, 0);
-        assertEquals(12, logMessages.get(0).size());
+        assertEquals(11, logMessages.get(0).size());
     }
 
     @ParameterizedTest
@@ -624,7 +624,7 @@ public class HttpInstrumentationLoggingTests {
         assertResponseLog(logMessages.get(1), REDACTED_URI, 0, 302, firstRedirectContext.get());
 
         assertRedirectLog(logMessages.get(2), 0, 3, true, "http://redirecthost/1?param=REDACTED&api-version=REDACTED",
-            HttpMethod.GET, "", parentContext);
+            HttpMethod.GET, null, parentContext);
         assertResponseLog(logMessages.get(4), "http://redirecthost/1?param=REDACTED&api-version=42", response, 0);
     }
 
@@ -670,7 +670,7 @@ public class HttpInstrumentationLoggingTests {
         List<Map<String, Object>> logMessages = parseLogMessages(logCaptureStream);
 
         assertEquals(2, logMessages.size());
-        assertRedirectLog(logMessages.get(0), 0, 3, true, "http://redirecthost/", HttpMethod.GET, "", parentContext);
+        assertRedirectLog(logMessages.get(0), 0, 3, true, "http://redirecthost/", HttpMethod.GET, null, parentContext);
         assertRedirectLog(logMessages.get(1), 1, 3, false, "http://redirecthost/", HttpMethod.GET,
             "Request was redirected more than once to the same URI.", parentContext);
     }
@@ -695,8 +695,8 @@ public class HttpInstrumentationLoggingTests {
         List<Map<String, Object>> logMessages = parseLogMessages(logCaptureStream);
 
         assertEquals(3, logMessages.size());
-        assertRedirectLog(logMessages.get(0), 0, 3, true, "http://redirecthost/1", HttpMethod.GET, "", parentContext);
-        assertRedirectLog(logMessages.get(1), 1, 3, true, "http://redirecthost/2", HttpMethod.GET, "", parentContext);
+        assertRedirectLog(logMessages.get(0), 0, 3, true, "http://redirecthost/1", HttpMethod.GET, null, parentContext);
+        assertRedirectLog(logMessages.get(1), 1, 3, true, "http://redirecthost/2", HttpMethod.GET, null, parentContext);
         assertRedirectLog(logMessages.get(2), 2, 3, false, "http://redirecthost/3", HttpMethod.GET,
             "Redirect attempts have been exhausted.", parentContext);
     }
@@ -788,7 +788,7 @@ public class HttpInstrumentationLoggingTests {
 
         assertEquals(getLength(request.getBody(), request.getHeaders()), (int) log.get("http.request.body.size"));
         assertEquals(request.getHttpMethod().toString(), log.get("http.request.method"));
-        assertEquals("", log.get("message"));
+        assertNull(log.get("message"));
 
         if (context == null) {
             context = request.getRequestOptions().getInstrumentationContext();
@@ -809,7 +809,7 @@ public class HttpInstrumentationLoggingTests {
             assertTrue((boolean) log.get("retry.was_last_attempt"));
         }
         assertEquals(maxAttempts, log.get("retry.max_attempt_count"));
-        assertEquals("", log.get("message"));
+        assertNull(log.get("message"));
         assertTraceContext(log, context);
     }
 
@@ -882,7 +882,7 @@ public class HttpInstrumentationLoggingTests {
 
         assertInstanceOf(Double.class, log.get("http.request.time_to_response"));
         assertInstanceOf(Double.class, log.get("http.request.duration"));
-        assertEquals("", log.get("message"));
+        assertNull(log.get("message"));
         assertTraceContext(log, context);
     }
 
@@ -903,7 +903,7 @@ public class HttpInstrumentationLoggingTests {
         assertInstanceOf(Double.class, log.get("http.request.duration"));
         assertEquals(error.getMessage(), log.get("exception.message"));
         assertEquals(error.getClass().getCanonicalName(), log.get("exception.type"));
-        assertEquals("", log.get("message"));
+        assertNull(log.get("message"));
         assertTraceContext(log, response.getRequest().getRequestOptions().getInstrumentationContext());
     }
 
@@ -927,8 +927,7 @@ public class HttpInstrumentationLoggingTests {
         assertInstanceOf(Double.class, log.get("http.request.duration"));
         assertEquals(error.getMessage(), log.get("exception.message"));
         assertEquals(error.getClass().getCanonicalName(), log.get("exception.type"));
-
-        assertEquals("", log.get("message"));
+        assertNull(log.get("message"));
 
         if (context == null) {
             context = request.getRequestOptions().getInstrumentationContext();

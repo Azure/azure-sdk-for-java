@@ -26,7 +26,7 @@ final class FallbackSpanBuilder implements SpanBuilder {
     FallbackSpanBuilder(ClientLogger logger, String spanName, SpanKind spanKind,
         InstrumentationContext instrumentationContext) {
         this.parentSpanContext = FallbackSpanContext.fromInstrumentationContext(instrumentationContext);
-        this.log = logger.atInfo();
+        this.log = logger.atVerbose();
         if (log.isEnabled()) {
             log.addKeyValue(SPAN_NAME_KEY, spanName).addKeyValue(SPAN_KIND_KEY, spanKind.name());
             if (parentSpanContext.isValid()) {

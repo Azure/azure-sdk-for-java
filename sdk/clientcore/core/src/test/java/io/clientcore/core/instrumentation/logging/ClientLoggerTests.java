@@ -262,7 +262,7 @@ public class ClientLoggerTests {
         }
 
         String logValues = byteArraySteamToString(logCaptureStream);
-        assertMessage(Collections.singletonMap("message", ""), logValues, logLevel, logLevel);
+        assertMessage(Collections.emptyMap(), logValues, logLevel, logLevel);
     }
 
     @ParameterizedTest
@@ -443,7 +443,6 @@ public class ClientLoggerTests {
         logger.atVerbose().addKeyValue("connectionId", "foo").addKeyValue("linkName", true).log(null);
 
         Map<String, Object> expectedMessage = new HashMap<>();
-        expectedMessage.put("message", "");
         expectedMessage.put("connectionId", "foo");
         expectedMessage.put("linkName", true);
 
@@ -507,7 +506,6 @@ public class ClientLoggerTests {
         logger.atError().addKeyValue("connectionId", "foo").addKeyValue("linkName", (String) null).log(null);
 
         Map<String, Object> expectedMessage = new HashMap<>();
-        expectedMessage.put("message", "");
         expectedMessage.put("connectionId", "foo");
         expectedMessage.put("linkName", null);
 
@@ -679,7 +677,6 @@ public class ClientLoggerTests {
                 .log(null, runtimeException));
 
         Map<String, Object> expectedMessage = new HashMap<>();
-        expectedMessage.put("message", "");
         expectedMessage.put("connectionId", "foo");
         expectedMessage.put("linkName", "bar");
         expectedMessage.put("exception.type", runtimeException.getClass().getCanonicalName());
@@ -710,7 +707,6 @@ public class ClientLoggerTests {
                 .log(null, ioException));
 
         Map<String, Object> expectedMessage = new HashMap<>();
-        expectedMessage.put("message", "");
         expectedMessage.put("connectionId", "foo");
         expectedMessage.put("linkName", "bar");
         expectedMessage.put("exception.type", ioException.getClass().getCanonicalName());

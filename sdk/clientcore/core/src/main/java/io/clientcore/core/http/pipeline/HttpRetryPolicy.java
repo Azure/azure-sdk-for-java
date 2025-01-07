@@ -183,7 +183,7 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
 
                 return attempt(httpRequest, next, tryCount + 1, suppressedLocal);
             } else {
-                logRetry(logger.atError(), tryCount, null, err, true, instrumentationContext);
+                logRetry(logger.atWarning(), tryCount, null, err, true, instrumentationContext);
 
                 if (suppressed != null) {
                     suppressed.forEach(err::addSuppressed);

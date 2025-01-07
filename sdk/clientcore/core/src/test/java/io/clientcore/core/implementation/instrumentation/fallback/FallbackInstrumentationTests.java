@@ -45,6 +45,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -385,13 +386,14 @@ public class FallbackInstrumentationTests {
 
     public static Stream<Arguments> logLevels() {
         return Stream.of(Arguments.of(ClientLogger.LogLevel.ERROR, false),
-            Arguments.of(ClientLogger.LogLevel.WARNING, false), Arguments.of(ClientLogger.LogLevel.INFORMATIONAL, true),
+            Arguments.of(ClientLogger.LogLevel.WARNING, false),
+            Arguments.of(ClientLogger.LogLevel.INFORMATIONAL, false),
             Arguments.of(ClientLogger.LogLevel.VERBOSE, true));
     }
 
     @Test
     public void basicTracingLogsEnabled() {
-        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.INFORMATIONAL, logCaptureStream);
+        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
         InstrumentationOptions<?> options = new InstrumentationOptions<>().setProvider(logger);
         Instrumentation instrumentation = Instrumentation.create(options, DEFAULT_LIB_OPTIONS);
         Tracer tracer = instrumentation.getTracer();
@@ -410,11 +412,16 @@ public class FallbackInstrumentationTests {
         Map<String, Object> loggedSpan = logMessages.get(0);
         assertSpanLog(loggedSpan, "test-span", "INTERNAL", span.getInstrumentationContext(), null);
         assertTrue((Double) loggedSpan.get("span.duration") <= duration.toNanos() / 1_000_000.0);
+
+        // lib info is null since custom logger is provided, we can't add global context.
+        // we'll add it in user app in common case
+        assertNull(loggedSpan.get("library.name"));
+        assertNull(loggedSpan.get("library.version"));
     }
 
     @Test
     public void tracingWithAttributesLogsEnabled() {
-        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.INFORMATIONAL, logCaptureStream);
+        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
         InstrumentationOptions<?> options = new InstrumentationOptions<>().setProvider(logger);
         Tracer tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS).getTracer();
 
@@ -452,7 +459,7 @@ public class FallbackInstrumentationTests {
 
     @Test
     public void tracingWithExceptionLogsEnabled() {
-        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.INFORMATIONAL, logCaptureStream);
+        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
         InstrumentationOptions<?> options = new InstrumentationOptions<>().setProvider(logger);
         Tracer tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS).getTracer();
 
@@ -466,13 +473,11 @@ public class FallbackInstrumentationTests {
         Map<String, Object> loggedSpan = logMessages.get(0);
         assertSpanLog(loggedSpan, "test-span", "SERVER", span.getInstrumentationContext(),
             exception.getClass().getCanonicalName());
-        assertEquals(exception.getMessage(), loggedSpan.get("exception.message"));
-        assertEquals("java.io.IOException", loggedSpan.get("exception.type"));
     }
 
     @Test
     public void tracingLogsEnabledParent() {
-        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.INFORMATIONAL, logCaptureStream);
+        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
         InstrumentationOptions<?> options = new InstrumentationOptions<>().setProvider(logger);
         Tracer tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS).getTracer();
 
