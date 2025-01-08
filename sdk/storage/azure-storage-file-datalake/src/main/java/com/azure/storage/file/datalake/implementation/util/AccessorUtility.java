@@ -6,6 +6,7 @@ package com.azure.storage.file.datalake.implementation.util;
 import com.azure.storage.file.datalake.models.FileSystemProperties;
 import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PathProperties;
+import com.azure.storage.file.datalake.models.PathStatus;
 
 /**
  * Helper to access package-private methods of {@link PathProperties}, {@link FileSystemProperties} and
@@ -16,6 +17,7 @@ public final class AccessorUtility {
     private static PathPropertiesAccessor pathPropertiesAccessor;
     private static FileSystemPropertiesAccessor fileSystemPropertiesAccessor;
     private static PathItemAccessor pathItemAccessor;
+    private static PathStatusAccessor pathStatusAccessor;
 
     private AccessorUtility() {
 
@@ -98,4 +100,29 @@ public final class AccessorUtility {
         return pathItemAccessor;
     }
 
+    /**
+     * Accessor interface for {@link PathStatus}
+     */
+    public interface PathStatusAccessor {
+        PathStatus setPathStatus(PathStatus pathStatus, String encryptionScope, String encryptionContext, String owner,
+            String group, String permissions, String acl);
+    }
+
+    /**
+     * Sets the {@link PathStatusAccessor} instance.
+     *
+     * @param accessor the accessor instance.
+     */
+    public static void setPathStatusAccessor(PathStatusAccessor accessor) {
+        pathStatusAccessor = accessor;
+    }
+
+    /**
+     * Returns the accessor for {@link PathStatus}.
+     *
+     * @return the {@link PathStatusAccessor}.
+     */
+    public static PathStatusAccessor getPathStatusAccessor() {
+        return pathStatusAccessor;
+    }
 }

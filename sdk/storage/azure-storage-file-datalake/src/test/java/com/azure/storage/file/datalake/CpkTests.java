@@ -8,6 +8,8 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathProperties;
+import com.azure.storage.file.datalake.models.PathStatus;
+import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,6 +27,7 @@ public class CpkTests extends DataLakeTestBase {
     // LiveOnly because "x-ms-encryption-key-sha256 should not be stored in recordings"
     private CustomerProvidedKey key;
     private DataLakeFileClient cpkFile;
+    private DataLakeFileClient cpkFileNoKeySpecified;
     private DataLakeDirectoryClient cpkDirectory;
 
     @BeforeEach
@@ -38,6 +41,9 @@ public class CpkTests extends DataLakeTestBase {
         DataLakeFileSystemClient cpkFileSystem = builder.buildClient();
         cpkDirectory = cpkFileSystem.getDirectoryClient(generatePathName());
         cpkFile = cpkFileSystem.getFileClient(generatePathName());
+
+        builder.customerProvidedKey(null);
+        cpkFileNoKeySpecified = builder.buildClient().getFileClient(cpkFile.pathName);
     }
 
     /**
@@ -79,6 +85,20 @@ public class CpkTests extends DataLakeTestBase {
         assertTrue(Boolean.parseBoolean(response.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
         assertEquals(key.getKeySha256(),
             response.getHeaders().getValue(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256_HEADER_NAME));
+    }
+
+    @Test
+    public void pathSetEncryptionContext() {
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions();
+        options.setEncryptionContext("encryption-context");
+        cpkFile.createWithResponse(options, null, null);
+
+        Response<PathStatus> response = cpkFileNoKeySpecified.getStatusWithResponse(null, null, null);
+
+        assertEquals(200, response.getStatusCode());
+        assertTrue(response.getValue().isServerEncrypted());
+        assertEquals(key.getKeySha256(), response.getValue().getEncryptionKeySha256());
+        assertEquals("encryption-context", response.getValue().getEncryptionContext());
     }
 
     @Test

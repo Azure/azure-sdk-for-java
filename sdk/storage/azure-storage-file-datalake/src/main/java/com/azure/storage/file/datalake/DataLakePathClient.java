@@ -47,12 +47,16 @@ import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 import com.azure.storage.file.datalake.models.DataLakeAclChangeFailedException;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
+import com.azure.storage.file.datalake.models.LeaseDurationType;
+import com.azure.storage.file.datalake.models.LeaseStatusType;
+import com.azure.storage.file.datalake.models.LeaseStateType;
 import com.azure.storage.file.datalake.models.PathAccessControl;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
+import com.azure.storage.file.datalake.models.PathStatus;
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
@@ -1369,6 +1373,90 @@ public class DataLakePathClient {
             new PathAccessControl(PathAccessControlEntry.parseList(response.getDeserializedHeaders().getXMsAcl()),
                 PathPermissions.parseSymbolic(response.getDeserializedHeaders().getXMsPermissions()),
                 response.getDeserializedHeaders().getXMsGroup(), response.getDeserializedHeaders().getXMsOwner()));
+    }
+
+    /**
+     * Returns the system defined properties for a resource.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClient.getStatus -->
+     * <pre>
+     * PathStatus response = client.getStatus&#40;&#41;;
+     * System.out.printf&#40;&quot;CreationTime: %s, Group: %s, Owner: %s, Permissions: %s&quot;,
+     *     response.getCreationTime&#40;&#41;, response.getGroup&#40;&#41;,
+     *     response.getOwner&#40;&#41;, response.getPermissions&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathClient.getStatus -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/getproperties">Azure Docs</a></p>
+     *
+     * @return A response containing the resource status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PathStatus getStatus() {
+        return getStatusWithResponse(null, null, Context.NONE).getValue();
+    }
+
+    /**
+     * Returns the system defined properties for a resource.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClient.getStatusWithResponse#DataLakeRequestConditions-Duration-Context -->
+     * <pre>
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     *
+     * Response&lt;PathStatus&gt; response = client.getStatusWithResponse&#40;
+     *     requestConditions, timeout, new Context&#40;key1, value1&#41;&#41;;
+     *
+     * PathStatus ps = response.getValue&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;CreationTime: %s, Group: %s, Owner: %s, Permissions: %s&quot;,
+     *     ps.getCreationTime&#40;&#41;, ps.getGroup&#40;&#41;, ps.getOwner&#40;&#41;,
+     *     ps.getPermissions&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathClient.getStatusWithResponse#DataLakeRequestConditions-Duration-Context -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/getproperties">Azure Docs</a></p>
+     *
+     * @param requestConditions {@link DataLakeRequestConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the resource status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PathStatus> getStatusWithResponse(DataLakeRequestConditions requestConditions, Duration timeout,
+        Context context) {
+        requestConditions = requestConditions == null ? new DataLakeRequestConditions() : requestConditions;
+
+        LeaseAccessConditions lac = new LeaseAccessConditions().setLeaseId(requestConditions.getLeaseId());
+        ModifiedAccessConditions mac = new ModifiedAccessConditions().setIfMatch(requestConditions.getIfMatch())
+            .setIfNoneMatch(requestConditions.getIfNoneMatch())
+            .setIfModifiedSince(requestConditions.getIfModifiedSince())
+            .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
+
+        Context finalContext = context == null ? Context.NONE : context;
+        Callable<ResponseBase<PathsGetPropertiesHeaders, Void>> operation = () -> this.dataLakeStorage.getPaths()
+            .getPropertiesWithResponse(null, null, PathGetPropertiesAction.GET_STATUS, false, lac, mac, finalContext);
+        ResponseBase<PathsGetPropertiesHeaders, Void> response
+            = sendRequest(operation, timeout, DataLakeStorageException.class);
+
+        return new SimpleResponse<>(response,
+            new PathStatus(response.getDeserializedHeaders().getDate(),
+                response.getDeserializedHeaders().getLastModified(), response.getDeserializedHeaders().getETag(),
+                response.getDeserializedHeaders().getContentLength(),
+                LeaseStatusType.fromString(response.getDeserializedHeaders().getXMsLeaseStatus()),
+                LeaseStateType.fromString(response.getDeserializedHeaders().getXMsLeaseState()),
+                LeaseDurationType.fromString(response.getDeserializedHeaders().getXMsLeaseDuration()),
+                response.getDeserializedHeaders().isServerEncrypted(),
+                response.getDeserializedHeaders().getXMsEncryptionKeySha256(),
+                response.getDeserializedHeaders().getXMsEncryptionScope(),
+                response.getDeserializedHeaders().getXMsEncryptionContext(),
+                response.getDeserializedHeaders().getXMsOwner(), response.getDeserializedHeaders().getXMsGroup(),
+                response.getDeserializedHeaders().getXMsPermissions(), response.getDeserializedHeaders().getXMsAcl()));
     }
 
     Response<DataLakePathClient> renameWithResponseWithTimeout(String destinationFileSystem, String destinationPath,
