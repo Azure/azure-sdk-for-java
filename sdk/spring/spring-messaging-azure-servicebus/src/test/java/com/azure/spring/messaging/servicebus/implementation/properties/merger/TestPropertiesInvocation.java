@@ -202,7 +202,6 @@ class TestPropertiesInvocation {
 
     void setTargetMemberVariables(Map<String, Object> targetMemberVariables) {
         this.targetMemberVariables.putAll(targetMemberVariables);
-        ;
     }
 
     /**
