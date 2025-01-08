@@ -93,7 +93,7 @@ public final class SearchServiceManager extends Manager<SearchManagementClient> 
     }
 
     /**
-     * Gets the availability set resource management API entry point.
+     * Gets the API entry point of the search management.
      *
      * @return the availability set resource management API entry point
      */
