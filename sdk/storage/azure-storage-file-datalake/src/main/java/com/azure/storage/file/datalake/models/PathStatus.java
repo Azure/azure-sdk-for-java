@@ -129,9 +129,9 @@ public class PathStatus {
     }
 
     /**
-     * Gets the size of the path in bytes.
+     * Gets the size of the file in bytes.
      *
-     * @return the size of the path in bytes
+     * @return the size of the file in bytes
      */
     public long getFileSize() {
         return fileSize;
@@ -219,7 +219,7 @@ public class PathStatus {
     }
 
     /**
-     * Get the group property of the path: The owner property.
+     * Get the group property of the path: The group property.
      *
      * @return the group value.
      */
