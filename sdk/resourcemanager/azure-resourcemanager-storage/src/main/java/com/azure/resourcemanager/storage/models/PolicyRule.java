@@ -13,7 +13,7 @@ import java.util.List;
 @Fluent
 public interface PolicyRule extends HasInnerModel<ManagementPolicyRule> {
     /**
-     * Gets the name of the rule .
+     * Gets the name of the rule.
      *
      * @return the name of the rule
      */
