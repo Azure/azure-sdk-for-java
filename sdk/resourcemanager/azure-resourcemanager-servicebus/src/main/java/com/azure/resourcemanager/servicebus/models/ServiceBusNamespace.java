@@ -29,7 +29,7 @@ public interface ServiceBusNamespace extends GroupableResource<ServiceBusManager
     String dnsLabel();
 
     /**
-     * Gets fully qualified domain name (FQDN) of the Service Bus namespace.
+     * Gets the fully qualified domain name (FQDN) of the Service Bus namespace.
      *
      * @return fully qualified domain name (FQDN) of the Service Bus namespace
      */

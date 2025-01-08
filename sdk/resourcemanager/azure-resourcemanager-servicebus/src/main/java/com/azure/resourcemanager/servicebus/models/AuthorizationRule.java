@@ -22,7 +22,7 @@ public interface AuthorizationRule<RuleT extends AuthorizationRule<RuleT>>
     extends IndependentChildResource<ServiceBusManager, SBAuthorizationRuleInner>, Refreshable<RuleT> {
 
     /**
-     * Gets rights associated with the rule.
+     * Gets the rights associated with the rule.
      *
      * @return rights associated with the rule
      */

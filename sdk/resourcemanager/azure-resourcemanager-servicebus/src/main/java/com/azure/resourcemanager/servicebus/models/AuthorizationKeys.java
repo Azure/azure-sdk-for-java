@@ -13,28 +13,28 @@ import com.azure.resourcemanager.servicebus.fluent.models.AccessKeysInner;
 @Fluent
 public interface AuthorizationKeys extends HasInnerModel<AccessKeysInner> {
     /**
-     * Gets primary key associated with the rule.
+     * Gets the primary key associated with the rule.
      *
      * @return primary key associated with the rule
      */
     String primaryKey();
 
     /**
-     * Gets secondary key associated with the rule.
+     * Gets the secondary key associated with the rule.
      *
      * @return secondary key associated with the rule
      */
     String secondaryKey();
 
     /**
-     * Gets primary connection string.
+     * Gets the primary connection string.
      *
      * @return primary connection string
      */
     String primaryConnectionString();
 
     /**
-     * Gets secondary connection string.
+     * Gets the secondary connection string.
      *
      * @return secondary connection string
      */
