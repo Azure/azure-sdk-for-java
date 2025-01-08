@@ -25,12 +25,16 @@ public interface SqlDatabaseImportRequest extends HasInnerModel<ImportExistingDa
         /** Sets the storage URI to use. */
         interface ImportFrom {
             /**
+             * Specifies the storage URI to use.
+             *
              * @param storageUri the storage URI to use
              * @return next definition stage
              */
             SqlDatabaseImportRequest.DefinitionStages.WithStorageTypeAndKey importFrom(String storageUri);
 
             /**
+             * Specifies the file from storage account.
+             *
              * @param storageAccount an existing storage account to be used
              * @param containerName the container name within the storage account to use
              * @param fileName the exported database file name
@@ -43,6 +47,8 @@ public interface SqlDatabaseImportRequest extends HasInnerModel<ImportExistingDa
         /** Sets the storage key type and value to use. */
         interface WithStorageTypeAndKey {
             /**
+             * Specifies the storage access key.
+             *
              * @param storageAccessKey the storage access key to use
              * @return next definition stage
              */
@@ -50,6 +56,8 @@ public interface SqlDatabaseImportRequest extends HasInnerModel<ImportExistingDa
                 withStorageAccessKey(String storageAccessKey);
 
             /**
+             * Specifies the share access key.
+             *
              * @param sharedAccessKey the shared access key to use; it must be preceded with a "?."
              * @return next definition stage
              */
@@ -60,6 +68,8 @@ public interface SqlDatabaseImportRequest extends HasInnerModel<ImportExistingDa
         /** Sets the authentication type and SQL or Active Directory administrator login and password. */
         interface WithAuthenticationTypeAndLoginPassword {
             /**
+             * Specifies the SQL login administrator and login password.
+             *
              * @param administratorLogin the SQL administrator login
              * @param administratorPassword the SQL administrator password
              * @return next definition stage
@@ -68,6 +78,8 @@ public interface SqlDatabaseImportRequest extends HasInnerModel<ImportExistingDa
                 withSqlAdministratorLoginAndPassword(String administratorLogin, String administratorPassword);
 
             /**
+             * Specifies the Active Directory administrator and login password.
+             *
              * @param administratorLogin the Active Directory administrator login
              * @param administratorPassword the Active Directory administrator password
              * @return next definition stage
