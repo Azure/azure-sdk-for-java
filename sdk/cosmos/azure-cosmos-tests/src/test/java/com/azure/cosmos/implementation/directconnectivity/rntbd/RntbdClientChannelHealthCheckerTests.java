@@ -82,10 +82,6 @@ public class RntbdClientChannelHealthCheckerTests {
             assertThat(healthyResult.getNow()).isNotEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
             assertThat(healthyResult.getNow().contains("health check failed due to non-responding write")).isTrue();
             assertThat(healthyResult.getNow().contains("clientVmId: testClientVmId")).isTrue();
-            assertThat(healthyResult.getNow().contains("clientUsedMemory")).isTrue();
-            assertThat(healthyResult.getNow().contains("clientAvailableMemory")).isTrue();
-            assertThat(healthyResult.getNow().contains("clientSystemCpuLoad")).isTrue();
-            assertThat(healthyResult.getNow().contains("clientAvailableProcessors")).isTrue();
         } else {
             Future<Boolean> healthyResult = healthChecker.isHealthy(channelMock).sync();
             assertThat(healthyResult.isSuccess()).isTrue();
@@ -130,13 +126,12 @@ public class RntbdClientChannelHealthCheckerTests {
         if (withFailureReason) {
             Future<String> healthyResult = healthChecker.isHealthyWithFailureReason(channelMock).sync();
             assertThat(healthyResult.isSuccess()).isTrue();
-            assertThat(healthyResult.getNow()).isNotEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
-            assertThat(healthyResult.getNow().contains("health check failed due to non-responding read")).isTrue();
-            assertThat(healthyResult.getNow().contains("clientVmId: testClientVmId")).isTrue();
-            assertThat(healthyResult.getNow().contains("clientUsedMemory")).isTrue();
-            assertThat(healthyResult.getNow().contains("clientAvailableMemory")).isTrue();
-            assertThat(healthyResult.getNow().contains("clientSystemCpuLoad")).isTrue();
-            assertThat(healthyResult.getNow().contains("clientAvailableProcessors")).isTrue();
+
+            String message = healthyResult.getNow();
+            assertThat(message).isNotEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
+            assertThat(message.contains("health check failed due to non-responding read")).isTrue();
+            assertThat(message.contains("clientVmId: testClientVmId")).isTrue();
+            validateSystemDiagnostics(message);
         } else {
             Future<Boolean> healthyResult = healthChecker.isHealthy(channelMock).sync();
             assertThat(healthyResult.isSuccess()).isTrue();
@@ -232,8 +227,12 @@ public class RntbdClientChannelHealthCheckerTests {
         if (withFailureReason) {
             Future<String> healthyResult = healthChecker.isHealthyWithFailureReason(channelMock).sync();
             assertThat(healthyResult.isSuccess()).isTrue();
-            assertThat(healthyResult.getNow()).isNotEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
-            assertThat(healthyResult.getNow().contains("health check failed due to transit timeout high frequency threshold hit"));
+
+            String message = healthyResult.getNow();
+            assertThat(message).isNotEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
+            assertThat(message.contains("health check failed due to transit timeout high frequency threshold hit")).isTrue();
+            assertThat(message.contains("clientVmId: testClientVmId")).isTrue();
+            validateSystemDiagnostics(message);
         } else {
             Future<Boolean> healthyResult = healthChecker.isHealthy(channelMock).sync();
             assertThat(healthyResult.isSuccess()).isTrue();
@@ -282,8 +281,12 @@ public class RntbdClientChannelHealthCheckerTests {
         if (withFailureReason) {
             Future<String> healthyResult = healthChecker.isHealthyWithFailureReason(channelMock).sync();
             assertThat(healthyResult.isSuccess()).isTrue();
-            assertThat(healthyResult.getNow()).isNotEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
-            assertThat(healthyResult.getNow()).contains("health check failed due to transit timeout on write threshold hit");
+
+            String message = healthyResult.getNow();
+            assertThat(message).isNotEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
+            assertThat(message).contains("health check failed due to transit timeout on write threshold hit");
+            assertThat(message).contains("clientVmId: testClientVmId");
+            validateSystemDiagnostics(message);
         } else {
             Future<Boolean> healthyResult = healthChecker.isHealthy(channelMock).sync();
             assertThat(healthyResult.isSuccess()).isTrue();
@@ -345,6 +348,7 @@ public class RntbdClientChannelHealthCheckerTests {
                 assertThat(healthyResult.getNow()).isEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
                 // Verify under high CPU load, the transitTimeout will be reset
                 Mockito.verify(timestampsMock, Mockito.times(1)).resetTransitTimeout();
+
             } else {
                 Future<Boolean> healthyResult = healthChecker.isHealthy(channelMock).sync();
                 assertThat(healthyResult.isSuccess()).isTrue();
@@ -461,7 +465,8 @@ public class RntbdClientChannelHealthCheckerTests {
             if (withFailureReason) {
                 Future<String> healthyResult = healthChecker.isHealthyWithFailureReason(channelMock).sync();
                 assertThat(healthyResult.isSuccess()).isTrue();
-                assertThat(healthyResult.getNow()).isEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
+                String message = healthyResult.getNow();
+                assertThat(message).isEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
                 // Verify under high CPU load, the cancellationCount will be reset
                 Mockito.verify(timestampsMock, Mockito.times(1)).resetCancellationCount();
             } else {
@@ -474,4 +479,10 @@ public class RntbdClientChannelHealthCheckerTests {
         }
     }
 
+    private void validateSystemDiagnostics(String string) {
+        assertThat(string.contains("clientUsedMemory")).isTrue();
+        assertThat(string.contains("clientAvailableMemory")).isTrue();
+        assertThat(string.contains("clientSystemCpuLoad")).isTrue();
+        assertThat(string.contains("clientAvailableProcessors")).isTrue();
+    }
 }
