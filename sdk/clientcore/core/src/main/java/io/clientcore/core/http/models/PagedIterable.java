@@ -7,6 +7,7 @@ import io.clientcore.core.util.ClientLogger;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -73,6 +74,7 @@ public final class PagedIterable<T> implements Iterable<T> {
      * @return {@link Iterable} of a pages
      */
     public Iterable<PagedResponse<T>> iterableByPage(PagingOptions pagingOptions) {
+        Objects.requireNonNull(pagingOptions, "'pagingOptions' cannot be null");
         return iterableByPageInternal(pagingOptions);
     }
 
@@ -103,6 +105,7 @@ public final class PagedIterable<T> implements Iterable<T> {
      * @return {@link Stream} of a pages
      */
     public Stream<PagedResponse<T>> streamByPage(PagingOptions pagingOptions) {
+        Objects.requireNonNull(pagingOptions, "'pagingOptions' cannot be null");
         return StreamSupport.stream(iterableByPage(pagingOptions).spliterator(), false);
     }
 
