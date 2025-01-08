@@ -23,7 +23,7 @@ public final class StorageAccountSkuType {
     private final SkuName name;
 
     /**
-     * Gets the storage account sku name.
+     * Gets the name of the storage account SKU.
      *
      * @return the storage account sku name
      */

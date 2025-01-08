@@ -83,7 +83,7 @@ public interface PolicyRule extends HasInnerModel<ManagementPolicyRule> {
     boolean deleteActionOnSnapShotEnabled();
 
     /**
-     * Gets the number of days after a filtered base blob is last modified when the tier to cool action is enacted
+     * Gets the number of days after a filtered base blob is last modified when the tier to cool action is enacted.
      *
      * @return the number of days after a filtered base blob is last modified when the tier to cool action is enacted
      */

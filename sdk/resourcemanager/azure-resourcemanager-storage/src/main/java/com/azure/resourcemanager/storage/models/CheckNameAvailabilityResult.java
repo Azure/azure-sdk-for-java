@@ -19,7 +19,7 @@ public class CheckNameAvailabilityResult {
     }
 
     /**
-     * Gets a boolean value that indicates whether the name is available for you to use.
+     * Checks whether the name is available for you to use.
      *
      * @return a boolean value that indicates whether the name is available for you to use. If true, the name is
      *     available. If false, the name has already been taken or invalid and cannot be used.
@@ -39,7 +39,7 @@ public class CheckNameAvailabilityResult {
     }
 
     /**
-     * gets an error message explaining the Reason value in more detail.
+     * Gets an error message explaining the Reason value in more detail.
      *
      * @return an error message explaining the Reason value in more detail
      */

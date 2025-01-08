@@ -101,7 +101,7 @@ public interface StorageAccount extends GroupableResource<StorageManager, Storag
     StorageAccountEncryptionKeySource encryptionKeySource();
 
     /**
-     * Geets the encryption statuses indexed by storage service type.
+     * Gets the encryption statuses indexed by storage service type.
      *
      * @return the encryption statuses indexed by storage service type.
      */
@@ -177,7 +177,7 @@ public interface StorageAccount extends GroupableResource<StorageManager, Storag
     List<String> ipAddressRangesWithAccess();
 
     /**
-     * Checks storage log entries can be read from any network.
+     * Checks whether storage log entries can be read from any network.
      *
      * @return true if storage log entries can be read from any network, false otherwise
      */

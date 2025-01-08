@@ -34,14 +34,14 @@ public interface BlobServiceProperties extends HasInnerModel<BlobServiceProperti
     String defaultServiceVersion();
 
     /**
-     * Gets blob soft delete policy used to restore a blob, snapshot, or version that has been deleted.
+     * Gets blob soft delete policy.
      *
      * @return blob soft delete policy used to restore a blob, snapshot, or version that has been deleted.
      */
     DeleteRetentionPolicy deleteRetentionPolicy();
 
     /**
-     * Gets container soft delete policy used to restore a container that has been deleted.
+     * Gets container soft delete policy.
      *
      * @return container soft delete policy used to restore a container that has been deleted.
      */

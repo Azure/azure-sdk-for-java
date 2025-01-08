@@ -112,7 +112,7 @@ public final class StorageManager extends Manager<StorageManagementClient> {
     }
 
     /**
-     * Gets the storage account management API entry point.
+     * Gets the API entry point of the storage account.
      *
      * @return the storage account management API entry point
      */
@@ -124,7 +124,7 @@ public final class StorageManager extends Manager<StorageManagementClient> {
     }
 
     /**
-     * Gets the storage service usage management API entry point.
+     * Gets the API entry point of the storage service usage.
      *
      * @return the storage service usage management API entry point
      */
@@ -136,7 +136,7 @@ public final class StorageManager extends Manager<StorageManagementClient> {
     }
 
     /**
-     * Gets the storage service SKU management API entry point.
+     * Gets the API entry point of the storage service SKU.
      *
      * @return the storage service SKU management API entry point
      */
@@ -148,7 +148,7 @@ public final class StorageManager extends Manager<StorageManagementClient> {
     }
 
     /**
-     * Gets the blob container management API entry point.
+     * Gets the API entry point of the blob container.
      *
      * @return the blob container management API entry point
      */
@@ -160,7 +160,7 @@ public final class StorageManager extends Manager<StorageManagementClient> {
     }
 
     /**
-     * Gets the blob service management API entry point.
+     * Gets the API entry point of the blob service.
      *
      * @return the blob service management API entry point
      */
@@ -172,9 +172,9 @@ public final class StorageManager extends Manager<StorageManagementClient> {
     }
 
     /**
-     * Gets the management policy management API entry point.
+     * Gets the API entry point of the management policy.
      *
-     * @return the management policy management API entry point
+     * @return the management policy API entry point
      */
     public ManagementPolicies managementPolicies() {
         if (managementPolicies == null) {

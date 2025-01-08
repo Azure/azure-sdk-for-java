@@ -24,7 +24,7 @@ public class PublicEndpoints {
 
     /**
      * Gets the URLs that are used to perform a retrieval of a public blob, queue or table object.Note that
-     *     StandardZRS and PremiumLRS accounts only return the blob endpoint.*
+     *     StandardZRS and PremiumLRS accounts only return the blob endpoint.
      *
      * @return the URLs that are used to perform a retrieval of a public blob, queue or table object.Note that
      *     StandardZRS and PremiumLRS accounts only return the blob endpoint.

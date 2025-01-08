@@ -14,7 +14,7 @@ import java.util.List;
 @Fluent
 public interface LegalHold extends HasInnerModel<LegalHoldInner>, HasManager<StorageManager> {
     /**
-     * Checks whether legal hold.
+     * Checks whether legal hold id true.
      *
      * @return the hasLegalHold value.
      */

@@ -27,7 +27,7 @@ public interface BlobContainer
     String etag();
 
     /**
-     * Checking whether the container has immutability policy.
+     * Checks whether the container has immutability policy.
      *
      * @return the hasImmutabilityPolicy value.
      */
