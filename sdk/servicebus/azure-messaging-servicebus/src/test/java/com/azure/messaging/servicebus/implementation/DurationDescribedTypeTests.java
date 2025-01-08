@@ -3,14 +3,12 @@
 package com.azure.messaging.servicebus.implementation;
 
 import org.apache.qpid.proton.amqp.DescribedType;
-import org.apache.qpid.proton.amqp.Symbol;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DURATION_SYMBOL;
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.URI_SYMBOL;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -23,10 +21,7 @@ public class DurationDescribedTypeTests {
     public void fromJavaClassToAmqp() {
         // Arrange
         // var timeSpan = new TimeSpan(0, 25, 10, 12, 450);
-        final Duration duration = Duration.ofHours(25)
-            .plusMinutes(10)
-            .plusSeconds(12)
-            .plusMillis(450);
+        final Duration duration = Duration.ofHours(25).plusMinutes(10).plusSeconds(12).plusMillis(450);
         final Long expectedTicks = 906124500000L;
         final int expectedLength = DURATION_SYMBOL.length() + Long.BYTES;;
 
@@ -48,10 +43,7 @@ public class DurationDescribedTypeTests {
         // var timeSpan = new TimeSpan(0, 3, 20, 35, 600);
         // 3 hours, 20 minutes, 35 seconds, 600 milliseconds.
         final long amqpValueTicks = 120356000000L;
-        final Duration expectedDuration = Duration.ofHours(3)
-            .plusMinutes(20)
-            .plusSeconds(35)
-            .plusMillis(600);
+        final Duration expectedDuration = Duration.ofHours(3).plusMinutes(20).plusSeconds(35).plusMillis(600);
         final DescribedType describedType = mock(DescribedType.class);
         when(describedType.getDescriptor()).thenReturn(DURATION_SYMBOL);
         when(describedType.getDescribed()).thenReturn(amqpValueTicks);

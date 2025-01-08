@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DURATION_SYMBOL;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.OFFSETDATETIME_SYMBOL;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -24,8 +23,7 @@ public class OffsetDateTimeDescribedTypeTests {
         // Arrange
         // DateTimeOffset represented 2024-11-15T23:26:02.5931825+00:00
         final long expectedTicks = 638673099625931825L;
-        final OffsetDateTime input = OffsetDateTime.of(2024, 11,15,
-            23, 26, 2, 593182500, ZoneOffset.UTC);
+        final OffsetDateTime input = OffsetDateTime.of(2024, 11, 15, 23, 26, 2, 593182500, ZoneOffset.UTC);
         final int expectedLength = OFFSETDATETIME_SYMBOL.length() + Long.BYTES;;
 
         // Act
@@ -48,8 +46,7 @@ public class OffsetDateTimeDescribedTypeTests {
         // DateTimeOffset represented is: 2024-11-16T00:06:39.6292674+00:00
         // Number of ticks for this .NET object is: 638673123996292674
         final Long amqpValue = 638673123996292674L;
-        final OffsetDateTime expectedValue = OffsetDateTime.of(2024, 11,16,
-            0, 6, 39, 629267400, ZoneOffset.UTC);
+        final OffsetDateTime expectedValue = OffsetDateTime.of(2024, 11, 16, 0, 6, 39, 629267400, ZoneOffset.UTC);
 
         final DescribedType describedType = mock(DescribedType.class);
         when(describedType.getDescriptor()).thenReturn(OFFSETDATETIME_SYMBOL);
