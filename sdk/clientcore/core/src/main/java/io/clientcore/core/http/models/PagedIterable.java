@@ -7,9 +7,6 @@ import io.clientcore.core.util.ClientLogger;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -90,23 +87,24 @@ public final class PagedIterable<T> implements Iterable<T> {
     private Iterable<T> iterableByItemInternal() {
         return () -> new PagedIterator<>(pageRetriever) {
 
-            private final Queue<Iterator<T>> pages = new ConcurrentLinkedQueue<>();
-            private volatile Iterator<T> currentPage;
+            private Iterator<T> nextPage;
+            private Iterator<T> currentPage;
 
             @Override
             boolean needToRequestPage() {
-                return (currentPage == null || !currentPage.hasNext()) && pages.peek() == null;
+                return (currentPage == null || !currentPage.hasNext()) && nextPage == null;
             }
 
             @Override
             boolean isNextAvailable() {
-                return (currentPage != null && currentPage.hasNext()) || pages.peek() != null;
+                return (currentPage != null && currentPage.hasNext()) || nextPage != null;
             }
 
             @Override
             T getNext() {
-                if ((currentPage == null || !currentPage.hasNext()) && pages.peek() != null) {
-                    currentPage = pages.poll();
+                if ((currentPage == null || !currentPage.hasNext()) && nextPage != null) {
+                    currentPage = nextPage;
+                    nextPage = null;
                 }
 
                 return currentPage.next();
@@ -116,7 +114,7 @@ public final class PagedIterable<T> implements Iterable<T> {
             void addPage(PagedResponse<T> page) {
                 Iterator<T> pageValues = page.getValue().iterator();
                 if (pageValues.hasNext()) {
-                    this.pages.add(pageValues);
+                    nextPage = pageValues;
                 }
             }
         };
@@ -125,26 +123,28 @@ public final class PagedIterable<T> implements Iterable<T> {
     private Iterable<PagedResponse<T>> iterableByPageInternal() {
         return () -> new PagedIterator<T, PagedResponse<T>>(pageRetriever) {
 
-            private final Queue<PagedResponse<T>> pages = new ConcurrentLinkedQueue<>();
+            private PagedResponse<T> nextPage;
 
             @Override
             boolean needToRequestPage() {
-                return pages.peek() == null;
+                return nextPage == null;
             }
 
             @Override
             boolean isNextAvailable() {
-                return pages.peek() != null;
+                return nextPage != null;
             }
 
             @Override
             PagedResponse<T> getNext() {
-                return pages.poll();
+                PagedResponse<T> currentPage = nextPage;
+                nextPage = null;
+                return currentPage;
             }
 
             @Override
             void addPage(PagedResponse<T> page) {
-                this.pages.add(page);
+                nextPage = page;
             }
         };
     }
@@ -153,8 +153,8 @@ public final class PagedIterable<T> implements Iterable<T> {
         private static final ClientLogger LOGGER = new ClientLogger(PagedIterator.class);
 
         private final Function<String, PagedResponse<T>> pageRetriever;
-        private volatile String continuationToken;
-        private volatile boolean done;
+        private String continuationToken;
+        private boolean done;
 
         PagedIterator(Function<String, PagedResponse<T>> pageRetriever) {
             this.pageRetriever = pageRetriever;
@@ -185,24 +185,24 @@ public final class PagedIterable<T> implements Iterable<T> {
 
         abstract E getNext();
 
-        synchronized void requestPage() {
-            AtomicBoolean receivedPages = new AtomicBoolean(false);
+        void requestPage() {
+            boolean receivedPages = false;
             PagedResponse<T> page = pageRetriever.apply(continuationToken);
             if (page != null) {
-                receivePage(receivedPages, page);
+                receivePage(page);
+                receivedPages = true;
             }
 
             /*
              * In the scenario when the subscription completes without emitting an element indicate we are done by checking
              * if we have any additional elements to return.
              */
-            this.done = done || (!receivedPages.get() && !isNextAvailable());
+            this.done = done || (!receivedPages && !isNextAvailable());
         }
 
         abstract void addPage(PagedResponse<T> page);
 
-        private void receivePage(AtomicBoolean receivedPages, PagedResponse<T> page) {
-            receivedPages.set(true);
+        private void receivePage(PagedResponse<T> page) {
             addPage(page);
 
             continuationToken = page.getNextLink();
