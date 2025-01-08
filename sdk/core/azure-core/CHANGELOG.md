@@ -1,14 +1,10 @@
 # Release History
 
-## 1.55.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.54.2 (2024-12-09)
 
 ### Other Changes
+
+- Removed length restriction on application id in `ClientOptions`. ([#42937](https://github.com/Azure/azure-sdk-for-java/pull/42937))
 
 ## 1.54.1 (2024-11-14)
 
