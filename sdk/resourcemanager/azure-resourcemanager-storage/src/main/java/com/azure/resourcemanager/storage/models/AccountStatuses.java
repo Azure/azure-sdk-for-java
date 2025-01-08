@@ -20,6 +20,8 @@ public class AccountStatuses {
     }
 
     /**
+     * Gets the status indicating whether the primary location of the storage account is available or unavailable.
+     *
      * @return the status indicating whether the primary location of the storage account is available or unavailable.
      */
     public AccountStatus primary() {
@@ -27,6 +29,8 @@ public class AccountStatuses {
     }
 
     /**
+     * Gets the status indicating whether the secondary location of the storage account is available or unavailable.
+     *
      * @return the status indicating whether the secondary location of the storage account is available or unavailable.
      *     Only available if the accountType is StandardGRS or StandardRAGRS.
      */
