@@ -27,7 +27,6 @@ public class CpkTests extends DataLakeTestBase {
     // LiveOnly because "x-ms-encryption-key-sha256 should not be stored in recordings"
     private CustomerProvidedKey key;
     private DataLakeFileClient cpkFile;
-    private DataLakeFileClient cpkFileNoKeySpecified;
     private DataLakeDirectoryClient cpkDirectory;
 
     @BeforeEach
@@ -41,9 +40,6 @@ public class CpkTests extends DataLakeTestBase {
         DataLakeFileSystemClient cpkFileSystem = builder.buildClient();
         cpkDirectory = cpkFileSystem.getDirectoryClient(generatePathName());
         cpkFile = cpkFileSystem.getFileClient(generatePathName());
-
-        builder.customerProvidedKey(null);
-        cpkFileNoKeySpecified = builder.buildClient().getFileClient(cpkFile.pathName);
     }
 
     /**
@@ -93,7 +89,10 @@ public class CpkTests extends DataLakeTestBase {
         options.setEncryptionContext("encryption-context");
         cpkFile.createWithResponse(options, null, null);
 
-        Response<PathStatus> response = cpkFileNoKeySpecified.getStatusWithResponse(null, null, null);
+        // The getStatus API returns the System defined properties of the Path. The encryption key is not required for
+        // this API.
+        Response<PathStatus> response
+            = cpkFile.getCustomerProvidedKeyClient(null).getStatusWithResponse(null, null, null);
 
         assertEquals(200, response.getStatusCode());
         assertTrue(response.getValue().isServerEncrypted());
