@@ -28,6 +28,7 @@ public class ProducerPropertiesParentMergerTests {
         parent.getClient().setTransportType(AmqpTransportType.AMQP_WEB_SOCKETS);
 
         TestPropertiesInvocation parentProperties = new TestPropertiesInvocation(parent);
+        // ignore the property 'crossEntityTransactions' since it does not support by ProcessorProperties class.
         parentProperties.addIgnoreMemberVariableNames("crossEntityTransactions");
         parentProperties.extractMethodsAndInvokeSetters();
 
@@ -53,6 +54,7 @@ public class ProducerPropertiesParentMergerTests {
         child.getClient().setTransportType(AmqpTransportType.AMQP);
 
         TestPropertiesInvocation childProperties = new TestPropertiesInvocation(child);
+        // ignore the property 'crossEntityTransactions' since it does not support by ProcessorProperties class.
         childProperties.addIgnoreMemberVariableNames("crossEntityTransactions");
         childProperties.extractMethodsAndInvokeSetters();
 
@@ -62,6 +64,7 @@ public class ProducerPropertiesParentMergerTests {
         parent.getClient().setTransportType(AmqpTransportType.AMQP_WEB_SOCKETS);
 
         TestPropertiesInvocation parentProperties = new TestPropertiesInvocation(parent);
+        // ignore the property 'crossEntityTransactions' since it does not support by ProcessorProperties class.
         parentProperties.addIgnoreMemberVariableNames("crossEntityTransactions");
         parentProperties.extractMethodsAndInvokeSetters();
 

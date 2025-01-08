@@ -6,12 +6,12 @@ package com.azure.spring.messaging.servicebus.implementation.properties.merger;
 import java.lang.reflect.Method;
 import java.util.Objects;
 
-class TestPropertyGroup {
+class TestGetterSetterAndValue {
     private Method getMethod;
     private Method setMethod;
     private Object testValue;
 
-    TestPropertyGroup(Method setMethod, Method getMethod, Object testValue) {
+    TestGetterSetterAndValue(Method getMethod, Method setMethod, Object testValue) {
         this.getMethod = getMethod;
         this.setMethod = setMethod;
         this.testValue = testValue;
@@ -51,7 +51,7 @@ class TestPropertyGroup {
             return false;
         }
 
-        TestPropertyGroup that = (TestPropertyGroup) o;
+        TestGetterSetterAndValue that = (TestGetterSetterAndValue) o;
         return Objects.equals(getMethod.getName(), that.getMethod.getName())
             && Objects.equals(setMethod.getName(), that.setMethod.getName())
             && Objects.equals(testValue, that.testValue);

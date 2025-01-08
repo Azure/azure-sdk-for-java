@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class TestPropertiesInvocation {
 
     private final Map<String, Object> memberVariables = new HashMap<>();
-    private final Map<String, TestPropertyGroup> propertyGroups = new HashMap<>();
+    private final Map<String, TestGetterSetterAndValue> setterAndValues = new HashMap<>();
     private final Map<String, Object> targetMemberVariables = new HashMap<>();
     private final Object target;
     private final Set<String> ignoreMemberVariableNames = new HashSet<>();
@@ -46,42 +47,44 @@ class TestPropertiesInvocation {
         Method[] declaredMethods = targetClass.getDeclaredMethods();
         List<Method> setterMethods = Arrays.stream(declaredMethods).filter(this::isSetter).toList();
         List<Method> getterMethods = Arrays.stream(declaredMethods).filter(this::isGetter).toList();
-        setterMethods.forEach(set -> {
-            Class<?>[] parameterTypes = set.getParameterTypes();
+        Random random = new Random();
+        setterMethods.forEach(setter -> {
+            Class<?>[] parameterTypes = setter.getParameterTypes();
             if (parameterTypes.length != 1) {
-                throw new RuntimeException("Found multiple parameters of the setter method:" + set.getName());
+                throw new RuntimeException("Found multiple parameters of the setter method:" + setter.getName());
             }
 
-            Class<?> parameterTypeClass = parameterTypes[0];
+            Class<?> parameterType = parameterTypes[0];
 
-            String varName = set.getName().substring(3);
+            String varName = setter.getName().substring("set".length());
             if (ignoreMemberVariableNames.contains(varName.toLowerCase())) {
                 return;
             }
 
-            Optional<Method> getOptional =
+            Optional<Method> optionalGetter =
                 getterMethods.stream()
-                             .filter(get -> get.getName().equals("get" + varName))
+                             .filter(getter -> isMatchedGetter(getter, varName))
                              .findFirst();
-            if (getOptional.isEmpty()) {
+            if (optionalGetter.isEmpty()) {
                 throw new RuntimeException("Not found the getter method: " + varName);
             }
 
             Object testValue;
-            if (parameterTypeClass == String.class) {
-                testValue = varName + "-" + System.currentTimeMillis();
-            } else if (parameterTypeClass == boolean.class || parameterTypeClass == Boolean.class) {
-                testValue = true;
-            } else if (parameterTypeClass == int.class || parameterTypeClass == Integer.class) {
-                testValue = 123;
-            } else if (parameterTypeClass == Duration.class) {
-                testValue = Duration.ofSeconds(10);
+            int randomValue = random.nextInt(100, 1000);
+            if (parameterType == String.class) {
+                testValue = varName + "-" + randomValue;
+            } else if (parameterType == boolean.class || parameterType == Boolean.class) {
+                testValue = randomValue % 2 == 0;
+            } else if (parameterType == int.class || parameterType == Integer.class) {
+                testValue = randomValue;
+            } else if (parameterType == Duration.class) {
+                testValue = Duration.ofSeconds(randomValue);
             } else {
                 // skip complex property
                 return;
             }
 
-            propertyGroups.put(varName, new TestPropertyGroup(set, getOptional.get(), testValue));
+            setterAndValues.put(varName, new TestGetterSetterAndValue(optionalGetter.get(), setter, testValue));
             memberVariables.put(varName, testValue);
         });
 
@@ -91,10 +94,14 @@ class TestPropertiesInvocation {
         }
     }
 
+    private static boolean isMatchedGetter(Method getter, String varName) {
+        return getter.getName().equals("get" + varName) || getter.getName().equals("is" + varName);
+    }
+
     void invokeSetter() {
-        propertyGroups.keySet()
-                      .stream()
-                      .sorted((String o1, String o2) -> {
+        setterAndValues.keySet()
+                       .stream()
+                       .sorted((String o1, String o2) -> {
                           String o1Value = o1.toLowerCase();
                           String o2Value = o2.toLowerCase();
                           if (lowPriorityMemberVariableNames.contains(o1Value) && !lowPriorityMemberVariableNames.contains(o2Value)) {
@@ -111,10 +118,10 @@ class TestPropertiesInvocation {
 
                           return o1Value.compareTo(o2Value);
                       })
-                      .forEach(envVar -> {
-                          TestPropertyGroup pair = propertyGroups.get(envVar);
+                       .forEach(envVar -> {
+                          TestGetterSetterAndValue property = setterAndValues.get(envVar);
                           try {
-                              pair.getSetMethod().invoke(target, pair.getTestValue());
+                              property.getSetMethod().invoke(target, property.getTestValue());
                           } catch (IllegalAccessException | InvocationTargetException e) {
                               throw new RuntimeException(e);
                           }
@@ -122,55 +129,50 @@ class TestPropertiesInvocation {
     }
 
     void assertTargetMemberVariablesValues() {
-        assertFalse(targetMemberVariables.isEmpty());
-        listNotExistMemberVariables();
-        printNotFoundMemberVariablesInTarget();
+        assertAllTargetMemberVariablesInPropertyGroups();
         targetMemberVariables.keySet().forEach(envVarName -> {
-            TestPropertyGroup pair = propertyGroups.get(envVarName);
-            String getMethodName = pair.getGetMethod().getName();
-            String memberEnv;
+            TestGetterSetterAndValue property = setterAndValues.get(envVarName);
+            String getMethodName = property.getGetMethod().getName();
+            String memberVariable;
             if (getMethodName.startsWith("get")) {
-                memberEnv = getMethodName.substring(3);
+                memberVariable = getMethodName.substring("get".length());
             } else if (getMethodName.startsWith("is")) {
-                memberEnv = getMethodName.substring(2);
+                memberVariable = getMethodName.substring("is".length());
             } else {
                 throw new RuntimeException("Not a common get method");
             }
 
             try {
-                Object gotValue = pair.getGetMethod().invoke(target);
-                assertEquals(targetMemberVariables.get(memberEnv), gotValue,
-                    () -> "The value of member variable " + memberEnv + " mismatched.");
+                Object gotValue = property.getGetMethod().invoke(target);
+                assertEquals(targetMemberVariables.get(memberVariable), gotValue,
+                    () -> "The value of member variable " + memberVariable + " mismatched.");
             } catch (IllegalAccessException | InvocationTargetException e) {
                 throw new RuntimeException(e);
             }
         });
     }
 
-    private void printNotFoundMemberVariablesInTarget() {
-        List<String> memberVariablesNotFoundInTarget = new ArrayList<>();
-        propertyGroups.keySet().forEach(envVarName -> {
+    private void assertAllTargetMemberVariablesInPropertyGroups() {
+        assertFalse(targetMemberVariables.isEmpty());
+        List<String> notFoundInTargetMemberVariables = new ArrayList<>();
+        setterAndValues.keySet().forEach(envVarName -> {
             if (!targetMemberVariables.containsKey(envVarName)) {
-                memberVariablesNotFoundInTarget.add(envVarName);
+                notFoundInTargetMemberVariables.add(envVarName);
             }
         });
-        if (memberVariablesNotFoundInTarget.isEmpty()) {
-            return;
+        if (!notFoundInTargetMemberVariables.isEmpty()) {
+            System.out.println("Below member variables are not found in target Class: \n"
+                + String.join(",", notFoundInTargetMemberVariables) + "\n");
         }
 
-        System.out.println("Below member variables are not found in target Class: \n"
-            + String.join(",", memberVariablesNotFoundInTarget) + "\n");
-    }
-
-    private void listNotExistMemberVariables() {
-        List<String> memberVariablesNotFoundInTarget = new ArrayList<>();
+        List<String> notFoundInCurrentMemberVariables = new ArrayList<>();
         targetMemberVariables.keySet().forEach(envVarName -> {
-            if (!propertyGroups.containsKey(envVarName)) {
-                memberVariablesNotFoundInTarget.add(envVarName);
+            if (!setterAndValues.containsKey(envVarName)) {
+                notFoundInCurrentMemberVariables.add(envVarName);
             }
         });
-        assertTrue(memberVariablesNotFoundInTarget.isEmpty(),
-            () -> "Member variables [" + String.join(",", memberVariablesNotFoundInTarget)
+        assertTrue(notFoundInCurrentMemberVariables.isEmpty(),
+            () -> "Member variables [" + String.join(",", notFoundInCurrentMemberVariables)
                 + "] not found in Class " + target.getClass().getSimpleName());
     }
 
