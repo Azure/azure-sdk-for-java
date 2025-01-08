@@ -82,10 +82,9 @@ public final class CharsToNameCanonicalizer {
      * collision chains.
      * Started with static value of 100 entries for the longest legal chain,
      * but increased in Jackson 2.13 to 150 to work around specific test case.
-     *<p>
+     * <p>
      * Note: longest chain we have been able to produce without malicious
-     * intent has been 38 (with "com.azure.json.implementation.jackson.core.main.TestWithTonsaSymbols");
-     * our setting should be reasonable here.
+     * intent has been 38, so our setting should be reasonable here.
      *
      * @since 2.1 (changed in 2.13)
      */

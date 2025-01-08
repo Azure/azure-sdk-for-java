@@ -13,43 +13,42 @@ public final class ResourceCertificateAndAcsDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceCertificateAndAcsDetails model = BinaryData.fromString(
-            "{\"authType\":\"AccessControlService\",\"globalAcsNamespace\":\"cswsrtjri\",\"globalAcsHostName\":\"lrbpbewtghfgbl\",\"globalAcsRPRealm\":\"gw\",\"friendlyName\":\"lvqhjkbegibtnmx\",\"issuer\":\"bwwaloa\",\"resourceId\":831563566329829657,\"subject\":\"rtzju\",\"thumbprint\":\"wyzmhtxon\",\"validFrom\":\"2021-08-29T11:45:06Z\",\"validTo\":\"2021-04-24T14:23:48Z\"}")
+            "{\"authType\":\"AccessControlService\",\"globalAcsNamespace\":\"iotwmcdytdxwit\",\"globalAcsHostName\":\"nrjawgqwg\",\"globalAcsRPRealm\":\"hniskxfbkpyc\",\"friendlyName\":\"wndnhj\",\"issuer\":\"uwhvylwzbtdhxujz\",\"resourceId\":9120098526772116433,\"subject\":\"wuwprzqlv\",\"thumbprint\":\"alupjm\",\"validFrom\":\"2021-08-12T08:43:21Z\",\"validTo\":\"2021-08-19T13:39:55Z\"}")
             .toObject(ResourceCertificateAndAcsDetails.class);
-        Assertions.assertEquals("lvqhjkbegibtnmx", model.friendlyName());
-        Assertions.assertEquals("bwwaloa", model.issuer());
-        Assertions.assertEquals(831563566329829657L, model.resourceId());
-        Assertions.assertEquals("rtzju", model.subject());
-        Assertions.assertEquals("wyzmhtxon", model.thumbprint());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-29T11:45:06Z"), model.validFrom());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-24T14:23:48Z"), model.validTo());
-        Assertions.assertEquals("cswsrtjri", model.globalAcsNamespace());
-        Assertions.assertEquals("lrbpbewtghfgbl", model.globalAcsHostname());
-        Assertions.assertEquals("gw", model.globalAcsRPRealm());
+        Assertions.assertEquals("wndnhj", model.friendlyName());
+        Assertions.assertEquals("uwhvylwzbtdhxujz", model.issuer());
+        Assertions.assertEquals(9120098526772116433L, model.resourceId());
+        Assertions.assertEquals("wuwprzqlv", model.subject());
+        Assertions.assertEquals("alupjm", model.thumbprint());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-12T08:43:21Z"), model.validFrom());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-19T13:39:55Z"), model.validTo());
+        Assertions.assertEquals("iotwmcdytdxwit", model.globalAcsNamespace());
+        Assertions.assertEquals("nrjawgqwg", model.globalAcsHostname());
+        Assertions.assertEquals("hniskxfbkpyc", model.globalAcsRPRealm());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceCertificateAndAcsDetails model
-            = new ResourceCertificateAndAcsDetails().withFriendlyName("lvqhjkbegibtnmx")
-                .withIssuer("bwwaloa")
-                .withResourceId(831563566329829657L)
-                .withSubject("rtzju")
-                .withThumbprint("wyzmhtxon")
-                .withValidFrom(OffsetDateTime.parse("2021-08-29T11:45:06Z"))
-                .withValidTo(OffsetDateTime.parse("2021-04-24T14:23:48Z"))
-                .withGlobalAcsNamespace("cswsrtjri")
-                .withGlobalAcsHostname("lrbpbewtghfgbl")
-                .withGlobalAcsRPRealm("gw");
+        ResourceCertificateAndAcsDetails model = new ResourceCertificateAndAcsDetails().withFriendlyName("wndnhj")
+            .withIssuer("uwhvylwzbtdhxujz")
+            .withResourceId(9120098526772116433L)
+            .withSubject("wuwprzqlv")
+            .withThumbprint("alupjm")
+            .withValidFrom(OffsetDateTime.parse("2021-08-12T08:43:21Z"))
+            .withValidTo(OffsetDateTime.parse("2021-08-19T13:39:55Z"))
+            .withGlobalAcsNamespace("iotwmcdytdxwit")
+            .withGlobalAcsHostname("nrjawgqwg")
+            .withGlobalAcsRPRealm("hniskxfbkpyc");
         model = BinaryData.fromObject(model).toObject(ResourceCertificateAndAcsDetails.class);
-        Assertions.assertEquals("lvqhjkbegibtnmx", model.friendlyName());
-        Assertions.assertEquals("bwwaloa", model.issuer());
-        Assertions.assertEquals(831563566329829657L, model.resourceId());
-        Assertions.assertEquals("rtzju", model.subject());
-        Assertions.assertEquals("wyzmhtxon", model.thumbprint());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-29T11:45:06Z"), model.validFrom());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-24T14:23:48Z"), model.validTo());
-        Assertions.assertEquals("cswsrtjri", model.globalAcsNamespace());
-        Assertions.assertEquals("lrbpbewtghfgbl", model.globalAcsHostname());
-        Assertions.assertEquals("gw", model.globalAcsRPRealm());
+        Assertions.assertEquals("wndnhj", model.friendlyName());
+        Assertions.assertEquals("uwhvylwzbtdhxujz", model.issuer());
+        Assertions.assertEquals(9120098526772116433L, model.resourceId());
+        Assertions.assertEquals("wuwprzqlv", model.subject());
+        Assertions.assertEquals("alupjm", model.thumbprint());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-12T08:43:21Z"), model.validFrom());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-19T13:39:55Z"), model.validTo());
+        Assertions.assertEquals("iotwmcdytdxwit", model.globalAcsNamespace());
+        Assertions.assertEquals("nrjawgqwg", model.globalAcsHostname());
+        Assertions.assertEquals("hniskxfbkpyc", model.globalAcsRPRealm());
     }
 }

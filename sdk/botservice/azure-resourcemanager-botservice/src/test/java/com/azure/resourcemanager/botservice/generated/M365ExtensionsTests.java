@@ -12,17 +12,17 @@ public final class M365ExtensionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         M365Extensions model = BinaryData.fromString(
-            "{\"channelName\":\"M365Extensions\",\"etag\":\"nayqi\",\"provisioningState\":\"nduhavhqlkthum\",\"location\":\"olbgycduiertgccy\"}")
+            "{\"channelName\":\"M365Extensions\",\"etag\":\"olbgycduiertgccy\",\"provisioningState\":\"aolps\",\"location\":\"qlfmmdnbb\"}")
             .toObject(M365Extensions.class);
-        Assertions.assertEquals("nayqi", model.etag());
-        Assertions.assertEquals("olbgycduiertgccy", model.location());
+        Assertions.assertEquals("olbgycduiertgccy", model.etag());
+        Assertions.assertEquals("qlfmmdnbb", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        M365Extensions model = new M365Extensions().withEtag("nayqi").withLocation("olbgycduiertgccy");
+        M365Extensions model = new M365Extensions().withEtag("olbgycduiertgccy").withLocation("qlfmmdnbb");
         model = BinaryData.fromObject(model).toObject(M365Extensions.class);
-        Assertions.assertEquals("nayqi", model.etag());
-        Assertions.assertEquals("olbgycduiertgccy", model.location());
+        Assertions.assertEquals("olbgycduiertgccy", model.etag());
+        Assertions.assertEquals("qlfmmdnbb", model.location());
     }
 }

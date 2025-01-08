@@ -32,7 +32,11 @@ public final class DiskSkuTypes {
     /** The actual serialized value for a DiskSkuTypes instance. */
     private final DiskStorageAccountTypes value;
 
-    /** @return predefined disk SKU types */
+    /**
+     * Gets predefined disk SKU types.
+     *
+     * @return predefined disk SKU types
+     */
     public static DiskSkuTypes[] values() {
         Collection<DiskSkuTypes> valuesCollection = VALUES_BY_NAME.values();
         return valuesCollection.toArray(new DiskSkuTypes[valuesCollection.size()]);
@@ -83,7 +87,11 @@ public final class DiskSkuTypes {
         return fromStorageAccountType(diskSku.name());
     }
 
-    /** @return the account type associated with the SKU. */
+    /**
+     * Gets the account type associated with the SKU.
+     *
+     * @return the account type associated with the SKU.
+     */
     public DiskStorageAccountTypes accountType() {
         return this.value;
     }

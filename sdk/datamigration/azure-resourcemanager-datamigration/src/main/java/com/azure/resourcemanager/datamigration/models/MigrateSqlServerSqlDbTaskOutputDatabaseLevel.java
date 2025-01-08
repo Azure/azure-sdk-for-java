@@ -93,11 +93,6 @@ public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevel extends MigrateS
      */
     private String objectSummary;
 
-    /*
-     * Result identifier
-     */
-    private String id;
-
     /**
      * Creates an instance of MigrateSqlServerSqlDbTaskOutputDatabaseLevel class.
      */
@@ -241,16 +236,6 @@ public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevel extends MigrateS
     }
 
     /**
-     * Get the id property: Result identifier.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -289,7 +274,7 @@ public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevel extends MigrateS
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevel.id = reader.getString();
+                    deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevel.withId(reader.getString());
                 } else if ("resultType".equals(fieldName)) {
                     deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevel.resultType = reader.getString();
                 } else if ("databaseName".equals(fieldName)) {

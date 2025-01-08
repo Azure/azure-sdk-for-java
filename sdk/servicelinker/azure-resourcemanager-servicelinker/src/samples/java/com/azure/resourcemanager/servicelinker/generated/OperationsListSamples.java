@@ -10,8 +10,8 @@ package com.azure.resourcemanager.servicelinker.generated;
 public final class OperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/servicelinker/resource-manager/Microsoft.ServiceLinker/preview/2024-07-01-preview/examples/
-     * OperationsList.json
+     * specification/servicelinker/resource-manager/Microsoft.ServiceLinker/stable/2022-05-01/examples/OperationsList.
+     * json
      */
     /**
      * Sample code: GetConfiguration.

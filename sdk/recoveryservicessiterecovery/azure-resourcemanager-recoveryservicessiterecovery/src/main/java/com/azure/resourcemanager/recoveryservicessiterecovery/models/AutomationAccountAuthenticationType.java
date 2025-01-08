@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -39,7 +38,6 @@ public final class AutomationAccountAuthenticationType
      * @param name a name to look for.
      * @return the corresponding AutomationAccountAuthenticationType.
      */
-    @JsonCreator
     public static AutomationAccountAuthenticationType fromString(String name) {
         return fromString(name, AutomationAccountAuthenticationType.class);
     }

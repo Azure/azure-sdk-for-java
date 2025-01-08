@@ -33,6 +33,10 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
         return this.innerModel().collation();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public DatabaseInner innerModel() {
         return this.innerObject;
     }
@@ -94,9 +98,9 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
     DatabaseImpl(DatabaseInner innerObject, com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serverName = Utils.getValueFromIdByName(innerObject.id(), "servers");
-        this.databaseName = Utils.getValueFromIdByName(innerObject.id(), "databases");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "servers");
+        this.databaseName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "databases");
     }
 
     public Database refresh() {

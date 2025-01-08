@@ -11,15 +11,31 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 /** An immutable client-side representation of an Azure virtual machine extension image type. */
 @Fluent
 public interface VirtualMachineExtensionImageType extends HasInnerModel<VirtualMachineExtensionImageInner>, HasName {
-    /** @return the resource ID of the virtual machine extension image type */
+    /**
+     * Gets the resource ID of the virtual machine extension image type.
+     *
+     * @return the resource ID of the virtual machine extension image type
+     */
     String id();
 
-    /** @return the region in which virtual machine extension image type is available */
+    /**
+     * Gets the region in which virtual machine extension image type is available.
+     *
+     * @return the region in which virtual machine extension image type is available
+     */
     String regionName();
 
-    /** @return the publisher of this virtual machine extension image type */
+    /**
+     * Gets the publisher of this virtual machine extension image type.
+     *
+     * @return the publisher of this virtual machine extension image type
+     */
     VirtualMachinePublisher publisher();
 
-    /** @return Virtual machine image extension versions available in this type */
+    /**
+     * Gets Virtual machine image extension versions available in this type.
+     *
+     * @return Virtual machine image extension versions available in this type
+     */
     VirtualMachineExtensionImageVersions versions();
 }

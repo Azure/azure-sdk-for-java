@@ -6,21 +6,16 @@ package com.azure.resourcemanager.servicelinker.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.servicelinker.models.AuthInfoBase;
-import com.azure.resourcemanager.servicelinker.models.AuthMode;
-import org.junit.jupiter.api.Assertions;
 
 public final class AuthInfoBaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AuthInfoBase model = BinaryData.fromString("{\"authType\":\"AuthInfoBase\",\"authMode\":\"optOutAllAuth\"}")
-            .toObject(AuthInfoBase.class);
-        Assertions.assertEquals(AuthMode.OPT_OUT_ALL_AUTH, model.authMode());
+        AuthInfoBase model = BinaryData.fromString("{\"authType\":\"AuthInfoBase\"}").toObject(AuthInfoBase.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AuthInfoBase model = new AuthInfoBase().withAuthMode(AuthMode.OPT_OUT_ALL_AUTH);
+        AuthInfoBase model = new AuthInfoBase();
         model = BinaryData.fromObject(model).toObject(AuthInfoBase.class);
-        Assertions.assertEquals(AuthMode.OPT_OUT_ALL_AUTH, model.authMode());
     }
 }

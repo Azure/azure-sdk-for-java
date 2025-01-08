@@ -112,6 +112,8 @@ public class Validator {
         error.setData(data);
 
         errors.add(error);
+        // This message gets logged once for every error we see on config validation. Config validation
+        // only happens once per config change.
         logger.verbose("{}. Due to this misconfiguration the {} rule will be ignored by the SDK.",
             message, isDerivedMetricId ? "derived metric" : "document filter conjunction");
     }
@@ -158,7 +160,6 @@ public class Validator {
     }
 
     private boolean isValidPredicateAndComparand(FilterInfo filter, String etag, String id, boolean isDerivedMetricId) {
-        // TODO (harskaur): In ErrorTracker PR, create an error message & track an error for each false case
         if (filter.getComparand().isEmpty()) {
             // It is possible to not type in a comparand and the service side to send us empty string.
             constructAndTrackCollectionConfigurationError(

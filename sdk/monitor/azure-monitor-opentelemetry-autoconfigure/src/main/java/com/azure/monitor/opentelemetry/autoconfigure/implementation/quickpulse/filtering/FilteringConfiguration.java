@@ -2,7 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering;
 
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.*;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DerivedMetricInfo;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterConjunctionGroupInfo;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationInfo;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentStreamInfo;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentFilterConjunctionGroupInfo;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.AggregationType;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.TelemetryType;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationErrorType;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationError;
 
 import java.util.Set;
 import java.util.List;
@@ -26,14 +35,18 @@ public class FilteringConfiguration {
 
     private final Validator validator = new Validator();
 
+    private static final ClientLogger logger = new ClientLogger(FilteringConfiguration.class);
+
     public FilteringConfiguration() {
         validDerivedMetricInfos = new HashMap<>();
         validDocumentFilterConjunctionGroupInfos = new HashMap<>();
         etag = "";
         validProjectionInfo = new HashMap<>();
+        logger.verbose("Initializing an empty live metrics filtering configuration - did not yet receive a configuration from ping or post.");
     }
 
     public FilteringConfiguration(CollectionConfigurationInfo configuration) {
+        logger.verbose("About to parse and validate a new live metrics filtering configuration with etag {}", configuration.getETag());
         validDerivedMetricInfos = parseMetricFilterConfiguration(configuration);
         validDocumentFilterConjunctionGroupInfos = parseDocumentFilterConfiguration(configuration);
         etag = configuration.getETag();

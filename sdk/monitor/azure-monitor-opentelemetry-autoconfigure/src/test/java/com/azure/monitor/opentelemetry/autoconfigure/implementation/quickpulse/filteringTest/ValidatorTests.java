@@ -28,8 +28,6 @@ class ValidatorTests {
         DerivedMetricInfo dmi = createDerivedMetricInfo("random-id", telemetryType.getValue(), AggregationType.SUM,
             AggregationType.SUM, DerivedMetricProjections.COUNT, filterGroups);
         assertFalse(validator.isValidDerivedMetricInfo(dmi, "random-etag"));
-        DocumentFilterConjunctionGroupInfo docGroup = createDocGroupWithNoFilters(telemetryType);
-        assertFalse(validator.isValidDocConjunctionGroupInfo(docGroup, "random-etag", "random-id"));
     }
 
     @ParameterizedTest
@@ -48,8 +46,6 @@ class ValidatorTests {
         DerivedMetricInfo dmi = createDerivedMetricInfo("random-id", telemetryType.getValue(), AggregationType.SUM,
             AggregationType.SUM, DerivedMetricProjections.COUNT, filterGroups);
         assertTrue(validator.isValidDerivedMetricInfo(dmi, "random-etag"));
-        DocumentFilterConjunctionGroupInfo docGroup = createDocGroupWithNoFilters(telemetryType);
-        assertTrue(validator.isValidDocConjunctionGroupInfo(docGroup, "random-etag", "random-id"));
     }
 
     @ParameterizedTest
@@ -87,9 +83,6 @@ class ValidatorTests {
             AggregationType.SUM, AggregationType.SUM, DerivedMetricProjections.COUNT, filterGroups);
         Validator validator = new Validator();
         assertFalse(validator.isValidDerivedMetricInfo(dmi, "random-etag"));
-
-        DocumentFilterConjunctionGroupInfo docGroup = createDocGroupWithOneFilter(TelemetryType.REQUEST, filter);
-        assertFalse(validator.isValidDocConjunctionGroupInfo(docGroup, "random-etag", "random-id"));
     }
 
     @ParameterizedTest
@@ -130,9 +123,6 @@ class ValidatorTests {
             AggregationType.SUM, AggregationType.SUM, DerivedMetricProjections.COUNT, filterGroups);
         Validator validator = new Validator();
         assertTrue(validator.isValidDerivedMetricInfo(dmi, "random-etag"));
-
-        DocumentFilterConjunctionGroupInfo docGroup = createDocGroupWithOneFilter(TelemetryType.REQUEST, filter);
-        assertTrue(validator.isValidDocConjunctionGroupInfo(docGroup, "random-etag", "random-id"));
     }
 
     @ParameterizedTest

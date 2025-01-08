@@ -5,69 +5,75 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Event details for InMageRcm provider.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("InMageRcm")
 @Immutable
 public final class InMageRcmEventDetails extends EventProviderSpecificDetails {
     /*
+     * Gets the class type. Overridden in derived classes.
+     */
+    private String instanceType = "InMageRcm";
+
+    /*
      * The protected item name.
      */
-    @JsonProperty(value = "protectedItemName", access = JsonProperty.Access.WRITE_ONLY)
     private String protectedItemName;
 
     /*
      * The protected item name.
      */
-    @JsonProperty(value = "vmName", access = JsonProperty.Access.WRITE_ONLY)
     private String vmName;
 
     /*
      * The latest agent version.
      */
-    @JsonProperty(value = "latestAgentVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String latestAgentVersion;
 
     /*
      * The job Id.
      */
-    @JsonProperty(value = "jobId", access = JsonProperty.Access.WRITE_ONLY)
     private String jobId;
 
     /*
      * The fabric name.
      */
-    @JsonProperty(value = "fabricName", access = JsonProperty.Access.WRITE_ONLY)
     private String fabricName;
 
     /*
      * The appliance name.
      */
-    @JsonProperty(value = "applianceName", access = JsonProperty.Access.WRITE_ONLY)
     private String applianceName;
 
     /*
      * The server type.
      */
-    @JsonProperty(value = "serverType", access = JsonProperty.Access.WRITE_ONLY)
     private String serverType;
 
     /*
      * The component display name.
      */
-    @JsonProperty(value = "componentDisplayName", access = JsonProperty.Access.WRITE_ONLY)
     private String componentDisplayName;
 
     /**
      * Creates an instance of InMageRcmEventDetails class.
      */
     public InMageRcmEventDetails() {
+    }
+
+    /**
+     * Get the instanceType property: Gets the class type. Overridden in derived classes.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -149,6 +155,57 @@ public final class InMageRcmEventDetails extends EventProviderSpecificDetails {
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageRcmEventDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageRcmEventDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InMageRcmEventDetails.
+     */
+    public static InMageRcmEventDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageRcmEventDetails deserializedInMageRcmEventDetails = new InMageRcmEventDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedInMageRcmEventDetails.instanceType = reader.getString();
+                } else if ("protectedItemName".equals(fieldName)) {
+                    deserializedInMageRcmEventDetails.protectedItemName = reader.getString();
+                } else if ("vmName".equals(fieldName)) {
+                    deserializedInMageRcmEventDetails.vmName = reader.getString();
+                } else if ("latestAgentVersion".equals(fieldName)) {
+                    deserializedInMageRcmEventDetails.latestAgentVersion = reader.getString();
+                } else if ("jobId".equals(fieldName)) {
+                    deserializedInMageRcmEventDetails.jobId = reader.getString();
+                } else if ("fabricName".equals(fieldName)) {
+                    deserializedInMageRcmEventDetails.fabricName = reader.getString();
+                } else if ("applianceName".equals(fieldName)) {
+                    deserializedInMageRcmEventDetails.applianceName = reader.getString();
+                } else if ("serverType".equals(fieldName)) {
+                    deserializedInMageRcmEventDetails.serverType = reader.getString();
+                } else if ("componentDisplayName".equals(fieldName)) {
+                    deserializedInMageRcmEventDetails.componentDisplayName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageRcmEventDetails;
+        });
     }
 }

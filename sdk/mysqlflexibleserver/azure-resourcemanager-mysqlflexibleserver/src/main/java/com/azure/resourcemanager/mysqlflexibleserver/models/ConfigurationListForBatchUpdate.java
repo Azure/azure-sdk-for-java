@@ -22,11 +22,6 @@ public final class ConfigurationListForBatchUpdate implements JsonSerializable<C
      */
     private List<ConfigurationForBatchUpdate> value;
 
-    /*
-     * Whether to reset all server parameters to default.
-     */
-    private ResetAllToDefault resetAllToDefault;
-
     /**
      * Creates an instance of ConfigurationListForBatchUpdate class.
      */
@@ -54,26 +49,6 @@ public final class ConfigurationListForBatchUpdate implements JsonSerializable<C
     }
 
     /**
-     * Get the resetAllToDefault property: Whether to reset all server parameters to default.
-     * 
-     * @return the resetAllToDefault value.
-     */
-    public ResetAllToDefault resetAllToDefault() {
-        return this.resetAllToDefault;
-    }
-
-    /**
-     * Set the resetAllToDefault property: Whether to reset all server parameters to default.
-     * 
-     * @param resetAllToDefault the resetAllToDefault value to set.
-     * @return the ConfigurationListForBatchUpdate object itself.
-     */
-    public ConfigurationListForBatchUpdate withResetAllToDefault(ResetAllToDefault resetAllToDefault) {
-        this.resetAllToDefault = resetAllToDefault;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -91,8 +66,6 @@ public final class ConfigurationListForBatchUpdate implements JsonSerializable<C
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("resetAllToDefault",
-            this.resetAllToDefault == null ? null : this.resetAllToDefault.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -116,9 +89,6 @@ public final class ConfigurationListForBatchUpdate implements JsonSerializable<C
                     List<ConfigurationForBatchUpdate> value
                         = reader.readArray(reader1 -> ConfigurationForBatchUpdate.fromJson(reader1));
                     deserializedConfigurationListForBatchUpdate.value = value;
-                } else if ("resetAllToDefault".equals(fieldName)) {
-                    deserializedConfigurationListForBatchUpdate.resetAllToDefault
-                        = ResetAllToDefault.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

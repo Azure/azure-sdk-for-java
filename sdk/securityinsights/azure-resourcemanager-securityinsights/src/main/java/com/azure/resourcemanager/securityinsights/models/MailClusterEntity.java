@@ -9,7 +9,6 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.securityinsights.fluent.models.EntityInner;
 import com.azure.resourcemanager.securityinsights.fluent.models.MailClusterEntityProperties;
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -20,11 +19,11 @@ import java.util.Map;
  * Represents a mail cluster entity.
  */
 @Immutable
-public final class MailClusterEntity extends EntityInner {
+public final class MailClusterEntity extends Entity {
     /*
      * The kind of the entity.
      */
-    private EntityKind kind = EntityKind.MAIL_CLUSTER;
+    private EntityKindEnum kind = EntityKindEnum.MAIL_CLUSTER;
 
     /*
      * Mail cluster entity properties
@@ -63,7 +62,7 @@ public final class MailClusterEntity extends EntityInner {
      * @return the kind value.
      */
     @Override
-    public EntityKind kind() {
+    public EntityKindEnum kind() {
         return this.kind;
     }
 
@@ -319,7 +318,7 @@ public final class MailClusterEntity extends EntityInner {
                 } else if ("systemData".equals(fieldName)) {
                     deserializedMailClusterEntity.systemData = SystemData.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
-                    deserializedMailClusterEntity.kind = EntityKind.fromString(reader.getString());
+                    deserializedMailClusterEntity.kind = EntityKindEnum.fromString(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedMailClusterEntity.innerProperties = MailClusterEntityProperties.fromJson(reader);
                 } else {

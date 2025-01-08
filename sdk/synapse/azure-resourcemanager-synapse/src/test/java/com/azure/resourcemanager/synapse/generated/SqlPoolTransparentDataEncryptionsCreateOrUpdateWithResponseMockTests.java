@@ -23,7 +23,7 @@ public final class SqlPoolTransparentDataEncryptionsCreateOrUpdateWithResponseMo
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"location\":\"nlmsoo\",\"properties\":{\"status\":\"Disabled\"},\"id\":\"ecdh\",\"name\":\"yswcrptveajczx\",\"type\":\"lgsrgkrfizrpywlp\"}";
+            = "{\"location\":\"gmnzjotvmrx\",\"properties\":{\"status\":\"Disabled\"},\"id\":\"bvvjbhvhdiq\",\"name\":\"yfluiyuosnuudte\",\"type\":\"vhyibdrqrsw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,8 +34,8 @@ public final class SqlPoolTransparentDataEncryptionsCreateOrUpdateWithResponseMo
 
         TransparentDataEncryption response = manager.sqlPoolTransparentDataEncryptions()
             .define(TransparentDataEncryptionName.CURRENT)
-            .withExistingSqlPool("oti", "fbbcngkegxcypxbb", "etwilyrzoxpd")
-            .withStatus(TransparentDataEncryptionStatus.ENABLED)
+            .withExistingSqlPool("exkydfb", "lj", "vhuerkjddvrglieg")
+            .withStatus(TransparentDataEncryptionStatus.DISABLED)
             .create();
 
         Assertions.assertEquals(TransparentDataEncryptionStatus.DISABLED, response.status());

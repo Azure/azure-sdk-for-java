@@ -9,8 +9,9 @@ package com.azure.resourcemanager.synapse.generated;
  */
 public final class IntegrationRuntimeNodesGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * IntegrationRuntimeNodes_Get.json
+     * x-ms-original-file:
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/IntegrationRuntimeNodes_Get.
+     * json
      */
     /**
      * Sample code: Get integration runtime node.

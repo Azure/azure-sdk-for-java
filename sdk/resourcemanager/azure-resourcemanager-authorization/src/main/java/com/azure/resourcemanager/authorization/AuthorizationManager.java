@@ -128,6 +128,8 @@ public final class AuthorizationManager implements HasServiceClient<MicrosoftGra
     }
 
     /**
+     * Gets wrapped inner authorization client.
+     *
      * @return wrapped inner authorization client providing direct access to auto-generated API implementation, based on
      *     Azure REST API
      */
@@ -135,17 +137,29 @@ public final class AuthorizationManager implements HasServiceClient<MicrosoftGra
         return authorizationManagementClient;
     }
 
-    /** @return the tenant ID the graph client is associated with */
+    /**
+     * Gets the tenant ID the graph client is associated with.
+     *
+     * @return the tenant ID the graph client is associated with
+     */
     public String tenantId() {
         return tenantId;
     }
 
-    /** @return the environment the graph client is associated with */
+    /**
+     * Gets the environment the graph client is associated with.
+     *
+     * @return the environment the graph client is associated with
+     */
     public AzureEnvironment environment() {
         return environment;
     }
 
-    /** @return the {@link ResourceManagerUtils.InternalRuntimeContext} associated with this manager */
+    /**
+     * Gets the {@link ResourceManagerUtils.InternalRuntimeContext} associated with this manager.
+     *
+     * @return the {@link ResourceManagerUtils.InternalRuntimeContext} associated with this manager
+     */
     public ResourceManagerUtils.InternalRuntimeContext internalContext() {
         if (internalContext == null) {
             internalContext = new ResourceManagerUtils.InternalRuntimeContext();
@@ -153,7 +167,11 @@ public final class AuthorizationManager implements HasServiceClient<MicrosoftGra
         return internalContext;
     }
 
-    /** @return the Active Directory user management API entry point */
+    /**
+     * Gets the Active Directory user management API entry point.
+     *
+     * @return the Active Directory user management API entry point
+     */
     public ActiveDirectoryUsers users() {
         if (activeDirectoryUsers == null) {
             activeDirectoryUsers = new ActiveDirectoryUsersImpl(this);
@@ -161,7 +179,11 @@ public final class AuthorizationManager implements HasServiceClient<MicrosoftGra
         return activeDirectoryUsers;
     }
 
-    /** @return the Active Directory group management API entry point */
+    /**
+     * Gets the Active Directory group management API entry point.
+     *
+     * @return the Active Directory group management API entry point
+     */
     public ActiveDirectoryGroups groups() {
         if (activeDirectoryGroups == null) {
             activeDirectoryGroups = new ActiveDirectoryGroupsImpl(this);
@@ -169,7 +191,11 @@ public final class AuthorizationManager implements HasServiceClient<MicrosoftGra
         return activeDirectoryGroups;
     }
 
-    /** @return the service principal management API entry point */
+    /**
+     * Gets the service principal management API entry point.
+     *
+     * @return the service principal management API entry point
+     */
     public ServicePrincipals servicePrincipals() {
         if (servicePrincipals == null) {
             servicePrincipals = new ServicePrincipalsImpl(this);
@@ -177,7 +203,11 @@ public final class AuthorizationManager implements HasServiceClient<MicrosoftGra
         return servicePrincipals;
     }
 
-    /** @return the application management API entry point */
+    /**
+     * Gets the application management API entry point.
+     *
+     * @return the application management API entry point
+     */
     public ActiveDirectoryApplications applications() {
         if (applications == null) {
             applications = new ActiveDirectoryApplicationsImpl(this);
@@ -185,7 +215,11 @@ public final class AuthorizationManager implements HasServiceClient<MicrosoftGra
         return applications;
     }
 
-    /** @return the role assignment management API entry point */
+    /**
+     * Gets the role assignment management API entry point.
+     *
+     * @return the role assignment management API entry point
+     */
     public RoleAssignments roleAssignments() {
         if (roleAssignments == null) {
             roleAssignments = new RoleAssignmentsImpl(this);
@@ -193,7 +227,11 @@ public final class AuthorizationManager implements HasServiceClient<MicrosoftGra
         return roleAssignments;
     }
 
-    /** @return the role definition management API entry point */
+    /**
+     * Gets the role definition management API entry point.
+     *
+     * @return the role definition management API entry point
+     */
     public RoleDefinitions roleDefinitions() {
         if (roleDefinitions == null) {
             roleDefinitions = new RoleDefinitionsImpl(this);

@@ -36,4 +36,6 @@
   <suppress files="io.clientcore.core.serialization.json.implementation.DefaultJsonWriter.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="io.clientcore.core.serialization.json.implementation.StringBuilderWriter.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="io.clientcore.core.serialization.json.models.JsonNumber.java" checks="com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck" />
+  <suppress files="io.clientcore.core.http.pipeline.HttpLoggingPolicy" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="io.clientcore.core.http.pipeline.HttpInstrumentationPolicy.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
 </suppressions>

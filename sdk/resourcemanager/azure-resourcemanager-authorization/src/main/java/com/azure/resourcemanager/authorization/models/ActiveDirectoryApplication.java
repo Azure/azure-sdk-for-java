@@ -18,7 +18,11 @@ import java.util.Set;
 @Fluent
 public interface ActiveDirectoryApplication extends ActiveDirectoryObject,
     HasInnerModel<MicrosoftGraphApplicationInner>, Updatable<ActiveDirectoryApplication.Update> {
-    /** @return the application ID */
+    /**
+     * Gets the application ID.
+     *
+     * @return the application ID
+     */
     String applicationId();
 
     /**
@@ -29,23 +33,45 @@ public interface ActiveDirectoryApplication extends ActiveDirectoryObject,
     boolean availableToOtherTenants();
 
     /**
+     * Gets the application account type.
+     *
      * @return the application account type
      */
     ApplicationAccountType accountType();
 
-    /** @return a collection of URIs for the application */
+    /**
+     * Gets a collection of URIs for the application.
+     *
+     * @return a collection of URIs for the application
+     */
     Set<String> identifierUris();
 
-    /** @return a collection of reply URLs for the application */
+    /**
+     * Gets a collection of reply URLs for the application.
+     *
+     * @return a collection of reply URLs for the application
+     */
     Set<String> replyUrls();
 
-    /** @return the home page of the application */
+    /**
+     * Gets the home page of the application.
+     *
+     * @return the home page of the application
+     */
     URL signOnUrl();
 
-    /** @return the mapping of password credentials from their names */
+    /**
+     * Gets the mapping of password credentials from their names.
+     *
+     * @return the mapping of password credentials from their names
+     */
     Map<String, PasswordCredential> passwordCredentials();
 
-    /** @return the mapping of certificate credentials from their names */
+    /**
+     * Gets the mapping of certificate credentials from their names.
+     *
+     * @return the mapping of certificate credentials from their names
+     */
     Map<String, CertificateCredential> certificateCredentials();
 
     /**************************************************************

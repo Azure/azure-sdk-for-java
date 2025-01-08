@@ -139,9 +139,9 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
 
         @Headers({ "Content-Type: application/json" })
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}")
-        @ExpectedResponses({ 200, 202 })
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+        Mono<Response<NodeTypeInner>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("nodeTypeName") String nodeTypeName, @QueryParam("api-version") String apiVersion,
@@ -1583,7 +1583,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
+    private Mono<Response<NodeTypeInner>> updateWithResponseAsync(String resourceGroupName, String clusterName,
         String nodeTypeName, NodeTypeUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -1632,7 +1632,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
+    private Mono<Response<NodeTypeInner>> updateWithResponseAsync(String resourceGroupName, String clusterName,
         String nodeTypeName, NodeTypeUpdateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -1675,107 +1675,14 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a node type in the cluster, each node type represents sub
-     * set of nodes in the cluster.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NodeTypeInner>, NodeTypeInner> beginUpdateAsync(String resourceGroupName,
-        String clusterName, String nodeTypeName, NodeTypeUpdateParameters parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = updateWithResponseAsync(resourceGroupName, clusterName, nodeTypeName, parameters);
-        return this.client.<NodeTypeInner, NodeTypeInner>getLroResult(mono, this.client.getHttpPipeline(),
-            NodeTypeInner.class, NodeTypeInner.class, this.client.getContext());
-    }
-
-    /**
-     * Update the tags of a node type resource of a given managed cluster.
-     * 
-     * Update the configuration of a node type of a given managed cluster, only updating tags.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters The parameters to update the node type configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a node type in the cluster, each node type represents sub
-     * set of nodes in the cluster.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NodeTypeInner>, NodeTypeInner> beginUpdateAsync(String resourceGroupName,
-        String clusterName, String nodeTypeName, NodeTypeUpdateParameters parameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = updateWithResponseAsync(resourceGroupName, clusterName, nodeTypeName, parameters, context);
-        return this.client.<NodeTypeInner, NodeTypeInner>getLroResult(mono, this.client.getHttpPipeline(),
-            NodeTypeInner.class, NodeTypeInner.class, context);
-    }
-
-    /**
-     * Update the tags of a node type resource of a given managed cluster.
-     * 
-     * Update the configuration of a node type of a given managed cluster, only updating tags.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters The parameters to update the node type configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a node type in the cluster, each node type represents sub
-     * set of nodes in the cluster.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NodeTypeInner>, NodeTypeInner> beginUpdate(String resourceGroupName,
-        String clusterName, String nodeTypeName, NodeTypeUpdateParameters parameters) {
-        return this.beginUpdateAsync(resourceGroupName, clusterName, nodeTypeName, parameters).getSyncPoller();
-    }
-
-    /**
-     * Update the tags of a node type resource of a given managed cluster.
-     * 
-     * Update the configuration of a node type of a given managed cluster, only updating tags.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters The parameters to update the node type configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a node type in the cluster, each node type represents sub
-     * set of nodes in the cluster.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NodeTypeInner>, NodeTypeInner> beginUpdate(String resourceGroupName,
-        String clusterName, String nodeTypeName, NodeTypeUpdateParameters parameters, Context context) {
-        return this.beginUpdateAsync(resourceGroupName, clusterName, nodeTypeName, parameters, context).getSyncPoller();
-    }
-
-    /**
-     * Update the tags of a node type resource of a given managed cluster.
-     * 
-     * Update the configuration of a node type of a given managed cluster, only updating tags.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters The parameters to update the node type configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a node type in the cluster, each node type represents sub set of nodes in the cluster on
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NodeTypeInner> updateAsync(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeUpdateParameters parameters) {
-        return beginUpdateAsync(resourceGroupName, clusterName, nodeTypeName, parameters).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return updateWithResponseAsync(resourceGroupName, clusterName, nodeTypeName, parameters)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1791,14 +1698,13 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a node type in the cluster, each node type represents sub set of nodes in the cluster on
-     * successful completion of {@link Mono}.
+     * @return describes a node type in the cluster, each node type represents sub set of nodes in the cluster along
+     * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NodeTypeInner> updateAsync(String resourceGroupName, String clusterName, String nodeTypeName,
+    public Response<NodeTypeInner> updateWithResponse(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeUpdateParameters parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, clusterName, nodeTypeName, parameters, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return updateWithResponseAsync(resourceGroupName, clusterName, nodeTypeName, parameters, context).block();
     }
 
     /**
@@ -1818,28 +1724,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NodeTypeInner update(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeUpdateParameters parameters) {
-        return updateAsync(resourceGroupName, clusterName, nodeTypeName, parameters).block();
-    }
-
-    /**
-     * Update the tags of a node type resource of a given managed cluster.
-     * 
-     * Update the configuration of a node type of a given managed cluster, only updating tags.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters The parameters to update the node type configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a node type in the cluster, each node type represents sub set of nodes in the cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NodeTypeInner update(String resourceGroupName, String clusterName, String nodeTypeName,
-        NodeTypeUpdateParameters parameters, Context context) {
-        return updateAsync(resourceGroupName, clusterName, nodeTypeName, parameters, context).block();
+        return updateWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE).getValue();
     }
 
     /**

@@ -19,7 +19,7 @@ public class CopyLogDetails implements JsonSerializable<CopyLogDetails> {
     /*
      * Indicates the type of job details.
      */
-    private ClassDiscriminator copyLogDetailsType = ClassDiscriminator.fromString("CopyLogDetails");
+    private ClassDiscriminator copyLogDetailsType;
 
     /**
      * Creates an instance of CopyLogDetails class.

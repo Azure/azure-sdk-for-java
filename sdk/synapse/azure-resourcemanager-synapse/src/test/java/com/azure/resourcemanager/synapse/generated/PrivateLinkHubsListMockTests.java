@@ -22,7 +22,7 @@ public final class PrivateLinkHubsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"sejb\",\"privateEndpointConnections\":[{\"id\":\"aieswhddzy\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"epywyjlnldpxottd\"}}]},\"location\":\"i\",\"tags\":{\"weebiphryv\":\"qibzji\",\"w\":\"jw\"},\"id\":\"qsratjhd\",\"name\":\"zybspijhfrzgdkk\",\"type\":\"gv\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"awn\",\"privateEndpointConnections\":[{\"id\":\"n\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"xvjabjq\"}},{\"id\":\"xuyvymcn\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"abhjx\"}},{\"id\":\"qweuip\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"m\"}}]},\"location\":\"tnsqxtlt\",\"tags\":{\"frakkldgrc\":\"rdpqgfhy\",\"jajqmatxjt\":\"fcmfcn\",\"pqagynoiprn\":\"elnzqgxxgfbbmt\"},\"id\":\"calincryqxz\",\"name\":\"aqzi\",\"type\":\"mqimiymqru\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,8 +33,8 @@ public final class PrivateLinkHubsListMockTests {
 
         PagedIterable<PrivateLinkHub> response = manager.privateLinkHubs().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("i", response.iterator().next().location());
-        Assertions.assertEquals("qibzji", response.iterator().next().tags().get("weebiphryv"));
-        Assertions.assertEquals("sejb", response.iterator().next().provisioningState());
+        Assertions.assertEquals("tnsqxtlt", response.iterator().next().location());
+        Assertions.assertEquals("rdpqgfhy", response.iterator().next().tags().get("frakkldgrc"));
+        Assertions.assertEquals("awn", response.iterator().next().provisioningState());
     }
 }

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.synapse.fluent.models.DataWarehouseUserActiviti
 public final class DataWarehouseUserActivitiesPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataWarehouseUserActivitiesProperties model = BinaryData.fromString("{\"activeQueriesCount\":887975126}")
+        DataWarehouseUserActivitiesProperties model = BinaryData.fromString("{\"activeQueriesCount\":1120696384}")
             .toObject(DataWarehouseUserActivitiesProperties.class);
     }
 

@@ -22,7 +22,7 @@ public final class DnsResolversListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"etag\":\"sdyhtozfikdowwq\",\"properties\":{\"virtualNetwork\":{\"id\":\"v\"},\"dnsResolverState\":\"Connected\",\"provisioningState\":\"Creating\",\"resourceGuid\":\"ithhqzon\"},\"location\":\"ggbhcohfwds\",\"tags\":{\"fgdkzzew\":\"aljutiiswac\"},\"id\":\"fvhqc\",\"name\":\"a\",\"type\":\"lvpnpp\"}]}";
+            = "{\"value\":[{\"etag\":\"hseyvju\",\"properties\":{\"virtualNetwork\":{\"id\":\"tslhspkdeem\"},\"dnsResolverState\":\"Connected\",\"provisioningState\":\"Failed\",\"resourceGuid\":\"gkvtmelmqkrhah\"},\"location\":\"juahaquhcdhmdual\",\"tags\":{\"adm\":\"qpv\",\"r\":\"sr\",\"fmisg\":\"vxpvgomz\"},\"id\":\"bnbbeldawkz\",\"name\":\"ali\",\"type\":\"urqhaka\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class DnsResolversListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DnsResolver> response
-            = manager.dnsResolvers().listByResourceGroup("ohdneuel", 1976701075, com.azure.core.util.Context.NONE);
+            = manager.dnsResolvers().listByResourceGroup("rnwb", 1267023941, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ggbhcohfwds", response.iterator().next().location());
-        Assertions.assertEquals("aljutiiswac", response.iterator().next().tags().get("fgdkzzew"));
-        Assertions.assertEquals("v", response.iterator().next().virtualNetwork().id());
+        Assertions.assertEquals("juahaquhcdhmdual", response.iterator().next().location());
+        Assertions.assertEquals("qpv", response.iterator().next().tags().get("adm"));
+        Assertions.assertEquals("tslhspkdeem", response.iterator().next().virtualNetwork().id());
     }
 }

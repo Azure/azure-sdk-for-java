@@ -12,24 +12,22 @@ public final class LibraryInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LibraryInfo model = BinaryData.fromString(
-            "{\"name\":\"qxtbjwgnyf\",\"path\":\"fzsvtuikzh\",\"containerName\":\"qglcfhmlrqryxynq\",\"uploadedTimestamp\":\"2021-09-26T14:22:07Z\",\"type\":\"p\",\"provisioningStatus\":\"vwxzn\",\"creatorId\":\"goeiybbabpfhvfsl\"}")
+            "{\"name\":\"o\",\"path\":\"si\",\"containerName\":\"evcciqihnhun\",\"uploadedTimestamp\":\"2021-08-15T16:10:49Z\",\"type\":\"zrnf\",\"provisioningStatus\":\"xgispemvtzfkufu\",\"creatorId\":\"jofxqe\"}")
             .toObject(LibraryInfo.class);
-        Assertions.assertEquals("qxtbjwgnyf", model.name());
-        Assertions.assertEquals("fzsvtuikzh", model.path());
-        Assertions.assertEquals("qglcfhmlrqryxynq", model.containerName());
-        Assertions.assertEquals("p", model.type());
+        Assertions.assertEquals("o", model.name());
+        Assertions.assertEquals("si", model.path());
+        Assertions.assertEquals("evcciqihnhun", model.containerName());
+        Assertions.assertEquals("zrnf", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LibraryInfo model = new LibraryInfo().withName("qxtbjwgnyf")
-            .withPath("fzsvtuikzh")
-            .withContainerName("qglcfhmlrqryxynq")
-            .withType("p");
+        LibraryInfo model
+            = new LibraryInfo().withName("o").withPath("si").withContainerName("evcciqihnhun").withType("zrnf");
         model = BinaryData.fromObject(model).toObject(LibraryInfo.class);
-        Assertions.assertEquals("qxtbjwgnyf", model.name());
-        Assertions.assertEquals("fzsvtuikzh", model.path());
-        Assertions.assertEquals("qglcfhmlrqryxynq", model.containerName());
-        Assertions.assertEquals("p", model.type());
+        Assertions.assertEquals("o", model.name());
+        Assertions.assertEquals("si", model.path());
+        Assertions.assertEquals("evcciqihnhun", model.containerName());
+        Assertions.assertEquals("zrnf", model.type());
     }
 }

@@ -4,23 +4,24 @@
 
 package com.azure.resourcemanager.deviceprovisioningservices.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for IotDpsResource DeletePrivateEndpointConnection. */
+/**
+ * Samples for IotDpsResource DeletePrivateEndpointConnection.
+ */
 public final class IotDpsResourceDeletePrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSDeletePrivateEndpointConnection.json
+     * x-ms-original-file:
+     * specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/
+     * DPSDeletePrivateEndpointConnection.json
      */
     /**
      * Sample code: PrivateEndpointConnection_Delete.
-     *
+     * 
      * @param manager Entry point to IotDpsManager.
      */
-    public static void privateEndpointConnectionDelete(
-        com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
-        manager
-            .iotDpsResources()
-            .deletePrivateEndpointConnection(
-                "myResourceGroup", "myFirstProvisioningService", "myPrivateEndpointConnection", Context.NONE);
+    public static void
+        privateEndpointConnectionDelete(com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
+        manager.iotDpsResources()
+            .deletePrivateEndpointConnection("myResourceGroup", "myFirstProvisioningService",
+                "myPrivateEndpointConnection", com.azure.core.util.Context.NONE);
     }
 }

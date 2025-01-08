@@ -27,7 +27,7 @@ public final class AssessmentsMetadatasDeleteInSubscriptionWithResponseMockTests
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.assessmentsMetadatas().deleteInSubscriptionWithResponse("uedcm", com.azure.core.util.Context.NONE);
+        manager.assessmentsMetadatas().deleteInSubscriptionWithResponse("pqht", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -21,7 +21,7 @@ public final class SignalRSharedPrivateLinkResourcesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"groupId\":\"btsuahxs\",\"privateLinkResourceId\":\"xjcmmzrrsc\",\"provisioningState\":\"Moving\",\"requestMessage\":\"sd\",\"status\":\"Rejected\"},\"id\":\"qwodiffjx\",\"name\":\"jrmmuabwib\",\"type\":\"jogjonmc\"}";
+            = "{\"properties\":{\"groupId\":\"sqyzqedikdfr\",\"privateLinkResourceId\":\"biqmrjgei\",\"provisioningState\":\"Unknown\",\"requestMessage\":\"ggwfiwz\",\"status\":\"Approved\"},\"id\":\"jpbyephmgtv\",\"name\":\"j\",\"type\":\"rc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class SignalRSharedPrivateLinkResourcesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SharedPrivateLinkResource response = manager.signalRSharedPrivateLinkResources()
-            .getWithResponse("ay", "xbulpzealbmqkyo", "wyvf", com.azure.core.util.Context.NONE)
+            .getWithResponse("h", "rbqgvgov", "bbttefjo", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("btsuahxs", response.groupId());
-        Assertions.assertEquals("xjcmmzrrsc", response.privateLinkResourceId());
-        Assertions.assertEquals("sd", response.requestMessage());
+        Assertions.assertEquals("sqyzqedikdfr", response.groupId());
+        Assertions.assertEquals("biqmrjgei", response.privateLinkResourceId());
+        Assertions.assertEquals("ggwfiwz", response.requestMessage());
     }
 }

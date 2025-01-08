@@ -13,21 +13,21 @@ public final class SlicePropertiesFormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SlicePropertiesFormat model = BinaryData.fromString(
-            "{\"provisioningState\":\"Accepted\",\"snssai\":{\"sst\":1795870437,\"sd\":\"xxulcdi\"},\"description\":\"osfjbjsv\"}")
+            "{\"provisioningState\":\"Unknown\",\"snssai\":{\"sst\":373191664,\"sd\":\"rngifl\"},\"description\":\"pasccbi\"}")
             .toObject(SlicePropertiesFormat.class);
-        Assertions.assertEquals(1795870437, model.snssai().sst());
-        Assertions.assertEquals("xxulcdi", model.snssai().sd());
-        Assertions.assertEquals("osfjbjsv", model.description());
+        Assertions.assertEquals(373191664, model.snssai().sst());
+        Assertions.assertEquals("rngifl", model.snssai().sd());
+        Assertions.assertEquals("pasccbi", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SlicePropertiesFormat model
-            = new SlicePropertiesFormat().withSnssai(new Snssai().withSst(1795870437).withSd("xxulcdi"))
-                .withDescription("osfjbjsv");
+            = new SlicePropertiesFormat().withSnssai(new Snssai().withSst(373191664).withSd("rngifl"))
+                .withDescription("pasccbi");
         model = BinaryData.fromObject(model).toObject(SlicePropertiesFormat.class);
-        Assertions.assertEquals(1795870437, model.snssai().sst());
-        Assertions.assertEquals("xxulcdi", model.snssai().sd());
-        Assertions.assertEquals("osfjbjsv", model.description());
+        Assertions.assertEquals(373191664, model.snssai().sst());
+        Assertions.assertEquals("rngifl", model.snssai().sd());
+        Assertions.assertEquals("pasccbi", model.description());
     }
 }

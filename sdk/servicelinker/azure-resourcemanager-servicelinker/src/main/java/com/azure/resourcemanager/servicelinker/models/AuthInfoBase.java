@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.servicelinker.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,19 +14,12 @@ import java.io.IOException;
 /**
  * The authentication info.
  */
-@Fluent
+@Immutable
 public class AuthInfoBase implements JsonSerializable<AuthInfoBase> {
     /*
      * The authentication type.
      */
     private AuthType authType = AuthType.fromString("AuthInfoBase");
-
-    /*
-     * Optional. Indicates how to configure authentication. If optInAllAuth, service linker configures authentication
-     * such as enabling identity on source resource and granting RBAC roles. If optOutAllAuth, opt out authentication
-     * setup. Default is optInAllAuth.
-     */
-    private AuthMode authMode;
 
     /**
      * Creates an instance of AuthInfoBase class.
@@ -44,30 +37,6 @@ public class AuthInfoBase implements JsonSerializable<AuthInfoBase> {
     }
 
     /**
-     * Get the authMode property: Optional. Indicates how to configure authentication. If optInAllAuth, service linker
-     * configures authentication such as enabling identity on source resource and granting RBAC roles. If optOutAllAuth,
-     * opt out authentication setup. Default is optInAllAuth.
-     * 
-     * @return the authMode value.
-     */
-    public AuthMode authMode() {
-        return this.authMode;
-    }
-
-    /**
-     * Set the authMode property: Optional. Indicates how to configure authentication. If optInAllAuth, service linker
-     * configures authentication such as enabling identity on source resource and granting RBAC roles. If optOutAllAuth,
-     * opt out authentication setup. Default is optInAllAuth.
-     * 
-     * @param authMode the authMode value to set.
-     * @return the AuthInfoBase object itself.
-     */
-    public AuthInfoBase withAuthMode(AuthMode authMode) {
-        this.authMode = authMode;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -82,7 +51,6 @@ public class AuthInfoBase implements JsonSerializable<AuthInfoBase> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("authType", this.authType == null ? null : this.authType.toString());
-        jsonWriter.writeStringField("authMode", this.authMode == null ? null : this.authMode.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -110,9 +78,7 @@ public class AuthInfoBase implements JsonSerializable<AuthInfoBase> {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("accessKey".equals(discriminatorValue)) {
-                    return AccessKeyInfoBase.fromJson(readerToUse.reset());
-                } else if ("secret".equals(discriminatorValue)) {
+                if ("secret".equals(discriminatorValue)) {
                     return SecretAuthInfo.fromJson(readerToUse.reset());
                 } else if ("userAssignedIdentity".equals(discriminatorValue)) {
                     return UserAssignedIdentityAuthInfo.fromJson(readerToUse.reset());
@@ -122,10 +88,6 @@ public class AuthInfoBase implements JsonSerializable<AuthInfoBase> {
                     return ServicePrincipalSecretAuthInfo.fromJson(readerToUse.reset());
                 } else if ("servicePrincipalCertificate".equals(discriminatorValue)) {
                     return ServicePrincipalCertificateAuthInfo.fromJson(readerToUse.reset());
-                } else if ("userAccount".equals(discriminatorValue)) {
-                    return UserAccountAuthInfo.fromJson(readerToUse.reset());
-                } else if ("easyAuthMicrosoftEntraID".equals(discriminatorValue)) {
-                    return EasyAuthMicrosoftEntraIdAuthInfo.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
@@ -142,8 +104,6 @@ public class AuthInfoBase implements JsonSerializable<AuthInfoBase> {
 
                 if ("authType".equals(fieldName)) {
                     deserializedAuthInfoBase.authType = AuthType.fromString(reader.getString());
-                } else if ("authMode".equals(fieldName)) {
-                    deserializedAuthInfoBase.authMode = AuthMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

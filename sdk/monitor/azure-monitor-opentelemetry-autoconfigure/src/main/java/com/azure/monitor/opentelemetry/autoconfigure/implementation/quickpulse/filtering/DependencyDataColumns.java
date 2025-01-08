@@ -3,6 +3,7 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RemoteDependencyData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterInfo;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.FormattedDuration;
@@ -15,17 +16,25 @@ public class DependencyDataColumns implements TelemetryColumns {
     private final CustomDimensions customDims;
     private final Map<String, Object> mapping = new HashMap<>();
 
+    private static ClientLogger logger = new ClientLogger(DependencyDataColumns.class);
+
     public DependencyDataColumns(RemoteDependencyData rdData) {
         customDims = new CustomDimensions(rdData.getProperties(), rdData.getMeasurements());
         mapping.put(KnownDependencyColumns.TARGET, rdData.getTarget());
         mapping.put(KnownDependencyColumns.DURATION,
             FormattedDuration.getDurationFromTelemetryItemDurationString(rdData.getDuration()));
+
+        if (mapping.get(KnownDependencyColumns.DURATION).equals(-1)) {
+            logger.verbose("The timestamp from the RemoteDependencyData could not be converted to microseconds: {}", rdData.getDuration());
+        }
+
         mapping.put(KnownDependencyColumns.SUCCESS, rdData.isSuccess());
         mapping.put(KnownDependencyColumns.NAME, rdData.getName());
         int resultCode;
         try {
             resultCode = Integer.parseInt(rdData.getResultCode());
         } catch (NumberFormatException e) {
+            logger.verbose("The result code in the RemoteDependencyData object could not be converted to a numeric value so setting the value to -1: {}", rdData.getResultCode());
             resultCode = -1;
         }
         mapping.put(KnownDependencyColumns.RESULT_CODE, resultCode);

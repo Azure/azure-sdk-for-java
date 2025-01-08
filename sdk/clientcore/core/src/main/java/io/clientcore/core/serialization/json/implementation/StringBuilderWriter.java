@@ -8,9 +8,7 @@ import java.io.Writer;
 import java.util.Objects;
 
 /**
- * Implementation of {@link Writer} that write content to a {@link StringBuilder}. This is copied directly from
- * sdk/core/azure-core/src/main/java/com/azure/core/implementation/StringBuilderWriter.java in order to avoid a
- * dependency on azure-core.
+ * Implementation of {@link Writer} that write content to a {@link StringBuilder}.
  * <p>
  * Given the backing store of this {@link Writer} is a {@link StringBuilder} this is not thread-safe.
  */

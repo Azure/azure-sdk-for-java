@@ -377,6 +377,15 @@ public class ComputeSkuName extends ExpandableStringEnum<ComputeSkuName> {
     public static final ComputeSkuName STANDARD_DS3 = fromString("Standard_DS3");
 
     /**
+     * Creates a new instance of ComputeSkuName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ComputeSkuName() {
+    }
+
+    /**
      * Creates or finds a ComputeSkuName from its string representation.
      *
      * @param name a name to look for
@@ -386,7 +395,11 @@ public class ComputeSkuName extends ExpandableStringEnum<ComputeSkuName> {
         return fromString(name, ComputeSkuName.class);
     }
 
-    /** @return known ComputeSkuName values */
+    /**
+     * Gets known ComputeSkuName values.
+     *
+     * @return known ComputeSkuName values
+     */
     public static Collection<ComputeSkuName> values() {
         return values(ComputeSkuName.class);
     }

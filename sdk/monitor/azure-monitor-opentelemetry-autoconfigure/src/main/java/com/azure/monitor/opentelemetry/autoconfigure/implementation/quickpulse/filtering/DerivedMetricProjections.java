@@ -65,7 +65,8 @@ public class DerivedMetricProjections {
         }
 
         if (Double.isNaN(incrementBy)) {
-            logger.verbose("The {} column in the incoming telemetry item was either not present or could not be parsed to a numeric value when calculating a projection",
+            logger.verbose("The {} column in the incoming telemetry item was either not present or could not be parsed to a numeric value. " +
+                    "This telemetry item will not be counted in derived metric projections.",
                 derivedMetricInfo.getProjection().equals(KnownRequestColumns.DURATION) ?
                     "Duration" : derivedMetricInfo.getProjection().substring(Filter.CUSTOM_DIM_FIELDNAME_PREFIX.length()));
         } else {

@@ -14,10 +14,10 @@ public final class CreateComputePolicyWithAccountParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CreateComputePolicyWithAccountParameters model = BinaryData.fromString(
-            "{\"name\":\"usivye\",\"properties\":{\"objectId\":\"2bc146ee-a90e-4197-8b64-eb06e89cf3be\",\"objectType\":\"ServicePrincipal\",\"maxDegreeOfParallelismPerJob\":1323562973,\"minPriorityPerJob\":1522291140}}")
+            "{\"name\":\"usivye\",\"properties\":{\"objectId\":\"5db3c7a4-c6f9-4cd8-8fdb-94a2ce82af13\",\"objectType\":\"ServicePrincipal\",\"maxDegreeOfParallelismPerJob\":1323562973,\"minPriorityPerJob\":1522291140}}")
             .toObject(CreateComputePolicyWithAccountParameters.class);
         Assertions.assertEquals("usivye", model.name());
-        Assertions.assertEquals(UUID.fromString("2bc146ee-a90e-4197-8b64-eb06e89cf3be"), model.objectId());
+        Assertions.assertEquals(UUID.fromString("5db3c7a4-c6f9-4cd8-8fdb-94a2ce82af13"), model.objectId());
         Assertions.assertEquals(AadObjectType.SERVICE_PRINCIPAL, model.objectType());
         Assertions.assertEquals(1323562973, model.maxDegreeOfParallelismPerJob());
         Assertions.assertEquals(1522291140, model.minPriorityPerJob());
@@ -27,13 +27,13 @@ public final class CreateComputePolicyWithAccountParametersTests {
     public void testSerialize() throws Exception {
         CreateComputePolicyWithAccountParameters model
             = new CreateComputePolicyWithAccountParameters().withName("usivye")
-                .withObjectId(UUID.fromString("2bc146ee-a90e-4197-8b64-eb06e89cf3be"))
+                .withObjectId(UUID.fromString("5db3c7a4-c6f9-4cd8-8fdb-94a2ce82af13"))
                 .withObjectType(AadObjectType.SERVICE_PRINCIPAL)
                 .withMaxDegreeOfParallelismPerJob(1323562973)
                 .withMinPriorityPerJob(1522291140);
         model = BinaryData.fromObject(model).toObject(CreateComputePolicyWithAccountParameters.class);
         Assertions.assertEquals("usivye", model.name());
-        Assertions.assertEquals(UUID.fromString("2bc146ee-a90e-4197-8b64-eb06e89cf3be"), model.objectId());
+        Assertions.assertEquals(UUID.fromString("5db3c7a4-c6f9-4cd8-8fdb-94a2ce82af13"), model.objectId());
         Assertions.assertEquals(AadObjectType.SERVICE_PRINCIPAL, model.objectType());
         Assertions.assertEquals(1323562973, model.maxDegreeOfParallelismPerJob());
         Assertions.assertEquals(1522291140, model.minPriorityPerJob());

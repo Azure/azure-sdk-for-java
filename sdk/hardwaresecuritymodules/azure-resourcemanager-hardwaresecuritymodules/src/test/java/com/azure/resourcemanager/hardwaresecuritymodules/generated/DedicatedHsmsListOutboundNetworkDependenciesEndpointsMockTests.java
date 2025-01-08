@@ -22,7 +22,7 @@ public final class DedicatedHsmsListOutboundNetworkDependenciesEndpointsMockTest
     @Test
     public void testListOutboundNetworkDependenciesEndpoints() throws Exception {
         String responseStr
-            = "{\"value\":[{\"category\":\"ywrckp\",\"endpoints\":[{\"domainName\":\"hpluodpvruudlg\",\"endpointDetails\":[{\"ipAddress\":\"hostgktstvdxecl\",\"port\":1260615912,\"protocol\":\"bcvhzlhpl\",\"description\":\"qkdlw\"}]},{\"domainName\":\"fbumlkx\",\"endpointDetails\":[{\"ipAddress\":\"fsmlmbtxhwgfw\",\"port\":836535007,\"protocol\":\"wcoezbrhub\",\"description\":\"hud\"},{\"ipAddress\":\"oookkqfq\",\"port\":958097402,\"protocol\":\"eorfm\",\"description\":\"iqtqzfavyvnq\"},{\"ipAddress\":\"bar\",\"port\":1877295480,\"protocol\":\"yjkqabqgzslesjcb\",\"description\":\"rnntiewdjcv\"}]},{\"domainName\":\"uwrbehwagoh\",\"endpointDetails\":[{\"ipAddress\":\"kmr\",\"port\":1538670364,\"protocol\":\"vhmxtdrjfu\",\"description\":\"coebjvewzcj\"}]},{\"domainName\":\"m\",\"endpointDetails\":[{\"ipAddress\":\"guaadraufactkahz\",\"port\":1219742698,\"protocol\":\"j\",\"description\":\"uxxpshne\"},{\"ipAddress\":\"ulfgslqu\",\"port\":471639164,\"protocol\":\"lenrd\",\"description\":\"tujbazpju\"},{\"ipAddress\":\"minyflnorwm\",\"port\":1535649405,\"protocol\":\"pklvxw\",\"description\":\"gdxpg\"},{\"ipAddress\":\"chisze\",\"port\":511466566,\"protocol\":\"jcrxgibbdaxcon\",\"description\":\"zauorsuk\"}]}]}]}";
+            = "{\"value\":[{\"category\":\"fkbey\",\"endpoints\":[{\"domainName\":\"mjmwvvjektcx\",\"endpointDetails\":[{\"ipAddress\":\"wlrsffrzpwv\",\"port\":1792150681,\"protocol\":\"gbiqylihkaet\",\"description\":\"tvfcivfsn\"},{\"ipAddress\":\"m\",\"port\":1059821653,\"protocol\":\"hjfbebrjcxe\",\"description\":\"uwutttxfvjrbi\"},{\"ipAddress\":\"hxepcyvahfnlj\",\"port\":561070013,\"protocol\":\"j\",\"description\":\"ujqgidok\"},{\"ipAddress\":\"ljyoxgvcltb\",\"port\":1745548413,\"protocol\":\"ghkjeszzhbi\",\"description\":\"txfvgx\"}]},{\"domainName\":\"smx\",\"endpointDetails\":[{\"ipAddress\":\"pvecxgodeb\",\"port\":398257944,\"protocol\":\"rbmpukgri\",\"description\":\"lzlfbxzpuz\"},{\"ipAddress\":\"ispnqzahmgkbrp\",\"port\":1687540865,\"protocol\":\"ibnuqqkpik\",\"description\":\"rgvtqag\"}]},{\"domainName\":\"uynhijg\",\"endpointDetails\":[{\"ipAddress\":\"fsiarbutr\",\"port\":1477198207,\"protocol\":\"azzmhjrunmpxt\",\"description\":\"bh\"}]},{\"domainName\":\"nlankxmyskpb\",\"endpointDetails\":[{\"ipAddress\":\"tkcxywnytnrsy\",\"port\":1857239406,\"protocol\":\"dybyxczfclhaa\",\"description\":\"babphlwrqlfk\"},{\"ipAddress\":\"thsu\",\"port\":296949281,\"protocol\":\"nyyazttbtwwrqpue\",\"description\":\"kzywbiex\"},{\"ipAddress\":\"eyueaxibxujwb\",\"port\":913520848,\"protocol\":\"lmuzy\",\"description\":\"aepdkzjanc\"},{\"ipAddress\":\"rhdwbavxbniw\",\"port\":1074996435,\"protocol\":\"zt\",\"description\":\"bpg\"}]}]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,17 +32,17 @@ public final class DedicatedHsmsListOutboundNetworkDependenciesEndpointsMockTest
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<OutboundEnvironmentEndpoint> response = manager.dedicatedHsms()
-            .listOutboundNetworkDependenciesEndpoints("n", "tbaxk", com.azure.core.util.Context.NONE);
+            .listOutboundNetworkDependenciesEndpoints("konocu", "oklyaxuconuq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ywrckp", response.iterator().next().category());
-        Assertions.assertEquals("hpluodpvruudlg", response.iterator().next().endpoints().get(0).domainName());
-        Assertions.assertEquals("hostgktstvdxecl",
+        Assertions.assertEquals("fkbey", response.iterator().next().category());
+        Assertions.assertEquals("mjmwvvjektcx", response.iterator().next().endpoints().get(0).domainName());
+        Assertions.assertEquals("wlrsffrzpwv",
             response.iterator().next().endpoints().get(0).endpointDetails().get(0).ipAddress());
-        Assertions.assertEquals(1260615912,
+        Assertions.assertEquals(1792150681,
             response.iterator().next().endpoints().get(0).endpointDetails().get(0).port());
-        Assertions.assertEquals("bcvhzlhpl",
+        Assertions.assertEquals("gbiqylihkaet",
             response.iterator().next().endpoints().get(0).endpointDetails().get(0).protocol());
-        Assertions.assertEquals("qkdlw",
+        Assertions.assertEquals("tvfcivfsn",
             response.iterator().next().endpoints().get(0).endpointDetails().get(0).description());
     }
 }

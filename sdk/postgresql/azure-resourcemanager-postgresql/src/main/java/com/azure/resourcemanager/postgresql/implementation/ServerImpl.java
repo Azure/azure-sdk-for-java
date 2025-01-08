@@ -137,6 +137,10 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ServerInner innerModel() {
         return this.innerObject;
     }
@@ -201,8 +205,8 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     ServerImpl(ServerInner innerObject, com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serverName = Utils.getValueFromIdByName(innerObject.id(), "servers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "servers");
     }
 
     public Server refresh() {

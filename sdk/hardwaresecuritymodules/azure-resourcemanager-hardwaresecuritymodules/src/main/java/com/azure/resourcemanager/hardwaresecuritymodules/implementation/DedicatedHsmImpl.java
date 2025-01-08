@@ -59,12 +59,12 @@ public final class DedicatedHsmImpl implements DedicatedHsm, DedicatedHsm.Defini
         }
     }
 
-    public DedicatedHsmProperties properties() {
-        return this.innerModel().properties();
-    }
-
     public SystemData systemData() {
         return this.innerModel().systemData();
+    }
+
+    public DedicatedHsmProperties properties() {
+        return this.innerModel().properties();
     }
 
     public Region region() {
@@ -172,11 +172,6 @@ public final class DedicatedHsmImpl implements DedicatedHsm, DedicatedHsm.Defini
         return this;
     }
 
-    public DedicatedHsmImpl withSku(Sku sku) {
-        this.innerModel().withSku(sku);
-        return this;
-    }
-
     public DedicatedHsmImpl withProperties(DedicatedHsmProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
@@ -190,6 +185,11 @@ public final class DedicatedHsmImpl implements DedicatedHsm, DedicatedHsm.Defini
             this.updateParameters.withTags(tags);
             return this;
         }
+    }
+
+    public DedicatedHsmImpl withSku(Sku sku) {
+        this.innerModel().withSku(sku);
+        return this;
     }
 
     public DedicatedHsmImpl withZones(List<String> zones) {

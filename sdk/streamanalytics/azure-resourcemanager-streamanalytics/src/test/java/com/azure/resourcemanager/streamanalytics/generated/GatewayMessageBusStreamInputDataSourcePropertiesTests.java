@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class GatewayMessageBusStreamInputDataSourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GatewayMessageBusStreamInputDataSourceProperties model = BinaryData.fromString("{\"topic\":\"wi\"}")
+        GatewayMessageBusStreamInputDataSourceProperties model = BinaryData.fromString("{\"topic\":\"b\"}")
             .toObject(GatewayMessageBusStreamInputDataSourceProperties.class);
-        Assertions.assertEquals("wi", model.topic());
+        Assertions.assertEquals("b", model.topic());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GatewayMessageBusStreamInputDataSourceProperties model
-            = new GatewayMessageBusStreamInputDataSourceProperties().withTopic("wi");
+            = new GatewayMessageBusStreamInputDataSourceProperties().withTopic("b");
         model = BinaryData.fromObject(model).toObject(GatewayMessageBusStreamInputDataSourceProperties.class);
-        Assertions.assertEquals("wi", model.topic());
+        Assertions.assertEquals("b", model.topic());
     }
 }

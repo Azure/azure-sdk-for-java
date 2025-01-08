@@ -17,16 +17,6 @@ public final class ActionType extends ExpandableStringEnum<ActionType> {
     public static final ActionType INTERNAL = fromString("Internal");
 
     /**
-     * Static value enable for ActionType.
-     */
-    public static final ActionType ENABLE = fromString("enable");
-
-    /**
-     * Static value optOut for ActionType.
-     */
-    public static final ActionType OPT_OUT = fromString("optOut");
-
-    /**
      * Creates a new instance of ActionType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

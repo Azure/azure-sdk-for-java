@@ -24,7 +24,7 @@ public final class ServerBackupInner extends ProxyResource {
     private ServerBackupProperties innerProperties;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * The system metadata relating to this resource.
      */
     private SystemData systemData;
 
@@ -59,7 +59,7 @@ public final class ServerBackupInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * Get the systemData property: The system metadata relating to this resource.
      * 
      * @return the systemData value.
      */

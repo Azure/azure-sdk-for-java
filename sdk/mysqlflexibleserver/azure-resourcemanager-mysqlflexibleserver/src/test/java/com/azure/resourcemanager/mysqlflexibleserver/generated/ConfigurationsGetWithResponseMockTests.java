@@ -22,7 +22,7 @@ public final class ConfigurationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"value\":\"stotxh\",\"currentValue\":\"ujbypelmcuvhixb\",\"description\":\"yfwnylr\",\"documentationLink\":\"o\",\"defaultValue\":\"ttpkiwkkbnujrywv\",\"dataType\":\"lbfpncurd\",\"allowedValues\":\"wiithtywub\",\"source\":\"user-override\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"True\"},\"id\":\"dntwjchrdgo\",\"name\":\"hxumwctondzj\",\"type\":\"uu\"}";
+            = "{\"properties\":{\"value\":\"gzva\",\"description\":\"pjyzhpv\",\"defaultValue\":\"zcjrvxdjzlmwlx\",\"dataType\":\"ug\",\"allowedValues\":\"zovawjvz\",\"source\":\"system-default\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"False\"},\"id\":\"nxipeil\",\"name\":\"jzuaejxdultskzbb\",\"type\":\"dzumveekg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,10 @@ public final class ConfigurationsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Configuration response = manager.configurations()
-            .getWithResponse("wau", "qncygupkvi", "mdscwxqupev", com.azure.core.util.Context.NONE)
+            .getWithResponse("bexrmcq", "bycnojvkn", "e", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("stotxh", response.value());
-        Assertions.assertEquals("ujbypelmcuvhixb", response.currentValue());
-        Assertions.assertEquals(ConfigurationSource.USER_OVERRIDE, response.source());
+        Assertions.assertEquals("gzva", response.value());
+        Assertions.assertEquals(ConfigurationSource.SYSTEM_DEFAULT, response.source());
     }
 }

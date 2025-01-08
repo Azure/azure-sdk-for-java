@@ -22,7 +22,7 @@ public final class JobsListByAutomationAccountMockTests {
     @Test
     public void testListByAutomationAccount() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"runbook\":{\"name\":\"moxfablq\"},\"jobId\":\"31064a90-172c-4309-aec4-6d07b131b379\",\"creationTime\":\"2021-05-30T11:18:20Z\",\"status\":\"Removing\",\"startTime\":\"2021-01-17T05:13:19Z\",\"endTime\":\"2021-06-09T07:17:22Z\",\"lastModifiedTime\":\"2021-02-25T19:09:09Z\",\"provisioningState\":\"rycgnwplrrbph\",\"runOn\":\"sbbi\"},\"id\":\"ticuhqvumsp\",\"name\":\"fsfeqbbe\",\"type\":\"f\"}]}";
+            = "{\"value\":[{\"properties\":{\"runbook\":{\"name\":\"moxfablq\"},\"jobId\":\"534b6f13-22ca-4110-aa9c-7e4734e6cf8b\",\"creationTime\":\"2021-05-30T11:18:20Z\",\"status\":\"Removing\",\"startTime\":\"2021-01-17T05:13:19Z\",\"endTime\":\"2021-06-09T07:17:22Z\",\"lastModifiedTime\":\"2021-02-25T19:09:09Z\",\"provisioningState\":\"rycgnwplrrbph\",\"runOn\":\"sbbi\"},\"id\":\"ticuhqvumsp\",\"name\":\"fsfeqbbe\",\"type\":\"f\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

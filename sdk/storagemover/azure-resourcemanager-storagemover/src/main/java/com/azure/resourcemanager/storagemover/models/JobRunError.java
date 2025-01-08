@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Error type.
  */
 @Fluent
-public final class JobRunError {
+public final class JobRunError implements JsonSerializable<JobRunError> {
     /*
      * Error code of the given entry.
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * Error message of the given entry.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * Target of the given error entry.
      */
-    @JsonProperty(value = "target")
     private String target;
 
     /**
@@ -102,5 +103,47 @@ public final class JobRunError {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("target", this.target);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobRunError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobRunError if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobRunError.
+     */
+    public static JobRunError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobRunError deserializedJobRunError = new JobRunError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedJobRunError.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedJobRunError.message = reader.getString();
+                } else if ("target".equals(fieldName)) {
+                    deserializedJobRunError.target = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobRunError;
+        });
     }
 }

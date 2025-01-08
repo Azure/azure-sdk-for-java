@@ -10,7 +10,7 @@ package com.azure.resourcemanager.streamanalytics.generated;
 public final class InputsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Input_Get_Reference_Blob_CSV.json
      */
     /**
@@ -25,7 +25,7 @@ public final class InputsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Input_Get_Stream_EventHub_JSON.json
      */
     /**
@@ -40,7 +40,7 @@ public final class InputsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Input_Get_Stream_IoTHub_Avro.json
      */
     /**
@@ -55,7 +55,7 @@ public final class InputsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Input_Get_Stream_Blob_CSV.json
      */
     /**

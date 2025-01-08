@@ -82,10 +82,6 @@ public class TargetServiceBase implements JsonSerializable<TargetServiceBase> {
                     return AzureResource.fromJson(readerToUse.reset());
                 } else if ("ConfluentBootstrapServer".equals(discriminatorValue)) {
                     return ConfluentBootstrapServer.fromJson(readerToUse.reset());
-                } else if ("FabricPlatform".equals(discriminatorValue)) {
-                    return FabricPlatform.fromJson(readerToUse.reset());
-                } else if ("SelfHostedServer".equals(discriminatorValue)) {
-                    return SelfHostedServer.fromJson(readerToUse.reset());
                 } else if ("ConfluentSchemaRegistry".equals(discriminatorValue)) {
                     return ConfluentSchemaRegistry.fromJson(readerToUse.reset());
                 } else {

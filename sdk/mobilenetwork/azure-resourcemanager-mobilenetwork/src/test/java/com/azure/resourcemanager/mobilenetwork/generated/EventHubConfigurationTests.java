@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class EventHubConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EventHubConfiguration model = BinaryData.fromString("{\"id\":\"y\",\"reportingInterval\":1553337592}")
+        EventHubConfiguration model = BinaryData.fromString("{\"id\":\"lwn\",\"reportingInterval\":1035502887}")
             .toObject(EventHubConfiguration.class);
-        Assertions.assertEquals("y", model.id());
-        Assertions.assertEquals(1553337592, model.reportingInterval());
+        Assertions.assertEquals("lwn", model.id());
+        Assertions.assertEquals(1035502887, model.reportingInterval());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventHubConfiguration model = new EventHubConfiguration().withId("y").withReportingInterval(1553337592);
+        EventHubConfiguration model = new EventHubConfiguration().withId("lwn").withReportingInterval(1035502887);
         model = BinaryData.fromObject(model).toObject(EventHubConfiguration.class);
-        Assertions.assertEquals("y", model.id());
-        Assertions.assertEquals(1553337592, model.reportingInterval());
+        Assertions.assertEquals("lwn", model.id());
+        Assertions.assertEquals(1035502887, model.reportingInterval());
     }
 }
