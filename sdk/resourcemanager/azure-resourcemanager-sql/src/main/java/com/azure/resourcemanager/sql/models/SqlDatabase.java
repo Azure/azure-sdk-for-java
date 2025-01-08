@@ -57,9 +57,9 @@ public interface SqlDatabase extends ExternalChildResource<SqlDatabase, SqlServe
     String currentServiceObjectiveName();
 
     /**
-     * Gets the Id of the Azure SQL Database.
+     * Gets the ID of the Azure SQL Database.
      *
-     * @return the Id of the Azure SQL Database
+     * @return the ID of the Azure SQL Database
      */
     String databaseId();
 
@@ -101,7 +101,7 @@ public interface SqlDatabase extends ExternalChildResource<SqlDatabase, SqlServe
     DatabaseStatus status();
 
     /**
-     * Gets Id of the elastic pool.
+     * Gets ID of the elastic pool.
      *
      * @return the elasticPoolId value
      */

@@ -33,7 +33,7 @@ public interface SqlDatabaseExportRequest extends HasInnerModel<ExportDatabaseDe
             SqlDatabaseExportRequest.DefinitionStages.WithStorageTypeAndKey exportTo(String storageUri);
 
             /**
-             * Export to file.
+             * Export database file to the container of storage.
              *
              * @param storageAccount an existing storage account to be used
              * @param containerName the container name within the storage account to use
@@ -44,7 +44,7 @@ public interface SqlDatabaseExportRequest extends HasInnerModel<ExportDatabaseDe
                 exportTo(StorageAccount storageAccount, String containerName, String fileName);
 
             /**
-             * Export to file.
+             * Export database file to the container of storage.
              *
              * @param storageAccountCreatable a storage account to be created as part of this execution flow
              * @param containerName the container name within the storage account to use

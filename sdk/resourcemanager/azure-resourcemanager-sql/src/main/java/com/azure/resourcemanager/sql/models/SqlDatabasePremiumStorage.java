@@ -108,7 +108,7 @@ public enum SqlDatabasePremiumStorage {
     }
 
     /**
-     * gets the maximum allowed storage capacity in MB for the SQL Database.
+     * Gets the maximum allowed storage capacity in MB for the SQL Database.
      *
      * @return the maximum allowed storage capacity in MB for the SQL Database
      */

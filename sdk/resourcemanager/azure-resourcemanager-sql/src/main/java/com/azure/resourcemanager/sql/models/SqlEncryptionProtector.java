@@ -19,7 +19,7 @@ public interface SqlEncryptionProtector extends HasId, HasInnerModel<EncryptionP
     Indexable, Refreshable<SqlEncryptionProtector>, Updatable<SqlEncryptionProtector.Update> {
 
     /**
-     * Gets name of the SQL Server to which this DNS alias belongs.
+     * Gets the name of the SQL Server to which this DNS alias belongs.
      *
      * @return name of the SQL Server to which this DNS alias belongs
      */
@@ -68,7 +68,7 @@ public interface SqlEncryptionProtector extends HasId, HasInnerModel<EncryptionP
     String uri();
 
     /**
-     * Gets thumbprint of the server key.
+     * Gets the thumbprint of the server key.
      *
      * @return thumbprint of the server key
      */

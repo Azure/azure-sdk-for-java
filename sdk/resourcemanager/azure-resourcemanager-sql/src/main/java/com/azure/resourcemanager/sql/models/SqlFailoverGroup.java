@@ -19,7 +19,7 @@ public interface SqlFailoverGroup extends Resource, HasInnerModel<FailoverGroupI
     Refreshable<SqlFailoverGroup>, Updatable<SqlFailoverGroup.Update> {
 
     /**
-     * Gets name of the SQL Server to which this Failover Group belongs.
+     * Gets the name of the SQL Server to which this Failover Group belongs.
      *
      * @return name of the SQL Server to which this Failover Group belongs
      */

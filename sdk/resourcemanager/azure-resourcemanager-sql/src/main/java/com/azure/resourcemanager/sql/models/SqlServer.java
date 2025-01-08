@@ -22,7 +22,7 @@ public interface SqlServer
     extends GroupableResource<SqlServerManager, ServerInner>, Refreshable<SqlServer>, Updatable<SqlServer.Update> {
 
     /**
-     * Gets fully qualified name of the SQL Server.
+     * Gets the fully qualified name of the SQL Server.
      *
      * @return fully qualified name of the SQL Server
      */
@@ -122,7 +122,7 @@ public interface SqlServer
     SqlFirewallRule enableAccessFromAzureServices();
 
     /**
-     * Whether the SQL Server can be accessed from public network.
+     * Checks whether the SQL Server can be accessed from public network.
      *
      * @return whether the SQL Server can be accessed from public network.
      */

@@ -17,14 +17,14 @@ import reactor.core.publisher.Mono;
 public interface TransparentDataEncryption extends Refreshable<TransparentDataEncryption>,
     HasInnerModel<LogicalDatabaseTransparentDataEncryptionInner>, HasResourceGroup, HasName, HasId {
     /**
-     * Gets name of the SQL Server to which this replication belongs.
+     * Gets the name of the SQL Server to which this replication belongs.
      *
      * @return name of the SQL Server to which this replication belongs
      */
     String sqlServerName();
 
     /**
-     * Gets name of the SQL Database to which this replication belongs.
+     * Gets the name of the SQL Database to which this replication belongs.
      *
      * @return name of the SQL Database to which this replication belongs
      */

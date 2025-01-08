@@ -39,7 +39,7 @@ public interface SqlDatabaseThreatDetectionPolicy
     String kind();
 
     /**
-     * Gets the state of the policy..
+     * Gets the state of the policy.
      *
      * @return the state of the policy.
      */

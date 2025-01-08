@@ -106,7 +106,7 @@ public class SqlServerManager extends Manager<SqlManagementClient> {
     }
 
     /**
-     * Gets the SQL Server management API entry point.
+     * Gets the API entry point of SQL Server management.
      *
      * @return the SQL Server management API entry point
      */

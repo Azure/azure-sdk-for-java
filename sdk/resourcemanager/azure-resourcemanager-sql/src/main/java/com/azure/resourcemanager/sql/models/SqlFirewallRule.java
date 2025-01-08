@@ -21,7 +21,7 @@ public interface SqlFirewallRule
     Refreshable<SqlFirewallRule>, Updatable<SqlFirewallRule.Update> {
 
     /**
-     * Gets name of the SQL Server to which this Firewall Rule belongs.
+     * Gets the name of the SQL Server to which this Firewall Rule belongs.
      *
      * @return name of the SQL Server to which this Firewall Rule belongs
      */
@@ -42,14 +42,14 @@ public interface SqlFirewallRule
     String endIpAddress();
 
     /**
-     * Gets kind of SQL Server that contains this Firewall Rule.
+     * Gets the kind of SQL Server that contains this Firewall Rule.
      *
      * @return kind of SQL Server that contains this Firewall Rule.
      */
     String kind();
 
     /**
-     * Gets region of SQL Server that contains this Firewall Rule.
+     * Gets the region of SQL Server that contains this Firewall Rule.
      *
      * @return region of SQL Server that contains this Firewall Rule.
      */

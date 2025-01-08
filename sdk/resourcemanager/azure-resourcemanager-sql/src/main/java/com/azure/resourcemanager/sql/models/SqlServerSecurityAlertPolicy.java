@@ -21,7 +21,7 @@ public interface SqlServerSecurityAlertPolicy
     Refreshable<SqlServerSecurityAlertPolicy>, Updatable<SqlServerSecurityAlertPolicy.Update> {
 
     /**
-     * Gets name of the SQL Server to which this DNS alias belongs.
+     * Gets the name of the SQL Server to which this DNS alias belongs.
      *
      * @return name of the SQL Server to which this DNS alias belongs
      */

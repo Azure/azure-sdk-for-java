@@ -54,16 +54,16 @@ public interface SqlSyncMember extends ExternalChildResource<SqlSyncMember, SqlS
     SyncMemberDbType databaseType();
 
     /**
-     * Gets the ARM resource id of the sync agent in the sync member.
+     * Gets the ARM resource ID of the sync agent in the sync member.
      *
-     * @return the ARM resource id of the sync agent in the sync member
+     * @return the ARM resource ID of the sync agent in the sync member
      */
     String syncAgentId();
 
     /**
-     * Gets the SQL Database id of the sync member.
+     * Gets the SQL Database ID of the sync member.
      *
-     * @return the SQL Database id of the sync member
+     * @return the SQL Database ID of the sync member
      */
     String sqlServerDatabaseId();
 

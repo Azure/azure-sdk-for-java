@@ -288,7 +288,7 @@ public final class ElasticPoolSku {
     }
 
     /**
-     * gets the underneath sku description.
+     * Gets the underneath sku description.
      *
      * @return the underneath sku description
      */

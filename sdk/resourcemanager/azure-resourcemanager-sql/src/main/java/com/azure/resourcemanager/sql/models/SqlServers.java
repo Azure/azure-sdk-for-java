@@ -29,42 +29,42 @@ public interface SqlServers extends SupportsCreating<SqlServer.DefinitionStages.
     SupportsBatchCreation<SqlServer>, SupportsBatchDeletion, HasManager<SqlServerManager> {
 
     /**
-     * Gets the SQL Server Firewall Rules API entry point.
+     * Gets the API entry point of the SQL Server Firewall Rules.
      *
      * @return the SQL Server Firewall Rules API entry point
      */
     SqlFirewallRuleOperations firewallRules();
 
     /**
-     * Gets the SQL Server VirtualNetwork Rules API entry point.
+     * Gets the API entry point of the SQL Server VirtualNetwork Rules.
      *
      * @return the SQL Server VirtualNetwork Rules API entry point
      */
     SqlVirtualNetworkRuleOperations virtualNetworkRules();
 
     /**
-     * Gets the SQL Server DNS aliases API entry point.
+     * Gets the API entry point of the SQL Server DNS aliases.
      *
      * @return the SQL Server DNS aliases API entry point
      */
     SqlServerDnsAliasOperations dnsAliases();
 
     /**
-     * Gets the SQL Failover Group API entry point.
+     * Gets the API entry point of the SQL Failover Group.
      *
      * @return the SQL Failover Group API entry point
      */
     SqlFailoverGroupOperations failoverGroups();
 
     /**
-     * Gets the SQL Server Key entry point.
+     * Gets the entry point of the SQL Server Key.
      *
      * @return the SQL Server Key entry point
      */
     SqlServerKeyOperations serverKeys();
 
     /**
-     * Gets the SQL Encryption Protector entry point.
+     * Gets the entry point of the SQL Encryption Protector.
      *
      * @return the SQL Encryption Protector entry point
      */
@@ -78,28 +78,28 @@ public interface SqlServers extends SupportsCreating<SqlServer.DefinitionStages.
     SqlServerSecurityAlertPolicyOperations serverSecurityAlertPolicies();
 
     /**
-     * Gets the SQL Sync Group entry point.
+     * Gets the entry point of the SQL Sync Group.
      *
      * @return the SQL Sync Group entry point
      */
     SqlSyncGroupOperations syncGroups();
 
     /**
-     * Gets the SQL Sync Group entry point.
+     * Gets the entry point of the SQL Sync Group.
      *
      * @return the SQL Sync Group entry point
      */
     SqlSyncMemberOperations syncMembers();
 
     /**
-     * Gets the SQL Server Elastic Pools API entry point.
+     * Gets the API entry point of the SQL Server Elastic Pools.
      *
      * @return the SQL Server Elastic Pools API entry point
      */
     SqlElasticPoolOperations elasticPools();
 
     /**
-     * Gets the SQL Server Database API entry point.
+     * Gets the API entry point of the SQL Server Database.
      *
      * @return the SQL Server Database API entry point
      */

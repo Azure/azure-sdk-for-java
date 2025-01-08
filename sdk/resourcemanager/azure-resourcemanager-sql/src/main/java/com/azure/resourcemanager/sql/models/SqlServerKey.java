@@ -20,7 +20,7 @@ import java.time.OffsetDateTime;
 public interface SqlServerKey
     extends HasId, HasInnerModel<ServerKeyInner>, HasName, HasResourceGroup, Indexable, Refreshable<SqlServerKey> {
     /**
-     * Gets name of the SQL Server to which this DNS alias belongs.
+     * Gets the name of the SQL Server to which this DNS alias belongs.
      *
      * @return name of the SQL Server to which this DNS alias belongs
      */
