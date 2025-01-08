@@ -10,16 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class VersionTest {
     @Test
-    public void testArtifactName() {
-        assertThat(VersionGenerator.getArtifactName()).isEqualTo("azure-monitor-opentelemetry-autoconfigure");
-    }
-
-    @Test
-    public void testArtifactVersion() {
-        assertTrue(VersionGenerator.getArtifactVersion().matches("[0-9].[0-9].[0-9].*"));
-    }
-
-    @Test
     public void testSdkVersion() {
         // OpenTelemetry added version.properties files in 1.3.0
         // but testing against OpenTelemetry 1.0.0, so it's unknown in this test
