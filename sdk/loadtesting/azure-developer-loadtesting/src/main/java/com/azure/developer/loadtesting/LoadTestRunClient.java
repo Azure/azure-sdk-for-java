@@ -314,7 +314,8 @@ public final class LoadTestRunClient {
         }
         // Content-Type header required even though body can be null
         requestOptions.setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
-        return this.client.listMetrics(testRunId, metricName, metricNamespace, timespan, requestOptions);
+        return ((PagedIterable<BinaryData>) PagedIterable.of(
+            this.client.listMetrics(testRunId, metricName, metricNamespace, timespan, requestOptions).toIterable()));
     }
 
     /**
@@ -665,7 +666,7 @@ public final class LoadTestRunClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> createOrUpdateTestRunWithResponse(String testRunId, BinaryData body,
         RequestOptions requestOptions) {
-        return this.client.createOrUpdateTestRunWithResponse(testRunId, body, requestOptions);
+        return this.client.createOrUpdateTestRunWithResponse(testRunId, body, requestOptions).block();
     }
 
     /**

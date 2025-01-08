@@ -759,7 +759,7 @@ public final class LoadTestAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> uploadTestFileWithResponse(String testId, String fileName, BinaryData body,
         RequestOptions requestOptions) {
-        return this.client.uploadTestFileWithResponse(testId, fileName, body, requestOptions);
+        return this.client.uploadTestFileWithResponse(testId, fileName, body, requestOptions).block();
     }
 
     /**
