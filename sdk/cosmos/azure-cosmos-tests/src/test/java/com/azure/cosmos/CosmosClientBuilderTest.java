@@ -240,7 +240,7 @@ public class CosmosClientBuilderTest {
     }
 
     // set env variable to COSMOS.SESSION_CAPTURING_TYPE to REGION_SCOPED to test all possible assertions
-    @Test(groups = "emulator", enabled = false)
+    @Test(groups = "unit", enabled = false)
     public void validateSessionTokenCapturingForAccountDefaultConsistencyWithEnvVariable() {
 
         try {
@@ -272,7 +272,7 @@ public class CosmosClientBuilderTest {
         }
     }
 
-    @Test(groups = "unit")
+    @Test(groups = "emulator")
     public void validateContainerCreationInterceptor() {
         CosmosClient clientWithoutInterceptor = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
