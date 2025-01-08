@@ -63,7 +63,7 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
     int port();
 
     /**
-     * Gets ssl port.
+     * Gets SSL port.
      *
      * @return the sslPort value
      */
