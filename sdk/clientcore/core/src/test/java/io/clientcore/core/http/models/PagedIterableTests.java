@@ -50,8 +50,8 @@ public class PagedIterableTests {
     }
 
     private PagedIterable<TodoItem> list() {
-        return new PagedIterable<>((context) -> listSinglePage(null),
-            (context, nextLink) -> listNextSinglePage(null, nextLink));
+        return new PagedIterable<>((context) -> listSinglePage(context),
+            (context, nextLink) -> listNextSinglePage(context, nextLink));
     }
 
     private PagedResponse<TodoItem> listSinglePage(PagingOptions pagingOptions) {

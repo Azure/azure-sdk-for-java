@@ -52,7 +52,7 @@ public final class PagedIterable<T> implements Iterable<T> {
      */
     @Override
     public Iterator<T> iterator() {
-        return iterableByItemInternal().iterator();
+        return iterableByItemInternal(new PagingOptions()).iterator();
     }
 
     /**
@@ -62,7 +62,18 @@ public final class PagedIterable<T> implements Iterable<T> {
      * @return {@link Iterable} of a pages
      */
     public Iterable<PagedResponse<T>> iterableByPage() {
-        return iterableByPageInternal();
+        return iterableByPageInternal(new PagingOptions());
+    }
+
+    /**
+     * Retrieve the {@link Iterable}, one page at a time. It will provide same {@link Iterable} of T values from
+     * starting if called multiple times.
+     *
+     * @param pagingOptions the paging options
+     * @return {@link Iterable} of a pages
+     */
+    public Iterable<PagedResponse<T>> iterableByPage(PagingOptions pagingOptions) {
+        return iterableByPageInternal(pagingOptions);
     }
 
     /**
@@ -71,7 +82,7 @@ public final class PagedIterable<T> implements Iterable<T> {
      * @return {@link Stream} of value {@code T}.
      */
     public Stream<T> stream() {
-        return StreamSupport.stream(iterableByItemInternal().spliterator(), false);
+        return StreamSupport.stream(iterableByItemInternal(new PagingOptions()).spliterator(), false);
     }
 
     /**
@@ -82,6 +93,17 @@ public final class PagedIterable<T> implements Iterable<T> {
      */
     public Stream<PagedResponse<T>> streamByPage() {
         return StreamSupport.stream(iterableByPage().spliterator(), false);
+    }
+
+    /**
+     * Retrieve the {@link Stream}, one page at a time. It will provide same {@link Stream} of T values from starting if
+     * called multiple times.
+     *
+     * @param pagingOptions the paging options
+     * @return {@link Stream} of a pages
+     */
+    public Stream<PagedResponse<T>> streamByPage(PagingOptions pagingOptions) {
+        return StreamSupport.stream(iterableByPage(pagingOptions).spliterator(), false);
     }
 
     private static class PagingContext {
@@ -102,8 +124,8 @@ public final class PagedIterable<T> implements Iterable<T> {
         }
     }
 
-    private Iterable<T> iterableByItemInternal() {
-        return () -> new PagedIterator<>(pageRetriever) {
+    private Iterable<T> iterableByItemInternal(PagingOptions pagingOptions) {
+        return () -> new PagedIterator<>(pageRetriever, pagingOptions) {
 
             private Iterator<T> nextPage;
             private Iterator<T> currentPage;
@@ -138,8 +160,8 @@ public final class PagedIterable<T> implements Iterable<T> {
         };
     }
 
-    private Iterable<PagedResponse<T>> iterableByPageInternal() {
-        return () -> new PagedIterator<T, PagedResponse<T>>(pageRetriever) {
+    private Iterable<PagedResponse<T>> iterableByPageInternal(PagingOptions pagingOptions) {
+        return () -> new PagedIterator<T, PagedResponse<T>>(pageRetriever, pagingOptions) {
 
             private PagedResponse<T> nextPage;
 
@@ -171,12 +193,14 @@ public final class PagedIterable<T> implements Iterable<T> {
         private static final ClientLogger LOGGER = new ClientLogger(PagedIterator.class);
 
         private final Function<PagingContext, PagedResponse<T>> pageRetriever;
+        private final Long pageSize;
         private String nextLink;
         private String continuationToken;
         private boolean done;
 
-        PagedIterator(Function<PagingContext, PagedResponse<T>> pageRetriever) {
+        PagedIterator(Function<PagingContext, PagedResponse<T>> pageRetriever, PagingOptions pagingOptions) {
             this.pageRetriever = pageRetriever;
+            this.pageSize = pagingOptions.getPageSize();
         }
 
         @Override
@@ -207,9 +231,8 @@ public final class PagedIterable<T> implements Iterable<T> {
         void requestPage() {
             boolean receivedPages = false;
             PagingOptions pagingOptions = new PagingOptions();
-            if (continuationToken != null) {
-                pagingOptions.setContinuationToken(continuationToken);
-            }
+            pagingOptions.setPageSize(pageSize);
+            pagingOptions.setContinuationToken(continuationToken);
             PagedResponse<T> page = pageRetriever.apply(new PagingContext(pagingOptions, nextLink));
             if (page != null) {
                 receivePage(page);
