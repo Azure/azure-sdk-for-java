@@ -38,14 +38,14 @@ public interface FlowLogSettings extends HasParent<NetworkWatcher>, HasInnerMode
     boolean enabled();
 
     /**
-     * Checks whether retention policy enabled.
+     * Checks whether retention policy is enabled.
      *
      * @return true if retention policy enabled, false otherwise
      */
     boolean isRetentionEnabled();
 
     /**
-     * GEts the number of days to retain flow log records.
+     * Gets the number of days to retain flow log records.
      *
      * @return the number of days to retain flow log records
      */

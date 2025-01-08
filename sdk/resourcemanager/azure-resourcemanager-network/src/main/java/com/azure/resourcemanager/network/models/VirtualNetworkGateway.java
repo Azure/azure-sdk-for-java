@@ -102,10 +102,10 @@ public interface VirtualNetworkGateway
     boolean activeActive();
 
     /**
-     * Gets the resource id of the LocalNetworkGateway resource which represents local network site having default
+     * Gets the resource ID of the LocalNetworkGateway resource which represents local network site having default
      *     routes
      *
-     * @return the resource id of the LocalNetworkGateway resource which represents local network site having default
+     * @return the resource ID of the LocalNetworkGateway resource which represents local network site having default
      *     routes
      */
     String gatewayDefaultSiteResourceId();

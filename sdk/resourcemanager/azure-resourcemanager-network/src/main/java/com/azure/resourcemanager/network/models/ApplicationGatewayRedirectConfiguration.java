@@ -23,7 +23,7 @@ public interface ApplicationGatewayRedirectConfiguration
     ApplicationGatewayRedirectType type();
 
     /**
-     * gets the target listener on this application network traffic is redirected to.
+     * Gets the target listener on this application network traffic is redirected to.
      *
      * @return the target listener on this application network traffic is redirected to
      */

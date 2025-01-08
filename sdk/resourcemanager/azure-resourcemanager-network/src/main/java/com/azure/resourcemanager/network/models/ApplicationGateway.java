@@ -259,7 +259,7 @@ public interface ApplicationGateway
     Map<String, ApplicationGatewayAuthenticationCertificate> authenticationCertificates();
 
     /**
-     * Checks whether HTTP2 enabled for the application gateway
+     * Checks whether HTTP2 is enabled for the application gateway.
      *
      * @return whether HTTP2 enabled for the application gateway
      */
@@ -292,9 +292,9 @@ public interface ApplicationGateway
     ApplicationGatewayListener listenerByPortNumber(int portNumber);
 
     /**
-     * Gets resource id of the Web Application Firewall Policy (if any) associated with the application gateway.
+     * Gets resource ID of the Web Application Firewall Policy (if any) associated with the application gateway.
      *
-     * @return resource id of the Web Application Firewall Policy (if any) associated with the application gateway
+     * @return resource ID of the Web Application Firewall Policy (if any) associated with the application gateway
      */
     String getWebApplicationFirewallPolicyId();
 

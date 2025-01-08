@@ -239,7 +239,7 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
     }
 
     /**
-     * Gets entry point to network resource usage management API entry point.
+     * Gets API entry point to network resource usage management.
      *
      * @return entry point to network resource usage management API entry point
      */
@@ -251,7 +251,7 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
     }
 
     /**
-     * Gets entry point to network watchers management API entry point.
+     * Gets API entry point to network watchers management.
      *
      * @return entry point to network watchers management API entry point
      */

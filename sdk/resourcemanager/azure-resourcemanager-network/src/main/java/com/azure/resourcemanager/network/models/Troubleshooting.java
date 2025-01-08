@@ -22,9 +22,9 @@ public interface Troubleshooting extends Executable<Troubleshooting>, HasParent<
     String targetResourceId();
 
     /**
-     * Gets id of the storage account where troubleshooting information was saved.
+     * Gets ID of the storage account where troubleshooting information was saved.
      *
-     * @return id of the storage account where troubleshooting information was saved
+     * @return ID of the storage account where troubleshooting information was saved
      */
     String storageId();
 

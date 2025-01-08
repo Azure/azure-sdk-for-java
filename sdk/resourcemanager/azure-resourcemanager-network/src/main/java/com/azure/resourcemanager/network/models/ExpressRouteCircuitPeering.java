@@ -35,7 +35,7 @@ public interface ExpressRouteCircuitPeering
     ExpressRoutePeeringState state();
 
     /**
-     * GEts the Azure ASN.
+     * Gets the Azure ASN.
      *
      * @return the Azure ASN
      */
@@ -91,7 +91,7 @@ public interface ExpressRouteCircuitPeering
     int vlanId();
 
     /**
-     * Gets The Microsoft peering configuration.
+     * Gets the Microsoft peering configuration.
      *
      * @return The Microsoft peering configuration.
      */
@@ -189,7 +189,7 @@ public interface ExpressRouteCircuitPeering
         /** The stage of Express Route Circuit Peering definition allowing to specify AS number for peering. */
         interface WithPeerAsn {
             /**
-             * Specifies aS number for peering
+             * Specifies as number for peering
              *
              * @param peerAsn AS number for peering. Both 2-byte and 4-byte AS numbers can be used
              * @return next stage of definition

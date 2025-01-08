@@ -22,9 +22,9 @@ public interface VirtualNetworkGatewayIpConfiguration
     String networkId();
 
     /**
-     * Gets the resource id of associated public IP address.
+     * Gets the resource ID of associated public IP address.
      *
-     * @return the resource id of associated public IP address
+     * @return the resource ID of associated public IP address
      */
     String publicIpAddressId();
 

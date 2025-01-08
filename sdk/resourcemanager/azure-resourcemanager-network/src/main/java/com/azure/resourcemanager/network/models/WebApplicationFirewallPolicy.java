@@ -28,7 +28,7 @@ public interface WebApplicationFirewallPolicy
     WebApplicationFirewallMode mode();
 
     /**
-     * Gets whether request body inspection is enabled.
+     * Checks whether request body inspection is enabled.
      *
      * @return whether request body inspection is enabled
      */

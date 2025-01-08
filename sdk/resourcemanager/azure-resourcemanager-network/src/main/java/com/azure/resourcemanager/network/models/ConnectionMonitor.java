@@ -124,7 +124,7 @@ public interface ConnectionMonitor extends HasInnerModel<ConnectionMonitorResult
         /** Sets the source property. */
         interface WithSource {
             /**
-             * Specifies resourceId the ID of the resource used as the source by connection monitor.
+             * Specifies the ID of the resource used as the source by connection monitor.
              *
              * @param resourceId the ID of the resource used as the source by connection monitor
              * @return next definition stage
@@ -154,7 +154,7 @@ public interface ConnectionMonitor extends HasInnerModel<ConnectionMonitorResult
         /** Sets the destination. */
         interface WithDestination {
             /**
-             * Specifies resourceId the ID of the resource used as the source by connection monitor.
+             * Specifies the ID of the resource used as the source by connection monitor.
              *
              * @param resourceId the ID of the resource used as the source by connection monitor
              * @return next definition stage

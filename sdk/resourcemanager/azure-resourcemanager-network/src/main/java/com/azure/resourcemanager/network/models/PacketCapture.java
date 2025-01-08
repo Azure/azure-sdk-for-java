@@ -16,9 +16,9 @@ import reactor.core.publisher.Mono;
 @Fluent
 public interface PacketCapture extends HasInnerModel<PacketCaptureResultInner>, HasName, HasId, Indexable {
     /**
-     * Gets the target id value.
+     * Gets the target ID value.
      *
-     * @return the target id value
+     * @return the target ID value
      */
     String targetId();
 

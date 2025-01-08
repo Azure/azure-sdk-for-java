@@ -21,7 +21,7 @@ public interface NicIpConfigurationBase extends HasSubnet, HasPrivateIpAddress {
     boolean isPrimary();
 
     /**
-     * GEts the virtual network associated with this IP configuration.
+     * Gets the virtual network associated with this IP configuration.
      *
      * @return the virtual network associated with this IP configuration
      */

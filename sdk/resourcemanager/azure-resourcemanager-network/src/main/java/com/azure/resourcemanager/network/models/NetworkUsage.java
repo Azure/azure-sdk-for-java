@@ -10,7 +10,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 @Fluent
 public interface NetworkUsage extends HasInnerModel<UsageInner> {
     /**
-     * Gets the unit of measurement..
+     * Gets the unit of measurement.
      *
      * @return the unit of measurement.
      */
