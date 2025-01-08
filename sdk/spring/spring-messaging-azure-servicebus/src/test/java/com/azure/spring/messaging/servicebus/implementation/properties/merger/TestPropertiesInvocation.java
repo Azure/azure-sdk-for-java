@@ -139,7 +139,7 @@ class TestPropertiesInvocation {
             } else if (getMethodName.startsWith("is")) {
                 memberVariable = getMethodName.substring("is".length());
             } else {
-                throw new RuntimeException("Not a common get method");
+                throw new RuntimeException("Not a common getter method");
             }
 
             try {
