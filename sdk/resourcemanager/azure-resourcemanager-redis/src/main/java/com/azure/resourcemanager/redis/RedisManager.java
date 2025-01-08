@@ -86,7 +86,7 @@ public final class RedisManager extends Manager<RedisManagementClient> {
     }
 
     /**
-     * Gets the Redis Cache management API entry point.
+     * Gets the API entry point of the Redis Cache management.
      *
      * @return the Redis Cache management API entry point
      */

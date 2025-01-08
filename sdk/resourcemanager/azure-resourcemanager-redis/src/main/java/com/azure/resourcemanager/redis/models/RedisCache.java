@@ -28,7 +28,7 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
     SupportsUpdatingPrivateEndpointConnection {
 
     /**
-     * Gets exposes features available only to Premium Sku Redis Cache instances..
+     * Gets an instance of the Azure Redis cache with Premium SKU.
      *
      * @return exposes features available only to Premium Sku Redis Cache instances.
      */
