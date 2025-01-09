@@ -7,18 +7,36 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.servicebus.core.properties.ProcessorProperties;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_CHINA;
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT;
+import static com.azure.spring.messaging.servicebus.implementation.properties.merger.TestPropertiesComparer.mergeValueCorrect;
+import static com.azure.spring.messaging.servicebus.implementation.properties.merger.TestPropertiesValueInjectHelper.injectPseudoPropertyValues;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ProcessorPropertiesParentMergerTests {
     private final ProcessorPropertiesParentMerger merger = new ProcessorPropertiesParentMerger();
     private static final String PARENT_HOSTNAME = "parent-hostname";
     private static final String CHILD_HOSTNAME = "child-hostname";
+
+
+    @Test
+    void allParentPropertiesWillBeMerged() {
+        // Arrange
+        ProcessorProperties child = new ProcessorProperties();
+        NamespaceProperties parent = new NamespaceProperties();
+        injectPseudoPropertyValues(parent);
+
+        // Action
+        ProcessorProperties result = merger.merge(child, parent);
+
+        // Assertion
+        Assertions.assertTrue(mergeValueCorrect(parent, child, result));
+    }
 
     @Test
     void childNotProvidedShouldUseParent() {
