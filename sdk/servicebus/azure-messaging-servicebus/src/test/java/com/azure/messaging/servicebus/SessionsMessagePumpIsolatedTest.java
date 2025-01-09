@@ -8,6 +8,8 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.ServiceBusProcessorClientOptions;
 import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.Modified;
@@ -28,6 +30,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.stubbing.Answer;
 import reactor.core.Disposables;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -43,11 +46,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -142,6 +148,64 @@ public class SessionsMessagePumpIsolatedTest {
         Assertions.assertTrue(unseenMessages.isEmpty());
         // closeAsync() invocation upon RollingSessionReceiver.MessageFlux cancellation.
         verify(session1.getLink(), times(1)).closeAsync();
+        verify(onTerminate, times(1)).run();
+    }
+
+    @Test
+    @Execution(ExecutionMode.SAME_THREAD)
+    @SuppressWarnings("unchecked")
+    public void shouldPumpFromMultiSessionWhenBackingProcessor() throws InterruptedException {
+        final String session1Id = "1";
+        final String session2Id = "2";
+        final int sessionMessagesCount = 5;
+
+        final HashMap<Message, ServiceBusReceivedMessage> session1Messages
+            = createMockMessages(session1Id, sessionMessagesCount);
+        final HashMap<Message, ServiceBusReceivedMessage> session2Messages
+            = createMockMessages(session2Id, sessionMessagesCount);
+        final TestPublisher<AmqpEndpointState> session1EpStates = TestPublisher.createCold();
+        final TestPublisher<AmqpEndpointState> session2EpStates = TestPublisher.createCold();
+        session1EpStates.next(AmqpEndpointState.ACTIVE);
+        session2EpStates.next(AmqpEndpointState.ACTIVE);
+        final Session session1 = createMockSession(session1Id, session1Messages, session1EpStates);
+        final Session session2 = createMockSession(session2Id, session2Messages, session2EpStates);
+        final MessageSerializer serializer = createMockmessageSerializer(session1Messages, session2Messages);
+        final ServiceBusSessionAcquirer sessionAcquirer = createMockSessionAcquirer(session1, session2);
+        final Runnable onTerminate = createMockOnTerminate();
+
+        final Set<ServiceBusReceivedMessage> unseenMessages = values(session1Messages, session2Messages);
+
+        final ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder builder
+            = mock(ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder.class);
+
+        final Consumer<ServiceBusReceivedMessageContext> processMessage = context -> {
+            unseenMessages.remove(context.getMessage());
+        };
+        final Consumer<ServiceBusErrorContext> processError = e -> {
+        };
+
+        when(builder.buildPumpForProcessor(any(ClientLogger.class), any(Consumer.class), any(Consumer.class), anyInt()))
+            .thenAnswer((Answer<SessionsMessagePump>) invocation -> {
+                final Consumer<ServiceBusReceivedMessageContext> onMessage = invocation.getArgument(1);
+                final Consumer<ServiceBusErrorContext> onError = invocation.getArgument(2);
+                final int maxSessions = 2;
+                final int concurrency = 1;
+                final boolean autoDispositionDisabled = true;
+                return createSessionsMessagePump(sessionAcquirer, idleTimeoutDisabled, maxSessions, concurrency,
+                    autoDispositionDisabled, serializer, onMessage, onError, onTerminate);
+            });
+
+        final ServiceBusProcessorClient processor = new ServiceBusProcessorClient(builder, "q0", null, null,
+            processMessage, processError, new ServiceBusProcessorClientOptions());
+
+        final CountDownLatch latch = new CountDownLatch(1);
+        processor.start();
+        boolean success = latch.await(5, TimeUnit.SECONDS);
+        processor.close();
+
+        Assertions.assertTrue(unseenMessages.isEmpty());
+        verify(session1.getLink(), times(1)).closeAsync();
+        verify(session2.getLink(), times(1)).closeAsync();
         verify(onTerminate, times(1)).run();
     }
 
