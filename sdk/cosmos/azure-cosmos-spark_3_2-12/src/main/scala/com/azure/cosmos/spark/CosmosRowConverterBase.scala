@@ -694,7 +694,7 @@ private[cosmos] class CosmosRowConverterBase(
     private def parseTtlExpired(objectNode: ObjectNode): Boolean = {
         objectNode.get(MetadataJsonBodyAttributeName) match {
             case metadataNode: JsonNode =>
-                return metadataNode.get(TimeToLiveExpiredPropertyName) match {
+                metadataNode.get(TimeToLiveExpiredPropertyName) match {
                     case valueNode: JsonNode =>
                         Option(valueNode).fold(false)(v => v.asBoolean(false))
                     case _ => false
@@ -706,37 +706,40 @@ private[cosmos] class CosmosRowConverterBase(
     private def parseId(objectNode: ObjectNode): String = {
         val currentNode = getCurrentOrPreviousNode(objectNode)
         if (currentNode != null) {
-            return currentNode.get(IdAttributeName) match {
+            currentNode.get(IdAttributeName) match {
                 case valueNode: JsonNode =>
                     Option(valueNode).fold(null: String)(v => v.asText(null))
                 case _ => null
             }
+        } else {
+            null
         }
-        null
     }
 
     private def parseTimestamp(objectNode: ObjectNode): Long = {
         val currentNode = getCurrentOrPreviousNode(objectNode)
         if (currentNode != null) {
-            return currentNode.get(TimestampAttributeName) match {
+            currentNode.get(TimestampAttributeName) match {
                 case valueNode: JsonNode =>
                     Option(valueNode).fold(-1L)(v => v.asLong(-1))
                 case _ => -1L
             }
+        } else {
+            -1L
         }
-       -1L
     }
 
     private def parseETag(objectNode: ObjectNode): String = {
         val currentNode = getCurrentOrPreviousNode(objectNode)
         if (currentNode != null) {
-            return currentNode.get(ETagAttributeName) match {
+            currentNode.get(ETagAttributeName) match {
                 case valueNode: JsonNode =>
                     Option(valueNode).fold(null: String)(v => v.asText(null))
                 case _ => null
             }
+        } else {
+            null
         }
-        null
     }
 
     private def getCurrentOrPreviousNode(objectNode: ObjectNode): JsonNode = {
