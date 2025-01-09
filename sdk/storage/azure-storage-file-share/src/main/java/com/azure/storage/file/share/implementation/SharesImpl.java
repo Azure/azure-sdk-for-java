@@ -101,6 +101,8 @@ public final class SharesImpl {
             @HeaderParam("x-ms-share-paid-bursting-max-bandwidth-mibps") Long paidBurstingMaxBandwidthMibps,
             @HeaderParam("x-ms-share-paid-bursting-max-iops") Long paidBurstingMaxIops,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("x-ms-share-provisioned-iops") Long shareProvisionedIops,
+            @HeaderParam("x-ms-share-provisioned-bandwidth-mibps") Long shareProvisionedBandwidthMibps,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -117,6 +119,8 @@ public final class SharesImpl {
             @HeaderParam("x-ms-share-paid-bursting-max-bandwidth-mibps") Long paidBurstingMaxBandwidthMibps,
             @HeaderParam("x-ms-share-paid-bursting-max-iops") Long paidBurstingMaxIops,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("x-ms-share-provisioned-iops") Long shareProvisionedIops,
+            @HeaderParam("x-ms-share-provisioned-bandwidth-mibps") Long shareProvisionedBandwidthMibps,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -133,6 +137,8 @@ public final class SharesImpl {
             @HeaderParam("x-ms-share-paid-bursting-max-bandwidth-mibps") Long paidBurstingMaxBandwidthMibps,
             @HeaderParam("x-ms-share-paid-bursting-max-iops") Long paidBurstingMaxIops,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("x-ms-share-provisioned-iops") Long shareProvisionedIops,
+            @HeaderParam("x-ms-share-provisioned-bandwidth-mibps") Long shareProvisionedBandwidthMibps,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -149,6 +155,8 @@ public final class SharesImpl {
             @HeaderParam("x-ms-share-paid-bursting-max-bandwidth-mibps") Long paidBurstingMaxBandwidthMibps,
             @HeaderParam("x-ms-share-paid-bursting-max-iops") Long paidBurstingMaxIops,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("x-ms-share-provisioned-iops") Long shareProvisionedIops,
+            @HeaderParam("x-ms-share-provisioned-bandwidth-mibps") Long shareProvisionedBandwidthMibps,
             @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{shareName}")
@@ -620,6 +628,8 @@ public final class SharesImpl {
             @HeaderParam("x-ms-share-paid-bursting-max-bandwidth-mibps") Long paidBurstingMaxBandwidthMibps,
             @HeaderParam("x-ms-share-paid-bursting-max-iops") Long paidBurstingMaxIops,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("x-ms-share-provisioned-iops") Long shareProvisionedIops,
+            @HeaderParam("x-ms-share-provisioned-bandwidth-mibps") Long shareProvisionedBandwidthMibps,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -636,6 +646,8 @@ public final class SharesImpl {
             @HeaderParam("x-ms-share-paid-bursting-max-bandwidth-mibps") Long paidBurstingMaxBandwidthMibps,
             @HeaderParam("x-ms-share-paid-bursting-max-iops") Long paidBurstingMaxIops,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("x-ms-share-provisioned-iops") Long shareProvisionedIops,
+            @HeaderParam("x-ms-share-provisioned-bandwidth-mibps") Long shareProvisionedBandwidthMibps,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -652,6 +664,8 @@ public final class SharesImpl {
             @HeaderParam("x-ms-share-paid-bursting-max-bandwidth-mibps") Long paidBurstingMaxBandwidthMibps,
             @HeaderParam("x-ms-share-paid-bursting-max-iops") Long paidBurstingMaxIops,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("x-ms-share-provisioned-iops") Long shareProvisionedIops,
+            @HeaderParam("x-ms-share-provisioned-bandwidth-mibps") Long shareProvisionedBandwidthMibps,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -668,6 +682,8 @@ public final class SharesImpl {
             @HeaderParam("x-ms-share-paid-bursting-max-bandwidth-mibps") Long paidBurstingMaxBandwidthMibps,
             @HeaderParam("x-ms-share-paid-bursting-max-iops") Long paidBurstingMaxIops,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("x-ms-share-provisioned-iops") Long shareProvisionedIops,
+            @HeaderParam("x-ms-share-provisioned-bandwidth-mibps") Long shareProvisionedBandwidthMibps,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
@@ -909,6 +925,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -918,11 +940,13 @@ public final class SharesImpl {
     public Mono<ResponseBase<SharesCreateHeaders, Void>> createWithResponseAsync(String shareName, Integer timeout,
         Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
         ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled,
-        Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops) {
+        Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops, Long shareProvisionedIops,
+        Long shareProvisionedBandwidthMibps) {
         return FluxUtil
             .withContext(context -> createWithResponseAsync(shareName, timeout, metadata, quota, accessTier,
                 enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled,
-                paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, context))
+                paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, shareProvisionedIops,
+                shareProvisionedBandwidthMibps, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -946,6 +970,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -956,14 +986,14 @@ public final class SharesImpl {
     public Mono<ResponseBase<SharesCreateHeaders, Void>> createWithResponseAsync(String shareName, Integer timeout,
         Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
         ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled,
-        Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops, Context context) {
+        Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops, Long shareProvisionedIops,
+        Long shareProvisionedBandwidthMibps, Context context) {
         final String restype = "share";
         final String accept = "application/xml";
-        return service
-            .create(this.client.getUrl(), shareName, restype, timeout, metadata, quota, accessTier,
-                this.client.getVersion(), enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess,
-                paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops,
-                this.client.getFileRequestIntent(), accept, context)
+        return service.create(this.client.getUrl(), shareName, restype, timeout, metadata, quota, accessTier,
+            this.client.getVersion(), enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess,
+            paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, this.client.getFileRequestIntent(),
+            shareProvisionedIops, shareProvisionedBandwidthMibps, accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -987,6 +1017,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -996,10 +1032,10 @@ public final class SharesImpl {
     public Mono<Void> createAsync(String shareName, Integer timeout, Map<String, String> metadata, Integer quota,
         ShareAccessTier accessTier, String enabledProtocols, ShareRootSquash rootSquash,
         Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
-        Long paidBurstingMaxIops) {
+        Long paidBurstingMaxIops, Long shareProvisionedIops, Long shareProvisionedBandwidthMibps) {
         return createWithResponseAsync(shareName, timeout, metadata, quota, accessTier, enabledProtocols, rootSquash,
             enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
-            paidBurstingMaxIops)
+            paidBurstingMaxIops, shareProvisionedIops, shareProvisionedBandwidthMibps)
                 .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
@@ -1024,6 +1060,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -1034,10 +1076,10 @@ public final class SharesImpl {
     public Mono<Void> createAsync(String shareName, Integer timeout, Map<String, String> metadata, Integer quota,
         ShareAccessTier accessTier, String enabledProtocols, ShareRootSquash rootSquash,
         Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
-        Long paidBurstingMaxIops, Context context) {
+        Long paidBurstingMaxIops, Long shareProvisionedIops, Long shareProvisionedBandwidthMibps, Context context) {
         return createWithResponseAsync(shareName, timeout, metadata, quota, accessTier, enabledProtocols, rootSquash,
             enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
-            paidBurstingMaxIops, context)
+            paidBurstingMaxIops, shareProvisionedIops, shareProvisionedBandwidthMibps, context)
                 .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
@@ -1062,6 +1104,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1071,11 +1119,13 @@ public final class SharesImpl {
     public Mono<Response<Void>> createNoCustomHeadersWithResponseAsync(String shareName, Integer timeout,
         Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
         ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled,
-        Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops) {
+        Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops, Long shareProvisionedIops,
+        Long shareProvisionedBandwidthMibps) {
         return FluxUtil
             .withContext(context -> createNoCustomHeadersWithResponseAsync(shareName, timeout, metadata, quota,
                 accessTier, enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled,
-                paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, context))
+                paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, shareProvisionedIops,
+                shareProvisionedBandwidthMibps, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -1099,6 +1149,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -1109,14 +1165,14 @@ public final class SharesImpl {
     public Mono<Response<Void>> createNoCustomHeadersWithResponseAsync(String shareName, Integer timeout,
         Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
         ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled,
-        Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops, Context context) {
+        Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops, Long shareProvisionedIops,
+        Long shareProvisionedBandwidthMibps, Context context) {
         final String restype = "share";
         final String accept = "application/xml";
-        return service
-            .createNoCustomHeaders(this.client.getUrl(), shareName, restype, timeout, metadata, quota, accessTier,
-                this.client.getVersion(), enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess,
-                paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops,
-                this.client.getFileRequestIntent(), accept, context)
+        return service.createNoCustomHeaders(this.client.getUrl(), shareName, restype, timeout, metadata, quota,
+            accessTier, this.client.getVersion(), enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess,
+            paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, this.client.getFileRequestIntent(),
+            shareProvisionedIops, shareProvisionedBandwidthMibps, accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -1140,6 +1196,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -1150,14 +1212,16 @@ public final class SharesImpl {
     public ResponseBase<SharesCreateHeaders, Void> createWithResponse(String shareName, Integer timeout,
         Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
         ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled,
-        Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops, Context context) {
+        Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops, Long shareProvisionedIops,
+        Long shareProvisionedBandwidthMibps, Context context) {
         try {
             final String restype = "share";
             final String accept = "application/xml";
             return service.createSync(this.client.getUrl(), shareName, restype, timeout, metadata, quota, accessTier,
                 this.client.getVersion(), enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess,
                 paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops,
-                this.client.getFileRequestIntent(), accept, context);
+                this.client.getFileRequestIntent(), shareProvisionedIops, shareProvisionedBandwidthMibps, accept,
+                context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
@@ -1183,6 +1247,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1191,10 +1261,10 @@ public final class SharesImpl {
     public void create(String shareName, Integer timeout, Map<String, String> metadata, Integer quota,
         ShareAccessTier accessTier, String enabledProtocols, ShareRootSquash rootSquash,
         Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
-        Long paidBurstingMaxIops) {
+        Long paidBurstingMaxIops, Long shareProvisionedIops, Long shareProvisionedBandwidthMibps) {
         createWithResponse(shareName, timeout, metadata, quota, accessTier, enabledProtocols, rootSquash,
             enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
-            paidBurstingMaxIops, Context.NONE);
+            paidBurstingMaxIops, shareProvisionedIops, shareProvisionedBandwidthMibps, Context.NONE);
     }
 
     /**
@@ -1217,6 +1287,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -1227,14 +1303,16 @@ public final class SharesImpl {
     public Response<Void> createNoCustomHeadersWithResponse(String shareName, Integer timeout,
         Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
         ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled,
-        Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops, Context context) {
+        Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops, Long shareProvisionedIops,
+        Long shareProvisionedBandwidthMibps, Context context) {
         try {
             final String restype = "share";
             final String accept = "application/xml";
             return service.createNoCustomHeadersSync(this.client.getUrl(), shareName, restype, timeout, metadata, quota,
                 accessTier, this.client.getVersion(), enabledProtocols, rootSquash,
                 enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
-                paidBurstingMaxIops, this.client.getFileRequestIntent(), accept, context);
+                paidBurstingMaxIops, this.client.getFileRequestIntent(), shareProvisionedIops,
+                shareProvisionedBandwidthMibps, accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
@@ -3876,6 +3954,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3885,11 +3969,11 @@ public final class SharesImpl {
     public Mono<ResponseBase<SharesSetPropertiesHeaders, Void>> setPropertiesWithResponseAsync(String shareName,
         Integer timeout, Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
         Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
-        Long paidBurstingMaxIops) {
+        Long paidBurstingMaxIops, Long shareProvisionedIops, Long shareProvisionedBandwidthMibps) {
         return FluxUtil
             .withContext(context -> setPropertiesWithResponseAsync(shareName, timeout, quota, accessTier, leaseId,
                 rootSquash, enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
-                paidBurstingMaxIops, context))
+                paidBurstingMaxIops, shareProvisionedIops, shareProvisionedBandwidthMibps, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -3911,6 +3995,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -3921,14 +4011,15 @@ public final class SharesImpl {
     public Mono<ResponseBase<SharesSetPropertiesHeaders, Void>> setPropertiesWithResponseAsync(String shareName,
         Integer timeout, Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
         Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
-        Long paidBurstingMaxIops, Context context) {
+        Long paidBurstingMaxIops, Long shareProvisionedIops, Long shareProvisionedBandwidthMibps, Context context) {
         final String restype = "share";
         final String comp = "properties";
         final String accept = "application/xml";
         return service
             .setProperties(this.client.getUrl(), shareName, restype, comp, timeout, this.client.getVersion(), quota,
                 accessTier, leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled,
-                paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, this.client.getFileRequestIntent(), accept, context)
+                paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, this.client.getFileRequestIntent(),
+                shareProvisionedIops, shareProvisionedBandwidthMibps, accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -3950,6 +4041,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3958,10 +4055,11 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setPropertiesAsync(String shareName, Integer timeout, Integer quota, ShareAccessTier accessTier,
         String leaseId, ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess,
-        Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops) {
+        Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops,
+        Long shareProvisionedIops, Long shareProvisionedBandwidthMibps) {
         return setPropertiesWithResponseAsync(shareName, timeout, quota, accessTier, leaseId, rootSquash,
             enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
-            paidBurstingMaxIops)
+            paidBurstingMaxIops, shareProvisionedIops, shareProvisionedBandwidthMibps)
                 .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
@@ -3984,6 +4082,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -3993,10 +4097,11 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setPropertiesAsync(String shareName, Integer timeout, Integer quota, ShareAccessTier accessTier,
         String leaseId, ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess,
-        Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops, Context context) {
+        Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops,
+        Long shareProvisionedIops, Long shareProvisionedBandwidthMibps, Context context) {
         return setPropertiesWithResponseAsync(shareName, timeout, quota, accessTier, leaseId, rootSquash,
             enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
-            paidBurstingMaxIops, context)
+            paidBurstingMaxIops, shareProvisionedIops, shareProvisionedBandwidthMibps, context)
                 .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
@@ -4019,6 +4124,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4028,11 +4139,12 @@ public final class SharesImpl {
     public Mono<Response<Void>> setPropertiesNoCustomHeadersWithResponseAsync(String shareName, Integer timeout,
         Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
         Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
-        Long paidBurstingMaxIops) {
+        Long paidBurstingMaxIops, Long shareProvisionedIops, Long shareProvisionedBandwidthMibps) {
         return FluxUtil
             .withContext(context -> setPropertiesNoCustomHeadersWithResponseAsync(shareName, timeout, quota, accessTier,
                 leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled,
-                paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, context))
+                paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, shareProvisionedIops,
+                shareProvisionedBandwidthMibps, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -4054,6 +4166,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -4064,15 +4182,14 @@ public final class SharesImpl {
     public Mono<Response<Void>> setPropertiesNoCustomHeadersWithResponseAsync(String shareName, Integer timeout,
         Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
         Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
-        Long paidBurstingMaxIops, Context context) {
+        Long paidBurstingMaxIops, Long shareProvisionedIops, Long shareProvisionedBandwidthMibps, Context context) {
         final String restype = "share";
         final String comp = "properties";
         final String accept = "application/xml";
-        return service
-            .setPropertiesNoCustomHeaders(this.client.getUrl(), shareName, restype, comp, timeout,
-                this.client.getVersion(), quota, accessTier, leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess,
-                paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops,
-                this.client.getFileRequestIntent(), accept, context)
+        return service.setPropertiesNoCustomHeaders(this.client.getUrl(), shareName, restype, comp, timeout,
+            this.client.getVersion(), quota, accessTier, leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess,
+            paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, this.client.getFileRequestIntent(),
+            shareProvisionedIops, shareProvisionedBandwidthMibps, accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -4094,6 +4211,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -4104,7 +4227,7 @@ public final class SharesImpl {
     public ResponseBase<SharesSetPropertiesHeaders, Void> setPropertiesWithResponse(String shareName, Integer timeout,
         Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
         Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
-        Long paidBurstingMaxIops, Context context) {
+        Long paidBurstingMaxIops, Long shareProvisionedIops, Long shareProvisionedBandwidthMibps, Context context) {
         try {
             final String restype = "share";
             final String comp = "properties";
@@ -4112,7 +4235,8 @@ public final class SharesImpl {
             return service.setPropertiesSync(this.client.getUrl(), shareName, restype, comp, timeout,
                 this.client.getVersion(), quota, accessTier, leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess,
                 paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops,
-                this.client.getFileRequestIntent(), accept, context);
+                this.client.getFileRequestIntent(), shareProvisionedIops, shareProvisionedBandwidthMibps, accept,
+                context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
@@ -4136,6 +4260,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4143,10 +4273,11 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void setProperties(String shareName, Integer timeout, Integer quota, ShareAccessTier accessTier,
         String leaseId, ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess,
-        Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops) {
+        Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops,
+        Long shareProvisionedIops, Long shareProvisionedBandwidthMibps) {
         setPropertiesWithResponse(shareName, timeout, quota, accessTier, leaseId, rootSquash,
             enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
-            paidBurstingMaxIops, Context.NONE);
+            paidBurstingMaxIops, shareProvisionedIops, shareProvisionedBandwidthMibps, Context.NONE);
     }
 
     /**
@@ -4167,6 +4298,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -4177,7 +4314,7 @@ public final class SharesImpl {
     public Response<Void> setPropertiesNoCustomHeadersWithResponse(String shareName, Integer timeout, Integer quota,
         ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
         Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
-        Long paidBurstingMaxIops, Context context) {
+        Long paidBurstingMaxIops, Long shareProvisionedIops, Long shareProvisionedBandwidthMibps, Context context) {
         try {
             final String restype = "share";
             final String comp = "properties";
@@ -4185,7 +4322,8 @@ public final class SharesImpl {
             return service.setPropertiesNoCustomHeadersSync(this.client.getUrl(), shareName, restype, comp, timeout,
                 this.client.getVersion(), quota, accessTier, leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess,
                 paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops,
-                this.client.getFileRequestIntent(), accept, context);
+                this.client.getFileRequestIntent(), shareProvisionedIops, shareProvisionedBandwidthMibps, accept,
+                context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }

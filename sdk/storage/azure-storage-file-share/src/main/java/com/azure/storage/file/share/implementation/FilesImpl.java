@@ -911,6 +911,7 @@ public final class FilesImpl {
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-copy-source") String copySource,
             @HeaderParam("x-ms-file-permission") String filePermission,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
             @HeaderParam("x-ms-file-permission-copy-mode") PermissionCopyModeType filePermissionCopyMode,
             @HeaderParam("x-ms-file-copy-ignore-readonly") Boolean ignoreReadOnly,
@@ -933,6 +934,7 @@ public final class FilesImpl {
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-copy-source") String copySource,
             @HeaderParam("x-ms-file-permission") String filePermission,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
             @HeaderParam("x-ms-file-permission-copy-mode") PermissionCopyModeType filePermissionCopyMode,
             @HeaderParam("x-ms-file-copy-ignore-readonly") Boolean ignoreReadOnly,
@@ -955,6 +957,7 @@ public final class FilesImpl {
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-copy-source") String copySource,
             @HeaderParam("x-ms-file-permission") String filePermission,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
             @HeaderParam("x-ms-file-permission-copy-mode") PermissionCopyModeType filePermissionCopyMode,
             @HeaderParam("x-ms-file-copy-ignore-readonly") Boolean ignoreReadOnly,
@@ -977,6 +980,7 @@ public final class FilesImpl {
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-copy-source") String copySource,
             @HeaderParam("x-ms-file-permission") String filePermission,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
             @HeaderParam("x-ms-file-permission-copy-mode") PermissionCopyModeType filePermissionCopyMode,
             @HeaderParam("x-ms-file-copy-ignore-readonly") Boolean ignoreReadOnly,
@@ -5889,6 +5893,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -5901,10 +5910,11 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesStartCopyHeaders, Void>> startCopyWithResponseAsync(String shareName, String fileName,
         String copySource, Integer timeout, Map<String, String> metadata, String filePermission,
-        String filePermissionKey, String leaseId, CopyFileSmbInfo copyFileSmbInfo) {
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, String leaseId,
+        CopyFileSmbInfo copyFileSmbInfo) {
         return FluxUtil
             .withContext(context -> startCopyWithResponseAsync(shareName, fileName, copySource, timeout, metadata,
-                filePermission, filePermissionKey, leaseId, copyFileSmbInfo, context))
+                filePermission, filePermissionFormat, filePermissionKey, leaseId, copyFileSmbInfo, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -5927,6 +5937,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -5940,7 +5955,8 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesStartCopyHeaders, Void>> startCopyWithResponseAsync(String shareName, String fileName,
         String copySource, Integer timeout, Map<String, String> metadata, String filePermission,
-        String filePermissionKey, String leaseId, CopyFileSmbInfo copyFileSmbInfo, Context context) {
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, String leaseId,
+        CopyFileSmbInfo copyFileSmbInfo, Context context) {
         final String accept = "application/xml";
         PermissionCopyModeType filePermissionCopyModeInternal = null;
         if (copyFileSmbInfo != null) {
@@ -5979,9 +5995,9 @@ public final class FilesImpl {
         Boolean setArchiveAttribute = setArchiveAttributeInternal;
         return service
             .startCopy(this.client.getUrl(), shareName, fileName, timeout, this.client.getVersion(), metadata,
-                copySource, filePermission, filePermissionKey, filePermissionCopyMode, ignoreReadOnly, fileAttributes,
-                fileCreationTime, fileLastWriteTime, fileChangeTime, setArchiveAttribute, leaseId,
-                this.client.isAllowTrailingDot(), this.client.isAllowSourceTrailingDot(),
+                copySource, filePermission, filePermissionFormat, filePermissionKey, filePermissionCopyMode,
+                ignoreReadOnly, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime,
+                setArchiveAttribute, leaseId, this.client.isAllowTrailingDot(), this.client.isAllowSourceTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
@@ -6005,6 +6021,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -6016,10 +6037,10 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startCopyAsync(String shareName, String fileName, String copySource, Integer timeout,
-        Map<String, String> metadata, String filePermission, String filePermissionKey, String leaseId,
-        CopyFileSmbInfo copyFileSmbInfo) {
+        Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
+        String filePermissionKey, String leaseId, CopyFileSmbInfo copyFileSmbInfo) {
         return startCopyWithResponseAsync(shareName, fileName, copySource, timeout, metadata, filePermission,
-            filePermissionKey, leaseId, copyFileSmbInfo)
+            filePermissionFormat, filePermissionKey, leaseId, copyFileSmbInfo)
                 .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
@@ -6043,6 +6064,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -6055,10 +6081,10 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startCopyAsync(String shareName, String fileName, String copySource, Integer timeout,
-        Map<String, String> metadata, String filePermission, String filePermissionKey, String leaseId,
-        CopyFileSmbInfo copyFileSmbInfo, Context context) {
+        Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
+        String filePermissionKey, String leaseId, CopyFileSmbInfo copyFileSmbInfo, Context context) {
         return startCopyWithResponseAsync(shareName, fileName, copySource, timeout, metadata, filePermission,
-            filePermissionKey, leaseId, copyFileSmbInfo, context)
+            filePermissionFormat, filePermissionKey, leaseId, copyFileSmbInfo, context)
                 .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
@@ -6082,6 +6108,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -6094,10 +6125,11 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> startCopyNoCustomHeadersWithResponseAsync(String shareName, String fileName,
         String copySource, Integer timeout, Map<String, String> metadata, String filePermission,
-        String filePermissionKey, String leaseId, CopyFileSmbInfo copyFileSmbInfo) {
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, String leaseId,
+        CopyFileSmbInfo copyFileSmbInfo) {
         return FluxUtil
             .withContext(context -> startCopyNoCustomHeadersWithResponseAsync(shareName, fileName, copySource, timeout,
-                metadata, filePermission, filePermissionKey, leaseId, copyFileSmbInfo, context))
+                metadata, filePermission, filePermissionFormat, filePermissionKey, leaseId, copyFileSmbInfo, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -6120,6 +6152,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -6133,7 +6170,8 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> startCopyNoCustomHeadersWithResponseAsync(String shareName, String fileName,
         String copySource, Integer timeout, Map<String, String> metadata, String filePermission,
-        String filePermissionKey, String leaseId, CopyFileSmbInfo copyFileSmbInfo, Context context) {
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, String leaseId,
+        CopyFileSmbInfo copyFileSmbInfo, Context context) {
         final String accept = "application/xml";
         PermissionCopyModeType filePermissionCopyModeInternal = null;
         if (copyFileSmbInfo != null) {
@@ -6172,9 +6210,9 @@ public final class FilesImpl {
         Boolean setArchiveAttribute = setArchiveAttributeInternal;
         return service
             .startCopyNoCustomHeaders(this.client.getUrl(), shareName, fileName, timeout, this.client.getVersion(),
-                metadata, copySource, filePermission, filePermissionKey, filePermissionCopyMode, ignoreReadOnly,
-                fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, setArchiveAttribute, leaseId,
-                this.client.isAllowTrailingDot(), this.client.isAllowSourceTrailingDot(),
+                metadata, copySource, filePermission, filePermissionFormat, filePermissionKey, filePermissionCopyMode,
+                ignoreReadOnly, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime,
+                setArchiveAttribute, leaseId, this.client.isAllowTrailingDot(), this.client.isAllowSourceTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
@@ -6198,6 +6236,11 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -6211,121 +6254,7 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesStartCopyHeaders, Void> startCopyWithResponse(String shareName, String fileName,
         String copySource, Integer timeout, Map<String, String> metadata, String filePermission,
-        String filePermissionKey, String leaseId, CopyFileSmbInfo copyFileSmbInfo, Context context) {
-        try {
-            final String accept = "application/xml";
-            PermissionCopyModeType filePermissionCopyModeInternal = null;
-            if (copyFileSmbInfo != null) {
-                filePermissionCopyModeInternal = copyFileSmbInfo.getFilePermissionCopyMode();
-            }
-            PermissionCopyModeType filePermissionCopyMode = filePermissionCopyModeInternal;
-            Boolean ignoreReadOnlyInternal = null;
-            if (copyFileSmbInfo != null) {
-                ignoreReadOnlyInternal = copyFileSmbInfo.isIgnoreReadOnly();
-            }
-            Boolean ignoreReadOnly = ignoreReadOnlyInternal;
-            String fileAttributesInternal = null;
-            if (copyFileSmbInfo != null) {
-                fileAttributesInternal = copyFileSmbInfo.getFileAttributes();
-            }
-            String fileAttributes = fileAttributesInternal;
-            String fileCreationTimeInternal = null;
-            if (copyFileSmbInfo != null) {
-                fileCreationTimeInternal = copyFileSmbInfo.getFileCreationTime();
-            }
-            String fileCreationTime = fileCreationTimeInternal;
-            String fileLastWriteTimeInternal = null;
-            if (copyFileSmbInfo != null) {
-                fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
-            }
-            String fileLastWriteTime = fileLastWriteTimeInternal;
-            String fileChangeTimeInternal = null;
-            if (copyFileSmbInfo != null) {
-                fileChangeTimeInternal = copyFileSmbInfo.getFileChangeTime();
-            }
-            String fileChangeTime = fileChangeTimeInternal;
-            Boolean setArchiveAttributeInternal = null;
-            if (copyFileSmbInfo != null) {
-                setArchiveAttributeInternal = copyFileSmbInfo.isSetArchiveAttribute();
-            }
-            Boolean setArchiveAttribute = setArchiveAttributeInternal;
-            return service.startCopySync(this.client.getUrl(), shareName, fileName, timeout, this.client.getVersion(),
-                metadata, copySource, filePermission, filePermissionKey, filePermissionCopyMode, ignoreReadOnly,
-                fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, setArchiveAttribute, leaseId,
-                this.client.isAllowTrailingDot(), this.client.isAllowSourceTrailingDot(),
-                this.client.getFileRequestIntent(), accept, context);
-        } catch (ShareStorageExceptionInternal internalException) {
-            throw ModelHelper.mapToShareStorageException(internalException);
-        }
-    }
-
-    /**
-     * Copies a blob or file to a destination file within the storage account.
-     *
-     * @param shareName The name of the target share.
-     * @param fileName The path of the target file.
-     * @param copySource Specifies the URL of the source file or blob, up to 2 KB in length. To copy a file to another
-     * file within the same storage account, you may use Shared Key to authenticate the source file. If you are copying
-     * a file from another storage account, or if you are copying a blob from the same storage account or another
-     * storage account, then you must authenticate the source file or blob using a shared access signature. If the
-     * source is a public blob, no authentication is required to perform the copy operation. A file in a share snapshot
-     * can also be specified as a copy source.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
-     * Timeouts for File Service Operations.&lt;/a&gt;.
-     * @param metadata A name-value pair to associate with a file storage object.
-     * @param filePermission If specified the permission (security descriptor) shall be set for the directory/file. This
-     * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
-     * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
-     * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
-     * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param copyFileSmbInfo Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void startCopy(String shareName, String fileName, String copySource, Integer timeout,
-        Map<String, String> metadata, String filePermission, String filePermissionKey, String leaseId,
-        CopyFileSmbInfo copyFileSmbInfo) {
-        startCopyWithResponse(shareName, fileName, copySource, timeout, metadata, filePermission, filePermissionKey,
-            leaseId, copyFileSmbInfo, Context.NONE);
-    }
-
-    /**
-     * Copies a blob or file to a destination file within the storage account.
-     *
-     * @param shareName The name of the target share.
-     * @param fileName The path of the target file.
-     * @param copySource Specifies the URL of the source file or blob, up to 2 KB in length. To copy a file to another
-     * file within the same storage account, you may use Shared Key to authenticate the source file. If you are copying
-     * a file from another storage account, or if you are copying a blob from the same storage account or another
-     * storage account, then you must authenticate the source file or blob using a shared access signature. If the
-     * source is a public blob, no authentication is required to perform the copy operation. A file in a share snapshot
-     * can also be specified as a copy source.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
-     * Timeouts for File Service Operations.&lt;/a&gt;.
-     * @param metadata A name-value pair to associate with a file storage object.
-     * @param filePermission If specified the permission (security descriptor) shall be set for the directory/file. This
-     * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
-     * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
-     * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
-     * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param copyFileSmbInfo Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> startCopyNoCustomHeadersWithResponse(String shareName, String fileName, String copySource,
-        Integer timeout, Map<String, String> metadata, String filePermission, String filePermissionKey, String leaseId,
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, String leaseId,
         CopyFileSmbInfo copyFileSmbInfo, Context context) {
         try {
             final String accept = "application/xml";
@@ -6364,8 +6293,133 @@ public final class FilesImpl {
                 setArchiveAttributeInternal = copyFileSmbInfo.isSetArchiveAttribute();
             }
             Boolean setArchiveAttribute = setArchiveAttributeInternal;
+            return service.startCopySync(this.client.getUrl(), shareName, fileName, timeout, this.client.getVersion(),
+                metadata, copySource, filePermission, filePermissionFormat, filePermissionKey, filePermissionCopyMode,
+                ignoreReadOnly, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime,
+                setArchiveAttribute, leaseId, this.client.isAllowTrailingDot(), this.client.isAllowSourceTrailingDot(),
+                this.client.getFileRequestIntent(), accept, context);
+        } catch (ShareStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToShareStorageException(internalException);
+        }
+    }
+
+    /**
+     * Copies a blob or file to a destination file within the storage account.
+     *
+     * @param shareName The name of the target share.
+     * @param fileName The path of the target file.
+     * @param copySource Specifies the URL of the source file or blob, up to 2 KB in length. To copy a file to another
+     * file within the same storage account, you may use Shared Key to authenticate the source file. If you are copying
+     * a file from another storage account, or if you are copying a blob from the same storage account or another
+     * storage account, then you must authenticate the source file or blob using a shared access signature. If the
+     * source is a public blob, no authentication is required to perform the copy operation. A file in a share snapshot
+     * can also be specified as a copy source.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param metadata A name-value pair to associate with a file storage object.
+     * @param filePermission If specified the permission (security descriptor) shall be set for the directory/file. This
+     * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
+     * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
+     * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
+     * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
+     * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param copyFileSmbInfo Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void startCopy(String shareName, String fileName, String copySource, Integer timeout,
+        Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
+        String filePermissionKey, String leaseId, CopyFileSmbInfo copyFileSmbInfo) {
+        startCopyWithResponse(shareName, fileName, copySource, timeout, metadata, filePermission, filePermissionFormat,
+            filePermissionKey, leaseId, copyFileSmbInfo, Context.NONE);
+    }
+
+    /**
+     * Copies a blob or file to a destination file within the storage account.
+     *
+     * @param shareName The name of the target share.
+     * @param fileName The path of the target file.
+     * @param copySource Specifies the URL of the source file or blob, up to 2 KB in length. To copy a file to another
+     * file within the same storage account, you may use Shared Key to authenticate the source file. If you are copying
+     * a file from another storage account, or if you are copying a blob from the same storage account or another
+     * storage account, then you must authenticate the source file or blob using a shared access signature. If the
+     * source is a public blob, no authentication is required to perform the copy operation. A file in a share snapshot
+     * can also be specified as a copy source.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param metadata A name-value pair to associate with a file storage object.
+     * @param filePermission If specified the permission (security descriptor) shall be set for the directory/file. This
+     * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
+     * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
+     * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
+     * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
+     * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param copyFileSmbInfo Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> startCopyNoCustomHeadersWithResponse(String shareName, String fileName, String copySource,
+        Integer timeout, Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
+        String filePermissionKey, String leaseId, CopyFileSmbInfo copyFileSmbInfo, Context context) {
+        try {
+            final String accept = "application/xml";
+            PermissionCopyModeType filePermissionCopyModeInternal = null;
+            if (copyFileSmbInfo != null) {
+                filePermissionCopyModeInternal = copyFileSmbInfo.getFilePermissionCopyMode();
+            }
+            PermissionCopyModeType filePermissionCopyMode = filePermissionCopyModeInternal;
+            Boolean ignoreReadOnlyInternal = null;
+            if (copyFileSmbInfo != null) {
+                ignoreReadOnlyInternal = copyFileSmbInfo.isIgnoreReadOnly();
+            }
+            Boolean ignoreReadOnly = ignoreReadOnlyInternal;
+            String fileAttributesInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileAttributesInternal = copyFileSmbInfo.getFileAttributes();
+            }
+            String fileAttributes = fileAttributesInternal;
+            String fileCreationTimeInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileCreationTimeInternal = copyFileSmbInfo.getFileCreationTime();
+            }
+            String fileCreationTime = fileCreationTimeInternal;
+            String fileLastWriteTimeInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
+            }
+            String fileLastWriteTime = fileLastWriteTimeInternal;
+            String fileChangeTimeInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileChangeTimeInternal = copyFileSmbInfo.getFileChangeTime();
+            }
+            String fileChangeTime = fileChangeTimeInternal;
+            Boolean setArchiveAttributeInternal = null;
+            if (copyFileSmbInfo != null) {
+                setArchiveAttributeInternal = copyFileSmbInfo.isSetArchiveAttribute();
+            }
+            Boolean setArchiveAttribute = setArchiveAttributeInternal;
             return service.startCopyNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, timeout,
-                this.client.getVersion(), metadata, copySource, filePermission, filePermissionKey,
+                this.client.getVersion(), metadata, copySource, filePermission, filePermissionFormat, filePermissionKey,
                 filePermissionCopyMode, ignoreReadOnly, fileAttributes, fileCreationTime, fileLastWriteTime,
                 fileChangeTime, setArchiveAttribute, leaseId, this.client.isAllowTrailingDot(),
                 this.client.isAllowSourceTrailingDot(), this.client.getFileRequestIntent(), accept, context);
