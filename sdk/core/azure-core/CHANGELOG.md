@@ -1,6 +1,6 @@
 # Release History
 
-## 1.54.2 (2024-12-09)
+## 1.55.0-beta.1 (Unreleased)
 
 ### Other Changes
 
