@@ -68,16 +68,21 @@ public final class RestProxy implements InvocationHandler {
      * @param swaggerInterface the Swagger interface to provide a proxy implementation for
      * @param httpPipeline the HttpPipelinePolicy and HttpClient pipeline that will be used to send Http requests
      * @param <A> the type of the Swagger interface
+     * @param useRestProxy flag to enable RestProxy functionality
      * @return a proxy implementation of the provided Swagger interface
      */
     @SuppressWarnings("unchecked")
-    public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline) {
-        final SwaggerInterfaceParser interfaceParser = SwaggerInterfaceParser.getInstance(swaggerInterface);
-        final RestProxy restProxy
-            = new RestProxy(httpPipeline, interfaceParser, new JsonSerializer(), new XmlSerializer());
+    public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline, boolean useRestProxy) {
+        if (useRestProxy) {
+            final SwaggerInterfaceParser interfaceParser = SwaggerInterfaceParser.getInstance(swaggerInterface);
+            final RestProxy restProxy
+                = new RestProxy(httpPipeline, interfaceParser, new JsonSerializer(), new XmlSerializer());
 
-        return (A) Proxy.newProxyInstance(swaggerInterface.getClassLoader(), new Class<?>[] { swaggerInterface },
-            restProxy);
+            return (A) Proxy.newProxyInstance(swaggerInterface.getClassLoader(), new Class<?>[]{swaggerInterface},
+                restProxy);
+        } else {
+            throw new UnsupportedOperationException("Please set 'useRestProxy' to true to use RestProxy functionality.");
+        }
     }
 
     /**
@@ -85,17 +90,22 @@ public final class RestProxy implements InvocationHandler {
      *
      * @param swaggerInterface the Swagger interface to provide a proxy implementation for
      * @param httpPipeline the HttpPipelinePolicy and HttpClient pipeline that will be used to send Http requests
+     * @param useRestProxy flag to enable RestProxy functionality
      * @param serializers the serializers that will be used to convert POJOs to and from request and response bodies
      * @param <A> the type of the Swagger interface.
      * @return a proxy implementation of the provided Swagger interface
      * @throws IllegalArgumentException If {@code serializers} is null or empty.
      */
     @SuppressWarnings("unchecked")
-    public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline, ObjectSerializer... serializers) {
-        final SwaggerInterfaceParser interfaceParser = SwaggerInterfaceParser.getInstance(swaggerInterface);
-        final RestProxy restProxy = new RestProxy(httpPipeline, interfaceParser, serializers);
+    public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline, boolean useRestProxy, ObjectSerializer... serializers) {
+        if (useRestProxy) {
+            final SwaggerInterfaceParser interfaceParser = SwaggerInterfaceParser.getInstance(swaggerInterface);
+            final RestProxy restProxy = new RestProxy(httpPipeline, interfaceParser, serializers);
 
-        return (A) Proxy.newProxyInstance(swaggerInterface.getClassLoader(), new Class<?>[] { swaggerInterface },
-            restProxy);
+            return (A) Proxy.newProxyInstance(swaggerInterface.getClassLoader(), new Class<?>[]{swaggerInterface},
+                restProxy);
+        } else {
+            throw new UnsupportedOperationException("Please set 'useRestProxy' to true to use RestProxy functionality.");
+        }
     }
 }

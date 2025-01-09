@@ -71,7 +71,7 @@ public class RestProxyXmlSerializableTests {
             return new MockHttpResponse(request, 200);
         }).build();
 
-        SimpleXmlSerializableProxy proxy = RestProxy.create(SimpleXmlSerializableProxy.class, pipeline);
+        SimpleXmlSerializableProxy proxy = RestProxy.create(SimpleXmlSerializableProxy.class, pipeline, true);
         restCall.accept(proxy, xmlSerializable);
     }
 
@@ -86,7 +86,7 @@ public class RestProxyXmlSerializableTests {
                 new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, contentType), new StringBinaryData(response)))
             .build();
 
-        SimpleXmlSerializableProxy proxy = RestProxy.create(SimpleXmlSerializableProxy.class, pipeline);
+        SimpleXmlSerializableProxy proxy = RestProxy.create(SimpleXmlSerializableProxy.class, pipeline, true);
 
         SimpleXmlSerializable xmlSerializable = proxy.getXml();
 
@@ -107,7 +107,7 @@ public class RestProxyXmlSerializableTests {
                 new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, contentType), new StringBinaryData(response)))
             .build();
 
-        SimpleXmlSerializableProxy proxy = RestProxy.create(SimpleXmlSerializableProxy.class, pipeline);
+        SimpleXmlSerializableProxy proxy = RestProxy.create(SimpleXmlSerializableProxy.class, pipeline, true);
         assertThrows(RuntimeException.class, proxy::getInvalidXml);
     }
 }

@@ -62,7 +62,7 @@ public class RestProxyImplTests {
     public void voidReturningApiClosesResponse() {
         LocalHttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, true, new JsonSerializer());
 
         testInterface.testVoidMethod(Context.none());
 
@@ -73,7 +73,7 @@ public class RestProxyImplTests {
     public void contentTypeHeaderPriorityOverBodyParamAnnotationTest() {
         HttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, true, new JsonSerializer());
         byte[] bytes = "hello".getBytes();
         Response<Void> response
             = testInterface.testMethod(BinaryData.fromStream(new ByteArrayInputStream(bytes), (long) bytes.length),
@@ -221,6 +221,13 @@ public class RestProxyImplTests {
 
             assertArraysEqual(EXPECTED, validateAndCollectRequest(httpRequest));
         }
+    }
+
+    @Test
+    public void testFlagIndicatorToChoseRestProxyCreateOrNot() {
+        LocalHttpClient client = new LocalHttpClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
+        assertThrows(UnsupportedOperationException.class, () -> RestProxy.create(TestInterface.class, pipeline, false, new JsonSerializer()));
     }
 
     private static byte[] validateAndCollectRequest(HttpRequest request) {
