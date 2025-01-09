@@ -7,7 +7,9 @@ import io.clientcore.core.util.binarydata.BinaryData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.opentest4j.AssertionFailedError;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -109,11 +111,27 @@ public class PagedIterableTests {
     }
 
     // tests with mocked HttpResponse
-    @Test
-    public void testPagedIterableNextLink() {
+    private NextPageMode nextPageMode;
+
+    @ParameterizedTest
+    @EnumSource(NextPageMode.class)
+    public void testPagedIterable(NextPageMode nextPageMode) {
+        this.nextPageMode = nextPageMode;
+
         PagedIterable<TodoItem> pagedIterable = this.list();
         verifyIteratorSize(pagedIterable.iterableByPage().iterator(), 2);
         verifyIteratorSize(pagedIterable.iterator(), 3);
+    }
+
+    @Test
+    public void testPagedIterableContinuationToken() {
+        this.nextPageMode = NextPageMode.CONTINUATION_TOKEN;
+
+        PagingOptions pagingOptions = new PagingOptions().setContinuationToken("page1");
+
+        PagedIterable<TodoItem> pagedIterable = this.list();
+        verifyIteratorSize(pagedIterable.iterableByPage(pagingOptions).iterator(), 1);
+        verifyIteratorSize(pagedIterable.streamByPage(pagingOptions).iterator(), 1);
     }
 
     private static <T> void verifyIteratorSize(Iterator<T> iterator, long size) {
@@ -126,20 +144,30 @@ public class PagedIterableTests {
     }
 
     // mock class and API for pageable operation
+    public enum NextPageMode {
+        CONTINUATION_TOKEN, NEXT_LINK
+    }
+
     private static final class TodoItem {
     }
 
     private static final class TodoPage {
         private final List<TodoItem> items;
+        private final String continuationToken;
         private final String nextLink;
 
-        private TodoPage(List<TodoItem> items, String nextLink) {
+        private TodoPage(List<TodoItem> items, String continuationToken, String nextLink) {
             this.items = items;
+            this.continuationToken = continuationToken;
             this.nextLink = nextLink;
         }
 
         public List<TodoItem> getItems() {
             return items;
+        }
+
+        public String getContinuationToken() {
+            return continuationToken;
         }
 
         public String getNextLink() {
@@ -155,24 +183,42 @@ public class PagedIterableTests {
     private PagedResponse<TodoItem> listSinglePage(PagingOptions pagingOptions) {
         Response<TodoPage> res = listSync(pagingOptions);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
-            res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
+            res.getValue().getItems(), res.getValue().getContinuationToken(), res.getValue().getNextLink(), null, null,
+            null);
     }
 
     private PagedResponse<TodoItem> listNextSinglePage(PagingOptions pagingOptions, String nextLink) {
         Response<TodoPage> res = (nextLink == null) ? listSync(pagingOptions) : listNextSync(nextLink);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
-            res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
+            res.getValue().getItems(), res.getValue().getContinuationToken(), res.getValue().getNextLink(), null, null,
+            null);
     }
 
     private Response<TodoPage> listSync(PagingOptions pagingOptions) {
         // mock request on first page
-        return new HttpResponse<>(httpRequest, 200, httpHeaders,
-            new TodoPage(List.of(new TodoItem(), new TodoItem()), "nextLink1"));
+        if (nextPageMode == NextPageMode.NEXT_LINK) {
+            return new HttpResponse<>(httpRequest, 200, httpHeaders,
+                new TodoPage(List.of(new TodoItem(), new TodoItem()), null, "https://nextLink"));
+        } else if (nextPageMode == NextPageMode.CONTINUATION_TOKEN) {
+            if (pagingOptions.getContinuationToken() == null) {
+                // first page
+                return new HttpResponse<>(httpRequest, 200, httpHeaders,
+                    new TodoPage(List.of(new TodoItem(), new TodoItem()), "page1", null));
+            } else if ("page1".equals(pagingOptions.getContinuationToken())) {
+                // second page
+                return new HttpResponse<>(httpRequest, 200, httpHeaders,
+                    new TodoPage(List.of(new TodoItem()), null, null));
+            } else {
+                throw new AssertionFailedError();
+            }
+        } else {
+            throw new AssertionFailedError();
+        }
     }
 
     private Response<TodoPage> listNextSync(String nextLink) {
         // mock request on next page
-        Assertions.assertEquals("nextLink1", nextLink);
-        return new HttpResponse<>(httpRequest, 200, httpHeaders, new TodoPage(List.of(new TodoItem()), null));
+        Assertions.assertEquals("https://nextLink", nextLink);
+        return new HttpResponse<>(httpRequest, 200, httpHeaders, new TodoPage(List.of(new TodoItem()), null, null));
     }
 }

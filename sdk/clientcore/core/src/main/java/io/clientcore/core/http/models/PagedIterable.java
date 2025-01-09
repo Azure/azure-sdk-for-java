@@ -43,7 +43,7 @@ public final class PagedIterable<T> implements Iterable<T> {
      */
     public PagedIterable(Function<PagingOptions, PagedResponse<T>> firstPageRetriever,
         BiFunction<PagingOptions, String, PagedResponse<T>> nextPageRetriever) {
-        this.pageRetriever = (context) -> (context.getNextLink() == null)
+        this.pageRetriever = context -> (context.getNextLink() == null)
             ? firstPageRetriever.apply(context.getPagingOptions())
             : nextPageRetriever.apply(context.getPagingOptions(), context.getNextLink());
     }
@@ -197,13 +197,14 @@ public final class PagedIterable<T> implements Iterable<T> {
 
         private final Function<PagingContext, PagedResponse<T>> pageRetriever;
         private final Long pageSize;
-        private String nextLink;
         private String continuationToken;
+        private String nextLink;
         private boolean done;
 
         PagedIterator(Function<PagingContext, PagedResponse<T>> pageRetriever, PagingOptions pagingOptions) {
             this.pageRetriever = pageRetriever;
             this.pageSize = pagingOptions.getPageSize();
+            this.continuationToken = pagingOptions.getContinuationToken();
         }
 
         @Override
