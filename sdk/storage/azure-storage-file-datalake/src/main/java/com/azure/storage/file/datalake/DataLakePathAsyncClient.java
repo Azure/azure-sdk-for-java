@@ -74,18 +74,15 @@ import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveO
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.storage.common.implementation.StorageImplUtils.sendRequest;
 
 /**
  * This class provides a client that contains all operations that apply to any path object.
@@ -1665,8 +1662,7 @@ public class DataLakePathAsyncClient {
         }
     }
 
-    public Mono<Response<PathStatus>> getStatusWithResponse(DataLakeRequestConditions requestConditions,
-        Context context) {
+    Mono<Response<PathStatus>> getStatusWithResponse(DataLakeRequestConditions requestConditions, Context context) {
         requestConditions = requestConditions == null ? new DataLakeRequestConditions() : requestConditions;
 
         LeaseAccessConditions lac = new LeaseAccessConditions().setLeaseId(requestConditions.getLeaseId());
