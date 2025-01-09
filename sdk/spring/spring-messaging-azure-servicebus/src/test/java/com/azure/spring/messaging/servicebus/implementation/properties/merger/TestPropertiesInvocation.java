@@ -102,30 +102,30 @@ class TestPropertiesInvocation {
         setterAndValues.keySet()
                        .stream()
                        .sorted((String o1, String o2) -> {
-                          String o1Value = o1.toLowerCase();
-                          String o2Value = o2.toLowerCase();
-                          if (lowPriorityMemberVariableNames.contains(o1Value) && !lowPriorityMemberVariableNames.contains(o2Value)) {
-                              return 1;
-                          }
+                           String o1Value = o1.toLowerCase();
+                           String o2Value = o2.toLowerCase();
+                           if (lowPriorityMemberVariableNames.contains(o1Value) && !lowPriorityMemberVariableNames.contains(o2Value)) {
+                               return 1;
+                           }
 
-                          if (!lowPriorityMemberVariableNames.contains(o1Value) && lowPriorityMemberVariableNames.contains(o2Value)) {
-                              return -1;
-                          }
+                           if (!lowPriorityMemberVariableNames.contains(o1Value) && lowPriorityMemberVariableNames.contains(o2Value)) {
+                               return -1;
+                           }
 
-                          if (lowPriorityMemberVariableNames.contains(o1Value) && lowPriorityMemberVariableNames.contains(o2Value)) {
-                              return lowPriorityMemberVariableNames.indexOf(o1Value) - lowPriorityMemberVariableNames.indexOf(o2Value);
-                          }
+                           if (lowPriorityMemberVariableNames.contains(o1Value) && lowPriorityMemberVariableNames.contains(o2Value)) {
+                               return lowPriorityMemberVariableNames.indexOf(o1Value) - lowPriorityMemberVariableNames.indexOf(o2Value);
+                           }
 
-                          return o1Value.compareTo(o2Value);
-                      })
+                           return o1Value.compareTo(o2Value);
+                       })
                        .forEach(envVar -> {
-                          TestGetterSetterAndValue property = setterAndValues.get(envVar);
-                          try {
-                              property.getSetMethod().invoke(target, property.getTestValue());
-                          } catch (IllegalAccessException | InvocationTargetException e) {
-                              throw new RuntimeException(e);
-                          }
-                      });
+                           TestGetterSetterAndValue property = setterAndValues.get(envVar);
+                           try {
+                               property.getSetMethod().invoke(target, property.getTestValue());
+                           } catch (IllegalAccessException | InvocationTargetException e) {
+                               throw new RuntimeException(e);
+                           }
+                       });
     }
 
     void assertTargetMemberVariablesValues() {
