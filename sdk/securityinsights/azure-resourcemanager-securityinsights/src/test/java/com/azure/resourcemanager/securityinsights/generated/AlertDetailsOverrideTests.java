@@ -12,24 +12,24 @@ public final class AlertDetailsOverrideTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AlertDetailsOverride model = BinaryData.fromString(
-            "{\"alertDisplayNameFormat\":\"xldzyyfytpqsix\",\"alertDescriptionFormat\":\"m\",\"alertTacticsColumnName\":\"jivyqlkjuv\",\"alertSeverityColumnName\":\"bmslzoyov\"}")
+            "{\"alertDisplayNameFormat\":\"xwh\",\"alertDescriptionFormat\":\"nsymoyqhlwigd\",\"alertTacticsColumnName\":\"bkbxgomfa\",\"alertSeverityColumnName\":\"wasqvdaeyyg\"}")
             .toObject(AlertDetailsOverride.class);
-        Assertions.assertEquals("xldzyyfytpqsix", model.alertDisplayNameFormat());
-        Assertions.assertEquals("m", model.alertDescriptionFormat());
-        Assertions.assertEquals("jivyqlkjuv", model.alertTacticsColumnName());
-        Assertions.assertEquals("bmslzoyov", model.alertSeverityColumnName());
+        Assertions.assertEquals("xwh", model.alertDisplayNameFormat());
+        Assertions.assertEquals("nsymoyqhlwigd", model.alertDescriptionFormat());
+        Assertions.assertEquals("bkbxgomfa", model.alertTacticsColumnName());
+        Assertions.assertEquals("wasqvdaeyyg", model.alertSeverityColumnName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AlertDetailsOverride model = new AlertDetailsOverride().withAlertDisplayNameFormat("xldzyyfytpqsix")
-            .withAlertDescriptionFormat("m")
-            .withAlertTacticsColumnName("jivyqlkjuv")
-            .withAlertSeverityColumnName("bmslzoyov");
+        AlertDetailsOverride model = new AlertDetailsOverride().withAlertDisplayNameFormat("xwh")
+            .withAlertDescriptionFormat("nsymoyqhlwigd")
+            .withAlertTacticsColumnName("bkbxgomfa")
+            .withAlertSeverityColumnName("wasqvdaeyyg");
         model = BinaryData.fromObject(model).toObject(AlertDetailsOverride.class);
-        Assertions.assertEquals("xldzyyfytpqsix", model.alertDisplayNameFormat());
-        Assertions.assertEquals("m", model.alertDescriptionFormat());
-        Assertions.assertEquals("jivyqlkjuv", model.alertTacticsColumnName());
-        Assertions.assertEquals("bmslzoyov", model.alertSeverityColumnName());
+        Assertions.assertEquals("xwh", model.alertDisplayNameFormat());
+        Assertions.assertEquals("nsymoyqhlwigd", model.alertDescriptionFormat());
+        Assertions.assertEquals("bkbxgomfa", model.alertTacticsColumnName());
+        Assertions.assertEquals("wasqvdaeyyg", model.alertSeverityColumnName());
     }
 }

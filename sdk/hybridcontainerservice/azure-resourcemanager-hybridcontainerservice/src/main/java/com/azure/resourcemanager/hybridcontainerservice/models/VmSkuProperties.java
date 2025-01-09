@@ -5,42 +5,41 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The profile for supported VM SKUs.
  */
 @Immutable
-public final class VmSkuProperties {
+public final class VmSkuProperties implements JsonSerializable<VmSkuProperties> {
     /*
      * The type of resource the SKU applies to.
      */
-    @JsonProperty(value = "resourceType", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceType;
 
     /*
      * The list of name-value pairs to describe VM SKU capabilities like MemoryGB, vCPUs, etc.
      */
-    @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
     private List<VmSkuCapabilities> capabilities;
 
     /*
      * The name of the VM SKU
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The tier of the VM SKU
      */
-    @JsonProperty(value = "tier", access = JsonProperty.Access.WRITE_ONLY)
     private String tier;
 
     /*
      * The size of the VM SKU
      */
-    @JsonProperty(value = "size", access = JsonProperty.Access.WRITE_ONLY)
     private String size;
 
     /**
@@ -59,8 +58,8 @@ public final class VmSkuProperties {
     }
 
     /**
-     * Get the capabilities property: The list of name-value pairs to describe VM SKU capabilities like MemoryGB,
-     * vCPUs, etc.
+     * Get the capabilities property: The list of name-value pairs to describe VM SKU capabilities like MemoryGB, vCPUs,
+     * etc.
      * 
      * @return the capabilities value.
      */
@@ -104,5 +103,50 @@ public final class VmSkuProperties {
         if (capabilities() != null) {
             capabilities().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VmSkuProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VmSkuProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VmSkuProperties.
+     */
+    public static VmSkuProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VmSkuProperties deserializedVmSkuProperties = new VmSkuProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceType".equals(fieldName)) {
+                    deserializedVmSkuProperties.resourceType = reader.getString();
+                } else if ("capabilities".equals(fieldName)) {
+                    List<VmSkuCapabilities> capabilities
+                        = reader.readArray(reader1 -> VmSkuCapabilities.fromJson(reader1));
+                    deserializedVmSkuProperties.capabilities = capabilities;
+                } else if ("name".equals(fieldName)) {
+                    deserializedVmSkuProperties.name = reader.getString();
+                } else if ("tier".equals(fieldName)) {
+                    deserializedVmSkuProperties.tier = reader.getString();
+                } else if ("size".equals(fieldName)) {
+                    deserializedVmSkuProperties.size = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVmSkuProperties;
+        });
     }
 }

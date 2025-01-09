@@ -232,7 +232,6 @@ public final class ImageTemplateSharedImageDistributor extends ImageTemplateDist
      */
     @Override
     public void validate() {
-        super.validate();
         if (galleryImageId() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -243,6 +242,11 @@ public final class ImageTemplateSharedImageDistributor extends ImageTemplateDist
         }
         if (versioning() != null) {
             versioning().validate();
+        }
+        if (runOutputName() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property runOutputName in model ImageTemplateSharedImageDistributor"));
         }
     }
 

@@ -19,31 +19,31 @@ public final class JiraObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JiraObjectDataset model = BinaryData.fromString(
-            "{\"type\":\"JiraObject\",\"typeProperties\":{\"tableName\":\"datazc\"},\"description\":\"kckrnovqdmh\",\"structure\":\"datajstfs\",\"schema\":\"datacjakgkqwx\",\"linkedServiceName\":{\"referenceName\":\"dsoqzhxwdjoxwkb\",\"parameters\":{\"lfhn\":\"dataobvcnsbioez\",\"t\":\"dataz\"}},\"parameters\":{\"cmwbejywwwvn\":{\"type\":\"Bool\",\"defaultValue\":\"datagtkxncwdytnlr\"}},\"annotations\":[\"datakrmqevrhhafqf\",\"datadfyziruqvgnjxi\",\"datakgyjmzbm\"],\"folder\":{\"name\":\"kyluyug\"},\"\":{\"loxtvq\":\"datadcv\",\"ryhmmglv\":\"datab\",\"nkpsvokkyankxvc\":\"datab\"}}")
+            "{\"type\":\"JiraObject\",\"typeProperties\":{\"tableName\":\"datawenbqvpr\"},\"description\":\"voqatdjkaldpmec\",\"structure\":\"dataxfzynfemq\",\"schema\":\"datakkp\",\"linkedServiceName\":{\"referenceName\":\"wgssdquupirnb\",\"parameters\":{\"pvirzyud\":\"datayvdsqxkjwd\"}},\"parameters\":{\"xmlfouqpskva\":{\"type\":\"Object\",\"defaultValue\":\"datax\"}},\"annotations\":[\"datapmrrhyjx\"],\"folder\":{\"name\":\"acz\"},\"\":{\"jqyfy\":\"dataaeztt\",\"f\":\"dataqlyyslg\"}}")
             .toObject(JiraObjectDataset.class);
-        Assertions.assertEquals("kckrnovqdmh", model.description());
-        Assertions.assertEquals("dsoqzhxwdjoxwkb", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("cmwbejywwwvn").type());
-        Assertions.assertEquals("kyluyug", model.folder().name());
+        Assertions.assertEquals("voqatdjkaldpmec", model.description());
+        Assertions.assertEquals("wgssdquupirnb", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("xmlfouqpskva").type());
+        Assertions.assertEquals("acz", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JiraObjectDataset model = new JiraObjectDataset().withDescription("kckrnovqdmh")
-            .withStructure("datajstfs")
-            .withSchema("datacjakgkqwx")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("dsoqzhxwdjoxwkb")
-                .withParameters(mapOf("lfhn", "dataobvcnsbioez", "t", "dataz")))
-            .withParameters(mapOf("cmwbejywwwvn",
-                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datagtkxncwdytnlr")))
-            .withAnnotations(Arrays.asList("datakrmqevrhhafqf", "datadfyziruqvgnjxi", "datakgyjmzbm"))
-            .withFolder(new DatasetFolder().withName("kyluyug"))
-            .withTableName("datazc");
+        JiraObjectDataset model = new JiraObjectDataset().withDescription("voqatdjkaldpmec")
+            .withStructure("dataxfzynfemq")
+            .withSchema("datakkp")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("wgssdquupirnb")
+                .withParameters(mapOf("pvirzyud", "datayvdsqxkjwd")))
+            .withParameters(mapOf("xmlfouqpskva",
+                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datax")))
+            .withAnnotations(Arrays.asList("datapmrrhyjx"))
+            .withFolder(new DatasetFolder().withName("acz"))
+            .withTableName("datawenbqvpr");
         model = BinaryData.fromObject(model).toObject(JiraObjectDataset.class);
-        Assertions.assertEquals("kckrnovqdmh", model.description());
-        Assertions.assertEquals("dsoqzhxwdjoxwkb", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("cmwbejywwwvn").type());
-        Assertions.assertEquals("kyluyug", model.folder().name());
+        Assertions.assertEquals("voqatdjkaldpmec", model.description());
+        Assertions.assertEquals("wgssdquupirnb", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("xmlfouqpskva").type());
+        Assertions.assertEquals("acz", model.folder().name());
     }
 
     // Use "Map.of" if available

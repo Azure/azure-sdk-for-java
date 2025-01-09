@@ -5,41 +5,40 @@
 package com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Rule counter reset.
  */
 @Fluent
-public final class RuleCounterResetInner {
+public final class RuleCounterResetInner implements JsonSerializable<RuleCounterResetInner> {
     /*
      * priority number
      */
-    @JsonProperty(value = "priority", access = JsonProperty.Access.WRITE_ONLY)
     private String priority;
 
     /*
      * rule Stack Name
      */
-    @JsonProperty(value = "ruleStackName")
     private String ruleStackName;
 
     /*
      * rule list name
      */
-    @JsonProperty(value = "ruleListName")
     private String ruleListName;
 
     /*
      * firewall name
      */
-    @JsonProperty(value = "firewallName")
     private String firewallName;
 
     /*
      * rule name
      */
-    @JsonProperty(value = "ruleName")
     private String ruleName;
 
     /**
@@ -143,5 +142,52 @@ public final class RuleCounterResetInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ruleStackName", this.ruleStackName);
+        jsonWriter.writeStringField("ruleListName", this.ruleListName);
+        jsonWriter.writeStringField("firewallName", this.firewallName);
+        jsonWriter.writeStringField("ruleName", this.ruleName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RuleCounterResetInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RuleCounterResetInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RuleCounterResetInner.
+     */
+    public static RuleCounterResetInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RuleCounterResetInner deserializedRuleCounterResetInner = new RuleCounterResetInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("priority".equals(fieldName)) {
+                    deserializedRuleCounterResetInner.priority = reader.getString();
+                } else if ("ruleStackName".equals(fieldName)) {
+                    deserializedRuleCounterResetInner.ruleStackName = reader.getString();
+                } else if ("ruleListName".equals(fieldName)) {
+                    deserializedRuleCounterResetInner.ruleListName = reader.getString();
+                } else if ("firewallName".equals(fieldName)) {
+                    deserializedRuleCounterResetInner.firewallName = reader.getString();
+                } else if ("ruleName".equals(fieldName)) {
+                    deserializedRuleCounterResetInner.ruleName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRuleCounterResetInner;
+        });
     }
 }

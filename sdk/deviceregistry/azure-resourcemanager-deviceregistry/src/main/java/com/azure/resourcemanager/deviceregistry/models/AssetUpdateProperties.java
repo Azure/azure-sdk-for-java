@@ -20,11 +20,6 @@ import java.util.Map;
 @Fluent
 public final class AssetUpdateProperties implements JsonSerializable<AssetUpdateProperties> {
     /*
-     * Resource path to asset type (model) definition.
-     */
-    private String assetType;
-
-    /*
      * Enabled/Disabled status of the asset.
      */
     private Boolean enabled;
@@ -85,26 +80,29 @@ public final class AssetUpdateProperties implements JsonSerializable<AssetUpdate
     private Map<String, BinaryData> attributes;
 
     /*
-     * Protocol-specific default configuration for all data points. Each data point can have its own configuration that
-     * overrides the default settings here. This assumes that each asset instance has one protocol.
+     * Stringified JSON that contains connector-specific default configuration for all datasets. Each dataset can have
+     * its own configuration that overrides the default settings here.
      */
-    private String defaultDataPointsConfiguration;
+    private String defaultDatasetsConfiguration;
 
     /*
-     * Protocol-specific default configuration for all events. Each event can have its own configuration that overrides
-     * the default settings here. This assumes that each asset instance has one protocol.
+     * Stringified JSON that contains connector-specific default configuration for all events. Each event can have its
+     * own configuration that overrides the default settings here.
      */
     private String defaultEventsConfiguration;
 
     /*
-     * Array of data points that are part of the asset. Each data point can reference an asset type capability and have
-     * per-data point configuration. See below for more details for the definition of the dataPoints element.
+     * Object that describes the default topic information for the asset.
      */
-    private List<DataPoint> dataPoints;
+    private Topic defaultTopic;
 
     /*
-     * Array of events that are part of the asset. Each event can reference an asset type capability and have per-event
-     * configuration. See below for more details about the definition of the events element.
+     * Array of datasets that are part of the asset. Each dataset describes the data points that make up the set.
+     */
+    private List<Dataset> datasets;
+
+    /*
+     * Array of events that are part of the asset. Each event can have per-event configuration.
      */
     private List<Event> events;
 
@@ -112,26 +110,6 @@ public final class AssetUpdateProperties implements JsonSerializable<AssetUpdate
      * Creates an instance of AssetUpdateProperties class.
      */
     public AssetUpdateProperties() {
-    }
-
-    /**
-     * Get the assetType property: Resource path to asset type (model) definition.
-     * 
-     * @return the assetType value.
-     */
-    public String assetType() {
-        return this.assetType;
-    }
-
-    /**
-     * Set the assetType property: Resource path to asset type (model) definition.
-     * 
-     * @param assetType the assetType value to set.
-     * @return the AssetUpdateProperties object itself.
-     */
-    public AssetUpdateProperties withAssetType(String assetType) {
-        this.assetType = assetType;
-        return this;
     }
 
     /**
@@ -375,33 +353,32 @@ public final class AssetUpdateProperties implements JsonSerializable<AssetUpdate
     }
 
     /**
-     * Get the defaultDataPointsConfiguration property: Protocol-specific default configuration for all data points.
-     * Each data point can have its own configuration that overrides the default settings here. This assumes that each
-     * asset instance has one protocol.
+     * Get the defaultDatasetsConfiguration property: Stringified JSON that contains connector-specific default
+     * configuration for all datasets. Each dataset can have its own configuration that overrides the default settings
+     * here.
      * 
-     * @return the defaultDataPointsConfiguration value.
+     * @return the defaultDatasetsConfiguration value.
      */
-    public String defaultDataPointsConfiguration() {
-        return this.defaultDataPointsConfiguration;
+    public String defaultDatasetsConfiguration() {
+        return this.defaultDatasetsConfiguration;
     }
 
     /**
-     * Set the defaultDataPointsConfiguration property: Protocol-specific default configuration for all data points.
-     * Each data point can have its own configuration that overrides the default settings here. This assumes that each
-     * asset instance has one protocol.
+     * Set the defaultDatasetsConfiguration property: Stringified JSON that contains connector-specific default
+     * configuration for all datasets. Each dataset can have its own configuration that overrides the default settings
+     * here.
      * 
-     * @param defaultDataPointsConfiguration the defaultDataPointsConfiguration value to set.
+     * @param defaultDatasetsConfiguration the defaultDatasetsConfiguration value to set.
      * @return the AssetUpdateProperties object itself.
      */
-    public AssetUpdateProperties withDefaultDataPointsConfiguration(String defaultDataPointsConfiguration) {
-        this.defaultDataPointsConfiguration = defaultDataPointsConfiguration;
+    public AssetUpdateProperties withDefaultDatasetsConfiguration(String defaultDatasetsConfiguration) {
+        this.defaultDatasetsConfiguration = defaultDatasetsConfiguration;
         return this;
     }
 
     /**
-     * Get the defaultEventsConfiguration property: Protocol-specific default configuration for all events. Each event
-     * can have its own configuration that overrides the default settings here. This assumes that each asset instance
-     * has one protocol.
+     * Get the defaultEventsConfiguration property: Stringified JSON that contains connector-specific default
+     * configuration for all events. Each event can have its own configuration that overrides the default settings here.
      * 
      * @return the defaultEventsConfiguration value.
      */
@@ -410,9 +387,8 @@ public final class AssetUpdateProperties implements JsonSerializable<AssetUpdate
     }
 
     /**
-     * Set the defaultEventsConfiguration property: Protocol-specific default configuration for all events. Each event
-     * can have its own configuration that overrides the default settings here. This assumes that each asset instance
-     * has one protocol.
+     * Set the defaultEventsConfiguration property: Stringified JSON that contains connector-specific default
+     * configuration for all events. Each event can have its own configuration that overrides the default settings here.
      * 
      * @param defaultEventsConfiguration the defaultEventsConfiguration value to set.
      * @return the AssetUpdateProperties object itself.
@@ -423,33 +399,49 @@ public final class AssetUpdateProperties implements JsonSerializable<AssetUpdate
     }
 
     /**
-     * Get the dataPoints property: Array of data points that are part of the asset. Each data point can reference an
-     * asset type capability and have per-data point configuration. See below for more details for the definition of the
-     * dataPoints element.
+     * Get the defaultTopic property: Object that describes the default topic information for the asset.
      * 
-     * @return the dataPoints value.
+     * @return the defaultTopic value.
      */
-    public List<DataPoint> dataPoints() {
-        return this.dataPoints;
+    public Topic defaultTopic() {
+        return this.defaultTopic;
     }
 
     /**
-     * Set the dataPoints property: Array of data points that are part of the asset. Each data point can reference an
-     * asset type capability and have per-data point configuration. See below for more details for the definition of the
-     * dataPoints element.
+     * Set the defaultTopic property: Object that describes the default topic information for the asset.
      * 
-     * @param dataPoints the dataPoints value to set.
+     * @param defaultTopic the defaultTopic value to set.
      * @return the AssetUpdateProperties object itself.
      */
-    public AssetUpdateProperties withDataPoints(List<DataPoint> dataPoints) {
-        this.dataPoints = dataPoints;
+    public AssetUpdateProperties withDefaultTopic(Topic defaultTopic) {
+        this.defaultTopic = defaultTopic;
         return this;
     }
 
     /**
-     * Get the events property: Array of events that are part of the asset. Each event can reference an asset type
-     * capability and have per-event configuration. See below for more details about the definition of the events
-     * element.
+     * Get the datasets property: Array of datasets that are part of the asset. Each dataset describes the data points
+     * that make up the set.
+     * 
+     * @return the datasets value.
+     */
+    public List<Dataset> datasets() {
+        return this.datasets;
+    }
+
+    /**
+     * Set the datasets property: Array of datasets that are part of the asset. Each dataset describes the data points
+     * that make up the set.
+     * 
+     * @param datasets the datasets value to set.
+     * @return the AssetUpdateProperties object itself.
+     */
+    public AssetUpdateProperties withDatasets(List<Dataset> datasets) {
+        this.datasets = datasets;
+        return this;
+    }
+
+    /**
+     * Get the events property: Array of events that are part of the asset. Each event can have per-event configuration.
      * 
      * @return the events value.
      */
@@ -458,9 +450,7 @@ public final class AssetUpdateProperties implements JsonSerializable<AssetUpdate
     }
 
     /**
-     * Set the events property: Array of events that are part of the asset. Each event can reference an asset type
-     * capability and have per-event configuration. See below for more details about the definition of the events
-     * element.
+     * Set the events property: Array of events that are part of the asset. Each event can have per-event configuration.
      * 
      * @param events the events value to set.
      * @return the AssetUpdateProperties object itself.
@@ -476,8 +466,11 @@ public final class AssetUpdateProperties implements JsonSerializable<AssetUpdate
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (dataPoints() != null) {
-            dataPoints().forEach(e -> e.validate());
+        if (defaultTopic() != null) {
+            defaultTopic().validate();
+        }
+        if (datasets() != null) {
+            datasets().forEach(e -> e.validate());
         }
         if (events() != null) {
             events().forEach(e -> e.validate());
@@ -490,7 +483,6 @@ public final class AssetUpdateProperties implements JsonSerializable<AssetUpdate
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("assetType", this.assetType);
         jsonWriter.writeBooleanField("enabled", this.enabled);
         jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeStringField("description", this.description);
@@ -504,9 +496,10 @@ public final class AssetUpdateProperties implements JsonSerializable<AssetUpdate
         jsonWriter.writeStringField("serialNumber", this.serialNumber);
         jsonWriter.writeMapField("attributes", this.attributes,
             (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
-        jsonWriter.writeStringField("defaultDataPointsConfiguration", this.defaultDataPointsConfiguration);
+        jsonWriter.writeStringField("defaultDatasetsConfiguration", this.defaultDatasetsConfiguration);
         jsonWriter.writeStringField("defaultEventsConfiguration", this.defaultEventsConfiguration);
-        jsonWriter.writeArrayField("dataPoints", this.dataPoints, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("defaultTopic", this.defaultTopic);
+        jsonWriter.writeArrayField("datasets", this.datasets, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("events", this.events, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -526,9 +519,7 @@ public final class AssetUpdateProperties implements JsonSerializable<AssetUpdate
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("assetType".equals(fieldName)) {
-                    deserializedAssetUpdateProperties.assetType = reader.getString();
-                } else if ("enabled".equals(fieldName)) {
+                if ("enabled".equals(fieldName)) {
                     deserializedAssetUpdateProperties.enabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("displayName".equals(fieldName)) {
                     deserializedAssetUpdateProperties.displayName = reader.getString();
@@ -554,13 +545,15 @@ public final class AssetUpdateProperties implements JsonSerializable<AssetUpdate
                     Map<String, BinaryData> attributes = reader.readMap(reader1 -> reader1
                         .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                     deserializedAssetUpdateProperties.attributes = attributes;
-                } else if ("defaultDataPointsConfiguration".equals(fieldName)) {
-                    deserializedAssetUpdateProperties.defaultDataPointsConfiguration = reader.getString();
+                } else if ("defaultDatasetsConfiguration".equals(fieldName)) {
+                    deserializedAssetUpdateProperties.defaultDatasetsConfiguration = reader.getString();
                 } else if ("defaultEventsConfiguration".equals(fieldName)) {
                     deserializedAssetUpdateProperties.defaultEventsConfiguration = reader.getString();
-                } else if ("dataPoints".equals(fieldName)) {
-                    List<DataPoint> dataPoints = reader.readArray(reader1 -> DataPoint.fromJson(reader1));
-                    deserializedAssetUpdateProperties.dataPoints = dataPoints;
+                } else if ("defaultTopic".equals(fieldName)) {
+                    deserializedAssetUpdateProperties.defaultTopic = Topic.fromJson(reader);
+                } else if ("datasets".equals(fieldName)) {
+                    List<Dataset> datasets = reader.readArray(reader1 -> Dataset.fromJson(reader1));
+                    deserializedAssetUpdateProperties.datasets = datasets;
                 } else if ("events".equals(fieldName)) {
                     List<Event> events = reader.readArray(reader1 -> Event.fromJson(reader1));
                     deserializedAssetUpdateProperties.events = events;

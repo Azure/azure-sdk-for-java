@@ -7,6 +7,9 @@ package com.azure.resourcemanager.workloads.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.workloads.models.CentralServerVmDetails;
 import com.azure.resourcemanager.workloads.models.EnqueueReplicationServerProperties;
 import com.azure.resourcemanager.workloads.models.EnqueueServerProperties;
@@ -17,32 +20,49 @@ import com.azure.resourcemanager.workloads.models.SapHealthState;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceError;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceProvisioningState;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Define the SAP Central Services Instance resource. */
+/**
+ * Define the SAP Central Services Instance resource.
+ */
 @Fluent
 public final class SapCentralServerInstanceInner extends Resource {
     /*
      * Defines the SAP Central Services Instance properties.
      */
-    @JsonProperty(value = "properties")
     private SapCentralServerProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of SapCentralServerInstanceInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SapCentralServerInstanceInner class.
+     */
     public SapCentralServerInstanceInner() {
     }
 
     /**
      * Get the innerProperties property: Defines the SAP Central Services Instance properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SapCentralServerProperties innerProperties() {
@@ -51,21 +71,55 @@ public final class SapCentralServerInstanceInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapCentralServerInstanceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapCentralServerInstanceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -74,7 +128,7 @@ public final class SapCentralServerInstanceInner extends Resource {
 
     /**
      * Get the instanceNo property: The central services instance number.
-     *
+     * 
      * @return the instanceNo value.
      */
     public String instanceNo() {
@@ -83,7 +137,7 @@ public final class SapCentralServerInstanceInner extends Resource {
 
     /**
      * Get the subnet property: The central services instance subnet.
-     *
+     * 
      * @return the subnet value.
      */
     public String subnet() {
@@ -92,7 +146,7 @@ public final class SapCentralServerInstanceInner extends Resource {
 
     /**
      * Get the messageServerProperties property: Defines the SAP Message Server properties.
-     *
+     * 
      * @return the messageServerProperties value.
      */
     public MessageServerProperties messageServerProperties() {
@@ -101,7 +155,7 @@ public final class SapCentralServerInstanceInner extends Resource {
 
     /**
      * Set the messageServerProperties property: Defines the SAP Message Server properties.
-     *
+     * 
      * @param messageServerProperties the messageServerProperties value to set.
      * @return the SapCentralServerInstanceInner object itself.
      */
@@ -115,7 +169,7 @@ public final class SapCentralServerInstanceInner extends Resource {
 
     /**
      * Get the enqueueServerProperties property: Defines the SAP Enqueue Server properties.
-     *
+     * 
      * @return the enqueueServerProperties value.
      */
     public EnqueueServerProperties enqueueServerProperties() {
@@ -124,7 +178,7 @@ public final class SapCentralServerInstanceInner extends Resource {
 
     /**
      * Set the enqueueServerProperties property: Defines the SAP Enqueue Server properties.
-     *
+     * 
      * @param enqueueServerProperties the enqueueServerProperties value to set.
      * @return the SapCentralServerInstanceInner object itself.
      */
@@ -138,7 +192,7 @@ public final class SapCentralServerInstanceInner extends Resource {
 
     /**
      * Get the gatewayServerProperties property: Defines the SAP Gateway Server properties.
-     *
+     * 
      * @return the gatewayServerProperties value.
      */
     public GatewayServerProperties gatewayServerProperties() {
@@ -147,7 +201,7 @@ public final class SapCentralServerInstanceInner extends Resource {
 
     /**
      * Set the gatewayServerProperties property: Defines the SAP Gateway Server properties.
-     *
+     * 
      * @param gatewayServerProperties the gatewayServerProperties value to set.
      * @return the SapCentralServerInstanceInner object itself.
      */
@@ -161,7 +215,7 @@ public final class SapCentralServerInstanceInner extends Resource {
 
     /**
      * Get the enqueueReplicationServerProperties property: Defines the SAP Enqueue Replication Server (ERS) properties.
-     *
+     * 
      * @return the enqueueReplicationServerProperties value.
      */
     public EnqueueReplicationServerProperties enqueueReplicationServerProperties() {
@@ -170,7 +224,7 @@ public final class SapCentralServerInstanceInner extends Resource {
 
     /**
      * Set the enqueueReplicationServerProperties property: Defines the SAP Enqueue Replication Server (ERS) properties.
-     *
+     * 
      * @param enqueueReplicationServerProperties the enqueueReplicationServerProperties value to set.
      * @return the SapCentralServerInstanceInner object itself.
      */
@@ -185,7 +239,7 @@ public final class SapCentralServerInstanceInner extends Resource {
 
     /**
      * Get the kernelVersion property: The central services instance Kernel Version.
-     *
+     * 
      * @return the kernelVersion value.
      */
     public String kernelVersion() {
@@ -194,7 +248,7 @@ public final class SapCentralServerInstanceInner extends Resource {
 
     /**
      * Get the kernelPatch property: The central services instance Kernel Patch level.
-     *
+     * 
      * @return the kernelPatch value.
      */
     public String kernelPatch() {
@@ -204,7 +258,7 @@ public final class SapCentralServerInstanceInner extends Resource {
     /**
      * Get the loadBalancerDetails property: The Load Balancer details such as LoadBalancer ID attached to ASCS Virtual
      * Machines.
-     *
+     * 
      * @return the loadBalancerDetails value.
      */
     public LoadBalancerDetails loadBalancerDetails() {
@@ -213,7 +267,7 @@ public final class SapCentralServerInstanceInner extends Resource {
 
     /**
      * Get the vmDetails property: The list of virtual machines corresponding to the Central Services instance.
-     *
+     * 
      * @return the vmDetails value.
      */
     public List<CentralServerVmDetails> vmDetails() {
@@ -222,7 +276,7 @@ public final class SapCentralServerInstanceInner extends Resource {
 
     /**
      * Get the status property: Defines the SAP Instance status.
-     *
+     * 
      * @return the status value.
      */
     public SapVirtualInstanceStatus status() {
@@ -231,7 +285,7 @@ public final class SapCentralServerInstanceInner extends Resource {
 
     /**
      * Get the health property: Defines the health of SAP Instances.
-     *
+     * 
      * @return the health value.
      */
     public SapHealthState health() {
@@ -240,7 +294,7 @@ public final class SapCentralServerInstanceInner extends Resource {
 
     /**
      * Get the provisioningState property: Defines the provisioning states.
-     *
+     * 
      * @return the provisioningState value.
      */
     public SapVirtualInstanceProvisioningState provisioningState() {
@@ -249,7 +303,7 @@ public final class SapCentralServerInstanceInner extends Resource {
 
     /**
      * Get the errors property: Defines the errors related to SAP Central Services Instance resource.
-     *
+     * 
      * @return the errors value.
      */
     public SapVirtualInstanceError errors() {
@@ -258,12 +312,66 @@ public final class SapCentralServerInstanceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapCentralServerInstanceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapCentralServerInstanceInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SapCentralServerInstanceInner.
+     */
+    public static SapCentralServerInstanceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapCentralServerInstanceInner deserializedSapCentralServerInstanceInner
+                = new SapCentralServerInstanceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSapCentralServerInstanceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSapCentralServerInstanceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSapCentralServerInstanceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedSapCentralServerInstanceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSapCentralServerInstanceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSapCentralServerInstanceInner.innerProperties
+                        = SapCentralServerProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedSapCentralServerInstanceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSapCentralServerInstanceInner;
+        });
     }
 }

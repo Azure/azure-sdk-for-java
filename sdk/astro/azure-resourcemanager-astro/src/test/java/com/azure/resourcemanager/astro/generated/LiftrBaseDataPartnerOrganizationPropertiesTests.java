@@ -15,38 +15,38 @@ public final class LiftrBaseDataPartnerOrganizationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LiftrBaseDataPartnerOrganizationProperties model = BinaryData.fromString(
-            "{\"organizationId\":\"fiyipjxsqwpgrj\",\"workspaceId\":\"norcjxvsnbyxqab\",\"organizationName\":\"mocpc\",\"workspaceName\":\"hurzafblj\",\"singleSignOnProperties\":{\"singleSignOnState\":\"Disable\",\"enterpriseAppId\":\"oq\",\"singleSignOnUrl\":\"mkljavb\",\"aadDomains\":[\"tqajzyulpkudjkrl\",\"hbzhfepg\",\"gqexzlocxs\",\"paierh\"],\"provisioningState\":\"Failed\"}}")
+            "{\"organizationId\":\"qabnmoc\",\"workspaceId\":\"ysh\",\"organizationName\":\"rzafbljjgpbtoqcj\",\"workspaceName\":\"ljavbqid\",\"singleSignOnProperties\":{\"singleSignOnState\":\"Initial\",\"enterpriseAppId\":\"yulpkudjkr\",\"singleSignOnUrl\":\"hbzhfepg\",\"aadDomains\":[\"e\"],\"provisioningState\":\"Succeeded\"}}")
             .toObject(LiftrBaseDataPartnerOrganizationProperties.class);
-        Assertions.assertEquals("fiyipjxsqwpgrj", model.organizationId());
-        Assertions.assertEquals("norcjxvsnbyxqab", model.workspaceId());
-        Assertions.assertEquals("mocpc", model.organizationName());
-        Assertions.assertEquals("hurzafblj", model.workspaceName());
-        Assertions.assertEquals(SingleSignOnStates.DISABLE, model.singleSignOnProperties().singleSignOnState());
-        Assertions.assertEquals("oq", model.singleSignOnProperties().enterpriseAppId());
-        Assertions.assertEquals("mkljavb", model.singleSignOnProperties().singleSignOnUrl());
-        Assertions.assertEquals("tqajzyulpkudjkrl", model.singleSignOnProperties().aadDomains().get(0));
+        Assertions.assertEquals("qabnmoc", model.organizationId());
+        Assertions.assertEquals("ysh", model.workspaceId());
+        Assertions.assertEquals("rzafbljjgpbtoqcj", model.organizationName());
+        Assertions.assertEquals("ljavbqid", model.workspaceName());
+        Assertions.assertEquals(SingleSignOnStates.INITIAL, model.singleSignOnProperties().singleSignOnState());
+        Assertions.assertEquals("yulpkudjkr", model.singleSignOnProperties().enterpriseAppId());
+        Assertions.assertEquals("hbzhfepg", model.singleSignOnProperties().singleSignOnUrl());
+        Assertions.assertEquals("e", model.singleSignOnProperties().aadDomains().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LiftrBaseDataPartnerOrganizationProperties model
-            = new LiftrBaseDataPartnerOrganizationProperties().withOrganizationId("fiyipjxsqwpgrj")
-                .withWorkspaceId("norcjxvsnbyxqab")
-                .withOrganizationName("mocpc")
-                .withWorkspaceName("hurzafblj")
+            = new LiftrBaseDataPartnerOrganizationProperties().withOrganizationId("qabnmoc")
+                .withWorkspaceId("ysh")
+                .withOrganizationName("rzafbljjgpbtoqcj")
+                .withWorkspaceName("ljavbqid")
                 .withSingleSignOnProperties(
-                    new LiftrBaseSingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.DISABLE)
-                        .withEnterpriseAppId("oq")
-                        .withSingleSignOnUrl("mkljavb")
-                        .withAadDomains(Arrays.asList("tqajzyulpkudjkrl", "hbzhfepg", "gqexzlocxs", "paierh")));
+                    new LiftrBaseSingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.INITIAL)
+                        .withEnterpriseAppId("yulpkudjkr")
+                        .withSingleSignOnUrl("hbzhfepg")
+                        .withAadDomains(Arrays.asList("e")));
         model = BinaryData.fromObject(model).toObject(LiftrBaseDataPartnerOrganizationProperties.class);
-        Assertions.assertEquals("fiyipjxsqwpgrj", model.organizationId());
-        Assertions.assertEquals("norcjxvsnbyxqab", model.workspaceId());
-        Assertions.assertEquals("mocpc", model.organizationName());
-        Assertions.assertEquals("hurzafblj", model.workspaceName());
-        Assertions.assertEquals(SingleSignOnStates.DISABLE, model.singleSignOnProperties().singleSignOnState());
-        Assertions.assertEquals("oq", model.singleSignOnProperties().enterpriseAppId());
-        Assertions.assertEquals("mkljavb", model.singleSignOnProperties().singleSignOnUrl());
-        Assertions.assertEquals("tqajzyulpkudjkrl", model.singleSignOnProperties().aadDomains().get(0));
+        Assertions.assertEquals("qabnmoc", model.organizationId());
+        Assertions.assertEquals("ysh", model.workspaceId());
+        Assertions.assertEquals("rzafbljjgpbtoqcj", model.organizationName());
+        Assertions.assertEquals("ljavbqid", model.workspaceName());
+        Assertions.assertEquals(SingleSignOnStates.INITIAL, model.singleSignOnProperties().singleSignOnState());
+        Assertions.assertEquals("yulpkudjkr", model.singleSignOnProperties().enterpriseAppId());
+        Assertions.assertEquals("hbzhfepg", model.singleSignOnProperties().singleSignOnUrl());
+        Assertions.assertEquals("e", model.singleSignOnProperties().aadDomains().get(0));
     }
 }

@@ -108,10 +108,10 @@ public final class TimeSeriesDatabaseConnectionImpl implements TimeSeriesDatabas
         com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "digitalTwinsInstances");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "digitalTwinsInstances");
         this.timeSeriesDatabaseConnectionName
-            = Utils.getValueFromIdByName(innerObject.id(), "timeSeriesDatabaseConnections");
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "timeSeriesDatabaseConnections");
     }
 
     public TimeSeriesDatabaseConnection refresh() {

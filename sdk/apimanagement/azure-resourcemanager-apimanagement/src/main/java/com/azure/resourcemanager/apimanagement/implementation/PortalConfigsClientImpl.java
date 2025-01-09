@@ -32,17 +32,23 @@ import com.azure.resourcemanager.apimanagement.models.PortalConfigsGetEntityTagR
 import com.azure.resourcemanager.apimanagement.models.PortalConfigsGetResponse;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PortalConfigsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PortalConfigsClient.
+ */
 public final class PortalConfigsClientImpl implements PortalConfigsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PortalConfigsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of PortalConfigsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PortalConfigsClientImpl(ApiManagementClientImpl client) {
@@ -114,14 +120,14 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
 
     /**
      * Lists the developer portal configurations.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the collection of the developer portal configurations along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PortalConfigCollectionInner>> listByServiceWithResponseAsync(String resourceGroupName,
@@ -150,7 +156,7 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
 
     /**
      * Lists the developer portal configurations.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
@@ -158,7 +164,7 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the collection of the developer portal configurations along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PortalConfigCollectionInner>> listByServiceWithResponseAsync(String resourceGroupName,
@@ -186,7 +192,7 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
 
     /**
      * Lists the developer portal configurations.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -202,7 +208,7 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
 
     /**
      * Lists the developer portal configurations.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
@@ -219,7 +225,7 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
 
     /**
      * Lists the developer portal configurations.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -234,15 +240,15 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
 
     /**
      * Gets the entity state (Etag) version of the developer portal configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalConfigId Portal configuration identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the developer portal configuration on successful completion of {@link
-     *     Mono}.
+     * @return the entity state (Etag) version of the developer portal configuration on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PortalConfigsGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
@@ -274,7 +280,7 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
 
     /**
      * Gets the entity state (Etag) version of the developer portal configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalConfigId Portal configuration identifier.
@@ -282,8 +288,8 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the developer portal configuration on successful completion of {@link
-     *     Mono}.
+     * @return the entity state (Etag) version of the developer portal configuration on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PortalConfigsGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
@@ -314,15 +320,15 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
 
     /**
      * Gets the entity state (Etag) version of the developer portal configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalConfigId Portal configuration identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the developer portal configuration on successful completion of {@link
-     *     Mono}.
+     * @return the entity state (Etag) version of the developer portal configuration on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getEntityTagAsync(String resourceGroupName, String serviceName, String portalConfigId) {
@@ -332,7 +338,7 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
 
     /**
      * Gets the entity state (Etag) version of the developer portal configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalConfigId Portal configuration identifier.
@@ -350,7 +356,7 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
 
     /**
      * Gets the entity state (Etag) version of the developer portal configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalConfigId Portal configuration identifier.
@@ -365,7 +371,7 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
 
     /**
      * Get the developer portal configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalConfigId Portal configuration identifier.
@@ -404,7 +410,7 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
 
     /**
      * Get the developer portal configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalConfigId Portal configuration identifier.
@@ -443,7 +449,7 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
 
     /**
      * Get the developer portal configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalConfigId Portal configuration identifier.
@@ -461,7 +467,7 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
 
     /**
      * Get the developer portal configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalConfigId Portal configuration identifier.
@@ -479,7 +485,7 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
 
     /**
      * Get the developer portal configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalConfigId Portal configuration identifier.
@@ -495,18 +501,18 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
 
     /**
      * Update the developer portal configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalConfigId Portal configuration identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update the developer portal configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the developer portal configuration contract along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PortalConfigContractInner>> updateWithResponseAsync(String resourceGroupName,
@@ -547,19 +553,19 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
 
     /**
      * Update the developer portal configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalConfigId Portal configuration identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update the developer portal configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the developer portal configuration contract along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PortalConfigContractInner>> updateWithResponseAsync(String resourceGroupName,
@@ -599,12 +605,12 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
 
     /**
      * Update the developer portal configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalConfigId Portal configuration identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update the developer portal configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -620,12 +626,12 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
 
     /**
      * Update the developer portal configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalConfigId Portal configuration identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update the developer portal configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -642,12 +648,12 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
 
     /**
      * Update the developer portal configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalConfigId Portal configuration identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update the developer portal configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -663,18 +669,18 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
 
     /**
      * Create or update the developer portal configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalConfigId Portal configuration identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update the developer portal configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the developer portal configuration contract along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PortalConfigContractInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -715,19 +721,19 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
 
     /**
      * Create or update the developer portal configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalConfigId Portal configuration identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update the developer portal configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the developer portal configuration contract along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PortalConfigContractInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -767,12 +773,12 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
 
     /**
      * Create or update the developer portal configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalConfigId Portal configuration identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update the developer portal configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -788,12 +794,12 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
 
     /**
      * Create or update the developer portal configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalConfigId Portal configuration identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update the developer portal configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -810,12 +816,12 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
 
     /**
      * Create or update the developer portal configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalConfigId Portal configuration identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update the developer portal configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

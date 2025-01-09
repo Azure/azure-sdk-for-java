@@ -93,8 +93,8 @@ public final class CustomRolloutImpl implements CustomRollout, CustomRollout.Def
         com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.providerNamespace = Utils.getValueFromIdByName(innerObject.id(), "providerRegistrations");
-        this.rolloutName = Utils.getValueFromIdByName(innerObject.id(), "customRollouts");
+        this.providerNamespace = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "providerRegistrations");
+        this.rolloutName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "customRollouts");
     }
 
     public CustomRollout refresh() {

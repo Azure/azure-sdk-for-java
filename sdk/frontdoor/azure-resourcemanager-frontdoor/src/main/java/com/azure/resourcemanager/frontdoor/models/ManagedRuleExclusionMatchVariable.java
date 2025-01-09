@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -54,7 +53,6 @@ public final class ManagedRuleExclusionMatchVariable extends ExpandableStringEnu
      * @param name a name to look for.
      * @return the corresponding ManagedRuleExclusionMatchVariable.
      */
-    @JsonCreator
     public static ManagedRuleExclusionMatchVariable fromString(String name) {
         return fromString(name, ManagedRuleExclusionMatchVariable.class);
     }

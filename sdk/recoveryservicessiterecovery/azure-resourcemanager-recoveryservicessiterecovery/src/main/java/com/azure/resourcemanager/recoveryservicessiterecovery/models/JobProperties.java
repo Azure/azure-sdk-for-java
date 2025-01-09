@@ -5,99 +5,91 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Job custom data details.
  */
 @Fluent
-public final class JobProperties {
+public final class JobProperties implements JsonSerializable<JobProperties> {
     /*
      * The activity id.
      */
-    @JsonProperty(value = "activityId")
     private String activityId;
 
     /*
      * The ScenarioName.
      */
-    @JsonProperty(value = "scenarioName")
     private String scenarioName;
 
     /*
      * The DisplayName.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * The status of the Job. It is one of these values - NotStarted, InProgress, Succeeded, Failed, Cancelled,
      * Suspended or Other.
      */
-    @JsonProperty(value = "state")
     private String state;
 
     /*
      * The description of the state of the Job. For e.g. - For Succeeded state, description can be Completed,
      * PartiallySucceeded, CompletedWithInformation or Skipped.
      */
-    @JsonProperty(value = "stateDescription")
     private String stateDescription;
 
     /*
      * The tasks.
      */
-    @JsonProperty(value = "tasks")
     private List<AsrTask> tasks;
 
     /*
      * The errors.
      */
-    @JsonProperty(value = "errors")
     private List<JobErrorDetails> errors;
 
     /*
      * The start time.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * The end time.
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * The Allowed action the job.
      */
-    @JsonProperty(value = "allowedActions")
     private List<String> allowedActions;
 
     /*
      * The affected Object Id.
      */
-    @JsonProperty(value = "targetObjectId")
     private String targetObjectId;
 
     /*
      * The name of the affected object.
      */
-    @JsonProperty(value = "targetObjectName")
     private String targetObjectName;
 
     /*
      * The type of the affected object which is of Microsoft.Azure.SiteRecovery.V2015_11_10.AffectedObjectType class.
      */
-    @JsonProperty(value = "targetInstanceType")
     private String targetInstanceType;
 
     /*
      * The custom job details like test failover job details.
      */
-    @JsonProperty(value = "customDetails")
     private JobDetails customDetails;
 
     /**
@@ -407,5 +399,88 @@ public final class JobProperties {
         if (customDetails() != null) {
             customDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("activityId", this.activityId);
+        jsonWriter.writeStringField("scenarioName", this.scenarioName);
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeStringField("state", this.state);
+        jsonWriter.writeStringField("stateDescription", this.stateDescription);
+        jsonWriter.writeArrayField("tasks", this.tasks, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeArrayField("allowedActions", this.allowedActions,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("targetObjectId", this.targetObjectId);
+        jsonWriter.writeStringField("targetObjectName", this.targetObjectName);
+        jsonWriter.writeStringField("targetInstanceType", this.targetInstanceType);
+        jsonWriter.writeJsonField("customDetails", this.customDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobProperties.
+     */
+    public static JobProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobProperties deserializedJobProperties = new JobProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("activityId".equals(fieldName)) {
+                    deserializedJobProperties.activityId = reader.getString();
+                } else if ("scenarioName".equals(fieldName)) {
+                    deserializedJobProperties.scenarioName = reader.getString();
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedJobProperties.friendlyName = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedJobProperties.state = reader.getString();
+                } else if ("stateDescription".equals(fieldName)) {
+                    deserializedJobProperties.stateDescription = reader.getString();
+                } else if ("tasks".equals(fieldName)) {
+                    List<AsrTask> tasks = reader.readArray(reader1 -> AsrTask.fromJson(reader1));
+                    deserializedJobProperties.tasks = tasks;
+                } else if ("errors".equals(fieldName)) {
+                    List<JobErrorDetails> errors = reader.readArray(reader1 -> JobErrorDetails.fromJson(reader1));
+                    deserializedJobProperties.errors = errors;
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedJobProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedJobProperties.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("allowedActions".equals(fieldName)) {
+                    List<String> allowedActions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedJobProperties.allowedActions = allowedActions;
+                } else if ("targetObjectId".equals(fieldName)) {
+                    deserializedJobProperties.targetObjectId = reader.getString();
+                } else if ("targetObjectName".equals(fieldName)) {
+                    deserializedJobProperties.targetObjectName = reader.getString();
+                } else if ("targetInstanceType".equals(fieldName)) {
+                    deserializedJobProperties.targetInstanceType = reader.getString();
+                } else if ("customDetails".equals(fieldName)) {
+                    deserializedJobProperties.customDetails = JobDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobProperties;
+        });
     }
 }

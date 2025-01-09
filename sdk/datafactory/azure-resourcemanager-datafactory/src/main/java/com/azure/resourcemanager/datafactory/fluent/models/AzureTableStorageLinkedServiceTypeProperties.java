@@ -128,9 +128,14 @@ public final class AzureTableStorageLinkedServiceTypeProperties extends AzureSto
      */
     @Override
     public void validate() {
-        super.validate();
         if (credential() != null) {
             credential().validate();
+        }
+        if (accountKey() != null) {
+            accountKey().validate();
+        }
+        if (sasToken() != null) {
+            sasToken().validate();
         }
     }
 

@@ -16,11 +16,11 @@ public final class UserAssignedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserAssignedIdentity model = BinaryData.fromString(
-            "{\"userAssignedIdentities\":{\"hahvljuahaq\":{\"principalId\":\"kv\",\"clientId\":\"elmqk\"}},\"type\":\"UserAssigned\",\"tenantId\":\"dhmdua\"}")
+            "{\"userAssignedIdentities\":{\"hahvljuahaq\":{\"principalId\":\"kv\",\"clientId\":\"elmqk\"}},\"type\":\"SystemAssigned\",\"tenantId\":\"dhmdua\"}")
             .toObject(UserAssignedIdentity.class);
         Assertions.assertEquals("kv", model.userAssignedIdentities().get("hahvljuahaq").principalId());
         Assertions.assertEquals("elmqk", model.userAssignedIdentities().get("hahvljuahaq").clientId());
-        Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
@@ -28,11 +28,11 @@ public final class UserAssignedIdentityTests {
         UserAssignedIdentity model = new UserAssignedIdentity()
             .withUserAssignedIdentities(
                 mapOf("hahvljuahaq", new UserIdentity().withPrincipalId("kv").withClientId("elmqk")))
-            .withType(IdentityType.USER_ASSIGNED);
+            .withType(IdentityType.SYSTEM_ASSIGNED);
         model = BinaryData.fromObject(model).toObject(UserAssignedIdentity.class);
         Assertions.assertEquals("kv", model.userAssignedIdentities().get("hahvljuahaq").principalId());
         Assertions.assertEquals("elmqk", model.userAssignedIdentities().get("hahvljuahaq").clientId());
-        Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
     // Use "Map.of" if available

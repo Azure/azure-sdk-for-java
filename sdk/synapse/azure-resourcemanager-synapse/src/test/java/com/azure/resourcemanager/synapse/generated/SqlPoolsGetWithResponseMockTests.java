@@ -23,7 +23,7 @@ public final class SqlPoolsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"sku\":{\"tier\":\"klvzrl\",\"name\":\"l\",\"capacity\":1219772220},\"properties\":{\"maxSizeBytes\":8845842496565245250,\"collation\":\"zivfqbqnasdsy\",\"sourceDatabaseId\":\"zsieuscplhyvd\",\"recoverableDatabaseId\":\"lyzkxitds\",\"provisioningState\":\"zsvko\",\"status\":\"upjo\",\"restorePointInTime\":\"2021-01-15T17:21:56Z\",\"createMode\":\"PointInTimeRestore\",\"creationDate\":\"2021-06-21T07:21Z\",\"storageAccountType\":\"LRS\",\"sourceDatabaseDeletionDate\":\"2021-10-20T06:12:37Z\"},\"location\":\"zwzlp\",\"tags\":{\"cmbezac\":\"zuykykipfsdyepfn\",\"tgkppgkqzkcyzmff\":\"pztgazwyqejgaaok\",\"goiutgw\":\"gdyfcixrhlcqvhoe\",\"yntacihnco\":\"mkahpqha\"},\"id\":\"mip\",\"name\":\"mliqmvlb\",\"type\":\"i\"}";
+            = "{\"sku\":{\"tier\":\"chl\",\"name\":\"pwctofl\",\"capacity\":2128667253},\"properties\":{\"maxSizeBytes\":8723499745139166146,\"collation\":\"txkbr\",\"sourceDatabaseId\":\"drwjiy\",\"recoverableDatabaseId\":\"hfjsrwqrxetf\",\"provisioningState\":\"wvrrmdqn\",\"status\":\"cnawth\",\"restorePointInTime\":\"2021-06-23T07:16:30Z\",\"createMode\":\"Recovery\",\"creationDate\":\"2021-09-22T14:21:25Z\",\"storageAccountType\":\"LRS\"},\"location\":\"a\",\"tags\":{\"cpqtwloesq\":\"hudfjecehok\",\"uwj\":\"ggvrbnyrukoilaci\",\"pjlh\":\"e\",\"whbgxvellvul\":\"yxpzruzythqk\"},\"id\":\"xdm\",\"name\":\"itmujdtvm\",\"type\":\"lyymffhmjpddny\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,22 +33,23 @@ public final class SqlPoolsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SqlPool response = manager.sqlPools()
-            .getWithResponse("qwec", "snhpcselqx", "vppqi", com.azure.core.util.Context.NONE)
+            .getWithResponse("meboywhczzq", "hmngqb", "dygisrzwnykd", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("zwzlp", response.location());
-        Assertions.assertEquals("zuykykipfsdyepfn", response.tags().get("cmbezac"));
-        Assertions.assertEquals("klvzrl", response.sku().tier());
-        Assertions.assertEquals("l", response.sku().name());
-        Assertions.assertEquals(1219772220, response.sku().capacity());
-        Assertions.assertEquals(8845842496565245250L, response.maxSizeBytes());
-        Assertions.assertEquals("zivfqbqnasdsy", response.collation());
-        Assertions.assertEquals("zsieuscplhyvd", response.sourceDatabaseId());
-        Assertions.assertEquals("lyzkxitds", response.recoverableDatabaseId());
-        Assertions.assertEquals("zsvko", response.provisioningState());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-15T17:21:56Z"), response.restorePointInTime());
-        Assertions.assertEquals(CreateMode.POINT_IN_TIME_RESTORE, response.createMode());
+        Assertions.assertEquals("a", response.location());
+        Assertions.assertEquals("hudfjecehok", response.tags().get("cpqtwloesq"));
+        Assertions.assertEquals("chl", response.sku().tier());
+        Assertions.assertEquals("pwctofl", response.sku().name());
+        Assertions.assertEquals(2128667253, response.sku().capacity());
+        Assertions.assertEquals(8723499745139166146L, response.maxSizeBytes());
+        Assertions.assertEquals("txkbr", response.collation());
+        Assertions.assertEquals("drwjiy", response.sourceDatabaseId());
+        Assertions.assertEquals("hfjsrwqrxetf", response.recoverableDatabaseId());
+        Assertions.assertEquals("wvrrmdqn", response.provisioningState());
+        Assertions.assertEquals("cnawth", response.status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-23T07:16:30Z"), response.restorePointInTime());
+        Assertions.assertEquals(CreateMode.RECOVERY, response.createMode());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-22T14:21:25Z"), response.creationDate());
         Assertions.assertEquals(StorageAccountType.LRS, response.storageAccountType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-20T06:12:37Z"), response.sourceDatabaseDeletionDate());
     }
 }

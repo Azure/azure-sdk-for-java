@@ -12,15 +12,15 @@ public final class ConfluentBootstrapServerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfluentBootstrapServer model
-            = BinaryData.fromString("{\"type\":\"ConfluentBootstrapServer\",\"endpoint\":\"nvowgujju\"}")
+            = BinaryData.fromString("{\"type\":\"ConfluentBootstrapServer\",\"endpoint\":\"ayhuy\"}")
                 .toObject(ConfluentBootstrapServer.class);
-        Assertions.assertEquals("nvowgujju", model.endpoint());
+        Assertions.assertEquals("ayhuy", model.endpoint());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfluentBootstrapServer model = new ConfluentBootstrapServer().withEndpoint("nvowgujju");
+        ConfluentBootstrapServer model = new ConfluentBootstrapServer().withEndpoint("ayhuy");
         model = BinaryData.fromObject(model).toObject(ConfluentBootstrapServer.class);
-        Assertions.assertEquals("nvowgujju", model.endpoint());
+        Assertions.assertEquals("ayhuy", model.endpoint());
     }
 }

@@ -86,16 +86,6 @@ public final class DatacenterAddressLocationResponse extends DatacenterAddressRe
      */
     private String additionalShippingInformation;
 
-    /*
-     * Azure Location where the Data Center serves primarily.
-     */
-    private String dataCenterAzureLocation;
-
-    /*
-     * List of supported carriers for return shipment.
-     */
-    private List<String> supportedCarriersForReturnShipment;
-
     /**
      * Creates an instance of DatacenterAddressLocationResponse class.
      */
@@ -230,26 +220,6 @@ public final class DatacenterAddressLocationResponse extends DatacenterAddressRe
     }
 
     /**
-     * Get the dataCenterAzureLocation property: Azure Location where the Data Center serves primarily.
-     * 
-     * @return the dataCenterAzureLocation value.
-     */
-    @Override
-    public String dataCenterAzureLocation() {
-        return this.dataCenterAzureLocation;
-    }
-
-    /**
-     * Get the supportedCarriersForReturnShipment property: List of supported carriers for return shipment.
-     * 
-     * @return the supportedCarriersForReturnShipment value.
-     */
-    @Override
-    public List<String> supportedCarriersForReturnShipment() {
-        return this.supportedCarriersForReturnShipment;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -287,10 +257,10 @@ public final class DatacenterAddressLocationResponse extends DatacenterAddressRe
 
                 if ("supportedCarriersForReturnShipment".equals(fieldName)) {
                     List<String> supportedCarriersForReturnShipment = reader.readArray(reader1 -> reader1.getString());
-                    deserializedDatacenterAddressLocationResponse.supportedCarriersForReturnShipment
-                        = supportedCarriersForReturnShipment;
+                    deserializedDatacenterAddressLocationResponse
+                        .withSupportedCarriersForReturnShipment(supportedCarriersForReturnShipment);
                 } else if ("dataCenterAzureLocation".equals(fieldName)) {
-                    deserializedDatacenterAddressLocationResponse.dataCenterAzureLocation = reader.getString();
+                    deserializedDatacenterAddressLocationResponse.withDataCenterAzureLocation(reader.getString());
                 } else if ("datacenterAddressType".equals(fieldName)) {
                     deserializedDatacenterAddressLocationResponse.datacenterAddressType
                         = DatacenterAddressType.fromString(reader.getString());

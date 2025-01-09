@@ -32,7 +32,7 @@ public final class SoftwareUpdateConfigurationRunsGetByIdWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SoftwareUpdateConfigurationRun response = manager.softwareUpdateConfigurationRuns()
-            .getByIdWithResponse("ubewgzygba", "uvecovsd", UUID.fromString("a200c834-a695-4ff7-b131-768e80ee5e75"),
+            .getByIdWithResponse("ubewgzygba", "uvecovsd", UUID.fromString("eb12a286-60a4-4494-af49-65cf9fcd4ad8"),
                 "hzrtd", com.azure.core.util.Context.NONE)
             .getValue();
 

@@ -32,14 +32,14 @@ public final class ArtifactsImpl implements Artifacts {
 
     public PagedIterable<Artifact> list(String resourceGroupName, String labName, String artifactSourceName) {
         PagedIterable<ArtifactInner> inner = this.serviceClient().list(resourceGroupName, labName, artifactSourceName);
-        return Utils.mapPage(inner, inner1 -> new ArtifactImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ArtifactImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Artifact> list(String resourceGroupName, String labName, String artifactSourceName,
         String expand, String filter, Integer top, String orderby, Context context) {
         PagedIterable<ArtifactInner> inner = this.serviceClient()
             .list(resourceGroupName, labName, artifactSourceName, expand, filter, top, orderby, context);
-        return Utils.mapPage(inner, inner1 -> new ArtifactImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ArtifactImpl(inner1, this.manager()));
     }
 
     public Response<Artifact> getWithResponse(String resourceGroupName, String labName, String artifactSourceName,

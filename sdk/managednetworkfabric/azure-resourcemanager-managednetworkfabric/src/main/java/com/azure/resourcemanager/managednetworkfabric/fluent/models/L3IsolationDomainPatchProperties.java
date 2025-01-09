@@ -5,47 +5,50 @@
 package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.AggregateRouteConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
 import com.azure.resourcemanager.managednetworkfabric.models.ConnectedSubnetRoutePolicy;
 import com.azure.resourcemanager.managednetworkfabric.models.RedistributeConnectedSubnets;
 import com.azure.resourcemanager.managednetworkfabric.models.RedistributeStaticRoutes;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Resource properties. */
+/**
+ * Resource properties.
+ */
 @Fluent
 public final class L3IsolationDomainPatchProperties extends AnnotationResource {
     /*
      * Advertise Connected Subnets. Ex: "True" | "False".
      */
-    @JsonProperty(value = "redistributeConnectedSubnets")
     private RedistributeConnectedSubnets redistributeConnectedSubnets;
 
     /*
      * Advertise Static Routes. Ex: "True" | "False".
      */
-    @JsonProperty(value = "redistributeStaticRoutes")
     private RedistributeStaticRoutes redistributeStaticRoutes;
 
     /*
      * Aggregate route configurations.
      */
-    @JsonProperty(value = "aggregateRouteConfiguration")
     private AggregateRouteConfiguration aggregateRouteConfiguration;
 
     /*
      * Connected Subnet RoutePolicy
      */
-    @JsonProperty(value = "connectedSubnetRoutePolicy")
     private ConnectedSubnetRoutePolicy connectedSubnetRoutePolicy;
 
-    /** Creates an instance of L3IsolationDomainPatchProperties class. */
+    /**
+     * Creates an instance of L3IsolationDomainPatchProperties class.
+     */
     public L3IsolationDomainPatchProperties() {
     }
 
     /**
      * Get the redistributeConnectedSubnets property: Advertise Connected Subnets. Ex: "True" | "False".
-     *
+     * 
      * @return the redistributeConnectedSubnets value.
      */
     public RedistributeConnectedSubnets redistributeConnectedSubnets() {
@@ -54,7 +57,7 @@ public final class L3IsolationDomainPatchProperties extends AnnotationResource {
 
     /**
      * Set the redistributeConnectedSubnets property: Advertise Connected Subnets. Ex: "True" | "False".
-     *
+     * 
      * @param redistributeConnectedSubnets the redistributeConnectedSubnets value to set.
      * @return the L3IsolationDomainPatchProperties object itself.
      */
@@ -66,7 +69,7 @@ public final class L3IsolationDomainPatchProperties extends AnnotationResource {
 
     /**
      * Get the redistributeStaticRoutes property: Advertise Static Routes. Ex: "True" | "False".
-     *
+     * 
      * @return the redistributeStaticRoutes value.
      */
     public RedistributeStaticRoutes redistributeStaticRoutes() {
@@ -75,7 +78,7 @@ public final class L3IsolationDomainPatchProperties extends AnnotationResource {
 
     /**
      * Set the redistributeStaticRoutes property: Advertise Static Routes. Ex: "True" | "False".
-     *
+     * 
      * @param redistributeStaticRoutes the redistributeStaticRoutes value to set.
      * @return the L3IsolationDomainPatchProperties object itself.
      */
@@ -87,7 +90,7 @@ public final class L3IsolationDomainPatchProperties extends AnnotationResource {
 
     /**
      * Get the aggregateRouteConfiguration property: Aggregate route configurations.
-     *
+     * 
      * @return the aggregateRouteConfiguration value.
      */
     public AggregateRouteConfiguration aggregateRouteConfiguration() {
@@ -96,7 +99,7 @@ public final class L3IsolationDomainPatchProperties extends AnnotationResource {
 
     /**
      * Set the aggregateRouteConfiguration property: Aggregate route configurations.
-     *
+     * 
      * @param aggregateRouteConfiguration the aggregateRouteConfiguration value to set.
      * @return the L3IsolationDomainPatchProperties object itself.
      */
@@ -108,7 +111,7 @@ public final class L3IsolationDomainPatchProperties extends AnnotationResource {
 
     /**
      * Get the connectedSubnetRoutePolicy property: Connected Subnet RoutePolicy.
-     *
+     * 
      * @return the connectedSubnetRoutePolicy value.
      */
     public ConnectedSubnetRoutePolicy connectedSubnetRoutePolicy() {
@@ -117,7 +120,7 @@ public final class L3IsolationDomainPatchProperties extends AnnotationResource {
 
     /**
      * Set the connectedSubnetRoutePolicy property: Connected Subnet RoutePolicy.
-     *
+     * 
      * @param connectedSubnetRoutePolicy the connectedSubnetRoutePolicy value to set.
      * @return the L3IsolationDomainPatchProperties object itself.
      */
@@ -127,7 +130,9 @@ public final class L3IsolationDomainPatchProperties extends AnnotationResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L3IsolationDomainPatchProperties withAnnotation(String annotation) {
         super.withAnnotation(annotation);
@@ -136,17 +141,71 @@ public final class L3IsolationDomainPatchProperties extends AnnotationResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (aggregateRouteConfiguration() != null) {
             aggregateRouteConfiguration().validate();
         }
         if (connectedSubnetRoutePolicy() != null) {
             connectedSubnetRoutePolicy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("annotation", annotation());
+        jsonWriter.writeStringField("redistributeConnectedSubnets",
+            this.redistributeConnectedSubnets == null ? null : this.redistributeConnectedSubnets.toString());
+        jsonWriter.writeStringField("redistributeStaticRoutes",
+            this.redistributeStaticRoutes == null ? null : this.redistributeStaticRoutes.toString());
+        jsonWriter.writeJsonField("aggregateRouteConfiguration", this.aggregateRouteConfiguration);
+        jsonWriter.writeJsonField("connectedSubnetRoutePolicy", this.connectedSubnetRoutePolicy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of L3IsolationDomainPatchProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of L3IsolationDomainPatchProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the L3IsolationDomainPatchProperties.
+     */
+    public static L3IsolationDomainPatchProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            L3IsolationDomainPatchProperties deserializedL3IsolationDomainPatchProperties
+                = new L3IsolationDomainPatchProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("annotation".equals(fieldName)) {
+                    deserializedL3IsolationDomainPatchProperties.withAnnotation(reader.getString());
+                } else if ("redistributeConnectedSubnets".equals(fieldName)) {
+                    deserializedL3IsolationDomainPatchProperties.redistributeConnectedSubnets
+                        = RedistributeConnectedSubnets.fromString(reader.getString());
+                } else if ("redistributeStaticRoutes".equals(fieldName)) {
+                    deserializedL3IsolationDomainPatchProperties.redistributeStaticRoutes
+                        = RedistributeStaticRoutes.fromString(reader.getString());
+                } else if ("aggregateRouteConfiguration".equals(fieldName)) {
+                    deserializedL3IsolationDomainPatchProperties.aggregateRouteConfiguration
+                        = AggregateRouteConfiguration.fromJson(reader);
+                } else if ("connectedSubnetRoutePolicy".equals(fieldName)) {
+                    deserializedL3IsolationDomainPatchProperties.connectedSubnetRoutePolicy
+                        = ConnectedSubnetRoutePolicy.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedL3IsolationDomainPatchProperties;
+        });
     }
 }

@@ -18,60 +18,56 @@ public final class AnomalySecurityMLAnalyticsSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AnomalySecurityMLAnalyticsSettings model = BinaryData.fromString(
-            "{\"kind\":\"Anomaly\",\"properties\":{\"description\":\"drnzkjthf\",\"displayName\":\"eyjncjmlfuy\",\"enabled\":false,\"lastModifiedUtc\":\"2021-08-31T04:50:59Z\",\"requiredDataConnectors\":[{\"connectorId\":\"dhlrufzcqyjmq\",\"dataTypes\":[\"iocuselqkr\",\"azrhxudd\",\"mdtff\",\"sjmrkkhm\"]},{\"connectorId\":\"mdlgy\",\"dataTypes\":[\"okwtjawhvagnqfqq\",\"lcvmyolcaymjch\",\"vsnvlaq\",\"nzyzawatuwqko\"]},{\"connectorId\":\"czothymgo\",\"dataTypes\":[\"msn\",\"gwi\"]}],\"tactics\":[\"Discovery\"],\"techniques\":[\"khtmhobcyanrfv\",\"tvkhgvo\",\"gxkfnaoaqymhccto\",\"uowyrnskbyhqu\"],\"anomalyVersion\":\"czygxv\",\"customizableObservations\":\"datajpxecxqnwhsco\",\"frequency\":\"PT21H43M45S\",\"settingsStatus\":\"Flighting\",\"isDefaultSettings\":true,\"anomalySettingsVersion\":1995633814,\"settingsDefinitionId\":\"9701d308-0fcb-408f-8971-3009248c8686\"},\"etag\":\"mpk\",\"id\":\"wirfljf\",\"name\":\"wxqouoxudnmc\",\"type\":\"aprhknqiijgencdg\"}")
+            "{\"kind\":\"Anomaly\",\"properties\":{\"description\":\"nqzi\",\"displayName\":\"kfkbgbzbowxeqocl\",\"enabled\":true,\"lastModifiedUtc\":\"2021-01-04T04:03:18Z\",\"requiredDataConnectors\":[{\"connectorId\":\"qkjjeokbz\",\"dataTypes\":[\"zrxcczurt\",\"e\",\"pqxbkwvzgnzvdf\",\"zdix\"]}],\"tactics\":[\"InhibitResponseFunction\"],\"techniques\":[\"d\",\"wopqhewjptmcgs\",\"ostzelndlatu\",\"mzlbiojlvfhrb\"],\"anomalyVersion\":\"pn\",\"customizableObservations\":\"datavcwwyyurmochppr\",\"frequency\":\"PT151H32M19S\",\"settingsStatus\":\"Flighting\",\"isDefaultSettings\":true,\"anomalySettingsVersion\":1135076177,\"settingsDefinitionId\":\"8af64da2-e0a9-4296-9e40-0abb55fb4dc1\"},\"etag\":\"yzejnhlbk\",\"id\":\"z\",\"name\":\"cpilj\",\"type\":\"a\"}")
             .toObject(AnomalySecurityMLAnalyticsSettings.class);
-        Assertions.assertEquals("mpk", model.etag());
-        Assertions.assertEquals("drnzkjthf", model.description());
-        Assertions.assertEquals("eyjncjmlfuy", model.displayName());
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("dhlrufzcqyjmq", model.requiredDataConnectors().get(0).connectorId());
-        Assertions.assertEquals("iocuselqkr", model.requiredDataConnectors().get(0).dataTypes().get(0));
-        Assertions.assertEquals(AttackTactic.DISCOVERY, model.tactics().get(0));
-        Assertions.assertEquals("khtmhobcyanrfv", model.techniques().get(0));
-        Assertions.assertEquals("czygxv", model.anomalyVersion());
-        Assertions.assertEquals(Duration.parse("PT21H43M45S"), model.frequency());
+        Assertions.assertEquals("yzejnhlbk", model.etag());
+        Assertions.assertEquals("nqzi", model.description());
+        Assertions.assertEquals("kfkbgbzbowxeqocl", model.displayName());
+        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals("qkjjeokbz", model.requiredDataConnectors().get(0).connectorId());
+        Assertions.assertEquals("zrxcczurt", model.requiredDataConnectors().get(0).dataTypes().get(0));
+        Assertions.assertEquals(AttackTactic.INHIBIT_RESPONSE_FUNCTION, model.tactics().get(0));
+        Assertions.assertEquals("d", model.techniques().get(0));
+        Assertions.assertEquals("pn", model.anomalyVersion());
+        Assertions.assertEquals(Duration.parse("PT151H32M19S"), model.frequency());
         Assertions.assertEquals(SettingsStatus.FLIGHTING, model.settingsStatus());
         Assertions.assertEquals(true, model.isDefaultSettings());
-        Assertions.assertEquals(1995633814, model.anomalySettingsVersion());
-        Assertions.assertEquals(UUID.fromString("9701d308-0fcb-408f-8971-3009248c8686"), model.settingsDefinitionId());
+        Assertions.assertEquals(1135076177, model.anomalySettingsVersion());
+        Assertions.assertEquals(UUID.fromString("8af64da2-e0a9-4296-9e40-0abb55fb4dc1"), model.settingsDefinitionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AnomalySecurityMLAnalyticsSettings model = new AnomalySecurityMLAnalyticsSettings().withEtag("mpk")
-            .withDescription("drnzkjthf")
-            .withDisplayName("eyjncjmlfuy")
-            .withEnabled(false)
-            .withRequiredDataConnectors(Arrays.asList(
-                new SecurityMLAnalyticsSettingsDataSource().withConnectorId("dhlrufzcqyjmq")
-                    .withDataTypes(Arrays.asList("iocuselqkr", "azrhxudd", "mdtff", "sjmrkkhm")),
-                new SecurityMLAnalyticsSettingsDataSource().withConnectorId("mdlgy")
-                    .withDataTypes(Arrays.asList("okwtjawhvagnqfqq", "lcvmyolcaymjch", "vsnvlaq", "nzyzawatuwqko")),
-                new SecurityMLAnalyticsSettingsDataSource().withConnectorId("czothymgo")
-                    .withDataTypes(Arrays.asList("msn", "gwi"))))
-            .withTactics(Arrays.asList(AttackTactic.DISCOVERY))
-            .withTechniques(Arrays.asList("khtmhobcyanrfv", "tvkhgvo", "gxkfnaoaqymhccto", "uowyrnskbyhqu"))
-            .withAnomalyVersion("czygxv")
-            .withCustomizableObservations("datajpxecxqnwhsco")
-            .withFrequency(Duration.parse("PT21H43M45S"))
+        AnomalySecurityMLAnalyticsSettings model = new AnomalySecurityMLAnalyticsSettings().withEtag("yzejnhlbk")
+            .withDescription("nqzi")
+            .withDisplayName("kfkbgbzbowxeqocl")
+            .withEnabled(true)
+            .withRequiredDataConnectors(
+                Arrays.asList(new SecurityMLAnalyticsSettingsDataSource().withConnectorId("qkjjeokbz")
+                    .withDataTypes(Arrays.asList("zrxcczurt", "e", "pqxbkwvzgnzvdf", "zdix"))))
+            .withTactics(Arrays.asList(AttackTactic.INHIBIT_RESPONSE_FUNCTION))
+            .withTechniques(Arrays.asList("d", "wopqhewjptmcgs", "ostzelndlatu", "mzlbiojlvfhrb"))
+            .withAnomalyVersion("pn")
+            .withCustomizableObservations("datavcwwyyurmochppr")
+            .withFrequency(Duration.parse("PT151H32M19S"))
             .withSettingsStatus(SettingsStatus.FLIGHTING)
             .withIsDefaultSettings(true)
-            .withAnomalySettingsVersion(1995633814)
-            .withSettingsDefinitionId(UUID.fromString("9701d308-0fcb-408f-8971-3009248c8686"));
+            .withAnomalySettingsVersion(1135076177)
+            .withSettingsDefinitionId(UUID.fromString("8af64da2-e0a9-4296-9e40-0abb55fb4dc1"));
         model = BinaryData.fromObject(model).toObject(AnomalySecurityMLAnalyticsSettings.class);
-        Assertions.assertEquals("mpk", model.etag());
-        Assertions.assertEquals("drnzkjthf", model.description());
-        Assertions.assertEquals("eyjncjmlfuy", model.displayName());
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("dhlrufzcqyjmq", model.requiredDataConnectors().get(0).connectorId());
-        Assertions.assertEquals("iocuselqkr", model.requiredDataConnectors().get(0).dataTypes().get(0));
-        Assertions.assertEquals(AttackTactic.DISCOVERY, model.tactics().get(0));
-        Assertions.assertEquals("khtmhobcyanrfv", model.techniques().get(0));
-        Assertions.assertEquals("czygxv", model.anomalyVersion());
-        Assertions.assertEquals(Duration.parse("PT21H43M45S"), model.frequency());
+        Assertions.assertEquals("yzejnhlbk", model.etag());
+        Assertions.assertEquals("nqzi", model.description());
+        Assertions.assertEquals("kfkbgbzbowxeqocl", model.displayName());
+        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals("qkjjeokbz", model.requiredDataConnectors().get(0).connectorId());
+        Assertions.assertEquals("zrxcczurt", model.requiredDataConnectors().get(0).dataTypes().get(0));
+        Assertions.assertEquals(AttackTactic.INHIBIT_RESPONSE_FUNCTION, model.tactics().get(0));
+        Assertions.assertEquals("d", model.techniques().get(0));
+        Assertions.assertEquals("pn", model.anomalyVersion());
+        Assertions.assertEquals(Duration.parse("PT151H32M19S"), model.frequency());
         Assertions.assertEquals(SettingsStatus.FLIGHTING, model.settingsStatus());
         Assertions.assertEquals(true, model.isDefaultSettings());
-        Assertions.assertEquals(1995633814, model.anomalySettingsVersion());
-        Assertions.assertEquals(UUID.fromString("9701d308-0fcb-408f-8971-3009248c8686"), model.settingsDefinitionId());
+        Assertions.assertEquals(1135076177, model.anomalySettingsVersion());
+        Assertions.assertEquals(UUID.fromString("8af64da2-e0a9-4296-9e40-0abb55fb4dc1"), model.settingsDefinitionId());
     }
 }

@@ -24,12 +24,16 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
     private String type = "BlobEventsTrigger";
 
     /*
-     * The blob path must begin with the pattern provided for trigger to fire. For example, '/records/blobs/december/' will only fire the trigger for blobs in the december folder under the records container. At least one of these must be provided: blobPathBeginsWith, blobPathEndsWith.
+     * The blob path must begin with the pattern provided for trigger to fire. For example, '/records/blobs/december/'
+     * will only fire the trigger for blobs in the december folder under the records container. At least one of these
+     * must be provided: blobPathBeginsWith, blobPathEndsWith.
      */
     private String blobPathBeginsWith;
 
     /*
-     * The blob path must end with the pattern provided for trigger to fire. For example, 'december/boxes.csv' will only fire the trigger for blobs named boxes in a december folder. At least one of these must be provided: blobPathBeginsWith, blobPathEndsWith.
+     * The blob path must end with the pattern provided for trigger to fire. For example, 'december/boxes.csv' will only
+     * fire the trigger for blobs named boxes in a december folder. At least one of these must be provided:
+     * blobPathBeginsWith, blobPathEndsWith.
      */
     private String blobPathEndsWith;
 
@@ -47,6 +51,11 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
      * The ARM resource ID of the Storage Account.
      */
     private String scope;
+
+    /*
+     * Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger.
+     */
+    private TriggerRuntimeState runtimeState;
 
     /**
      * Creates an instance of BlobEventsTrigger class.
@@ -173,6 +182,17 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
     }
 
     /**
+     * Get the runtimeState property: Indicates if trigger is running or not. Updated when Start/Stop APIs are called on
+     * the Trigger.
+     * 
+     * @return the runtimeState value.
+     */
+    @Override
+    public TriggerRuntimeState getRuntimeState() {
+        return this.runtimeState;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -251,7 +271,7 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
                 if ("description".equals(fieldName)) {
                     deserializedBlobEventsTrigger.setDescription(reader.getString());
                 } else if ("runtimeState".equals(fieldName)) {
-                    deserializedBlobEventsTrigger.setRuntimeState(TriggerRuntimeState.fromString(reader.getString()));
+                    deserializedBlobEventsTrigger.runtimeState = TriggerRuntimeState.fromString(reader.getString());
                 } else if ("annotations".equals(fieldName)) {
                     List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
                     deserializedBlobEventsTrigger.setAnnotations(annotations);

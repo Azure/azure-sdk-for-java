@@ -5,61 +5,57 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.frontdoor.fluent.models.FrontendEndpointInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The properties needed to update a Front Door.
  */
 @Fluent
-public class FrontDoorUpdateParameters {
+public class FrontDoorUpdateParameters implements JsonSerializable<FrontDoorUpdateParameters> {
     /*
      * A friendly name for the frontDoor
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * Routing rules associated with this Front Door.
      */
-    @JsonProperty(value = "routingRules")
     private List<RoutingRule> routingRules;
 
     /*
      * Load balancing settings associated with this Front Door instance.
      */
-    @JsonProperty(value = "loadBalancingSettings")
     private List<LoadBalancingSettingsModel> loadBalancingSettings;
 
     /*
      * Health probe settings associated with this Front Door instance.
      */
-    @JsonProperty(value = "healthProbeSettings")
     private List<HealthProbeSettingsModel> healthProbeSettings;
 
     /*
      * Backend pools available to routing rules.
      */
-    @JsonProperty(value = "backendPools")
     private List<BackendPool> backendPools;
 
     /*
      * Frontend endpoints available to routing rules.
      */
-    @JsonProperty(value = "frontendEndpoints")
     private List<FrontendEndpointInner> frontendEndpoints;
 
     /*
      * Settings for all backendPools
      */
-    @JsonProperty(value = "backendPoolsSettings")
     private BackendPoolsSettings backendPoolsSettings;
 
     /*
      * Operational status of the Front Door load balancer. Permitted values are 'Enabled' or 'Disabled'
      */
-    @JsonProperty(value = "enabledState")
     private FrontDoorEnabledState enabledState;
 
     /**
@@ -254,5 +250,74 @@ public class FrontDoorUpdateParameters {
         if (backendPoolsSettings() != null) {
             backendPoolsSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeArrayField("routingRules", this.routingRules, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("loadBalancingSettings", this.loadBalancingSettings,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("healthProbeSettings", this.healthProbeSettings,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("backendPools", this.backendPools, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("frontendEndpoints", this.frontendEndpoints,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("backendPoolsSettings", this.backendPoolsSettings);
+        jsonWriter.writeStringField("enabledState", this.enabledState == null ? null : this.enabledState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FrontDoorUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FrontDoorUpdateParameters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FrontDoorUpdateParameters.
+     */
+    public static FrontDoorUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FrontDoorUpdateParameters deserializedFrontDoorUpdateParameters = new FrontDoorUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("friendlyName".equals(fieldName)) {
+                    deserializedFrontDoorUpdateParameters.friendlyName = reader.getString();
+                } else if ("routingRules".equals(fieldName)) {
+                    List<RoutingRule> routingRules = reader.readArray(reader1 -> RoutingRule.fromJson(reader1));
+                    deserializedFrontDoorUpdateParameters.routingRules = routingRules;
+                } else if ("loadBalancingSettings".equals(fieldName)) {
+                    List<LoadBalancingSettingsModel> loadBalancingSettings
+                        = reader.readArray(reader1 -> LoadBalancingSettingsModel.fromJson(reader1));
+                    deserializedFrontDoorUpdateParameters.loadBalancingSettings = loadBalancingSettings;
+                } else if ("healthProbeSettings".equals(fieldName)) {
+                    List<HealthProbeSettingsModel> healthProbeSettings
+                        = reader.readArray(reader1 -> HealthProbeSettingsModel.fromJson(reader1));
+                    deserializedFrontDoorUpdateParameters.healthProbeSettings = healthProbeSettings;
+                } else if ("backendPools".equals(fieldName)) {
+                    List<BackendPool> backendPools = reader.readArray(reader1 -> BackendPool.fromJson(reader1));
+                    deserializedFrontDoorUpdateParameters.backendPools = backendPools;
+                } else if ("frontendEndpoints".equals(fieldName)) {
+                    List<FrontendEndpointInner> frontendEndpoints
+                        = reader.readArray(reader1 -> FrontendEndpointInner.fromJson(reader1));
+                    deserializedFrontDoorUpdateParameters.frontendEndpoints = frontendEndpoints;
+                } else if ("backendPoolsSettings".equals(fieldName)) {
+                    deserializedFrontDoorUpdateParameters.backendPoolsSettings = BackendPoolsSettings.fromJson(reader);
+                } else if ("enabledState".equals(fieldName)) {
+                    deserializedFrontDoorUpdateParameters.enabledState
+                        = FrontDoorEnabledState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFrontDoorUpdateParameters;
+        });
     }
 }

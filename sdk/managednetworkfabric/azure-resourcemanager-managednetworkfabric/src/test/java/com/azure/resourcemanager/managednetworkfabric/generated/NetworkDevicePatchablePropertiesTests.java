@@ -12,18 +12,18 @@ public final class NetworkDevicePatchablePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkDevicePatchableProperties model
-            = BinaryData.fromString("{\"hostName\":\"b\",\"serialNumber\":\"glhzqp\"}")
+            = BinaryData.fromString("{\"hostName\":\"upjo\",\"serialNumber\":\"ozsaye\"}")
                 .toObject(NetworkDevicePatchableProperties.class);
-        Assertions.assertEquals("b", model.hostname());
-        Assertions.assertEquals("glhzqp", model.serialNumber());
+        Assertions.assertEquals("upjo", model.hostname());
+        Assertions.assertEquals("ozsaye", model.serialNumber());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkDevicePatchableProperties model
-            = new NetworkDevicePatchableProperties().withHostname("b").withSerialNumber("glhzqp");
+            = new NetworkDevicePatchableProperties().withHostname("upjo").withSerialNumber("ozsaye");
         model = BinaryData.fromObject(model).toObject(NetworkDevicePatchableProperties.class);
-        Assertions.assertEquals("b", model.hostname());
-        Assertions.assertEquals("glhzqp", model.serialNumber());
+        Assertions.assertEquals("upjo", model.hostname());
+        Assertions.assertEquals("ozsaye", model.serialNumber());
     }
 }

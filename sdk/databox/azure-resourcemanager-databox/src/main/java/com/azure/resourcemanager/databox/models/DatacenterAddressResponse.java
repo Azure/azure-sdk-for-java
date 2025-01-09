@@ -20,7 +20,7 @@ public class DatacenterAddressResponse implements JsonSerializable<DatacenterAdd
     /*
      * Data center address type
      */
-    private DatacenterAddressType datacenterAddressType = DatacenterAddressType.fromString("DatacenterAddressResponse");
+    private DatacenterAddressType datacenterAddressType;
 
     /*
      * List of supported carriers for return shipment.

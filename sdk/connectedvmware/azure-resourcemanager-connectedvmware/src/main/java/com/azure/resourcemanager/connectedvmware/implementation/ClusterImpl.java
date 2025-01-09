@@ -206,8 +206,8 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = Utils.getValueFromIdByName(innerObject.id(), "clusters");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
     }
 
     public Cluster refresh() {

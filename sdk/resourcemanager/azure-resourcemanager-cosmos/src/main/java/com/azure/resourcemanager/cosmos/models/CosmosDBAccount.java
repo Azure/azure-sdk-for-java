@@ -24,13 +24,25 @@ import java.util.Map;
 public interface CosmosDBAccount extends GroupableResource<CosmosManager, DatabaseAccountGetResultsInner>,
     Refreshable<CosmosDBAccount>, Updatable<CosmosDBAccount.Update>, SupportsUpdatingPrivateEndpointConnection {
 
-    /** @return indicates the type of database account */
+    /**
+     * Gets the type of database account.
+     *
+     * @return indicates the type of database account
+     */
     DatabaseAccountKind kind();
 
-    /** @return the connection endpoint for the CosmosDB database account */
+    /**
+     * Gets the connection endpoint for the CosmosDB database account.
+     *
+     * @return the connection endpoint for the CosmosDB database account
+     */
     String documentEndpoint();
 
-    /** @return the offer type for the CosmosDB database account */
+    /**
+     * Gets the offer type for the CosmosDB database account.
+     *
+     * @return the offer type for the CosmosDB database account
+     */
     DatabaseAccountOfferType databaseAccountOfferType();
 
     /**
@@ -41,103 +53,205 @@ public interface CosmosDBAccount extends GroupableResource<CosmosManager, Databa
     PublicNetworkAccess publicNetworkAccess();
 
     /**
+     * Gets specifies the set of IP addresses or IP address ranges in CIDR form.
+     *
      * @return specifies the set of IP addresses or IP address ranges in CIDR form.
      * @deprecated use {@link #ipRules()}
      */
     @Deprecated
     String ipRangeFilter();
 
-    /** @return specifies the set of IP addresses or IP address ranges in CIDR form. */
+    /**
+     * Gets specifies the set of IP addresses or IP address ranges in CIDR form.
+     *
+     * @return specifies the set of IP addresses or IP address ranges in CIDR form.
+     */
     List<IpAddressOrRange> ipRules();
 
-    /** @return the consistency policy for the CosmosDB database account */
+    /**
+     * Gets the consistency policy for the CosmosDB database account.
+     *
+     * @return the consistency policy for the CosmosDB database account
+     */
     ConsistencyPolicy consistencyPolicy();
 
-    /** @return the default consistency level for the CosmosDB database account */
+    /**
+     * Gets the default consistency level for the CosmosDB database account.
+     *
+     * @return the default consistency level for the CosmosDB database account
+     */
     DefaultConsistencyLevel defaultConsistencyLevel();
 
-    /** @return an array that contains the writable georeplication locations enabled for the CosmosDB account */
+    /**
+     * Gets an array that contains the writable georeplication locations enabled for the CosmosDB account.
+     *
+     * @return an array that contains the writable georeplication locations enabled for the CosmosDB account
+     */
     List<Location> writableReplications();
 
-    /** @return an array that contains the readable georeplication locations enabled for the CosmosDB account */
+    /**
+     * Gets an array that contains the readable georeplication locations enabled for the CosmosDB account.
+     *
+     * @return an array that contains the readable georeplication locations enabled for the CosmosDB account
+     */
     List<Location> readableReplications();
 
-    /** @return the access keys for the specified Azure CosmosDB database account */
+    /**
+     * Gets the access keys for the specified Azure CosmosDB database account.
+     *
+     * @return the access keys for the specified Azure CosmosDB database account
+     */
     DatabaseAccountListKeysResult listKeys();
 
-    /** @return the access keys for the specified Azure CosmosDB database account */
+    /**
+     * Gets the access keys for the specified Azure CosmosDB database account.
+     *
+     * @return the access keys for the specified Azure CosmosDB database account
+     */
     Mono<DatabaseAccountListKeysResult> listKeysAsync();
 
-    /** @return the read-only access keys for the specified Azure CosmosDB database account */
+    /**
+     * Gets the read-only access keys for the specified Azure CosmosDB database account.
+     *
+     * @return the read-only access keys for the specified Azure CosmosDB database account
+     */
     DatabaseAccountListReadOnlyKeysResult listReadOnlyKeys();
 
-    /** @return the read-only access keys for the specified Azure CosmosDB database account */
+    /**
+     * Gets the read-only access keys for the specified Azure CosmosDB database account.
+     *
+     * @return the read-only access keys for the specified Azure CosmosDB database account
+     */
     Mono<DatabaseAccountListReadOnlyKeysResult> listReadOnlyKeysAsync();
 
-    /** @return the connection strings for the specified Azure CosmosDB database account */
+    /**
+     * Gets the connection strings for the specified Azure CosmosDB database account.
+     *
+     * @return the connection strings for the specified Azure CosmosDB database account
+     */
     DatabaseAccountListConnectionStringsResult listConnectionStrings();
 
-    /** @return the connection strings for the specified Azure CosmosDB database account */
+    /**
+     * Gets the connection strings for the specified Azure CosmosDB database account.
+     *
+     * @return the connection strings for the specified Azure CosmosDB database account
+     */
     Mono<DatabaseAccountListConnectionStringsResult> listConnectionStringsAsync();
 
-    /** @return the list of Azure Cosmos DB SQL databases */
+    /**
+     * Gets the list of Azure Cosmos DB SQL databases.
+     *
+     * @return the list of Azure Cosmos DB SQL databases
+     */
     List<SqlDatabase> listSqlDatabases();
 
-    /** @return the list of Azure Cosmos DB SQL databases */
+    /**
+     * Gets the list of Azure Cosmos DB SQL databases.
+     *
+     * @return the list of Azure Cosmos DB SQL databases
+     */
     PagedFlux<SqlDatabase> listSqlDatabasesAsync();
 
-    /** @return whether write is enabled for multiple locations or not */
+    /**
+     * Checks whether write is enabled for multiple locations.
+     *
+     * @return whether write is enabled for multiple locations or not
+     */
     boolean multipleWriteLocationsEnabled();
 
-    /** @return whether cassandra connector is enabled or not. */
+    /**
+     * Checks whether cassandra connector is enabled.
+     *
+     * @return whether cassandra connector is enabled or not.
+     */
     boolean cassandraConnectorEnabled();
 
-    /** @return the current cassandra connector offer. */
+    /**
+     * Gets the current cassandra connector offer.
+     *
+     * @return the current cassandra connector offer.
+     */
     ConnectorOffer cassandraConnectorOffer();
 
-    /** @return whether metadata write access is disabled or not. */
+    /**
+     * Checks whether metadata write access is disabled.
+     *
+     * @return whether metadata write access is disabled or not.
+     */
     boolean keyBasedMetadataWriteAccessDisabled();
 
-    /** @return all private link resources in the account. */
+    /**
+     * Gets all private link resources in the account.
+     *
+     * @return all private link resources in the account.
+     */
     PagedFlux<PrivateLinkResource> listPrivateLinkResourcesAsync();
 
-    /** @return all private link resources in the account. */
+    /**
+     * Gets all private link resources in the account.
+     *
+     * @return all private link resources in the account.
+     */
     List<PrivateLinkResource> listPrivateLinkResources();
 
     /**
+     * Gets the specific private link resource.
+     *
      * @param groupName group name of private link resource
-     * @return the specific private link resource group
+     * @return the specific private link resource
      */
     Mono<PrivateLinkResource> getPrivateLinkResourceAsync(String groupName);
 
     /**
+     * Gets the specific private link resource.
+     *
      * @param groupName group name of private link resource
-     * @return the specific private link resource group
+     * @return the specific private link resource
      */
     PrivateLinkResource getPrivateLinkResource(String groupName);
 
-    /** @return all private endpoint connection in the account. */
+    /**
+     * Gets all private endpoint connection in the account.
+     *
+     * @return all private endpoint connection in the account.
+     */
     Mono<Map<String, PrivateEndpointConnection>> listPrivateEndpointConnectionAsync();
 
-    /** @return all private endpoint connection in the account. */
+    /**
+     * Gets all private endpoint connection in the account.
+     *
+     * @return all private endpoint connection in the account.
+     */
     Map<String, PrivateEndpointConnection> listPrivateEndpointConnection();
 
     /**
+     * Gets the specific private endpoint connection.
+     *
      * @param name name of private endpoint connection
      * @return the specific private endpoint connection
      */
     Mono<PrivateEndpointConnection> getPrivateEndpointConnectionAsync(String name);
 
     /**
+     * Gets the specific private endpoint connection.
+     *
      * @param name name of private endpoint connection
      * @return the specific private endpoint connection
      */
     PrivateEndpointConnection getPrivateEndpointConnection(String name);
 
-    /** @return a list that contains the Cosmos DB capabilities */
+    /**
+     * Gets a list that contains the Cosmos DB capabilities.
+     *
+     * @return a list that contains the Cosmos DB capabilities
+     */
     List<Capability> capabilities();
 
-    /** @return a list that contains the Cosmos DB Virtual Network ACL Rules (empty list if none is set) */
+    /**
+     * Gets a list that contains the Cosmos DB Virtual Network ACL Rules.
+     *
+     * @return a list that contains the Cosmos DB Virtual Network ACL Rules (empty list if none is set)
+     */
     List<VirtualNetworkRule> virtualNetworkRules();
 
     /**
@@ -170,10 +284,16 @@ public interface CosmosDBAccount extends GroupableResource<CosmosManager, Databa
      */
     Mono<Void> onlineRegionAsync(Region region);
 
-    /** @param keyKind the key kind */
+    /**
+     * Regenerates secret keys.
+     *
+     * @param keyKind the key kind
+     */
     void regenerateKey(KeyKind keyKind);
 
     /**
+     * A deferred emitter that regenerates secret keys.
+     *
      * @param keyKind the key kind
      * @return a representation of the deferred computation of this call
      */

@@ -9,7 +9,9 @@ package com.azure.resourcemanager.quota.generated;
  */
 public final class GroupQuotaLimitsRequestGetSamples {
     /*
-     * x-ms-original-file: specification/quota/resource-manager/Microsoft.Quota/preview/2023-06-01-preview/examples/GroupQuotaLimitsRequests/GroupQuotaLimitsRequests_Get.json
+     * x-ms-original-file:
+     * specification/quota/resource-manager/Microsoft.Quota/preview/2023-06-01-preview/examples/GroupQuotaLimitsRequests
+     * /GroupQuotaLimitsRequests_Get.json
      */
     /**
      * Sample code: GroupQuotaLimitsRequests_Get.

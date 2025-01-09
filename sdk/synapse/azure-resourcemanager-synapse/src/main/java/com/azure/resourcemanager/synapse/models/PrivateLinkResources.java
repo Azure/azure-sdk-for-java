@@ -4,97 +4,72 @@
 
 package com.azure.resourcemanager.synapse.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.synapse.fluent.models.KustoPoolPrivateLinkResourcesInner;
-import java.io.IOException;
-import java.util.List;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 
 /**
- * The list Kusto Private Link Resources operation response.
+ * Resource collection API of PrivateLinkResources.
  */
-@Fluent
-public final class PrivateLinkResources implements JsonSerializable<PrivateLinkResources> {
-    /*
-     * The list of Kusto Private Link Resources.
-     */
-    private List<KustoPoolPrivateLinkResourcesInner> value;
-
+public interface PrivateLinkResources {
     /**
-     * Creates an instance of PrivateLinkResources class.
-     */
-    public PrivateLinkResources() {
-    }
-
-    /**
-     * Get the value property: The list of Kusto Private Link Resources.
+     * Private Link Resources
      * 
-     * @return the value value.
-     */
-    public List<KustoPoolPrivateLinkResourcesInner> value() {
-        return this.value;
-    }
-
-    /**
-     * Set the value property: The list of Kusto Private Link Resources.
+     * Get all private link resources for a workspaces.
      * 
-     * @param value the value value to set.
-     * @return the PrivateLinkResources object itself.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all private link resources for a workspaces as paginated response with {@link PagedIterable}.
      */
-    public PrivateLinkResources withValue(List<KustoPoolPrivateLinkResourcesInner> value) {
-        this.value = value;
-        return this;
-    }
+    PagedIterable<PrivateLinkResource> list(String resourceGroupName, String workspaceName);
 
     /**
-     * Validates the instance.
+     * Private Link Resources
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (value() != null) {
-            value().forEach(e -> e.validate());
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of PrivateLinkResources from the JsonReader.
+     * Get all private link resources for a workspaces.
      * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of PrivateLinkResources if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the PrivateLinkResources.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all private link resources for a workspaces as paginated response with {@link PagedIterable}.
      */
-    public static PrivateLinkResources fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            PrivateLinkResources deserializedPrivateLinkResources = new PrivateLinkResources();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+    PagedIterable<PrivateLinkResource> list(String resourceGroupName, String workspaceName, Context context);
 
-                if ("value".equals(fieldName)) {
-                    List<KustoPoolPrivateLinkResourcesInner> value
-                        = reader.readArray(reader1 -> KustoPoolPrivateLinkResourcesInner.fromJson(reader1));
-                    deserializedPrivateLinkResources.value = value;
-                } else {
-                    reader.skipChildren();
-                }
-            }
+    /**
+     * Get Private Link Resource
+     * 
+     * Get private link resource in workspace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param privateLinkResourceName The name of the private link resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return private link resource in workspace along with {@link Response}.
+     */
+    Response<PrivateLinkResource> getWithResponse(String resourceGroupName, String workspaceName,
+        String privateLinkResourceName, Context context);
 
-            return deserializedPrivateLinkResources;
-        });
-    }
+    /**
+     * Get Private Link Resource
+     * 
+     * Get private link resource in workspace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param privateLinkResourceName The name of the private link resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return private link resource in workspace.
+     */
+    PrivateLinkResource get(String resourceGroupName, String workspaceName, String privateLinkResourceName);
 }

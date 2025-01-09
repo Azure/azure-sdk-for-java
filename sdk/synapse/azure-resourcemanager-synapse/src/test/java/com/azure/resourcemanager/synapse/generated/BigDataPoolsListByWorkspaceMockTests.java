@@ -12,7 +12,6 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.synapse.SynapseManager;
 import com.azure.resourcemanager.synapse.models.BigDataPoolResourceInfo;
-import com.azure.resourcemanager.synapse.models.ConfigurationType;
 import com.azure.resourcemanager.synapse.models.NodeSize;
 import com.azure.resourcemanager.synapse.models.NodeSizeFamily;
 import java.nio.charset.StandardCharsets;
@@ -25,7 +24,7 @@ public final class BigDataPoolsListByWorkspaceMockTests {
     @Test
     public void testListByWorkspace() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"cejo\",\"autoScale\":{\"minNodeCount\":937861779,\"enabled\":false,\"maxNodeCount\":861790888},\"creationDate\":\"2021-03-20T00:28:35Z\",\"autoPause\":{\"delayInMinutes\":99801916,\"enabled\":false},\"isComputeIsolationEnabled\":false,\"isAutotuneEnabled\":true,\"sessionLevelPackagesEnabled\":false,\"cacheSize\":1249603806,\"dynamicExecutorAllocation\":{\"enabled\":true,\"minExecutors\":316016947,\"maxExecutors\":845820025},\"sparkEventsFolder\":\"izhqikmgobl\",\"nodeCount\":44018032,\"libraryRequirements\":{\"time\":\"2021-05-19T05:59:46Z\",\"content\":\"iisklbonxx\",\"filename\":\"jxvtrkfkgenjqnnp\"},\"customLibraries\":[{\"name\":\"snyxigfouj\",\"path\":\"xgdqmrlhnzkwops\",\"containerName\":\"yinxu\",\"uploadedTimestamp\":\"2021-02-03T10:12:01Z\",\"type\":\"yxwjezb\",\"provisioningStatus\":\"ployuekdcpvu\",\"creatorId\":\"rsvjmnsvujnjktv\"},{\"name\":\"efcjisepkdbxot\",\"path\":\"jampqoclannm\",\"containerName\":\"nlsuqbwzstr\",\"uploadedTimestamp\":\"2021-01-09T08:16:41Z\",\"type\":\"patr\",\"provisioningStatus\":\"jktfinf\",\"creatorId\":\"ks\"},{\"name\":\"culwkqic\",\"path\":\"ook\",\"containerName\":\"flsgaoj\",\"uploadedTimestamp\":\"2021-01-11T06:14:21Z\",\"type\":\"q\",\"provisioningStatus\":\"oc\",\"creatorId\":\"zpujzflmcdsg\"},{\"name\":\"elujiswl\",\"path\":\"unxhfwlfxzfwugeu\",\"containerName\":\"knecexkgrv\",\"uploadedTimestamp\":\"2021-09-28T17:08:57Z\",\"type\":\"d\",\"provisioningStatus\":\"gsytqpdzfyxcn\",\"creatorId\":\"woxcgzbejqfb\"}],\"sparkConfigProperties\":{\"time\":\"2021-03-23T15:39:52Z\",\"content\":\"jxdwdrpazqjkr\",\"filename\":\"bwotfcuuugtji\",\"configurationType\":\"Artifact\"},\"sparkVersion\":\"yiawohfmhnnz\",\"defaultSparkLogFolder\":\"cjjkmqenh\",\"nodeSize\":\"XXXLarge\",\"nodeSizeFamily\":\"HardwareAcceleratedFPGA\",\"lastSucceededTimestamp\":\"2021-10-11T05:24:17Z\"},\"location\":\"sgloi\",\"tags\":{\"enbg\":\"lvivqsuvw\",\"pkhc\":\"i\"},\"id\":\"oa\",\"name\":\"xukuicjuftekio\",\"type\":\"anduew\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"qkueatgroesho\",\"autoScale\":{\"minNodeCount\":1935320450,\"enabled\":false,\"maxNodeCount\":826437079},\"creationDate\":\"2021-05-24T01:51:35Z\",\"autoPause\":{\"delayInMinutes\":597504676,\"enabled\":true},\"isComputeIsolationEnabled\":false,\"sessionLevelPackagesEnabled\":true,\"cacheSize\":1536135813,\"dynamicExecutorAllocation\":{\"enabled\":true},\"sparkEventsFolder\":\"mtdwcky\",\"nodeCount\":568375923,\"libraryRequirements\":{\"time\":\"2021-08-17T10:42:57Z\",\"content\":\"dljdjuskb\",\"filename\":\"eqy\"},\"customLibraries\":[{\"name\":\"ysfaqegplwrysh\",\"path\":\"d\",\"containerName\":\"bxgkqusy\",\"uploadedTimestamp\":\"2020-12-26T05:36:32Z\",\"type\":\"dacarvvlfnty\",\"provisioningStatus\":\"poi\",\"creatorId\":\"naz\"},{\"name\":\"ohzrsqalsx\",\"path\":\"nwqapfgsdpcvess\",\"containerName\":\"hhkuuip\",\"uploadedTimestamp\":\"2021-07-14T11:13:21Z\",\"type\":\"ctekval\",\"provisioningStatus\":\"htjqvqyvw\",\"creatorId\":\"tae\"},{\"name\":\"hzzysevusxiv\",\"path\":\"rryveimipskdy\",\"containerName\":\"tv\",\"uploadedTimestamp\":\"2021-09-22T17:23:18Z\",\"type\":\"aftjvvruxwigsy\",\"provisioningStatus\":\"pq\",\"creatorId\":\"mjtgrqg\"}],\"sparkConfigProperties\":{\"time\":\"2021-09-22T05:16:38Z\",\"content\":\"eplkcsm\",\"filename\":\"hwtbbaedorvvm\"},\"sparkVersion\":\"loyg\",\"defaultSparkLogFolder\":\"gwumgxdgdhpa\",\"nodeSize\":\"Small\",\"nodeSizeFamily\":\"None\",\"lastSucceededTimestamp\":\"2021-01-13T23:43:23Z\"},\"location\":\"d\",\"tags\":{\"colsrsxaptefhex\":\"aqwotmmwl\"},\"id\":\"gjokjljnhvlqjbek\",\"name\":\"eeksnbksdqhjvyk\",\"type\":\"xeslkhhustcpoqm\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,39 +33,36 @@ public final class BigDataPoolsListByWorkspaceMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<BigDataPoolResourceInfo> response = manager.bigDataPools()
-            .listByWorkspace("hyrkqakofajfr", "prfvmkinwteyrqsh", com.azure.core.util.Context.NONE);
+        PagedIterable<BigDataPoolResourceInfo> response
+            = manager.bigDataPools().listByWorkspace("txfkndlqvt", "knvgmmbugtywat", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("sgloi", response.iterator().next().location());
-        Assertions.assertEquals("lvivqsuvw", response.iterator().next().tags().get("enbg"));
-        Assertions.assertEquals("cejo", response.iterator().next().provisioningState());
-        Assertions.assertEquals(937861779, response.iterator().next().autoScale().minNodeCount());
+        Assertions.assertEquals("d", response.iterator().next().location());
+        Assertions.assertEquals("aqwotmmwl", response.iterator().next().tags().get("colsrsxaptefhex"));
+        Assertions.assertEquals("qkueatgroesho", response.iterator().next().provisioningState());
+        Assertions.assertEquals(1935320450, response.iterator().next().autoScale().minNodeCount());
         Assertions.assertEquals(false, response.iterator().next().autoScale().enabled());
-        Assertions.assertEquals(861790888, response.iterator().next().autoScale().maxNodeCount());
-        Assertions.assertEquals(99801916, response.iterator().next().autoPause().delayInMinutes());
-        Assertions.assertEquals(false, response.iterator().next().autoPause().enabled());
+        Assertions.assertEquals(826437079, response.iterator().next().autoScale().maxNodeCount());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-24T01:51:35Z"),
+            response.iterator().next().creationDate());
+        Assertions.assertEquals(597504676, response.iterator().next().autoPause().delayInMinutes());
+        Assertions.assertEquals(true, response.iterator().next().autoPause().enabled());
         Assertions.assertEquals(false, response.iterator().next().isComputeIsolationEnabled());
-        Assertions.assertEquals(true, response.iterator().next().isAutotuneEnabled());
-        Assertions.assertEquals(false, response.iterator().next().sessionLevelPackagesEnabled());
-        Assertions.assertEquals(1249603806, response.iterator().next().cacheSize());
+        Assertions.assertEquals(true, response.iterator().next().sessionLevelPackagesEnabled());
+        Assertions.assertEquals(1536135813, response.iterator().next().cacheSize());
         Assertions.assertEquals(true, response.iterator().next().dynamicExecutorAllocation().enabled());
-        Assertions.assertEquals(316016947, response.iterator().next().dynamicExecutorAllocation().minExecutors());
-        Assertions.assertEquals(845820025, response.iterator().next().dynamicExecutorAllocation().maxExecutors());
-        Assertions.assertEquals("izhqikmgobl", response.iterator().next().sparkEventsFolder());
-        Assertions.assertEquals(44018032, response.iterator().next().nodeCount());
-        Assertions.assertEquals("iisklbonxx", response.iterator().next().libraryRequirements().content());
-        Assertions.assertEquals("jxvtrkfkgenjqnnp", response.iterator().next().libraryRequirements().filename());
-        Assertions.assertEquals("snyxigfouj", response.iterator().next().customLibraries().get(0).name());
-        Assertions.assertEquals("xgdqmrlhnzkwops", response.iterator().next().customLibraries().get(0).path());
-        Assertions.assertEquals("yinxu", response.iterator().next().customLibraries().get(0).containerName());
-        Assertions.assertEquals("yxwjezb", response.iterator().next().customLibraries().get(0).type());
-        Assertions.assertEquals("jxdwdrpazqjkr", response.iterator().next().sparkConfigProperties().content());
-        Assertions.assertEquals("bwotfcuuugtji", response.iterator().next().sparkConfigProperties().filename());
-        Assertions.assertEquals(ConfigurationType.ARTIFACT,
-            response.iterator().next().sparkConfigProperties().configurationType());
-        Assertions.assertEquals("yiawohfmhnnz", response.iterator().next().sparkVersion());
-        Assertions.assertEquals("cjjkmqenh", response.iterator().next().defaultSparkLogFolder());
-        Assertions.assertEquals(NodeSize.XXXLARGE, response.iterator().next().nodeSize());
-        Assertions.assertEquals(NodeSizeFamily.HARDWARE_ACCELERATED_FPGA, response.iterator().next().nodeSizeFamily());
+        Assertions.assertEquals("mtdwcky", response.iterator().next().sparkEventsFolder());
+        Assertions.assertEquals(568375923, response.iterator().next().nodeCount());
+        Assertions.assertEquals("dljdjuskb", response.iterator().next().libraryRequirements().content());
+        Assertions.assertEquals("eqy", response.iterator().next().libraryRequirements().filename());
+        Assertions.assertEquals("ysfaqegplwrysh", response.iterator().next().customLibraries().get(0).name());
+        Assertions.assertEquals("d", response.iterator().next().customLibraries().get(0).path());
+        Assertions.assertEquals("bxgkqusy", response.iterator().next().customLibraries().get(0).containerName());
+        Assertions.assertEquals("dacarvvlfnty", response.iterator().next().customLibraries().get(0).type());
+        Assertions.assertEquals("eplkcsm", response.iterator().next().sparkConfigProperties().content());
+        Assertions.assertEquals("hwtbbaedorvvm", response.iterator().next().sparkConfigProperties().filename());
+        Assertions.assertEquals("loyg", response.iterator().next().sparkVersion());
+        Assertions.assertEquals("gwumgxdgdhpa", response.iterator().next().defaultSparkLogFolder());
+        Assertions.assertEquals(NodeSize.SMALL, response.iterator().next().nodeSize());
+        Assertions.assertEquals(NodeSizeFamily.NONE, response.iterator().next().nodeSizeFamily());
     }
 }

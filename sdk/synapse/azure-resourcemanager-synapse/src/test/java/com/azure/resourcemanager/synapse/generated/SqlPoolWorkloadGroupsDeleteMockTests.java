@@ -28,7 +28,7 @@ public final class SqlPoolWorkloadGroupsDeleteMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.sqlPoolWorkloadGroups()
-            .delete("vcdsvm", "bit", "kdtfo", "vfiybxqichgyb", com.azure.core.util.Context.NONE);
+            .delete("nrecchdidrm", "hkahmjedbiucvkh", "wmjpjbweunxcqrr", "hu", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -104,9 +104,9 @@ public final class DigitalTwinsEndpointResourceImpl implements DigitalTwinsEndpo
         com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "digitalTwinsInstances");
-        this.endpointName = Utils.getValueFromIdByName(innerObject.id(), "endpoints");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "digitalTwinsInstances");
+        this.endpointName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "endpoints");
     }
 
     public DigitalTwinsEndpointResource refresh() {

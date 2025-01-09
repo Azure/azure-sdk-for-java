@@ -4,8 +4,6 @@
 
 package com.azure.messaging.servicebus.administration.implementation.models;
 
-import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
-
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
@@ -240,11 +238,11 @@ public final class RuleDescriptionEntryImpl implements XmlSerializable<RuleDescr
                 } else if ("published".equals(elementName.getLocalPart())
                     && WWW_W3_ORG_TWO_ZERO_ZERO_FIVE_ATOM.equals(elementName.getNamespaceURI())) {
                     deserializedRuleDescriptionEntry.published
-                        = reader.getNullableElement(dateString -> EntityHelper.parseOffsetDateTimeBest(dateString));
+                        = reader.getNullableElement(dateString -> CoreUtils.parseBestOffsetDateTime(dateString));
                 } else if ("updated".equals(elementName.getLocalPart())
                     && WWW_W3_ORG_TWO_ZERO_ZERO_FIVE_ATOM.equals(elementName.getNamespaceURI())) {
                     deserializedRuleDescriptionEntry.updated
-                        = reader.getNullableElement(dateString -> EntityHelper.parseOffsetDateTimeBest(dateString));
+                        = reader.getNullableElement(dateString -> CoreUtils.parseBestOffsetDateTime(dateString));
                 } else if ("link".equals(elementName.getLocalPart())
                     && WWW_W3_ORG_TWO_ZERO_ZERO_FIVE_ATOM.equals(elementName.getNamespaceURI())) {
                     deserializedRuleDescriptionEntry.link = ResponseLinkImpl.fromXml(reader, "link");

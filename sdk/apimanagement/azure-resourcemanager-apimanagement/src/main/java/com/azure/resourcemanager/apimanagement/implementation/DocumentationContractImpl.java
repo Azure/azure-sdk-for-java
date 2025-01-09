@@ -119,9 +119,9 @@ public final class DocumentationContractImpl
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.documentationId = Utils.getValueFromIdByName(innerObject.id(), "documentations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.documentationId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "documentations");
     }
 
     public DocumentationContract refresh() {

@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ApiKeys. */
+/**
+ * Resource collection API of ApiKeys.
+ */
 public interface ApiKeys {
     /**
      * Gets a list of API keys of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface ApiKeys {
 
     /**
      * Gets a list of API keys of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param context The context to associate with this operation.
@@ -38,11 +40,11 @@ public interface ApiKeys {
 
     /**
      * Create an API Key of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param apiKeyProperties Properties that need to be specified to create an API key of a Application Insights
-     *     component.
+     * component.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -54,11 +56,11 @@ public interface ApiKeys {
 
     /**
      * Create an API Key of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param apiKeyProperties Properties that need to be specified to create an API key of a Application Insights
-     *     component.
+     * component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -69,7 +71,7 @@ public interface ApiKeys {
 
     /**
      * Delete an API Key of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param keyId The API Key ID. This is unique within a Application Insights component.
@@ -84,7 +86,7 @@ public interface ApiKeys {
 
     /**
      * Delete an API Key of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param keyId The API Key ID. This is unique within a Application Insights component.
@@ -97,7 +99,7 @@ public interface ApiKeys {
 
     /**
      * Get the API Key for this key id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param keyId The API Key ID. This is unique within a Application Insights component.
@@ -112,7 +114,7 @@ public interface ApiKeys {
 
     /**
      * Get the API Key for this key id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param keyId The API Key ID. This is unique within a Application Insights component.

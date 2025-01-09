@@ -5,56 +5,68 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Gets or sets the virtual machine resource settings. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resourceType")
-@JsonTypeName("Microsoft.Compute/virtualMachines")
+/**
+ * Gets or sets the virtual machine resource settings.
+ */
 @Fluent
 public final class VirtualMachineResourceSettings extends ResourceSettings {
     /*
+     * The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
+     */
+    private String resourceType = "Microsoft.Compute/virtualMachines";
+
+    /*
      * Gets or sets the Resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * Gets or sets user-managed identities
      */
-    @JsonProperty(value = "userManagedIdentities")
     private List<String> userManagedIdentities;
 
     /*
      * Gets or sets the target availability zone.
      */
-    @JsonProperty(value = "targetAvailabilityZone")
     private TargetAvailabilityZone targetAvailabilityZone;
 
     /*
      * Gets or sets the target virtual machine size.
      */
-    @JsonProperty(value = "targetVmSize")
     private String targetVmSize;
 
     /*
      * Gets or sets the target availability set id for virtual machines not in an availability set at source.
      */
-    @JsonProperty(value = "targetAvailabilitySetId")
     private String targetAvailabilitySetId;
 
-    /** Creates an instance of VirtualMachineResourceSettings class. */
+    /**
+     * Creates an instance of VirtualMachineResourceSettings class.
+     */
     public VirtualMachineResourceSettings() {
     }
 
     /**
+     * Get the resourceType property: The resource type. For example, the value can be
+     * Microsoft.Compute/virtualMachines.
+     * 
+     * @return the resourceType value.
+     */
+    @Override
+    public String resourceType() {
+        return this.resourceType;
+    }
+
+    /**
      * Get the tags property: Gets or sets the Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -63,7 +75,7 @@ public final class VirtualMachineResourceSettings extends ResourceSettings {
 
     /**
      * Set the tags property: Gets or sets the Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the VirtualMachineResourceSettings object itself.
      */
@@ -74,7 +86,7 @@ public final class VirtualMachineResourceSettings extends ResourceSettings {
 
     /**
      * Get the userManagedIdentities property: Gets or sets user-managed identities.
-     *
+     * 
      * @return the userManagedIdentities value.
      */
     public List<String> userManagedIdentities() {
@@ -83,7 +95,7 @@ public final class VirtualMachineResourceSettings extends ResourceSettings {
 
     /**
      * Set the userManagedIdentities property: Gets or sets user-managed identities.
-     *
+     * 
      * @param userManagedIdentities the userManagedIdentities value to set.
      * @return the VirtualMachineResourceSettings object itself.
      */
@@ -94,7 +106,7 @@ public final class VirtualMachineResourceSettings extends ResourceSettings {
 
     /**
      * Get the targetAvailabilityZone property: Gets or sets the target availability zone.
-     *
+     * 
      * @return the targetAvailabilityZone value.
      */
     public TargetAvailabilityZone targetAvailabilityZone() {
@@ -103,7 +115,7 @@ public final class VirtualMachineResourceSettings extends ResourceSettings {
 
     /**
      * Set the targetAvailabilityZone property: Gets or sets the target availability zone.
-     *
+     * 
      * @param targetAvailabilityZone the targetAvailabilityZone value to set.
      * @return the VirtualMachineResourceSettings object itself.
      */
@@ -114,7 +126,7 @@ public final class VirtualMachineResourceSettings extends ResourceSettings {
 
     /**
      * Get the targetVmSize property: Gets or sets the target virtual machine size.
-     *
+     * 
      * @return the targetVmSize value.
      */
     public String targetVmSize() {
@@ -123,7 +135,7 @@ public final class VirtualMachineResourceSettings extends ResourceSettings {
 
     /**
      * Set the targetVmSize property: Gets or sets the target virtual machine size.
-     *
+     * 
      * @param targetVmSize the targetVmSize value to set.
      * @return the VirtualMachineResourceSettings object itself.
      */
@@ -135,7 +147,7 @@ public final class VirtualMachineResourceSettings extends ResourceSettings {
     /**
      * Get the targetAvailabilitySetId property: Gets or sets the target availability set id for virtual machines not in
      * an availability set at source.
-     *
+     * 
      * @return the targetAvailabilitySetId value.
      */
     public String targetAvailabilitySetId() {
@@ -145,7 +157,7 @@ public final class VirtualMachineResourceSettings extends ResourceSettings {
     /**
      * Set the targetAvailabilitySetId property: Gets or sets the target availability set id for virtual machines not in
      * an availability set at source.
-     *
+     * 
      * @param targetAvailabilitySetId the targetAvailabilitySetId value to set.
      * @return the VirtualMachineResourceSettings object itself.
      */
@@ -154,14 +166,18 @@ public final class VirtualMachineResourceSettings extends ResourceSettings {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualMachineResourceSettings withTargetResourceName(String targetResourceName) {
         super.withTargetResourceName(targetResourceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualMachineResourceSettings withTargetResourceGroupName(String targetResourceGroupName) {
         super.withTargetResourceGroupName(targetResourceGroupName);
@@ -170,11 +186,73 @@ public final class VirtualMachineResourceSettings extends ResourceSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetResourceName", targetResourceName());
+        jsonWriter.writeStringField("targetResourceGroupName", targetResourceGroupName());
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("userManagedIdentities", this.userManagedIdentities,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("targetAvailabilityZone",
+            this.targetAvailabilityZone == null ? null : this.targetAvailabilityZone.toString());
+        jsonWriter.writeStringField("targetVmSize", this.targetVmSize);
+        jsonWriter.writeStringField("targetAvailabilitySetId", this.targetAvailabilitySetId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineResourceSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineResourceSettings if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineResourceSettings.
+     */
+    public static VirtualMachineResourceSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineResourceSettings deserializedVirtualMachineResourceSettings
+                = new VirtualMachineResourceSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetResourceName".equals(fieldName)) {
+                    deserializedVirtualMachineResourceSettings.withTargetResourceName(reader.getString());
+                } else if ("targetResourceGroupName".equals(fieldName)) {
+                    deserializedVirtualMachineResourceSettings.withTargetResourceGroupName(reader.getString());
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedVirtualMachineResourceSettings.resourceType = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVirtualMachineResourceSettings.tags = tags;
+                } else if ("userManagedIdentities".equals(fieldName)) {
+                    List<String> userManagedIdentities = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualMachineResourceSettings.userManagedIdentities = userManagedIdentities;
+                } else if ("targetAvailabilityZone".equals(fieldName)) {
+                    deserializedVirtualMachineResourceSettings.targetAvailabilityZone
+                        = TargetAvailabilityZone.fromString(reader.getString());
+                } else if ("targetVmSize".equals(fieldName)) {
+                    deserializedVirtualMachineResourceSettings.targetVmSize = reader.getString();
+                } else if ("targetAvailabilitySetId".equals(fieldName)) {
+                    deserializedVirtualMachineResourceSettings.targetAvailabilitySetId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineResourceSettings;
+        });
     }
 }

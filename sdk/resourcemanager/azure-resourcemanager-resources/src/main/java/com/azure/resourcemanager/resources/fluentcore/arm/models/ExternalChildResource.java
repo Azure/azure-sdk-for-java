@@ -13,6 +13,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 public interface ExternalChildResource<FluentModelT, ParentT>
     extends ChildResource<ParentT>, Refreshable<FluentModelT> {
     /**
+     * Gets the id of the external child resource.
+     *
      * @return the id of the external child resource
      */
     String id();

@@ -28,6 +28,11 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
      */
     private OffsetDateTime receivedTimestamp;
 
+    /*
+     * Number of segments in the message
+     */
+    private int segmentCount;
+
     /**
      * Creates an instance of AcsSmsReceivedEventData class.
      */
@@ -75,6 +80,26 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
     }
 
     /**
+     * Get the segmentCount property: Number of segments in the message.
+     * 
+     * @return the segmentCount value.
+     */
+    public int getSegmentCount() {
+        return this.segmentCount;
+    }
+
+    /**
+     * Set the segmentCount property: Number of segments in the message.
+     * 
+     * @param segmentCount the segmentCount value to set.
+     * @return the AcsSmsReceivedEventData object itself.
+     */
+    public AcsSmsReceivedEventData setSegmentCount(int segmentCount) {
+        this.segmentCount = segmentCount;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -110,6 +135,7 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
         jsonWriter.writeStringField("messageId", getMessageId());
         jsonWriter.writeStringField("from", getFrom());
         jsonWriter.writeStringField("to", getTo());
+        jsonWriter.writeIntField("segmentCount", this.segmentCount);
         jsonWriter.writeStringField("message", this.message);
         jsonWriter.writeStringField("receivedTimestamp",
             this.receivedTimestamp == null
@@ -124,6 +150,7 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsSmsReceivedEventData if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsSmsReceivedEventData.
      */
     public static AcsSmsReceivedEventData fromJson(JsonReader jsonReader) throws IOException {
@@ -139,6 +166,8 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
                     deserializedAcsSmsReceivedEventData.setFrom(reader.getString());
                 } else if ("to".equals(fieldName)) {
                     deserializedAcsSmsReceivedEventData.setTo(reader.getString());
+                } else if ("segmentCount".equals(fieldName)) {
+                    deserializedAcsSmsReceivedEventData.segmentCount = reader.getInt();
                 } else if ("message".equals(fieldName)) {
                     deserializedAcsSmsReceivedEventData.message = reader.getString();
                 } else if ("receivedTimestamp".equals(fieldName)) {

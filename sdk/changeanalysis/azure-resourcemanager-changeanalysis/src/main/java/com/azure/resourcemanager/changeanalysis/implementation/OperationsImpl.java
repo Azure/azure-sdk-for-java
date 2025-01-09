@@ -27,12 +27,14 @@ public final class OperationsImpl implements Operations {
 
     public PagedIterable<ResourceProviderOperationDefinition> list() {
         PagedIterable<ResourceProviderOperationDefinitionInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ResourceProviderOperationDefinitionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ResourceProviderOperationDefinitionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ResourceProviderOperationDefinition> list(String skipToken, Context context) {
         PagedIterable<ResourceProviderOperationDefinitionInner> inner = this.serviceClient().list(skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new ResourceProviderOperationDefinitionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ResourceProviderOperationDefinitionImpl(inner1, this.manager()));
     }
 
     private OperationsClient serviceClient() {

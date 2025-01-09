@@ -12,7 +12,9 @@ import com.azure.resourcemanager.maintenance.models.UpdateStatus;
  */
 public final class ApplyUpdatesCreateOrUpdateOrCancelSamples {
     /*
-     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2023-10-01-preview/examples/ApplyUpdates_CreateOrUpdateOnly_NoCancellation.json
+     * x-ms-original-file:
+     * specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2023-10-01-preview/examples/
+     * ApplyUpdates_CreateOrUpdateOnly_NoCancellation.json
      */
     /**
      * Sample code: ApplyUpdates_CreateOrUpdateOnly_NoCancellation.
@@ -27,7 +29,9 @@ public final class ApplyUpdatesCreateOrUpdateOrCancelSamples {
     }
 
     /*
-     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2023-10-01-preview/examples/ApplyUpdates_CreateOrUpdate_CancelMaintenance.json
+     * x-ms-original-file:
+     * specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2023-10-01-preview/examples/
+     * ApplyUpdates_CreateOrUpdate_CancelMaintenance.json
      */
     /**
      * Sample code: ApplyUpdates_CreateOrUpdateOrCancel.

@@ -5,32 +5,37 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.ApiVersionSetEntityBase;
 import com.azure.resourcemanager.apimanagement.models.VersioningScheme;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties used to create or update an API Version Set. */
+/**
+ * Properties used to create or update an API Version Set.
+ */
 @Fluent
 public final class ApiVersionSetUpdateParametersProperties extends ApiVersionSetEntityBase {
     /*
      * Name of API Version Set
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * An value that determines where the API Version identifier will be located in a HTTP request.
      */
-    @JsonProperty(value = "versioningScheme")
     private VersioningScheme versioningScheme;
 
-    /** Creates an instance of ApiVersionSetUpdateParametersProperties class. */
+    /**
+     * Creates an instance of ApiVersionSetUpdateParametersProperties class.
+     */
     public ApiVersionSetUpdateParametersProperties() {
     }
 
     /**
      * Get the displayName property: Name of API Version Set.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -39,7 +44,7 @@ public final class ApiVersionSetUpdateParametersProperties extends ApiVersionSet
 
     /**
      * Set the displayName property: Name of API Version Set.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ApiVersionSetUpdateParametersProperties object itself.
      */
@@ -51,7 +56,7 @@ public final class ApiVersionSetUpdateParametersProperties extends ApiVersionSet
     /**
      * Get the versioningScheme property: An value that determines where the API Version identifier will be located in a
      * HTTP request.
-     *
+     * 
      * @return the versioningScheme value.
      */
     public VersioningScheme versioningScheme() {
@@ -61,7 +66,7 @@ public final class ApiVersionSetUpdateParametersProperties extends ApiVersionSet
     /**
      * Set the versioningScheme property: An value that determines where the API Version identifier will be located in a
      * HTTP request.
-     *
+     * 
      * @param versioningScheme the versioningScheme value to set.
      * @return the ApiVersionSetUpdateParametersProperties object itself.
      */
@@ -70,21 +75,27 @@ public final class ApiVersionSetUpdateParametersProperties extends ApiVersionSet
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiVersionSetUpdateParametersProperties withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiVersionSetUpdateParametersProperties withVersionQueryName(String versionQueryName) {
         super.withVersionQueryName(versionQueryName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiVersionSetUpdateParametersProperties withVersionHeaderName(String versionHeaderName) {
         super.withVersionHeaderName(versionHeaderName);
@@ -93,11 +104,61 @@ public final class ApiVersionSetUpdateParametersProperties extends ApiVersionSet
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("versionQueryName", versionQueryName());
+        jsonWriter.writeStringField("versionHeaderName", versionHeaderName());
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("versioningScheme",
+            this.versioningScheme == null ? null : this.versioningScheme.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiVersionSetUpdateParametersProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiVersionSetUpdateParametersProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiVersionSetUpdateParametersProperties.
+     */
+    public static ApiVersionSetUpdateParametersProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiVersionSetUpdateParametersProperties deserializedApiVersionSetUpdateParametersProperties
+                = new ApiVersionSetUpdateParametersProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedApiVersionSetUpdateParametersProperties.withDescription(reader.getString());
+                } else if ("versionQueryName".equals(fieldName)) {
+                    deserializedApiVersionSetUpdateParametersProperties.withVersionQueryName(reader.getString());
+                } else if ("versionHeaderName".equals(fieldName)) {
+                    deserializedApiVersionSetUpdateParametersProperties.withVersionHeaderName(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedApiVersionSetUpdateParametersProperties.displayName = reader.getString();
+                } else if ("versioningScheme".equals(fieldName)) {
+                    deserializedApiVersionSetUpdateParametersProperties.versioningScheme
+                        = VersioningScheme.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiVersionSetUpdateParametersProperties;
+        });
     }
 }

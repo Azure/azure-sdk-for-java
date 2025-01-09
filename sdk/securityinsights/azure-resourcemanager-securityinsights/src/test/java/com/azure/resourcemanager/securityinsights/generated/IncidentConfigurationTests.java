@@ -18,38 +18,37 @@ public final class IncidentConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IncidentConfiguration model = BinaryData.fromString(
-            "{\"createIncident\":false,\"groupingConfiguration\":{\"enabled\":false,\"reopenClosedIncident\":false,\"lookbackDuration\":\"PT198H59M7S\",\"matchingMethod\":\"AllEntities\",\"groupByEntities\":[\"MailCluster\",\"IP\",\"RegistryValue\",\"IP\"],\"groupByAlertDetails\":[\"DisplayName\",\"Severity\",\"Severity\"],\"groupByCustomDetails\":[\"jcemqbmfuvqar\",\"z\",\"uqrebluimmbwx\"]}}")
+            "{\"createIncident\":true,\"groupingConfiguration\":{\"enabled\":false,\"reopenClosedIncident\":false,\"lookbackDuration\":\"PT218H45M39S\",\"matchingMethod\":\"AnyAlert\",\"groupByEntities\":[\"IP\",\"DNS\",\"Process\"],\"groupByAlertDetails\":[\"DisplayName\",\"DisplayName\"],\"groupByCustomDetails\":[\"izxfpxt\",\"qscjavftjuh\",\"qaz\",\"mtggu\"]}}")
             .toObject(IncidentConfiguration.class);
-        Assertions.assertEquals(false, model.createIncident());
+        Assertions.assertEquals(true, model.createIncident());
         Assertions.assertEquals(false, model.groupingConfiguration().enabled());
         Assertions.assertEquals(false, model.groupingConfiguration().reopenClosedIncident());
-        Assertions.assertEquals(Duration.parse("PT198H59M7S"), model.groupingConfiguration().lookbackDuration());
-        Assertions.assertEquals(MatchingMethod.ALL_ENTITIES, model.groupingConfiguration().matchingMethod());
-        Assertions.assertEquals(EntityMappingType.MAIL_CLUSTER, model.groupingConfiguration().groupByEntities().get(0));
+        Assertions.assertEquals(Duration.parse("PT218H45M39S"), model.groupingConfiguration().lookbackDuration());
+        Assertions.assertEquals(MatchingMethod.ANY_ALERT, model.groupingConfiguration().matchingMethod());
+        Assertions.assertEquals(EntityMappingType.IP, model.groupingConfiguration().groupByEntities().get(0));
         Assertions.assertEquals(AlertDetail.DISPLAY_NAME, model.groupingConfiguration().groupByAlertDetails().get(0));
-        Assertions.assertEquals("jcemqbmfuvqar", model.groupingConfiguration().groupByCustomDetails().get(0));
+        Assertions.assertEquals("izxfpxt", model.groupingConfiguration().groupByCustomDetails().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IncidentConfiguration model = new IncidentConfiguration().withCreateIncident(false)
+        IncidentConfiguration model = new IncidentConfiguration().withCreateIncident(true)
             .withGroupingConfiguration(new GroupingConfiguration().withEnabled(false)
                 .withReopenClosedIncident(false)
-                .withLookbackDuration(Duration.parse("PT198H59M7S"))
-                .withMatchingMethod(MatchingMethod.ALL_ENTITIES)
-                .withGroupByEntities(Arrays.asList(EntityMappingType.MAIL_CLUSTER, EntityMappingType.IP,
-                    EntityMappingType.REGISTRY_VALUE, EntityMappingType.IP))
-                .withGroupByAlertDetails(
-                    Arrays.asList(AlertDetail.DISPLAY_NAME, AlertDetail.SEVERITY, AlertDetail.SEVERITY))
-                .withGroupByCustomDetails(Arrays.asList("jcemqbmfuvqar", "z", "uqrebluimmbwx")));
+                .withLookbackDuration(Duration.parse("PT218H45M39S"))
+                .withMatchingMethod(MatchingMethod.ANY_ALERT)
+                .withGroupByEntities(
+                    Arrays.asList(EntityMappingType.IP, EntityMappingType.DNS, EntityMappingType.PROCESS))
+                .withGroupByAlertDetails(Arrays.asList(AlertDetail.DISPLAY_NAME, AlertDetail.DISPLAY_NAME))
+                .withGroupByCustomDetails(Arrays.asList("izxfpxt", "qscjavftjuh", "qaz", "mtggu")));
         model = BinaryData.fromObject(model).toObject(IncidentConfiguration.class);
-        Assertions.assertEquals(false, model.createIncident());
+        Assertions.assertEquals(true, model.createIncident());
         Assertions.assertEquals(false, model.groupingConfiguration().enabled());
         Assertions.assertEquals(false, model.groupingConfiguration().reopenClosedIncident());
-        Assertions.assertEquals(Duration.parse("PT198H59M7S"), model.groupingConfiguration().lookbackDuration());
-        Assertions.assertEquals(MatchingMethod.ALL_ENTITIES, model.groupingConfiguration().matchingMethod());
-        Assertions.assertEquals(EntityMappingType.MAIL_CLUSTER, model.groupingConfiguration().groupByEntities().get(0));
+        Assertions.assertEquals(Duration.parse("PT218H45M39S"), model.groupingConfiguration().lookbackDuration());
+        Assertions.assertEquals(MatchingMethod.ANY_ALERT, model.groupingConfiguration().matchingMethod());
+        Assertions.assertEquals(EntityMappingType.IP, model.groupingConfiguration().groupByEntities().get(0));
         Assertions.assertEquals(AlertDetail.DISPLAY_NAME, model.groupingConfiguration().groupByAlertDetails().get(0));
-        Assertions.assertEquals("jcemqbmfuvqar", model.groupingConfiguration().groupByCustomDetails().get(0));
+        Assertions.assertEquals("izxfpxt", model.groupingConfiguration().groupByCustomDetails().get(0));
     }
 }

@@ -5,33 +5,40 @@
 package com.azure.resourcemanager.applicationinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsComponentDataVolumeCap;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** An Application Insights component billing features. */
+/**
+ * An Application Insights component billing features.
+ */
 @Fluent
-public final class ApplicationInsightsComponentBillingFeaturesInner {
+public final class ApplicationInsightsComponentBillingFeaturesInner
+    implements JsonSerializable<ApplicationInsightsComponentBillingFeaturesInner> {
     /*
      * An Application Insights component daily data volume cap
      */
-    @JsonProperty(value = "DataVolumeCap")
     private ApplicationInsightsComponentDataVolumeCap dataVolumeCap;
 
     /*
      * Current enabled pricing plan. When the component is in the Enterprise plan, this will list both 'Basic' and
      * 'Application Insights Enterprise'.
      */
-    @JsonProperty(value = "CurrentBillingFeatures")
     private List<String> currentBillingFeatures;
 
-    /** Creates an instance of ApplicationInsightsComponentBillingFeaturesInner class. */
+    /**
+     * Creates an instance of ApplicationInsightsComponentBillingFeaturesInner class.
+     */
     public ApplicationInsightsComponentBillingFeaturesInner() {
     }
 
     /**
      * Get the dataVolumeCap property: An Application Insights component daily data volume cap.
-     *
+     * 
      * @return the dataVolumeCap value.
      */
     public ApplicationInsightsComponentDataVolumeCap dataVolumeCap() {
@@ -40,7 +47,7 @@ public final class ApplicationInsightsComponentBillingFeaturesInner {
 
     /**
      * Set the dataVolumeCap property: An Application Insights component daily data volume cap.
-     *
+     * 
      * @param dataVolumeCap the dataVolumeCap value to set.
      * @return the ApplicationInsightsComponentBillingFeaturesInner object itself.
      */
@@ -53,7 +60,7 @@ public final class ApplicationInsightsComponentBillingFeaturesInner {
     /**
      * Get the currentBillingFeatures property: Current enabled pricing plan. When the component is in the Enterprise
      * plan, this will list both 'Basic' and 'Application Insights Enterprise'.
-     *
+     * 
      * @return the currentBillingFeatures value.
      */
     public List<String> currentBillingFeatures() {
@@ -63,7 +70,7 @@ public final class ApplicationInsightsComponentBillingFeaturesInner {
     /**
      * Set the currentBillingFeatures property: Current enabled pricing plan. When the component is in the Enterprise
      * plan, this will list both 'Basic' and 'Application Insights Enterprise'.
-     *
+     * 
      * @param currentBillingFeatures the currentBillingFeatures value to set.
      * @return the ApplicationInsightsComponentBillingFeaturesInner object itself.
      */
@@ -75,12 +82,56 @@ public final class ApplicationInsightsComponentBillingFeaturesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dataVolumeCap() != null) {
             dataVolumeCap().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("DataVolumeCap", this.dataVolumeCap);
+        jsonWriter.writeArrayField("CurrentBillingFeatures", this.currentBillingFeatures,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationInsightsComponentBillingFeaturesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationInsightsComponentBillingFeaturesInner if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationInsightsComponentBillingFeaturesInner.
+     */
+    public static ApplicationInsightsComponentBillingFeaturesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationInsightsComponentBillingFeaturesInner deserializedApplicationInsightsComponentBillingFeaturesInner
+                = new ApplicationInsightsComponentBillingFeaturesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("DataVolumeCap".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentBillingFeaturesInner.dataVolumeCap
+                        = ApplicationInsightsComponentDataVolumeCap.fromJson(reader);
+                } else if ("CurrentBillingFeatures".equals(fieldName)) {
+                    List<String> currentBillingFeatures = reader.readArray(reader1 -> reader1.getString());
+                    deserializedApplicationInsightsComponentBillingFeaturesInner.currentBillingFeatures
+                        = currentBillingFeatures;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationInsightsComponentBillingFeaturesInner;
+        });
     }
 }

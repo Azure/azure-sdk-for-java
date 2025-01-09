@@ -10,7 +10,7 @@ package com.azure.resourcemanager.synapse.generated;
 public final class SqlPoolGeoBackupPoliciesListSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/SqlPoolGeoBackupPolicies_List
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/SqlPoolGeoBackupPolicies_List
      * .json
      */
     /**

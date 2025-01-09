@@ -31,20 +31,26 @@ import com.azure.resourcemanager.loadtesting.fluent.QuotasClient;
 import com.azure.resourcemanager.loadtesting.fluent.models.CheckQuotaAvailabilityResponseInner;
 import com.azure.resourcemanager.loadtesting.fluent.models.QuotaResourceInner;
 import com.azure.resourcemanager.loadtesting.models.QuotaBucketRequest;
-import com.azure.resourcemanager.loadtesting.models.QuotaResourceList;
+import com.azure.resourcemanager.loadtesting.models.QuotaResourceListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in QuotasClient. */
+/**
+ * An instance of this class provides access to all the operations defined in QuotasClient.
+ */
 public final class QuotasClientImpl implements QuotasClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final QuotasService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final LoadTestClientImpl client;
 
     /**
      * Initializes an instance of QuotasClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     QuotasClientImpl(LoadTestClientImpl client) {
@@ -63,47 +69,46 @@ public final class QuotasClientImpl implements QuotasClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.LoadTestService/locations/{location}/quotas")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<QuotaResourceList>> list(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<QuotaResourceListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.LoadTestService/locations/{location}/quotas"
-            + "/{quotaBucketName}")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.LoadTestService/locations/{location}/quotas/{quotaBucketName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<QuotaResourceInner>> get(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
-            @QueryParam("api-version") String apiVersion, @PathParam("quotaBucketName") String quotaBucketName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @PathParam("quotaBucketName") String quotaBucketName,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.LoadTestService/locations/{location}/quotas"
-            + "/{quotaBucketName}/checkAvailability")
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.LoadTestService/locations/{location}/quotas/{quotaBucketName}/checkAvailability")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CheckQuotaAvailabilityResponseInner>> checkAvailability(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
-            @QueryParam("api-version") String apiVersion, @PathParam("quotaBucketName") String quotaBucketName,
-            @BodyParam("application/json") QuotaBucketRequest quotaBucketRequest, @HeaderParam("Accept") String accept,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @PathParam("quotaBucketName") String quotaBucketName,
+            @BodyParam("application/json") QuotaBucketRequest body, @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<QuotaResourceList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Mono<Response<QuotaResourceListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * Lists all the available quota per region per subscription.
-     *
-     * @param location The name of Azure region.
+     * List quotas for a given subscription Id.
+     * 
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of quota bucket objects along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response of a QuotaResource list operation along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QuotaResourceInner>> listSinglePageAsync(String location) {
@@ -120,22 +125,23 @@ public final class QuotasClientImpl implements QuotasClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
-                this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), location, accept, context))
             .<PagedResponse<QuotaResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Lists all the available quota per region per subscription.
-     *
-     * @param location The name of Azure region.
+     * List quotas for a given subscription Id.
+     * 
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of quota bucket objects along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response of a QuotaResource list operation along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QuotaResourceInner>> listSinglePageAsync(String location, Context context) {
@@ -153,20 +159,20 @@ public final class QuotasClientImpl implements QuotasClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), location, this.client.getApiVersion(),
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), location,
                 accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
-     * Lists all the available quota per region per subscription.
-     *
-     * @param location The name of Azure region.
+     * List quotas for a given subscription Id.
+     * 
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of quota bucket objects as paginated response with {@link PagedFlux}.
+     * @return the response of a QuotaResource list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<QuotaResourceInner> listAsync(String location) {
@@ -174,14 +180,14 @@ public final class QuotasClientImpl implements QuotasClient {
     }
 
     /**
-     * Lists all the available quota per region per subscription.
-     *
-     * @param location The name of Azure region.
+     * List quotas for a given subscription Id.
+     * 
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of quota bucket objects as paginated response with {@link PagedFlux}.
+     * @return the response of a QuotaResource list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<QuotaResourceInner> listAsync(String location, Context context) {
@@ -190,13 +196,13 @@ public final class QuotasClientImpl implements QuotasClient {
     }
 
     /**
-     * Lists all the available quota per region per subscription.
-     *
-     * @param location The name of Azure region.
+     * List quotas for a given subscription Id.
+     * 
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of quota bucket objects as paginated response with {@link PagedIterable}.
+     * @return the response of a QuotaResource list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QuotaResourceInner> list(String location) {
@@ -204,14 +210,14 @@ public final class QuotasClientImpl implements QuotasClient {
     }
 
     /**
-     * Lists all the available quota per region per subscription.
-     *
-     * @param location The name of Azure region.
+     * List quotas for a given subscription Id.
+     * 
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of quota bucket objects as paginated response with {@link PagedIterable}.
+     * @return the response of a QuotaResource list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QuotaResourceInner> list(String location, Context context) {
@@ -220,14 +226,14 @@ public final class QuotasClientImpl implements QuotasClient {
 
     /**
      * Get the available quota for a quota bucket per region per subscription.
-     *
-     * @param location The name of Azure region.
-     * @param quotaBucketName Quota Bucket name.
+     * 
+     * @param location The name of the Azure region.
+     * @param quotaBucketName The quota name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the available quota for a quota bucket per region per subscription along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<QuotaResourceInner>> getWithResponseAsync(String location, String quotaBucketName) {
@@ -248,22 +254,22 @@ public final class QuotasClientImpl implements QuotasClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
-                this.client.getApiVersion(), quotaBucketName, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), location, quotaBucketName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the available quota for a quota bucket per region per subscription.
-     *
-     * @param location The name of Azure region.
-     * @param quotaBucketName Quota Bucket name.
+     * 
+     * @param location The name of the Azure region.
+     * @param quotaBucketName The quota name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the available quota for a quota bucket per region per subscription along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<QuotaResourceInner>> getWithResponseAsync(String location, String quotaBucketName,
@@ -285,20 +291,20 @@ public final class QuotasClientImpl implements QuotasClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
-            this.client.getApiVersion(), quotaBucketName, accept, context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            location, quotaBucketName, accept, context);
     }
 
     /**
      * Get the available quota for a quota bucket per region per subscription.
-     *
-     * @param location The name of Azure region.
-     * @param quotaBucketName Quota Bucket name.
+     * 
+     * @param location The name of the Azure region.
+     * @param quotaBucketName The quota name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available quota for a quota bucket per region per subscription on successful completion of {@link
-     *     Mono}.
+     * @return the available quota for a quota bucket per region per subscription on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<QuotaResourceInner> getAsync(String location, String quotaBucketName) {
@@ -307,9 +313,9 @@ public final class QuotasClientImpl implements QuotasClient {
 
     /**
      * Get the available quota for a quota bucket per region per subscription.
-     *
-     * @param location The name of Azure region.
-     * @param quotaBucketName Quota Bucket name.
+     * 
+     * @param location The name of the Azure region.
+     * @param quotaBucketName The quota name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -323,9 +329,9 @@ public final class QuotasClientImpl implements QuotasClient {
 
     /**
      * Get the available quota for a quota bucket per region per subscription.
-     *
-     * @param location The name of Azure region.
-     * @param quotaBucketName Quota Bucket name.
+     * 
+     * @param location The name of the Azure region.
+     * @param quotaBucketName The quota name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -338,19 +344,19 @@ public final class QuotasClientImpl implements QuotasClient {
 
     /**
      * Check Quota Availability on quota bucket per region per subscription.
-     *
-     * @param location The name of Azure region.
-     * @param quotaBucketName Quota Bucket name.
-     * @param quotaBucketRequest Quota Bucket Request data.
+     * 
+     * @param location The name of the Azure region.
+     * @param quotaBucketName The quota name.
+     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return check quota availability response object along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return check quota availability response object along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckQuotaAvailabilityResponseInner>> checkAvailabilityWithResponseAsync(String location,
-        String quotaBucketName, QuotaBucketRequest quotaBucketRequest) {
+        String quotaBucketName, QuotaBucketRequest body) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -366,36 +372,34 @@ public final class QuotasClientImpl implements QuotasClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter quotaBucketName is required and cannot be null."));
         }
-        if (quotaBucketRequest == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter quotaBucketRequest is required and cannot be null."));
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
         } else {
-            quotaBucketRequest.validate();
+            body.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.checkAvailability(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                    location, this.client.getApiVersion(), quotaBucketName, quotaBucketRequest, accept, context))
+            .withContext(context -> service.checkAvailability(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), location, quotaBucketName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Check Quota Availability on quota bucket per region per subscription.
-     *
-     * @param location The name of Azure region.
-     * @param quotaBucketName Quota Bucket name.
-     * @param quotaBucketRequest Quota Bucket Request data.
+     * 
+     * @param location The name of the Azure region.
+     * @param quotaBucketName The quota name.
+     * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return check quota availability response object along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return check quota availability response object along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckQuotaAvailabilityResponseInner>> checkAvailabilityWithResponseAsync(String location,
-        String quotaBucketName, QuotaBucketRequest quotaBucketRequest, Context context) {
+        String quotaBucketName, QuotaBucketRequest body, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -411,24 +415,23 @@ public final class QuotasClientImpl implements QuotasClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter quotaBucketName is required and cannot be null."));
         }
-        if (quotaBucketRequest == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter quotaBucketRequest is required and cannot be null."));
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
         } else {
-            quotaBucketRequest.validate();
+            body.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.checkAvailability(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
-            this.client.getApiVersion(), quotaBucketName, quotaBucketRequest, accept, context);
+        return service.checkAvailability(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), location, quotaBucketName, body, accept, context);
     }
 
     /**
      * Check Quota Availability on quota bucket per region per subscription.
-     *
-     * @param location The name of Azure region.
-     * @param quotaBucketName Quota Bucket name.
-     * @param quotaBucketRequest Quota Bucket Request data.
+     * 
+     * @param location The name of the Azure region.
+     * @param quotaBucketName The quota name.
+     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -436,17 +439,17 @@ public final class QuotasClientImpl implements QuotasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CheckQuotaAvailabilityResponseInner> checkAvailabilityAsync(String location, String quotaBucketName,
-        QuotaBucketRequest quotaBucketRequest) {
-        return checkAvailabilityWithResponseAsync(location, quotaBucketName, quotaBucketRequest)
+        QuotaBucketRequest body) {
+        return checkAvailabilityWithResponseAsync(location, quotaBucketName, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Check Quota Availability on quota bucket per region per subscription.
-     *
-     * @param location The name of Azure region.
-     * @param quotaBucketName Quota Bucket name.
-     * @param quotaBucketRequest Quota Bucket Request data.
+     * 
+     * @param location The name of the Azure region.
+     * @param quotaBucketName The quota name.
+     * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -455,16 +458,16 @@ public final class QuotasClientImpl implements QuotasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckQuotaAvailabilityResponseInner> checkAvailabilityWithResponse(String location,
-        String quotaBucketName, QuotaBucketRequest quotaBucketRequest, Context context) {
-        return checkAvailabilityWithResponseAsync(location, quotaBucketName, quotaBucketRequest, context).block();
+        String quotaBucketName, QuotaBucketRequest body, Context context) {
+        return checkAvailabilityWithResponseAsync(location, quotaBucketName, body, context).block();
     }
 
     /**
      * Check Quota Availability on quota bucket per region per subscription.
-     *
-     * @param location The name of Azure region.
-     * @param quotaBucketName Quota Bucket name.
-     * @param quotaBucketRequest Quota Bucket Request data.
+     * 
+     * @param location The name of the Azure region.
+     * @param quotaBucketName The quota name.
+     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -472,19 +475,19 @@ public final class QuotasClientImpl implements QuotasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckQuotaAvailabilityResponseInner checkAvailability(String location, String quotaBucketName,
-        QuotaBucketRequest quotaBucketRequest) {
-        return checkAvailabilityWithResponse(location, quotaBucketName, quotaBucketRequest, Context.NONE).getValue();
+        QuotaBucketRequest body) {
+        return checkAvailabilityWithResponse(location, quotaBucketName, body, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of quota bucket objects along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response of a QuotaResource list operation along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QuotaResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -504,14 +507,14 @@ public final class QuotasClientImpl implements QuotasClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of quota bucket objects along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response of a QuotaResource list operation along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QuotaResourceInner>> listNextSinglePageAsync(String nextLink, Context context) {

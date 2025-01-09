@@ -10,9 +10,7 @@ import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifierOption;
 import com.puppycrawl.tools.checkstyle.utils.CheckUtil;
 import com.puppycrawl.tools.checkstyle.utils.ScopeUtil;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Arrays;
 
 /**
  * Ensure that code is not using words or abbreviations that are deny listed by this Checkstyle. denyListedWords: the
@@ -21,7 +19,7 @@ import java.util.Set;
  * Prints out a message stating the location and the class, method or variable as well as the list of deny listed words.
  */
 public class DenyListedWordsCheck extends AbstractCheck {
-    private final Set<String> denyListedWords = new HashSet<>();
+    private String[] denyListedWords = new String[0];
 
     static final String ERROR_MESSAGE = "%s, All Public API Classes, Fields and Methods should follow "
         + "Camelcase standards for the following words: %s.";
@@ -33,7 +31,7 @@ public class DenyListedWordsCheck extends AbstractCheck {
      */
     public final void setDenyListedWords(String... denyListedWords) {
         if (denyListedWords != null) {
-            Collections.addAll(this.denyListedWords, denyListedWords);
+            this.denyListedWords = Arrays.copyOf(denyListedWords, denyListedWords.length);
         }
     }
 

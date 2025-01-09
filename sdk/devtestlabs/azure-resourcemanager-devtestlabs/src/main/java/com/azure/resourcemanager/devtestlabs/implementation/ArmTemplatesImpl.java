@@ -30,14 +30,14 @@ public final class ArmTemplatesImpl implements ArmTemplates {
     public PagedIterable<ArmTemplate> list(String resourceGroupName, String labName, String artifactSourceName) {
         PagedIterable<ArmTemplateInner> inner
             = this.serviceClient().list(resourceGroupName, labName, artifactSourceName);
-        return Utils.mapPage(inner, inner1 -> new ArmTemplateImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ArmTemplateImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ArmTemplate> list(String resourceGroupName, String labName, String artifactSourceName,
         String expand, String filter, Integer top, String orderby, Context context) {
         PagedIterable<ArmTemplateInner> inner = this.serviceClient()
             .list(resourceGroupName, labName, artifactSourceName, expand, filter, top, orderby, context);
-        return Utils.mapPage(inner, inner1 -> new ArmTemplateImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ArmTemplateImpl(inner1, this.manager()));
     }
 
     public Response<ArmTemplate> getWithResponse(String resourceGroupName, String labName, String artifactSourceName,

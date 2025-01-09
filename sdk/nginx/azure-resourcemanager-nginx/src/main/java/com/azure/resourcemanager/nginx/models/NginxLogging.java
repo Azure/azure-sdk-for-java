@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.nginx.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The NginxLogging model.
  */
 @Fluent
-public final class NginxLogging {
+public final class NginxLogging implements JsonSerializable<NginxLogging> {
     /*
      * The storageAccount property.
      */
-    @JsonProperty(value = "storageAccount")
     private NginxStorageAccount storageAccount;
 
     /**
@@ -53,5 +56,41 @@ public final class NginxLogging {
         if (storageAccount() != null) {
             storageAccount().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("storageAccount", this.storageAccount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NginxLogging from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NginxLogging if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NginxLogging.
+     */
+    public static NginxLogging fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NginxLogging deserializedNginxLogging = new NginxLogging();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageAccount".equals(fieldName)) {
+                    deserializedNginxLogging.storageAccount = NginxStorageAccount.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNginxLogging;
+        });
     }
 }

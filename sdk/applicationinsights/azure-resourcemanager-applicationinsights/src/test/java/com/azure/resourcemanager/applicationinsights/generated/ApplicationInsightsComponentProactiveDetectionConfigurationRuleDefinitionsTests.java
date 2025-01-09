@@ -12,38 +12,38 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationRu
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions model = BinaryData.fromString(
-            "{\"Name\":\"nmoc\",\"DisplayName\":\"ysh\",\"Description\":\"zafb\",\"HelpUrl\":\"j\",\"IsHidden\":true,\"IsEnabledByDefault\":false,\"IsInPreview\":false,\"SupportsEmailNotifications\":false}")
+            "{\"Name\":\"lmjthjq\",\"DisplayName\":\"pyeicxm\",\"Description\":\"iwqvhkh\",\"HelpUrl\":\"uigdtopbobjog\",\"IsHidden\":false,\"IsEnabledByDefault\":false,\"IsInPreview\":false,\"SupportsEmailNotifications\":true}")
             .toObject(ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions.class);
-        Assertions.assertEquals("nmoc", model.name());
-        Assertions.assertEquals("ysh", model.displayName());
-        Assertions.assertEquals("zafb", model.description());
-        Assertions.assertEquals("j", model.helpUrl());
-        Assertions.assertEquals(true, model.isHidden());
+        Assertions.assertEquals("lmjthjq", model.name());
+        Assertions.assertEquals("pyeicxm", model.displayName());
+        Assertions.assertEquals("iwqvhkh", model.description());
+        Assertions.assertEquals("uigdtopbobjog", model.helpUrl());
+        Assertions.assertEquals(false, model.isHidden());
         Assertions.assertEquals(false, model.isEnabledByDefault());
         Assertions.assertEquals(false, model.isInPreview());
-        Assertions.assertEquals(false, model.supportsEmailNotifications());
+        Assertions.assertEquals(true, model.supportsEmailNotifications());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions model
-            = new ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions().withName("nmoc")
-                .withDisplayName("ysh")
-                .withDescription("zafb")
-                .withHelpUrl("j")
-                .withIsHidden(true)
+            = new ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions().withName("lmjthjq")
+                .withDisplayName("pyeicxm")
+                .withDescription("iwqvhkh")
+                .withHelpUrl("uigdtopbobjog")
+                .withIsHidden(false)
                 .withIsEnabledByDefault(false)
                 .withIsInPreview(false)
-                .withSupportsEmailNotifications(false);
+                .withSupportsEmailNotifications(true);
         model = BinaryData.fromObject(model)
             .toObject(ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions.class);
-        Assertions.assertEquals("nmoc", model.name());
-        Assertions.assertEquals("ysh", model.displayName());
-        Assertions.assertEquals("zafb", model.description());
-        Assertions.assertEquals("j", model.helpUrl());
-        Assertions.assertEquals(true, model.isHidden());
+        Assertions.assertEquals("lmjthjq", model.name());
+        Assertions.assertEquals("pyeicxm", model.displayName());
+        Assertions.assertEquals("iwqvhkh", model.description());
+        Assertions.assertEquals("uigdtopbobjog", model.helpUrl());
+        Assertions.assertEquals(false, model.isHidden());
         Assertions.assertEquals(false, model.isEnabledByDefault());
         Assertions.assertEquals(false, model.isInPreview());
-        Assertions.assertEquals(false, model.supportsEmailNotifications());
+        Assertions.assertEquals(true, model.supportsEmailNotifications());
     }
 }

@@ -25,17 +25,23 @@ import com.azure.resourcemanager.loganalytics.fluent.SharedKeysOperationsClient;
 import com.azure.resourcemanager.loganalytics.fluent.models.SharedKeysInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SharedKeysOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SharedKeysOperationsClient.
+ */
 public final class SharedKeysOperationsClientImpl implements SharedKeysOperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SharedKeysOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final OperationalInsightsManagementClientImpl client;
 
     /**
      * Initializes an instance of SharedKeysOperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SharedKeysOperationsClientImpl(OperationalInsightsManagementClientImpl client) {
@@ -72,7 +78,7 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
 
     /**
      * Gets the shared keys for a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -108,7 +114,7 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
 
     /**
      * Gets the shared keys for a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -144,7 +150,7 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
 
     /**
      * Gets the shared keys for a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -160,7 +166,7 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
 
     /**
      * Gets the shared keys for a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -177,7 +183,7 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
 
     /**
      * Gets the shared keys for a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -193,7 +199,7 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
     /**
      * Regenerates the shared keys for a Log Analytics Workspace. These keys are used to connect Microsoft Operational
      * Insights agents to the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -230,7 +236,7 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
     /**
      * Regenerates the shared keys for a Log Analytics Workspace. These keys are used to connect Microsoft Operational
      * Insights agents to the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -267,7 +273,7 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
     /**
      * Regenerates the shared keys for a Log Analytics Workspace. These keys are used to connect Microsoft Operational
      * Insights agents to the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -284,7 +290,7 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
     /**
      * Regenerates the shared keys for a Log Analytics Workspace. These keys are used to connect Microsoft Operational
      * Insights agents to the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -302,7 +308,7 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
     /**
      * Regenerates the shared keys for a Log Analytics Workspace. These keys are used to connect Microsoft Operational
      * Insights agents to the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -7,18 +7,20 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of PolicyFragments. */
+/**
+ * Resource collection API of PolicyFragments.
+ */
 public interface PolicyFragments {
     /**
      * Gets all policy fragments.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter, orderBy |
-     *     ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| description | filter | ge,
-     *     le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| value | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter, orderBy | ge,
+     * le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| description | filter | ge, le, eq,
+     * ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| value | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param orderby OData order by query option.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
@@ -33,7 +35,7 @@ public interface PolicyFragments {
 
     /**
      * Gets all policy fragments.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,7 +47,7 @@ public interface PolicyFragments {
 
     /**
      * Gets the entity state (Etag) version of a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -60,7 +62,7 @@ public interface PolicyFragments {
 
     /**
      * Gets the entity state (Etag) version of a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -72,7 +74,7 @@ public interface PolicyFragments {
 
     /**
      * Gets a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -88,7 +90,7 @@ public interface PolicyFragments {
 
     /**
      * Gets a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -101,12 +103,12 @@ public interface PolicyFragments {
 
     /**
      * Deletes a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -118,12 +120,12 @@ public interface PolicyFragments {
 
     /**
      * Deletes a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -132,7 +134,7 @@ public interface PolicyFragments {
 
     /**
      * Lists policy resources that reference the policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -149,7 +151,7 @@ public interface PolicyFragments {
 
     /**
      * Lists policy resources that reference the policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -162,7 +164,7 @@ public interface PolicyFragments {
 
     /**
      * Gets a policy fragment.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -173,7 +175,7 @@ public interface PolicyFragments {
 
     /**
      * Gets a policy fragment.
-     *
+     * 
      * @param id the resource ID.
      * @param format Policy fragment content format.
      * @param context The context to associate with this operation.
@@ -187,7 +189,7 @@ public interface PolicyFragments {
 
     /**
      * Deletes a policy fragment.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -197,10 +199,10 @@ public interface PolicyFragments {
 
     /**
      * Deletes a policy fragment.
-     *
+     * 
      * @param id the resource ID.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -211,7 +213,7 @@ public interface PolicyFragments {
 
     /**
      * Begins definition for a new PolicyFragmentContract resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new PolicyFragmentContract definition.
      */

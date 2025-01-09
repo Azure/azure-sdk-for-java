@@ -5,63 +5,63 @@
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * Description of a NotificationHub ApnsCredential.
+ * Description of a NotificationHub ApnsCredential. Note that there is no explicit switch between Certificate and Token
+ * Authentication Modes. The mode is determined based on the properties passed in.
  */
 @Fluent
-public final class ApnsCredentialProperties {
+public final class ApnsCredentialProperties implements JsonSerializable<ApnsCredentialProperties> {
     /*
-     * Gets or sets the APNS certificate.
+     * The APNS certificate. Specify if using Certificate Authentication Mode.
      */
-    @JsonProperty(value = "apnsCertificate")
     private String apnsCertificate;
 
     /*
-     * Gets or sets the certificate key.
+     * The APNS certificate password if it exists.
      */
-    @JsonProperty(value = "certificateKey")
     private String certificateKey;
 
     /*
-     * Gets or sets the endpoint of this credential.
+     * The APNS endpoint of this credential. If using Certificate Authentication Mode and Sandbox specify
+     * 'gateway.sandbox.push.apple.com'. If using Certificate Authentication Mode and Production specify
+     * 'gateway.push.apple.com'. If using Token Authentication Mode and Sandbox specify
+     * 'https://api.development.push.apple.com:443/3/device'. If using Token Authentication Mode and Production specify
+     * 'https://api.push.apple.com:443/3/device'.
      */
-    @JsonProperty(value = "endpoint")
     private String endpoint;
 
     /*
-     * Gets or sets the APNS certificate Thumbprint
+     * The APNS certificate thumbprint. Specify if using Certificate Authentication Mode.
      */
-    @JsonProperty(value = "thumbprint")
     private String thumbprint;
 
     /*
-     * Gets or sets a 10-character key identifier (kid) key, obtained from
-     * your developer account
+     * A 10-character key identifier (kid) key, obtained from your developer account. Specify if using Token
+     * Authentication Mode.
      */
-    @JsonProperty(value = "keyId")
     private String keyId;
 
     /*
-     * Gets or sets the name of the application
+     * The name of the application or BundleId. Specify if using Token Authentication Mode.
      */
-    @JsonProperty(value = "appName")
     private String appName;
 
     /*
-     * Gets or sets the issuer (iss) registered claim key, whose value is
-     * your 10-character Team ID, obtained from your developer account
+     * The issuer (iss) registered claim key. The value is a 10-character TeamId, obtained from your developer account.
+     * Specify if using Token Authentication Mode.
      */
-    @JsonProperty(value = "appId")
     private String appId;
 
     /*
-     * Gets or sets provider Authentication Token, obtained through your
-     * developer account
+     * Provider Authentication Token, obtained through your developer account. Specify if using Token Authentication
+     * Mode.
      */
-    @JsonProperty(value = "token")
     private String token;
 
     /**
@@ -71,7 +71,7 @@ public final class ApnsCredentialProperties {
     }
 
     /**
-     * Get the apnsCertificate property: Gets or sets the APNS certificate.
+     * Get the apnsCertificate property: The APNS certificate. Specify if using Certificate Authentication Mode.
      * 
      * @return the apnsCertificate value.
      */
@@ -80,7 +80,7 @@ public final class ApnsCredentialProperties {
     }
 
     /**
-     * Set the apnsCertificate property: Gets or sets the APNS certificate.
+     * Set the apnsCertificate property: The APNS certificate. Specify if using Certificate Authentication Mode.
      * 
      * @param apnsCertificate the apnsCertificate value to set.
      * @return the ApnsCredentialProperties object itself.
@@ -91,7 +91,7 @@ public final class ApnsCredentialProperties {
     }
 
     /**
-     * Get the certificateKey property: Gets or sets the certificate key.
+     * Get the certificateKey property: The APNS certificate password if it exists.
      * 
      * @return the certificateKey value.
      */
@@ -100,7 +100,7 @@ public final class ApnsCredentialProperties {
     }
 
     /**
-     * Set the certificateKey property: Gets or sets the certificate key.
+     * Set the certificateKey property: The APNS certificate password if it exists.
      * 
      * @param certificateKey the certificateKey value to set.
      * @return the ApnsCredentialProperties object itself.
@@ -111,7 +111,11 @@ public final class ApnsCredentialProperties {
     }
 
     /**
-     * Get the endpoint property: Gets or sets the endpoint of this credential.
+     * Get the endpoint property: The APNS endpoint of this credential. If using Certificate Authentication Mode and
+     * Sandbox specify 'gateway.sandbox.push.apple.com'. If using Certificate Authentication Mode and Production specify
+     * 'gateway.push.apple.com'. If using Token Authentication Mode and Sandbox specify
+     * 'https://api.development.push.apple.com:443/3/device'. If using Token Authentication Mode and Production specify
+     * 'https://api.push.apple.com:443/3/device'.
      * 
      * @return the endpoint value.
      */
@@ -120,7 +124,11 @@ public final class ApnsCredentialProperties {
     }
 
     /**
-     * Set the endpoint property: Gets or sets the endpoint of this credential.
+     * Set the endpoint property: The APNS endpoint of this credential. If using Certificate Authentication Mode and
+     * Sandbox specify 'gateway.sandbox.push.apple.com'. If using Certificate Authentication Mode and Production specify
+     * 'gateway.push.apple.com'. If using Token Authentication Mode and Sandbox specify
+     * 'https://api.development.push.apple.com:443/3/device'. If using Token Authentication Mode and Production specify
+     * 'https://api.push.apple.com:443/3/device'.
      * 
      * @param endpoint the endpoint value to set.
      * @return the ApnsCredentialProperties object itself.
@@ -131,7 +139,7 @@ public final class ApnsCredentialProperties {
     }
 
     /**
-     * Get the thumbprint property: Gets or sets the APNS certificate Thumbprint.
+     * Get the thumbprint property: The APNS certificate thumbprint. Specify if using Certificate Authentication Mode.
      * 
      * @return the thumbprint value.
      */
@@ -140,7 +148,7 @@ public final class ApnsCredentialProperties {
     }
 
     /**
-     * Set the thumbprint property: Gets or sets the APNS certificate Thumbprint.
+     * Set the thumbprint property: The APNS certificate thumbprint. Specify if using Certificate Authentication Mode.
      * 
      * @param thumbprint the thumbprint value to set.
      * @return the ApnsCredentialProperties object itself.
@@ -151,8 +159,8 @@ public final class ApnsCredentialProperties {
     }
 
     /**
-     * Get the keyId property: Gets or sets a 10-character key identifier (kid) key, obtained from
-     * your developer account.
+     * Get the keyId property: A 10-character key identifier (kid) key, obtained from your developer account. Specify if
+     * using Token Authentication Mode.
      * 
      * @return the keyId value.
      */
@@ -161,8 +169,8 @@ public final class ApnsCredentialProperties {
     }
 
     /**
-     * Set the keyId property: Gets or sets a 10-character key identifier (kid) key, obtained from
-     * your developer account.
+     * Set the keyId property: A 10-character key identifier (kid) key, obtained from your developer account. Specify if
+     * using Token Authentication Mode.
      * 
      * @param keyId the keyId value to set.
      * @return the ApnsCredentialProperties object itself.
@@ -173,7 +181,7 @@ public final class ApnsCredentialProperties {
     }
 
     /**
-     * Get the appName property: Gets or sets the name of the application.
+     * Get the appName property: The name of the application or BundleId. Specify if using Token Authentication Mode.
      * 
      * @return the appName value.
      */
@@ -182,7 +190,7 @@ public final class ApnsCredentialProperties {
     }
 
     /**
-     * Set the appName property: Gets or sets the name of the application.
+     * Set the appName property: The name of the application or BundleId. Specify if using Token Authentication Mode.
      * 
      * @param appName the appName value to set.
      * @return the ApnsCredentialProperties object itself.
@@ -193,8 +201,8 @@ public final class ApnsCredentialProperties {
     }
 
     /**
-     * Get the appId property: Gets or sets the issuer (iss) registered claim key, whose value is
-     * your 10-character Team ID, obtained from your developer account.
+     * Get the appId property: The issuer (iss) registered claim key. The value is a 10-character TeamId, obtained from
+     * your developer account. Specify if using Token Authentication Mode.
      * 
      * @return the appId value.
      */
@@ -203,8 +211,8 @@ public final class ApnsCredentialProperties {
     }
 
     /**
-     * Set the appId property: Gets or sets the issuer (iss) registered claim key, whose value is
-     * your 10-character Team ID, obtained from your developer account.
+     * Set the appId property: The issuer (iss) registered claim key. The value is a 10-character TeamId, obtained from
+     * your developer account. Specify if using Token Authentication Mode.
      * 
      * @param appId the appId value to set.
      * @return the ApnsCredentialProperties object itself.
@@ -215,8 +223,8 @@ public final class ApnsCredentialProperties {
     }
 
     /**
-     * Get the token property: Gets or sets provider Authentication Token, obtained through your
-     * developer account.
+     * Get the token property: Provider Authentication Token, obtained through your developer account. Specify if using
+     * Token Authentication Mode.
      * 
      * @return the token value.
      */
@@ -225,8 +233,8 @@ public final class ApnsCredentialProperties {
     }
 
     /**
-     * Set the token property: Gets or sets provider Authentication Token, obtained through your
-     * developer account.
+     * Set the token property: Provider Authentication Token, obtained through your developer account. Specify if using
+     * Token Authentication Mode.
      * 
      * @param token the token value to set.
      * @return the ApnsCredentialProperties object itself.
@@ -242,11 +250,62 @@ public final class ApnsCredentialProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (endpoint() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property endpoint in model ApnsCredentialProperties"));
-        }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(ApnsCredentialProperties.class);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("apnsCertificate", this.apnsCertificate);
+        jsonWriter.writeStringField("certificateKey", this.certificateKey);
+        jsonWriter.writeStringField("endpoint", this.endpoint);
+        jsonWriter.writeStringField("thumbprint", this.thumbprint);
+        jsonWriter.writeStringField("keyId", this.keyId);
+        jsonWriter.writeStringField("appName", this.appName);
+        jsonWriter.writeStringField("appId", this.appId);
+        jsonWriter.writeStringField("token", this.token);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApnsCredentialProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApnsCredentialProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApnsCredentialProperties.
+     */
+    public static ApnsCredentialProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApnsCredentialProperties deserializedApnsCredentialProperties = new ApnsCredentialProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("apnsCertificate".equals(fieldName)) {
+                    deserializedApnsCredentialProperties.apnsCertificate = reader.getString();
+                } else if ("certificateKey".equals(fieldName)) {
+                    deserializedApnsCredentialProperties.certificateKey = reader.getString();
+                } else if ("endpoint".equals(fieldName)) {
+                    deserializedApnsCredentialProperties.endpoint = reader.getString();
+                } else if ("thumbprint".equals(fieldName)) {
+                    deserializedApnsCredentialProperties.thumbprint = reader.getString();
+                } else if ("keyId".equals(fieldName)) {
+                    deserializedApnsCredentialProperties.keyId = reader.getString();
+                } else if ("appName".equals(fieldName)) {
+                    deserializedApnsCredentialProperties.appName = reader.getString();
+                } else if ("appId".equals(fieldName)) {
+                    deserializedApnsCredentialProperties.appId = reader.getString();
+                } else if ("token".equals(fieldName)) {
+                    deserializedApnsCredentialProperties.token = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApnsCredentialProperties;
+        });
+    }
 }

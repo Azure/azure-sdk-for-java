@@ -38,6 +38,15 @@ public class SqlDatabaseStandardServiceObjective extends ExpandableStringEnum<Sq
     public static final SqlDatabaseStandardServiceObjective S12 = fromString("S12");
 
     /**
+     * Creates a new instance of SqlDatabaseStandardServiceObjective value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SqlDatabaseStandardServiceObjective() {
+    }
+
+    /**
      * Creates or finds a ServiceObjectiveName from its string representation.
      *
      * @param name a name to look for
@@ -47,7 +56,11 @@ public class SqlDatabaseStandardServiceObjective extends ExpandableStringEnum<Sq
         return fromString(name, SqlDatabaseStandardServiceObjective.class);
     }
 
-    /** @return known ServiceObjectiveName values */
+    /**
+     * Gets known ServiceObjectiveName values.
+     *
+     * @return known ServiceObjectiveName values
+     */
     public static Collection<SqlDatabaseStandardServiceObjective> values() {
         return values(SqlDatabaseStandardServiceObjective.class);
     }

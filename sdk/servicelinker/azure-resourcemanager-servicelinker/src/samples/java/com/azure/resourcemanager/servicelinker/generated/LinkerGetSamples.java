@@ -10,15 +10,14 @@ package com.azure.resourcemanager.servicelinker.generated;
 public final class LinkerGetSamples {
     /*
      * x-ms-original-file:
-     * specification/servicelinker/resource-manager/Microsoft.ServiceLinker/preview/2024-07-01-preview/examples/Linker.
-     * json
+     * specification/servicelinker/resource-manager/Microsoft.ServiceLinker/stable/2022-05-01/examples/Link.json
      */
     /**
-     * Sample code: Linker.
+     * Sample code: Link.
      * 
      * @param manager Entry point to ServiceLinkerManager.
      */
-    public static void linker(com.azure.resourcemanager.servicelinker.ServiceLinkerManager manager) {
+    public static void link(com.azure.resourcemanager.servicelinker.ServiceLinkerManager manager) {
         manager.linkers()
             .getWithResponse(
                 "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Web/sites/test-app",

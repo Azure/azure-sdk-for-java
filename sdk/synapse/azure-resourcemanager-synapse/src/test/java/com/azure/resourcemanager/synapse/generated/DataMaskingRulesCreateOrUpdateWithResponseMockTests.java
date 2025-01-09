@@ -23,7 +23,7 @@ public final class DataMaskingRulesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"id\":\"imrljdp\",\"aliasName\":\"fxyemhkftbaewh\",\"ruleState\":\"Enabled\",\"schemaName\":\"loamfmxtllfltym\",\"tableName\":\"cn\",\"columnName\":\"rfijhggabq\",\"maskingFunction\":\"CCN\",\"numberFrom\":\"mkli\",\"numberTo\":\"rwdvffhsdpzou\",\"prefixSize\":\"tqrxqwqnjxrdf\",\"suffixSize\":\"t\",\"replacementString\":\"lygtavczcxdfweap\"},\"location\":\"mlx\",\"kind\":\"jphrasp\",\"id\":\"fleimixlmd\",\"name\":\"gicehfgsmdr\",\"type\":\"uq\"}";
+            = "{\"properties\":{\"id\":\"h\",\"aliasName\":\"pter\",\"ruleState\":\"Disabled\",\"schemaName\":\"wki\",\"tableName\":\"kskw\",\"columnName\":\"tsdetjygowifcq\",\"maskingFunction\":\"CCN\",\"numberFrom\":\"zkgysdgzyybzoxlv\",\"numberTo\":\"ptvdxxheigm\",\"prefixSize\":\"lwzgh\",\"suffixSize\":\"jvmabzzbway\",\"replacementString\":\"mdafbgymqt\"},\"location\":\"preojxrjnbsconxa\",\"kind\":\"pney\",\"id\":\"hbjizqfsgnwdx\",\"name\":\"edpqlrfbo\",\"type\":\"xi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,31 +33,31 @@ public final class DataMaskingRulesCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DataMaskingRule response = manager.dataMaskingRules()
-            .define("fqpgaixwrgr")
-            .withExistingSqlPool("vczdjiahuqymjzu", "wwmejjqhddwvmqx", "yookyfozkbnzxby")
-            .withAliasName("wqikwepwogggic")
+            .define("bwjtrdx")
+            .withExistingSqlPool("f", "zsifcuvbdujgcwx", "ec")
+            .withAliasName("sy")
             .withRuleState(DataMaskingRuleState.ENABLED)
-            .withSchemaName("htfmcqbsudzpgc")
-            .withTableName("zpgf")
-            .withColumnName("umjdjxhzghg")
-            .withMaskingFunction(DataMaskingFunction.SSN)
-            .withNumberFrom("ynrceqavfdbdf")
-            .withNumberTo("xjdnajuo")
-            .withPrefixSize("y")
-            .withSuffixSize("mk")
-            .withReplacementString("hvcw")
+            .withSchemaName("dqxwabzrwiqrxhac")
+            .withTableName("cdosqkptj")
+            .withColumnName("gkifmmainwh")
+            .withMaskingFunction(DataMaskingFunction.EMAIL)
+            .withNumberFrom("kp")
+            .withNumberTo("wuntobuiz")
+            .withPrefixSize("zelwgvydjufbnkl")
+            .withSuffixSize("axpegjw")
+            .withReplacementString("bal")
             .create();
 
-        Assertions.assertEquals("fxyemhkftbaewh", response.aliasName());
-        Assertions.assertEquals(DataMaskingRuleState.ENABLED, response.ruleState());
-        Assertions.assertEquals("loamfmxtllfltym", response.schemaName());
-        Assertions.assertEquals("cn", response.tableName());
-        Assertions.assertEquals("rfijhggabq", response.columnName());
+        Assertions.assertEquals("pter", response.aliasName());
+        Assertions.assertEquals(DataMaskingRuleState.DISABLED, response.ruleState());
+        Assertions.assertEquals("wki", response.schemaName());
+        Assertions.assertEquals("kskw", response.tableName());
+        Assertions.assertEquals("tsdetjygowifcq", response.columnName());
         Assertions.assertEquals(DataMaskingFunction.CCN, response.maskingFunction());
-        Assertions.assertEquals("mkli", response.numberFrom());
-        Assertions.assertEquals("rwdvffhsdpzou", response.numberTo());
-        Assertions.assertEquals("tqrxqwqnjxrdf", response.prefixSize());
-        Assertions.assertEquals("t", response.suffixSize());
-        Assertions.assertEquals("lygtavczcxdfweap", response.replacementString());
+        Assertions.assertEquals("zkgysdgzyybzoxlv", response.numberFrom());
+        Assertions.assertEquals("ptvdxxheigm", response.numberTo());
+        Assertions.assertEquals("lwzgh", response.prefixSize());
+        Assertions.assertEquals("jvmabzzbway", response.suffixSize());
+        Assertions.assertEquals("mdafbgymqt", response.replacementString());
     }
 }

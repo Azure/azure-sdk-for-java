@@ -125,8 +125,8 @@ public final class VaultModelImpl implements VaultModel, VaultModel.Definition, 
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.vaultName = Utils.getValueFromIdByName(innerObject.id(), "replicationVaults");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.vaultName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "replicationVaults");
     }
 
     public VaultModel refresh() {

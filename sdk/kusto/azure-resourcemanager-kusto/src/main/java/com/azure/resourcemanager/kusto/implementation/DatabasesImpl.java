@@ -60,14 +60,14 @@ public final class DatabasesImpl implements Databases {
 
     public PagedIterable<Database> listByCluster(String resourceGroupName, String clusterName) {
         PagedIterable<DatabaseInner> inner = this.serviceClient().listByCluster(resourceGroupName, clusterName);
-        return Utils.mapPage(inner, inner1 -> new DatabaseImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DatabaseImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Database> listByCluster(String resourceGroupName, String clusterName, Integer top,
         String skiptoken, Context context) {
         PagedIterable<DatabaseInner> inner
             = this.serviceClient().listByCluster(resourceGroupName, clusterName, top, skiptoken, context);
-        return Utils.mapPage(inner, inner1 -> new DatabaseImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DatabaseImpl(inner1, this.manager()));
     }
 
     public Response<Database> getWithResponse(String resourceGroupName, String clusterName, String databaseName,
@@ -146,14 +146,14 @@ public final class DatabasesImpl implements Databases {
         String databaseName) {
         PagedIterable<DatabasePrincipalInner> inner
             = this.serviceClient().listPrincipals(resourceGroupName, clusterName, databaseName);
-        return Utils.mapPage(inner, inner1 -> new DatabasePrincipalImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DatabasePrincipalImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DatabasePrincipal> listPrincipals(String resourceGroupName, String clusterName,
         String databaseName, Context context) {
         PagedIterable<DatabasePrincipalInner> inner
             = this.serviceClient().listPrincipals(resourceGroupName, clusterName, databaseName, context);
-        return Utils.mapPage(inner, inner1 -> new DatabasePrincipalImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DatabasePrincipalImpl(inner1, this.manager()));
     }
 
     public Response<DatabasePrincipalListResult> addPrincipalsWithResponse(String resourceGroupName, String clusterName,

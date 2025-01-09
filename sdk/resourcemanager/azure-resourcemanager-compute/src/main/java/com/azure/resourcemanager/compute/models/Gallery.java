@@ -23,13 +23,25 @@ import reactor.core.publisher.Mono;
 @Fluent
 public interface Gallery extends HasInnerModel<GalleryInner>, Resource, GroupableResource<ComputeManager, GalleryInner>,
     HasResourceGroup, Refreshable<Gallery>, Updatable<Gallery.Update>, HasManager<ComputeManager> {
-    /** @return description for the gallery resource. */
+    /**
+     * Gets description for the gallery resource.
+     *
+     * @return description for the gallery resource.
+     */
     String description();
 
-    /** @return the unique name of the gallery resource. */
+    /**
+     * Gets the unique name of the gallery resource.
+     *
+     * @return the unique name of the gallery resource.
+     */
     String uniqueName();
 
-    /** @return the provisioning state of the gallery resource. */
+    /**
+     * Gets the provisioning state of the gallery resource.
+     *
+     * @return the provisioning state of the gallery resource.
+     */
     String provisioningState();
 
     /**

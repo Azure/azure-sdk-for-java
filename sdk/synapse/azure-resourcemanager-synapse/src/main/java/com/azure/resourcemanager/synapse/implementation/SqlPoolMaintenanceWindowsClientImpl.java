@@ -119,11 +119,11 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
             return Mono
                 .error(new IllegalArgumentException("Parameter maintenanceWindowName is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -165,11 +165,10 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
             return Mono
                 .error(new IllegalArgumentException("Parameter maintenanceWindowName is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            workspaceName, sqlPoolName, maintenanceWindowName, accept, context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName, accept, context);
     }
 
     /**
@@ -273,9 +272,8 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-06-01";
         return FluxUtil
-            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName,
                 parameters, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -325,10 +323,10 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-06-01";
         context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName, parameters, context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName,
+            parameters, context);
     }
 
     /**

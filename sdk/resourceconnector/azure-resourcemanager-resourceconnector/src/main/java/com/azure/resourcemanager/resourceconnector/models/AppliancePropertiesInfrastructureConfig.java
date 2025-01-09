@@ -5,24 +5,32 @@
 package com.azure.resourcemanager.resourceconnector.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Contains infrastructure information about the Appliance. */
+/**
+ * Contains infrastructure information about the Appliance.
+ */
 @Fluent
-public final class AppliancePropertiesInfrastructureConfig {
+public final class AppliancePropertiesInfrastructureConfig
+    implements JsonSerializable<AppliancePropertiesInfrastructureConfig> {
     /*
      * Information about the connected appliance.
      */
-    @JsonProperty(value = "provider")
     private Provider provider;
 
-    /** Creates an instance of AppliancePropertiesInfrastructureConfig class. */
+    /**
+     * Creates an instance of AppliancePropertiesInfrastructureConfig class.
+     */
     public AppliancePropertiesInfrastructureConfig() {
     }
 
     /**
      * Get the provider property: Information about the connected appliance.
-     *
+     * 
      * @return the provider value.
      */
     public Provider provider() {
@@ -31,7 +39,7 @@ public final class AppliancePropertiesInfrastructureConfig {
 
     /**
      * Set the provider property: Information about the connected appliance.
-     *
+     * 
      * @param provider the provider value to set.
      * @return the AppliancePropertiesInfrastructureConfig object itself.
      */
@@ -42,9 +50,47 @@ public final class AppliancePropertiesInfrastructureConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("provider", this.provider == null ? null : this.provider.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AppliancePropertiesInfrastructureConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AppliancePropertiesInfrastructureConfig if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AppliancePropertiesInfrastructureConfig.
+     */
+    public static AppliancePropertiesInfrastructureConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AppliancePropertiesInfrastructureConfig deserializedAppliancePropertiesInfrastructureConfig
+                = new AppliancePropertiesInfrastructureConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provider".equals(fieldName)) {
+                    deserializedAppliancePropertiesInfrastructureConfig.provider
+                        = Provider.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAppliancePropertiesInfrastructureConfig;
+        });
     }
 }

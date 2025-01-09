@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Indicates what public IP type to create - IPv4 (default), or DualStack (both IPv4 and IPv6). */
+/**
+ * Indicates what public IP type to create - IPv4 (default), or DualStack (both IPv4 and IPv6).
+ */
 public final class PublicIpType extends ExpandableStringEnum<PublicIpType> {
-    /** Static value IPv4 for PublicIpType. */
+    /**
+     * Static value IPv4 for PublicIpType.
+     */
     public static final PublicIpType IPV4 = fromString("IPv4");
 
-    /** Static value DualStack for PublicIpType. */
+    /**
+     * Static value DualStack for PublicIpType.
+     */
     public static final PublicIpType DUAL_STACK = fromString("DualStack");
 
     /**
      * Creates a new instance of PublicIpType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class PublicIpType extends ExpandableStringEnum<PublicIpType> {
 
     /**
      * Creates or finds a PublicIpType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PublicIpType.
      */
-    @JsonCreator
     public static PublicIpType fromString(String name) {
         return fromString(name, PublicIpType.class);
     }
 
     /**
      * Gets known PublicIpType values.
-     *
+     * 
      * @return known PublicIpType values.
      */
     public static Collection<PublicIpType> values() {

@@ -36,17 +36,23 @@ import com.azure.resourcemanager.providerhub.models.OperationsPutContent;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in OperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OperationsClient.
+ */
 public final class OperationsClientImpl implements OperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final OperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ProviderHubImpl client;
 
     /**
      * Initializes an instance of OperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     OperationsClientImpl(ProviderHubImpl client) {
@@ -70,8 +76,7 @@ public final class OperationsClientImpl implements OperationsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/operations/default")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/operations/default")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<List<OperationsDefinitionInner>>> listByProviderRegistration(@HostParam("$host") String endpoint,
@@ -80,8 +85,7 @@ public final class OperationsClientImpl implements OperationsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/operations/default")
+        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/operations/default")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OperationsContentInner>> createOrUpdate(@HostParam("$host") String endpoint,
@@ -91,8 +95,7 @@ public final class OperationsClientImpl implements OperationsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/operations/default")
+        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/operations/default")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
@@ -111,7 +114,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Lists all the operations supported by Microsoft.ProviderHub.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -131,7 +134,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Lists all the operations supported by Microsoft.ProviderHub.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -153,7 +156,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Lists all the operations supported by Microsoft.ProviderHub.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedFlux}.
@@ -165,7 +168,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Lists all the operations supported by Microsoft.ProviderHub.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -180,7 +183,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Lists all the operations supported by Microsoft.ProviderHub.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedIterable}.
@@ -192,7 +195,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Lists all the operations supported by Microsoft.ProviderHub.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -206,13 +209,13 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Gets the operations supported by the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the operations supported by the given provider along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<OperationsDefinitionInner>>>
@@ -238,14 +241,14 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Gets the operations supported by the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the operations supported by the given provider along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<OperationsDefinitionInner>>>
@@ -270,7 +273,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Gets the operations supported by the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -285,7 +288,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Gets the operations supported by the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -301,7 +304,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Gets the operations supported by the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -315,7 +318,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Creates or updates the operation supported by the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param operationsPutContent The operations content properties supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -353,7 +356,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Creates or updates the operation supported by the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param operationsPutContent The operations content properties supplied to the CreateOrUpdate operation.
      * @param context The context to associate with this operation.
@@ -391,7 +394,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Creates or updates the operation supported by the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param operationsPutContent The operations content properties supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -408,7 +411,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Creates or updates the operation supported by the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param operationsPutContent The operations content properties supplied to the CreateOrUpdate operation.
      * @param context The context to associate with this operation.
@@ -425,7 +428,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Creates or updates the operation supported by the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param operationsPutContent The operations content properties supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -440,7 +443,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Deletes an operation.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -470,7 +473,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Deletes an operation.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -500,7 +503,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Deletes an operation.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -514,7 +517,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Deletes an operation.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -529,7 +532,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Deletes an operation.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -542,9 +545,8 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -568,9 +570,8 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

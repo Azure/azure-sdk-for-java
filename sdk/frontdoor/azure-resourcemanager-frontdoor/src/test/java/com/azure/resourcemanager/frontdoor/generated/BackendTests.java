@@ -13,45 +13,45 @@ public final class BackendTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Backend model = BinaryData.fromString(
-            "{\"address\":\"dyhgkfminsg\",\"privateLinkAlias\":\"zfttsttktlahb\",\"privateLinkResourceId\":\"ctxtgzukxi\",\"privateLinkLocation\":\"m\",\"privateEndpointStatus\":\"Disconnected\",\"privateLinkApprovalMessage\":\"qqxhrnxrxcpj\",\"httpPort\":58328549,\"httpsPort\":1960010520,\"enabledState\":\"Enabled\",\"priority\":744996388,\"weight\":1739983778,\"backendHostHeader\":\"azivjlfrqttbajl\"}")
+            "{\"address\":\"vqikfxcvhrfsphu\",\"privateLinkAlias\":\"rttikteusqc\",\"privateLinkResourceId\":\"vyklxuby\",\"privateLinkLocation\":\"ff\",\"privateEndpointStatus\":\"Approved\",\"privateLinkApprovalMessage\":\"lcqcuubgqibrt\",\"httpPort\":2109412730,\"httpsPort\":1066879045,\"enabledState\":\"Enabled\",\"priority\":1081428420,\"weight\":1155063942,\"backendHostHeader\":\"qxihhrmooi\"}")
             .toObject(Backend.class);
-        Assertions.assertEquals("dyhgkfminsg", model.address());
-        Assertions.assertEquals("zfttsttktlahb", model.privateLinkAlias());
-        Assertions.assertEquals("ctxtgzukxi", model.privateLinkResourceId());
-        Assertions.assertEquals("m", model.privateLinkLocation());
-        Assertions.assertEquals("qqxhrnxrxcpj", model.privateLinkApprovalMessage());
-        Assertions.assertEquals(58328549, model.httpPort());
-        Assertions.assertEquals(1960010520, model.httpsPort());
+        Assertions.assertEquals("vqikfxcvhrfsphu", model.address());
+        Assertions.assertEquals("rttikteusqc", model.privateLinkAlias());
+        Assertions.assertEquals("vyklxuby", model.privateLinkResourceId());
+        Assertions.assertEquals("ff", model.privateLinkLocation());
+        Assertions.assertEquals("lcqcuubgqibrt", model.privateLinkApprovalMessage());
+        Assertions.assertEquals(2109412730, model.httpPort());
+        Assertions.assertEquals(1066879045, model.httpsPort());
         Assertions.assertEquals(BackendEnabledState.ENABLED, model.enabledState());
-        Assertions.assertEquals(744996388, model.priority());
-        Assertions.assertEquals(1739983778, model.weight());
-        Assertions.assertEquals("azivjlfrqttbajl", model.backendHostHeader());
+        Assertions.assertEquals(1081428420, model.priority());
+        Assertions.assertEquals(1155063942, model.weight());
+        Assertions.assertEquals("qxihhrmooi", model.backendHostHeader());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Backend model = new Backend().withAddress("dyhgkfminsg")
-            .withPrivateLinkAlias("zfttsttktlahb")
-            .withPrivateLinkResourceId("ctxtgzukxi")
-            .withPrivateLinkLocation("m")
-            .withPrivateLinkApprovalMessage("qqxhrnxrxcpj")
-            .withHttpPort(58328549)
-            .withHttpsPort(1960010520)
+        Backend model = new Backend().withAddress("vqikfxcvhrfsphu")
+            .withPrivateLinkAlias("rttikteusqc")
+            .withPrivateLinkResourceId("vyklxuby")
+            .withPrivateLinkLocation("ff")
+            .withPrivateLinkApprovalMessage("lcqcuubgqibrt")
+            .withHttpPort(2109412730)
+            .withHttpsPort(1066879045)
             .withEnabledState(BackendEnabledState.ENABLED)
-            .withPriority(744996388)
-            .withWeight(1739983778)
-            .withBackendHostHeader("azivjlfrqttbajl");
+            .withPriority(1081428420)
+            .withWeight(1155063942)
+            .withBackendHostHeader("qxihhrmooi");
         model = BinaryData.fromObject(model).toObject(Backend.class);
-        Assertions.assertEquals("dyhgkfminsg", model.address());
-        Assertions.assertEquals("zfttsttktlahb", model.privateLinkAlias());
-        Assertions.assertEquals("ctxtgzukxi", model.privateLinkResourceId());
-        Assertions.assertEquals("m", model.privateLinkLocation());
-        Assertions.assertEquals("qqxhrnxrxcpj", model.privateLinkApprovalMessage());
-        Assertions.assertEquals(58328549, model.httpPort());
-        Assertions.assertEquals(1960010520, model.httpsPort());
+        Assertions.assertEquals("vqikfxcvhrfsphu", model.address());
+        Assertions.assertEquals("rttikteusqc", model.privateLinkAlias());
+        Assertions.assertEquals("vyklxuby", model.privateLinkResourceId());
+        Assertions.assertEquals("ff", model.privateLinkLocation());
+        Assertions.assertEquals("lcqcuubgqibrt", model.privateLinkApprovalMessage());
+        Assertions.assertEquals(2109412730, model.httpPort());
+        Assertions.assertEquals(1066879045, model.httpsPort());
         Assertions.assertEquals(BackendEnabledState.ENABLED, model.enabledState());
-        Assertions.assertEquals(744996388, model.priority());
-        Assertions.assertEquals(1739983778, model.weight());
-        Assertions.assertEquals("azivjlfrqttbajl", model.backendHostHeader());
+        Assertions.assertEquals(1081428420, model.priority());
+        Assertions.assertEquals(1155063942, model.weight());
+        Assertions.assertEquals("qxihhrmooi", model.backendHostHeader());
     }
 }

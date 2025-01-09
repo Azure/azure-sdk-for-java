@@ -4,6 +4,8 @@
 
 ### Features Added
 
+Setting the v2 stack as the default. ([43725](https://github.com/Azure/azure-sdk-for-java/pull/43725))
+
 ### Breaking Changes
 
 - Do not remove `x-opt-partition-key` message annotation when publishing events. 
@@ -28,6 +30,15 @@
   ([#43039](https://github.com/Azure/azure-sdk-for-java/pull/43039))
 
 ### Other Changes
+
+## 5.19.2 (2024-12-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
+- Upgraded `azure-core-amqp` from `2.9.10` to version `2.9.12`.
 
 ## 5.19.1 (2024-10-27)
 

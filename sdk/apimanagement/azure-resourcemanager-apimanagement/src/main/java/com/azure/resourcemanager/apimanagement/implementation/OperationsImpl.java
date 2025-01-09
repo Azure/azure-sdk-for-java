@@ -28,14 +28,14 @@ public final class OperationsImpl implements Operations {
     public PagedIterable<TagResourceContract> listByTags(String resourceGroupName, String serviceName, String apiId) {
         PagedIterable<TagResourceContractInner> inner
             = this.serviceClient().listByTags(resourceGroupName, serviceName, apiId);
-        return Utils.mapPage(inner, inner1 -> new TagResourceContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TagResourceContractImpl(inner1, this.manager()));
     }
 
     public PagedIterable<TagResourceContract> listByTags(String resourceGroupName, String serviceName, String apiId,
         String filter, Integer top, Integer skip, Boolean includeNotTaggedOperations, Context context) {
         PagedIterable<TagResourceContractInner> inner = this.serviceClient()
             .listByTags(resourceGroupName, serviceName, apiId, filter, top, skip, includeNotTaggedOperations, context);
-        return Utils.mapPage(inner, inner1 -> new TagResourceContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TagResourceContractImpl(inner1, this.manager()));
     }
 
     private OperationsClient serviceClient() {

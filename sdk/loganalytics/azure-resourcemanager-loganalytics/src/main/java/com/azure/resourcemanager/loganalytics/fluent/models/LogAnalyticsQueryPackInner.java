@@ -6,41 +6,96 @@ package com.azure.resourcemanager.loganalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.loganalytics.models.QueryPacksResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** An Log Analytics QueryPack definition. */
+/**
+ * An Log Analytics QueryPack definition.
+ */
 @Fluent
 public final class LogAnalyticsQueryPackInner extends QueryPacksResource {
     /*
      * Properties that define a Log Analytics QueryPack resource.
      */
-    @JsonProperty(value = "properties", required = true)
     private LogAnalyticsQueryPackProperties innerProperties = new LogAnalyticsQueryPackProperties();
 
-    /** Creates an instance of LogAnalyticsQueryPackInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of LogAnalyticsQueryPackInner class.
+     */
     public LogAnalyticsQueryPackInner() {
     }
 
     /**
      * Get the innerProperties property: Properties that define a Log Analytics QueryPack resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private LogAnalyticsQueryPackProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LogAnalyticsQueryPackInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LogAnalyticsQueryPackInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -49,7 +104,7 @@ public final class LogAnalyticsQueryPackInner extends QueryPacksResource {
 
     /**
      * Get the queryPackId property: The unique ID of your application. This field cannot be changed.
-     *
+     * 
      * @return the queryPackId value.
      */
     public String queryPackId() {
@@ -58,7 +113,7 @@ public final class LogAnalyticsQueryPackInner extends QueryPacksResource {
 
     /**
      * Get the timeCreated property: Creation Date for the Log Analytics QueryPack, in ISO 8601 format.
-     *
+     * 
      * @return the timeCreated value.
      */
     public OffsetDateTime timeCreated() {
@@ -67,7 +122,7 @@ public final class LogAnalyticsQueryPackInner extends QueryPacksResource {
 
     /**
      * Get the timeModified property: Last modified date of the Log Analytics QueryPack, in ISO 8601 format.
-     *
+     * 
      * @return the timeModified value.
      */
     public OffsetDateTime timeModified() {
@@ -78,7 +133,7 @@ public final class LogAnalyticsQueryPackInner extends QueryPacksResource {
      * Get the provisioningState property: Current state of this QueryPack: whether or not is has been provisioned
      * within the resource group it is defined. Users cannot change this value but are able to read from it. Values will
      * include Succeeded, Deploying, Canceled, and Failed.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -87,19 +142,70 @@ public final class LogAnalyticsQueryPackInner extends QueryPacksResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model LogAnalyticsQueryPackInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model LogAnalyticsQueryPackInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LogAnalyticsQueryPackInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LogAnalyticsQueryPackInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LogAnalyticsQueryPackInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LogAnalyticsQueryPackInner.
+     */
+    public static LogAnalyticsQueryPackInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LogAnalyticsQueryPackInner deserializedLogAnalyticsQueryPackInner = new LogAnalyticsQueryPackInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLogAnalyticsQueryPackInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedLogAnalyticsQueryPackInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedLogAnalyticsQueryPackInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedLogAnalyticsQueryPackInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedLogAnalyticsQueryPackInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedLogAnalyticsQueryPackInner.innerProperties
+                        = LogAnalyticsQueryPackProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLogAnalyticsQueryPackInner;
+        });
+    }
 }

@@ -7,7 +7,7 @@ import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.util.ImplUtils;
 import io.clientcore.core.implementation.util.IterableOfByteBuffersInputStream;
 import io.clientcore.core.implementation.util.StreamUtil;
-import io.clientcore.core.json.JsonWriter;
+import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 

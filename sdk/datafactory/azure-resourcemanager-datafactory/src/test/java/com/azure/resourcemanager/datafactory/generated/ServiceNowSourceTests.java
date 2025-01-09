@@ -11,19 +11,19 @@ public final class ServiceNowSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceNowSource model = BinaryData.fromString(
-            "{\"type\":\"ServiceNowSource\",\"query\":\"datagw\",\"queryTimeout\":\"dataujshcsnk\",\"additionalColumns\":\"datagpqxqevt\",\"sourceRetryCount\":\"datavyy\",\"sourceRetryWait\":\"datakjirvjogsalvjl\",\"maxConcurrentConnections\":\"dataimua\",\"disableMetricsCollection\":\"datakympwquu\",\"\":{\"iqeftgunropdpuf\":\"dataofuzthszjyanhs\"}}")
+            "{\"type\":\"ServiceNowSource\",\"query\":\"databetzydtgpvnczf\",\"queryTimeout\":\"dataybjku\",\"additionalColumns\":\"dataajkyrhucbfkaqlp\",\"sourceRetryCount\":\"dataptero\",\"sourceRetryWait\":\"dataqaktao\",\"maxConcurrentConnections\":\"datagefobcqvzmyw\",\"disableMetricsCollection\":\"datayns\",\"\":{\"kklzabauvncln\":\"dataosqvojgol\",\"ikireetvjfizafd\":\"dataaoidjhoykgtyvrn\",\"csipfwlye\":\"datajhnuvndgrolgxa\",\"rzfppopwxxdgzhn\":\"dataajdpjmqteirrjjm\"}}")
             .toObject(ServiceNowSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceNowSource model = new ServiceNowSource().withSourceRetryCount("datavyy")
-            .withSourceRetryWait("datakjirvjogsalvjl")
-            .withMaxConcurrentConnections("dataimua")
-            .withDisableMetricsCollection("datakympwquu")
-            .withQueryTimeout("dataujshcsnk")
-            .withAdditionalColumns("datagpqxqevt")
-            .withQuery("datagw");
+        ServiceNowSource model = new ServiceNowSource().withSourceRetryCount("dataptero")
+            .withSourceRetryWait("dataqaktao")
+            .withMaxConcurrentConnections("datagefobcqvzmyw")
+            .withDisableMetricsCollection("datayns")
+            .withQueryTimeout("dataybjku")
+            .withAdditionalColumns("dataajkyrhucbfkaqlp")
+            .withQuery("databetzydtgpvnczf");
         model = BinaryData.fromObject(model).toObject(ServiceNowSource.class);
     }
 }

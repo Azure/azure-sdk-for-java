@@ -12,12 +12,12 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Specifies the operating system settings for the Azure Bare Metal instance.
+ * Specifies the operating system settings for the AzureBareMetal instance.
  */
 @Fluent
 public final class OSProfile implements JsonSerializable<OSProfile> {
     /*
-     * Specifies the host OS name of the Azure Bare Metal instance.
+     * Specifies the host OS name of the AzureBareMetal instance.
      */
     private String computerName;
 
@@ -43,7 +43,7 @@ public final class OSProfile implements JsonSerializable<OSProfile> {
     }
 
     /**
-     * Get the computerName property: Specifies the host OS name of the Azure Bare Metal instance.
+     * Get the computerName property: Specifies the host OS name of the AzureBareMetal instance.
      * 
      * @return the computerName value.
      */
@@ -52,7 +52,7 @@ public final class OSProfile implements JsonSerializable<OSProfile> {
     }
 
     /**
-     * Set the computerName property: Specifies the host OS name of the Azure Bare Metal instance.
+     * Set the computerName property: Specifies the host OS name of the AzureBareMetal instance.
      * 
      * @param computerName the computerName value to set.
      * @return the OSProfile object itself.

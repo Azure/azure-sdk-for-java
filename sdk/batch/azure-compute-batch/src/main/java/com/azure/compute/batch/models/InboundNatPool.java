@@ -35,8 +35,8 @@ public final class InboundNatPool implements JsonSerializable<InboundNatPool> {
 
     /*
      * The port number on the Compute Node. This must be unique within a Batch Pool. Acceptable values are between 1 and
-     * 65535 except for 22, 3389, 29876 and 29877 as these are reserved. If any reserved values are provided the request
-     * fails with HTTP status code 400.
+     * 65535 except for 29876 and 29877 as these are reserved. If any reserved values are provided the request fails
+     * with HTTP status code 400.
      */
     @Generated
     private final int backendPort;
@@ -95,8 +95,8 @@ public final class InboundNatPool implements JsonSerializable<InboundNatPool> {
 
     /**
      * Get the backendPort property: The port number on the Compute Node. This must be unique within a Batch Pool.
-     * Acceptable values are between 1 and 65535 except for 22, 3389, 29876 and 29877 as these are reserved. If any
-     * reserved values are provided the request fails with HTTP status code 400.
+     * Acceptable values are between 1 and 65535 except for 29876 and 29877 as these are reserved. If any reserved
+     * values are provided the request fails with HTTP status code 400.
      *
      * @return the backendPort value.
      */

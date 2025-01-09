@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -43,7 +42,6 @@ public final class LatencyScorecardAggregationInterval
      * @param name a name to look for.
      * @return the corresponding LatencyScorecardAggregationInterval.
      */
-    @JsonCreator
     public static LatencyScorecardAggregationInterval fromString(String name) {
         return fromString(name, LatencyScorecardAggregationInterval.class);
     }

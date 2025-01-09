@@ -21,7 +21,7 @@ public final class WorkspaceSqlAadAdminsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"tenantId\":\"br\",\"login\":\"bjpppktlpdi\",\"administratorType\":\"mthieatnejrnmin\",\"sid\":\"plgtkihonikzsrzf\"},\"id\":\"f\",\"name\":\"ilzfbpnto\",\"type\":\"kensckh\"}";
+            = "{\"properties\":{\"tenantId\":\"sfeqbbe\",\"login\":\"cuq\",\"administratorType\":\"yyxmzrmtmvwituw\",\"sid\":\"yjshcyb\"},\"id\":\"fuppoxprc\",\"name\":\"vo\",\"type\":\"ujx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class WorkspaceSqlAadAdminsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkspaceAadAdminInfo response = manager.workspaceSqlAadAdmins()
-            .getWithResponse("vrkdpsqeq", "bdxmd", com.azure.core.util.Context.NONE)
+            .getWithResponse("hctsbbibti", "uhqvums", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("br", response.tenantId());
-        Assertions.assertEquals("bjpppktlpdi", response.login());
-        Assertions.assertEquals("mthieatnejrnmin", response.administratorType());
-        Assertions.assertEquals("plgtkihonikzsrzf", response.sid());
+        Assertions.assertEquals("sfeqbbe", response.tenantId());
+        Assertions.assertEquals("cuq", response.login());
+        Assertions.assertEquals("yyxmzrmtmvwituw", response.administratorType());
+        Assertions.assertEquals("yjshcyb", response.sid());
     }
 }

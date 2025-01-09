@@ -16,6 +16,15 @@ public final class RemoteVisualStudioVersion extends ExpandableStringEnum<Remote
     public static final RemoteVisualStudioVersion VS2019 = RemoteVisualStudioVersion.fromString("VS2019");
 
     /**
+     * Creates a new instance of RemoteVisualStudioVersion value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RemoteVisualStudioVersion() {
+    }
+
+    /**
      * Finds or creates a Visual Studio version based on the specified name.
      *
      * @param name a name
@@ -25,7 +34,11 @@ public final class RemoteVisualStudioVersion extends ExpandableStringEnum<Remote
         return fromString(name, RemoteVisualStudioVersion.class);
     }
 
-    /** @return known Visual Studio versions */
+    /**
+     * Gets known Visual Studio versions.
+     *
+     * @return known Visual Studio versions
+     */
     public static Collection<RemoteVisualStudioVersion> values() {
         return values(RemoteVisualStudioVersion.class);
     }

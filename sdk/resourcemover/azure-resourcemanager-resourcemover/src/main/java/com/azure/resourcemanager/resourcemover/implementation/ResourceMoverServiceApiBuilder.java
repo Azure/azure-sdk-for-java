@@ -14,7 +14,9 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the ResourceMoverServiceApiImpl type. */
+/**
+ * A builder for creating a new instance of the ResourceMoverServiceApiImpl type.
+ */
 @ServiceClientBuilder(serviceClients = { ResourceMoverServiceApiImpl.class })
 public final class ResourceMoverServiceApiBuilder {
     /*
@@ -24,7 +26,7 @@ public final class ResourceMoverServiceApiBuilder {
 
     /**
      * Sets The Subscription ID.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the ResourceMoverServiceApiBuilder.
      */
@@ -40,7 +42,7 @@ public final class ResourceMoverServiceApiBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the ResourceMoverServiceApiBuilder.
      */
@@ -56,7 +58,7 @@ public final class ResourceMoverServiceApiBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the ResourceMoverServiceApiBuilder.
      */
@@ -72,7 +74,7 @@ public final class ResourceMoverServiceApiBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the ResourceMoverServiceApiBuilder.
      */
@@ -88,7 +90,7 @@ public final class ResourceMoverServiceApiBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the ResourceMoverServiceApiBuilder.
      */
@@ -104,7 +106,7 @@ public final class ResourceMoverServiceApiBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the ResourceMoverServiceApiBuilder.
      */
@@ -115,7 +117,7 @@ public final class ResourceMoverServiceApiBuilder {
 
     /**
      * Builds an instance of ResourceMoverServiceApiImpl with the provided parameters.
-     *
+     * 
      * @return an instance of ResourceMoverServiceApiImpl.
      */
     public ResourceMoverServiceApiImpl buildClient() {

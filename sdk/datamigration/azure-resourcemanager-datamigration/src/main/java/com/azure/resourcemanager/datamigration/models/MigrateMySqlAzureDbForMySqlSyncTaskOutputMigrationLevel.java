@@ -53,11 +53,6 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputMigrationLevel
      */
     private String targetServer;
 
-    /*
-     * Result identifier
-     */
-    private String id;
-
     /**
      * Creates an instance of MigrateMySqlAzureDbForMySqlSyncTaskOutputMigrationLevel class.
      */
@@ -129,16 +124,6 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputMigrationLevel
     }
 
     /**
-     * Get the id property: Result identifier.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -175,7 +160,7 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputMigrationLevel
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputMigrationLevel.id = reader.getString();
+                    deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputMigrationLevel.withId(reader.getString());
                 } else if ("resultType".equals(fieldName)) {
                     deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputMigrationLevel.resultType = reader.getString();
                 } else if ("startedOn".equals(fieldName)) {

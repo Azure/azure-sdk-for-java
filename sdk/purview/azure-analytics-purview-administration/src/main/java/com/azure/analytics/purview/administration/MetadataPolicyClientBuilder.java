@@ -21,7 +21,6 @@ import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -34,13 +33,16 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/** A builder for creating a new instance of the MetadataPolicyClient type. */
+/**
+ * A builder for creating a new instance of the MetadataPolicyClient type.
+ */
 @ServiceClientBuilder(serviceClients = { MetadataPolicyClient.class, MetadataPolicyAsyncClient.class })
 public final class MetadataPolicyClientBuilder
     implements HttpTrait<MetadataPolicyClientBuilder>, ConfigurationTrait<MetadataPolicyClientBuilder>,
@@ -61,7 +63,9 @@ public final class MetadataPolicyClientBuilder
     @Generated
     private final List<HttpPipelinePolicy> pipelinePolicies;
 
-    /** Create an instance of the MetadataPolicyClientBuilder. */
+    /**
+     * Create an instance of the MetadataPolicyClientBuilder.
+     */
     @Generated
     public MetadataPolicyClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
@@ -73,10 +77,15 @@ public final class MetadataPolicyClientBuilder
     @Generated
     private HttpPipeline pipeline;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public MetadataPolicyClientBuilder pipeline(HttpPipeline pipeline) {
+        if (this.pipeline != null && pipeline == null) {
+            LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
+        }
         this.pipeline = pipeline;
         return this;
     }
@@ -87,7 +96,9 @@ public final class MetadataPolicyClientBuilder
     @Generated
     private HttpClient httpClient;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public MetadataPolicyClientBuilder httpClient(HttpClient httpClient) {
@@ -101,7 +112,9 @@ public final class MetadataPolicyClientBuilder
     @Generated
     private HttpLogOptions httpLogOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public MetadataPolicyClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
@@ -115,7 +128,9 @@ public final class MetadataPolicyClientBuilder
     @Generated
     private ClientOptions clientOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public MetadataPolicyClientBuilder clientOptions(ClientOptions clientOptions) {
@@ -129,7 +144,9 @@ public final class MetadataPolicyClientBuilder
     @Generated
     private RetryOptions retryOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public MetadataPolicyClientBuilder retryOptions(RetryOptions retryOptions) {
@@ -137,7 +154,9 @@ public final class MetadataPolicyClientBuilder
         return this;
     }
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public MetadataPolicyClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
@@ -152,7 +171,9 @@ public final class MetadataPolicyClientBuilder
     @Generated
     private Configuration configuration;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public MetadataPolicyClientBuilder configuration(Configuration configuration) {
@@ -166,7 +187,9 @@ public final class MetadataPolicyClientBuilder
     @Generated
     private TokenCredential tokenCredential;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public MetadataPolicyClientBuilder credential(TokenCredential tokenCredential) {
@@ -180,7 +203,9 @@ public final class MetadataPolicyClientBuilder
     @Generated
     private String endpoint;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public MetadataPolicyClientBuilder endpoint(String endpoint) {
@@ -196,7 +221,7 @@ public final class MetadataPolicyClientBuilder
 
     /**
      * Sets Service version.
-     *
+     * 
      * @param serviceVersion the serviceVersion value.
      * @return the MetadataPolicyClientBuilder.
      */
@@ -214,7 +239,7 @@ public final class MetadataPolicyClientBuilder
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     *
+     * 
      * @param retryPolicy the retryPolicy value.
      * @return the MetadataPolicyClientBuilder.
      */
@@ -226,17 +251,25 @@ public final class MetadataPolicyClientBuilder
 
     /**
      * Builds an instance of PurviewMetadataClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of PurviewMetadataClientImpl.
      */
     @Generated
     private PurviewMetadataClientImpl buildInnerClient() {
+        this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         PurviewMetadataServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : PurviewMetadataServiceVersion.getLatest();
         PurviewMetadataClientImpl client = new PurviewMetadataClientImpl(localPipeline,
-            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, localServiceVersion);
+            JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, localServiceVersion);
         return client;
+    }
+
+    @Generated
+    private void validateClient() {
+        // This method is invoked from 'buildInnerClient'/'buildClient' method.
+        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
     }
 
     @Generated
@@ -252,9 +285,8 @@ public final class MetadataPolicyClientBuilder
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
-        HttpHeaders headers = new HttpHeaders();
-        localClientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
-        if (headers.getSize() > 0) {
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(localClientOptions);
+        if (headers != null) {
             policies.add(new AddHeadersPolicy(headers));
         }
         this.pipelinePolicies.stream()
@@ -263,7 +295,6 @@ public final class MetadataPolicyClientBuilder
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
-        policies.add(new CookiePolicy());
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
@@ -271,7 +302,7 @@ public final class MetadataPolicyClientBuilder
             .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
             .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(httpLogOptions));
+        policies.add(new HttpLoggingPolicy(localHttpLogOptions));
         HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .clientOptions(localClientOptions)
@@ -281,7 +312,7 @@ public final class MetadataPolicyClientBuilder
 
     /**
      * Builds an instance of MetadataPolicyAsyncClient class.
-     *
+     * 
      * @return an instance of MetadataPolicyAsyncClient.
      */
     @Generated
@@ -291,11 +322,13 @@ public final class MetadataPolicyClientBuilder
 
     /**
      * Builds an instance of MetadataPolicyClient class.
-     *
+     * 
      * @return an instance of MetadataPolicyClient.
      */
     @Generated
     public MetadataPolicyClient buildClient() {
         return new MetadataPolicyClient(buildInnerClient().getMetadataPolicies());
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MetadataPolicyClientBuilder.class);
 }

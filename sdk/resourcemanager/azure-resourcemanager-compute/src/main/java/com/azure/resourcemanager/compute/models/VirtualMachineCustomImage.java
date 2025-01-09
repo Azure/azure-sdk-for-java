@@ -19,19 +19,39 @@ import java.util.Map;
 @Fluent
 public interface VirtualMachineCustomImage
     extends GroupableResource<ComputeManager, ImageInner>, Refreshable<VirtualMachineCustomImage> {
-    /** @return true if this image was created by capturing a virtual machine */
+    /**
+     * Checks whether this image was created by capturing a virtual machine.
+     *
+     * @return true if this image was created by capturing a virtual machine
+     */
     boolean isCreatedFromVirtualMachine();
 
-    /** @return the hyper v Generation */
+    /**
+     * Gets the hyper v Generation.
+     *
+     * @return the hyper v Generation
+     */
     HyperVGenerationTypes hyperVGeneration();
 
-    /** @return ID of the virtual machine if this image was created by capturing that virtual machine */
+    /**
+     * Gets ID of the virtual machine if this image was created by capturing that virtual machine.
+     *
+     * @return ID of the virtual machine if this image was created by capturing that virtual machine
+     */
     String sourceVirtualMachineId();
 
-    /** @return operating system disk image in this image */
+    /**
+     * Gets operating system disk image in this image.
+     *
+     * @return operating system disk image in this image
+     */
     ImageOSDisk osDiskImage();
 
-    /** @return data disk images in this image, indexed by the disk LUN */
+    /**
+     * Gets data disk images in this image.
+     *
+     * @return data disk images in this image, indexed by the disk LUN
+     */
     Map<Integer, ImageDataDisk> dataDiskImages();
 
     /** The entirety of the image definition. */

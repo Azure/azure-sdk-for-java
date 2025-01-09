@@ -97,6 +97,8 @@ public final class MsiManager extends Manager<ManagedServiceIdentityClient> {
     }
 
     /**
+     * Gets entry point to Azure MSI Identity resource management API.
+     *
      * @return entry point to Azure MSI Identity resource management API
      */
     public Identities identities() {
@@ -107,6 +109,8 @@ public final class MsiManager extends Manager<ManagedServiceIdentityClient> {
     }
 
     /**
+     * Gets the authorization manager.
+     *
      * @return the authorization manager.
      */
     public AuthorizationManager authorizationManager() {

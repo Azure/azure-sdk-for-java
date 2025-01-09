@@ -125,11 +125,10 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, sqlPoolName, accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, sqlPoolName, accept, context))
             .<PagedResponse<ReplicationLinkInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -171,12 +170,11 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-                workspaceName, sqlPoolName, accept, context)
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, sqlPoolName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -303,12 +301,9 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
         if (linkId == null) {
             return Mono.error(new IllegalArgumentException("Parameter linkId is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.getByName(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                    resourceGroupName, workspaceName, sqlPoolName, linkId, accept, context))
+        return FluxUtil.withContext(context -> service.getByName(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, workspaceName, sqlPoolName, linkId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -351,11 +346,10 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
         if (linkId == null) {
             return Mono.error(new IllegalArgumentException("Parameter linkId is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getByName(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, workspaceName, sqlPoolName, linkId, accept, context);
+        return service.getByName(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, workspaceName, sqlPoolName, linkId, accept, context);
     }
 
     /**

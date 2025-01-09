@@ -15,7 +15,9 @@ import java.util.Arrays;
  */
 public final class StorageTargetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/StorageTargets_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/
+     * StorageTargets_CreateOrUpdate.json
      */
     /**
      * Sample code: StorageTargets_CreateOrUpdate.
@@ -42,7 +44,9 @@ public final class StorageTargetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/StorageTargets_CreateOrUpdate_BlobNfs.json
+     * x-ms-original-file:
+     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/
+     * StorageTargets_CreateOrUpdate_BlobNfs.json
      */
     /**
      * Sample code: StorageTargets_CreateOrUpdate_BlobNfs.
@@ -65,7 +69,9 @@ public final class StorageTargetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/StorageTargets_CreateOrUpdate_NoJunctions.json
+     * x-ms-original-file:
+     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/
+     * StorageTargets_CreateOrUpdate_NoJunctions.json
      */
     /**
      * Sample code: StorageTargets_CreateOrUpdate_NoJunctions.

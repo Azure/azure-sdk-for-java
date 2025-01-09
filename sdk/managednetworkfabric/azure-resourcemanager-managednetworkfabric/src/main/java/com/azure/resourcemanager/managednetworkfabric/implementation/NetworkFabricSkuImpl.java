@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.managednetworkfabric.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkFabricSkuInner;
 import com.azure.resourcemanager.managednetworkfabric.models.FabricSkuType;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricSku;
@@ -32,6 +33,10 @@ public final class NetworkFabricSkuImpl implements NetworkFabricSku {
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public FabricSkuType typePropertiesType() {

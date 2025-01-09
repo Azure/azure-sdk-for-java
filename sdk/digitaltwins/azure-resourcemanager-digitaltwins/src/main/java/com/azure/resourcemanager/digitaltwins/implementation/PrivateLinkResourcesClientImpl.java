@@ -26,17 +26,23 @@ import com.azure.resourcemanager.digitaltwins.fluent.models.GroupIdInformationIn
 import com.azure.resourcemanager.digitaltwins.fluent.models.GroupIdInformationResponseInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient.
+ */
 public final class PrivateLinkResourcesClientImpl implements PrivateLinkResourcesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PrivateLinkResourcesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureDigitalTwinsManagementClientImpl client;
 
     /**
      * Initializes an instance of PrivateLinkResourcesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PrivateLinkResourcesClientImpl(AzureDigitalTwinsManagementClientImpl client) {
@@ -73,14 +79,14 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * List private link resources for given Digital Twin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the available private link resources for a Digital Twin along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GroupIdInformationResponseInner>> listWithResponseAsync(String resourceGroupName,
@@ -109,7 +115,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * List private link resources for given Digital Twin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
@@ -117,7 +123,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the available private link resources for a Digital Twin along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GroupIdInformationResponseInner>> listWithResponseAsync(String resourceGroupName,
@@ -145,7 +151,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * List private link resources for given Digital Twin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -160,7 +166,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * List private link resources for given Digital Twin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
@@ -177,7 +183,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * List private link resources for given Digital Twin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -192,7 +198,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Get the specified private link resource for the given Digital Twin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param resourceId The name of the private link resource.
@@ -200,7 +206,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified private link resource for the given Digital Twin along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GroupIdInformationInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
@@ -232,7 +238,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Get the specified private link resource for the given Digital Twin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param resourceId The name of the private link resource.
@@ -241,7 +247,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified private link resource for the given Digital Twin along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GroupIdInformationInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
@@ -272,7 +278,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Get the specified private link resource for the given Digital Twin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param resourceId The name of the private link resource.
@@ -289,7 +295,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Get the specified private link resource for the given Digital Twin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param resourceId The name of the private link resource.
@@ -307,7 +313,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Get the specified private link resource for the given Digital Twin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param resourceId The name of the private link resource.

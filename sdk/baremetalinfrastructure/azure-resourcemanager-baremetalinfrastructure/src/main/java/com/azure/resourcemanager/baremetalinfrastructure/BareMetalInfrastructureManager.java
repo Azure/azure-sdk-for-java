@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -19,17 +20,14 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.baremetalinfrastructure.fluent.BareMetalInfrastructureClient;
 import com.azure.resourcemanager.baremetalinfrastructure.implementation.AzureBareMetalInstancesImpl;
-import com.azure.resourcemanager.baremetalinfrastructure.implementation.AzureBareMetalStorageInstancesImpl;
 import com.azure.resourcemanager.baremetalinfrastructure.implementation.BareMetalInfrastructureClientBuilder;
 import com.azure.resourcemanager.baremetalinfrastructure.implementation.OperationsImpl;
 import com.azure.resourcemanager.baremetalinfrastructure.models.AzureBareMetalInstances;
-import com.azure.resourcemanager.baremetalinfrastructure.models.AzureBareMetalStorageInstances;
 import com.azure.resourcemanager.baremetalinfrastructure.models.Operations;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -40,14 +38,12 @@ import java.util.stream.Collectors;
 
 /**
  * Entry point to BareMetalInfrastructureManager.
- * The Bare Metal Infrastructure Management client.
+ * The BareMetalInfrastructure Management client.
  */
 public final class BareMetalInfrastructureManager {
     private AzureBareMetalInstances azureBareMetalInstances;
 
     private Operations operations;
-
-    private AzureBareMetalStorageInstances azureBareMetalStorageInstances;
 
     private final BareMetalInfrastructureClient clientObject;
 
@@ -215,7 +211,7 @@ public final class BareMetalInfrastructureManager {
                 .append("-")
                 .append("com.azure.resourcemanager.baremetalinfrastructure")
                 .append("/")
-                .append("1.0.0-beta.4");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -248,7 +244,7 @@ public final class BareMetalInfrastructureManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
                 .collect(Collectors.toList()));
@@ -284,19 +280,6 @@ public final class BareMetalInfrastructureManager {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
         }
         return operations;
-    }
-
-    /**
-     * Gets the resource collection API of AzureBareMetalStorageInstances. It manages AzureBareMetalStorageInstance.
-     * 
-     * @return Resource collection API of AzureBareMetalStorageInstances.
-     */
-    public AzureBareMetalStorageInstances azureBareMetalStorageInstances() {
-        if (this.azureBareMetalStorageInstances == null) {
-            this.azureBareMetalStorageInstances
-                = new AzureBareMetalStorageInstancesImpl(clientObject.getAzureBareMetalStorageInstances(), this);
-        }
-        return azureBareMetalStorageInstances;
     }
 
     /**

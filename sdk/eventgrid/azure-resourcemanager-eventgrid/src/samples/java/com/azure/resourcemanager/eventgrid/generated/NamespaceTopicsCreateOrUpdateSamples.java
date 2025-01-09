@@ -12,7 +12,9 @@ import com.azure.resourcemanager.eventgrid.models.PublisherType;
  */
 public final class NamespaceTopicsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/NamespaceTopics_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * NamespaceTopics_CreateOrUpdate.json
      */
     /**
      * Sample code: NamespaceTopics_CreateOrUpdate.

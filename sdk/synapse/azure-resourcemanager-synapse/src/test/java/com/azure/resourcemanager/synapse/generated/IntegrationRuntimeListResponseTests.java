@@ -17,29 +17,27 @@ public final class IntegrationRuntimeListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IntegrationRuntimeListResponse model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"wnwvroevytlyokr\",\"\":{\"o\":\"datauuxvnsasbcry\"}},\"etag\":\"zrxklobd\",\"id\":\"nazpmk\",\"name\":\"lmv\",\"type\":\"vfxzopjh\"},{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"xliohrdddt\",\"\":{\"p\":\"dataqbawpcbbnzqcykn\",\"zb\":\"dataofyuicd\"}},\"etag\":\"bwwg\",\"id\":\"d\",\"name\":\"ibidmhmwffp\",\"type\":\"fmuvapckccr\"},{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"weyoxoy\",\"\":{\"oqboshbragapyyr\":\"dataphaimmoi\"}},\"etag\":\"svbpavbopfppdbwn\",\"id\":\"pgahxkumas\",\"name\":\"caac\",\"type\":\"dmmcpugmehqep\"},{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"fhbzehewhoqhn\",\"\":{\"krsrrmoucs\":\"datanbldxeaclgschori\",\"abeolhbhlvbm\":\"datafldpuviyfc\"}},\"etag\":\"qi\",\"id\":\"s\",\"name\":\"tkcudfbsfarfsiow\",\"type\":\"kjxnqpvwgfstmhq\"}],\"nextLink\":\"izmdksa\"}")
+            "{\"value\":[{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"gzfbishcbk\",\"\":{\"wgipwhono\":\"datadeyeamdphagalpbu\",\"kix\":\"datakgshwa\",\"eputtmrywnuzoqf\":\"databin\"}},\"etag\":\"yqzrnkcqvyxlw\",\"id\":\"zlsico\",\"name\":\"oqqnwvlryav\",\"type\":\"hheunmmqhgyx\"},{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"onocukok\",\"\":{\"szfkbe\":\"dataxuconu\",\"jmwvvj\":\"datapewr\"}},\"etag\":\"tcxsenhwlrs\",\"id\":\"frzpwvlqdqgb\",\"name\":\"qylihkaetckt\",\"type\":\"fcivfsnkym\"}],\"nextLink\":\"tqhjfbebrjcx\"}")
             .toObject(IntegrationRuntimeListResponse.class);
-        Assertions.assertEquals("wnwvroevytlyokr", model.value().get(0).properties().description());
-        Assertions.assertEquals("izmdksa", model.nextLink());
+        Assertions.assertEquals("gzfbishcbk", model.value().get(0).properties().description());
+        Assertions.assertEquals("tqhjfbebrjcx", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeListResponse model = new IntegrationRuntimeListResponse().withValue(Arrays.asList(
-            new IntegrationRuntimeResourceInner().withProperties(
-                new IntegrationRuntime().withDescription("wnwvroevytlyokr")
-                    .withAdditionalProperties(mapOf("type", "IntegrationRuntime"))),
-            new IntegrationRuntimeResourceInner().withProperties(new IntegrationRuntime().withDescription("xliohrdddt")
-                .withAdditionalProperties(mapOf("type", "IntegrationRuntime"))),
-            new IntegrationRuntimeResourceInner().withProperties(new IntegrationRuntime().withDescription("weyoxoy")
-                .withAdditionalProperties(mapOf("type", "IntegrationRuntime"))),
-            new IntegrationRuntimeResourceInner()
-                .withProperties(new IntegrationRuntime().withDescription("fhbzehewhoqhn")
-                    .withAdditionalProperties(mapOf("type", "IntegrationRuntime")))))
-            .withNextLink("izmdksa");
+        IntegrationRuntimeListResponse model
+            = new IntegrationRuntimeListResponse()
+                .withValue(Arrays.asList(
+                    new IntegrationRuntimeResourceInner()
+                        .withProperties(new IntegrationRuntime().withDescription("gzfbishcbk")
+                            .withAdditionalProperties(mapOf("type", "IntegrationRuntime"))),
+                    new IntegrationRuntimeResourceInner()
+                        .withProperties(new IntegrationRuntime().withDescription("onocukok")
+                            .withAdditionalProperties(mapOf("type", "IntegrationRuntime")))))
+                .withNextLink("tqhjfbebrjcx");
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeListResponse.class);
-        Assertions.assertEquals("wnwvroevytlyokr", model.value().get(0).properties().description());
-        Assertions.assertEquals("izmdksa", model.nextLink());
+        Assertions.assertEquals("gzfbishcbk", model.value().get(0).properties().description());
+        Assertions.assertEquals("tqhjfbebrjcx", model.nextLink());
     }
 
     // Use "Map.of" if available

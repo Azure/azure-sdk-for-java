@@ -9,7 +9,6 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.securityinsights.fluent.models.EntityInner;
 import com.azure.resourcemanager.securityinsights.fluent.models.ProcessEntityProperties;
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -19,11 +18,11 @@ import java.util.Map;
  * Represents a process entity.
  */
 @Fluent
-public final class ProcessEntity extends EntityInner {
+public final class ProcessEntity extends Entity {
     /*
      * The kind of the entity.
      */
-    private EntityKind kind = EntityKind.PROCESS;
+    private EntityKindEnum kind = EntityKindEnum.PROCESS;
 
     /*
      * Process entity properties
@@ -62,7 +61,7 @@ public final class ProcessEntity extends EntityInner {
      * @return the kind value.
      */
     @Override
-    public EntityKind kind() {
+    public EntityKindEnum kind() {
         return this.kind;
     }
 
@@ -278,7 +277,7 @@ public final class ProcessEntity extends EntityInner {
                 } else if ("systemData".equals(fieldName)) {
                     deserializedProcessEntity.systemData = SystemData.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
-                    deserializedProcessEntity.kind = EntityKind.fromString(reader.getString());
+                    deserializedProcessEntity.kind = EntityKindEnum.fromString(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedProcessEntity.innerProperties = ProcessEntityProperties.fromJson(reader);
                 } else {

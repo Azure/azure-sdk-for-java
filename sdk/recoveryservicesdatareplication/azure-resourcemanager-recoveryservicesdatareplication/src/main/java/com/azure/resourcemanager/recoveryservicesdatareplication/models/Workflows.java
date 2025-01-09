@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Workflows. */
+/**
+ * Resource collection API of Workflows.
+ */
 public interface Workflows {
     /**
      * Gets the job (workflow).
-     *
-     * <p>Gets the details of the job.
-     *
+     * 
+     * Gets the details of the job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param jobName The job (workflow) name.
@@ -29,9 +31,9 @@ public interface Workflows {
 
     /**
      * Gets the job (workflow).
-     *
-     * <p>Gets the details of the job.
-     *
+     * 
+     * Gets the details of the job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param jobName The job (workflow) name.
@@ -44,9 +46,9 @@ public interface Workflows {
 
     /**
      * Lists the jobs (workflows).
-     *
-     * <p>Gets the list of jobs in the given vault.
-     *
+     * 
+     * Gets the list of jobs in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -58,9 +60,9 @@ public interface Workflows {
 
     /**
      * Lists the jobs (workflows).
-     *
-     * <p>Gets the list of jobs in the given vault.
-     *
+     * 
+     * Gets the list of jobs in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param filter Filter string.

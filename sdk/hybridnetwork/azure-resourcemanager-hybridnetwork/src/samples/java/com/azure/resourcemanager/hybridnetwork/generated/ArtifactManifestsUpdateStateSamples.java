@@ -23,8 +23,9 @@ public final class ArtifactManifestsUpdateStateSamples {
      */
     public static void
         updateArtifactManifestState(com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.artifactManifests().updateState("rg", "TestPublisher", "TestArtifactStore", "TestArtifactManifestName",
-            new ArtifactManifestUpdateStateInner().withArtifactManifestState(ArtifactManifestState.UPLOADED),
-            com.azure.core.util.Context.NONE);
+        manager.artifactManifests()
+            .updateState("rg", "TestPublisher", "TestArtifactStore", "TestArtifactManifestName",
+                new ArtifactManifestUpdateStateInner().withArtifactManifestState(ArtifactManifestState.UPLOADED),
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -17,34 +17,62 @@ import java.util.Set;
 /** An immutable client-side representation of an Azure traffic manager profile endpoint. */
 public interface TrafficManagerEndpoint
     extends ExternalChildResource<TrafficManagerEndpoint, TrafficManagerProfile>, HasInnerModel<EndpointInner> {
-    /** @return the endpoint type */
+    /**
+     * Gets the endpoint type.
+     *
+     * @return the endpoint type
+     */
     EndpointType endpointType();
 
-    /** @return the monitor status of the endpoint */
+    /**
+     * Gets the monitor status of the endpoint.
+     *
+     * @return the monitor status of the endpoint
+     */
     EndpointMonitorStatus monitorStatus();
 
-    /** @return true if the endpoint is enabled, false otherwise */
+    /**
+     * Checks whether the endpoint is enabled.
+     *
+     * @return true if the endpoint is enabled, false otherwise
+     */
     boolean isEnabled();
 
     /**
+     * Gets the weight of the endpoint which is used when traffic manager profile is configured.
+     *
      * @return the weight of the endpoint which is used when traffic manager profile is configured with Weighted
      *     traffic-routing method
      */
     long routingWeight();
 
     /**
+     * Gets the priority of the endpoint which is used when traffic manager profile is configured.
+     *
      * @return the priority of the endpoint which is used when traffic manager profile is configured with Priority
      *     traffic-routing method
      */
     long routingPriority();
 
-    /** @return the geographic location codes indicating the locations to which traffic will be distributed. */
+    /**
+     * Gets the geographic location codes indicating the locations to which traffic will be distributed.
+     *
+     * @return the geographic location codes indicating the locations to which traffic will be distributed.
+     */
     Set<String> geographicLocationCodes();
 
-    /** @return the list of subnets, IP addresses, and/or address ranges mapped to this endpoint. */
+    /**
+     * gets the list of subnets, IP addresses, and/or address ranges mapped to this endpoint.
+     *
+     * @return the list of subnets, IP addresses, and/or address ranges mapped to this endpoint.
+     */
     Collection<EndpointPropertiesSubnetsItem> subnets();
 
-    /** @return custom headers associated with the endpoint as key-value pair. */
+    /**
+     * Gets custom headers associated with the endpoint as key-value pair.
+     *
+     * @return custom headers associated with the endpoint as key-value pair.
+     */
     Map<String, String> customHeaders();
 
     /**

@@ -19,13 +19,12 @@ public final class CustomSetupBase implements JsonSerializable<CustomSetupBase> 
     /*
      * The type of custom setup.
      */
-    private String type;
+    private String type = "CustomSetupBase";
 
     /**
      * Creates an instance of CustomSetupBase class.
      */
     public CustomSetupBase() {
-        this.type = "CustomSetupBase";
     }
 
     /**

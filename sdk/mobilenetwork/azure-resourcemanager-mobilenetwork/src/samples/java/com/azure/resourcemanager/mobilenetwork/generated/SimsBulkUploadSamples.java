@@ -18,7 +18,9 @@ import java.util.Arrays;
  */
 public final class SimsBulkUploadSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimBulkUpload.json
+     * x-ms-original-file:
+     * specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimBulkUpload.
+     * json
      */
     /**
      * Sample code: Bulk upload SIMs in a SIM group.

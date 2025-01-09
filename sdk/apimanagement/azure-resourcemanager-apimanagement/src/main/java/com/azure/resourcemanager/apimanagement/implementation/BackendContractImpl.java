@@ -151,9 +151,9 @@ public final class BackendContractImpl implements BackendContract, BackendContra
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.backendId = Utils.getValueFromIdByName(innerObject.id(), "backends");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.backendId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "backends");
     }
 
     public BackendContract refresh() {

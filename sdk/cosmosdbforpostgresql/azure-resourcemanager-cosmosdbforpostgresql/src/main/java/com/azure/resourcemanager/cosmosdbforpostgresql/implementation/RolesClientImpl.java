@@ -63,8 +63,8 @@ public final class RolesClientImpl implements RolesClient {
     }
 
     /**
-     * The interface defining all the services for CosmosDBForPostgreSqlRoles to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for CosmosDBForPostgreSqlRoles to be used by the proxy service to perform
+     * REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBForPostgreSq")

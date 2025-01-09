@@ -5,44 +5,49 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** API Release details. */
+/**
+ * API Release details.
+ */
 @Fluent
-public final class ApiReleaseContractProperties {
+public final class ApiReleaseContractProperties implements JsonSerializable<ApiReleaseContractProperties> {
     /*
      * Identifier of the API the release belongs to.
      */
-    @JsonProperty(value = "apiId")
     private String apiId;
 
     /*
      * The time the API was released. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by
      * the ISO 8601 standard.
      */
-    @JsonProperty(value = "createdDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdDateTime;
 
     /*
      * The time the API release was updated.
      */
-    @JsonProperty(value = "updatedDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime updatedDateTime;
 
     /*
      * Release Notes
      */
-    @JsonProperty(value = "notes")
     private String notes;
 
-    /** Creates an instance of ApiReleaseContractProperties class. */
+    /**
+     * Creates an instance of ApiReleaseContractProperties class.
+     */
     public ApiReleaseContractProperties() {
     }
 
     /**
      * Get the apiId property: Identifier of the API the release belongs to.
-     *
+     * 
      * @return the apiId value.
      */
     public String apiId() {
@@ -51,7 +56,7 @@ public final class ApiReleaseContractProperties {
 
     /**
      * Set the apiId property: Identifier of the API the release belongs to.
-     *
+     * 
      * @param apiId the apiId value to set.
      * @return the ApiReleaseContractProperties object itself.
      */
@@ -63,7 +68,7 @@ public final class ApiReleaseContractProperties {
     /**
      * Get the createdDateTime property: The time the API was released. The date conforms to the following format:
      * yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the createdDateTime value.
      */
     public OffsetDateTime createdDateTime() {
@@ -72,7 +77,7 @@ public final class ApiReleaseContractProperties {
 
     /**
      * Get the updatedDateTime property: The time the API release was updated.
-     *
+     * 
      * @return the updatedDateTime value.
      */
     public OffsetDateTime updatedDateTime() {
@@ -81,7 +86,7 @@ public final class ApiReleaseContractProperties {
 
     /**
      * Get the notes property: Release Notes.
-     *
+     * 
      * @return the notes value.
      */
     public String notes() {
@@ -90,7 +95,7 @@ public final class ApiReleaseContractProperties {
 
     /**
      * Set the notes property: Release Notes.
-     *
+     * 
      * @param notes the notes value to set.
      * @return the ApiReleaseContractProperties object itself.
      */
@@ -101,9 +106,54 @@ public final class ApiReleaseContractProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("apiId", this.apiId);
+        jsonWriter.writeStringField("notes", this.notes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiReleaseContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiReleaseContractProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiReleaseContractProperties.
+     */
+    public static ApiReleaseContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiReleaseContractProperties deserializedApiReleaseContractProperties = new ApiReleaseContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("apiId".equals(fieldName)) {
+                    deserializedApiReleaseContractProperties.apiId = reader.getString();
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedApiReleaseContractProperties.createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("updatedDateTime".equals(fieldName)) {
+                    deserializedApiReleaseContractProperties.updatedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("notes".equals(fieldName)) {
+                    deserializedApiReleaseContractProperties.notes = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiReleaseContractProperties;
+        });
     }
 }

@@ -7,25 +7,27 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.azure.resourcemanager.apimanagement.fluent.models.PortalConfigCollectionInner;
 import java.util.List;
 
-/** An immutable client-side representation of PortalConfigCollection. */
+/**
+ * An immutable client-side representation of PortalConfigCollection.
+ */
 public interface PortalConfigCollection {
     /**
      * Gets the value property: The developer portal configurations.
-     *
+     * 
      * @return the value value.
      */
     List<PortalConfigContract> value();
 
     /**
      * Gets the nextLink property: Next page link if any.
-     *
+     * 
      * @return the nextLink value.
      */
     String nextLink();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.PortalConfigCollectionInner object.
-     *
+     * 
      * @return the inner object.
      */
     PortalConfigCollectionInner innerModel();

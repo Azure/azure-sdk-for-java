@@ -24,6 +24,8 @@ public interface ResourceGroup extends Indexable, Resource, Refreshable<Resource
     HasInnerModel<ResourceGroupInner>, Updatable<ResourceGroup.Update>, HasName {
 
     /**
+     * Gets the provisioning state of the resource group.
+     *
      * @return the provisioning state of the resource group
      */
     String provisioningState();

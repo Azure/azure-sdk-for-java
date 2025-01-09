@@ -72,18 +72,11 @@ public interface Watchlist {
     String provider();
 
     /**
-     * Gets the source property: The filename of the watchlist, called 'source'.
+     * Gets the source property: The source of the watchlist.
      * 
      * @return the source value.
      */
-    String source();
-
-    /**
-     * Gets the sourceType property: The sourceType of the watchlist.
-     * 
-     * @return the sourceType value.
-     */
-    SourceType sourceType();
+    Source source();
 
     /**
      * Gets the created property: The time the watchlist was created.
@@ -163,15 +156,17 @@ public interface Watchlist {
     String tenantId();
 
     /**
-     * Gets the numberOfLinesToSkip property: The number of lines in a csv/tsv content to skip before the header.
+     * Gets the numberOfLinesToSkip property: The number of lines in a csv content to skip before the header.
      * 
      * @return the numberOfLinesToSkip value.
      */
     Integer numberOfLinesToSkip();
 
     /**
-     * Gets the rawContent property: The raw content that represents to watchlist items to create. In case of csv/tsv
-     * content type, it's the content of the file that will parsed by the endpoint.
+     * Gets the rawContent property: The raw content that represents to watchlist items to create. Example : This line
+     * will be skipped
+     * header1,header2
+     * value1,value2.
      * 
      * @return the rawContent value.
      */
@@ -187,15 +182,15 @@ public interface Watchlist {
     String itemsSearchKey();
 
     /**
-     * Gets the contentType property: The content type of the raw content. Example : text/csv or text/tsv.
+     * Gets the contentType property: The content type of the raw content. For now, only text/csv is valid.
      * 
      * @return the contentType value.
      */
     String contentType();
 
     /**
-     * Gets the uploadStatus property: The status of the Watchlist upload : New, InProgress or Complete. Pls note : When
-     * a Watchlist upload status is equal to InProgress, the Watchlist cannot be deleted.
+     * Gets the uploadStatus property: The status of the Watchlist upload : New, InProgress or Complete. **Note** : When
+     * a Watchlist upload status is InProgress, the Watchlist cannot be deleted.
      * 
      * @return the uploadStatus value.
      */
@@ -250,13 +245,13 @@ public interface Watchlist {
          * The stage of the Watchlist definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithEtag, DefinitionStages.WithWatchlistId,
-            DefinitionStages.WithDisplayName, DefinitionStages.WithProvider, DefinitionStages.WithSource,
-            DefinitionStages.WithSourceType, DefinitionStages.WithCreated, DefinitionStages.WithUpdated,
-            DefinitionStages.WithCreatedBy, DefinitionStages.WithUpdatedBy, DefinitionStages.WithDescription,
-            DefinitionStages.WithWatchlistType, DefinitionStages.WithWatchlistAlias, DefinitionStages.WithIsDeleted,
-            DefinitionStages.WithLabels, DefinitionStages.WithDefaultDuration, DefinitionStages.WithTenantId,
-            DefinitionStages.WithNumberOfLinesToSkip, DefinitionStages.WithRawContent,
+        interface WithCreate
+            extends DefinitionStages.WithEtag, DefinitionStages.WithWatchlistId, DefinitionStages.WithDisplayName,
+            DefinitionStages.WithProvider, DefinitionStages.WithSource, DefinitionStages.WithCreated,
+            DefinitionStages.WithUpdated, DefinitionStages.WithCreatedBy, DefinitionStages.WithUpdatedBy,
+            DefinitionStages.WithDescription, DefinitionStages.WithWatchlistType, DefinitionStages.WithWatchlistAlias,
+            DefinitionStages.WithIsDeleted, DefinitionStages.WithLabels, DefinitionStages.WithDefaultDuration,
+            DefinitionStages.WithTenantId, DefinitionStages.WithNumberOfLinesToSkip, DefinitionStages.WithRawContent,
             DefinitionStages.WithItemsSearchKey, DefinitionStages.WithContentType, DefinitionStages.WithUploadStatus {
             /**
              * Executes the create request.
@@ -331,25 +326,12 @@ public interface Watchlist {
          */
         interface WithSource {
             /**
-             * Specifies the source property: The filename of the watchlist, called 'source'.
+             * Specifies the source property: The source of the watchlist.
              * 
-             * @param source The filename of the watchlist, called 'source'.
+             * @param source The source of the watchlist.
              * @return the next definition stage.
              */
-            WithCreate withSource(String source);
-        }
-
-        /**
-         * The stage of the Watchlist definition allowing to specify sourceType.
-         */
-        interface WithSourceType {
-            /**
-             * Specifies the sourceType property: The sourceType of the watchlist.
-             * 
-             * @param sourceType The sourceType of the watchlist.
-             * @return the next definition stage.
-             */
-            WithCreate withSourceType(SourceType sourceType);
+            WithCreate withSource(Source source);
         }
 
         /**
@@ -501,10 +483,10 @@ public interface Watchlist {
          */
         interface WithNumberOfLinesToSkip {
             /**
-             * Specifies the numberOfLinesToSkip property: The number of lines in a csv/tsv content to skip before the
+             * Specifies the numberOfLinesToSkip property: The number of lines in a csv content to skip before the
              * header.
              * 
-             * @param numberOfLinesToSkip The number of lines in a csv/tsv content to skip before the header.
+             * @param numberOfLinesToSkip The number of lines in a csv content to skip before the header.
              * @return the next definition stage.
              */
             WithCreate withNumberOfLinesToSkip(Integer numberOfLinesToSkip);
@@ -515,11 +497,15 @@ public interface Watchlist {
          */
         interface WithRawContent {
             /**
-             * Specifies the rawContent property: The raw content that represents to watchlist items to create. In case
-             * of csv/tsv content type, it's the content of the file that will parsed by the endpoint.
+             * Specifies the rawContent property: The raw content that represents to watchlist items to create. Example
+             * : This line will be skipped
+             * header1,header2
+             * value1,value2.
              * 
-             * @param rawContent The raw content that represents to watchlist items to create. In case of csv/tsv
-             * content type, it's the content of the file that will parsed by the endpoint.
+             * @param rawContent The raw content that represents to watchlist items to create. Example : This line will
+             * be skipped
+             * header1,header2
+             * value1,value2.
              * @return the next definition stage.
              */
             WithCreate withRawContent(String rawContent);
@@ -547,9 +533,9 @@ public interface Watchlist {
          */
         interface WithContentType {
             /**
-             * Specifies the contentType property: The content type of the raw content. Example : text/csv or text/tsv .
+             * Specifies the contentType property: The content type of the raw content. For now, only text/csv is valid.
              * 
-             * @param contentType The content type of the raw content. Example : text/csv or text/tsv.
+             * @param contentType The content type of the raw content. For now, only text/csv is valid.
              * @return the next definition stage.
              */
             WithCreate withContentType(String contentType);
@@ -561,10 +547,10 @@ public interface Watchlist {
         interface WithUploadStatus {
             /**
              * Specifies the uploadStatus property: The status of the Watchlist upload : New, InProgress or Complete.
-             * Pls note : When a Watchlist upload status is equal to InProgress, the Watchlist cannot be deleted.
+             * **Note** : When a Watchlist upload status is InProgress, the Watchlist cannot be deleted.
              * 
-             * @param uploadStatus The status of the Watchlist upload : New, InProgress or Complete. Pls note : When a
-             * Watchlist upload status is equal to InProgress, the Watchlist cannot be deleted.
+             * @param uploadStatus The status of the Watchlist upload : New, InProgress or Complete. **Note** : When a
+             * Watchlist upload status is InProgress, the Watchlist cannot be deleted.
              * @return the next definition stage.
              */
             WithCreate withUploadStatus(String uploadStatus);
@@ -582,8 +568,8 @@ public interface Watchlist {
      * The template for Watchlist update.
      */
     interface Update extends UpdateStages.WithEtag, UpdateStages.WithWatchlistId, UpdateStages.WithDisplayName,
-        UpdateStages.WithProvider, UpdateStages.WithSource, UpdateStages.WithSourceType, UpdateStages.WithCreated,
-        UpdateStages.WithUpdated, UpdateStages.WithCreatedBy, UpdateStages.WithUpdatedBy, UpdateStages.WithDescription,
+        UpdateStages.WithProvider, UpdateStages.WithSource, UpdateStages.WithCreated, UpdateStages.WithUpdated,
+        UpdateStages.WithCreatedBy, UpdateStages.WithUpdatedBy, UpdateStages.WithDescription,
         UpdateStages.WithWatchlistType, UpdateStages.WithWatchlistAlias, UpdateStages.WithIsDeleted,
         UpdateStages.WithLabels, UpdateStages.WithDefaultDuration, UpdateStages.WithTenantId,
         UpdateStages.WithNumberOfLinesToSkip, UpdateStages.WithRawContent, UpdateStages.WithItemsSearchKey,
@@ -665,25 +651,12 @@ public interface Watchlist {
          */
         interface WithSource {
             /**
-             * Specifies the source property: The filename of the watchlist, called 'source'.
+             * Specifies the source property: The source of the watchlist.
              * 
-             * @param source The filename of the watchlist, called 'source'.
+             * @param source The source of the watchlist.
              * @return the next definition stage.
              */
-            Update withSource(String source);
-        }
-
-        /**
-         * The stage of the Watchlist update allowing to specify sourceType.
-         */
-        interface WithSourceType {
-            /**
-             * Specifies the sourceType property: The sourceType of the watchlist.
-             * 
-             * @param sourceType The sourceType of the watchlist.
-             * @return the next definition stage.
-             */
-            Update withSourceType(SourceType sourceType);
+            Update withSource(Source source);
         }
 
         /**
@@ -835,10 +808,10 @@ public interface Watchlist {
          */
         interface WithNumberOfLinesToSkip {
             /**
-             * Specifies the numberOfLinesToSkip property: The number of lines in a csv/tsv content to skip before the
+             * Specifies the numberOfLinesToSkip property: The number of lines in a csv content to skip before the
              * header.
              * 
-             * @param numberOfLinesToSkip The number of lines in a csv/tsv content to skip before the header.
+             * @param numberOfLinesToSkip The number of lines in a csv content to skip before the header.
              * @return the next definition stage.
              */
             Update withNumberOfLinesToSkip(Integer numberOfLinesToSkip);
@@ -849,11 +822,15 @@ public interface Watchlist {
          */
         interface WithRawContent {
             /**
-             * Specifies the rawContent property: The raw content that represents to watchlist items to create. In case
-             * of csv/tsv content type, it's the content of the file that will parsed by the endpoint.
+             * Specifies the rawContent property: The raw content that represents to watchlist items to create. Example
+             * : This line will be skipped
+             * header1,header2
+             * value1,value2.
              * 
-             * @param rawContent The raw content that represents to watchlist items to create. In case of csv/tsv
-             * content type, it's the content of the file that will parsed by the endpoint.
+             * @param rawContent The raw content that represents to watchlist items to create. Example : This line will
+             * be skipped
+             * header1,header2
+             * value1,value2.
              * @return the next definition stage.
              */
             Update withRawContent(String rawContent);
@@ -881,9 +858,9 @@ public interface Watchlist {
          */
         interface WithContentType {
             /**
-             * Specifies the contentType property: The content type of the raw content. Example : text/csv or text/tsv .
+             * Specifies the contentType property: The content type of the raw content. For now, only text/csv is valid.
              * 
-             * @param contentType The content type of the raw content. Example : text/csv or text/tsv.
+             * @param contentType The content type of the raw content. For now, only text/csv is valid.
              * @return the next definition stage.
              */
             Update withContentType(String contentType);
@@ -895,10 +872,10 @@ public interface Watchlist {
         interface WithUploadStatus {
             /**
              * Specifies the uploadStatus property: The status of the Watchlist upload : New, InProgress or Complete.
-             * Pls note : When a Watchlist upload status is equal to InProgress, the Watchlist cannot be deleted.
+             * **Note** : When a Watchlist upload status is InProgress, the Watchlist cannot be deleted.
              * 
-             * @param uploadStatus The status of the Watchlist upload : New, InProgress or Complete. Pls note : When a
-             * Watchlist upload status is equal to InProgress, the Watchlist cannot be deleted.
+             * @param uploadStatus The status of the Watchlist upload : New, InProgress or Complete. **Note** : When a
+             * Watchlist upload status is InProgress, the Watchlist cannot be deleted.
              * @return the next definition stage.
              */
             Update withUploadStatus(String uploadStatus);

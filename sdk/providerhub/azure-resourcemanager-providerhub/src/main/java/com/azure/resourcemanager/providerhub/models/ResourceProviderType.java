@@ -5,38 +5,55 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ResourceProviderType. */
+/**
+ * Defines values for ResourceProviderType.
+ */
 public final class ResourceProviderType extends ExpandableStringEnum<ResourceProviderType> {
-    /** Static value NotSpecified for ResourceProviderType. */
+    /**
+     * Static value NotSpecified for ResourceProviderType.
+     */
     public static final ResourceProviderType NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value Internal for ResourceProviderType. */
+    /**
+     * Static value Internal for ResourceProviderType.
+     */
     public static final ResourceProviderType INTERNAL = fromString("Internal");
 
-    /** Static value External for ResourceProviderType. */
+    /**
+     * Static value External for ResourceProviderType.
+     */
     public static final ResourceProviderType EXTERNAL = fromString("External");
 
-    /** Static value Hidden for ResourceProviderType. */
+    /**
+     * Static value Hidden for ResourceProviderType.
+     */
     public static final ResourceProviderType HIDDEN = fromString("Hidden");
 
-    /** Static value RegistrationFree for ResourceProviderType. */
+    /**
+     * Static value RegistrationFree for ResourceProviderType.
+     */
     public static final ResourceProviderType REGISTRATION_FREE = fromString("RegistrationFree");
 
-    /** Static value LegacyRegistrationRequired for ResourceProviderType. */
+    /**
+     * Static value LegacyRegistrationRequired for ResourceProviderType.
+     */
     public static final ResourceProviderType LEGACY_REGISTRATION_REQUIRED = fromString("LegacyRegistrationRequired");
 
-    /** Static value TenantOnly for ResourceProviderType. */
+    /**
+     * Static value TenantOnly for ResourceProviderType.
+     */
     public static final ResourceProviderType TENANT_ONLY = fromString("TenantOnly");
 
-    /** Static value AuthorizationFree for ResourceProviderType. */
+    /**
+     * Static value AuthorizationFree for ResourceProviderType.
+     */
     public static final ResourceProviderType AUTHORIZATION_FREE = fromString("AuthorizationFree");
 
     /**
      * Creates a new instance of ResourceProviderType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -45,18 +62,17 @@ public final class ResourceProviderType extends ExpandableStringEnum<ResourcePro
 
     /**
      * Creates or finds a ResourceProviderType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ResourceProviderType.
      */
-    @JsonCreator
     public static ResourceProviderType fromString(String name) {
         return fromString(name, ResourceProviderType.class);
     }
 
     /**
      * Gets known ResourceProviderType values.
-     *
+     * 
      * @return known ResourceProviderType values.
      */
     public static Collection<ResourceProviderType> values() {

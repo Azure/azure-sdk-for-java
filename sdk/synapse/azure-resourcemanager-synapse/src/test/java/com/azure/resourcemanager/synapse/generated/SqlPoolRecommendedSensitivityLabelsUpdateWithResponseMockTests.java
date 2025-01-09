@@ -32,24 +32,20 @@ public final class SqlPoolRecommendedSensitivityLabelsUpdateWithResponseMockTest
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.sqlPoolRecommendedSensitivityLabels()
-            .updateWithResponse("bwtdr", "wgzwllxzlhhfi", "acfculzjrmhpf",
+            .updateWithResponse("ph", "yv", "jw",
                 new RecommendedSensitivityLabelUpdateList().withOperations(Arrays.asList(
-                    new RecommendedSensitivityLabelUpdate().withOp(RecommendedSensitivityLabelUpdateKind.ENABLE)
-                        .withSchema("dqpz")
-                        .withTable("zx")
-                        .withColumn("oxinunjlzkdr"),
-                    new RecommendedSensitivityLabelUpdate().withOp(RecommendedSensitivityLabelUpdateKind.ENABLE)
-                        .withSchema("p")
-                        .withTable("c")
-                        .withColumn("ryklleynqa"),
-                    new RecommendedSensitivityLabelUpdate().withOp(RecommendedSensitivityLabelUpdateKind.ENABLE)
-                        .withSchema("qzjval")
-                        .withTable("cx")
-                        .withColumn("ibiwksdegyxsb"),
                     new RecommendedSensitivityLabelUpdate().withOp(RecommendedSensitivityLabelUpdateKind.DISABLE)
-                        .withSchema("hezpfkissaidqzs")
-                        .withTable("aoq")
-                        .withColumn("sgptotxjq"))),
+                        .withSchema("ratjhdhzybspij")
+                        .withTable("frzgdkkagvwukhs")
+                        .withColumn("s"),
+                    new RecommendedSensitivityLabelUpdate().withOp(RecommendedSensitivityLabelUpdateKind.DISABLE)
+                        .withSchema("yttlrcxiv")
+                        .withTable("bkut")
+                        .withColumn("umltwjflu"),
+                    new RecommendedSensitivityLabelUpdate().withOp(RecommendedSensitivityLabelUpdateKind.ENABLE)
+                        .withSchema("rhwv")
+                        .withTable("xqqggljky")
+                        .withColumn("sjrclrvtzq"))),
                 com.azure.core.util.Context.NONE);
 
     }
