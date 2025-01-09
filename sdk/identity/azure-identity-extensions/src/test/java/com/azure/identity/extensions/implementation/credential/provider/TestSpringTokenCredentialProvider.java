@@ -6,9 +6,9 @@ package com.azure.identity.extensions.implementation.credential.provider;
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.extensions.implementation.credential.TokenCredentialProviderOptions;
 
-class SpringTokenCredentialProviderTest implements TokenCredentialProvider {
+class TestSpringTokenCredentialProvider implements TokenCredentialProvider {
 
-    SpringTokenCredentialProviderTest(TokenCredentialProviderOptions options) {
+    TestSpringTokenCredentialProvider(TokenCredentialProviderOptions options) {
     }
 
     @Override
