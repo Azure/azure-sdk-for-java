@@ -42,11 +42,13 @@ public class FilteringConfiguration {
         validDocumentFilterConjunctionGroupInfos = new HashMap<>();
         etag = "";
         validProjectionInfo = new HashMap<>();
-        logger.verbose("Initializing an empty live metrics filtering configuration - did not yet receive a configuration from ping or post.");
+        logger.verbose(
+            "Initializing an empty live metrics filtering configuration - did not yet receive a configuration from ping or post.");
     }
 
     public FilteringConfiguration(CollectionConfigurationInfo configuration) {
-        logger.verbose("About to parse and validate a new live metrics filtering configuration with etag {}", configuration.getETag());
+        logger.verbose("About to parse and validate a new live metrics filtering configuration with etag {}",
+            configuration.getETag());
         validDerivedMetricInfos = parseMetricFilterConfiguration(configuration);
         validDocumentFilterConjunctionGroupInfos = parseDocumentFilterConfiguration(configuration);
         etag = configuration.getETag();
@@ -92,7 +94,8 @@ public class FilteringConfiguration {
                 .getDocumentFilterGroups()) {
                 TelemetryType telemetryType = documentFilterGroupInfo.getTelemetryType();
                 FilterConjunctionGroupInfo filterGroup = documentFilterGroupInfo.getFilters();
-                if (validator.isValidDocConjunctionGroupInfo(documentFilterGroupInfo, configuration.getETag(), documentStreamId)) {
+                if (validator.isValidDocConjunctionGroupInfo(documentFilterGroupInfo, configuration.getETag(),
+                    documentStreamId)) {
                     if (!result.containsKey(telemetryType)) {
                         result.put(telemetryType, new HashMap<>());
                     }

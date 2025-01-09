@@ -34,28 +34,24 @@ public class Validator {
 
     private final List<CollectionConfigurationError> errors = new ArrayList<>();
 
-    private static final ClientLogger logger = new ClientLogger(Validator.class);
+    private static final ClientLogger LOGGER = new ClientLogger(Validator.class);
 
     public boolean isValidDerivedMetricInfo(DerivedMetricInfo derivedMetricInfo, String etag) {
         TelemetryType telemetryType = TelemetryType.fromString(derivedMetricInfo.getTelemetryType());
         if (!isValidTelemetryType(telemetryType)) {
             constructAndTrackCollectionConfigurationError(
                 CollectionConfigurationErrorType.METRIC_TELEMETRY_TYPE_UNSUPPORTED,
-                "The user selected a telemetry type that the SDK does not support for Live Metrics Filtering. " +
-                    "Telemetry type: " + telemetryType,
-                etag,
-                derivedMetricInfo.getId(),
-                true);
+                "The user selected a telemetry type that the SDK does not support for Live Metrics Filtering. "
+                    + "Telemetry type: " + telemetryType,
+                etag, derivedMetricInfo.getId(), true);
             return false;
         }
 
         if (!isNotCustomMetricProjection(derivedMetricInfo.getProjection())) {
             constructAndTrackCollectionConfigurationError(
                 CollectionConfigurationErrorType.FILTER_FAILURE_TO_CREATE_UNEXPECTED,
-                "The user selected a projection of Custom Metric, which this SDK does not support.",
-                etag,
-                derivedMetricInfo.getId(),
-                true);
+                "The user selected a projection of Custom Metric, which this SDK does not support.", etag,
+                derivedMetricInfo.getId(), true);
             return false;
         }
 
@@ -72,10 +68,15 @@ public class Validator {
         return true;
     }
 
-    public boolean
-        isValidDocConjunctionGroupInfo(DocumentFilterConjunctionGroupInfo documentFilterConjunctionGroupInfo, String etag, String id) {
+    public boolean isValidDocConjunctionGroupInfo(DocumentFilterConjunctionGroupInfo documentFilterConjunctionGroupInfo,
+        String etag, String id) {
         TelemetryType telemetryType = documentFilterConjunctionGroupInfo.getTelemetryType();
         if (!isValidTelemetryType(telemetryType)) {
+            constructAndTrackCollectionConfigurationError(
+                CollectionConfigurationErrorType.METRIC_TELEMETRY_TYPE_UNSUPPORTED,
+                "The user selected a telemetry type that the SDK does not support for Live Metrics Filtering. "
+                    + "Telemetry type: " + telemetryType,
+                etag, id, false);
             return false;
         }
 
@@ -114,8 +115,8 @@ public class Validator {
         errors.add(error);
         // This message gets logged once for every error we see on config validation. Config validation
         // only happens once per config change.
-        logger.verbose("{}. Due to this misconfiguration the {} rule will be ignored by the SDK.",
-            message, isDerivedMetricId ? "derived metric" : "document filter conjunction");
+        LOGGER.verbose("{}. Due to this misconfiguration the {} rule will be ignored by the SDK.", message,
+            isDerivedMetricId ? "derived metric" : "document filter conjunction");
     }
 
     private boolean isValidTelemetryType(TelemetryType telemetryType) {
@@ -141,19 +142,14 @@ public class Validator {
         if (fieldName.isEmpty()) {
             constructAndTrackCollectionConfigurationError(
                 CollectionConfigurationErrorType.FILTER_FAILURE_TO_CREATE_UNEXPECTED,
-                "The user specified an empty field name for a filter.",
-                etag,
-                id,
-                isDerivedMetricId);
+                "The user specified an empty field name for a filter.", etag, id, isDerivedMetricId);
             return false;
         }
         if (fieldName.startsWith("CustomMetrics.")) {
             constructAndTrackCollectionConfigurationError(
                 CollectionConfigurationErrorType.FILTER_FAILURE_TO_CREATE_UNEXPECTED,
                 "The user selected a custom metric field name, but this SDK does not support filtering of custom metrics. ",
-                etag,
-                id,
-                isDerivedMetricId);
+                etag, id, isDerivedMetricId);
             return false;
         }
         return true;
@@ -164,10 +160,7 @@ public class Validator {
             // It is possible to not type in a comparand and the service side to send us empty string.
             constructAndTrackCollectionConfigurationError(
                 CollectionConfigurationErrorType.FILTER_FAILURE_TO_CREATE_UNEXPECTED,
-                "The user specified an empty comparand value for a filter.",
-                etag,
-                id,
-                isDerivedMetricId);
+                "The user specified an empty comparand value for a filter.", etag, id, isDerivedMetricId);
             return false;
         } else if (Filter.ANY_FIELD.equals(filter.getFieldName())
             && !(filter.getPredicate().equals(PredicateType.CONTAINS)
@@ -176,10 +169,9 @@ public class Validator {
             // .net classic behavior for this particular condition.
             constructAndTrackCollectionConfigurationError(
                 CollectionConfigurationErrorType.FILTER_FAILURE_TO_CREATE_UNEXPECTED,
-                "The specified predicate is not supported for the fieldName * (Any field): " + filter.getPredicate().getValue(),
-                etag,
-                id,
-                isDerivedMetricId);
+                "The specified predicate is not supported for the fieldName * (Any field): "
+                    + filter.getPredicate().getValue(),
+                etag, id, isDerivedMetricId);
             return false;
         } else if (knownNumericColumns.contains(filter.getFieldName())) {
             // Just in case a strange timestamp value is passed from the service side. The service side should send a duration with a specific
@@ -188,10 +180,9 @@ public class Validator {
                 if (Filter.getMicroSecondsFromFilterTimestampString(filter.getComparand()) == Long.MIN_VALUE) {
                     constructAndTrackCollectionConfigurationError(
                         CollectionConfigurationErrorType.FILTER_FAILURE_TO_CREATE_UNEXPECTED,
-                        "The duration string provided by the user could not be parsed to a numeric value: " + filter.getComparand(),
-                        etag,
-                        id,
-                        isDerivedMetricId);
+                        "The duration string provided by the user could not be parsed to a numeric value: "
+                            + filter.getComparand(),
+                        etag, id, isDerivedMetricId);
                     return false;
                 }
             } else { // The service side not does not validate if resultcode or responsecode is a numeric value
@@ -200,10 +191,9 @@ public class Validator {
                 } catch (NumberFormatException e) {
                     constructAndTrackCollectionConfigurationError(
                         CollectionConfigurationErrorType.FILTER_FAILURE_TO_CREATE_UNEXPECTED,
-                        "The result/response code specified by the user did not parse to a numeric value: " + filter.getComparand(),
-                        etag,
-                        id,
-                        isDerivedMetricId);
+                        "The result/response code specified by the user did not parse to a numeric value: "
+                            + filter.getComparand(),
+                        etag, id, isDerivedMetricId);
                     return false;
                 }
             }
@@ -214,10 +204,9 @@ public class Validator {
             if (!validStringPredicates.contains(filter.getPredicate())) {
                 constructAndTrackCollectionConfigurationError(
                     CollectionConfigurationErrorType.FILTER_FAILURE_TO_CREATE_UNEXPECTED,
-                    "The user selected a predicate (" + filter.getPredicate().getValue() + ") that is not supported for the field name " + filter.getFieldName(),
-                    etag,
-                    id,
-                    isDerivedMetricId);
+                    "The user selected a predicate (" + filter.getPredicate().getValue()
+                        + ") that is not supported for the field name " + filter.getFieldName(),
+                    etag, id, isDerivedMetricId);
                 return false;
             }
         }

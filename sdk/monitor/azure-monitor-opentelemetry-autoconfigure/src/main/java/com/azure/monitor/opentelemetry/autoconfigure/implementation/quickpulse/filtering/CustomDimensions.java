@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterInfo;
 
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import java.util.Map;
 
 public class CustomDimensions {
     private final Map<String, String> customDimensions;
+    private static ClientLogger logger = new ClientLogger(CustomDimensions.class);
 
     public CustomDimensions(Map<String, String> customDimensions, Map<String, Double> customMeasurements) {
         Map<String, String> resultMap = new HashMap<>();
@@ -47,9 +49,13 @@ public class CustomDimensions {
             try {
                 return Double.parseDouble(value);
             } catch (NumberFormatException e) {
-
+                logger.verbose(
+                    "The value for the custom dimension could not be converted to a numeric value for a derived metric projection");
             }
+            return Double.NaN;
         }
+        logger.verbose(
+            "The custom dimension could not be found in this telemetry item when calculating a derived metric.");
         return Double.NaN;
     }
 

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -28,6 +29,7 @@ class ValidatorTests {
         DerivedMetricInfo dmi = createDerivedMetricInfo("random-id", telemetryType.getValue(), AggregationType.SUM,
             AggregationType.SUM, DerivedMetricProjections.COUNT, filterGroups);
         assertFalse(validator.isValidDerivedMetricInfo(dmi, "random-etag"));
+        assertThat(validator.getErrors().size()).isEqualTo(1);
     }
 
     @ParameterizedTest
@@ -36,6 +38,7 @@ class ValidatorTests {
         Validator validator = new Validator();
         DocumentFilterConjunctionGroupInfo docGroup = createDocGroupWithNoFilters(telemetryType);
         assertFalse(validator.isValidDocConjunctionGroupInfo(docGroup, "random-etag", "random-id"));
+        assertThat(validator.getErrors().size()).isEqualTo(1);
     }
 
     @ParameterizedTest
@@ -46,6 +49,7 @@ class ValidatorTests {
         DerivedMetricInfo dmi = createDerivedMetricInfo("random-id", telemetryType.getValue(), AggregationType.SUM,
             AggregationType.SUM, DerivedMetricProjections.COUNT, filterGroups);
         assertTrue(validator.isValidDerivedMetricInfo(dmi, "random-etag"));
+        assertThat(validator.getErrors().size()).isEqualTo(0);
     }
 
     @ParameterizedTest
@@ -54,6 +58,7 @@ class ValidatorTests {
         Validator validator = new Validator();
         DocumentFilterConjunctionGroupInfo docGroup = createDocGroupWithNoFilters(telemetryType);
         assertTrue(validator.isValidDocConjunctionGroupInfo(docGroup, "random-etag", "random-id"));
+        assertThat(validator.getErrors().size()).isEqualTo(0);
     }
 
     @Test
@@ -63,6 +68,7 @@ class ValidatorTests {
         DerivedMetricInfo dmi = createDerivedMetricInfo("random-id", TelemetryType.TRACE.getValue(),
             AggregationType.SUM, AggregationType.SUM, "CustomMetrics.property", filterGroups);
         assertFalse(validator.isValidDerivedMetricInfo(dmi, "random-etag"));
+        assertThat(validator.getErrors().size()).isEqualTo(1);
     }
 
     @Test
@@ -73,6 +79,7 @@ class ValidatorTests {
         DerivedMetricInfo dmi = createDerivedMetricInfo("random-id", TelemetryType.TRACE.getValue(),
             AggregationType.SUM, AggregationType.SUM, DerivedMetricProjections.COUNT, filterGroups);
         assertFalse(validator.isValidDerivedMetricInfo(dmi, "random-etag"));
+        assertThat(validator.getErrors().size()).isEqualTo(1);
     }
 
     @ParameterizedTest
@@ -83,6 +90,7 @@ class ValidatorTests {
             AggregationType.SUM, AggregationType.SUM, DerivedMetricProjections.COUNT, filterGroups);
         Validator validator = new Validator();
         assertFalse(validator.isValidDerivedMetricInfo(dmi, "random-etag"));
+        assertThat(validator.getErrors().size()).isEqualTo(1);
     }
 
     @ParameterizedTest
@@ -91,6 +99,7 @@ class ValidatorTests {
         Validator validator = new Validator();
         DocumentFilterConjunctionGroupInfo docGroup = createDocGroupWithOneFilter(TelemetryType.REQUEST, filter);
         assertFalse(validator.isValidDocConjunctionGroupInfo(docGroup, "random-etag", "random-id"));
+        assertThat(validator.getErrors().size()).isEqualTo(1);
     }
 
     @Test
@@ -113,6 +122,8 @@ class ValidatorTests {
         docGroup.setFilters(filterGroup);
         docGroup.setTelemetryType(TelemetryType.REQUEST);
         assertFalse(validator.isValidDocConjunctionGroupInfo(docGroup, "random-etag", "random-id"));
+
+        assertThat(validator.getErrors().size()).isEqualTo(2);
     }
 
     @ParameterizedTest
@@ -123,6 +134,7 @@ class ValidatorTests {
             AggregationType.SUM, AggregationType.SUM, DerivedMetricProjections.COUNT, filterGroups);
         Validator validator = new Validator();
         assertTrue(validator.isValidDerivedMetricInfo(dmi, "random-etag"));
+        assertThat(validator.getErrors().size()).isEqualTo(0);
     }
 
     @ParameterizedTest
@@ -131,6 +143,7 @@ class ValidatorTests {
         Validator validator = new Validator();
         DocumentFilterConjunctionGroupInfo docGroup = createDocGroupWithOneFilter(TelemetryType.REQUEST, filter);
         assertTrue(validator.isValidDocConjunctionGroupInfo(docGroup, "random-etag", "random-id"));
+        assertThat(validator.getErrors().size()).isEqualTo(0);
     }
 
     private static List<TelemetryType> invalidTelemetryTypes() {

@@ -81,14 +81,13 @@ class QuickPulseDataSender implements Runnable {
             long transmissionTimeInTicks = currentDate.getTime() * 10000 + TICKS_AT_EPOCH;
             String etag = configuration.get().getETag();
 
-            logger.verbose("Attempting to send data points to quickpulse with etag {}: {}",
-                etag,
+            logger.verbose("Attempting to send data points to quickpulse with etag {}: {}", etag,
                 printListOfMonitoringPoints(dataPointList));
 
             try {
                 Response<CollectionConfigurationInfo> responseMono = liveMetricsRestAPIsForClientSDKs
-                    .publishNoCustomHeadersWithResponseAsync(endpointPrefix, instrumentationKey.get(),
-                        etag, transmissionTimeInTicks, dataPointList)
+                    .publishNoCustomHeadersWithResponseAsync(endpointPrefix, instrumentationKey.get(), etag,
+                        transmissionTimeInTicks, dataPointList)
                     .block();
                 if (responseMono == null) {
                     // this shouldn't happen, the mono should complete with a response or a failure
@@ -111,7 +110,8 @@ class QuickPulseDataSender implements Runnable {
                 if (body != null && !etag.equals(body.getETag())) {
                     configuration.set(new FilteringConfiguration(body));
                     try {
-                        logger.verbose("Received a new live metrics filtering configuration from post response: {}", body.toJsonString());
+                        logger.verbose("Received a new live metrics filtering configuration from post response: {}",
+                            body.toJsonString());
                     } catch (IOException e) {
                         logger.verbose(e.getMessage());
                     }
@@ -140,11 +140,11 @@ class QuickPulseDataSender implements Runnable {
 
     private String printListOfMonitoringPoints(List<MonitoringDataPoint> points) {
         StringBuilder dataPointsPrint = new StringBuilder("[");
-        for (MonitoringDataPoint p: points) {
+        for (MonitoringDataPoint p : points) {
             try {
                 dataPointsPrint.append(p.toJsonString());
                 dataPointsPrint.append("\n");
-            } catch (IOException e){
+            } catch (IOException e) {
                 logger.verbose(e.getMessage());
             }
         }

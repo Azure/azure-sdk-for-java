@@ -15,7 +15,7 @@ public class DerivedMetricProjections {
     public static final String COUNT = "Count()";
     private final Map<String, DerivedMetricAggregation> derivedMetricValues = new HashMap<>();
 
-    private static final ClientLogger logger = new ClientLogger(DerivedMetricProjections.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DerivedMetricProjections.class);
 
     public DerivedMetricProjections(Map<String, AggregationType> projectionInfo) {
         for (Map.Entry<String, AggregationType> entry : projectionInfo.entrySet()) {
@@ -65,10 +65,8 @@ public class DerivedMetricProjections {
         }
 
         if (Double.isNaN(incrementBy)) {
-            logger.verbose("The {} column in the incoming telemetry item was either not present or could not be parsed to a numeric value. " +
-                    "This telemetry item will not be counted in derived metric projections.",
-                derivedMetricInfo.getProjection().equals(KnownRequestColumns.DURATION) ?
-                    "Duration" : derivedMetricInfo.getProjection().substring(Filter.CUSTOM_DIM_FIELDNAME_PREFIX.length()));
+            LOGGER.verbose(
+                "This telemetry item will not be counted in derived metric projections because the Duration or a CustomDimension column could not be interpreted as a numeric value.");
         } else {
             calculateAggregation(derivedMetricInfo.getId(), incrementBy);
         }

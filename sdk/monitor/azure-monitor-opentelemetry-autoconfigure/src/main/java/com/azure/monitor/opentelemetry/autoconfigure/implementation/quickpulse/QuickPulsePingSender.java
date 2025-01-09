@@ -106,8 +106,9 @@ class QuickPulsePingSender {
             CollectionConfigurationInfo body = responseMono.getValue();
             if (body != null && !configuration.get().getETag().equals(body.getETag())) {
                 try {
-                    logger.verbose("Received a new live metrics filtering configuration from ping response: {}", body.toJsonString());
-                } catch (IOException e){
+                    logger.verbose("Received a new live metrics filtering configuration from ping response: {}",
+                        body.toJsonString());
+                } catch (IOException e) {
                     logger.verbose(e.getMessage());
                 }
                 configuration.set(new FilteringConfiguration(body));

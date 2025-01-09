@@ -19,8 +19,17 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.f
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.Filter;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.TraceDataColumns;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.DerivedMetricProjections;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.*;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.RemoteDependency;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.Request;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.KeyValuePairString;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentIngress;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.Exception;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterConjunctionGroupInfo;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DerivedMetricInfo;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.Trace;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.TelemetryType;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.AggregationType;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationError;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.CpuPerformanceCounterCalculator;
 import reactor.util.annotation.Nullable;
 
@@ -84,7 +93,8 @@ final class QuickPulseDataCollector {
     @Nullable
     synchronized FinalCounters getAndRestart() {
         FilteringConfiguration config = configuration.get();
-        Counters currentCounters = counters.getAndSet(new Counters(config.getValidProjectionInitInfo(), config.getErrors()));
+        Counters currentCounters
+            = counters.getAndSet(new Counters(config.getValidProjectionInitInfo(), config.getErrors()));
         if (currentCounters != null) {
             return new FinalCounters(currentCounters);
         }
