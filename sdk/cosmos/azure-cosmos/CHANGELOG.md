@@ -13,6 +13,15 @@
 * Added support to allow changing http2 max connection pool size with system property `COSMOS.HTTP2_MAX_CONNECTION_POOL_SIZE` and system variable `COSMOS_HTTP2_MAX_CONNECTION_POOL_SIZE`. - [PR 42947](https://github.com/Azure/azure-sdk-for-java/pull/42947)
 * Added support to allow changing http2 max connection pool size with system property `COSMOS.HTTP2_MIN_CONNECTION_POOL_SIZE` and system variable `COSMOS_HTTP2_MIN_CONNECTION_POOL_SIZE`. - [PR 42947](https://github.com/Azure/azure-sdk-for-java/pull/42947)
 * Added options to fine-tune settings for bulk operations. - [PR 43509](https://github.com/Azure/azure-sdk-for-java/pull/43509)
+* Added the following metrics. - See [PR 43716](https://github.com/Azure/azure-sdk-for-java/pull/43716)
+  *`cosmos.client.req.gw.bulkOpCountPerEvaluation`
+  *`cosmos.client.req.gw.bulkOpRetriedCountPerEvaluation`
+  *`cosmos.client.req.gw.bulkGlobalOpCount`
+  *`cosmos.client.req.gw.bulkTargetMaxMicroBatchSize`
+  *`cosmos.client.req.rntbd.bulkOpCountPerEvaluation`
+  *`cosmos.client.req.rntbd.bulkOpRetriedCountPerEvaluation`
+  *`cosmos.client.req.rntbd.bulkGlobalOpCount`
+  *`cosmos.client.req.rntbd.bulkTargetMaxMicroBatchSize`
  
 ### 4.65.0 (2024-11-19)
 
