@@ -57,13 +57,13 @@ public class PagedIterableTests {
     private PagedResponse<TodoItem> listSinglePage(PagingOptions pagingOptions) {
         Response<TodoPage> res = listSync(pagingOptions);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
-            res.getValue().getItems(), res.getValue().getNextLink());
+            res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
     }
 
     private PagedResponse<TodoItem> listNextSinglePage(PagingOptions pagingOptions, String nextLink) {
         Response<TodoPage> res = (nextLink == null) ? listSync(pagingOptions) : listNextSync(nextLink);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
-            res.getValue().getItems(), res.getValue().getNextLink());
+            res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
     }
 
     private Response<TodoPage> listSync(PagingOptions pagingOptions) {
