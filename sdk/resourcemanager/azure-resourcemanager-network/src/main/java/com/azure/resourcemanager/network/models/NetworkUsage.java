@@ -9,15 +9,31 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 /** An immutable client-side representation of an Azure compute resource usage info object. */
 @Fluent
 public interface NetworkUsage extends HasInnerModel<UsageInner> {
-    /** @return the unit of measurement. */
+    /**
+     * Gets the unit of measurement.
+     *
+     * @return the unit of measurement.
+     */
     UsageUnit unit();
 
-    /** @return the current count of the allocated resources in the subscription */
+    /**
+     * Gets the current count of the allocated resources in the subscription.
+     *
+     * @return the current count of the allocated resources in the subscription
+     */
     long currentValue();
 
-    /** @return the maximum count of the resources that can be allocated in the subscription */
+    /**
+     * Gets the maximum count of the resources that can be allocated in the subscription.
+     *
+     * @return the maximum count of the resources that can be allocated in the subscription
+     */
     long limit();
 
-    /** @return the name of the type of usage */
+    /**
+     * Gets the name of the type of usage.
+     *
+     * @return the name of the type of usage
+     */
     UsageName name();
 }

@@ -11,13 +11,25 @@ import java.util.List;
 /** Status of packet capture session. */
 @Fluent
 public interface PacketCaptureStatus extends HasInnerModel<PacketCaptureQueryStatusResultInner> {
-    /** @return the name of the packet capture resource */
+    /**
+     * Gets the name of the packet capture resource.
+     *
+     * @return the name of the packet capture resource
+     */
     String name();
 
-    /** @return the ID of the packet capture resource */
+    /**
+     * Gets the ID of the packet capture resource.
+     *
+     * @return the ID of the packet capture resource
+     */
     String id();
 
-    /** @return the start time of the packet capture session */
+    /**
+     * Gets the start time of the packet capture session.
+     *
+     * @return the start time of the packet capture session
+     */
     OffsetDateTime captureStartTime();
 
     /**
@@ -27,9 +39,17 @@ public interface PacketCaptureStatus extends HasInnerModel<PacketCaptureQuerySta
      */
     PcStatus packetCaptureStatus();
 
-    /** @return the reason the current packet capture session was stopped */
+    /**
+     * Gets the reason the current packet capture session was stopped.
+     *
+     * @return the reason the current packet capture session was stopped
+     */
     String stopReason();
 
-    /** @return the list of errors of packet capture session */
+    /**
+     * Gets the list of errors of packet capture session.
+     *
+     * @return the list of errors of packet capture session
+     */
     List<PcError> packetCaptureErrors();
 }

@@ -16,7 +16,11 @@ import java.util.Set;
 public interface LoadBalancerBackend
     extends HasInnerModel<BackendAddressPoolInner>, ChildResource<LoadBalancer>, HasLoadBalancingRules, HasBackendNics {
 
-    /** @return a list of the resource IDs of the virtual machines associated with this backend */
+    /**
+     * Gets a list of the resource IDs of the virtual machines associated with this backend.
+     *
+     * @return a list of the resource IDs of the virtual machines associated with this backend
+     */
     Set<String> getVirtualMachineIds();
 
     /** Grouping of load balancer backend definition stages. */

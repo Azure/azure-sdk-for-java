@@ -20,7 +20,11 @@ public interface ExpressRouteCircuitPeering
 
     // Getters
 
-    /** @return peering type */
+    /**
+     * Gets peering type.
+     *
+     * @return peering type
+     */
     ExpressRoutePeeringType peeringType();
 
     /**
@@ -30,34 +34,74 @@ public interface ExpressRouteCircuitPeering
      */
     ExpressRoutePeeringState state();
 
-    /** @return the Azure ASN */
+    /**
+     * Gets the Azure ASN.
+     *
+     * @return the Azure ASN
+     */
     int azureAsn();
 
-    /** @return the peer ASN */
+    /**
+     * Gets the peer ASN.
+     *
+     * @return the peer ASN
+     */
     long peerAsn();
 
-    /** @return the primary address prefix */
+    /**
+     * Gets the primary address prefix.
+     *
+     * @return the primary address prefix
+     */
     String primaryPeerAddressPrefix();
 
-    /** @return the secondary address prefix. */
+    /**
+     * Gets the secondary address prefix.
+     *
+     * @return the secondary address prefix.
+     */
     String secondaryPeerAddressPrefix();
 
-    /** @return the primary port */
+    /**
+     * Gets the primary port.
+     *
+     * @return the primary port
+     */
     String primaryAzurePort();
 
-    /** @return the secondary port */
+    /**
+     * Gets the secondary port.
+     *
+     * @return the secondary port
+     */
     String secondaryAzurePort();
 
-    /** @return the shared key */
+    /**
+     * Gets the shared key.
+     *
+     * @return the shared key
+     */
     String sharedKey();
 
-    /** @return the VLAN ID */
+    /**
+     * GEts the VLAN ID.
+     *
+     * @return the VLAN ID
+     */
     int vlanId();
 
-    /** @return The Microsoft peering configuration. */
+    /**
+     * Gets the Microsoft peering configuration.
+     *
+     * @return The Microsoft peering configuration.
+     */
     ExpressRouteCircuitPeeringConfig microsoftPeeringConfig();
 
-    /** @return peering stats */
+    /**
+     * Gets peering stats.
+     *
+     * @return peering stats
+     */
     ExpressRouteCircuitStats stats();
 
     /**
@@ -67,10 +111,18 @@ public interface ExpressRouteCircuitPeering
      */
     String provisioningState();
 
-    /** @return whether the provider or the customer last modified the peering */
+    /**
+     * Gets the provider or the customer last modified the peering.
+     *
+     * @return whether the provider or the customer last modified the peering
+     */
     String lastModifiedBy();
 
-    /** @return the IPv6 peering configuration */
+    /**
+     * Gets the IPv6 peering configuration.
+     *
+     * @return the IPv6 peering configuration
+     */
     Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig();
 
     /** The entirety of the express route circuit peering definition. */
@@ -125,6 +177,8 @@ public interface ExpressRouteCircuitPeering
         /** The stage of Express Route Circuit Peering definition allowing to specify VLAN ID. */
         interface WithVlanId {
             /**
+             * Specifies a valid VLAN ID to establish this peering on.
+             *
              * @param vlanId a valid VLAN ID to establish this peering on. No other peering in the circuit can use the
              *     same VLAN ID
              * @return next stage of definition
@@ -135,6 +189,8 @@ public interface ExpressRouteCircuitPeering
         /** The stage of Express Route Circuit Peering definition allowing to specify AS number for peering. */
         interface WithPeerAsn {
             /**
+             * Specifies as number for peering
+             *
              * @param peerAsn AS number for peering. Both 2-byte and 4-byte AS numbers can be used
              * @return next stage of definition
              */

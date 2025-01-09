@@ -13,9 +13,17 @@ import java.util.Map;
 public interface ApplicationGatewayBackendHealth
     extends HasInnerModel<ApplicationGatewayBackendHealthPool>, HasName, HasParent<ApplicationGateway> {
 
-    /** @return the application gateway backend address pool that is health information pertains to */
+    /**
+     * Gets the application gateway backend address pool that is health information pertains to.
+     *
+     * @return the application gateway backend address pool that is health information pertains to
+     */
     ApplicationGatewayBackend backend();
 
-    /** @return the health information about each associated backend HTTP settings configuration, indexed by its name */
+    /**
+     * Gets the health information about each associated backend HTTP settings configuration.
+     *
+     * @return the health information about each associated backend HTTP settings configuration, indexed by its name
+     */
     Map<String, ApplicationGatewayBackendHttpConfigurationHealth> httpConfigurationHealths();
 }

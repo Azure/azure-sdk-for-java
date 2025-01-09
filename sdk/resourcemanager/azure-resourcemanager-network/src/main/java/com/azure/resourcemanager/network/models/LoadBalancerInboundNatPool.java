@@ -13,10 +13,18 @@ import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 public interface LoadBalancerInboundNatPool extends HasFrontend, HasBackendPort, HasProtocol<TransportProtocol>,
     HasInnerModel<InboundNatPool>, ChildResource<LoadBalancer> {
 
-    /** @return the starting frontend port number */
+    /**
+     * Gets the starting frontend port number.
+     *
+     * @return the starting frontend port number
+     */
     int frontendPortRangeStart();
 
-    /** @return the ending frontend port number */
+    /**
+     * Gets the ending frontend port number.
+     *
+     * @return the ending frontend port number
+     */
     int frontendPortRangeEnd();
 
     /** Grouping of inbound NAT pool definition stages. */

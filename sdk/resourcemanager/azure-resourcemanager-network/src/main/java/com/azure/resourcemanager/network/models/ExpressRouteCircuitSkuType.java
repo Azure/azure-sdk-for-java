@@ -30,7 +30,11 @@ public class ExpressRouteCircuitSkuType {
     /** The string value of the SKU. */
     private final String value;
 
-    /** @return predefined Express Route circuit SKU types */
+    /**
+     * Gets predefined Express Route circuit SKU types.
+     *
+     * @return predefined Express Route circuit SKU types
+     */
     public static ExpressRouteCircuitSkuType[] values() {
         Collection<ExpressRouteCircuitSkuType> valuesCollection = VALUES_BY_NAME.values();
         return valuesCollection.toArray(new ExpressRouteCircuitSkuType[valuesCollection.size()]);
@@ -87,7 +91,11 @@ public class ExpressRouteCircuitSkuType {
         }
     }
 
-    /** @return the SKU */
+    /**
+     * Gets the SKU.
+     *
+     * @return the SKU
+     */
     public ExpressRouteCircuitSku sku() {
         // Return copy of sku to guard ExpressRouteCircuitSkuType from ending up with invalid
         // sku in case consumer changes the returned Sku instance.
