@@ -45,6 +45,7 @@
   {
     "extension": "allowed-external-apis",
     "configuration": {
+      "enabled": true,
       "allowedPrefixes": {
         "io.": [
           "clientcore.core"
@@ -55,8 +56,9 @@
   {
     "extension": "ignored-transitive-changes",
     "configuration": {
+      "enabled": true,
       "ignoredNewArchives": [
-        "io.clientcore:core:",
+        "io.clientcore:core:"
       ]
     }
   },

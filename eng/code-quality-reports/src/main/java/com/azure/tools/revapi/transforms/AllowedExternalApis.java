@@ -3,6 +3,7 @@
 
 package com.azure.tools.revapi.transforms;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.revapi.AnalysisContext;
 import org.revapi.Difference;
 import org.revapi.Element;
@@ -29,6 +30,7 @@ public final class AllowedExternalApis<E extends Element<E>> extends BaseDiffere
     private static final Pattern DIFFERENCE_CODE_PATTERN = Pattern.compile("java.class.externalClassExposedInAPI",
         Pattern.LITERAL);
 
+    private boolean enabled = false;
     private List<PrefixMatcher> allowedPrefixes = Collections.emptyList();
 
     @Override
@@ -38,7 +40,7 @@ public final class AllowedExternalApis<E extends Element<E>> extends BaseDiffere
 
     @Override
     public TransformationResult tryTransform(@Nullable E oldElement, @Nullable E newElement, Difference difference) {
-        if (newElement == null || allowedPrefixes.isEmpty()) {
+        if (!enabled || newElement == null || allowedPrefixes.isEmpty()) {
             // Missing element to compare.
             return TransformationResult.keep();
         }
@@ -72,6 +74,8 @@ public final class AllowedExternalApis<E extends Element<E>> extends BaseDiffere
 
     @Override
     public void initialize(@Nonnull AnalysisContext analysisContext) {
+        JsonNode enabledNode = analysisContext.getConfigurationNode().get("enabled");
+        this.enabled = enabledNode != null && enabledNode.isBoolean() && enabledNode.booleanValue();
         this.allowedPrefixes = createPrefixMatchersFromConfiguration(analysisContext, "allowedPrefixes");
     }
 }

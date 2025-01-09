@@ -2,12 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.tools.revapi.transforms;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import org.revapi.AnalysisContext;
 import org.revapi.Criticality;
 import org.revapi.Difference;
 import org.revapi.Element;
 import org.revapi.TransformationResult;
 import org.revapi.base.BaseDifferenceTransform;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.regex.Pattern;
 
@@ -19,6 +22,8 @@ import java.util.regex.Pattern;
  */
 public final class IgnoredJacksonDatabindRemovalTransform<E extends Element<E>> extends BaseDifferenceTransform<E> {
     private static final Pattern DIFFERENCE_CODE_PATTERN = Pattern.compile("java\\.annotation\\.removed");
+
+    private boolean enabled = false;
 
     @Override
     public Pattern[] getDifferenceCodePatterns() {
@@ -33,7 +38,18 @@ public final class IgnoredJacksonDatabindRemovalTransform<E extends Element<E>> 
     }
 
     @Override
+    public void initialize(@Nonnull AnalysisContext analysisContext) {
+        JsonNode enabledNode = analysisContext.getConfigurationNode().get("enabled");
+        this.enabled = enabledNode != null && enabledNode.isBoolean() && enabledNode.booleanValue();
+    }
+
+    @Override
     public TransformationResult tryTransform(@Nullable E oldElement, @Nullable E newElement, Difference difference) {
+        if (!enabled) {
+            // If this transform isn't enabled, keep the current result.
+            return TransformationResult.keep();
+        }
+
         // RevApi should add 'annotationType' as an attachment for 'java.annotation.removed' differences.
         String annotationType = difference.attachments.get("annotationType");
 

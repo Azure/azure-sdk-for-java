@@ -45,6 +45,7 @@
   {
     "extension": "allowed-external-apis",
     "configuration": {
+      "enabled": true,
       "allowedPrefixes": {
         "com.azure.": [
           "communication.common.",
@@ -82,8 +83,15 @@
     }
   },
   {
+    "extension": "ignored-jackson-databind-removal",
+    "configuration": {
+      "enabled": true
+    }
+  },
+  {
     "extension": "ignored-transitive-changes",
     "configuration": {
+      "enabled": true,
       "ignoredNewArchives": [
         "com.azure:azure-core:",
         "com.azure:azure-json:",

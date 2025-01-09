@@ -45,6 +45,7 @@ public final class ClassAndPackageTreeFilterProvider implements TreeFilterProvid
         return null;
     }
 
+    // TreeFilterProviders don't need to have a configuration for enabled as
     private List<PrefixMatcher> ignoredClasses = Collections.emptyList();
     private List<PrefixMatcher> ignoredPackages = Collections.emptyList();
     private List<Pattern> ignoredPackagesPatterns = Collections.emptyList();

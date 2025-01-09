@@ -32,6 +32,7 @@ public final class IgnoredTransitiveChangesTransform<E extends Element<E>> exten
     private static final Pattern DIFFERENCE_CODE_PATTERN = Pattern.compile(".*");
     private static final String SUPPLEMENTARY = Archive.Role.SUPPLEMENTARY.toString();
 
+    private boolean enabled = false;
     private List<String> ignoredNewArchives = Collections.emptyList();
 
     @Override
@@ -48,6 +49,8 @@ public final class IgnoredTransitiveChangesTransform<E extends Element<E>> exten
 
     @Override
     public void initialize(@Nonnull AnalysisContext analysisContext) {
+        JsonNode enabledNode = analysisContext.getConfigurationNode().get("enabled");
+        this.enabled = enabledNode != null && enabledNode.isBoolean() && enabledNode.booleanValue();
         JsonNode configuration = analysisContext.getConfigurationNode().get("ignoredNewArchives");
         if (configuration != null) {
             if (!configuration.isArray()) {
@@ -69,6 +72,11 @@ public final class IgnoredTransitiveChangesTransform<E extends Element<E>> exten
 
     @Override
     public TransformationResult tryTransform(@Nullable E oldElement, @Nullable E newElement, Difference difference) {
+        if (!enabled) {
+            // If this transform isn't enabled, keep the current result.
+            return TransformationResult.keep();
+        }
+
         // RevApi will always add newArchive and newArchiveRole together.
         String newArchive = difference.attachments.get("newArchive");
         String newArchiveRole = difference.attachments.get("newArchiveRole");
