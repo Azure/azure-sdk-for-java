@@ -27,52 +27,116 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
     Updatable<RedisCache.Update>, SupportsListingPrivateLinkResource, SupportsListingPrivateEndpointConnection,
     SupportsUpdatingPrivateEndpointConnection {
 
-    /** @return exposes features available only to Premium Sku Redis Cache instances. */
+    /**
+     * Gets an instance of the Azure Redis cache with Premium SKU.
+     *
+     * @return exposes features available only to Premium Sku Redis Cache instances.
+     */
     RedisCachePremium asPremium();
 
-    /** @return returns true if current Redis Cache instance has Premium Sku. */
+    /**
+     * Checks whether current Redis Cache instance has Premium Sku.
+     *
+     * @return returns true if current Redis Cache instance has Premium Sku.
+     */
     boolean isPremium();
 
-    /** @return the provisioningState value */
+    /**
+     * Gets the provisioning state.
+     *
+     * @return the provisioningState value
+     */
     String provisioningState();
 
-    /** @return the hostname value */
+    /**
+     * Gets the host name.
+     *
+     * @return the hostname value
+     */
     String hostname();
 
-    /** @return the port value */
+    /**
+     * Gets the port.
+     *
+     * @return the port value
+     */
     int port();
 
-    /** @return the sslPort value */
+    /**
+     * Gets SSL port.
+     *
+     * @return the sslPort value
+     */
     int sslPort();
 
-    /** @return the Redis version value */
+    /**
+     * Gets the redis version
+     *
+     * @return the Redis version value
+     */
     String redisVersion();
 
-    /** @return the sku value */
+    /**
+     * Gets the SKU.
+     *
+     * @return the sku value
+     */
     Sku sku();
 
-    /** @return the Redis configuration value */
+    /**
+     * Gets the redis configuration.
+     *
+     * @return the Redis configuration value
+     */
     Map<String, String> redisConfiguration();
 
-    /** @return true if non SSL port is enabled, false otherwise */
+    /**
+     * Checks whether non SSL port is enabled.
+     *
+     * @return true if non SSL port is enabled, false otherwise
+     */
     boolean nonSslPort();
 
-    /** @return the shardCount value */
+    /**
+     * Gets count of the shard.
+     *
+     * @return the shardCount value
+     */
     int shardCount();
 
-    /** @return the subnetId value */
+    /**
+     * Gets the resource id of the subnet.
+     *
+     * @return the subnetId value
+     */
     String subnetId();
 
-    /** @return the staticIP value */
+    /**
+     * Gets the static IP.
+     *
+     * @return the staticIP value
+     */
     String staticIp();
 
-    /** @return the minimum TLS version (or higher) that clients require to use. */
+    /**
+     * Gets the minimum TLS version (or higher) that clients require to use.
+     *
+     * @return the minimum TLS version (or higher) that clients require to use.
+     */
     TlsVersion minimumTlsVersion();
 
-    /** @return Firewall Rules in the Redis Cache, indexed by name */
+    /**
+     * Gets firewall rules in the Redis Cache.
+     *
+     * @return Firewall Rules in the Redis Cache, indexed by name
+     */
     Map<String, RedisFirewallRule> firewallRules();
 
-    /** @return List of patch schedules for current Redis Cache. */
+    /**
+     * Gets list of patch schedules for current Redis Cache.
+     *
+     * @return List of patch schedules for current Redis Cache.
+     */
     List<ScheduleEntry> patchSchedules();
 
     /**
@@ -84,7 +148,11 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
      */
     void forceReboot(RebootType rebootType);
 
-    /** @return a Redis Cache's access keys. This operation requires write permission to the Cache resource. */
+    /**
+     * Gets a Redis Cache's access keys.
+     *
+     * @return a Redis Cache's access keys. This operation requires write permission to the Cache resource.
+     */
     RedisAccessKeys keys();
 
     /**
