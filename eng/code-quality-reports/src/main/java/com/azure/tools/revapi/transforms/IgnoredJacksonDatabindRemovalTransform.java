@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
  *
  * @param <E> Type of element to transform.
  */
-public final class JacksonDatabindRemovalTransform<E extends Element<E>> extends BaseDifferenceTransform<E> {
+public final class IgnoredJacksonDatabindRemovalTransform<E extends Element<E>> extends BaseDifferenceTransform<E> {
     private static final Pattern DIFFERENCE_CODE_PATTERN = Pattern.compile("java\\.annotation\\.removed");
 
     @Override
@@ -29,7 +29,7 @@ public final class JacksonDatabindRemovalTransform<E extends Element<E>> extends
     @Override
     public String getExtensionId() {
         // Used to configure this transform in the RevApi pipeline.
-        return "jackson-databind-removal";
+        return "ignored-jackson-databind-removal";
     }
 
     @Override
@@ -117,6 +117,10 @@ public final class JacksonDatabindRemovalTransform<E extends Element<E>> extends
             } else if (packageName.regionMatches(20, "eventgrid.systemevents", 0, 22)) {
                 // Event Grid
                 return true;
+            } else if (packageName.regionMatches(20, "webpubsub.", 0, 10)) {
+                // WebPubSub
+                return packageName.regionMatches(30, "models", 0, 6)
+                    || packageName.regionMatches(30, "client.models", 0, 13);
             }
         } else if (packageName.regionMatches(10, "monitor.query.models", 0, 20)) {
             // Monitor Query
@@ -140,10 +144,25 @@ public final class JacksonDatabindRemovalTransform<E extends Element<E>> extends
                     || packageName.regionMatches(23, "options", 0, 7);
             }
         } else if (packageName.regionMatches(10, "communication.", 0, 14)) {
-            if (packageName.regionMatches(24, "jobrouter.models", 0, 16)) {
-                // Communication Job Router
-                return true;
-            }
+            return packageName.regionMatches(24, "jobrouter.models", 0, 16) // Communication Job Router
+                || packageName.regionMatches(24, "messages.models", 0, 15) // Communication Messages
+                || packageName.regionMatches(24, "callautomation.models", 0, 21) // Communication Call Automation
+                || packageName.regionMatches(24, "chat.models", 0, 11) // Communication Chat
+                || packageName.regionMatches(24, "rooms.models", 0, 12) // Communication Rooms
+                || packageName.regionMatches(24, "identity.models", 0, 15) // Communication Identity
+                || packageName.regionMatches(24, "email.models", 0, 12); // Communication Email
+        } else if (packageName.regionMatches(10, "digitaltwins.core", 0, 17)) {
+            // Digital Twins Core
+            return true;
+        } else if (packageName.regionMatches(10, "developer.devcenter.models", 0, 26)) {
+            // Developer Dev Center
+            return true;
+        } else if (packageName.regionMatches(10, "compute.batch.models", 0, 20)) {
+            // Compute Batch
+            return true;
+        } else if (packageName.regionMatches(10, "ai.translation.text.models", 0, 26)) {
+            // Translation Text
+            return true;
         }
 
         // The package is from the Azure SDK, but not in the allowed list, keep the current result.

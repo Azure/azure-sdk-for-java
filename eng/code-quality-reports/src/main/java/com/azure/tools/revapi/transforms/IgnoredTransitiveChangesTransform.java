@@ -3,6 +3,8 @@
 
 package com.azure.tools.revapi.transforms;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import org.revapi.AnalysisContext;
 import org.revapi.Archive;
 import org.revapi.Criticality;
 import org.revapi.Difference;
@@ -10,18 +12,27 @@ import org.revapi.Element;
 import org.revapi.TransformationResult;
 import org.revapi.base.BaseDifferenceTransform;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * Transform that runs after RevApi generates API differences that removes transitive azure-core changes from the
- * flagged differences set.
+ * Transform that runs after RevApi generates API differences that removes transitive changes from the flagged
+ * differences set.
  *
  * @param <E> Type of element to transform.
  */
-public final class TransitiveCoreChangesTransform<E extends Element<E>> extends BaseDifferenceTransform<E> {
+public final class IgnoredTransitiveChangesTransform<E extends Element<E>> extends BaseDifferenceTransform<E> {
+    private static final String CONFIGURATION_ERROR_MESSAGE = "Configuration 'ignoredNewArchives' must be an array "
+        + "of strings representing a Maven groupId:artifactId pair to ignore transitive changes from.";
+
     private static final Pattern DIFFERENCE_CODE_PATTERN = Pattern.compile(".*");
     private static final String SUPPLEMENTARY = Archive.Role.SUPPLEMENTARY.toString();
+
+    private List<String> ignoredNewArchives = Collections.emptyList();
 
     @Override
     public Pattern[] getDifferenceCodePatterns() {
@@ -32,7 +43,28 @@ public final class TransitiveCoreChangesTransform<E extends Element<E>> extends 
     @Override
     public String getExtensionId() {
         // Used to configure this transform in the RevApi pipeline.
-        return "transitive-core-changes";
+        return "ignored-transitive-changes";
+    }
+
+    @Override
+    public void initialize(@Nonnull AnalysisContext analysisContext) {
+        JsonNode configuration = analysisContext.getConfigurationNode().get("ignoredNewArchives");
+        if (configuration != null) {
+            if (!configuration.isArray()) {
+                throw new IllegalArgumentException(CONFIGURATION_ERROR_MESSAGE);
+            }
+
+            List<String> ignoredNewArchives = new ArrayList<>();
+            for (JsonNode node : configuration) {
+                if (!node.isTextual()) {
+                    throw new IllegalArgumentException(CONFIGURATION_ERROR_MESSAGE);
+                }
+
+                ignoredNewArchives.add(node.asText());
+            }
+
+            this.ignoredNewArchives = ignoredNewArchives;
+        }
     }
 
     @Override
@@ -51,10 +83,16 @@ public final class TransitiveCoreChangesTransform<E extends Element<E>> extends 
             return TransformationResult.keep();
         }
 
-        if (!newArchive.startsWith("com.azure:azure-core:")
-            && !newArchive.startsWith("com.azure:azure-json:")
-            && !newArchive.startsWith("com.azure:azure-xml:")) {
-            // The difference isn't from the azure-core, azure-json, or azure-xml SDK, keep the current result.
+        boolean shouldKeep = true;
+        for (String ignoredNewArchive : ignoredNewArchives) {
+            if (newArchive.startsWith(ignoredNewArchive)) {
+                shouldKeep = false;
+                break;
+            }
+        }
+
+        if (shouldKeep) {
+            // The difference didn't match any 'ignoredNewArchives', keep the current result.
             return TransformationResult.keep();
         }
 
@@ -62,7 +100,7 @@ public final class TransitiveCoreChangesTransform<E extends Element<E>> extends 
         // infinite transformation loop as RevApi will keep running the transformation pipeline until there are no
         // transformations applied in the pipeline run.
         if (difference.criticality == Criticality.ERROR) {
-            // The difference is from azure-core and azure-core is a dependency to this SDK, discard it for now.
+            // The difference is from an ignored new archive, discard it.
             // In the future this could retain it with a lower criticality level for informational reasons.
             return TransformationResult.discard();
         } else {
