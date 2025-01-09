@@ -3,23 +3,11 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusProcessorClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder;
 import com.azure.messaging.servicebus.implementation.ServiceBusProcessorClientOptions;
-import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
-import org.reactivestreams.Subscription;
-import reactor.core.CoreSubscriber;
-import reactor.core.Disposable;
-import reactor.core.scheduler.Schedulers;
 
-import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 /**
@@ -187,25 +175,11 @@ import java.util.function.Consumer;
  * @see ServiceBusSessionProcessorClientBuilder
  */
 public final class ServiceBusProcessorClient implements AutoCloseable {
-
-    private static final int SCHEDULER_INTERVAL_IN_SECONDS = 10;
-    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusProcessorClient.class);
-    private final ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder sessionReceiverBuilder;
-    private final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder;
-    private final Consumer<ServiceBusReceivedMessageContext> processMessage;
-    private final Consumer<ServiceBusErrorContext> processError;
     private final ServiceBusProcessorClientOptions processorOptions;
-    // Use ConcurrentHashMap as a set because there is no ConcurrentHashSet.
-    private final Map<Subscription, Subscription> receiverSubscriptions = new ConcurrentHashMap<>();
-    private final AtomicReference<ServiceBusReceiverAsyncClient> asyncClient = new AtomicReference<>();
-    private final AtomicBoolean isRunning = new AtomicBoolean();
     private final String queueName;
     private final String topicName;
     private final String subscriptionName;
-    private final ServiceBusTracer tracer;
-    private Disposable monitorDisposable;
-    private boolean wasStopped = false;
-    private final ServiceBusProcessor processorV2;
+    private final ServiceBusProcessor processor;
 
     /**
      * Constructor to create a sessions-enabled processor.
@@ -222,27 +196,16 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         String queueName, String topicName, String subscriptionName,
         Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError,
         ServiceBusProcessorClientOptions processorOptions) {
-        this.sessionReceiverBuilder
-            = Objects.requireNonNull(sessionReceiverBuilder, "'sessionReceiverBuilder' cannot be null");
-        this.processMessage = Objects.requireNonNull(processMessage, "'processMessage' cannot be null");
-        this.processError = Objects.requireNonNull(processError, "'processError' cannot be null");
+        Objects.requireNonNull(sessionReceiverBuilder, "'sessionReceiverBuilder' cannot be null");
+        Objects.requireNonNull(processMessage, "'processMessage' cannot be null");
+        Objects.requireNonNull(processError, "'processError' cannot be null");
         this.processorOptions = Objects.requireNonNull(processorOptions, "'processorOptions' cannot be null");
-
-        this.receiverBuilder = null;
         this.queueName = queueName;
         this.topicName = topicName;
         this.subscriptionName = subscriptionName;
-        if (processorOptions.isV2()) {
-            final int concurrencyPerSession = this.processorOptions.getMaxConcurrentCalls();
-            this.processorV2
-                = new ServiceBusProcessor(sessionReceiverBuilder, processMessage, processError, concurrencyPerSession);
-            this.tracer = null;
-        } else {
-            this.processorV2 = null;
-            ServiceBusReceiverAsyncClient client = sessionReceiverBuilder.buildAsyncClientForProcessor();
-            this.asyncClient.set(client);
-            this.tracer = client.getInstrumentation().getTracer();
-        }
+        final int concurrencyPerSession = this.processorOptions.getMaxConcurrentCalls();
+        this.processor
+            = new ServiceBusProcessor(sessionReceiverBuilder, processMessage, processError, concurrencyPerSession);
     }
 
     /**
@@ -259,27 +222,18 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     ServiceBusProcessorClient(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder, String queueName,
         String topicName, String subscriptionName, Consumer<ServiceBusReceivedMessageContext> processMessage,
         Consumer<ServiceBusErrorContext> processError, ServiceBusProcessorClientOptions processorOptions) {
-        this.receiverBuilder = Objects.requireNonNull(receiverBuilder, "'receiverBuilder' cannot be null");
-        this.processMessage = Objects.requireNonNull(processMessage, "'processMessage' cannot be null");
-        this.processError = Objects.requireNonNull(processError, "'processError' cannot be null");
+        Objects.requireNonNull(receiverBuilder, "'receiverBuilder' cannot be null");
+        Objects.requireNonNull(processMessage, "'processMessage' cannot be null");
+        Objects.requireNonNull(processError, "'processError' cannot be null");
         this.processorOptions = Objects.requireNonNull(processorOptions, "'processorOptions' cannot be null");
 
-        this.sessionReceiverBuilder = null;
         this.queueName = queueName;
         this.topicName = topicName;
         this.subscriptionName = subscriptionName;
-        if (this.processorOptions.isV2()) {
-            final int concurrency = this.processorOptions.getMaxConcurrentCalls();
-            final boolean enableAutoDisposition = !this.processorOptions.isDisableAutoComplete();
-            this.processorV2 = new ServiceBusProcessor(receiverBuilder, processMessage, processError, concurrency,
-                enableAutoDisposition);
-            this.tracer = null;
-        } else {
-            this.processorV2 = null;
-            final ServiceBusReceiverAsyncClient client = receiverBuilder.buildAsyncClientForProcessor();
-            this.asyncClient.set(client);
-            this.tracer = client.getInstrumentation().getTracer();
-        }
+        final int concurrency = this.processorOptions.getMaxConcurrentCalls();
+        final boolean enableAutoDisposition = !this.processorOptions.isDisableAutoComplete();
+        this.processor = new ServiceBusProcessor(receiverBuilder, processMessage, processError, concurrency,
+            enableAutoDisposition);
     }
 
     /**
@@ -295,40 +249,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      * </p>
      */
     public synchronized void start() {
-        if (processorV2 != null) {
-            processorV2.start();
-            return;
-        }
-        if (isRunning.getAndSet(true)) {
-            LOGGER.info("Processor is already running");
-            return;
-        }
-
-        if (wasStopped) {
-            wasStopped = false;
-            LOGGER.warning(
-                "Starting Processor that was stopped before is not recommended, and this feature may be deprecated in the future. "
-                    + "Please close this processor instance and create a new one to restart processing. "
-                    + "Refer to the GitHub issue https://github.com/Azure/azure-sdk-for-java/issues/34464 for more details");
-        }
-
-        if (asyncClient.get() == null) {
-            asyncClient.set(createNewReceiver());
-        }
-
-        receiveMessages();
-
-        // Start a monitor to periodically check if the client's connection is active.
-        // NOTE: Schedulers.boundedElastic() is used here instead of Flux.interval() because the restart route involves
-        // tearing down multiple levels of clients synchronously. The boundedElastic is used instead of the parallel
-        // (parallel scheduler backing Flux.interval), so that we don't block any of the parallel threads.
-        if (monitorDisposable == null) {
-            monitorDisposable = Schedulers.boundedElastic().schedulePeriodically(() -> {
-                if (this.asyncClient.get().isConnectionClosed()) {
-                    restartMessageReceiver(null);
-                }
-            }, SCHEDULER_INTERVAL_IN_SECONDS, SCHEDULER_INTERVAL_IN_SECONDS, TimeUnit.SECONDS);
-        }
+        processor.start();
     }
 
     /**
@@ -336,12 +257,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      * processor can resume processing messages by calling {@link #start()} again.
      */
     public synchronized void stop() {
-        if (processorV2 != null) {
-            processorV2.stop();
-            return;
-        }
-        wasStopped = true;
-        isRunning.set(false);
+        processor.stop();
     }
 
     /**
@@ -350,21 +266,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      */
     @Override
     public synchronized void close() {
-        if (processorV2 != null) {
-            processorV2.close();
-            return;
-        }
-        isRunning.set(false);
-        receiverSubscriptions.keySet().forEach(Subscription::cancel);
-        receiverSubscriptions.clear();
-        if (monitorDisposable != null) {
-            monitorDisposable.dispose();
-            monitorDisposable = null;
-        }
-        if (asyncClient.get() != null) {
-            asyncClient.get().close();
-            asyncClient.set(null);
-        }
+        processor.close();
     }
 
     /**
@@ -374,10 +276,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      * @return {@code true} if the processor is running; {@code false} otherwise.
      */
     public synchronized boolean isRunning() {
-        if (processorV2 != null) {
-            return processorV2.isRunning();
-        }
-        return isRunning.get();
+        return processor.isRunning();
     }
 
     /**
@@ -416,146 +315,6 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      * @return The identifier that can identify the instance of {@link ServiceBusProcessorClient}.
      */
     public synchronized String getIdentifier() {
-        if (processorV2 != null) {
-            return processorV2.getIdentifier();
-        }
-        if (asyncClient.get() == null) {
-            asyncClient.set(createNewReceiver());
-        }
-
-        return asyncClient.get().getIdentifier();
-    }
-
-    private synchronized void receiveMessages() {
-        if (receiverSubscriptions.size() > 0) {
-            // For the case of start -> stop -> start again
-            receiverSubscriptions.keySet().forEach(subscription -> subscription.request(1L));
-            return;
-        }
-        ServiceBusReceiverAsyncClient receiverClient = asyncClient.get();
-
-        @SuppressWarnings({ "unchecked", "rawtypes" })
-        CoreSubscriber<ServiceBusMessageContext>[] subscribers
-            = new CoreSubscriber[processorOptions.getMaxConcurrentCalls()];
-
-        for (int i = 0; i < processorOptions.getMaxConcurrentCalls(); i++) {
-            subscribers[i] = new CoreSubscriber<ServiceBusMessageContext>() {
-                private Subscription subscription = null;
-
-                @Override
-                public void onSubscribe(Subscription subscription) {
-                    this.subscription = subscription;
-                    receiverSubscriptions.put(subscription, subscription);
-                    subscription.request(1);
-                }
-
-                @SuppressWarnings("try")
-                @Override
-                public void onNext(ServiceBusMessageContext serviceBusMessageContext) {
-                    Context span = serviceBusMessageContext.getMessage() != null
-                        ? serviceBusMessageContext.getMessage().getContext()
-                        : Context.NONE;
-                    Exception exception = null;
-                    AutoCloseable scope = tracer.makeSpanCurrent(span);
-                    try {
-                        if (serviceBusMessageContext.hasError()) {
-                            handleError(serviceBusMessageContext.getThrowable());
-                        } else {
-                            ServiceBusReceivedMessageContext serviceBusReceivedMessageContext
-                                = new ServiceBusReceivedMessageContext(receiverClient, serviceBusMessageContext);
-
-                            try {
-                                processMessage.accept(serviceBusReceivedMessageContext);
-                            } catch (Exception ex) {
-                                handleError(new ServiceBusException(ex, ServiceBusErrorSource.USER_CALLBACK));
-
-                                if (!processorOptions.isDisableAutoComplete()) {
-                                    LOGGER.warning("Error when processing message. Abandoning message.", ex);
-                                    abandonMessage(serviceBusMessageContext, receiverClient);
-                                }
-                                exception = ex;
-                            }
-                        }
-                        if (isRunning.get()) {
-                            LOGGER.verbose("Requesting 1 more message from upstream");
-                            subscription.request(1);
-                        }
-                    } finally {
-                        tracer.endSpan(exception, span, scope);
-                    }
-                }
-
-                @Override
-                public void onError(Throwable throwable) {
-                    LOGGER.info("Error receiving messages.", throwable);
-                    handleError(throwable);
-                    if (isRunning.get()) {
-                        restartMessageReceiver(subscription);
-                    }
-                }
-
-                @Override
-                public void onComplete() {
-                    LOGGER.info("Completed receiving messages.");
-                    if (isRunning.get()) {
-                        restartMessageReceiver(subscription);
-                    }
-                }
-            };
-        }
-
-        if (processorOptions.getMaxConcurrentCalls() > 1) {
-            receiverClient.receiveMessagesWithContext()
-                .parallel(processorOptions.getMaxConcurrentCalls(), 1)
-                .runOn(Schedulers.boundedElastic(), 1)
-                .subscribe(subscribers);
-        } else {
-            // For the default case, i.e., when max-concurrent-call is one, the Processor handler can be invoked on
-            // the same Bounded-Elastic thread that the Low-Level Receiver obtained. This way, we can avoid
-            // the unnecessary thread hopping and allocation that otherwise would have been introduced by the parallel
-            // and runOn operators for this code path.
-            receiverClient.receiveMessagesWithContext().subscribe(subscribers[0]);
-        }
-    }
-
-    private void abandonMessage(ServiceBusMessageContext serviceBusMessageContext,
-        ServiceBusReceiverAsyncClient receiverClient) {
-        try {
-            receiverClient.abandon(serviceBusMessageContext.getMessage()).block();
-        } catch (Exception exception) {
-            LOGGER.verbose("Failed to abandon message", exception);
-        }
-    }
-
-    private void handleError(Throwable throwable) {
-        try {
-            ServiceBusReceiverAsyncClient client = asyncClient.get();
-            final String fullyQualifiedNamespace = client.getFullyQualifiedNamespace();
-            final String entityPath = client.getEntityPath();
-            processError.accept(new ServiceBusErrorContext(throwable, fullyQualifiedNamespace, entityPath));
-        } catch (Exception ex) {
-            LOGGER.verbose("Error from error handler. Ignoring error.", ex);
-        }
-    }
-
-    private synchronized void restartMessageReceiver(Subscription requester) {
-        if (!isRunning()) {
-            return;
-        }
-        if (requester != null && !receiverSubscriptions.containsKey(requester)) {
-            return;
-        }
-        receiverSubscriptions.keySet().forEach(Subscription::cancel);
-        receiverSubscriptions.clear();
-        ServiceBusReceiverAsyncClient receiverClient = asyncClient.get();
-        receiverClient.close();
-        asyncClient.set(createNewReceiver());
-        receiveMessages();
-    }
-
-    private ServiceBusReceiverAsyncClient createNewReceiver() {
-        return this.receiverBuilder == null
-            ? this.sessionReceiverBuilder.buildAsyncClientForProcessor()
-            : this.receiverBuilder.buildAsyncClientForProcessor();
+        return processor.getIdentifier();
     }
 }
