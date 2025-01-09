@@ -166,7 +166,8 @@ public final class IgnoredJacksonDatabindRemovalTransform<E extends Element<E>> 
                 || packageName.regionMatches(24, "chat.models", 0, 11) // Communication Chat
                 || packageName.regionMatches(24, "rooms.models", 0, 12) // Communication Rooms
                 || packageName.regionMatches(24, "identity.models", 0, 15) // Communication Identity
-                || packageName.regionMatches(24, "email.models", 0, 12); // Communication Email
+                || packageName.regionMatches(24, "email.models", 0, 12) // Communication Email
+                || packageName.regionMatches(24, "phonenumbers.models", 0, 19); // Communication Phone Numbers
         } else if (packageName.regionMatches(10, "digitaltwins.core", 0, 17)) {
             // Digital Twins Core
             return true;
