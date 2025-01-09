@@ -109,7 +109,7 @@ public final class PagedIterable<T> implements Iterable<T> {
         return StreamSupport.stream(iterableByPage(pagingOptions).spliterator(), false);
     }
 
-    private static class PagingContext {
+    private static final class PagingContext {
         private final PagingOptions pagingOptions;
         private final String nextLink;
 
