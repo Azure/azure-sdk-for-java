@@ -15,13 +15,23 @@ import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 public interface ApplicationGatewayIpConfiguration
     extends HasInnerModel<ApplicationGatewayIpConfigurationInner>, ChildResource<ApplicationGateway> {
 
-    /** @return the resource ID of the virtual network the application gateway is in */
+    /**
+     * Gets the resource ID of the virtual network the application gateway is in.
+     *
+     * @return the resource ID of the virtual network the application gateway is in
+     */
     String networkId();
 
-    /** @return the name of the subnet the application gateway is in */
+    /**
+     * Gets the name of the subnet the application gateway is in.
+     *
+     * @return the name of the subnet the application gateway is in
+     */
     String subnetName();
 
     /**
+     * Gets the subnet the application gateway is in.
+     *
      * @return the subnet the application gateway is in
      *     <p>Note, this results in a separate call to Azure.
      */

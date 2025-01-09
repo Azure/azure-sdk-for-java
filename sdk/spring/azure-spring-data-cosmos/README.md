@@ -567,6 +567,7 @@ String[] includePaths() default {};
 // Excluded paths for indexing
 String[] excludePaths() default {};
 ```
+- If using a column for summation in a sum() query that column should be indexed or else it will lead to performance issues.
 #### Unique Key Policy
  - Azure Spring Data Cosmos supports setting `UniqueKeyPolicy` on container by adding the annotation `@CosmosUniqueKeyPolicy` to domain class. This annotation has the following attributes:
 ```java readme-sample-CosmosUniqueKeyPolicyCodeSnippet

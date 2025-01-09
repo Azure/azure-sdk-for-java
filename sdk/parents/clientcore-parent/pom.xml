@@ -240,12 +240,6 @@
       <version>0.8.12</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <build>
@@ -765,7 +759,7 @@
           </dependencies>
           <configuration>
             <skip>${checkstyle.skip}</skip>
-            <configLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
+            <configLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/clientcore-checkstyle.xml</configLocation>
             <suppressionsLocation>${checkstyle.suppressionsLocation}</suppressionsLocation>
             <headerLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
             <excludes>${checkstyle.excludes}</excludes>

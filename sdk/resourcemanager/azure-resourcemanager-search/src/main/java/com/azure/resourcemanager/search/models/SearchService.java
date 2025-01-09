@@ -37,6 +37,8 @@ public interface SearchService extends GroupableResource<SearchServiceManager, S
     HostingMode hostingMode();
 
     /**
+     * Gets the number of partitions used by the service.
+     *
      * @return the number of partitions used by the service
      */
     int partitionCount();
@@ -57,11 +59,15 @@ public interface SearchService extends GroupableResource<SearchServiceManager, S
     ProvisioningState provisioningState();
 
     /**
+     * Gets the number of replicas used by the service.
+     *
      * @return the number of replicas used by the service
      */
     int replicaCount();
 
     /**
+     * Gets the SKU type of the service.
+     *
      * @return the SKU type of the service
      */
     Sku sku();
@@ -87,6 +93,8 @@ public interface SearchService extends GroupableResource<SearchServiceManager, S
     SearchServiceStatus status();
 
     /**
+     * Gets the details of the status.
+     *
      * @return the details of the status.
      */
     String statusDetails();
