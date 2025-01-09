@@ -24,7 +24,7 @@ public class OffsetDateTimeDescribedTypeTests {
         // DateTimeOffset represented 2024-11-15T23:26:02.5931825+00:00
         final long expectedTicks = 638673099625931825L;
         final OffsetDateTime input = OffsetDateTime.of(2024, 11, 15, 23, 26, 2, 593182500, ZoneOffset.UTC);
-        final int expectedLength = OFFSETDATETIME_SYMBOL.length() + Long.BYTES;;
+        final int expectedLength = OFFSETDATETIME_SYMBOL.length() + Long.BYTES;
 
         // Act
         final OffsetDateTimeDescribedType actualType = new OffsetDateTimeDescribedType(input);

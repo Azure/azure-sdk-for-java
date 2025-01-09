@@ -23,7 +23,7 @@ public class DurationDescribedTypeTests {
         // var timeSpan = new TimeSpan(0, 25, 10, 12, 450);
         final Duration duration = Duration.ofHours(25).plusMinutes(10).plusSeconds(12).plusMillis(450);
         final Long expectedTicks = 906124500000L;
-        final int expectedLength = DURATION_SYMBOL.length() + Long.BYTES;;
+        final int expectedLength = DURATION_SYMBOL.length() + Long.BYTES;
 
         // Act
         final DurationDescribedType actual = new DurationDescribedType(duration);
