@@ -958,6 +958,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return receiveMessagesNoBackPressure().limitRate(1, 0);
     }
 
+    // API used only in v1 stack
     @SuppressWarnings("try")
     Flux<ServiceBusReceivedMessage> receiveMessagesNoBackPressure() {
         return receiveMessagesWithContext(0).handle((serviceBusMessageContext, sink) -> {
@@ -980,6 +981,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *     {@link Flux#take(Duration)}).</li>
      *     <li>An {@link AmqpException} occurs that causes the receive link to stop.</li>
      * </ul>
+     * <p>
+     * API used only in v1 stack
+     * </p>
      *
      * @return An <b>infinite</b> stream of messages from the Service Bus entity.
      */
@@ -987,6 +991,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return receiveMessagesWithContext(1);
     }
 
+    // API used only in v1 stack
     private Flux<ServiceBusMessageContext> receiveMessagesWithContext(int highTide) {
         final Flux<ServiceBusMessageContext> messageFlux = sessionManager != null
             ? sessionManager.receive()

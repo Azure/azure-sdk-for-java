@@ -55,6 +55,7 @@ import static com.azure.messaging.servicebus.TestUtils.getSessionQueueBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getSessionSubscriptionBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
@@ -442,6 +443,16 @@ public abstract class IntegrationTestBase extends TestProxyTestBase {
             // the queue or topic contains messages from previous test cases.
             // assertEquals(sessionId, message.getSessionId());
         }
+    }
+
+    protected void assertMessageEquals(String sessionId, String messageId, String contents,
+        ServiceBusReceivedMessage message) {
+        assertNotNull(message, "'message' should not be null.");
+        if (!CoreUtils.isNullOrEmpty(sessionId)) {
+            assertEquals(sessionId, message.getSessionId());
+        }
+        assertEquals(messageId, message.getMessageId());
+        assertEquals(contents, message.getBody().toString());
     }
 
     protected final Configuration v1OrV2(boolean isV2) {

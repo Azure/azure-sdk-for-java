@@ -58,6 +58,7 @@ import static com.azure.messaging.servicebus.TestUtils.USE_CASE_AUTO_COMPLETE;
 import static com.azure.messaging.servicebus.TestUtils.USE_CASE_PEEK_BATCH_MESSAGES;
 import static com.azure.messaging.servicebus.TestUtils.USE_CASE_PEEK_MESSAGE;
 import static com.azure.messaging.servicebus.TestUtils.USE_CASE_RECEIVE_AND_COMPLETE;
+import static com.azure.messaging.servicebus.TestUtils.getServiceBusMessage;
 import static com.azure.messaging.servicebus.TestUtils.getServiceBusMessages;
 import static com.azure.messaging.servicebus.TestUtils.getSessionSubscriptionBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
@@ -1439,6 +1440,44 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
         for (Long sequenceNumber : sequenceNumbers) {
             StepVerifier.create(autoCompleteReceiver.peekMessage(sequenceNumber)).verifyComplete();
         }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
+    void receivesSingleSessionMessages(MessagingEntityType entityType) {
+        // Arrange
+        final int entityIndex = TestUtils.USE_CASE_SINGLE_SESSION;
+        final String messageId = "sessionMessageId";
+        final String contents = "Some-contents";
+        final int numberToSend = 5;
+
+        setSender(entityType, entityIndex, true);
+        final Disposable subscription = Flux.interval(Duration.ofMillis(500)).take(numberToSend).flatMap(index -> {
+            final ServiceBusMessage message = getServiceBusMessage(contents, messageId).setSessionId(sessionId);
+            return sender.sendMessage(message).thenReturn(index);
+        })
+            .subscribe(number -> logger.info("sessionId[{}] sent[{}] Message sent.", sessionId, number),
+                error -> logger.error("sessionId[{}] Error encountered.", sessionId, error),
+                () -> logger.info("sessionId[{}] Finished sending.", sessionId));
+        toClose(subscription);
+        setReceiver(entityType, entityIndex, true);
+
+        // Act & Assert
+        StepVerifier
+            .create(receiver.receiveMessages()
+                .concatMap(receivedMessage -> receiver.complete(receivedMessage).thenReturn(receivedMessage)))
+            .assertNext(serviceBusReceivedMessage -> assertMessageEquals(sessionId, messageId, contents,
+                serviceBusReceivedMessage))
+            .assertNext(serviceBusReceivedMessage -> assertMessageEquals(sessionId, messageId, contents,
+                serviceBusReceivedMessage))
+            .assertNext(serviceBusReceivedMessage -> assertMessageEquals(sessionId, messageId, contents,
+                serviceBusReceivedMessage))
+            .assertNext(serviceBusReceivedMessage -> assertMessageEquals(sessionId, messageId, contents,
+                serviceBusReceivedMessage))
+            .assertNext(serviceBusReceivedMessage -> assertMessageEquals(sessionId, messageId, contents,
+                serviceBusReceivedMessage))
+            .thenCancel()
+            .verify(Duration.ofMinutes(2));
     }
 
     /**
