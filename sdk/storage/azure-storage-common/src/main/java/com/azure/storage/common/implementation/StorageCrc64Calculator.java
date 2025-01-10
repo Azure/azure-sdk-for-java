@@ -5,13 +5,20 @@ package com.azure.storage.common.implementation;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.Arrays;
 
+/**
+ * This class provides methods to compute and manipulate CRC64 checksums using the Azure Storage CRC64 polynomial.
+ * It includes methods for computing CRC64 checksums for byte arrays, updating CRC values using lookup tables, and
+ * concatenating CRC values.
+ * <p>
+ * RESERVED FOR INTERNAL USE.
+ *
+ */
 public class StorageCrc64Calculator {
 
-    private static long poly = 0x9A6C9329AC4BC9B5L;
+    private static final long POLY = 0x9A6C9329AC4BC9B5L;
 
-    private static final long[] m_u1 = {
+    private static final long[] M_U1 = {
         0x0000000000000000L,
         0x7f6ef0c830358979L,
         0xfedde190606b12f2L,
@@ -269,7 +276,7 @@ public class StorageCrc64Calculator {
         0x55b4a08fdfd90e51L,
         0x2ada5047efec8728L, };
 
-    private static final long[] m_u32 = {
+    private static final long[] M_U32 = {
         0x0000000000000000L,
         0xb8c533c1177eb231L,
         0x455341d1766af709L,
@@ -2326,7 +2333,7 @@ public class StorageCrc64Calculator {
         0x353bc4114ae35c0cL,
         0x8587ea49d8e7a90cL, };
 
-    private static final long[] m_uX2N = {
+    private static final long[] M_UX2N = {
         0x0080000000000000L,
         0x0000800000000000L,
         0x0000000080000000L,
@@ -2392,167 +2399,15 @@ public class StorageCrc64Calculator {
         0x2000000000000000L,
         0x0800000000000000L, };
 
-    private static final long m_uComplement = ~0L;
-    private static final int m_uBitWidth = 64;
-
-    /// <summary>
-    /// Compute the CRC64 of the input data using the Azure Storage CRC64 polynomial.
-    /// </summary>
-    /// <param name="src">The source data on which to compute the CRC64.</param>
-    /// <param name="uCrc"></param>
-    /// <returns></returns>
-    public static long computeSlicedSafe(byte[] src, long uCrc) {
-        int pData = 0;
-        long uSize = src.length;
-
-        long uBytes, uStop;
-
-        uCrc ^= ~0L;
-
-        uStop = uSize - (uSize % 32);
-        if (uStop >= 2 * 32) {
-            long uCrc0 = 0;
-            long uCrc1 = 0;
-            long uCrc2 = 0;
-            long uCrc3 = 0;
-            int pLast = pData + (int) uStop - 32;
-            uSize -= uStop;
-            uCrc0 = uCrc;
-
-            for (; pData < pLast; pData += 32) {
-                long b0;
-                long b1;
-                long b2;
-                long b3;
-
-                b0 = ByteBuffer.wrap(Arrays.copyOfRange(src, pData, pData + 8)).order(ByteOrder.LITTLE_ENDIAN).getLong()
-                    ^ uCrc0;
-                b1 = ByteBuffer.wrap(Arrays.copyOfRange(src, pData + 8, pData + 16))
-                    .order(ByteOrder.LITTLE_ENDIAN)
-                    .getLong() ^ uCrc1;
-                b2 = ByteBuffer.wrap(Arrays.copyOfRange(src, pData + 16, pData + 24))
-                    .order(ByteOrder.LITTLE_ENDIAN)
-                    .getLong() ^ uCrc2;
-                b3 = ByteBuffer.wrap(Arrays.copyOfRange(src, pData + 24, pData + 32))
-                    .order(ByteOrder.LITTLE_ENDIAN)
-                    .getLong() ^ uCrc3;
-
-                uCrc0 = m_u32[7 * 256 + (int) ((b0) & (256 - 1))];
-                b0 >>= 8;
-                uCrc1 = m_u32[7 * 256 + (int) ((b1) & (256 - 1))];
-                b1 >>= 8;
-                uCrc2 = m_u32[7 * 256 + (int) ((b2) & (256 - 1))];
-                b2 >>= 8;
-                uCrc3 = m_u32[7 * 256 + (int) ((b3) & (256 - 1))];
-                b3 >>= 8;
-                uCrc0 ^= m_u32[6 * 256 + (int) ((b0) & (256 - 1))];
-                b0 >>= 8;
-                uCrc1 ^= m_u32[6 * 256 + (int) ((b1) & (256 - 1))];
-                b1 >>= 8;
-                uCrc2 ^= m_u32[6 * 256 + (int) ((b2) & (256 - 1))];
-                b2 >>= 8;
-                uCrc3 ^= m_u32[6 * 256 + (int) ((b3) & (256 - 1))];
-                b3 >>= 8;
-                uCrc0 ^= m_u32[5 * 256 + (int) ((b0) & (256 - 1))];
-                b0 >>= 8;
-                uCrc1 ^= m_u32[5 * 256 + (int) ((b1) & (256 - 1))];
-                b1 >>= 8;
-                uCrc2 ^= m_u32[5 * 256 + (int) ((b2) & (256 - 1))];
-                b2 >>= 8;
-                uCrc3 ^= m_u32[5 * 256 + (int) ((b3) & (256 - 1))];
-                b3 >>= 8;
-                uCrc0 ^= m_u32[4 * 256 + (int) ((b0) & (256 - 1))];
-                b0 >>= 8;
-                uCrc1 ^= m_u32[4 * 256 + (int) ((b1) & (256 - 1))];
-                b1 >>= 8;
-                uCrc2 ^= m_u32[4 * 256 + (int) ((b2) & (256 - 1))];
-                b2 >>= 8;
-                uCrc3 ^= m_u32[4 * 256 + (int) ((b3) & (256 - 1))];
-                b3 >>= 8;
-                uCrc0 ^= m_u32[3 * 256 + (int) ((b0) & (256 - 1))];
-                b0 >>= 8;
-                uCrc1 ^= m_u32[3 * 256 + (int) ((b1) & (256 - 1))];
-                b1 >>= 8;
-                uCrc2 ^= m_u32[3 * 256 + (int) ((b2) & (256 - 1))];
-                b2 >>= 8;
-                uCrc3 ^= m_u32[3 * 256 + (int) ((b3) & (256 - 1))];
-                b3 >>= 8;
-                uCrc0 ^= m_u32[2 * 256 + (int) ((b0) & (256 - 1))];
-                b0 >>= 8;
-                uCrc1 ^= m_u32[2 * 256 + (int) ((b1) & (256 - 1))];
-                b1 >>= 8;
-                uCrc2 ^= m_u32[2 * 256 + (int) ((b2) & (256 - 1))];
-                b2 >>= 8;
-                uCrc3 ^= m_u32[2 * 256 + (int) ((b3) & (256 - 1))];
-                b3 >>= 8;
-                uCrc0 ^= m_u32[256 + (int) ((b0) & (256 - 1))];
-                b0 >>= 8;
-                uCrc1 ^= m_u32[256 + (int) ((b1) & (256 - 1))];
-                b1 >>= 8;
-                uCrc2 ^= m_u32[256 + (int) ((b2) & (256 - 1))];
-                b2 >>= 8;
-                uCrc3 ^= m_u32[256 + (int) ((b3) & (256 - 1))];
-                b3 >>= 8;
-                uCrc0 ^= m_u32[(int) ((b0) & (256 - 1))];
-                uCrc1 ^= m_u32[(int) ((b1) & (256 - 1))];
-                uCrc2 ^= m_u32[(int) ((b2) & (256 - 1))];
-                uCrc3 ^= m_u32[(int) ((b3) & (256 - 1))];
-            }
-
-            uCrc = 0;
-            uCrc ^= ByteBuffer.wrap(Arrays.copyOfRange(src, pData, pData + 8)).order(ByteOrder.LITTLE_ENDIAN).getLong()
-                ^ uCrc0;
-            uCrc = (uCrc >> 8) ^ m_u1[(int) ((uCrc) & (256 - 1))];
-            uCrc = (uCrc >> 8) ^ m_u1[(int) ((uCrc) & (256 - 1))];
-            uCrc = (uCrc >> 8) ^ m_u1[(int) ((uCrc) & (256 - 1))];
-            uCrc = (uCrc >> 8) ^ m_u1[(int) ((uCrc) & (256 - 1))];
-            uCrc = (uCrc >> 8) ^ m_u1[(int) ((uCrc) & (256 - 1))];
-            uCrc = (uCrc >> 8) ^ m_u1[(int) ((uCrc) & (256 - 1))];
-            uCrc = (uCrc >> 8) ^ m_u1[(int) ((uCrc) & (256 - 1))];
-            uCrc = (uCrc >> 8) ^ m_u1[(int) ((uCrc) & (256 - 1))];
-            uCrc ^= ByteBuffer.wrap(Arrays.copyOfRange(src, pData + 8, pData + 16))
-                .order(ByteOrder.LITTLE_ENDIAN)
-                .getLong() ^ uCrc1;
-            uCrc = (uCrc >> 8) ^ m_u1[(int) ((uCrc) & (256 - 1))];
-            uCrc = (uCrc >> 8) ^ m_u1[(int) ((uCrc) & (256 - 1))];
-            uCrc = (uCrc >> 8) ^ m_u1[(int) ((uCrc) & (256 - 1))];
-            uCrc = (uCrc >> 8) ^ m_u1[(int) ((uCrc) & (256 - 1))];
-            uCrc = (uCrc >> 8) ^ m_u1[(int) ((uCrc) & (256 - 1))];
-            uCrc = (uCrc >> 8) ^ m_u1[(int) ((uCrc) & (256 - 1))];
-            uCrc = (uCrc >> 8) ^ m_u1[(int) ((uCrc) & (256 - 1))];
-            uCrc = (uCrc >> 8) ^ m_u1[(int) ((uCrc) & (256 - 1))];
-            uCrc ^= ByteBuffer.wrap(Arrays.copyOfRange(src, pData + 16, pData + 24))
-                .order(ByteOrder.LITTLE_ENDIAN)
-                .getLong() ^ uCrc2;
-            uCrc = (uCrc >> 8) ^ m_u1[(int) ((uCrc) & (256 - 1))];
-            uCrc = (uCrc >> 8) ^ m_u1[(int) ((uCrc) & (256 - 1))];
-            uCrc = (uCrc >> 8) ^ m_u1[(int) ((uCrc) & (256 - 1))];
-            uCrc = (uCrc >> 8) ^ m_u1[(int) ((uCrc) & (256 - 1))];
-            uCrc = (uCrc >> 8) ^ m_u1[(int) ((uCrc) & (256 - 1))];
-            uCrc = (uCrc >> 8) ^ m_u1[(int) ((uCrc) & (256 - 1))];
-            uCrc = (uCrc >> 8) ^ m_u1[(int) ((uCrc) & (256 - 1))];
-            uCrc = (uCrc >> 8) ^ m_u1[(int) ((uCrc) & (256 - 1))];
-            uCrc ^= ByteBuffer.wrap(Arrays.copyOfRange(src, pData + 24, pData + 32))
-                .order(ByteOrder.LITTLE_ENDIAN)
-                .getLong() ^ uCrc3;
-            uCrc = (uCrc >> 8) ^ m_u1[(int) ((uCrc) & (256 - 1))];
-            uCrc = (uCrc >> 8) ^ m_u1[(int) ((uCrc) & (256 - 1))];
-            uCrc = (uCrc >> 8) ^ m_u1[(int) ((uCrc) & (256 - 1))];
-            uCrc = (uCrc >> 8) ^ m_u1[(int) ((uCrc) & (256 - 1))];
-            uCrc = (uCrc >> 8) ^ m_u1[(int) ((uCrc) & (256 - 1))];
-            uCrc = (uCrc >> 8) ^ m_u1[(int) ((uCrc) & (256 - 1))];
-            uCrc = (uCrc >> 8) ^ m_u1[(int) ((uCrc) & (256 - 1))];
-            uCrc = (uCrc >> 8) ^ m_u1[(int) ((uCrc) & (256 - 1))];
-            pData += 32;
-        }
-
-        for (uBytes = 0; uBytes < uSize; ++uBytes, ++pData) {
-            uCrc = (uCrc >> 8) ^ m_u1[(int) ((uCrc ^ src[pData]) & (256 - 1))];
-        }
-
-        return (uCrc ^ ~0L);
-    }
-
+    /**
+     * Computes the CRC64 checksum for the given byte array using the Azure Storage CRC64 polynomial.
+     * This method processes the input data in chunks of 32 bytes for efficiency and uses lookup tables
+     * to update the CRC values.
+     *
+     * @param src the byte array for which the CRC64 checksum is to be computed.
+     * @param uCrc the initial CRC value.
+     * @return the computed CRC64 checksum.
+     */
     public static long compute(byte[] src, long uCrc) {
         int pData = 0;
         long uSize = src.length;
@@ -2583,24 +2438,24 @@ public class StorageCrc64Calculator {
                 b3 = ByteBuffer.wrap(src, pData + 24, 8).order(ByteOrder.LITTLE_ENDIAN).getLong() ^ uCrc3;
 
                 // Unsigned updates using tables and masking
-                uCrc0 = m_u32[7 * 256 + ((int) (b0 & 0xFF))];
+                uCrc0 = M_U32[7 * 256 + ((int) (b0 & 0xFF))];
                 b0 >>>= 8;
-                uCrc1 = m_u32[7 * 256 + ((int) (b1 & 0xFF))];
+                uCrc1 = M_U32[7 * 256 + ((int) (b1 & 0xFF))];
                 b1 >>>= 8;
-                uCrc2 = m_u32[7 * 256 + ((int) (b2 & 0xFF))];
+                uCrc2 = M_U32[7 * 256 + ((int) (b2 & 0xFF))];
                 b2 >>>= 8;
-                uCrc3 = m_u32[7 * 256 + ((int) (b3 & 0xFF))];
+                uCrc3 = M_U32[7 * 256 + ((int) (b3 & 0xFF))];
                 b3 >>>= 8;
 
                 // Repeat for remaining bytes
                 for (int i = 6; i >= 0; i--) {
-                    uCrc0 ^= m_u32[i * 256 + ((int) (b0 & 0xFF))];
+                    uCrc0 ^= M_U32[i * 256 + ((int) (b0 & 0xFF))];
                     b0 >>>= 8;
-                    uCrc1 ^= m_u32[i * 256 + ((int) (b1 & 0xFF))];
+                    uCrc1 ^= M_U32[i * 256 + ((int) (b1 & 0xFF))];
                     b1 >>>= 8;
-                    uCrc2 ^= m_u32[i * 256 + ((int) (b2 & 0xFF))];
+                    uCrc2 ^= M_U32[i * 256 + ((int) (b2 & 0xFF))];
                     b2 >>>= 8;
-                    uCrc3 ^= m_u32[i * 256 + ((int) (b3 & 0xFF))];
+                    uCrc3 ^= M_U32[i * 256 + ((int) (b3 & 0xFF))];
                     b3 >>>= 8;
                 }
             }
@@ -2624,7 +2479,7 @@ public class StorageCrc64Calculator {
 
         // Process remaining bytes
         for (uBytes = 0; uBytes < uSize; ++uBytes, ++pData) {
-            uCrc = (uCrc >>> 8) ^ m_u1[(int) ((uCrc ^ src[pData]) & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) ((uCrc ^ src[pData]) & 0xFF)];
         }
 
         return uCrc ^ ~0L; // Final bit flip
@@ -2633,11 +2488,25 @@ public class StorageCrc64Calculator {
     // Helper method to update CRC using lookup tables
     private static long updateCrcWithTables(long uCrc) {
         for (int i = 0; i < 8; i++) {
-            uCrc = (uCrc >>> 8) ^ m_u1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
         }
         return uCrc;
     }
 
+    /**
+     * Concatenates two CRC64 values by combining their initial and final CRC values and sizes.
+     * This method ensures unsigned behavior and uses the `mulX_N` method to perform necessary
+     * multiplications in GF(2^64).
+     *
+     * @param uInitialCrcAB The initial CRC value for the concatenated data.
+     * @param uInitialCrcA The initial CRC value for the first data segment.
+     * @param uFinalCrcA The final CRC value for the first data segment.
+     * @param uSizeA The size of the first data segment.
+     * @param uInitialCrcB The initial CRC value for the second data segment.
+     * @param uFinalCrcB The final CRC value for the second data segment.
+     * @param uSizeB The size of the second data segment.
+     * @return The concatenated CRC64 value.
+     */
     public static long concat(long uInitialCrcAB, long uInitialCrcA, long uFinalCrcA, long uSizeA, long uInitialCrcB,
         long uFinalCrcB, long uSizeB) {
         long uFinalCrcAB = uFinalCrcA ^ ~0L; // Invert bits for unsigned logic
@@ -2656,11 +2525,12 @@ public class StorageCrc64Calculator {
     }
 
     /**
-     * Multiplies a CRC by x^n in GF(2^64).
+     * Multiplies a CRC value by x^n in GF(2^64).
+     * This method uses a lookup table to perform the multiplication efficiently.
      *
-     * @param crc The CRC value.
-     * @param n   The power of x.
-     * @return The resulting CRC64.
+     * @param a The CRC value to be multiplied.
+     * @param uSize The power of x by which the CRC value is to be multiplied.
+     * @return The resulting CRC64 value after multiplication.
      */
     public static long mulX_N(long a, long uSize) {
         long i = 0;
@@ -2668,7 +2538,7 @@ public class StorageCrc64Calculator {
 
         while (uSize != 0) {
             if ((uSize & 1) == 1) {
-                r = mulPolyUnrolled(r, m_uX2N[(int) i]) & 0xFFFFFFFFFFFFFFFFL; // Ensure result is treated as unsigned
+                r = mulPolyUnrolled(r, M_UX2N[(int) i]) & 0xFFFFFFFFFFFFFFFFL; // Ensure result is treated as unsigned
             }
             uSize >>>= 1; // Unsigned right shift
             i += 1;
@@ -2677,14 +2547,16 @@ public class StorageCrc64Calculator {
         return r;
     }
 
-    //    /**
-    //     * Performs multiplication of a CRC by POLY in GF(2^64).
-    //     *
-    //     * @param crc The CRC value.
-    //     * @return The resulting CRC64.
-    //     */
+    /**
+     * Multiplies two CRC values using the polynomial in GF(2^64).
+     * This method performs the multiplication using an unrolled loop for efficiency.
+     *
+     * @param a The first CRC value to be multiplied.
+     * @param b The second CRC value to be multiplied.
+     * @return The resulting CRC64 value after multiplication.
+     */
     public static long mulPolyUnrolled(long a, long b) {
-        final long p = poly;
+        final long p = POLY;
         final long p2 = (p >>> 1) ^ (p * (p & 1)); // Use unsigned shift
         final long bw = Long.SIZE;
 
