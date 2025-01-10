@@ -17,12 +17,11 @@ import java.util.stream.IntStream;
 import java.math.BigInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class StorageCrc64CalculatorTests {
     private static final int KB = 1024;
-    private static final String hexData = "C8E11B40D793D1526018"; // '\\xC8\\xE1\\x1B\\x40\\xD7\\x93\\xD1\\x52\\x60\\x18'
-    private static final byte[] hexBytes = hexStringToByteArray(hexData);
+    private static final String HEX_DATA = "C8E11B40D793D1526018"; // '\\xC8\\xE1\\x1B\\x40\\xD7\\x93\\xD1\\x52\\x60\\x18'
+    private static final byte[] HEX_BYTES = hexStringToByteArray();
 
     @ParameterizedTest
     @CsvSource({
@@ -38,24 +37,24 @@ public class StorageCrc64CalculatorTests {
 
     @ParameterizedTest
     @CsvSource({
-        "'C8E11B40D793D1526018', 0, 3386042136331673945",
-        "'C8E11B40D793D1526018', 208604604655264165, 4570059697646401418",
-        "'C8E11B40D793D1526018', 2153758901452455624, 13366433516720813220",
-        "'C8E11B40D793D1526018', 12345, 5139183895903464380" })
-    void testComputeWithBinaryData(String hexData, long initial, String expectedStr) {
-        byte[] hexBytes = hexStringToByteArray(hexData);
+        "0, 3386042136331673945",
+        "208604604655264165, 4570059697646401418",
+        "2153758901452455624, 13366433516720813220",
+        "12345, 5139183895903464380" })
+    void testComputeWithBinaryData(long initial, String expectedStr) {
+        //byte[] hexBytes = hexStringToByteArray(hexData);
         long expected = unsignedLongFromString(expectedStr);
-        long actual = StorageCrc64Calculator.compute(hexBytes, initial);
+        long actual = StorageCrc64Calculator.compute(HEX_BYTES, initial);
         assertEquals(expected, actual);
     }
 
-    private static byte[] hexStringToByteArray(String hexData) {
+    private static byte[] hexStringToByteArray() {
         //int length = StorageCrc64CalculatorTests.hexData.length();
-        int length = hexData.length();
+        int length = HEX_DATA.length();
         byte[] data = new byte[length / 2];
         for (int i = 0; i < length; i += 2) {
-            data[i / 2] = (byte) ((Character.digit(StorageCrc64CalculatorTests.hexData.charAt(i), 16) << 4)
-                + Character.digit(StorageCrc64CalculatorTests.hexData.charAt(i + 1), 16));
+            data[i / 2] = (byte) ((Character.digit(StorageCrc64CalculatorTests.HEX_DATA.charAt(i), 16) << 4)
+                + Character.digit(StorageCrc64CalculatorTests.HEX_DATA.charAt(i + 1), 16));
         }
         return data;
     }

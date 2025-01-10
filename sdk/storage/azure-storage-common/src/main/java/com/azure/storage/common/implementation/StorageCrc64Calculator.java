@@ -2514,11 +2514,11 @@ public class StorageCrc64Calculator {
         // Ensure unsigned behavior when comparing uInitialCrcA and uInitialCrcAB
         if ((uInitialCrcA & 0xFFFFFFFFFFFFFFFFL) != (uInitialCrcAB & 0xFFFFFFFFFFFFFFFFL)) {
             // Apply mulX_N with proper unsigned masking
-            uFinalCrcAB ^= mulX_N((uInitialCrcA ^ uInitialCrcAB) & 0xFFFFFFFFFFFFFFFFL, uSizeA) & 0xFFFFFFFFFFFFFFFFL;
+            uFinalCrcAB ^= multiplyCrcByPowerOfX((uInitialCrcA ^ uInitialCrcAB) & 0xFFFFFFFFFFFFFFFFL, uSizeA) & 0xFFFFFFFFFFFFFFFFL;
         }
 
         uFinalCrcAB ^= (uInitialCrcB ^ ~0L) & 0xFFFFFFFFFFFFFFFFL; // Ensure unsigned XOR logic
-        uFinalCrcAB = mulX_N(uFinalCrcAB & 0xFFFFFFFFFFFFFFFFL, uSizeB) & 0xFFFFFFFFFFFFFFFFL;
+        uFinalCrcAB = multiplyCrcByPowerOfX(uFinalCrcAB & 0xFFFFFFFFFFFFFFFFL, uSizeB) & 0xFFFFFFFFFFFFFFFFL;
         uFinalCrcAB ^= uFinalCrcB & 0xFFFFFFFFFFFFFFFFL;
 
         return uFinalCrcAB & 0xFFFFFFFFFFFFFFFFL; // Ensure the result is treated as unsigned
@@ -2532,7 +2532,7 @@ public class StorageCrc64Calculator {
      * @param uSize The power of x by which the CRC value is to be multiplied.
      * @return The resulting CRC64 value after multiplication.
      */
-    public static long mulX_N(long a, long uSize) {
+    public static long multiplyCrcByPowerOfX(long a, long uSize) {
         long i = 0;
         long r = a;
 
