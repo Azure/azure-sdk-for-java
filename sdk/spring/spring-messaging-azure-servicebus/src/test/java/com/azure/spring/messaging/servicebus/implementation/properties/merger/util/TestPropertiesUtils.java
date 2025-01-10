@@ -27,25 +27,25 @@ public class TestPropertiesUtils {
     public static final String GETTER_METHOD = "getter";
     private static final String OTHERS_METHOD = "others";
 
-    public static final Set<Class<?>> IGNORED_CLASSES = Set.of(Consumer.class, Object.class, Class.class);
+    public static final Set<Class<?>> IGNORED_CLASSES = Set.of(Class.class, Consumer.class, Object.class);
 
     public static final Set<String> BUILT_IN_MEMBER_VARIABLE_NAMES =
-        Set.of("client", "proxy", "retry", "credential", "profile", "environment", "fixed", "exponential");
+        Set.of("client", "credential", "environment", "exponential", "fixed", "profile", "proxy", "retry");
 
     public static final Class<?>[] NO_SETTER_PROPERTIES_CLASSES = new Class[] {
-        AzureAmqpSdkProperties.class,
         AmqpClientProperties.class,
         AmqpProxyProperties.class,
         AmqpRetryProperties.class,
-        TokenCredentialProperties.class,
-        AzureProfileProperties.class,
-        ClientProperties.class,
-        ProxyProperties.class,
-        RetryProperties.class,
+        AzureAmqpSdkProperties.class,
         AzureEnvironmentProperties.class,
         AzureProfileOptionsAdapter.class,
+        AzureProfileProperties.class,
+        ClientProperties.class,
+        ExponentialRetryProperties.class,
         FixedRetryProperties.class,
-        ExponentialRetryProperties.class
+        ProxyProperties.class,
+        RetryProperties.class,
+        TokenCredentialProperties.class
     };
 
     public static String groupMethodName(Method method) {

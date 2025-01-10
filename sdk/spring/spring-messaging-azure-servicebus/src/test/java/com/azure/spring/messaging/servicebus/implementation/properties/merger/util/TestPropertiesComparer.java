@@ -3,8 +3,6 @@
 
 package com.azure.spring.messaging.servicebus.implementation.properties.merger.util;
 
-import com.azure.spring.messaging.servicebus.implementation.properties.merger.util.TestPropertiesUtils;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

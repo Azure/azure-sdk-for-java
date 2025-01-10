@@ -9,7 +9,6 @@ import com.azure.messaging.servicebus.models.SubQueue;
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
-import com.azure.spring.messaging.servicebus.implementation.properties.merger.util.TestPropertiesUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -146,26 +145,26 @@ public class TestPropertiesValueInjectHelper {
 
     static class HighPriorityMethodComparator implements Comparator<Method> {
 
-        private final List<String> highPriorityVariables;
+        private final List<String> priorities;
 
-        HighPriorityMethodComparator(List<String> highPriorityVariables) {
-            this.highPriorityVariables = highPriorityVariables;
+        HighPriorityMethodComparator(List<String> priorities) {
+            this.priorities = priorities;
         }
 
         @Override
         public int compare(Method o1, Method o2) {
             String o1Value = o1.getName().toLowerCase();
             String o2Value = o2.getName().toLowerCase();
-            if (highPriorityVariables.contains(o1Value) && !highPriorityVariables.contains(o2Value)) {
+            if (priorities.contains(o1Value) && !priorities.contains(o2Value)) {
                 return 1;
             }
 
-            if (!highPriorityVariables.contains(o1Value) && highPriorityVariables.contains(o2Value)) {
+            if (!priorities.contains(o1Value) && priorities.contains(o2Value)) {
                 return -1;
             }
 
-            if (highPriorityVariables.contains(o1Value) && highPriorityVariables.contains(o2Value)) {
-                return highPriorityVariables.indexOf(o1Value) - highPriorityVariables.indexOf(o2Value);
+            if (priorities.contains(o1Value) && priorities.contains(o2Value)) {
+                return priorities.indexOf(o1Value) - priorities.indexOf(o2Value);
             }
 
             return o1Value.compareTo(o2Value);
