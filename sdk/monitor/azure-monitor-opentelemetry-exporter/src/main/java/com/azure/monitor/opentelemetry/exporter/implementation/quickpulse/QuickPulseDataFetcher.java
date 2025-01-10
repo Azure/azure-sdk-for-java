@@ -29,6 +29,7 @@ class QuickPulseDataFetcher {
 
     private final ArrayBlockingQueue<HttpRequest> sendQueue;
     private final QuickPulseNetworkHelper networkHelper = new QuickPulseNetworkHelper();
+    private QuickPulseConfiguration quickPulseConfiguration;
 
     private final Supplier<URL> endpointUrl;
     private final Supplier<String> instrumentationKey;
@@ -41,7 +42,7 @@ class QuickPulseDataFetcher {
 
     public QuickPulseDataFetcher(QuickPulseDataCollector collector, ArrayBlockingQueue<HttpRequest> sendQueue,
         Supplier<URL> endpointUrl, Supplier<String> instrumentationKey, String roleName, String instanceName,
-        String machineName, String quickPulseId) {
+        String machineName, String quickPulseId, QuickPulseConfiguration quickPulseConfiguration) {
         this.collector = collector;
         this.sendQueue = sendQueue;
         this.endpointUrl = endpointUrl;
@@ -50,6 +51,7 @@ class QuickPulseDataFetcher {
         this.instanceName = instanceName;
         this.machineName = machineName;
         this.quickPulseId = quickPulseId;
+        this.quickPulseConfiguration = quickPulseConfiguration;
 
         sdkVersion = getCurrentSdkVersion();
     }
@@ -75,7 +77,8 @@ class QuickPulseDataFetcher {
             Date currentDate = new Date();
             String endpointPrefix
                 = Strings.isNullOrEmpty(redirectedEndpoint) ? getQuickPulseEndpoint() : redirectedEndpoint;
-            HttpRequest request = networkHelper.buildRequest(currentDate, this.getEndpointUrl(endpointPrefix));
+            HttpRequest request = networkHelper.buildRequest(currentDate, this.getEndpointUrl(endpointPrefix),
+                quickPulseConfiguration.getEtag());
             request.setBody(buildPostEntity(counters));
 
             if (!sendQueue.offer(request)) {
@@ -122,15 +125,15 @@ class QuickPulseDataFetcher {
         postEnvelope.setStreamId(quickPulseId);
         postEnvelope.setVersion(sdkVersion);
         postEnvelope.setTimeStamp("/Date(" + System.currentTimeMillis() + ")/");
-        postEnvelope.setMetrics(addMetricsToQuickPulseEnvelope(counters));
+        postEnvelope.setMetrics(addMetricsToQuickPulseEnvelope(counters, collector.retrieveOtelMetrics()));
         envelopes.add(postEnvelope);
-        QuickPulseMonitoringDataPoints points = new QuickPulseMonitoringDataPoints(envelopes);
-        // By default '/' is not escaped in JSON, so we need to escape it manually as the backend requires it.
-        return points.toJsonString().replace("/", "\\/");
+
+        //By default, '/' is not escaped in JSON, so we need to escape it manually as the backend requires it.
+        return "[" + postEnvelope.toJsonString().replace("/", "\\/") + "]";
     }
 
-    private static List<QuickPulseMetrics>
-        addMetricsToQuickPulseEnvelope(QuickPulseDataCollector.FinalCounters counters) {
+    private static List<QuickPulseMetrics> addMetricsToQuickPulseEnvelope(
+        QuickPulseDataCollector.FinalCounters counters, ArrayList<QuickPulseMetrics> otelMetrics) {
         List<QuickPulseMetrics> metricsList = new ArrayList<>();
         metricsList.add(new QuickPulseMetrics("\\ApplicationInsights\\Requests/Sec", counters.requests, 1));
         if (counters.requests != 0) {
@@ -160,6 +163,7 @@ class QuickPulseDataFetcher {
         metricsList.add(
             new QuickPulseMetrics("\\% Process\\Processor Time Normalized", counters.processNormalizedCpuUsage, 1));
 
+        metricsList.addAll(otelMetrics);
         return metricsList;
     }
 }

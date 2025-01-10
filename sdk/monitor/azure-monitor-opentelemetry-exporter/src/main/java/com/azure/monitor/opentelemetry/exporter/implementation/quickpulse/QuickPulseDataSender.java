@@ -9,22 +9,28 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.util.ArrayList;
+import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 
 class QuickPulseDataSender implements Runnable {
 
     private static final ClientLogger logger = new ClientLogger(QuickPulseCoordinator.class);
 
     private final QuickPulseNetworkHelper networkHelper = new QuickPulseNetworkHelper();
+    private QuickPulseConfiguration quickPulseConfiguration;
     private final HttpPipeline httpPipeline;
     private volatile QuickPulseHeaderInfo quickPulseHeaderInfo;
     private long lastValidTransmission = 0;
 
     private final ArrayBlockingQueue<HttpRequest> sendQueue;
 
-    QuickPulseDataSender(HttpPipeline httpPipeline, ArrayBlockingQueue<HttpRequest> sendQueue) {
+    QuickPulseDataSender(HttpPipeline httpPipeline, ArrayBlockingQueue<HttpRequest> sendQueue,
+        QuickPulseConfiguration quickPulseConfiguration) {
         this.httpPipeline = httpPipeline;
         this.sendQueue = sendQueue;
+        this.quickPulseConfiguration = quickPulseConfiguration;
     }
 
     @Override
@@ -58,6 +64,12 @@ class QuickPulseDataSender implements Runnable {
                         case QP_IS_ON:
                             lastValidTransmission = sendTime;
                             this.quickPulseHeaderInfo = quickPulseHeaderInfo;
+                            String etagValue = networkHelper.getEtagHeaderValue(response);
+                            if (!Objects.equals(etagValue, quickPulseConfiguration.getEtag())) {
+                                ConcurrentHashMap<String, ArrayList<QuickPulseConfiguration.DerivedMetricInfo>> otelMetrics
+                                    = quickPulseConfiguration.parseDerivedMetrics(response);
+                                quickPulseConfiguration.updateConfig(etagValue, otelMetrics);
+                            }
                             break;
 
                         case ERROR:
@@ -65,6 +77,7 @@ class QuickPulseDataSender implements Runnable {
                             break;
                     }
                 }
+
             } catch (Throwable t) {
                 logger.error("QuickPulseDataSender failed to send a request", t);
             }
