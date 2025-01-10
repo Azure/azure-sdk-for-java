@@ -12,6 +12,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.opentest4j.AssertionFailedError;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
@@ -110,34 +111,62 @@ public class PagedIterableTests {
         return IntStream.range(i * 3, i * 3 + 3).boxed().collect(Collectors.toList());
     }
 
-    // tests with mocked HttpResponse
-    private NextPageMode nextPageMode;
+    @ParameterizedTest
+    @ValueSource(ints = { 0, 10000, 100000 })
+    public void streamParallelDoesNotRetrieveMorePagesThanExpected(int numberOfPages) {
+        /*
+         * The test doesn't make any service calls so use a high page count to give the test more opportunities for
+         * failure.
+         */
 
+        // there is still 1 request, when there is no item
+        int expectedNumberOfRetrievals = numberOfPages == 0 ? 1 : numberOfPages;
+
+        nextPageMode = NextPageMode.CONTINUATION_TOKEN;
+        pagingStatistics.resetAll();
+        pagingStatistics.totalPages = numberOfPages;
+
+        PagedIterable<TodoItem> pagedIterable = list();
+
+        long count = pagedIterable.stream().parallel().count();
+        assertEquals(numberOfPages * pagingStatistics.pageSize, (int) count);
+        assertEquals(expectedNumberOfRetrievals, pagingStatistics.countPageRetrieval);
+    }
+
+    // tests with mocked HttpResponse
     @ParameterizedTest
     @EnumSource(NextPageMode.class)
     public void testPagedIterable(NextPageMode nextPageMode) {
         this.nextPageMode = nextPageMode;
+        pagingStatistics.resetAll();
 
-        // 2 pages, 3 items
         PagedIterable<TodoItem> pagedIterable = this.list();
-        verifyIteratorSize(pagedIterable.iterableByPage().iterator(), 2);
-        verifyIteratorSize(pagedIterable.iterator(), 3);
 
-        // case when pagingOptions == null, 2 pages
-        verifyIteratorSize(pagedIterable.iterableByPage(null).iterator(), 2);
-        verifyIteratorSize(pagedIterable.streamByPage(null).iterator(), 2);
+        verifyIteratorSize(pagedIterable.iterableByPage().iterator(), pagingStatistics.totalPages);
+        verifyIteratorSize(pagedIterable.iterator(), pagingStatistics.totalPages * pagingStatistics.pageSize);
+
+        // case when pagingOptions == null
+        verifyIteratorSize(pagedIterable.iterableByPage(null).iterator(), pagingStatistics.totalPages);
+        verifyIteratorSize(pagedIterable.streamByPage(null).iterator(), pagingStatistics.totalPages);
     }
 
     @Test
     public void testPagedIterableContinuationToken() {
-        this.nextPageMode = NextPageMode.CONTINUATION_TOKEN;
+        nextPageMode = NextPageMode.CONTINUATION_TOKEN;
+        pagingStatistics.resetAll();
+        pagingStatistics.totalPages = 5;
 
-        PagingOptions pagingOptions = new PagingOptions().setContinuationToken("page1");
+        int startPage = 2;
 
-        // continuationToken provided, 1 page
         PagedIterable<TodoItem> pagedIterable = this.list();
-        verifyIteratorSize(pagedIterable.iterableByPage(pagingOptions).iterator(), 1);
-        verifyIteratorSize(pagedIterable.streamByPage(pagingOptions).iterator(), 1);
+
+        // continuationToken provided, start from startPage
+        PagingOptions pagingOptions = new PagingOptions().setContinuationToken(String.valueOf(startPage));
+
+        verifyIteratorSize(pagedIterable.iterableByPage(pagingOptions).iterator(),
+            pagingStatistics.totalPages - startPage);
+        verifyIteratorSize(pagedIterable.streamByPage(pagingOptions).iterator(),
+            pagingStatistics.totalPages - startPage);
     }
 
     private static <T> void verifyIteratorSize(Iterator<T> iterator, long size) {
@@ -149,12 +178,41 @@ public class PagedIterableTests {
         Assertions.assertEquals(size, iteratorSize);
     }
 
+    private NextPageMode nextPageMode;
+    private final PagingStatistics pagingStatistics = new PagingStatistics();
+
+    private static final class PagingStatistics {
+        private int totalPages = 3;
+        private int pageSize = 5;
+
+        private int countPageRetrieval;
+
+        private void resetAll() {
+            resetStatistics();
+            totalPages = 3;
+            pageSize = 5;
+        }
+
+        private void resetStatistics() {
+            countPageRetrieval = 0;
+        }
+    }
+
     // mock class and API for pageable operation
     public enum NextPageMode {
         CONTINUATION_TOKEN, NEXT_LINK
     }
 
     private static final class TodoItem {
+        private final int id;
+
+        public TodoItem(int id) {
+            this.id = id;
+        }
+
+        public int getId() {
+            return id;
+        }
     }
 
     private static final class TodoPage {
@@ -182,6 +240,7 @@ public class PagedIterableTests {
     }
 
     private PagedIterable<TodoItem> list() {
+        pagingStatistics.resetStatistics();
         return new PagedIterable<>((pagingOptions) -> listSinglePage(pagingOptions),
             (pagingOptions, nextLink) -> listNextSinglePage(pagingOptions, nextLink));
     }
@@ -201,30 +260,52 @@ public class PagedIterableTests {
     }
 
     private Response<TodoPage> listSync(PagingOptions pagingOptions) {
+        ++pagingStatistics.countPageRetrieval;
         // mock request on first page
-        if (nextPageMode == NextPageMode.NEXT_LINK) {
-            return new HttpResponse<>(httpRequest, 200, httpHeaders,
-                new TodoPage(List.of(new TodoItem(), new TodoItem()), null, "https://nextLink"));
-        } else if (nextPageMode == NextPageMode.CONTINUATION_TOKEN) {
-            if (pagingOptions.getContinuationToken() == null) {
-                // first page
-                return new HttpResponse<>(httpRequest, 200, httpHeaders,
-                    new TodoPage(List.of(new TodoItem(), new TodoItem()), "page1", null));
-            } else if ("page1".equals(pagingOptions.getContinuationToken())) {
-                // second page
-                return new HttpResponse<>(httpRequest, 200, httpHeaders,
-                    new TodoPage(List.of(new TodoItem()), null, null));
-            } else {
-                throw new AssertionFailedError();
-            }
+        if (pagingStatistics.totalPages == 0) {
+            return new HttpResponse<>(httpRequest, 200, httpHeaders, new TodoPage(Collections.emptyList(), null, null));
         } else {
-            throw new AssertionFailedError();
+            switch (nextPageMode) {
+                case NEXT_LINK: {
+                    // first page
+                    return new HttpResponse<>(httpRequest, 200, httpHeaders,
+                        new TodoPage(createTodoItemList(0), null, "1"));
+                }
+
+                case CONTINUATION_TOKEN: {
+                    if (pagingOptions.getContinuationToken() == null) {
+                        // first page
+                        return new HttpResponse<>(httpRequest, 200, httpHeaders,
+                            new TodoPage(createTodoItemList(0), "1", null));
+                    } else {
+                        int pageIndex = Integer.parseInt(pagingOptions.getContinuationToken());
+                        int nextPageIndex = pageIndex + 1;
+                        String newContinuationToken
+                            = nextPageIndex >= pagingStatistics.totalPages ? null : String.valueOf(nextPageIndex);
+                        return new HttpResponse<>(httpRequest, 200, httpHeaders,
+                            new TodoPage(createTodoItemList(pageIndex), newContinuationToken, null));
+                    }
+                }
+
+                default:
+                    throw new AssertionFailedError();
+            }
         }
     }
 
     private Response<TodoPage> listNextSync(String nextLink) {
+        ++pagingStatistics.countPageRetrieval;
         // mock request on next page
-        Assertions.assertEquals("https://nextLink", nextLink);
-        return new HttpResponse<>(httpRequest, 200, httpHeaders, new TodoPage(List.of(new TodoItem()), null, null));
+        int pageIndex = Integer.parseInt(nextLink);
+        int nextPageIndex = pageIndex + 1;
+        String newNextLink = nextPageIndex >= pagingStatistics.totalPages ? null : String.valueOf(nextPageIndex);
+        return new HttpResponse<>(httpRequest, 200, httpHeaders,
+            new TodoPage(createTodoItemList(pageIndex), null, newNextLink));
+    }
+
+    private List<TodoItem> createTodoItemList(int pageIndex) {
+        return IntStream.range(pageIndex * pagingStatistics.pageSize, (pageIndex + 1) * pagingStatistics.pageSize)
+            .mapToObj(TodoItem::new)
+            .collect(Collectors.toList());
     }
 }
