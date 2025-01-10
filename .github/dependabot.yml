@@ -7,12 +7,11 @@ version: 2
 updates:
   - package-ecosystem: "maven" # See documentation for possible values
     directories: 
-      - "/sdk/core/*"
+      - "/sdk/*"
     schedule:
       interval: "daily"
     reviewers: ["jairmyree"]
-    target-branch: "dependabot/dependency-updates"
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 10
     ignore:
         - dependency-name: "*" 
           update-types: ["version-update:semver-major"]
@@ -21,3 +20,4 @@ updates:
         - dependency-name: "com.fasterxml.jackson*"
         - dependency-name: "org.springframework*"
         
+          
