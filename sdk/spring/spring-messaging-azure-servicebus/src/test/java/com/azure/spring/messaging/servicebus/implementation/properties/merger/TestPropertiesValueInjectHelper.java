@@ -3,93 +3,173 @@
 
 package com.azure.spring.messaging.servicebus.implementation.properties.merger;
 
+import com.azure.core.amqp.AmqpTransportType;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import com.azure.messaging.servicebus.models.SubQueue;
+import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
+import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
+import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
+import com.azure.spring.messaging.servicebus.implementation.properties.merger.util.TestPropertiesUtils;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.Duration;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Random;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static com.azure.spring.messaging.servicebus.implementation.properties.merger.util.TestPropertiesUtils.GETTER_METHOD;
+import static com.azure.spring.messaging.servicebus.implementation.properties.merger.util.TestPropertiesUtils.IGNORED_CLASSES;
+import static com.azure.spring.messaging.servicebus.implementation.properties.merger.util.TestPropertiesUtils.SETTER_METHOD;
+import static com.azure.spring.messaging.servicebus.implementation.properties.merger.util.TestPropertiesUtils.NO_SETTER_PROPERTIES_CLASSES;
 
 class TestPropertiesValueInjectHelper {
 
     private static final Random RANDOM = new Random();
 
-    static <T> void injectPseudoPropertyValues(T target, String... ignoredVariableNames) {
-        Set<String> ignoredMemberVariableNames = new HashSet<>(Arrays.asList(ignoredVariableNames));
-        Class<?> targetClass = target.getClass();
+    static <T> void injectPseudoPropertyValues(T target,
+                                               String... ignoredMemberVariableNames) {
+        injectPseudoPropertyValues(target, null, ignoredMemberVariableNames);
+    }
 
-        List<Method> setters = Arrays.stream(targetClass.getDeclaredMethods()).filter(TestPropertiesValueInjectHelper::isSetter).toList();
-        List<Method> getters = Arrays.stream(targetClass.getDeclaredMethods()).filter(TestPropertiesValueInjectHelper::isGetter).toList();
+    static <T> void injectPseudoPropertyValues(T target,
+                                               List<String> highPriorityVariables,
+                                               String... ignoredMemberVariableNames) {
+        List<String> priorities = Optional.ofNullable(highPriorityVariables).orElseGet(Collections::emptyList);
+        Set<String> ignored = Arrays.stream(ignoredMemberVariableNames)
+                                    .map(String::toLowerCase)
+                                    .collect(Collectors.toSet());
+        doInjectPseudoPropertyValues(target, target.getClass(), priorities, ignored);
+    }
 
-        setters.forEach(setter -> {
-            String varName = setter.getName().substring("set".length());
-            if (ignoredMemberVariableNames.contains(varName.toLowerCase())) {
-                return;
-            }
+    private static <T> void doInjectPseudoPropertyValues(T target,
+                                                         Class<?> targetClass,
+                                                         List<String> priorities,
+                                                         Set<String> ignored) {
+        if (IGNORED_CLASSES.contains(targetClass) || targetClass.isInterface()) {
+            return;
+        }
 
-            Class<?>[] parameterTypes = setter.getParameterTypes();
-            if (parameterTypes.length != 1) {
-                throw new RuntimeException("Found multiple parameters of the setter method:" + setter.getName());
-            }
-            Class<?> parameterType = parameterTypes[0];
-
-            Optional<Method> optionalGetter =
-                getters.stream()
-                    .filter(getter -> isMatchedGetter(getter, varName))
-                    .findFirst();
-            if (optionalGetter.isEmpty()) {
-                throw new RuntimeException("Not found the getter method: " + varName);
-            }
-
-            Object testValue;
-            int randomValue = RANDOM.nextInt(100, 1000);
-            if (parameterType == String.class) {
-                testValue = varName + "-" + randomValue;
-            } else if (parameterType == boolean.class || parameterType == Boolean.class) {
-                testValue = randomValue % 2 == 0;
-            } else if (parameterType == int.class || parameterType == Integer.class) {
-                testValue = randomValue;
-            } else if (parameterType == Duration.class) {
-                testValue = Duration.ofSeconds(randomValue);
-            } else {
-                // skip complex property
-                return;
-            }
-
-            try {
-                setter.invoke(target, testValue);
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                throw new RuntimeException(e);
-            }
-        });
-
+        Map<String, List<Method>> methods = Arrays.stream(targetClass.getDeclaredMethods())
+                                                  .collect(Collectors.groupingBy(TestPropertiesUtils::groupMethodName));
+        if (!methods.isEmpty()) {
+            methods.get(GETTER_METHOD)
+                   .stream()
+                   .sorted(new HighPriorityMethodComparator(priorities))
+                   .forEach(getter -> invokeSetter(target, priorities, ignored, methods.get(SETTER_METHOD), getter));
+        }
         Class<?> parentClass = targetClass.getSuperclass();
         if (parentClass != null) {
-            injectPseudoPropertyValues(parentClass, ignoredVariableNames);
+            doInjectPseudoPropertyValues(target, parentClass, priorities, ignored);
         }
     }
 
-    private static boolean isMatchedGetter(Method getter, String varName) {
-        return getter.getName().equals("get" + varName) || getter.getName().equals("is" + varName);
+    private static <T> void invokeSetter(T target,
+                                         List<String> priorities,
+                                         Set<String> ignored,
+                                         List<Method> setters,
+                                         Method getter) {
+        String varName;
+        if (getter.getName().contains("get")) {
+            varName = getter.getName().substring("get".length());
+        } else {
+            varName = getter.getName().substring("is".length());
+        }
+
+        if (ignored.contains(varName.toLowerCase())) {
+            return;
+        }
+
+        Optional<List<Method>> optionalSetters = Optional.ofNullable(setters);
+        Optional<Method> optionalSetter = optionalSetters.stream().flatMap(Collection::stream)
+                                                         .filter(setter -> setter.getName().equals("set" + varName))
+                                                         .findFirst();
+        if (optionalSetter.isEmpty()) {
+            Class<?> getterReturnType = getter.getReturnType();
+            if (getterReturnType.isInterface()) {
+                return;
+            }
+
+            if (Arrays.stream(NO_SETTER_PROPERTIES_CLASSES).anyMatch(cls -> cls == getterReturnType)) {
+                Object subTarget;
+                try {
+                    subTarget = getter.invoke(target);
+                } catch (IllegalAccessException | InvocationTargetException e) {
+                    throw new RuntimeException(e);
+                }
+                if (subTarget != null) {
+                    doInjectPseudoPropertyValues(subTarget, subTarget.getClass(), priorities, ignored);
+                }
+            } else {
+                System.out.println("Return type not support: " + getterReturnType.getName());
+            }
+            return;
+        }
+
+        Method setter = optionalSetter.get();
+        Class<?> parameterType = setter.getParameterTypes()[0];
+
+        Object testValue;
+        int randomValue = RANDOM.nextInt(100, 1000);
+        switch (parameterType.getSimpleName()) {
+            case "AmqpTransportType" -> testValue = AmqpTransportType.AMQP;
+            case "boolean" -> testValue = true;
+            case "Boolean" -> testValue = randomValue % 2 == 0;
+            case "CloudType" -> testValue = AzureProfileOptionsProvider.CloudType.AZURE_CHINA;
+            case "Duration" -> testValue = Duration.ofSeconds(randomValue);
+            case "int", "Integer", "long" -> testValue = randomValue;
+            case "Long" -> testValue = RANDOM.nextLong(100, 1000);
+            case "RetryMode" -> testValue = RetryOptionsProvider.RetryMode.EXPONENTIAL;
+            case "ServiceBusEntityType" -> testValue = ServiceBusEntityType.QUEUE;
+            case "ServiceBusReceiveMode" -> testValue = ServiceBusReceiveMode.RECEIVE_AND_DELETE;
+            case "SubQueue" -> testValue = SubQueue.DEAD_LETTER_QUEUE;
+            case "String" -> testValue = varName + "-" + randomValue;
+            default -> {
+                System.out.println("Not support the setter parameter type: " + parameterType.getName());
+                return;
+            }
+        }
+
+        try {
+            setter.invoke(target, testValue);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException("Member variable " + varName, e);
+        }
     }
 
-    private static boolean isGetter(Method method) {
-        if (!method.getName().startsWith("get") && !method.getName().startsWith("is")) {
-            return false;
-        }
-        if (method.getParameterCount() != 0) {
-            return false;
+    static class HighPriorityMethodComparator implements Comparator<Method> {
+
+        private final List<String> highPriorityVariables;
+
+        HighPriorityMethodComparator(List<String> highPriorityVariables) {
+            this.highPriorityVariables = highPriorityVariables;
         }
 
-        return !void.class.equals(method.getReturnType());
+        @Override
+        public int compare(Method o1, Method o2) {
+            String o1Value = o1.getName().toLowerCase();
+            String o2Value = o2.getName().toLowerCase();
+            if (highPriorityVariables.contains(o1Value) && !highPriorityVariables.contains(o2Value)) {
+                return 1;
+            }
+
+            if (!highPriorityVariables.contains(o1Value) && highPriorityVariables.contains(o2Value)) {
+                return -1;
+            }
+
+            if (highPriorityVariables.contains(o1Value) && highPriorityVariables.contains(o2Value)) {
+                return highPriorityVariables.indexOf(o1Value) - highPriorityVariables.indexOf(o2Value);
+            }
+
+            return o1Value.compareTo(o2Value);
+        }
     }
 
-    private static boolean isSetter(Method method) {
-        if (!method.getName().startsWith("set")) {
-            return false;
-        }
-        if (method.getParameterCount() != 1) {
-            return false;
-        }
-
-        return void.class.equals(method.getReturnType());
-    }
 }

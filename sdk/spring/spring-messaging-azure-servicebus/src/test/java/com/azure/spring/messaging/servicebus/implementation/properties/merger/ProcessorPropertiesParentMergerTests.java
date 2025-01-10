@@ -5,99 +5,77 @@ package com.azure.spring.messaging.servicebus.implementation.properties.merger;
 
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.servicebus.core.properties.ProcessorProperties;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
+import java.util.List;
 
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_CHINA;
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT;
-import static com.azure.spring.messaging.servicebus.implementation.properties.merger.TestPropertiesComparer.mergeValueCorrect;
+import static com.azure.spring.messaging.servicebus.implementation.properties.merger.TestPropertiesComparer.isMergedPropertiesCorrect;
 import static com.azure.spring.messaging.servicebus.implementation.properties.merger.TestPropertiesValueInjectHelper.injectPseudoPropertyValues;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ProcessorPropertiesParentMergerTests {
     private final ProcessorPropertiesParentMerger merger = new ProcessorPropertiesParentMerger();
-    private static final String PARENT_HOSTNAME = "parent-hostname";
-    private static final String CHILD_HOSTNAME = "child-hostname";
-
-
-    @Test
-    void allParentPropertiesWillBeMerged() {
-        // Arrange
-        ProcessorProperties child = new ProcessorProperties();
-        NamespaceProperties parent = new NamespaceProperties();
-        injectPseudoPropertyValues(parent);
-
-        // Action
-        ProcessorProperties result = merger.merge(child, parent);
-
-        // Assertion
-        Assertions.assertTrue(mergeValueCorrect(parent, child, result));
-    }
-
+    
     @Test
     void childNotProvidedShouldUseParent() {
         ProcessorProperties child = new ProcessorProperties();
 
+        String customEndpoint = "https://test.address.com:443";
         NamespaceProperties parent = new NamespaceProperties();
-        parent.getClient().setTransportType(AmqpTransportType.AMQP_WEB_SOCKETS);
-        parent.getProxy().setHostname(PARENT_HOSTNAME);
+        parent.setConnectionString("parent-connection-str");
+        parent.getProxy().setHostname("parent-hostname");
         parent.getProfile().setCloudType(AZURE_US_GOVERNMENT);
-
-        TestPropertiesInvocation parentProperties = new TestPropertiesInvocation(parent);
-        // ignore the property 'crossEntityTransactions' since it does not support by ProcessorProperties class.
-        parentProperties.addIgnoreMemberVariableNames("crossEntityTransactions");
-        parentProperties.extractMethodsAndInvokeSetters();
+        parent.setDomainName("parent-domain");
+        parent.setCustomEndpointAddress(customEndpoint);
+        parent.getClient().setTransportType(AmqpTransportType.AMQP_WEB_SOCKETS);
 
         ProcessorProperties result = merger.merge(child, parent);
 
-        TestPropertiesInvocation resultProperties = new TestPropertiesInvocation(result);
-        resultProperties.extractMethods();
-        resultProperties.setTargetMemberVariables(parentProperties.getMemberVariables());
-        resultProperties.assertTargetMemberVariablesValues();
-
-        assertEquals(PARENT_HOSTNAME, result.getProxy().getHostname());
+        assertEquals("parent-connection-str", result.getConnectionString());
+        assertEquals("parent-hostname", result.getProxy().getHostname());
         assertEquals(AZURE_US_GOVERNMENT, result.getProfile().getCloudType());
         assertEquals(AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint(),
             result.getProfile().getEnvironment().getActiveDirectoryEndpoint());
+        assertEquals("parent-domain", result.getDomainName());
+        assertEquals(customEndpoint, result.getCustomEndpointAddress());
         assertEquals(AmqpTransportType.AMQP_WEB_SOCKETS, result.getClient().getTransportType());
     }
 
     @Test
     void childProvidedShouldUseChild() {
         ProcessorProperties child = new ProcessorProperties();
-        child.getProxy().setHostname(CHILD_HOSTNAME);
+        child.setConnectionString("child-connection-str");
+        child.getProxy().setHostname("child-hostname");
+        child.setPrefetchCount(3);
+        child.setMaxConcurrentCalls(2);
         child.getProfile().setCloudType(AZURE_CHINA);
+        child.setDomainName("child-domain");
+        child.setCustomEndpointAddress("https://child.address.com:443");
         child.getClient().setTransportType(AmqpTransportType.AMQP);
 
-        TestPropertiesInvocation childProperties = new TestPropertiesInvocation(child);
-        // ignore the property 'crossEntityTransactions' since it does not support by ProcessorProperties class.
-        childProperties.addIgnoreMemberVariableNames("crossEntityTransactions");
-        childProperties.extractMethodsAndInvokeSetters();
-
         NamespaceProperties parent = new NamespaceProperties();
-        parent.getProxy().setHostname(PARENT_HOSTNAME);
+        parent.setConnectionString("parent-connection-str");
+        parent.getProxy().setHostname("parent-hostname");
         parent.getProfile().setCloudType(AZURE_US_GOVERNMENT);
+        parent.setDomainName("parent-domain");
+        parent.setCustomEndpointAddress("https://parent.address.com:443");
         parent.getClient().setTransportType(AmqpTransportType.AMQP_WEB_SOCKETS);
-
-        TestPropertiesInvocation parentProperties = new TestPropertiesInvocation(parent);
-        parentProperties.addIgnoreMemberVariableNames("crossEntityTransactions");
-        parentProperties.extractMethodsAndInvokeSetters();
 
         ProcessorProperties result = merger.merge(child, parent);
 
-        Map<String, Object> childMemberVariables = childProperties.getMemberVariables();
-        Map<String, Object> parentMemberVariables = parentProperties.getMemberVariables();
-        TestPropertiesInvocation resultProperties = new TestPropertiesInvocation(result);
-        resultProperties.extractMethods();
-        resultProperties.setTargetMemberVariables(parentMemberVariables);
-        resultProperties.setTargetMemberVariables(childMemberVariables);
-        resultProperties.assertTargetMemberVariablesValues();
-
-        assertEquals(CHILD_HOSTNAME, result.getProxy().getHostname());
+        assertEquals("child-connection-str", result.getConnectionString());
+        assertEquals("child-hostname", result.getProxy().getHostname());
+        assertEquals(3, result.getPrefetchCount());
+        assertEquals(2, result.getMaxConcurrentCalls());
+        assertEquals("child-domain", result.getDomainName());
+        assertEquals("https://child.address.com:443", result.getCustomEndpointAddress());
         assertEquals(AZURE_CHINA, result.getProfile().getCloudType());
         assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryEndpoint(),
             result.getProfile().getEnvironment().getActiveDirectoryEndpoint());
