@@ -2,6 +2,8 @@
 
 ## 1.1.9 (2025-01-10)
 
+### Other Changes
+
 #### Dependency Updates
 - Upgraded `azure-identity` from `1.14.2` to `1.15.0`
 
