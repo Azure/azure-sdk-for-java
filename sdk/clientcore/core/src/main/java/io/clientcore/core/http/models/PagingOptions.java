@@ -23,7 +23,7 @@ public final class PagingOptions {
     /**
      * Gets the offset on items.
      *
-     * @return the offset on items.
+     * @return the offset on items
      */
     public Long getOffset() {
         return offset;
@@ -33,7 +33,7 @@ public final class PagingOptions {
      * Sets the offset on items.
      *
      * @param offset the offset on items
-     * @return the PagingOptions object itself.
+     * @return the PagingOptions object itself
      */
     public PagingOptions setOffset(Long offset) {
         this.offset = offset;
@@ -43,7 +43,7 @@ public final class PagingOptions {
     /**
      * Gets the size of a page.
      *
-     * @return the size of a page.
+     * @return the size of a page
      */
     public Long getPageSize() {
         return pageSize;
@@ -53,7 +53,7 @@ public final class PagingOptions {
      * Sets the size of a page.
      *
      * @param pageSize the size of a page
-     * @return the PagingOptions object itself.
+     * @return the PagingOptions object itself
      */
     public PagingOptions setPageSize(Long pageSize) {
         this.pageSize = pageSize;
@@ -63,7 +63,7 @@ public final class PagingOptions {
     /**
      * Gets the page index.
      *
-     * @return the page index.
+     * @return the page index
      */
     public Long getPageIndex() {
         return pageIndex;
@@ -73,7 +73,7 @@ public final class PagingOptions {
      * Sets the page index.
      *
      * @param pageIndex the page index
-     * @return the PagingOptions object itself.
+     * @return the PagingOptions object itself
      */
     public PagingOptions setPageIndex(Long pageIndex) {
         this.pageIndex = pageIndex;
@@ -83,7 +83,7 @@ public final class PagingOptions {
     /**
      * Gets the continuation token.
      *
-     * @return the continuation token.
+     * @return the continuation token
      */
     public String getContinuationToken() {
         return continuationToken;
@@ -93,7 +93,7 @@ public final class PagingOptions {
      * Sets the continuation token.
      *
      * @param continuationToken the continuation token
-     * @return the PagingOptions object itself.
+     * @return the PagingOptions object itself
      */
     public PagingOptions setContinuationToken(String continuationToken) {
         this.continuationToken = continuationToken;

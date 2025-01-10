@@ -101,7 +101,7 @@ public final class PagedResponse<T> implements Response<List<T>> {
     /**
      * Gets the link to the first page.
      *
-     * @return The first page link.
+     * @return The first page link
      */
     public String getFirstLink() {
         return firstLink;
@@ -110,7 +110,7 @@ public final class PagedResponse<T> implements Response<List<T>> {
     /**
      * Gets the link to the last page.
      *
-     * @return The last page link.
+     * @return The last page link
      */
     public String getLastLink() {
         return lastLink;

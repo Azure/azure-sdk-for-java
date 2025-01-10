@@ -27,7 +27,7 @@ public final class PagedIterable<T> implements Iterable<T> {
      * Creates an instance of {@link PagedIterable} that consists of only a single page. This constructor takes a {@code
      * Supplier} that return the single page of {@code T}.
      *
-     * @param firstPageRetriever Supplier that retrieves the first page.
+     * @param firstPageRetriever Function that retrieves the first page, given paging options.
      */
     public PagedIterable(Function<PagingOptions, PagedResponse<T>> firstPageRetriever) {
         this(firstPageRetriever, null);
@@ -38,8 +38,8 @@ public final class PagedIterable<T> implements Iterable<T> {
      * {@code Supplier} returns the first page of {@code T}, the {@code Function} retrieves subsequent pages of {@code
      * T}.
      *
-     * @param firstPageRetriever Supplier that retrieves the first page.
-     * @param nextPageRetriever Function that retrieves the next page given a continuation token
+     * @param firstPageRetriever Function that retrieves the first page, given paging options.
+     * @param nextPageRetriever Function that retrieves the next page, given paging options and next link.
      */
     public PagedIterable(Function<PagingOptions, PagedResponse<T>> firstPageRetriever,
         BiFunction<PagingOptions, String, PagedResponse<T>> nextPageRetriever) {
@@ -81,7 +81,7 @@ public final class PagedIterable<T> implements Iterable<T> {
     /**
      * Utility function to provide {@link Stream} of value {@code T}.
      *
-     * @return {@link Stream} of value {@code T}.
+     * @return {@link Stream} of value {@code T}
      */
     public Stream<T> stream() {
         return StreamSupport.stream(iterableByItemInternal(new PagingOptions()).spliterator(), false);
