@@ -17,7 +17,7 @@ public class RequestDataColumns implements TelemetryColumns {
     private final Map<String, Object> mapping = new HashMap<>();
     private final CustomDimensions customDims;
 
-    private static ClientLogger logger = new ClientLogger(RequestDataColumns.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RequestDataColumns.class);
 
     public RequestDataColumns(RequestData requestData) {
         customDims = new CustomDimensions(requestData.getProperties(), requestData.getMeasurements());
@@ -26,7 +26,7 @@ public class RequestDataColumns implements TelemetryColumns {
 
         long durationMicroSec = FormattedDuration.getDurationFromTelemetryItemDurationString(requestData.getDuration());
         if (durationMicroSec == -1) {
-            logger.verbose("The provided timestamp {} could not be converted to microseconds",
+            LOGGER.verbose("The provided timestamp {} could not be converted to microseconds",
                 requestData.getDuration());
         }
 
@@ -37,7 +37,7 @@ public class RequestDataColumns implements TelemetryColumns {
             responseCode = Integer.parseInt(requestData.getResponseCode());
         } catch (NumberFormatException e) {
             responseCode = -1;
-            logger.verbose("The provided response code {} could not be converted to a numeric value",
+            LOGGER.verbose("The provided response code {} could not be converted to a numeric value",
                 requestData.getResponseCode());
         }
         mapping.put(KnownRequestColumns.RESPONSE_CODE, responseCode);
