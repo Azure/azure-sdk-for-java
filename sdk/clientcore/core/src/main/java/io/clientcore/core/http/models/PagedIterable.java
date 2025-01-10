@@ -66,7 +66,7 @@ public final class PagedIterable<T> implements Iterable<T> {
     }
 
     /**
-     * Retrieve the {@link Iterable}, one page at a time. It will provide same {@link Iterable} of T values from
+     * Retrieve the {@link Iterable}, one page at a time. It will provide same {@link Iterable} of pages from
      * starting if called multiple times.
      *
      * @param pagingOptions the paging options
@@ -77,7 +77,8 @@ public final class PagedIterable<T> implements Iterable<T> {
     }
 
     /**
-     * Utility function to provide {@link Stream} of value {@code T}.
+     * Retrieve the {@link Stream} of value {@code T}. It will provide same {@link Stream} of T values from
+     * starting if called multiple times.
      *
      * @return {@link Stream} of value {@code T}
      */
@@ -86,7 +87,7 @@ public final class PagedIterable<T> implements Iterable<T> {
     }
 
     /**
-     * Retrieve the {@link Stream}, one page at a time. It will provide same {@link Stream} of T values from starting if
+     * Retrieve the {@link Stream}, one page at a time. It will provide same {@link Stream} of pages from starting if
      * called multiple times.
      *
      * @return {@link Stream} of a pages
