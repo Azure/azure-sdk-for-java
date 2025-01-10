@@ -118,9 +118,14 @@ public class PagedIterableTests {
     public void testPagedIterable(NextPageMode nextPageMode) {
         this.nextPageMode = nextPageMode;
 
+        // 2 pages, 3 items
         PagedIterable<TodoItem> pagedIterable = this.list();
         verifyIteratorSize(pagedIterable.iterableByPage().iterator(), 2);
         verifyIteratorSize(pagedIterable.iterator(), 3);
+
+        // case when pagingOptions == null, 2 pages
+        verifyIteratorSize(pagedIterable.iterableByPage(null).iterator(), 2);
+        verifyIteratorSize(pagedIterable.streamByPage(null).iterator(), 2);
     }
 
     @Test
@@ -129,6 +134,7 @@ public class PagedIterableTests {
 
         PagingOptions pagingOptions = new PagingOptions().setContinuationToken("page1");
 
+        // continuationToken provided, 1 page
         PagedIterable<TodoItem> pagedIterable = this.list();
         verifyIteratorSize(pagedIterable.iterableByPage(pagingOptions).iterator(), 1);
         verifyIteratorSize(pagedIterable.streamByPage(pagingOptions).iterator(), 1);

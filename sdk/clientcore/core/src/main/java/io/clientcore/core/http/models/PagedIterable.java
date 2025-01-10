@@ -7,7 +7,6 @@ import io.clientcore.core.util.ClientLogger;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -53,7 +52,7 @@ public final class PagedIterable<T> implements Iterable<T> {
      */
     @Override
     public Iterator<T> iterator() {
-        return iterableByItemInternal(new PagingOptions()).iterator();
+        return iterableByItemInternal(null).iterator();
     }
 
     /**
@@ -63,7 +62,7 @@ public final class PagedIterable<T> implements Iterable<T> {
      * @return {@link Iterable} of a pages
      */
     public Iterable<PagedResponse<T>> iterableByPage() {
-        return iterableByPageInternal(new PagingOptions());
+        return iterableByPageInternal(null);
     }
 
     /**
@@ -74,7 +73,6 @@ public final class PagedIterable<T> implements Iterable<T> {
      * @return {@link Iterable} of a pages
      */
     public Iterable<PagedResponse<T>> iterableByPage(PagingOptions pagingOptions) {
-        Objects.requireNonNull(pagingOptions, "'pagingOptions' cannot be null");
         return iterableByPageInternal(pagingOptions);
     }
 
@@ -84,7 +82,7 @@ public final class PagedIterable<T> implements Iterable<T> {
      * @return {@link Stream} of value {@code T}
      */
     public Stream<T> stream() {
-        return StreamSupport.stream(iterableByItemInternal(new PagingOptions()).spliterator(), false);
+        return StreamSupport.stream(iterableByItemInternal(null).spliterator(), false);
     }
 
     /**
@@ -105,7 +103,6 @@ public final class PagedIterable<T> implements Iterable<T> {
      * @return {@link Stream} of a pages
      */
     public Stream<PagedResponse<T>> streamByPage(PagingOptions pagingOptions) {
-        Objects.requireNonNull(pagingOptions, "'pagingOptions' cannot be null");
         return StreamSupport.stream(iterableByPage(pagingOptions).spliterator(), false);
     }
 
@@ -203,8 +200,8 @@ public final class PagedIterable<T> implements Iterable<T> {
 
         PagedIterator(Function<PagingContext, PagedResponse<T>> pageRetriever, PagingOptions pagingOptions) {
             this.pageRetriever = pageRetriever;
-            this.pageSize = pagingOptions.getPageSize();
-            this.continuationToken = pagingOptions.getContinuationToken();
+            this.pageSize = pagingOptions == null ? null : pagingOptions.getPageSize();
+            this.continuationToken = pagingOptions == null ? null : pagingOptions.getContinuationToken();
         }
 
         @Override
