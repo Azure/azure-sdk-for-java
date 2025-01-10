@@ -69,8 +69,8 @@ public class TestPropertiesComparer {
 
             Class<?> returnType = getter.getReturnType();
             if (isPrimitiveDefaultValue(returnType, gotValue)) {
-                System.out.println("Found the property that has a primitive default value: " + varName +
-                    "=" + gotValue);
+                System.out.println("Found the property that has a primitive default value: "
+                    + varName + "=" + gotValue);
                 counter.getAndIncrement();
                 return;
             }
