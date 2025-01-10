@@ -94,44 +94,6 @@ public class ServiceBusProcessorTest {
         assertTrue(success, "Failed to receive all expected messages");
     }
 
-    //    /**
-    //     * Tests receiving messages using a session-enabled {@link ServiceBusProcessorClient}.
-    //     *
-    //     * @throws InterruptedException If the test is interrupted.
-    //     */
-    //    @Test
-    //    @Disabled("Covered by SessionsMessagePumpIsolatedTest::shouldPumpFromMultiSessionWhenBackingProcessor test")
-    //    public void testReceivingMultiSessionMessagesWithProcessor() throws InterruptedException {
-    //        int numberOfMessages = 10;
-    //        Flux<ServiceBusReceivedMessage> messageFlux = Flux.create(emitter -> {
-    //            for (int i = 0; i < numberOfMessages; i++) {
-    //                ServiceBusReceivedMessage serviceBusReceivedMessage
-    //                    = new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
-    //                serviceBusReceivedMessage.setMessageId(String.valueOf(i));
-    //                serviceBusReceivedMessage.setSessionId(String.valueOf(i % 3));
-    //                emitter.next(serviceBusReceivedMessage);
-    //            }
-    //        });
-    //
-    //        ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder receiverBuilder = getSessionBuilder(messageFlux);
-    //
-    //        AtomicInteger messageId = new AtomicInteger();
-    //        CountDownLatch countDownLatch = new CountDownLatch(numberOfMessages);
-    //        ServiceBusProcessorClient serviceBusProcessorClient
-    //            = new ServiceBusProcessorClient(receiverBuilder, ENTITY_NAME, null, null, messageContext -> {
-    //                int expectedMessageId = messageId.getAndIncrement();
-    //                assertEquals(String.valueOf(expectedMessageId), messageContext.getMessage().getMessageId());
-    //                assertEquals(String.valueOf(expectedMessageId % 3), messageContext.getMessage().getSessionId());
-    //                countDownLatch.countDown();
-    //            }, error -> Assertions.fail("Error occurred when receiving messages from the processor"),
-    //                new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1));
-    //
-    //        serviceBusProcessorClient.start();
-    //        boolean success = countDownLatch.await(5, TimeUnit.SECONDS);
-    //        serviceBusProcessorClient.close();
-    //        assertTrue(success, "Failed to receive all expected messages");
-    //    }
-
     /**
      * Tests receiving messages using a {@link ServiceBusProcessorClient}, pausing the processor and then resuming
      * the processor to continue receiving messages.
@@ -403,38 +365,6 @@ public class ServiceBusProcessorTest {
         verify(tracer, atLeast(numberOfTimes - 1)).end(isNull(), isNull(), any());
     }
 
-    //    @Test
-    //    @Disabled("This test is not required anymore. In v2 we no longer use ServiceBusReceivedMessageContext to funnel errors. So, the instrumentation in v2 processor will not get ServiceBusReceivedMessageContext with no message i.e. with error. Originally, this test was added after a regression where instrumentation tried to access null message in such ServiceBusReceivedMessageContext leading to NPE.")
-    //    @SuppressWarnings("unchecked")
-    //    public void testProcessorWithTracingEnabledAndNullMessage() throws InterruptedException {
-    //        final Tracer tracer = mock(Tracer.class);
-    //        final int numberOfTimes = 1;
-    //
-    //        when(tracer.isEnabled()).thenReturn(true);
-    //        when(tracer.extractContext(any())).thenReturn(Context.NONE);
-    //
-    //        when(tracer.start(eq("ServiceBus.process"), any(StartSpanOptions.class), any()))
-    //            .thenReturn(new Context(PARENT_TRACE_CONTEXT_KEY, "span"));
-    //
-    //        Flux<ServiceBusMessageContext> messageFlux
-    //            = Flux.just(new ServiceBusMessageContext("sessionId", new RuntimeException("foo")));
-    //        ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder receiverBuilder
-    //            = getSessionBuilder(messageFlux, tracer);
-    //
-    //        CountDownLatch countDownLatch = new CountDownLatch(numberOfTimes);
-    //        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder,
-    //            ENTITY_NAME, null, null, messageContext -> fail("Should not have received a message"), error -> {
-    //                assertEquals("foo", error.getException().getMessage());
-    //                countDownLatch.countDown();
-    //            }, new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1));
-    //
-    //        serviceBusProcessorClient.start();
-    //        assertTrue(countDownLatch.await(20, TimeUnit.SECONDS));
-    //        serviceBusProcessorClient.close();
-    //
-    //        verify(tracer, never()).start(eq("ServiceBus.process"), any(StartSpanOptions.class), any(Context.class));
-    //    }
-
     @Test
     @SuppressWarnings("unchecked")
     public void testProcessorWithTracingDisabled() throws InterruptedException {
@@ -529,24 +459,6 @@ public class ServiceBusProcessorTest {
         when(asyncClient.isConnectionClosed()).thenReturn(false);
         doNothing().when(asyncClient).close();
         return receiverBuilder;
-    }
-
-    private ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder
-        getSessionBuilder(Flux<ServiceBusReceivedMessage> messageFlux) {
-
-        ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder sessionReceiverBuilder
-            = mock(ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder.class);
-        ServiceBusSessionReceiverAsyncClient sessionReceiverAsyncClient
-            = mock(ServiceBusSessionReceiverAsyncClient.class);
-        when(sessionReceiverBuilder.buildAsyncClient()).thenReturn(sessionReceiverAsyncClient);
-        ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
-        when(asyncClient.getEntityPath()).thenReturn(ENTITY_NAME);
-        when(asyncClient.receiveMessages()).thenReturn(messageFlux);
-        when(asyncClient.isConnectionClosed()).thenReturn(false);
-        when(asyncClient.getInstrumentation()).thenReturn(DEFAULT_INSTRUMENTATION);
-        doNothing().when(asyncClient).close();
-        return sessionReceiverBuilder;
     }
 
     private void assertStartOptions(StartSpanOptions startOpts, int linkCount) {
