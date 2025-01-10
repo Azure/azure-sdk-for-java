@@ -225,7 +225,7 @@ public class PagedIterableTests {
     private static final class TodoItem {
         private final int id;
 
-        public TodoItem(int id) {
+        private TodoItem(int id) {
             this.id = id;
         }
 
