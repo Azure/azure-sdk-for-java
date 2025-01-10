@@ -29,7 +29,7 @@ public final class PagedIterable<T> implements Iterable<T> {
      * @param firstPageRetriever Function that retrieves the first page, given paging options.
      */
     public PagedIterable(Function<PagingOptions, PagedResponse<T>> firstPageRetriever) {
-        this(firstPageRetriever, null);
+        this(firstPageRetriever, ((pagingOptions, nextLink) -> null));
     }
 
     /**
