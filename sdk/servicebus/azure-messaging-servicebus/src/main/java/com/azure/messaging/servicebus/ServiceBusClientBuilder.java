@@ -1583,11 +1583,9 @@ public final class ServiceBusClientBuilder
         }
 
         /**
-         * In V1, the client {@link ServiceBusSessionReceiverAsyncClient} backing the {@link ServiceBusProcessorClient}
-         * is constructed eagerly (triggering input validation in the Constructor) at build time i.e,
-         * when {@link #buildProcessorClient()} is called. In V2, the client {@link SessionsMessagePump} backing
-         * the processor will be built lazily, i.e., when the application calls {@link ServiceBusProcessorClient#start()},
-         * This is a helper method in v2 for input validations at build time.
+         * The client {@link SessionsMessagePump} backing the session {@link ServiceBusProcessorClient} is built lazily, i.e.,
+         * when the application calls {@link ServiceBusProcessorClient#start()}. This is a helper method for eager input
+         * validation when the application build {@link ServiceBusProcessorClient} from this builder.
          */
         private void validateInputs() {
             final ServiceBusSessionReceiverClientBuilder builder = sessionReceiverClientBuilder;
@@ -2251,11 +2249,9 @@ public final class ServiceBusClientBuilder
         }
 
         /**
-         * In V1, the client {@link ServiceBusReceiverAsyncClient} backing the {@link ServiceBusProcessorClient}
-         * is constructed eagerly (triggering input validation in the Constructor) at build time i.e,
-         * when {@link #buildProcessorClient()} is called. In V2, the client {@link MessagePump} backing
-         * the processor will be built lazily, i.e., when the application calls {@link ServiceBusProcessorClient#start()},
-         * This is a helper method in v2 for input validations at build time.
+         * The client {@link MessagePump} backing the non-session {@link ServiceBusProcessorClient} is built lazily, i.e.,
+         * when the application calls {@link ServiceBusProcessorClient#start()}. This is a helper method for eager input
+         * validation when the application build {@link ServiceBusProcessorClient} from this builder.
          */
         private void validateInputs() {
             final ServiceBusReceiverClientBuilder builder = serviceBusReceiverClientBuilder;

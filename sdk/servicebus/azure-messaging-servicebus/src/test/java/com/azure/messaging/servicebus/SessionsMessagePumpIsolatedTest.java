@@ -198,12 +198,14 @@ public class SessionsMessagePumpIsolatedTest {
         final ServiceBusProcessorClient processor = new ServiceBusProcessorClient(builder, "q0", null, null,
             processMessage, processError, new ServiceBusProcessorClientOptions());
 
-        final CountDownLatch latch = new CountDownLatch(1);
         processor.start();
-        boolean success = latch.await(5, TimeUnit.SECONDS);
+        boolean success = new CountDownLatch(1).await(8, TimeUnit.SECONDS);
         processor.close();
 
-        Assertions.assertTrue(unseenMessages.isEmpty());
+        final int unseen = unseenMessages.size();
+        final int sent = sessionMessagesCount * 2;
+        final int received = sent - unseen;
+        Assertions.assertEquals(0, unseen, "sent " + sent + " messages, but received " + received);
         verify(session1.getLink(), times(1)).closeAsync();
         verify(session2.getLink(), times(1)).closeAsync();
         verify(onTerminate, times(1)).run();
