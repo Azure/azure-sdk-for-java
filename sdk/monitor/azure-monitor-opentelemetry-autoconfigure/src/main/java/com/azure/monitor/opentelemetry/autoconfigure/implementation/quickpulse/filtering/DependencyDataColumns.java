@@ -16,7 +16,7 @@ public class DependencyDataColumns implements TelemetryColumns {
     private final CustomDimensions customDims;
     private final Map<String, Object> mapping = new HashMap<>();
 
-    private static ClientLogger logger = new ClientLogger(DependencyDataColumns.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DependencyDataColumns.class);
 
     public DependencyDataColumns(RemoteDependencyData rdData) {
         customDims = new CustomDimensions(rdData.getProperties(), rdData.getMeasurements());
@@ -24,7 +24,7 @@ public class DependencyDataColumns implements TelemetryColumns {
 
         long durationMicroSec = FormattedDuration.getDurationFromTelemetryItemDurationString(rdData.getDuration());
         if (durationMicroSec == -1) {
-            logger.verbose("The provided timestamp could not be converted to microseconds: {}", rdData.getDuration());
+            LOGGER.verbose("The provided timestamp {} could not be converted to microseconds", rdData.getDuration());
         }
         mapping.put(KnownDependencyColumns.DURATION, durationMicroSec);
 
@@ -34,7 +34,7 @@ public class DependencyDataColumns implements TelemetryColumns {
         try {
             resultCode = Integer.parseInt(rdData.getResultCode());
         } catch (NumberFormatException e) {
-            logger.verbose("The provided result code could not be converted to a numeric value: {}",
+            LOGGER.verbose("The provided result code {} could not be converted to a numeric value",
                 rdData.getResultCode());
             resultCode = -1;
         }
