@@ -23,11 +23,6 @@ public final class TransferToParticipantRequestInternal
     private CommunicationIdentifierModel targetParticipant;
 
     /*
-     * Used by customer to send custom calling context to targets
-     */
-    private CustomCallingContext customCallingContext;
-
-    /*
      * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
     private String operationContext;
@@ -42,6 +37,11 @@ public final class TransferToParticipantRequestInternal
      * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      */
     private String operationCallbackUri;
+
+    /*
+     * Used by customer to send custom calling context to targets
+     */
+    private CustomCallingContext customCallingContext;
 
     /*
      * The source caller Id, a phone number, that will be used as the transferor's caller Id when transferring a call to a Pstn target.
@@ -71,26 +71,6 @@ public final class TransferToParticipantRequestInternal
      */
     public TransferToParticipantRequestInternal setTargetParticipant(CommunicationIdentifierModel targetParticipant) {
         this.targetParticipant = targetParticipant;
-        return this;
-    }
-
-    /**
-     * Get the customCallingContext property: Used by customer to send custom calling context to targets.
-     * 
-     * @return the customCallingContext value.
-     */
-    public CustomCallingContext getCustomCallingContext() {
-        return this.customCallingContext;
-    }
-
-    /**
-     * Set the customCallingContext property: Used by customer to send custom calling context to targets.
-     * 
-     * @param customCallingContext the customCallingContext value to set.
-     * @return the TransferToParticipantRequestInternal object itself.
-     */
-    public TransferToParticipantRequestInternal setCustomCallingContext(CustomCallingContext customCallingContext) {
-        this.customCallingContext = customCallingContext;
         return this;
     }
 
@@ -161,6 +141,26 @@ public final class TransferToParticipantRequestInternal
     }
 
     /**
+     * Get the customCallingContext property: Used by customer to send custom calling context to targets.
+     * 
+     * @return the customCallingContext value.
+     */
+    public CustomCallingContext getCustomCallingContext() {
+        return this.customCallingContext;
+    }
+
+    /**
+     * Set the customCallingContext property: Used by customer to send custom calling context to targets.
+     * 
+     * @param customCallingContext the customCallingContext value to set.
+     * @return the TransferToParticipantRequestInternal object itself.
+     */
+    public TransferToParticipantRequestInternal setCustomCallingContext(CustomCallingContext customCallingContext) {
+        this.customCallingContext = customCallingContext;
+        return this;
+    }
+
+    /**
      * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that will be used as the
      * transferor's caller Id when transferring a call to a Pstn target.
      * 
@@ -190,10 +190,10 @@ public final class TransferToParticipantRequestInternal
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("targetParticipant", this.targetParticipant);
-        jsonWriter.writeJsonField("customCallingContext", this.customCallingContext);
         jsonWriter.writeStringField("operationContext", this.operationContext);
         jsonWriter.writeJsonField("transferee", this.transferee);
         jsonWriter.writeStringField("operationCallbackUri", this.operationCallbackUri);
+        jsonWriter.writeJsonField("customCallingContext", this.customCallingContext);
         jsonWriter.writeJsonField("sourceCallerIdNumber", this.sourceCallerIdNumber);
         return jsonWriter.writeEndObject();
     }
@@ -218,9 +218,6 @@ public final class TransferToParticipantRequestInternal
                 if ("targetParticipant".equals(fieldName)) {
                     deserializedTransferToParticipantRequestInternal.targetParticipant
                         = CommunicationIdentifierModel.fromJson(reader);
-                } else if ("customCallingContext".equals(fieldName)) {
-                    deserializedTransferToParticipantRequestInternal.customCallingContext
-                        = CustomCallingContext.fromJson(reader);
                 } else if ("operationContext".equals(fieldName)) {
                     deserializedTransferToParticipantRequestInternal.operationContext = reader.getString();
                 } else if ("transferee".equals(fieldName)) {
@@ -228,6 +225,9 @@ public final class TransferToParticipantRequestInternal
                         = CommunicationIdentifierModel.fromJson(reader);
                 } else if ("operationCallbackUri".equals(fieldName)) {
                     deserializedTransferToParticipantRequestInternal.operationCallbackUri = reader.getString();
+                } else if ("customCallingContext".equals(fieldName)) {
+                    deserializedTransferToParticipantRequestInternal.customCallingContext
+                        = CustomCallingContext.fromJson(reader);
                 } else if ("sourceCallerIdNumber".equals(fieldName)) {
                     deserializedTransferToParticipantRequestInternal.sourceCallerIdNumber
                         = PhoneNumberIdentifierModel.fromJson(reader);

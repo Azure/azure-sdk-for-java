@@ -33,14 +33,14 @@ public final class EmailTemplatesImpl implements EmailTemplates {
     public PagedIterable<EmailTemplateContract> listByService(String resourceGroupName, String serviceName) {
         PagedIterable<EmailTemplateContractInner> inner
             = this.serviceClient().listByService(resourceGroupName, serviceName);
-        return Utils.mapPage(inner, inner1 -> new EmailTemplateContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EmailTemplateContractImpl(inner1, this.manager()));
     }
 
     public PagedIterable<EmailTemplateContract> listByService(String resourceGroupName, String serviceName,
         String filter, Integer top, Integer skip, Context context) {
         PagedIterable<EmailTemplateContractInner> inner
             = this.serviceClient().listByService(resourceGroupName, serviceName, filter, top, skip, context);
-        return Utils.mapPage(inner, inner1 -> new EmailTemplateContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EmailTemplateContractImpl(inner1, this.manager()));
     }
 
     public EmailTemplatesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
@@ -83,17 +83,17 @@ public final class EmailTemplatesImpl implements EmailTemplates {
     }
 
     public EmailTemplateContract getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String templateNameLocal = Utils.getValueFromIdByName(id, "templates");
+        String templateNameLocal = ResourceManagerUtils.getValueFromIdByName(id, "templates");
         if (templateNameLocal == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'templates'.", id)));
@@ -103,17 +103,17 @@ public final class EmailTemplatesImpl implements EmailTemplates {
     }
 
     public Response<EmailTemplateContract> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String templateNameLocal = Utils.getValueFromIdByName(id, "templates");
+        String templateNameLocal = ResourceManagerUtils.getValueFromIdByName(id, "templates");
         if (templateNameLocal == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'templates'.", id)));
@@ -123,17 +123,17 @@ public final class EmailTemplatesImpl implements EmailTemplates {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String templateNameLocal = Utils.getValueFromIdByName(id, "templates");
+        String templateNameLocal = ResourceManagerUtils.getValueFromIdByName(id, "templates");
         if (templateNameLocal == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'templates'.", id)));
@@ -144,17 +144,17 @@ public final class EmailTemplatesImpl implements EmailTemplates {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String templateNameLocal = Utils.getValueFromIdByName(id, "templates");
+        String templateNameLocal = ResourceManagerUtils.getValueFromIdByName(id, "templates");
         if (templateNameLocal == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'templates'.", id)));

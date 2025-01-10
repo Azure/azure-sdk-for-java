@@ -11,7 +11,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,76 +29,6 @@ public final class LegacySingleScopeReservationRecommendationProperties
      * Subscription id associated with single scoped recommendation.
      */
     private UUID subscriptionId;
-
-    /*
-     * List of sku properties
-     */
-    private List<SkuProperty> skuProperties;
-
-    /*
-     * The usage date for looking back.
-     */
-    private OffsetDateTime firstUsageDate;
-
-    /*
-     * Total estimated savings with reserved instances.
-     */
-    private BigDecimal netSavings;
-
-    /*
-     * The total amount of cost with reserved instances.
-     */
-    private BigDecimal totalCostWithReservedInstances;
-
-    /*
-     * Recommended quality for reserved instances.
-     */
-    private BigDecimal recommendedQuantity;
-
-    /*
-     * The total amount of cost without reserved instances.
-     */
-    private BigDecimal costWithNoReservedInstances;
-
-    /*
-     * RI recommendations in one or three year terms.
-     */
-    private String term;
-
-    /*
-     * The azure resource type.
-     */
-    private String resourceType;
-
-    /*
-     * The meter id (GUID)
-     */
-    private UUID meterId;
-
-    /*
-     * The recommended Quantity Normalized.
-     */
-    private Float recommendedQuantityNormalized;
-
-    /*
-     * The normalized Size.
-     */
-    private String normalizedSize;
-
-    /*
-     * The instance Flexibility Group.
-     */
-    private String instanceFlexibilityGroup;
-
-    /*
-     * The instance Flexibility Ratio.
-     */
-    private Float instanceFlexibilityRatio;
-
-    /*
-     * The number of days of usage to look back for recommendation.
-     */
-    private String lookBackPeriod;
 
     /**
      * Creates an instance of LegacySingleScopeReservationRecommendationProperties class.
@@ -124,146 +53,6 @@ public final class LegacySingleScopeReservationRecommendationProperties
      */
     public UUID subscriptionId() {
         return this.subscriptionId;
-    }
-
-    /**
-     * Get the skuProperties property: List of sku properties.
-     * 
-     * @return the skuProperties value.
-     */
-    @Override
-    public List<SkuProperty> skuProperties() {
-        return this.skuProperties;
-    }
-
-    /**
-     * Get the firstUsageDate property: The usage date for looking back.
-     * 
-     * @return the firstUsageDate value.
-     */
-    @Override
-    public OffsetDateTime firstUsageDate() {
-        return this.firstUsageDate;
-    }
-
-    /**
-     * Get the netSavings property: Total estimated savings with reserved instances.
-     * 
-     * @return the netSavings value.
-     */
-    @Override
-    public BigDecimal netSavings() {
-        return this.netSavings;
-    }
-
-    /**
-     * Get the totalCostWithReservedInstances property: The total amount of cost with reserved instances.
-     * 
-     * @return the totalCostWithReservedInstances value.
-     */
-    @Override
-    public BigDecimal totalCostWithReservedInstances() {
-        return this.totalCostWithReservedInstances;
-    }
-
-    /**
-     * Get the recommendedQuantity property: Recommended quality for reserved instances.
-     * 
-     * @return the recommendedQuantity value.
-     */
-    @Override
-    public BigDecimal recommendedQuantity() {
-        return this.recommendedQuantity;
-    }
-
-    /**
-     * Get the costWithNoReservedInstances property: The total amount of cost without reserved instances.
-     * 
-     * @return the costWithNoReservedInstances value.
-     */
-    @Override
-    public BigDecimal costWithNoReservedInstances() {
-        return this.costWithNoReservedInstances;
-    }
-
-    /**
-     * Get the term property: RI recommendations in one or three year terms.
-     * 
-     * @return the term value.
-     */
-    @Override
-    public String term() {
-        return this.term;
-    }
-
-    /**
-     * Get the resourceType property: The azure resource type.
-     * 
-     * @return the resourceType value.
-     */
-    @Override
-    public String resourceType() {
-        return this.resourceType;
-    }
-
-    /**
-     * Get the meterId property: The meter id (GUID).
-     * 
-     * @return the meterId value.
-     */
-    @Override
-    public UUID meterId() {
-        return this.meterId;
-    }
-
-    /**
-     * Get the recommendedQuantityNormalized property: The recommended Quantity Normalized.
-     * 
-     * @return the recommendedQuantityNormalized value.
-     */
-    @Override
-    public Float recommendedQuantityNormalized() {
-        return this.recommendedQuantityNormalized;
-    }
-
-    /**
-     * Get the normalizedSize property: The normalized Size.
-     * 
-     * @return the normalizedSize value.
-     */
-    @Override
-    public String normalizedSize() {
-        return this.normalizedSize;
-    }
-
-    /**
-     * Get the instanceFlexibilityGroup property: The instance Flexibility Group.
-     * 
-     * @return the instanceFlexibilityGroup value.
-     */
-    @Override
-    public String instanceFlexibilityGroup() {
-        return this.instanceFlexibilityGroup;
-    }
-
-    /**
-     * Get the instanceFlexibilityRatio property: The instance Flexibility Ratio.
-     * 
-     * @return the instanceFlexibilityRatio value.
-     */
-    @Override
-    public Float instanceFlexibilityRatio() {
-        return this.instanceFlexibilityRatio;
-    }
-
-    /**
-     * Get the lookBackPeriod property: The number of days of usage to look back for recommendation.
-     * 
-     * @return the lookBackPeriod value.
-     */
-    @Override
-    public String lookBackPeriod() {
-        return this.lookBackPeriod;
     }
 
     /**
@@ -306,45 +95,46 @@ public final class LegacySingleScopeReservationRecommendationProperties
                 reader.nextToken();
 
                 if ("lookBackPeriod".equals(fieldName)) {
-                    deserializedLegacySingleScopeReservationRecommendationProperties.lookBackPeriod
-                        = reader.getString();
+                    deserializedLegacySingleScopeReservationRecommendationProperties
+                        .withLookBackPeriod(reader.getString());
                 } else if ("instanceFlexibilityRatio".equals(fieldName)) {
-                    deserializedLegacySingleScopeReservationRecommendationProperties.instanceFlexibilityRatio
-                        = reader.getNullable(JsonReader::getFloat);
+                    deserializedLegacySingleScopeReservationRecommendationProperties
+                        .withInstanceFlexibilityRatio(reader.getNullable(JsonReader::getFloat));
                 } else if ("instanceFlexibilityGroup".equals(fieldName)) {
-                    deserializedLegacySingleScopeReservationRecommendationProperties.instanceFlexibilityGroup
-                        = reader.getString();
+                    deserializedLegacySingleScopeReservationRecommendationProperties
+                        .withInstanceFlexibilityGroup(reader.getString());
                 } else if ("normalizedSize".equals(fieldName)) {
-                    deserializedLegacySingleScopeReservationRecommendationProperties.normalizedSize
-                        = reader.getString();
+                    deserializedLegacySingleScopeReservationRecommendationProperties
+                        .withNormalizedSize(reader.getString());
                 } else if ("recommendedQuantityNormalized".equals(fieldName)) {
-                    deserializedLegacySingleScopeReservationRecommendationProperties.recommendedQuantityNormalized
-                        = reader.getNullable(JsonReader::getFloat);
+                    deserializedLegacySingleScopeReservationRecommendationProperties
+                        .withRecommendedQuantityNormalized(reader.getNullable(JsonReader::getFloat));
                 } else if ("meterId".equals(fieldName)) {
-                    deserializedLegacySingleScopeReservationRecommendationProperties.meterId
-                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                    deserializedLegacySingleScopeReservationRecommendationProperties
+                        .withMeterId(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
                 } else if ("resourceType".equals(fieldName)) {
-                    deserializedLegacySingleScopeReservationRecommendationProperties.resourceType = reader.getString();
+                    deserializedLegacySingleScopeReservationRecommendationProperties
+                        .withResourceType(reader.getString());
                 } else if ("term".equals(fieldName)) {
-                    deserializedLegacySingleScopeReservationRecommendationProperties.term = reader.getString();
+                    deserializedLegacySingleScopeReservationRecommendationProperties.withTerm(reader.getString());
                 } else if ("costWithNoReservedInstances".equals(fieldName)) {
-                    deserializedLegacySingleScopeReservationRecommendationProperties.costWithNoReservedInstances
-                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                    deserializedLegacySingleScopeReservationRecommendationProperties.withCostWithNoReservedInstances(
+                        reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString())));
                 } else if ("recommendedQuantity".equals(fieldName)) {
-                    deserializedLegacySingleScopeReservationRecommendationProperties.recommendedQuantity
-                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                    deserializedLegacySingleScopeReservationRecommendationProperties.withRecommendedQuantity(
+                        reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString())));
                 } else if ("totalCostWithReservedInstances".equals(fieldName)) {
-                    deserializedLegacySingleScopeReservationRecommendationProperties.totalCostWithReservedInstances
-                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                    deserializedLegacySingleScopeReservationRecommendationProperties.withTotalCostWithReservedInstances(
+                        reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString())));
                 } else if ("netSavings".equals(fieldName)) {
-                    deserializedLegacySingleScopeReservationRecommendationProperties.netSavings
-                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                    deserializedLegacySingleScopeReservationRecommendationProperties
+                        .withNetSavings(reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString())));
                 } else if ("firstUsageDate".equals(fieldName)) {
-                    deserializedLegacySingleScopeReservationRecommendationProperties.firstUsageDate = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedLegacySingleScopeReservationRecommendationProperties.withFirstUsageDate(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("skuProperties".equals(fieldName)) {
                     List<SkuProperty> skuProperties = reader.readArray(reader1 -> SkuProperty.fromJson(reader1));
-                    deserializedLegacySingleScopeReservationRecommendationProperties.skuProperties = skuProperties;
+                    deserializedLegacySingleScopeReservationRecommendationProperties.withSkuProperties(skuProperties);
                 } else if ("scope".equals(fieldName)) {
                     deserializedLegacySingleScopeReservationRecommendationProperties.scope = reader.getString();
                 } else if ("subscriptionId".equals(fieldName)) {

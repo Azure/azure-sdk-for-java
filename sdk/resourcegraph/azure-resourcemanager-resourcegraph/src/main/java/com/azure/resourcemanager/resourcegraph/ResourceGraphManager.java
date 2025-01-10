@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -19,14 +20,15 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resourcegraph.fluent.ResourceGraphClient;
+import com.azure.resourcemanager.resourcegraph.implementation.GraphQueriesImpl;
 import com.azure.resourcemanager.resourcegraph.implementation.OperationsImpl;
 import com.azure.resourcemanager.resourcegraph.implementation.ResourceGraphClientBuilder;
 import com.azure.resourcemanager.resourcegraph.implementation.ResourceProvidersImpl;
+import com.azure.resourcemanager.resourcegraph.models.GraphQueries;
 import com.azure.resourcemanager.resourcegraph.models.Operations;
 import com.azure.resourcemanager.resourcegraph.models.ResourceProviders;
 import java.time.Duration;
@@ -36,11 +38,16 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to ResourceGraphManager. Azure Resource Graph API Reference. */
+/**
+ * Entry point to ResourceGraphManager.
+ * Azure Resource Graph API Reference.
+ */
 public final class ResourceGraphManager {
     private ResourceProviders resourceProviders;
 
     private Operations operations;
+
+    private GraphQueries graphQueries;
 
     private final ResourceGraphClient clientObject;
 
@@ -55,7 +62,7 @@ public final class ResourceGraphManager {
 
     /**
      * Creates an instance of ResourceGraph service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the ResourceGraph service API instance.
@@ -68,7 +75,7 @@ public final class ResourceGraphManager {
 
     /**
      * Creates an instance of ResourceGraph service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the ResourceGraph service API instance.
@@ -81,14 +88,16 @@ public final class ResourceGraphManager {
 
     /**
      * Gets a Configurable instance that can be used to create ResourceGraphManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new ResourceGraphManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -160,8 +169,8 @@ public final class ResourceGraphManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -203,7 +212,7 @@ public final class ResourceGraphManager {
                 .append("-")
                 .append("com.azure.resourcemanager.resourcegraph")
                 .append("/")
-                .append("1.0.0");
+                .append("1.1.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -236,7 +245,7 @@ public final class ResourceGraphManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
                 .collect(Collectors.toList()));
@@ -251,7 +260,7 @@ public final class ResourceGraphManager {
 
     /**
      * Gets the resource collection API of ResourceProviders.
-     *
+     * 
      * @return Resource collection API of ResourceProviders.
      */
     public ResourceProviders resourceProviders() {
@@ -263,7 +272,7 @@ public final class ResourceGraphManager {
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -274,8 +283,22 @@ public final class ResourceGraphManager {
     }
 
     /**
-     * @return Wrapped service client ResourceGraphClient providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * Gets the resource collection API of GraphQueries. It manages GraphQueryResource.
+     * 
+     * @return Resource collection API of GraphQueries.
+     */
+    public GraphQueries graphQueries() {
+        if (this.graphQueries == null) {
+            this.graphQueries = new GraphQueriesImpl(clientObject.getGraphQueries(), this);
+        }
+        return graphQueries;
+    }
+
+    /**
+     * Gets wrapped service client ResourceGraphClient providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client ResourceGraphClient.
      */
     public ResourceGraphClient serviceClient() {
         return this.clientObject;

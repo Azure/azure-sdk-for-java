@@ -35,7 +35,8 @@ public final class IntegrationRuntimeDataFlowProperties
     private Integer timeToLive;
 
     /*
-     * Cluster will not be recycled and it will be used in next data flow activity run until TTL (time to live) is reached if this is set as false. Default is true.
+     * Cluster will not be recycled and it will be used in next data flow activity run until TTL (time to live) is
+     * reached if this is set as false. Default is true.
      */
     private Boolean cleanup;
 

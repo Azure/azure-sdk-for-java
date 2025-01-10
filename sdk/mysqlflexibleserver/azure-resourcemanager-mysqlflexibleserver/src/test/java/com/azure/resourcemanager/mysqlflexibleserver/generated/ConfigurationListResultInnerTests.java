@@ -15,24 +15,22 @@ public final class ConfigurationListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfigurationListResultInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"value\":\"szdnr\",\"currentValue\":\"qguhmuo\",\"description\":\"f\",\"documentationLink\":\"wzwbnguitn\",\"defaultValue\":\"izgazxu\",\"dataType\":\"zuckyfi\",\"allowedValues\":\"fidfvzw\",\"source\":\"system-default\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"False\",\"isDynamicConfig\":\"False\"},\"id\":\"dkfthwxmnt\",\"name\":\"i\",\"type\":\"aop\"}],\"nextLink\":\"mijcmmxdcufufs\"}")
+            "{\"value\":[{\"properties\":{\"value\":\"zloc\",\"description\":\"c\",\"defaultValue\":\"ierhhbcsglummaj\",\"dataType\":\"aodxo\",\"allowedValues\":\"bdxkqpxokaj\",\"source\":\"system-default\",\"isReadOnly\":\"False\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"True\"},\"id\":\"txgcpodgmaajr\",\"name\":\"vdjwzrlovm\",\"type\":\"lwhijcoejctbzaq\"}],\"nextLink\":\"sycbkbfk\"}")
             .toObject(ConfigurationListResultInner.class);
-        Assertions.assertEquals("szdnr", model.value().get(0).value());
-        Assertions.assertEquals("qguhmuo", model.value().get(0).currentValue());
+        Assertions.assertEquals("zloc", model.value().get(0).value());
         Assertions.assertEquals(ConfigurationSource.SYSTEM_DEFAULT, model.value().get(0).source());
-        Assertions.assertEquals("mijcmmxdcufufs", model.nextLink());
+        Assertions.assertEquals("sycbkbfk", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigurationListResultInner model
-            = new ConfigurationListResultInner().withValue(Arrays.asList(new ConfigurationInner().withValue("szdnr")
-                .withCurrentValue("qguhmuo")
-                .withSource(ConfigurationSource.SYSTEM_DEFAULT))).withNextLink("mijcmmxdcufufs");
+        ConfigurationListResultInner model = new ConfigurationListResultInner()
+            .withValue(Arrays
+                .asList(new ConfigurationInner().withValue("zloc").withSource(ConfigurationSource.SYSTEM_DEFAULT)))
+            .withNextLink("sycbkbfk");
         model = BinaryData.fromObject(model).toObject(ConfigurationListResultInner.class);
-        Assertions.assertEquals("szdnr", model.value().get(0).value());
-        Assertions.assertEquals("qguhmuo", model.value().get(0).currentValue());
+        Assertions.assertEquals("zloc", model.value().get(0).value());
         Assertions.assertEquals(ConfigurationSource.SYSTEM_DEFAULT, model.value().get(0).source());
-        Assertions.assertEquals("mijcmmxdcufufs", model.nextLink());
+        Assertions.assertEquals("sycbkbfk", model.nextLink());
     }
 }

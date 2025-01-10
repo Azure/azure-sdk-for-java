@@ -17,7 +17,9 @@ import java.util.Map;
  */
 public final class DomainsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/Domains_Update.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/Domains_Update.
+     * json
      */
     /**
      * Sample code: Domains_Update.

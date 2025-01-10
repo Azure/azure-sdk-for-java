@@ -7,23 +7,22 @@ package com.azure.resourcemanager.loadtesting.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.loadtesting.fluent.models.QuotaResourceProperties;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class QuotaResourcePropertiesTests {
-    @Test
+    @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaResourceProperties model
-            = BinaryData.fromString("{\"limit\":1833864756,\"usage\":1656493513,\"provisioningState\":\"Canceled\"}")
+            = BinaryData.fromString("{\"limit\":951964300,\"usage\":568686899,\"provisioningState\":\"Deleted\"}")
                 .toObject(QuotaResourceProperties.class);
-        Assertions.assertEquals(1833864756, model.limit());
-        Assertions.assertEquals(1656493513, model.usage());
+        Assertions.assertEquals(951964300, model.limit());
+        Assertions.assertEquals(568686899, model.usage());
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaResourceProperties model = new QuotaResourceProperties().withLimit(1833864756).withUsage(1656493513);
+        QuotaResourceProperties model = new QuotaResourceProperties().withLimit(951964300).withUsage(568686899);
         model = BinaryData.fromObject(model).toObject(QuotaResourceProperties.class);
-        Assertions.assertEquals(1833864756, model.limit());
-        Assertions.assertEquals(1656493513, model.usage());
+        Assertions.assertEquals(951964300, model.limit());
+        Assertions.assertEquals(568686899, model.usage());
     }
 }

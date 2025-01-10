@@ -42,7 +42,7 @@ public final class SignalRResourceInner extends Resource {
     private SignalRProperties innerProperties;
 
     /*
-     * The kind of the service
+     * The kind of the service, it can be SignalR or RawWebSockets
      */
     private ServiceKind kind;
 
@@ -52,7 +52,7 @@ public final class SignalRResourceInner extends Resource {
     private ManagedIdentity identity;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * Metadata pertaining to creation and last modification of the resource.
      */
     private SystemData systemData;
 
@@ -107,7 +107,7 @@ public final class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Get the kind property: The kind of the service.
+     * Get the kind property: The kind of the service, it can be SignalR or RawWebSockets.
      * 
      * @return the kind value.
      */
@@ -116,7 +116,7 @@ public final class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Set the kind property: The kind of the service.
+     * Set the kind property: The kind of the service, it can be SignalR or RawWebSockets.
      * 
      * @param kind the kind value to set.
      * @return the SignalRResourceInner object itself.
@@ -147,7 +147,7 @@ public final class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
      * 
      * @return the systemData value.
      */
@@ -558,62 +558,6 @@ public final class SignalRResourceInner extends Resource {
             this.innerProperties = new SignalRProperties();
         }
         this.innerProperties().withDisableAadAuth(disableAadAuth);
-        return this;
-    }
-
-    /**
-     * Get the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled".
-     * When it's Disabled, new connections will not be routed to this endpoint, however existing connections will not be
-     * affected.
-     * This property is replica specific. Disable the regional endpoint without replica is not allowed.
-     * 
-     * @return the regionEndpointEnabled value.
-     */
-    public String regionEndpointEnabled() {
-        return this.innerProperties() == null ? null : this.innerProperties().regionEndpointEnabled();
-    }
-
-    /**
-     * Set the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled".
-     * When it's Disabled, new connections will not be routed to this endpoint, however existing connections will not be
-     * affected.
-     * This property is replica specific. Disable the regional endpoint without replica is not allowed.
-     * 
-     * @param regionEndpointEnabled the regionEndpointEnabled value to set.
-     * @return the SignalRResourceInner object itself.
-     */
-    public SignalRResourceInner withRegionEndpointEnabled(String regionEndpointEnabled) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SignalRProperties();
-        }
-        this.innerProperties().withRegionEndpointEnabled(regionEndpointEnabled);
-        return this;
-    }
-
-    /**
-     * Get the resourceStopped property: Stop or start the resource. Default to "False".
-     * When it's true, the data plane of the resource is shutdown.
-     * When it's false, the data plane of the resource is started.
-     * 
-     * @return the resourceStopped value.
-     */
-    public String resourceStopped() {
-        return this.innerProperties() == null ? null : this.innerProperties().resourceStopped();
-    }
-
-    /**
-     * Set the resourceStopped property: Stop or start the resource. Default to "False".
-     * When it's true, the data plane of the resource is shutdown.
-     * When it's false, the data plane of the resource is started.
-     * 
-     * @param resourceStopped the resourceStopped value to set.
-     * @return the SignalRResourceInner object itself.
-     */
-    public SignalRResourceInner withResourceStopped(String resourceStopped) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SignalRProperties();
-        }
-        this.innerProperties().withResourceStopped(resourceStopped);
         return this;
     }
 

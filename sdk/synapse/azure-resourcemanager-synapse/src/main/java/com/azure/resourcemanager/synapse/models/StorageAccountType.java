@@ -22,6 +22,11 @@ public final class StorageAccountType extends ExpandableStringEnum<StorageAccoun
     public static final StorageAccountType LRS = fromString("LRS");
 
     /**
+     * Static value ZRS for StorageAccountType.
+     */
+    public static final StorageAccountType ZRS = fromString("ZRS");
+
+    /**
      * Creates a new instance of StorageAccountType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

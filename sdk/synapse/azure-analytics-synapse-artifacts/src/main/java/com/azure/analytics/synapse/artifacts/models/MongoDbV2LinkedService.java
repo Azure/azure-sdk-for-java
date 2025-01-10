@@ -24,7 +24,8 @@ public class MongoDbV2LinkedService extends LinkedService {
     private String type = "MongoDbV2";
 
     /*
-     * The MongoDB connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
+     * The MongoDB connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Type: string,
+     * SecureString or AzureKeyVaultSecretReference.
      */
     private Object connectionString;
 

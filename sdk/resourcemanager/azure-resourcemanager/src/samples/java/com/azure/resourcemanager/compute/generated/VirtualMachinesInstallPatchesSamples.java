@@ -4,9 +4,9 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.resourcemanager.compute.models.VirtualMachineInstallPatchesParameters;
 import com.azure.resourcemanager.compute.models.VMGuestPatchClassificationWindows;
 import com.azure.resourcemanager.compute.models.VMGuestPatchRebootSetting;
+import com.azure.resourcemanager.compute.models.VirtualMachineInstallPatchesParameters;
 import com.azure.resourcemanager.compute.models.WindowsParameters;
 import java.time.OffsetDateTime;
 import java.util.Arrays;

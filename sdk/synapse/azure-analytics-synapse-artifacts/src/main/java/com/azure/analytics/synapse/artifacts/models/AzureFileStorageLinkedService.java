@@ -39,7 +39,8 @@ public class AzureFileStorageLinkedService extends LinkedService {
     private SecretBase password;
 
     /*
-     * The connection string. It is mutually exclusive with sasUri property. Type: string, SecureString or AzureKeyVaultSecretReference.
+     * The connection string. It is mutually exclusive with sasUri property. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
      */
     private Object connectionString;
 
@@ -49,7 +50,8 @@ public class AzureFileStorageLinkedService extends LinkedService {
     private AzureKeyVaultSecretReference accountKey;
 
     /*
-     * SAS URI of the Azure File resource. It is mutually exclusive with connectionString property. Type: string, SecureString or AzureKeyVaultSecretReference.
+     * SAS URI of the Azure File resource. It is mutually exclusive with connectionString property. Type: string,
+     * SecureString or AzureKeyVaultSecretReference.
      */
     private Object sasUri;
 
@@ -59,7 +61,8 @@ public class AzureFileStorageLinkedService extends LinkedService {
     private AzureKeyVaultSecretReference sasToken;
 
     /*
-     * The azure file share name. It is required when auth with accountKey/sasToken. Type: string (or Expression with resultType string).
+     * The azure file share name. It is required when auth with accountKey/sasToken. Type: string (or Expression with
+     * resultType string).
      */
     private Object fileShare;
 
@@ -69,7 +72,8 @@ public class AzureFileStorageLinkedService extends LinkedService {
     private Object snapshot;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     private Object encryptedCredential;
 

@@ -20,11 +20,6 @@ public final class Omnichannel extends Channel {
      */
     private String channelName = "Omnichannel";
 
-    /*
-     * Provisioning state of the resource
-     */
-    private String provisioningState;
-
     /**
      * Creates an instance of Omnichannel class.
      */
@@ -39,16 +34,6 @@ public final class Omnichannel extends Channel {
     @Override
     public String channelName() {
         return this.channelName;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state of the resource.
-     * 
-     * @return the provisioningState value.
-     */
-    @Override
-    public String provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -108,7 +93,7 @@ public final class Omnichannel extends Channel {
                 if ("etag".equals(fieldName)) {
                     deserializedOmnichannel.withEtag(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedOmnichannel.provisioningState = reader.getString();
+                    deserializedOmnichannel.withProvisioningState(reader.getString());
                 } else if ("location".equals(fieldName)) {
                     deserializedOmnichannel.withLocation(reader.getString());
                 } else if ("channelName".equals(fieldName)) {

@@ -5,78 +5,77 @@
 package com.azure.resourcemanager.workloads.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.workloads.models.DatabaseVmDetails;
 import com.azure.resourcemanager.workloads.models.LoadBalancerDetails;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceError;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceProvisioningState;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Defines the Database properties. */
+/**
+ * Defines the Database properties.
+ */
 @Immutable
-public final class SapDatabaseProperties {
+public final class SapDatabaseProperties implements JsonSerializable<SapDatabaseProperties> {
     /*
      * Database subnet.
      */
-    @JsonProperty(value = "subnet", access = JsonProperty.Access.WRITE_ONLY)
     private String subnet;
 
     /*
      * Database SID name.
      */
-    @JsonProperty(value = "databaseSid", access = JsonProperty.Access.WRITE_ONLY)
     private String databaseSid;
 
     /*
      * Database type, that is if the DB is HANA, DB2, Oracle, SAP ASE, Max DB or MS SQL Server.
      */
-    @JsonProperty(value = "databaseType", access = JsonProperty.Access.WRITE_ONLY)
     private String databaseType;
 
     /*
      * Database IP Address.
      */
-    @JsonProperty(value = "ipAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String ipAddress;
 
     /*
      * The Load Balancer details such as LoadBalancer ID attached to Database Virtual Machines
      */
-    @JsonProperty(value = "loadBalancerDetails", access = JsonProperty.Access.WRITE_ONLY)
     private LoadBalancerDetails loadBalancerDetails;
 
     /*
      * The list of virtual machines corresponding to the Database resource.
      */
-    @JsonProperty(value = "vmDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<DatabaseVmDetails> vmDetails;
 
     /*
      * Defines the SAP Instance status.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private SapVirtualInstanceStatus status;
 
     /*
      * Defines the provisioning states.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private SapVirtualInstanceProvisioningState provisioningState;
 
     /*
      * Defines the errors related to Database resource.
      */
-    @JsonProperty(value = "errors", access = JsonProperty.Access.WRITE_ONLY)
     private SapVirtualInstanceError errors;
 
-    /** Creates an instance of SapDatabaseProperties class. */
+    /**
+     * Creates an instance of SapDatabaseProperties class.
+     */
     public SapDatabaseProperties() {
     }
 
     /**
      * Get the subnet property: Database subnet.
-     *
+     * 
      * @return the subnet value.
      */
     public String subnet() {
@@ -85,7 +84,7 @@ public final class SapDatabaseProperties {
 
     /**
      * Get the databaseSid property: Database SID name.
-     *
+     * 
      * @return the databaseSid value.
      */
     public String databaseSid() {
@@ -95,7 +94,7 @@ public final class SapDatabaseProperties {
     /**
      * Get the databaseType property: Database type, that is if the DB is HANA, DB2, Oracle, SAP ASE, Max DB or MS SQL
      * Server.
-     *
+     * 
      * @return the databaseType value.
      */
     public String databaseType() {
@@ -104,7 +103,7 @@ public final class SapDatabaseProperties {
 
     /**
      * Get the ipAddress property: Database IP Address.
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -114,7 +113,7 @@ public final class SapDatabaseProperties {
     /**
      * Get the loadBalancerDetails property: The Load Balancer details such as LoadBalancer ID attached to Database
      * Virtual Machines.
-     *
+     * 
      * @return the loadBalancerDetails value.
      */
     public LoadBalancerDetails loadBalancerDetails() {
@@ -123,7 +122,7 @@ public final class SapDatabaseProperties {
 
     /**
      * Get the vmDetails property: The list of virtual machines corresponding to the Database resource.
-     *
+     * 
      * @return the vmDetails value.
      */
     public List<DatabaseVmDetails> vmDetails() {
@@ -132,7 +131,7 @@ public final class SapDatabaseProperties {
 
     /**
      * Get the status property: Defines the SAP Instance status.
-     *
+     * 
      * @return the status value.
      */
     public SapVirtualInstanceStatus status() {
@@ -141,7 +140,7 @@ public final class SapDatabaseProperties {
 
     /**
      * Get the provisioningState property: Defines the provisioning states.
-     *
+     * 
      * @return the provisioningState value.
      */
     public SapVirtualInstanceProvisioningState provisioningState() {
@@ -150,7 +149,7 @@ public final class SapDatabaseProperties {
 
     /**
      * Get the errors property: Defines the errors related to Database resource.
-     *
+     * 
      * @return the errors value.
      */
     public SapVirtualInstanceError errors() {
@@ -159,7 +158,7 @@ public final class SapDatabaseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -172,5 +171,59 @@ public final class SapDatabaseProperties {
         if (errors() != null) {
             errors().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapDatabaseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapDatabaseProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SapDatabaseProperties.
+     */
+    public static SapDatabaseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapDatabaseProperties deserializedSapDatabaseProperties = new SapDatabaseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subnet".equals(fieldName)) {
+                    deserializedSapDatabaseProperties.subnet = reader.getString();
+                } else if ("databaseSid".equals(fieldName)) {
+                    deserializedSapDatabaseProperties.databaseSid = reader.getString();
+                } else if ("databaseType".equals(fieldName)) {
+                    deserializedSapDatabaseProperties.databaseType = reader.getString();
+                } else if ("ipAddress".equals(fieldName)) {
+                    deserializedSapDatabaseProperties.ipAddress = reader.getString();
+                } else if ("loadBalancerDetails".equals(fieldName)) {
+                    deserializedSapDatabaseProperties.loadBalancerDetails = LoadBalancerDetails.fromJson(reader);
+                } else if ("vmDetails".equals(fieldName)) {
+                    List<DatabaseVmDetails> vmDetails
+                        = reader.readArray(reader1 -> DatabaseVmDetails.fromJson(reader1));
+                    deserializedSapDatabaseProperties.vmDetails = vmDetails;
+                } else if ("status".equals(fieldName)) {
+                    deserializedSapDatabaseProperties.status = SapVirtualInstanceStatus.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSapDatabaseProperties.provisioningState
+                        = SapVirtualInstanceProvisioningState.fromString(reader.getString());
+                } else if ("errors".equals(fieldName)) {
+                    deserializedSapDatabaseProperties.errors = SapVirtualInstanceError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSapDatabaseProperties;
+        });
     }
 }

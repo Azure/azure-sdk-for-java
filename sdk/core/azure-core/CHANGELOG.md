@@ -6,11 +6,9 @@
 
 - Added `azure.core.models.AzureCloud` expandable enum to represent different Azure clouds.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+- Removed length restriction on application id in `ClientOptions`. ([#42937](https://github.com/Azure/azure-sdk-for-java/pull/42937))
 
 ## 1.54.1 (2024-11-14)
 

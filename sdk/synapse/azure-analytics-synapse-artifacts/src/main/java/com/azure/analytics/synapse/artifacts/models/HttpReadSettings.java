@@ -23,17 +23,20 @@ public final class HttpReadSettings extends StoreReadSettings {
     private String type = "HttpReadSettings";
 
     /*
-     * The HTTP method used to call the RESTful API. The default is GET. Type: string (or Expression with resultType string).
+     * The HTTP method used to call the RESTful API. The default is GET. Type: string (or Expression with resultType
+     * string).
      */
     private Object requestMethod;
 
     /*
-     * The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or Expression with resultType string).
+     * The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or Expression with resultType
+     * string).
      */
     private Object requestBody;
 
     /*
-     * The additional HTTP headers in the request to the RESTful API. Type: string (or Expression with resultType string).
+     * The additional HTTP headers in the request to the RESTful API. Type: string (or Expression with resultType
+     * string).
      */
     private Object additionalHeaders;
 
@@ -53,7 +56,8 @@ public final class HttpReadSettings extends StoreReadSettings {
     private Object partitionRootPath;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with resultType array of objects).
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
+     * Expression with resultType array of objects).
      */
     private Object additionalColumns;
 

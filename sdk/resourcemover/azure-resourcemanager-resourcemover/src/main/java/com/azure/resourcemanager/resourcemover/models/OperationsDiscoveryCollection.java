@@ -7,25 +7,27 @@ package com.azure.resourcemanager.resourcemover.models;
 import com.azure.resourcemanager.resourcemover.fluent.models.OperationsDiscoveryCollectionInner;
 import java.util.List;
 
-/** An immutable client-side representation of OperationsDiscoveryCollection. */
+/**
+ * An immutable client-side representation of OperationsDiscoveryCollection.
+ */
 public interface OperationsDiscoveryCollection {
     /**
      * Gets the value property: Gets or sets the ClientDiscovery details.
-     *
+     * 
      * @return the value value.
      */
     List<OperationsDiscovery> value();
 
     /**
      * Gets the nextLink property: Gets or sets the value of next link.
-     *
+     * 
      * @return the nextLink value.
      */
     String nextLink();
 
     /**
      * Gets the inner com.azure.resourcemanager.resourcemover.fluent.models.OperationsDiscoveryCollectionInner object.
-     *
+     * 
      * @return the inner object.
      */
     OperationsDiscoveryCollectionInner innerModel();

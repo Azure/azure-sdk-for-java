@@ -6,58 +6,50 @@ package com.azure.resourcemanager.digitaltwins.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager;
 import com.azure.resourcemanager.digitaltwins.models.DigitalTwinsDescription;
 import com.azure.resourcemanager.digitaltwins.models.DigitalTwinsIdentityType;
+import com.azure.resourcemanager.digitaltwins.models.PrivateLinkServiceConnectionStatus;
 import com.azure.resourcemanager.digitaltwins.models.PublicNetworkAccess;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DigitalTwinsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"createdTime\":\"2021-10-12T16:41:20Z\",\"lastUpdatedTime\":\"2021-09-07T10:16:41Z\",\"provisioningState\":\"Suspending\",\"hostName\":\"hsucoc\",\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Enabled\"},\"identity\":{\"type\":\"None\",\"principalId\":\"twwrqp\",\"tenantId\":\"dckzywbiexz\",\"userAssignedIdentities\":{}},\"location\":\"eaxib\",\"tags\":{\"uzyoxaep\":\"wbhqwal\",\"bniwdj\":\"kzjancuxrhdwbav\",\"s\":\"wz\"},\"id\":\"bpg\",\"name\":\"xytxhpzxbz\",\"type\":\"fzab\"}";
+            = "{\"properties\":{\"createdTime\":\"2021-02-12T14:19:46Z\",\"lastUpdatedTime\":\"2021-07-26T08:48:27Z\",\"provisioningState\":\"Updating\",\"hostName\":\"hlwrqlfkts\",\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Rejected\",\"privateEndpoint\":{},\"groupIds\":[\"nyyazttbtwwrqpue\",\"ckzywbiexzfeyue\"],\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"bxu\"}},\"id\":\"bhqwalmuzyoxa\",\"name\":\"pdkzjancuxr\",\"type\":\"d\"},{\"properties\":{\"provisioningState\":\"Disconnected\",\"privateEndpoint\":{},\"groupIds\":[\"niwdjsw\",\"tsdbpgn\"],\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"x\"}},\"id\":\"zxbzpfzabglc\",\"name\":\"hxw\",\"type\":\"ctyqik\"},{\"properties\":{\"provisioningState\":\"Approved\",\"privateEndpoint\":{},\"groupIds\":[\"lwzbhvgyugu\",\"svmkfssxquk\",\"fpl\"],\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"sxnkjzkdeslpvlo\"}},\"id\":\"i\",\"name\":\"ighxpk\",\"type\":\"wzbaiue\"},{\"properties\":{\"provisioningState\":\"Pending\",\"privateEndpoint\":{},\"groupIds\":[\"yqupedeojnabckh\",\"mtxpsiebtfh\",\"pesapskrdqmhjj\",\"htldwk\"],\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"uutkncw\"}},\"id\":\"wsvlxotogtwrupqs\",\"name\":\"vnm\",\"type\":\"cykvceo\"}],\"publicNetworkAccess\":\"Enabled\"},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"oty\",\"tenantId\":\"fcnj\",\"userAssignedIdentities\":{\"h\":{\"clientId\":\"x\",\"principalId\":\"bttk\"}}},\"location\":\"pnvjtoqnermclf\",\"tags\":{\"rpabg\":\"hoxus\",\"xywpmueefjzwfqkq\":\"epsbjtazqu\"},\"id\":\"jidsuyonobglaoc\",\"name\":\"xtccmg\",\"type\":\"udxytlmoyrx\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AzureDigitalTwinsManager manager = AzureDigitalTwinsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DigitalTwinsDescription response = manager.digitalTwins()
-            .getByResourceGroupWithResponse("synlqidybyxczfc", "haaxdbabphl", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("qidybyx", "zfcl", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("eaxib", response.location());
-        Assertions.assertEquals("wbhqwal", response.tags().get("uzyoxaep"));
-        Assertions.assertEquals(DigitalTwinsIdentityType.NONE, response.identity().type());
+        Assertions.assertEquals("pnvjtoqnermclf", response.location());
+        Assertions.assertEquals("hoxus", response.tags().get("rpabg"));
+        Assertions.assertEquals(DigitalTwinsIdentityType.USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("nyyazttbtwwrqpue",
+            response.privateEndpointConnections().get(0).properties().groupIds().get(0));
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.PENDING,
+            response.privateEndpointConnections().get(0).properties().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("bxu",
+            response.privateEndpointConnections()
+                .get(0)
+                .properties()
+                .privateLinkServiceConnectionState()
+                .description());
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.publicNetworkAccess());
     }
 }

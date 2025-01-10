@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Storage Target space allocation properties.
  */
 @Fluent
-public final class StorageTargetSpaceAllocation {
+public final class StorageTargetSpaceAllocation implements JsonSerializable<StorageTargetSpaceAllocation> {
     /*
      * Name of the storage target.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The percentage of cache space allocated for this storage target
      */
-    @JsonProperty(value = "allocationPercentage")
     private Integer allocationPercentage;
 
     /**
@@ -76,5 +78,45 @@ public final class StorageTargetSpaceAllocation {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeNumberField("allocationPercentage", this.allocationPercentage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageTargetSpaceAllocation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageTargetSpaceAllocation if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageTargetSpaceAllocation.
+     */
+    public static StorageTargetSpaceAllocation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageTargetSpaceAllocation deserializedStorageTargetSpaceAllocation = new StorageTargetSpaceAllocation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedStorageTargetSpaceAllocation.name = reader.getString();
+                } else if ("allocationPercentage".equals(fieldName)) {
+                    deserializedStorageTargetSpaceAllocation.allocationPercentage
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageTargetSpaceAllocation;
+        });
     }
 }

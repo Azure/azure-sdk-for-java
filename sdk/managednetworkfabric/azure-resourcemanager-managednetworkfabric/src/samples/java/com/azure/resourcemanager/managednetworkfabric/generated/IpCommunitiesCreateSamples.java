@@ -11,36 +11,36 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for IpCommunities Create. */
+/**
+ * Samples for IpCommunities Create.
+ */
 public final class IpCommunitiesCreateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/IpCommunities_Create_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
+     * IpCommunities_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: IpCommunities_Create_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void ipCommunitiesCreateMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        manager
-            .ipCommunities()
+        manager.ipCommunities()
             .define("example-ipcommunity")
             .withRegion("eastus")
             .withExistingResourceGroup("example-rg")
             .withTags(mapOf("keyId", "fakeTokenPlaceholder"))
-            .withIpCommunityRules(
-                Arrays
-                    .asList(
-                        new IpCommunityRule()
-                            .withAction(CommunityActionTypes.PERMIT)
-                            .withSequenceNumber(4155123341L)
-                            .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.INTERNET))
-                            .withCommunityMembers(Arrays.asList("1:1"))))
+            .withIpCommunityRules(Arrays.asList(new IpCommunityRule().withAction(CommunityActionTypes.PERMIT)
+                .withSequenceNumber(4155123341L)
+                .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.INTERNET))
+                .withCommunityMembers(Arrays.asList("1:1"))))
             .withAnnotation("annotation")
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

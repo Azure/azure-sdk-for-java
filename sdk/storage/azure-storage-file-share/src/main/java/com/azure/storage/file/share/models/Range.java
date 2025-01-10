@@ -30,6 +30,12 @@ public final class Range implements XmlSerializable<Range> {
     private long end;
 
     /**
+     * Creates a new instance of the Range class.
+     */
+    public Range() {
+    }
+
+    /**
      * Get the start property: Start of the range.
      *
      * @return the start value.

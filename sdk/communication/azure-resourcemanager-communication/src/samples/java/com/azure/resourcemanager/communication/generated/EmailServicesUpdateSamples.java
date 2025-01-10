@@ -24,8 +24,10 @@ public final class EmailServicesUpdateSamples {
      */
     public static void
         updateEmailServiceResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        EmailServiceResource resource = manager.emailServices().getByResourceGroupWithResponse("MyResourceGroup",
-            "MyEmailServiceResource", com.azure.core.util.Context.NONE).getValue();
+        EmailServiceResource resource = manager.emailServices()
+            .getByResourceGroupWithResponse("MyResourceGroup", "MyEmailServiceResource",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("newTag", "newVal")).apply();
     }
 

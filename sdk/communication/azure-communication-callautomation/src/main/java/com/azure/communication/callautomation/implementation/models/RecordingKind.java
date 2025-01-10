@@ -12,19 +12,19 @@ import java.util.Collection;
  */
 public final class RecordingKind extends ExpandableStringEnum<RecordingKind> {
     /**
-     * Static value azureCommunicationServices for RecordingKind.
+     * Recording initiated by Azure Communication Services.
      */
-    public static final RecordingKind AZURE_COMMUNICATION_SERVICES = fromString("azureCommunicationServices");
+    public static final RecordingKind AZURE_COMMUNICATION_SERVICES = fromString("AzureCommunicationServices");
 
     /**
-     * Static value teams for RecordingKind.
+     * Recording initiated by Teams user.
      */
-    public static final RecordingKind TEAMS = fromString("teams");
+    public static final RecordingKind TEAMS = fromString("Teams");
 
     /**
-     * Static value teamsCompliance for RecordingKind.
+     * Recording initiated by Teams compliance policy.
      */
-    public static final RecordingKind TEAMS_COMPLIANCE = fromString("teamsCompliance");
+    public static final RecordingKind TEAMS_COMPLIANCE = fromString("TeamsCompliance");
 
     /**
      * Creates a new instance of RecordingKind value.

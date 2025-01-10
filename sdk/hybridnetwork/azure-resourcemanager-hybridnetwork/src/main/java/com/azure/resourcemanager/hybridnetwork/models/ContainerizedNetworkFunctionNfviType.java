@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -38,7 +37,6 @@ public final class ContainerizedNetworkFunctionNfviType
      * @param name a name to look for.
      * @return the corresponding ContainerizedNetworkFunctionNfviType.
      */
-    @JsonCreator
     public static ContainerizedNetworkFunctionNfviType fromString(String name) {
         return fromString(name, ContainerizedNetworkFunctionNfviType.class);
     }

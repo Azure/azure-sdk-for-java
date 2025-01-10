@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ServiceConfigurations. */
+/**
+ * Resource collection API of ServiceConfigurations.
+ */
 public interface ServiceConfigurations {
     /**
      * Lists of all the services associated with endpoint resource.
-     *
-     * <p>API to enumerate registered services in service configurations under a Endpoint Resource.
-     *
+     * 
+     * API to enumerate registered services in service configurations under a Endpoint Resource.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -26,9 +28,9 @@ public interface ServiceConfigurations {
 
     /**
      * Lists of all the services associated with endpoint resource.
-     *
-     * <p>API to enumerate registered services in service configurations under a Endpoint Resource.
-     *
+     * 
+     * API to enumerate registered services in service configurations under a Endpoint Resource.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param context The context to associate with this operation.
@@ -42,7 +44,7 @@ public interface ServiceConfigurations {
 
     /**
      * Gets the details about the service to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param serviceConfigurationName The service name.
@@ -57,7 +59,7 @@ public interface ServiceConfigurations {
 
     /**
      * Gets the details about the service to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param serviceConfigurationName The service name.
@@ -70,7 +72,7 @@ public interface ServiceConfigurations {
 
     /**
      * Deletes the service details to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param serviceConfigurationName The service name.
@@ -85,7 +87,7 @@ public interface ServiceConfigurations {
 
     /**
      * Deletes the service details to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param serviceConfigurationName The service name.
@@ -97,7 +99,7 @@ public interface ServiceConfigurations {
 
     /**
      * Gets the details about the service to the resource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -108,7 +110,7 @@ public interface ServiceConfigurations {
 
     /**
      * Gets the details about the service to the resource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -120,7 +122,7 @@ public interface ServiceConfigurations {
 
     /**
      * Deletes the service details to the target resource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -130,7 +132,7 @@ public interface ServiceConfigurations {
 
     /**
      * Deletes the service details to the target resource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -142,7 +144,7 @@ public interface ServiceConfigurations {
 
     /**
      * Begins definition for a new ServiceConfigurationResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ServiceConfigurationResource definition.
      */

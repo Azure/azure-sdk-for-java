@@ -27,6 +27,15 @@ public class ApplicationGatewayBackendHealthStatus extends ExpandableStringEnum<
     public static final ApplicationGatewayBackendHealthStatus DRAINING
         = fromString(ApplicationGatewayBackendHealthServerHealth.DRAINING.toString());
 
+    /**
+     * Creates a new instance of ApplicationGatewayBackendHealthStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApplicationGatewayBackendHealthStatus() {
+    }
+
     /** The server is unhealthy. */
     public static final ApplicationGatewayBackendHealthStatus UNHEALTHY = fromString("Unhealthy");
 
@@ -40,7 +49,11 @@ public class ApplicationGatewayBackendHealthStatus extends ExpandableStringEnum<
         return fromString(name, ApplicationGatewayBackendHealthStatus.class);
     }
 
-    /** @return known application gateway backend health statuses */
+    /**
+     * Gets known application gateway backend health statuses.
+     *
+     * @return known application gateway backend health statuses
+     */
     public static Collection<ApplicationGatewayBackendHealthStatus> values() {
         return values(ApplicationGatewayBackendHealthStatus.class);
     }

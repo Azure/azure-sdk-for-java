@@ -213,7 +213,6 @@ public final class SapOpenHubSource extends TabularSource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

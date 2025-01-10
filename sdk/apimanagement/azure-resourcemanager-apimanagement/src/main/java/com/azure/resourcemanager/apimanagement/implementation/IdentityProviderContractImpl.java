@@ -169,10 +169,10 @@ public final class IdentityProviderContractImpl
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.identityProviderName
-            = IdentityProviderType.fromString(Utils.getValueFromIdByName(innerObject.id(), "identityProviders"));
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.identityProviderName = IdentityProviderType
+            .fromString(ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "identityProviders"));
     }
 
     public IdentityProviderContract refresh() {

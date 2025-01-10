@@ -33,7 +33,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.agrifood.fluent.FarmBeatsModelsClient;
-import com.azure.resourcemanager.agrifood.fluent.models.ArmAsyncOperationInner;
 import com.azure.resourcemanager.agrifood.fluent.models.FarmBeatsInner;
 import com.azure.resourcemanager.agrifood.models.FarmBeatsListResponse;
 import com.azure.resourcemanager.agrifood.models.FarmBeatsUpdateRequestModel;
@@ -41,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in FarmBeatsModelsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FarmBeatsModelsClient.
+ */
 public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final FarmBeatsModelsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AgriFoodManagementClientImpl client;
 
     /**
      * Initializes an instance of FarmBeatsModelsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     FarmBeatsModelsClientImpl(AgriFoodManagementClientImpl client) {
@@ -66,10 +71,9 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AgriFoodManagementCl")
-    private interface FarmBeatsModelsService {
+    public interface FarmBeatsModelsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform"
-            + "/farmBeats/{farmBeatsResourceName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform/farmBeats/{farmBeatsResourceName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FarmBeatsInner>> getByResourceGroup(@HostParam("$host") String endpoint,
@@ -79,8 +83,7 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform"
-            + "/farmBeats/{farmBeatsResourceName}")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform/farmBeats/{farmBeatsResourceName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FarmBeatsInner>> createOrUpdate(@HostParam("$host") String endpoint,
@@ -91,8 +94,7 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform"
-            + "/farmBeats/{farmBeatsResourceName}")
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform/farmBeats/{farmBeatsResourceName}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
@@ -104,8 +106,7 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform"
-            + "/farmBeats/{farmBeatsResourceName}")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform/farmBeats/{farmBeatsResourceName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
@@ -124,26 +125,13 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform"
-            + "/farmBeats")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform/farmBeats")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FarmBeatsListResponse>> listByResourceGroup(@HostParam("$host") String endpoint,
             @QueryParam("$maxPageSize") Integer maxPageSize, @QueryParam("$skipToken") String skipToken,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform"
-            + "/farmBeats/{farmBeatsResourceName}/operationResults/{operationResultsId}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ArmAsyncOperationInner>> getOperationResult(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("farmBeatsResourceName") String farmBeatsResourceName,
-            @QueryParam("api-version") String apiVersion, @PathParam("operationResultsId") String operationResultsId,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -165,7 +153,7 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Get FarmBeats resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param farmBeatsResourceName FarmBeats resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -202,7 +190,7 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Get FarmBeats resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param farmBeatsResourceName FarmBeats resource name.
      * @param context The context to associate with this operation.
@@ -238,7 +226,7 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Get FarmBeats resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param farmBeatsResourceName FarmBeats resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -254,22 +242,7 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Get FarmBeats resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param farmBeatsResourceName FarmBeats resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return farmBeats resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FarmBeatsInner getByResourceGroup(String resourceGroupName, String farmBeatsResourceName) {
-        return getByResourceGroupAsync(resourceGroupName, farmBeatsResourceName).block();
-    }
-
-    /**
-     * Get FarmBeats resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param farmBeatsResourceName FarmBeats resource name.
      * @param context The context to associate with this operation.
@@ -285,8 +258,23 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
     }
 
     /**
+     * Get FarmBeats resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param farmBeatsResourceName FarmBeats resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return farmBeats resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FarmBeatsInner getByResourceGroup(String resourceGroupName, String farmBeatsResourceName) {
+        return getByResourceGroupWithResponse(resourceGroupName, farmBeatsResourceName, Context.NONE).getValue();
+    }
+
+    /**
      * Create or update FarmBeats resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param farmBeatsResourceName FarmBeats resource name.
      * @param body FarmBeats resource create or update request object.
@@ -328,7 +316,7 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Create or update FarmBeats resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param farmBeatsResourceName FarmBeats resource name.
      * @param body FarmBeats resource create or update request object.
@@ -370,7 +358,7 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Create or update FarmBeats resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param farmBeatsResourceName FarmBeats resource name.
      * @param body FarmBeats resource create or update request object.
@@ -388,23 +376,7 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Create or update FarmBeats resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param farmBeatsResourceName FarmBeats resource name.
-     * @param body FarmBeats resource create or update request object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return farmBeats ARM Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FarmBeatsInner createOrUpdate(String resourceGroupName, String farmBeatsResourceName, FarmBeatsInner body) {
-        return createOrUpdateAsync(resourceGroupName, farmBeatsResourceName, body).block();
-    }
-
-    /**
-     * Create or update FarmBeats resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param farmBeatsResourceName FarmBeats resource name.
      * @param body FarmBeats resource create or update request object.
@@ -421,8 +393,24 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
     }
 
     /**
+     * Create or update FarmBeats resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param farmBeatsResourceName FarmBeats resource name.
+     * @param body FarmBeats resource create or update request object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return farmBeats ARM Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FarmBeatsInner createOrUpdate(String resourceGroupName, String farmBeatsResourceName, FarmBeatsInner body) {
+        return createOrUpdateWithResponse(resourceGroupName, farmBeatsResourceName, body, Context.NONE).getValue();
+    }
+
+    /**
      * Update a FarmBeats resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param farmBeatsResourceName FarmBeats resource name.
      * @param body Request object.
@@ -464,7 +452,7 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Update a FarmBeats resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param farmBeatsResourceName FarmBeats resource name.
      * @param body Request object.
@@ -506,7 +494,7 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Update a FarmBeats resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param farmBeatsResourceName FarmBeats resource name.
      * @param body Request object.
@@ -525,7 +513,7 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Update a FarmBeats resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param farmBeatsResourceName FarmBeats resource name.
      * @param body Request object.
@@ -547,7 +535,7 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Update a FarmBeats resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param farmBeatsResourceName FarmBeats resource name.
      * @param body Request object.
@@ -559,12 +547,12 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FarmBeatsInner>, FarmBeatsInner> beginUpdate(String resourceGroupName,
         String farmBeatsResourceName, FarmBeatsUpdateRequestModel body) {
-        return beginUpdateAsync(resourceGroupName, farmBeatsResourceName, body).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, farmBeatsResourceName, body).getSyncPoller();
     }
 
     /**
      * Update a FarmBeats resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param farmBeatsResourceName FarmBeats resource name.
      * @param body Request object.
@@ -577,12 +565,12 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FarmBeatsInner>, FarmBeatsInner> beginUpdate(String resourceGroupName,
         String farmBeatsResourceName, FarmBeatsUpdateRequestModel body, Context context) {
-        return beginUpdateAsync(resourceGroupName, farmBeatsResourceName, body, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, farmBeatsResourceName, body, context).getSyncPoller();
     }
 
     /**
      * Update a FarmBeats resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param farmBeatsResourceName FarmBeats resource name.
      * @param body Request object.
@@ -600,7 +588,7 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Update a FarmBeats resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param farmBeatsResourceName FarmBeats resource name.
      * @param body Request object.
@@ -619,7 +607,7 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Update a FarmBeats resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param farmBeatsResourceName FarmBeats resource name.
      * @param body Request object.
@@ -636,7 +624,7 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Update a FarmBeats resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param farmBeatsResourceName FarmBeats resource name.
      * @param body Request object.
@@ -654,7 +642,7 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Delete a FarmBeats resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param farmBeatsResourceName FarmBeats resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -689,7 +677,7 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Delete a FarmBeats resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param farmBeatsResourceName FarmBeats resource name.
      * @param context The context to associate with this operation.
@@ -725,7 +713,7 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Delete a FarmBeats resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param farmBeatsResourceName FarmBeats resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -740,21 +728,7 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Delete a FarmBeats resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param farmBeatsResourceName FarmBeats resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String farmBeatsResourceName) {
-        deleteAsync(resourceGroupName, farmBeatsResourceName).block();
-    }
-
-    /**
-     * Delete a FarmBeats resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param farmBeatsResourceName FarmBeats resource name.
      * @param context The context to associate with this operation.
@@ -769,15 +743,30 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
     }
 
     /**
+     * Delete a FarmBeats resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param farmBeatsResourceName FarmBeats resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String farmBeatsResourceName) {
+        deleteWithResponse(resourceGroupName, farmBeatsResourceName, Context.NONE);
+    }
+
+    /**
      * Lists the FarmBeats instances for a subscription.
-     *
-     * @param maxPageSize Maximum number of items needed (inclusive). Minimum = 10, Maximum = 1000, Default value = 50.
+     * 
+     * @param maxPageSize Maximum number of items needed (inclusive).
+     * Minimum = 10, Maximum = 1000, Default value = 50.
      * @param skipToken Skip token for getting next set of results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged response contains list of requested objects and a URL link to get the next set of results along
-     *     with {@link PagedResponse} on successful completion of {@link Mono}.
+     * with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FarmBeatsInner>> listSinglePageAsync(Integer maxPageSize, String skipToken) {
@@ -800,15 +789,16 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Lists the FarmBeats instances for a subscription.
-     *
-     * @param maxPageSize Maximum number of items needed (inclusive). Minimum = 10, Maximum = 1000, Default value = 50.
+     * 
+     * @param maxPageSize Maximum number of items needed (inclusive).
+     * Minimum = 10, Maximum = 1000, Default value = 50.
      * @param skipToken Skip token for getting next set of results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged response contains list of requested objects and a URL link to get the next set of results along
-     *     with {@link PagedResponse} on successful completion of {@link Mono}.
+     * with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FarmBeatsInner>> listSinglePageAsync(Integer maxPageSize, String skipToken,
@@ -832,14 +822,15 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Lists the FarmBeats instances for a subscription.
-     *
-     * @param maxPageSize Maximum number of items needed (inclusive). Minimum = 10, Maximum = 1000, Default value = 50.
+     * 
+     * @param maxPageSize Maximum number of items needed (inclusive).
+     * Minimum = 10, Maximum = 1000, Default value = 50.
      * @param skipToken Skip token for getting next set of results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged response contains list of requested objects and a URL link to get the next set of results as
-     *     paginated response with {@link PagedFlux}.
+     * paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FarmBeatsInner> listAsync(Integer maxPageSize, String skipToken) {
@@ -849,11 +840,11 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Lists the FarmBeats instances for a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged response contains list of requested objects and a URL link to get the next set of results as
-     *     paginated response with {@link PagedFlux}.
+     * paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FarmBeatsInner> listAsync() {
@@ -865,15 +856,16 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Lists the FarmBeats instances for a subscription.
-     *
-     * @param maxPageSize Maximum number of items needed (inclusive). Minimum = 10, Maximum = 1000, Default value = 50.
+     * 
+     * @param maxPageSize Maximum number of items needed (inclusive).
+     * Minimum = 10, Maximum = 1000, Default value = 50.
      * @param skipToken Skip token for getting next set of results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged response contains list of requested objects and a URL link to get the next set of results as
-     *     paginated response with {@link PagedFlux}.
+     * paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FarmBeatsInner> listAsync(Integer maxPageSize, String skipToken, Context context) {
@@ -883,11 +875,11 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Lists the FarmBeats instances for a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged response contains list of requested objects and a URL link to get the next set of results as
-     *     paginated response with {@link PagedIterable}.
+     * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FarmBeatsInner> list() {
@@ -898,15 +890,16 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Lists the FarmBeats instances for a subscription.
-     *
-     * @param maxPageSize Maximum number of items needed (inclusive). Minimum = 10, Maximum = 1000, Default value = 50.
+     * 
+     * @param maxPageSize Maximum number of items needed (inclusive).
+     * Minimum = 10, Maximum = 1000, Default value = 50.
      * @param skipToken Skip token for getting next set of results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged response contains list of requested objects and a URL link to get the next set of results as
-     *     paginated response with {@link PagedIterable}.
+     * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FarmBeatsInner> list(Integer maxPageSize, String skipToken, Context context) {
@@ -915,15 +908,16 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Lists the FarmBeats instances for a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param maxPageSize Maximum number of items needed (inclusive). Minimum = 10, Maximum = 1000, Default value = 50.
+     * @param maxPageSize Maximum number of items needed (inclusive).
+     * Minimum = 10, Maximum = 1000, Default value = 50.
      * @param skipToken Continuation token for getting next set of results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged response contains list of requested objects and a URL link to get the next set of results along
-     *     with {@link PagedResponse} on successful completion of {@link Mono}.
+     * with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FarmBeatsInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -951,16 +945,17 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Lists the FarmBeats instances for a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param maxPageSize Maximum number of items needed (inclusive). Minimum = 10, Maximum = 1000, Default value = 50.
+     * @param maxPageSize Maximum number of items needed (inclusive).
+     * Minimum = 10, Maximum = 1000, Default value = 50.
      * @param skipToken Continuation token for getting next set of results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged response contains list of requested objects and a URL link to get the next set of results along
-     *     with {@link PagedResponse} on successful completion of {@link Mono}.
+     * with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FarmBeatsInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -988,15 +983,16 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Lists the FarmBeats instances for a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param maxPageSize Maximum number of items needed (inclusive). Minimum = 10, Maximum = 1000, Default value = 50.
+     * @param maxPageSize Maximum number of items needed (inclusive).
+     * Minimum = 10, Maximum = 1000, Default value = 50.
      * @param skipToken Continuation token for getting next set of results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged response contains list of requested objects and a URL link to get the next set of results as
-     *     paginated response with {@link PagedFlux}.
+     * paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FarmBeatsInner> listByResourceGroupAsync(String resourceGroupName, Integer maxPageSize,
@@ -1007,13 +1003,13 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Lists the FarmBeats instances for a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged response contains list of requested objects and a URL link to get the next set of results as
-     *     paginated response with {@link PagedFlux}.
+     * paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FarmBeatsInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1025,16 +1021,17 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Lists the FarmBeats instances for a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param maxPageSize Maximum number of items needed (inclusive). Minimum = 10, Maximum = 1000, Default value = 50.
+     * @param maxPageSize Maximum number of items needed (inclusive).
+     * Minimum = 10, Maximum = 1000, Default value = 50.
      * @param skipToken Continuation token for getting next set of results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged response contains list of requested objects and a URL link to get the next set of results as
-     *     paginated response with {@link PagedFlux}.
+     * paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FarmBeatsInner> listByResourceGroupAsync(String resourceGroupName, Integer maxPageSize,
@@ -1046,13 +1043,13 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Lists the FarmBeats instances for a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged response contains list of requested objects and a URL link to get the next set of results as
-     *     paginated response with {@link PagedIterable}.
+     * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FarmBeatsInner> listByResourceGroup(String resourceGroupName) {
@@ -1063,16 +1060,17 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Lists the FarmBeats instances for a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param maxPageSize Maximum number of items needed (inclusive). Minimum = 10, Maximum = 1000, Default value = 50.
+     * @param maxPageSize Maximum number of items needed (inclusive).
+     * Minimum = 10, Maximum = 1000, Default value = 50.
      * @param skipToken Continuation token for getting next set of results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged response contains list of requested objects and a URL link to get the next set of results as
-     *     paginated response with {@link PagedIterable}.
+     * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FarmBeatsInner> listByResourceGroup(String resourceGroupName, Integer maxPageSize,
@@ -1081,154 +1079,14 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
     }
 
     /**
-     * Get operationResults for a FarmBeats resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param farmBeatsResourceName FarmBeats resource name.
-     * @param operationResultsId The operation results id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operationResults for a FarmBeats resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ArmAsyncOperationInner>> getOperationResultWithResponseAsync(String resourceGroupName,
-        String farmBeatsResourceName, String operationResultsId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (farmBeatsResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter farmBeatsResourceName is required and cannot be null."));
-        }
-        if (operationResultsId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter operationResultsId is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.getOperationResult(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), resourceGroupName, farmBeatsResourceName, this.client.getApiVersion(),
-                operationResultsId, accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get operationResults for a FarmBeats resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param farmBeatsResourceName FarmBeats resource name.
-     * @param operationResultsId The operation results id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operationResults for a FarmBeats resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ArmAsyncOperationInner>> getOperationResultWithResponseAsync(String resourceGroupName,
-        String farmBeatsResourceName, String operationResultsId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (farmBeatsResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter farmBeatsResourceName is required and cannot be null."));
-        }
-        if (operationResultsId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter operationResultsId is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getOperationResult(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            farmBeatsResourceName, this.client.getApiVersion(), operationResultsId, accept, context);
-    }
-
-    /**
-     * Get operationResults for a FarmBeats resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param farmBeatsResourceName FarmBeats resource name.
-     * @param operationResultsId The operation results id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operationResults for a FarmBeats resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ArmAsyncOperationInner> getOperationResultAsync(String resourceGroupName, String farmBeatsResourceName,
-        String operationResultsId) {
-        return getOperationResultWithResponseAsync(resourceGroupName, farmBeatsResourceName, operationResultsId)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get operationResults for a FarmBeats resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param farmBeatsResourceName FarmBeats resource name.
-     * @param operationResultsId The operation results id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operationResults for a FarmBeats resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArmAsyncOperationInner getOperationResult(String resourceGroupName, String farmBeatsResourceName,
-        String operationResultsId) {
-        return getOperationResultAsync(resourceGroupName, farmBeatsResourceName, operationResultsId).block();
-    }
-
-    /**
-     * Get operationResults for a FarmBeats resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param farmBeatsResourceName FarmBeats resource name.
-     * @param operationResultsId The operation results id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operationResults for a FarmBeats resource along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ArmAsyncOperationInner> getOperationResultWithResponse(String resourceGroupName,
-        String farmBeatsResourceName, String operationResultsId, Context context) {
-        return getOperationResultWithResponseAsync(resourceGroupName, farmBeatsResourceName, operationResultsId,
-            context).block();
-    }
-
-    /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged response contains list of requested objects and a URL link to get the next set of results along
-     *     with {@link PagedResponse} on successful completion of {@link Mono}.
+     * with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FarmBeatsInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1250,15 +1108,14 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged response contains list of requested objects and a URL link to get the next set of results along
-     *     with {@link PagedResponse} on successful completion of {@link Mono}.
+     * with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FarmBeatsInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
@@ -1279,14 +1136,13 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged response contains list of requested objects and a URL link to get the next set of results along
-     *     with {@link PagedResponse} on successful completion of {@link Mono}.
+     * with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FarmBeatsInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1308,15 +1164,14 @@ public final class FarmBeatsModelsClientImpl implements FarmBeatsModelsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged response contains list of requested objects and a URL link to get the next set of results along
-     *     with {@link PagedResponse} on successful completion of {@link Mono}.
+     * with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FarmBeatsInner>> listByResourceGroupNextSinglePageAsync(String nextLink,

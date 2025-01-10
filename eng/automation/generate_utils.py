@@ -389,9 +389,7 @@ def generate_typespec_project(
             logging.info("SDK folder: " + sdk_folder)
             if sdk_folder:
                 # parse service and module
-                match = re.match(r"sdk[\\/](.*)[\\/](.*)", sdk_folder)
-                service = match.group(1)
-                module = match.group(2)
+                module, service = parse_service_module(sdk_folder)
                 # check require_sdk_integration
                 cmd = ["git", "add", "."]
                 check_call(cmd, sdk_root)
@@ -418,8 +416,25 @@ def generate_typespec_project(
                 succeeded = True
     except subprocess.CalledProcessError as error:
         logging.error(f"[GENERATE] Code generation failed. tsp-client init fails: {error}")
+        try:
+            sdk_folder = find_sdk_folder(sdk_root)
+            logging.info("SDK folder: " + sdk_folder)
+            if sdk_folder:
+                # parse service and module
+                module, service = parse_service_module(sdk_folder)
+            else:
+                logging.info(f"[GENERATE] Code generation failed. No sdk folder found.")
+        except Exception as e:
+            logging.error(f"[GENERATE] Code generation failed. Finding sdk folder fails: {e}")
 
     return succeeded, require_sdk_integration, sdk_folder, service, module
+
+
+def parse_service_module(sdk_folder: str) -> Tuple:
+    match = re.match(r"sdk[\\/](.*)[\\/](.*)", sdk_folder)
+    service = match.group(1)
+    module = match.group(2)
+    return module, service
 
 
 def check_call(cmd: List[str], work_dir: str, shell: bool = False):

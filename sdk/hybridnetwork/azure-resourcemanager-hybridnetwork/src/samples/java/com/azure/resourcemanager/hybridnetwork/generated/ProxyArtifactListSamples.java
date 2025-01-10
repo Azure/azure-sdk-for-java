@@ -20,7 +20,7 @@ public final class ProxyArtifactListSamples {
      */
     public static void
         listArtifactsUnderAnArtifactStore(com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.proxyArtifacts().list("TestResourceGroup", "TestPublisher", "TestArtifactStoreName",
-            com.azure.core.util.Context.NONE);
+        manager.proxyArtifacts()
+            .list("TestResourceGroup", "TestPublisher", "TestArtifactStoreName", com.azure.core.util.Context.NONE);
     }
 }

@@ -9,6 +9,10 @@ import java.util.Map;
 /** An interface representing a model's ability to reference load balancing rules. */
 @Fluent()
 public interface HasLoadBalancingRules {
-    /** @return the associated load balancing rules from this load balancer, indexed by their names */
+    /**
+     * Gets the associated load balancing rules from this load balancer.
+     *
+     * @return the associated load balancing rules from this load balancer, indexed by their names
+     */
     Map<String, LoadBalancingRule> loadBalancingRules();
 }

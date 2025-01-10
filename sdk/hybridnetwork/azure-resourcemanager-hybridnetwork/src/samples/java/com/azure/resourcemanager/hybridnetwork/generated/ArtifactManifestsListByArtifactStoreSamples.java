@@ -20,7 +20,7 @@ public final class ArtifactManifestsListByArtifactStoreSamples {
      */
     public static void
         getArtifactManifestListResource(com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.artifactManifests().listByArtifactStore("rg", "TestPublisher", "TestArtifactStore",
-            com.azure.core.util.Context.NONE);
+        manager.artifactManifests()
+            .listByArtifactStore("rg", "TestPublisher", "TestArtifactStore", com.azure.core.util.Context.NONE);
     }
 }

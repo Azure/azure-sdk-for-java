@@ -5,30 +5,32 @@
 package com.azure.resourcemanager.frontdoor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.frontdoor.models.KeyVaultCertificateSourceParametersVault;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Parameters required for bring-your-own-certification via Key Vault.
  */
 @Fluent
-public final class KeyVaultCertificateSourceParameters {
+public final class KeyVaultCertificateSourceParameters
+    implements JsonSerializable<KeyVaultCertificateSourceParameters> {
     /*
      * The Key Vault containing the SSL certificate
      */
-    @JsonProperty(value = "vault")
     private KeyVaultCertificateSourceParametersVault vault;
 
     /*
      * The name of the Key Vault secret representing the full certificate PFX
      */
-    @JsonProperty(value = "secretName")
     private String secretName;
 
     /*
      * The version of the Key Vault secret representing the full certificate PFX
      */
-    @JsonProperty(value = "secretVersion")
     private String secretVersion;
 
     /**
@@ -106,5 +108,49 @@ public final class KeyVaultCertificateSourceParameters {
         if (vault() != null) {
             vault().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("vault", this.vault);
+        jsonWriter.writeStringField("secretName", this.secretName);
+        jsonWriter.writeStringField("secretVersion", this.secretVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyVaultCertificateSourceParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyVaultCertificateSourceParameters if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KeyVaultCertificateSourceParameters.
+     */
+    public static KeyVaultCertificateSourceParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyVaultCertificateSourceParameters deserializedKeyVaultCertificateSourceParameters
+                = new KeyVaultCertificateSourceParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vault".equals(fieldName)) {
+                    deserializedKeyVaultCertificateSourceParameters.vault
+                        = KeyVaultCertificateSourceParametersVault.fromJson(reader);
+                } else if ("secretName".equals(fieldName)) {
+                    deserializedKeyVaultCertificateSourceParameters.secretName = reader.getString();
+                } else if ("secretVersion".equals(fieldName)) {
+                    deserializedKeyVaultCertificateSourceParameters.secretVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKeyVaultCertificateSourceParameters;
+        });
     }
 }

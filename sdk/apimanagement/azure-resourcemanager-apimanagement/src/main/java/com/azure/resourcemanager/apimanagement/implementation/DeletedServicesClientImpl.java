@@ -36,17 +36,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DeletedServicesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DeletedServicesClient.
+ */
 public final class DeletedServicesClientImpl implements DeletedServicesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DeletedServicesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of DeletedServicesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DeletedServicesClientImpl(ApiManagementClientImpl client) {
@@ -99,11 +105,11 @@ public final class DeletedServicesClientImpl implements DeletedServicesClient {
 
     /**
      * Lists all soft-deleted services available for undelete for the given subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged deleted API Management Services List Representation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeletedServiceContractInner>> listSinglePageAsync() {
@@ -126,13 +132,13 @@ public final class DeletedServicesClientImpl implements DeletedServicesClient {
 
     /**
      * Lists all soft-deleted services available for undelete for the given subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged deleted API Management Services List Representation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeletedServiceContractInner>> listSinglePageAsync(Context context) {
@@ -155,7 +161,7 @@ public final class DeletedServicesClientImpl implements DeletedServicesClient {
 
     /**
      * Lists all soft-deleted services available for undelete for the given subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged deleted API Management Services List Representation as paginated response with {@link PagedFlux}.
@@ -168,7 +174,7 @@ public final class DeletedServicesClientImpl implements DeletedServicesClient {
 
     /**
      * Lists all soft-deleted services available for undelete for the given subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -183,11 +189,11 @@ public final class DeletedServicesClientImpl implements DeletedServicesClient {
 
     /**
      * Lists all soft-deleted services available for undelete for the given subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged deleted API Management Services List Representation as paginated response with {@link
-     *     PagedIterable}.
+     * @return paged deleted API Management Services List Representation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedServiceContractInner> list() {
@@ -196,13 +202,13 @@ public final class DeletedServicesClientImpl implements DeletedServicesClient {
 
     /**
      * Lists all soft-deleted services available for undelete for the given subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged deleted API Management Services List Representation as paginated response with {@link
-     *     PagedIterable}.
+     * @return paged deleted API Management Services List Representation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedServiceContractInner> list(Context context) {
@@ -211,14 +217,14 @@ public final class DeletedServicesClientImpl implements DeletedServicesClient {
 
     /**
      * Get soft-deleted Api Management Service by name.
-     *
+     * 
      * @param serviceName The name of the API Management service.
      * @param location The location of the deleted API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return soft-deleted Api Management Service by name along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DeletedServiceContractInner>> getByNameWithResponseAsync(String serviceName,
@@ -246,7 +252,7 @@ public final class DeletedServicesClientImpl implements DeletedServicesClient {
 
     /**
      * Get soft-deleted Api Management Service by name.
-     *
+     * 
      * @param serviceName The name of the API Management service.
      * @param location The location of the deleted API Management service.
      * @param context The context to associate with this operation.
@@ -254,7 +260,7 @@ public final class DeletedServicesClientImpl implements DeletedServicesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return soft-deleted Api Management Service by name along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DeletedServiceContractInner>> getByNameWithResponseAsync(String serviceName, String location,
@@ -281,7 +287,7 @@ public final class DeletedServicesClientImpl implements DeletedServicesClient {
 
     /**
      * Get soft-deleted Api Management Service by name.
-     *
+     * 
      * @param serviceName The name of the API Management service.
      * @param location The location of the deleted API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -296,7 +302,7 @@ public final class DeletedServicesClientImpl implements DeletedServicesClient {
 
     /**
      * Get soft-deleted Api Management Service by name.
-     *
+     * 
      * @param serviceName The name of the API Management service.
      * @param location The location of the deleted API Management service.
      * @param context The context to associate with this operation.
@@ -313,7 +319,7 @@ public final class DeletedServicesClientImpl implements DeletedServicesClient {
 
     /**
      * Get soft-deleted Api Management Service by name.
-     *
+     * 
      * @param serviceName The name of the API Management service.
      * @param location The location of the deleted API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -328,7 +334,7 @@ public final class DeletedServicesClientImpl implements DeletedServicesClient {
 
     /**
      * Purges Api Management Service (deletes it with no option to undelete).
-     *
+     * 
      * @param serviceName The name of the API Management service.
      * @param location The location of the deleted API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -361,7 +367,7 @@ public final class DeletedServicesClientImpl implements DeletedServicesClient {
 
     /**
      * Purges Api Management Service (deletes it with no option to undelete).
-     *
+     * 
      * @param serviceName The name of the API Management service.
      * @param location The location of the deleted API Management service.
      * @param context The context to associate with this operation.
@@ -395,7 +401,7 @@ public final class DeletedServicesClientImpl implements DeletedServicesClient {
 
     /**
      * Purges Api Management Service (deletes it with no option to undelete).
-     *
+     * 
      * @param serviceName The name of the API Management service.
      * @param location The location of the deleted API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -414,7 +420,7 @@ public final class DeletedServicesClientImpl implements DeletedServicesClient {
 
     /**
      * Purges Api Management Service (deletes it with no option to undelete).
-     *
+     * 
      * @param serviceName The name of the API Management service.
      * @param location The location of the deleted API Management service.
      * @param context The context to associate with this operation.
@@ -435,7 +441,7 @@ public final class DeletedServicesClientImpl implements DeletedServicesClient {
 
     /**
      * Purges Api Management Service (deletes it with no option to undelete).
-     *
+     * 
      * @param serviceName The name of the API Management service.
      * @param location The location of the deleted API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -451,7 +457,7 @@ public final class DeletedServicesClientImpl implements DeletedServicesClient {
 
     /**
      * Purges Api Management Service (deletes it with no option to undelete).
-     *
+     * 
      * @param serviceName The name of the API Management service.
      * @param location The location of the deleted API Management service.
      * @param context The context to associate with this operation.
@@ -468,7 +474,7 @@ public final class DeletedServicesClientImpl implements DeletedServicesClient {
 
     /**
      * Purges Api Management Service (deletes it with no option to undelete).
-     *
+     * 
      * @param serviceName The name of the API Management service.
      * @param location The location of the deleted API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -483,7 +489,7 @@ public final class DeletedServicesClientImpl implements DeletedServicesClient {
 
     /**
      * Purges Api Management Service (deletes it with no option to undelete).
-     *
+     * 
      * @param serviceName The name of the API Management service.
      * @param location The location of the deleted API Management service.
      * @param context The context to associate with this operation.
@@ -499,7 +505,7 @@ public final class DeletedServicesClientImpl implements DeletedServicesClient {
 
     /**
      * Purges Api Management Service (deletes it with no option to undelete).
-     *
+     * 
      * @param serviceName The name of the API Management service.
      * @param location The location of the deleted API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -514,7 +520,7 @@ public final class DeletedServicesClientImpl implements DeletedServicesClient {
 
     /**
      * Purges Api Management Service (deletes it with no option to undelete).
-     *
+     * 
      * @param serviceName The name of the API Management service.
      * @param location The location of the deleted API Management service.
      * @param context The context to associate with this operation.
@@ -530,14 +536,13 @@ public final class DeletedServicesClientImpl implements DeletedServicesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged deleted API Management Services List Representation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeletedServiceContractInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -559,15 +564,14 @@ public final class DeletedServicesClientImpl implements DeletedServicesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged deleted API Management Services List Representation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeletedServiceContractInner>> listBySubscriptionNextSinglePageAsync(String nextLink,

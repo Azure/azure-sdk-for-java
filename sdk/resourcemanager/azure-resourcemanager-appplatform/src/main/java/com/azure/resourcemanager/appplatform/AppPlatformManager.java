@@ -84,7 +84,11 @@ public final class AppPlatformManager extends Manager<AppPlatformManagementClien
                 .buildClient());
     }
 
-    /** @return Entry point for Spring Service management API. */
+    /**
+     * Gets the entry point for Spring Service management API.
+     *
+     * @return Entry point for Spring Service management API.
+     */
     public SpringServices springServices() {
         if (springServices == null) {
             springServices = new SpringServicesImpl(this);

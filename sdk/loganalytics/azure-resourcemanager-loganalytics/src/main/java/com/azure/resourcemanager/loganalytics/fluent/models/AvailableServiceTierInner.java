@@ -5,61 +5,62 @@
 package com.azure.resourcemanager.loganalytics.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.loganalytics.models.SkuNameEnum;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Service Tier details. */
+/**
+ * Service Tier details.
+ */
 @Immutable
-public final class AvailableServiceTierInner {
+public final class AvailableServiceTierInner implements JsonSerializable<AvailableServiceTierInner> {
     /*
      * The name of the Service Tier.
      */
-    @JsonProperty(value = "serviceTier", access = JsonProperty.Access.WRITE_ONLY)
     private SkuNameEnum serviceTier;
 
     /*
      * True if the Service Tier is enabled for the workspace.
      */
-    @JsonProperty(value = "enabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean enabled;
 
     /*
      * The minimum retention for the Service Tier, in days.
      */
-    @JsonProperty(value = "minimumRetention", access = JsonProperty.Access.WRITE_ONLY)
     private Long minimumRetention;
 
     /*
      * The maximum retention for the Service Tier, in days.
      */
-    @JsonProperty(value = "maximumRetention", access = JsonProperty.Access.WRITE_ONLY)
     private Long maximumRetention;
 
     /*
      * The default retention for the Service Tier, in days.
      */
-    @JsonProperty(value = "defaultRetention", access = JsonProperty.Access.WRITE_ONLY)
     private Long defaultRetention;
 
     /*
      * The capacity reservation level in GB per day. Returned for the Capacity Reservation Service Tier.
      */
-    @JsonProperty(value = "capacityReservationLevel", access = JsonProperty.Access.WRITE_ONLY)
     private Long capacityReservationLevel;
 
     /*
      * Time when the sku was last updated for the workspace. Returned for the Capacity Reservation Service Tier.
      */
-    @JsonProperty(value = "lastSkuUpdate", access = JsonProperty.Access.WRITE_ONLY)
     private String lastSkuUpdate;
 
-    /** Creates an instance of AvailableServiceTierInner class. */
+    /**
+     * Creates an instance of AvailableServiceTierInner class.
+     */
     public AvailableServiceTierInner() {
     }
 
     /**
      * Get the serviceTier property: The name of the Service Tier.
-     *
+     * 
      * @return the serviceTier value.
      */
     public SkuNameEnum serviceTier() {
@@ -68,7 +69,7 @@ public final class AvailableServiceTierInner {
 
     /**
      * Get the enabled property: True if the Service Tier is enabled for the workspace.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -77,7 +78,7 @@ public final class AvailableServiceTierInner {
 
     /**
      * Get the minimumRetention property: The minimum retention for the Service Tier, in days.
-     *
+     * 
      * @return the minimumRetention value.
      */
     public Long minimumRetention() {
@@ -86,7 +87,7 @@ public final class AvailableServiceTierInner {
 
     /**
      * Get the maximumRetention property: The maximum retention for the Service Tier, in days.
-     *
+     * 
      * @return the maximumRetention value.
      */
     public Long maximumRetention() {
@@ -95,7 +96,7 @@ public final class AvailableServiceTierInner {
 
     /**
      * Get the defaultRetention property: The default retention for the Service Tier, in days.
-     *
+     * 
      * @return the defaultRetention value.
      */
     public Long defaultRetention() {
@@ -105,7 +106,7 @@ public final class AvailableServiceTierInner {
     /**
      * Get the capacityReservationLevel property: The capacity reservation level in GB per day. Returned for the
      * Capacity Reservation Service Tier.
-     *
+     * 
      * @return the capacityReservationLevel value.
      */
     public Long capacityReservationLevel() {
@@ -115,7 +116,7 @@ public final class AvailableServiceTierInner {
     /**
      * Get the lastSkuUpdate property: Time when the sku was last updated for the workspace. Returned for the Capacity
      * Reservation Service Tier.
-     *
+     * 
      * @return the lastSkuUpdate value.
      */
     public String lastSkuUpdate() {
@@ -124,9 +125,57 @@ public final class AvailableServiceTierInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailableServiceTierInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailableServiceTierInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AvailableServiceTierInner.
+     */
+    public static AvailableServiceTierInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailableServiceTierInner deserializedAvailableServiceTierInner = new AvailableServiceTierInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceTier".equals(fieldName)) {
+                    deserializedAvailableServiceTierInner.serviceTier = SkuNameEnum.fromString(reader.getString());
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedAvailableServiceTierInner.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("minimumRetention".equals(fieldName)) {
+                    deserializedAvailableServiceTierInner.minimumRetention = reader.getNullable(JsonReader::getLong);
+                } else if ("maximumRetention".equals(fieldName)) {
+                    deserializedAvailableServiceTierInner.maximumRetention = reader.getNullable(JsonReader::getLong);
+                } else if ("defaultRetention".equals(fieldName)) {
+                    deserializedAvailableServiceTierInner.defaultRetention = reader.getNullable(JsonReader::getLong);
+                } else if ("capacityReservationLevel".equals(fieldName)) {
+                    deserializedAvailableServiceTierInner.capacityReservationLevel
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("lastSkuUpdate".equals(fieldName)) {
+                    deserializedAvailableServiceTierInner.lastSkuUpdate = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailableServiceTierInner;
+        });
     }
 }

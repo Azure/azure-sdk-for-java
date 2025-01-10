@@ -30,14 +30,16 @@ public final class SingleSignOnConfigurationsImpl implements SingleSignOnConfigu
     public PagedIterable<DatadogSingleSignOnResource> list(String resourceGroupName, String monitorName) {
         PagedIterable<DatadogSingleSignOnResourceInner> inner
             = this.serviceClient().list(resourceGroupName, monitorName);
-        return Utils.mapPage(inner, inner1 -> new DatadogSingleSignOnResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new DatadogSingleSignOnResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DatadogSingleSignOnResource> list(String resourceGroupName, String monitorName,
         Context context) {
         PagedIterable<DatadogSingleSignOnResourceInner> inner
             = this.serviceClient().list(resourceGroupName, monitorName, context);
-        return Utils.mapPage(inner, inner1 -> new DatadogSingleSignOnResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new DatadogSingleSignOnResourceImpl(inner1, this.manager()));
     }
 
     public Response<DatadogSingleSignOnResource> getWithResponse(String resourceGroupName, String monitorName,
@@ -63,17 +65,17 @@ public final class SingleSignOnConfigurationsImpl implements SingleSignOnConfigu
     }
 
     public DatadogSingleSignOnResource getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String monitorName = Utils.getValueFromIdByName(id, "monitors");
+        String monitorName = ResourceManagerUtils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
-        String configurationName = Utils.getValueFromIdByName(id, "singleSignOnConfigurations");
+        String configurationName = ResourceManagerUtils.getValueFromIdByName(id, "singleSignOnConfigurations");
         if (configurationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'singleSignOnConfigurations'.", id)));
@@ -82,17 +84,17 @@ public final class SingleSignOnConfigurationsImpl implements SingleSignOnConfigu
     }
 
     public Response<DatadogSingleSignOnResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String monitorName = Utils.getValueFromIdByName(id, "monitors");
+        String monitorName = ResourceManagerUtils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
-        String configurationName = Utils.getValueFromIdByName(id, "singleSignOnConfigurations");
+        String configurationName = ResourceManagerUtils.getValueFromIdByName(id, "singleSignOnConfigurations");
         if (configurationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'singleSignOnConfigurations'.", id)));

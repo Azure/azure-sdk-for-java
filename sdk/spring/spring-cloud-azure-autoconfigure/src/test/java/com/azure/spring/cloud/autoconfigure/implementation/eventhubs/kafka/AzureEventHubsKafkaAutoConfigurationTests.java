@@ -34,7 +34,8 @@ class AzureEventHubsKafkaAutoConfigurationTests {
         "Endpoint=sb://%s.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key";
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AzureEventHubsKafkaAutoConfiguration.class, KafkaAutoConfiguration.class));
+            .withConfiguration(AutoConfigurations.of(AzureEventHubsKafkaAutoConfiguration.class,
+                KafkaPropertiesConfiguration.class, KafkaAutoConfiguration.class));
     @Test
     void shouldNotConfigureWhenAzureEventHubsKafkaDisabled() {
         this.contextRunner

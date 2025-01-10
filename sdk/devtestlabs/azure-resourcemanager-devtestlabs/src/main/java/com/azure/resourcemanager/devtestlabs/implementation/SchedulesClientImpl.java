@@ -41,17 +41,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SchedulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SchedulesClient.
+ */
 public final class SchedulesClientImpl implements SchedulesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SchedulesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DevTestLabsClientImpl client;
 
     /**
      * Initializes an instance of SchedulesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SchedulesClientImpl(DevTestLabsClientImpl client) {
@@ -157,7 +163,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * List schedules in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=status)'.
@@ -167,8 +173,8 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScheduleInner>> listSinglePageAsync(String resourceGroupName, String labName,
@@ -199,7 +205,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * List schedules in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=status)'.
@@ -210,8 +216,8 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScheduleInner>> listSinglePageAsync(String resourceGroupName, String labName,
@@ -242,7 +248,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * List schedules in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=status)'.
@@ -263,7 +269,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * List schedules in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -283,7 +289,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * List schedules in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=status)'.
@@ -306,7 +312,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * List schedules in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -325,7 +331,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * List schedules in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=status)'.
@@ -346,7 +352,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Get schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -386,7 +392,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Get schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -426,7 +432,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Get schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -444,7 +450,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Get schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -463,7 +469,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Get schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -480,7 +486,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Create or replace an existing schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -525,7 +531,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Create or replace an existing schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -570,7 +576,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Create or replace an existing schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -589,7 +595,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Create or replace an existing schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -608,7 +614,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Create or replace an existing schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -625,7 +631,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Delete schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -663,7 +669,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Delete schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -702,7 +708,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Delete schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -718,7 +724,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Delete schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -735,7 +741,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Delete schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -750,7 +756,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Allows modifying tags of schedules. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -795,7 +801,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Allows modifying tags of schedules. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -840,7 +846,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Allows modifying tags of schedules. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -859,7 +865,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Allows modifying tags of schedules. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -878,7 +884,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Allows modifying tags of schedules. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -895,7 +901,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -934,7 +940,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -973,7 +979,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -992,7 +998,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -1013,7 +1019,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -1029,7 +1035,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -1047,7 +1053,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -1064,7 +1070,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -1082,7 +1088,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -1097,7 +1103,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -1113,15 +1119,15 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Lists all applicable schedules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScheduleInner>> listApplicableSinglePageAsync(String resourceGroupName, String labName,
@@ -1155,7 +1161,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Lists all applicable schedules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -1163,8 +1169,8 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScheduleInner>> listApplicableSinglePageAsync(String resourceGroupName, String labName,
@@ -1198,7 +1204,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Lists all applicable schedules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -1215,7 +1221,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Lists all applicable schedules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -1234,7 +1240,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Lists all applicable schedules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -1250,7 +1256,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Lists all applicable schedules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -1268,14 +1274,13 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScheduleInner>> listNextSinglePageAsync(String nextLink) {
@@ -1295,15 +1300,14 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScheduleInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1323,14 +1327,13 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScheduleInner>> listApplicableNextSinglePageAsync(String nextLink) {
@@ -1351,15 +1354,14 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScheduleInner>> listApplicableNextSinglePageAsync(String nextLink, Context context) {

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,16 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2025-01-02)
+
+- Azure Resource Manager AzureArcData client library for Java. This package contains Microsoft Azure SDK for AzureArcData Management SDK. The AzureArcData management API provides a RESTful set of web APIs to manage Azure Data Services on Azure Arc Resources. Package tag package-2021-08-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.SqlManagedInstanceSku` was modified
+
+* `withName(java.lang.String)` was removed
 
 ## 1.0.0-beta.4 (2024-10-14)
 

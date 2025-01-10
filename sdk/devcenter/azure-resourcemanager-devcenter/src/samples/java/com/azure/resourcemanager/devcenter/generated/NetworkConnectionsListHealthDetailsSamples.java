@@ -9,7 +9,8 @@ package com.azure.resourcemanager.devcenter.generated;
  */
 public final class NetworkConnectionsListHealthDetailsSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/NetworkConnections_ListHealthDetails.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/
+     * NetworkConnections_ListHealthDetails.json
      */
     /**
      * Sample code: NetworkConnections_ListHealthDetails.

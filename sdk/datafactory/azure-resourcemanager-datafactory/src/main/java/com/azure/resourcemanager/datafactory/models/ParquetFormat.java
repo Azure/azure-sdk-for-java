@@ -63,7 +63,6 @@ public final class ParquetFormat extends DatasetStorageFormat {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

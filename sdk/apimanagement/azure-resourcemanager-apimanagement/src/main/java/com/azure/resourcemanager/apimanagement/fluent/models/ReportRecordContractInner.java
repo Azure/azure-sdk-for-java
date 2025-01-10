@@ -5,181 +5,164 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Report data. */
+/**
+ * Report data.
+ */
 @Fluent
-public final class ReportRecordContractInner {
+public final class ReportRecordContractInner implements JsonSerializable<ReportRecordContractInner> {
     /*
      * Name depending on report endpoint specifies product, API, operation or developer name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Start of aggregation period. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by
      * the ISO 8601 standard.
-     *
      */
-    @JsonProperty(value = "timestamp")
     private OffsetDateTime timestamp;
 
     /*
-     * Length of aggregation period.  Interval must be multiple of 15 minutes and may not be zero. The value should be
-     * in ISO 8601 format (http://en.wikipedia.org/wiki/ISO_8601#Durations).
+     * Length of aggregation period. Interval must be multiple of 15 minutes and may not be zero. The value should be in
+     * ISO 8601 format (http://en.wikipedia.org/wiki/ISO_8601#Durations).
      */
-    @JsonProperty(value = "interval")
     private String interval;
 
     /*
      * Country to which this record data is related.
      */
-    @JsonProperty(value = "country")
     private String country;
 
     /*
      * Country region to which this record data is related.
      */
-    @JsonProperty(value = "region")
     private String region;
 
     /*
      * Zip code to which this record data is related.
      */
-    @JsonProperty(value = "zip")
     private String zip;
 
     /*
      * User identifier path. /users/{userId}
      */
-    @JsonProperty(value = "userId", access = JsonProperty.Access.WRITE_ONLY)
     private String userId;
 
     /*
      * Product identifier path. /products/{productId}
      */
-    @JsonProperty(value = "productId", access = JsonProperty.Access.WRITE_ONLY)
     private String productId;
 
     /*
      * API identifier path. /apis/{apiId}
      */
-    @JsonProperty(value = "apiId")
     private String apiId;
 
     /*
      * Operation identifier path. /apis/{apiId}/operations/{operationId}
      */
-    @JsonProperty(value = "operationId")
     private String operationId;
 
     /*
      * API region identifier.
      */
-    @JsonProperty(value = "apiRegion")
     private String apiRegion;
 
     /*
      * Subscription identifier path. /subscriptions/{subscriptionId}
      */
-    @JsonProperty(value = "subscriptionId")
     private String subscriptionId;
 
     /*
      * Number of successful calls. This includes calls returning HttpStatusCode <= 301 and HttpStatusCode.NotModified
      * and HttpStatusCode.TemporaryRedirect
      */
-    @JsonProperty(value = "callCountSuccess")
     private Integer callCountSuccess;
 
     /*
-     * Number of calls blocked due to invalid credentials. This includes calls returning HttpStatusCode.Unauthorized
-     * and HttpStatusCode.Forbidden and HttpStatusCode.TooManyRequests
+     * Number of calls blocked due to invalid credentials. This includes calls returning HttpStatusCode.Unauthorized and
+     * HttpStatusCode.Forbidden and HttpStatusCode.TooManyRequests
      */
-    @JsonProperty(value = "callCountBlocked")
     private Integer callCountBlocked;
 
     /*
      * Number of calls failed due to gateway or backend errors. This includes calls returning
      * HttpStatusCode.BadRequest(400) and any Code between HttpStatusCode.InternalServerError (500) and 600
      */
-    @JsonProperty(value = "callCountFailed")
     private Integer callCountFailed;
 
     /*
      * Number of other calls.
      */
-    @JsonProperty(value = "callCountOther")
     private Integer callCountOther;
 
     /*
      * Total number of calls.
      */
-    @JsonProperty(value = "callCountTotal")
     private Integer callCountTotal;
 
     /*
      * Bandwidth consumed.
      */
-    @JsonProperty(value = "bandwidth")
     private Long bandwidth;
 
     /*
      * Number of times when content was served from cache policy.
      */
-    @JsonProperty(value = "cacheHitCount")
     private Integer cacheHitCount;
 
     /*
      * Number of times content was fetched from backend.
      */
-    @JsonProperty(value = "cacheMissCount")
     private Integer cacheMissCount;
 
     /*
      * Average time it took to process request.
      */
-    @JsonProperty(value = "apiTimeAvg")
     private Double apiTimeAvg;
 
     /*
      * Minimum time it took to process request.
      */
-    @JsonProperty(value = "apiTimeMin")
     private Double apiTimeMin;
 
     /*
      * Maximum time it took to process request.
      */
-    @JsonProperty(value = "apiTimeMax")
     private Double apiTimeMax;
 
     /*
      * Average time it took to process request on backend.
      */
-    @JsonProperty(value = "serviceTimeAvg")
     private Double serviceTimeAvg;
 
     /*
      * Minimum time it took to process request on backend.
      */
-    @JsonProperty(value = "serviceTimeMin")
     private Double serviceTimeMin;
 
     /*
      * Maximum time it took to process request on backend.
      */
-    @JsonProperty(value = "serviceTimeMax")
     private Double serviceTimeMax;
 
-    /** Creates an instance of ReportRecordContractInner class. */
+    /**
+     * Creates an instance of ReportRecordContractInner class.
+     */
     public ReportRecordContractInner() {
     }
 
     /**
      * Get the name property: Name depending on report endpoint specifies product, API, operation or developer name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -188,7 +171,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Set the name property: Name depending on report endpoint specifies product, API, operation or developer name.
-     *
+     * 
      * @param name the name value to set.
      * @return the ReportRecordContractInner object itself.
      */
@@ -200,7 +183,7 @@ public final class ReportRecordContractInner {
     /**
      * Get the timestamp property: Start of aggregation period. The date conforms to the following format:
      * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -210,7 +193,7 @@ public final class ReportRecordContractInner {
     /**
      * Set the timestamp property: Start of aggregation period. The date conforms to the following format:
      * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @param timestamp the timestamp value to set.
      * @return the ReportRecordContractInner object itself.
      */
@@ -222,7 +205,7 @@ public final class ReportRecordContractInner {
     /**
      * Get the interval property: Length of aggregation period. Interval must be multiple of 15 minutes and may not be
      * zero. The value should be in ISO 8601 format (http://en.wikipedia.org/wiki/ISO_8601#Durations).
-     *
+     * 
      * @return the interval value.
      */
     public String interval() {
@@ -232,7 +215,7 @@ public final class ReportRecordContractInner {
     /**
      * Set the interval property: Length of aggregation period. Interval must be multiple of 15 minutes and may not be
      * zero. The value should be in ISO 8601 format (http://en.wikipedia.org/wiki/ISO_8601#Durations).
-     *
+     * 
      * @param interval the interval value to set.
      * @return the ReportRecordContractInner object itself.
      */
@@ -243,7 +226,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Get the country property: Country to which this record data is related.
-     *
+     * 
      * @return the country value.
      */
     public String country() {
@@ -252,7 +235,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Set the country property: Country to which this record data is related.
-     *
+     * 
      * @param country the country value to set.
      * @return the ReportRecordContractInner object itself.
      */
@@ -263,7 +246,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Get the region property: Country region to which this record data is related.
-     *
+     * 
      * @return the region value.
      */
     public String region() {
@@ -272,7 +255,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Set the region property: Country region to which this record data is related.
-     *
+     * 
      * @param region the region value to set.
      * @return the ReportRecordContractInner object itself.
      */
@@ -283,7 +266,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Get the zip property: Zip code to which this record data is related.
-     *
+     * 
      * @return the zip value.
      */
     public String zip() {
@@ -292,7 +275,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Set the zip property: Zip code to which this record data is related.
-     *
+     * 
      * @param zip the zip value to set.
      * @return the ReportRecordContractInner object itself.
      */
@@ -303,7 +286,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Get the userId property: User identifier path. /users/{userId}.
-     *
+     * 
      * @return the userId value.
      */
     public String userId() {
@@ -312,7 +295,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Get the productId property: Product identifier path. /products/{productId}.
-     *
+     * 
      * @return the productId value.
      */
     public String productId() {
@@ -321,7 +304,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Get the apiId property: API identifier path. /apis/{apiId}.
-     *
+     * 
      * @return the apiId value.
      */
     public String apiId() {
@@ -330,7 +313,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Set the apiId property: API identifier path. /apis/{apiId}.
-     *
+     * 
      * @param apiId the apiId value to set.
      * @return the ReportRecordContractInner object itself.
      */
@@ -341,7 +324,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Get the operationId property: Operation identifier path. /apis/{apiId}/operations/{operationId}.
-     *
+     * 
      * @return the operationId value.
      */
     public String operationId() {
@@ -350,7 +333,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Set the operationId property: Operation identifier path. /apis/{apiId}/operations/{operationId}.
-     *
+     * 
      * @param operationId the operationId value to set.
      * @return the ReportRecordContractInner object itself.
      */
@@ -361,7 +344,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Get the apiRegion property: API region identifier.
-     *
+     * 
      * @return the apiRegion value.
      */
     public String apiRegion() {
@@ -370,7 +353,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Set the apiRegion property: API region identifier.
-     *
+     * 
      * @param apiRegion the apiRegion value to set.
      * @return the ReportRecordContractInner object itself.
      */
@@ -381,7 +364,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Get the subscriptionId property: Subscription identifier path. /subscriptions/{subscriptionId}.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -390,7 +373,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Set the subscriptionId property: Subscription identifier path. /subscriptions/{subscriptionId}.
-     *
+     * 
      * @param subscriptionId the subscriptionId value to set.
      * @return the ReportRecordContractInner object itself.
      */
@@ -402,7 +385,7 @@ public final class ReportRecordContractInner {
     /**
      * Get the callCountSuccess property: Number of successful calls. This includes calls returning HttpStatusCode &lt;=
      * 301 and HttpStatusCode.NotModified and HttpStatusCode.TemporaryRedirect.
-     *
+     * 
      * @return the callCountSuccess value.
      */
     public Integer callCountSuccess() {
@@ -412,7 +395,7 @@ public final class ReportRecordContractInner {
     /**
      * Set the callCountSuccess property: Number of successful calls. This includes calls returning HttpStatusCode &lt;=
      * 301 and HttpStatusCode.NotModified and HttpStatusCode.TemporaryRedirect.
-     *
+     * 
      * @param callCountSuccess the callCountSuccess value to set.
      * @return the ReportRecordContractInner object itself.
      */
@@ -424,7 +407,7 @@ public final class ReportRecordContractInner {
     /**
      * Get the callCountBlocked property: Number of calls blocked due to invalid credentials. This includes calls
      * returning HttpStatusCode.Unauthorized and HttpStatusCode.Forbidden and HttpStatusCode.TooManyRequests.
-     *
+     * 
      * @return the callCountBlocked value.
      */
     public Integer callCountBlocked() {
@@ -434,7 +417,7 @@ public final class ReportRecordContractInner {
     /**
      * Set the callCountBlocked property: Number of calls blocked due to invalid credentials. This includes calls
      * returning HttpStatusCode.Unauthorized and HttpStatusCode.Forbidden and HttpStatusCode.TooManyRequests.
-     *
+     * 
      * @param callCountBlocked the callCountBlocked value to set.
      * @return the ReportRecordContractInner object itself.
      */
@@ -446,7 +429,7 @@ public final class ReportRecordContractInner {
     /**
      * Get the callCountFailed property: Number of calls failed due to gateway or backend errors. This includes calls
      * returning HttpStatusCode.BadRequest(400) and any Code between HttpStatusCode.InternalServerError (500) and 600.
-     *
+     * 
      * @return the callCountFailed value.
      */
     public Integer callCountFailed() {
@@ -456,7 +439,7 @@ public final class ReportRecordContractInner {
     /**
      * Set the callCountFailed property: Number of calls failed due to gateway or backend errors. This includes calls
      * returning HttpStatusCode.BadRequest(400) and any Code between HttpStatusCode.InternalServerError (500) and 600.
-     *
+     * 
      * @param callCountFailed the callCountFailed value to set.
      * @return the ReportRecordContractInner object itself.
      */
@@ -467,7 +450,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Get the callCountOther property: Number of other calls.
-     *
+     * 
      * @return the callCountOther value.
      */
     public Integer callCountOther() {
@@ -476,7 +459,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Set the callCountOther property: Number of other calls.
-     *
+     * 
      * @param callCountOther the callCountOther value to set.
      * @return the ReportRecordContractInner object itself.
      */
@@ -487,7 +470,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Get the callCountTotal property: Total number of calls.
-     *
+     * 
      * @return the callCountTotal value.
      */
     public Integer callCountTotal() {
@@ -496,7 +479,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Set the callCountTotal property: Total number of calls.
-     *
+     * 
      * @param callCountTotal the callCountTotal value to set.
      * @return the ReportRecordContractInner object itself.
      */
@@ -507,7 +490,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Get the bandwidth property: Bandwidth consumed.
-     *
+     * 
      * @return the bandwidth value.
      */
     public Long bandwidth() {
@@ -516,7 +499,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Set the bandwidth property: Bandwidth consumed.
-     *
+     * 
      * @param bandwidth the bandwidth value to set.
      * @return the ReportRecordContractInner object itself.
      */
@@ -527,7 +510,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Get the cacheHitCount property: Number of times when content was served from cache policy.
-     *
+     * 
      * @return the cacheHitCount value.
      */
     public Integer cacheHitCount() {
@@ -536,7 +519,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Set the cacheHitCount property: Number of times when content was served from cache policy.
-     *
+     * 
      * @param cacheHitCount the cacheHitCount value to set.
      * @return the ReportRecordContractInner object itself.
      */
@@ -547,7 +530,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Get the cacheMissCount property: Number of times content was fetched from backend.
-     *
+     * 
      * @return the cacheMissCount value.
      */
     public Integer cacheMissCount() {
@@ -556,7 +539,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Set the cacheMissCount property: Number of times content was fetched from backend.
-     *
+     * 
      * @param cacheMissCount the cacheMissCount value to set.
      * @return the ReportRecordContractInner object itself.
      */
@@ -567,7 +550,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Get the apiTimeAvg property: Average time it took to process request.
-     *
+     * 
      * @return the apiTimeAvg value.
      */
     public Double apiTimeAvg() {
@@ -576,7 +559,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Set the apiTimeAvg property: Average time it took to process request.
-     *
+     * 
      * @param apiTimeAvg the apiTimeAvg value to set.
      * @return the ReportRecordContractInner object itself.
      */
@@ -587,7 +570,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Get the apiTimeMin property: Minimum time it took to process request.
-     *
+     * 
      * @return the apiTimeMin value.
      */
     public Double apiTimeMin() {
@@ -596,7 +579,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Set the apiTimeMin property: Minimum time it took to process request.
-     *
+     * 
      * @param apiTimeMin the apiTimeMin value to set.
      * @return the ReportRecordContractInner object itself.
      */
@@ -607,7 +590,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Get the apiTimeMax property: Maximum time it took to process request.
-     *
+     * 
      * @return the apiTimeMax value.
      */
     public Double apiTimeMax() {
@@ -616,7 +599,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Set the apiTimeMax property: Maximum time it took to process request.
-     *
+     * 
      * @param apiTimeMax the apiTimeMax value to set.
      * @return the ReportRecordContractInner object itself.
      */
@@ -627,7 +610,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Get the serviceTimeAvg property: Average time it took to process request on backend.
-     *
+     * 
      * @return the serviceTimeAvg value.
      */
     public Double serviceTimeAvg() {
@@ -636,7 +619,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Set the serviceTimeAvg property: Average time it took to process request on backend.
-     *
+     * 
      * @param serviceTimeAvg the serviceTimeAvg value to set.
      * @return the ReportRecordContractInner object itself.
      */
@@ -647,7 +630,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Get the serviceTimeMin property: Minimum time it took to process request on backend.
-     *
+     * 
      * @return the serviceTimeMin value.
      */
     public Double serviceTimeMin() {
@@ -656,7 +639,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Set the serviceTimeMin property: Minimum time it took to process request on backend.
-     *
+     * 
      * @param serviceTimeMin the serviceTimeMin value to set.
      * @return the ReportRecordContractInner object itself.
      */
@@ -667,7 +650,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Get the serviceTimeMax property: Maximum time it took to process request on backend.
-     *
+     * 
      * @return the serviceTimeMax value.
      */
     public Double serviceTimeMax() {
@@ -676,7 +659,7 @@ public final class ReportRecordContractInner {
 
     /**
      * Set the serviceTimeMax property: Maximum time it took to process request on backend.
-     *
+     * 
      * @param serviceTimeMax the serviceTimeMax value to set.
      * @return the ReportRecordContractInner object itself.
      */
@@ -687,9 +670,120 @@ public final class ReportRecordContractInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("timestamp",
+            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
+        jsonWriter.writeStringField("interval", this.interval);
+        jsonWriter.writeStringField("country", this.country);
+        jsonWriter.writeStringField("region", this.region);
+        jsonWriter.writeStringField("zip", this.zip);
+        jsonWriter.writeStringField("apiId", this.apiId);
+        jsonWriter.writeStringField("operationId", this.operationId);
+        jsonWriter.writeStringField("apiRegion", this.apiRegion);
+        jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
+        jsonWriter.writeNumberField("callCountSuccess", this.callCountSuccess);
+        jsonWriter.writeNumberField("callCountBlocked", this.callCountBlocked);
+        jsonWriter.writeNumberField("callCountFailed", this.callCountFailed);
+        jsonWriter.writeNumberField("callCountOther", this.callCountOther);
+        jsonWriter.writeNumberField("callCountTotal", this.callCountTotal);
+        jsonWriter.writeNumberField("bandwidth", this.bandwidth);
+        jsonWriter.writeNumberField("cacheHitCount", this.cacheHitCount);
+        jsonWriter.writeNumberField("cacheMissCount", this.cacheMissCount);
+        jsonWriter.writeNumberField("apiTimeAvg", this.apiTimeAvg);
+        jsonWriter.writeNumberField("apiTimeMin", this.apiTimeMin);
+        jsonWriter.writeNumberField("apiTimeMax", this.apiTimeMax);
+        jsonWriter.writeNumberField("serviceTimeAvg", this.serviceTimeAvg);
+        jsonWriter.writeNumberField("serviceTimeMin", this.serviceTimeMin);
+        jsonWriter.writeNumberField("serviceTimeMax", this.serviceTimeMax);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReportRecordContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReportRecordContractInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReportRecordContractInner.
+     */
+    public static ReportRecordContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReportRecordContractInner deserializedReportRecordContractInner = new ReportRecordContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedReportRecordContractInner.name = reader.getString();
+                } else if ("timestamp".equals(fieldName)) {
+                    deserializedReportRecordContractInner.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("interval".equals(fieldName)) {
+                    deserializedReportRecordContractInner.interval = reader.getString();
+                } else if ("country".equals(fieldName)) {
+                    deserializedReportRecordContractInner.country = reader.getString();
+                } else if ("region".equals(fieldName)) {
+                    deserializedReportRecordContractInner.region = reader.getString();
+                } else if ("zip".equals(fieldName)) {
+                    deserializedReportRecordContractInner.zip = reader.getString();
+                } else if ("userId".equals(fieldName)) {
+                    deserializedReportRecordContractInner.userId = reader.getString();
+                } else if ("productId".equals(fieldName)) {
+                    deserializedReportRecordContractInner.productId = reader.getString();
+                } else if ("apiId".equals(fieldName)) {
+                    deserializedReportRecordContractInner.apiId = reader.getString();
+                } else if ("operationId".equals(fieldName)) {
+                    deserializedReportRecordContractInner.operationId = reader.getString();
+                } else if ("apiRegion".equals(fieldName)) {
+                    deserializedReportRecordContractInner.apiRegion = reader.getString();
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedReportRecordContractInner.subscriptionId = reader.getString();
+                } else if ("callCountSuccess".equals(fieldName)) {
+                    deserializedReportRecordContractInner.callCountSuccess = reader.getNullable(JsonReader::getInt);
+                } else if ("callCountBlocked".equals(fieldName)) {
+                    deserializedReportRecordContractInner.callCountBlocked = reader.getNullable(JsonReader::getInt);
+                } else if ("callCountFailed".equals(fieldName)) {
+                    deserializedReportRecordContractInner.callCountFailed = reader.getNullable(JsonReader::getInt);
+                } else if ("callCountOther".equals(fieldName)) {
+                    deserializedReportRecordContractInner.callCountOther = reader.getNullable(JsonReader::getInt);
+                } else if ("callCountTotal".equals(fieldName)) {
+                    deserializedReportRecordContractInner.callCountTotal = reader.getNullable(JsonReader::getInt);
+                } else if ("bandwidth".equals(fieldName)) {
+                    deserializedReportRecordContractInner.bandwidth = reader.getNullable(JsonReader::getLong);
+                } else if ("cacheHitCount".equals(fieldName)) {
+                    deserializedReportRecordContractInner.cacheHitCount = reader.getNullable(JsonReader::getInt);
+                } else if ("cacheMissCount".equals(fieldName)) {
+                    deserializedReportRecordContractInner.cacheMissCount = reader.getNullable(JsonReader::getInt);
+                } else if ("apiTimeAvg".equals(fieldName)) {
+                    deserializedReportRecordContractInner.apiTimeAvg = reader.getNullable(JsonReader::getDouble);
+                } else if ("apiTimeMin".equals(fieldName)) {
+                    deserializedReportRecordContractInner.apiTimeMin = reader.getNullable(JsonReader::getDouble);
+                } else if ("apiTimeMax".equals(fieldName)) {
+                    deserializedReportRecordContractInner.apiTimeMax = reader.getNullable(JsonReader::getDouble);
+                } else if ("serviceTimeAvg".equals(fieldName)) {
+                    deserializedReportRecordContractInner.serviceTimeAvg = reader.getNullable(JsonReader::getDouble);
+                } else if ("serviceTimeMin".equals(fieldName)) {
+                    deserializedReportRecordContractInner.serviceTimeMin = reader.getNullable(JsonReader::getDouble);
+                } else if ("serviceTimeMax".equals(fieldName)) {
+                    deserializedReportRecordContractInner.serviceTimeMax = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReportRecordContractInner;
+        });
     }
 }

@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ActionPropertiesBaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ActionPropertiesBase model = BinaryData.fromString("{\"logicAppResourceId\":\"jwyahuxinpmqnja\"}")
-            .toObject(ActionPropertiesBase.class);
-        Assertions.assertEquals("jwyahuxinpmqnja", model.logicAppResourceId());
+        ActionPropertiesBase model
+            = BinaryData.fromString("{\"logicAppResourceId\":\"atscmd\"}").toObject(ActionPropertiesBase.class);
+        Assertions.assertEquals("atscmd", model.logicAppResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ActionPropertiesBase model = new ActionPropertiesBase().withLogicAppResourceId("jwyahuxinpmqnja");
+        ActionPropertiesBase model = new ActionPropertiesBase().withLogicAppResourceId("atscmd");
         model = BinaryData.fromObject(model).toObject(ActionPropertiesBase.class);
-        Assertions.assertEquals("jwyahuxinpmqnja", model.logicAppResourceId());
+        Assertions.assertEquals("atscmd", model.logicAppResourceId());
     }
 }

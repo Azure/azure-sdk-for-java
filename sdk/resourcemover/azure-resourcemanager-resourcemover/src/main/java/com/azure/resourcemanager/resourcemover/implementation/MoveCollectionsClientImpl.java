@@ -48,17 +48,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in MoveCollectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MoveCollectionsClient.
+ */
 public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final MoveCollectionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ResourceMoverServiceApiImpl client;
 
     /**
      * Initializes an instance of MoveCollectionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     MoveCollectionsClientImpl(ResourceMoverServiceApiImpl client) {
@@ -224,10 +230,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Creates or updates a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Define the move collection.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -264,10 +270,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Creates or updates a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Define the move collection.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -304,7 +310,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Creates or updates a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -321,10 +327,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Creates or updates a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Define the move collection.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -339,7 +345,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Creates or updates a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -355,10 +361,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Updates a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for updating move collection.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -395,10 +401,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Updates a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for updating move collection.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -435,7 +441,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Updates a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -452,10 +458,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Updates a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for updating move collection.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -470,7 +476,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Updates a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -486,7 +492,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Deletes a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -522,7 +528,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Deletes a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param context The context to associate with this operation.
@@ -558,7 +564,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Deletes a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -576,7 +582,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Deletes a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param context The context to associate with this operation.
@@ -596,7 +602,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Deletes a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -612,7 +618,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Deletes a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param context The context to associate with this operation.
@@ -629,7 +635,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Deletes a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -645,7 +651,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Deletes a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param context The context to associate with this operation.
@@ -663,7 +669,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Deletes a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -678,7 +684,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Deletes a move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param context The context to associate with this operation.
@@ -694,7 +700,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Gets the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -731,7 +737,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Gets the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param context The context to associate with this operation.
@@ -767,7 +773,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Gets the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -783,7 +789,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Gets the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param context The context to associate with this operation.
@@ -800,7 +806,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Gets the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -818,10 +824,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources that are in the moveState 'PreparePending' or 'PrepareFailed', on a successful completion the
      * moveResource moveState do a transition to MovePending. To aid the user to prerequisite the operation the client
      * can call operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for initiate prepare operation.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -861,10 +867,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources that are in the moveState 'PreparePending' or 'PrepareFailed', on a successful completion the
      * moveResource moveState do a transition to MovePending. To aid the user to prerequisite the operation the client
      * can call operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for initiate prepare operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -904,10 +910,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources that are in the moveState 'PreparePending' or 'PrepareFailed', on a successful completion the
      * moveResource moveState do a transition to MovePending. To aid the user to prerequisite the operation the client
      * can call operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for initiate prepare operation.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -926,7 +932,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources that are in the moveState 'PreparePending' or 'PrepareFailed', on a successful completion the
      * moveResource moveState do a transition to MovePending. To aid the user to prerequisite the operation the client
      * can call operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -948,10 +954,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources that are in the moveState 'PreparePending' or 'PrepareFailed', on a successful completion the
      * moveResource moveState do a transition to MovePending. To aid the user to prerequisite the operation the client
      * can call operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for initiate prepare operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -973,7 +979,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources that are in the moveState 'PreparePending' or 'PrepareFailed', on a successful completion the
      * moveResource moveState do a transition to MovePending. To aid the user to prerequisite the operation the client
      * can call operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -993,10 +999,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources that are in the moveState 'PreparePending' or 'PrepareFailed', on a successful completion the
      * moveResource moveState do a transition to MovePending. To aid the user to prerequisite the operation the client
      * can call operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for initiate prepare operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1014,10 +1020,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources that are in the moveState 'PreparePending' or 'PrepareFailed', on a successful completion the
      * moveResource moveState do a transition to MovePending. To aid the user to prerequisite the operation the client
      * can call operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for initiate prepare operation.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1035,7 +1041,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources that are in the moveState 'PreparePending' or 'PrepareFailed', on a successful completion the
      * moveResource moveState do a transition to MovePending. To aid the user to prerequisite the operation the client
      * can call operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1055,10 +1061,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources that are in the moveState 'PreparePending' or 'PrepareFailed', on a successful completion the
      * moveResource moveState do a transition to MovePending. To aid the user to prerequisite the operation the client
      * can call operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for initiate prepare operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1077,7 +1083,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources that are in the moveState 'PreparePending' or 'PrepareFailed', on a successful completion the
      * moveResource moveState do a transition to MovePending. To aid the user to prerequisite the operation the client
      * can call operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1096,10 +1102,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources that are in the moveState 'PreparePending' or 'PrepareFailed', on a successful completion the
      * moveResource moveState do a transition to MovePending. To aid the user to prerequisite the operation the client
      * can call operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for initiate prepare operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1117,10 +1123,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * are in the moveState 'MovePending' or 'MoveFailed', on a successful completion the moveResource moveState do a
      * transition to CommitPending. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for resource move operation.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1160,10 +1166,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * are in the moveState 'MovePending' or 'MoveFailed', on a successful completion the moveResource moveState do a
      * transition to CommitPending. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for resource move operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1203,10 +1209,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * are in the moveState 'MovePending' or 'MoveFailed', on a successful completion the moveResource moveState do a
      * transition to CommitPending. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for resource move operation.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1226,7 +1232,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * are in the moveState 'MovePending' or 'MoveFailed', on a successful completion the moveResource moveState do a
      * transition to CommitPending. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1249,10 +1255,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * are in the moveState 'MovePending' or 'MoveFailed', on a successful completion the moveResource moveState do a
      * transition to CommitPending. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for resource move operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1274,7 +1280,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * are in the moveState 'MovePending' or 'MoveFailed', on a successful completion the moveResource moveState do a
      * transition to CommitPending. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1294,10 +1300,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * are in the moveState 'MovePending' or 'MoveFailed', on a successful completion the moveResource moveState do a
      * transition to CommitPending. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for resource move operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1315,10 +1321,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * are in the moveState 'MovePending' or 'MoveFailed', on a successful completion the moveResource moveState do a
      * transition to CommitPending. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for resource move operation.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1336,7 +1342,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * are in the moveState 'MovePending' or 'MoveFailed', on a successful completion the moveResource moveState do a
      * transition to CommitPending. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1356,10 +1362,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * are in the moveState 'MovePending' or 'MoveFailed', on a successful completion the moveResource moveState do a
      * transition to CommitPending. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for resource move operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1378,7 +1384,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * are in the moveState 'MovePending' or 'MoveFailed', on a successful completion the moveResource moveState do a
      * transition to CommitPending. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1397,10 +1403,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * are in the moveState 'MovePending' or 'MoveFailed', on a successful completion the moveResource moveState do a
      * transition to CommitPending. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for resource move operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1418,10 +1424,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * in the moveState 'CommitPending' or 'CommitFailed', on a successful completion the moveResource moveState do a
      * transition to Committed. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for commit operation.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1461,10 +1467,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * in the moveState 'CommitPending' or 'CommitFailed', on a successful completion the moveResource moveState do a
      * transition to Committed. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for commit operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1504,10 +1510,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * in the moveState 'CommitPending' or 'CommitFailed', on a successful completion the moveResource moveState do a
      * transition to Committed. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for commit operation.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1526,7 +1532,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * in the moveState 'CommitPending' or 'CommitFailed', on a successful completion the moveResource moveState do a
      * transition to Committed. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1548,10 +1554,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * in the moveState 'CommitPending' or 'CommitFailed', on a successful completion the moveResource moveState do a
      * transition to Committed. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for commit operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1573,7 +1579,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * in the moveState 'CommitPending' or 'CommitFailed', on a successful completion the moveResource moveState do a
      * transition to Committed. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1593,10 +1599,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * in the moveState 'CommitPending' or 'CommitFailed', on a successful completion the moveResource moveState do a
      * transition to Committed. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for commit operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1614,10 +1620,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * in the moveState 'CommitPending' or 'CommitFailed', on a successful completion the moveResource moveState do a
      * transition to Committed. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for commit operation.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1635,7 +1641,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * in the moveState 'CommitPending' or 'CommitFailed', on a successful completion the moveResource moveState do a
      * transition to Committed. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1655,10 +1661,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * in the moveState 'CommitPending' or 'CommitFailed', on a successful completion the moveResource moveState do a
      * transition to Committed. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for commit operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1677,7 +1683,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * in the moveState 'CommitPending' or 'CommitFailed', on a successful completion the moveResource moveState do a
      * transition to Committed. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1696,10 +1702,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * in the moveState 'CommitPending' or 'CommitFailed', on a successful completion the moveResource moveState do a
      * transition to Committed. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for commit operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1717,10 +1723,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources in the moveState 'CommitPending' or 'DiscardFailed', on a successful completion the moveResource
      * moveState do a transition to MovePending. To aid the user to prerequisite the operation the client can call
      * operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for discard operation.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1760,10 +1766,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources in the moveState 'CommitPending' or 'DiscardFailed', on a successful completion the moveResource
      * moveState do a transition to MovePending. To aid the user to prerequisite the operation the client can call
      * operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for discard operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1803,10 +1809,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources in the moveState 'CommitPending' or 'DiscardFailed', on a successful completion the moveResource
      * moveState do a transition to MovePending. To aid the user to prerequisite the operation the client can call
      * operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for discard operation.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1825,7 +1831,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources in the moveState 'CommitPending' or 'DiscardFailed', on a successful completion the moveResource
      * moveState do a transition to MovePending. To aid the user to prerequisite the operation the client can call
      * operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1847,10 +1853,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources in the moveState 'CommitPending' or 'DiscardFailed', on a successful completion the moveResource
      * moveState do a transition to MovePending. To aid the user to prerequisite the operation the client can call
      * operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for discard operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1872,7 +1878,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources in the moveState 'CommitPending' or 'DiscardFailed', on a successful completion the moveResource
      * moveState do a transition to MovePending. To aid the user to prerequisite the operation the client can call
      * operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1892,10 +1898,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources in the moveState 'CommitPending' or 'DiscardFailed', on a successful completion the moveResource
      * moveState do a transition to MovePending. To aid the user to prerequisite the operation the client can call
      * operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for discard operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1913,10 +1919,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources in the moveState 'CommitPending' or 'DiscardFailed', on a successful completion the moveResource
      * moveState do a transition to MovePending. To aid the user to prerequisite the operation the client can call
      * operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for discard operation.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1934,7 +1940,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources in the moveState 'CommitPending' or 'DiscardFailed', on a successful completion the moveResource
      * moveState do a transition to MovePending. To aid the user to prerequisite the operation the client can call
      * operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1954,10 +1960,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources in the moveState 'CommitPending' or 'DiscardFailed', on a successful completion the moveResource
      * moveState do a transition to MovePending. To aid the user to prerequisite the operation the client can call
      * operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for discard operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1976,7 +1982,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources in the moveState 'CommitPending' or 'DiscardFailed', on a successful completion the moveResource
      * moveState do a transition to MovePending. To aid the user to prerequisite the operation the client can call
      * operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1995,10 +2001,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * moveResources in the moveState 'CommitPending' or 'DiscardFailed', on a successful completion the moveResource
      * moveState do a transition to MovePending. To aid the user to prerequisite the operation the client can call
      * operation with validateOnly property set to true.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
-     * @param body Defines the request body for discard operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2013,7 +2019,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Computes, resolves and validate the dependencies of the moveResources in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2050,7 +2056,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Computes, resolves and validate the dependencies of the moveResources in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param context The context to associate with this operation.
@@ -2086,7 +2092,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Computes, resolves and validate the dependencies of the moveResources in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2105,7 +2111,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Computes, resolves and validate the dependencies of the moveResources in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param context The context to associate with this operation.
@@ -2126,7 +2132,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Computes, resolves and validate the dependencies of the moveResources in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2142,7 +2148,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Computes, resolves and validate the dependencies of the moveResources in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param context The context to associate with this operation.
@@ -2159,7 +2165,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Computes, resolves and validate the dependencies of the moveResources in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2175,7 +2181,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Computes, resolves and validate the dependencies of the moveResources in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param context The context to associate with this operation.
@@ -2193,7 +2199,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Computes, resolves and validate the dependencies of the moveResources in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2208,7 +2214,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Computes, resolves and validate the dependencies of the moveResources in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param context The context to associate with this operation.
@@ -2227,10 +2233,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * Removes the set of move resources included in the request body from move collection. The orchestration is done by
      * service. To aid the user to prerequisite the operation the client can call operation with validateOnly property
      * set to true.
-     *
+     * 
      * @param resourceGroupName The resourceGroupName parameter.
      * @param moveCollectionName The moveCollectionName parameter.
-     * @param body Defines the request body for bulk remove of move resources operation.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2269,10 +2275,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * Removes the set of move resources included in the request body from move collection. The orchestration is done by
      * service. To aid the user to prerequisite the operation the client can call operation with validateOnly property
      * set to true.
-     *
+     * 
      * @param resourceGroupName The resourceGroupName parameter.
      * @param moveCollectionName The moveCollectionName parameter.
-     * @param body Defines the request body for bulk remove of move resources operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2311,10 +2317,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * Removes the set of move resources included in the request body from move collection. The orchestration is done by
      * service. To aid the user to prerequisite the operation the client can call operation with validateOnly property
      * set to true.
-     *
+     * 
      * @param resourceGroupName The resourceGroupName parameter.
      * @param moveCollectionName The moveCollectionName parameter.
-     * @param body Defines the request body for bulk remove of move resources operation.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2333,7 +2339,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * Removes the set of move resources included in the request body from move collection. The orchestration is done by
      * service. To aid the user to prerequisite the operation the client can call operation with validateOnly property
      * set to true.
-     *
+     * 
      * @param resourceGroupName The resourceGroupName parameter.
      * @param moveCollectionName The moveCollectionName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2355,10 +2361,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * Removes the set of move resources included in the request body from move collection. The orchestration is done by
      * service. To aid the user to prerequisite the operation the client can call operation with validateOnly property
      * set to true.
-     *
+     * 
      * @param resourceGroupName The resourceGroupName parameter.
      * @param moveCollectionName The moveCollectionName parameter.
-     * @param body Defines the request body for bulk remove of move resources operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2379,7 +2385,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * Removes the set of move resources included in the request body from move collection. The orchestration is done by
      * service. To aid the user to prerequisite the operation the client can call operation with validateOnly property
      * set to true.
-     *
+     * 
      * @param resourceGroupName The resourceGroupName parameter.
      * @param moveCollectionName The moveCollectionName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2398,10 +2404,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * Removes the set of move resources included in the request body from move collection. The orchestration is done by
      * service. To aid the user to prerequisite the operation the client can call operation with validateOnly property
      * set to true.
-     *
+     * 
      * @param resourceGroupName The resourceGroupName parameter.
      * @param moveCollectionName The moveCollectionName parameter.
-     * @param body Defines the request body for bulk remove of move resources operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2418,10 +2424,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * Removes the set of move resources included in the request body from move collection. The orchestration is done by
      * service. To aid the user to prerequisite the operation the client can call operation with validateOnly property
      * set to true.
-     *
+     * 
      * @param resourceGroupName The resourceGroupName parameter.
      * @param moveCollectionName The moveCollectionName parameter.
-     * @param body Defines the request body for bulk remove of move resources operation.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2438,7 +2444,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * Removes the set of move resources included in the request body from move collection. The orchestration is done by
      * service. To aid the user to prerequisite the operation the client can call operation with validateOnly property
      * set to true.
-     *
+     * 
      * @param resourceGroupName The resourceGroupName parameter.
      * @param moveCollectionName The moveCollectionName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2457,10 +2463,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * Removes the set of move resources included in the request body from move collection. The orchestration is done by
      * service. To aid the user to prerequisite the operation the client can call operation with validateOnly property
      * set to true.
-     *
+     * 
      * @param resourceGroupName The resourceGroupName parameter.
      * @param moveCollectionName The moveCollectionName parameter.
-     * @param body Defines the request body for bulk remove of move resources operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2478,7 +2484,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * Removes the set of move resources included in the request body from move collection. The orchestration is done by
      * service. To aid the user to prerequisite the operation the client can call operation with validateOnly property
      * set to true.
-     *
+     * 
      * @param resourceGroupName The resourceGroupName parameter.
      * @param moveCollectionName The moveCollectionName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2496,10 +2502,10 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
      * Removes the set of move resources included in the request body from move collection. The orchestration is done by
      * service. To aid the user to prerequisite the operation the client can call operation with validateOnly property
      * set to true.
-     *
+     * 
      * @param resourceGroupName The resourceGroupName parameter.
      * @param moveCollectionName The moveCollectionName parameter.
-     * @param body Defines the request body for bulk remove of move resources operation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2514,13 +2520,13 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Get all Move Collections.
-     *
-     * <p>Get all the Move Collections in the subscription.
-     *
+     * 
+     * Get all the Move Collections in the subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Move Collections in the subscription along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MoveCollectionInner>> listSinglePageAsync() {
@@ -2543,15 +2549,15 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Get all Move Collections.
-     *
-     * <p>Get all the Move Collections in the subscription.
-     *
+     * 
+     * Get all the Move Collections in the subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Move Collections in the subscription along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MoveCollectionInner>> listSinglePageAsync(Context context) {
@@ -2574,9 +2580,9 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Get all Move Collections.
-     *
-     * <p>Get all the Move Collections in the subscription.
-     *
+     * 
+     * Get all the Move Collections in the subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Move Collections in the subscription as paginated response with {@link PagedFlux}.
@@ -2589,9 +2595,9 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Get all Move Collections.
-     *
-     * <p>Get all the Move Collections in the subscription.
-     *
+     * 
+     * Get all the Move Collections in the subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2606,9 +2612,9 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Get all Move Collections.
-     *
-     * <p>Get all the Move Collections in the subscription.
-     *
+     * 
+     * Get all the Move Collections in the subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Move Collections in the subscription as paginated response with {@link PagedIterable}.
@@ -2620,9 +2626,9 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Get all Move Collections.
-     *
-     * <p>Get all the Move Collections in the subscription.
-     *
+     * 
+     * Get all the Move Collections in the subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2636,15 +2642,15 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Get all Move Collections.
-     *
-     * <p>Get all the Move Collections in the resource group.
-     *
+     * 
+     * Get all the Move Collections in the resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Move Collections in the resource group along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MoveCollectionInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -2671,16 +2677,16 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Get all Move Collections.
-     *
-     * <p>Get all the Move Collections in the resource group.
-     *
+     * 
+     * Get all the Move Collections in the resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Move Collections in the resource group along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MoveCollectionInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -2708,9 +2714,9 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Get all Move Collections.
-     *
-     * <p>Get all the Move Collections in the resource group.
-     *
+     * 
+     * Get all the Move Collections in the resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2725,9 +2731,9 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Get all Move Collections.
-     *
-     * <p>Get all the Move Collections in the resource group.
-     *
+     * 
+     * Get all the Move Collections in the resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2743,9 +2749,9 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Get all Move Collections.
-     *
-     * <p>Get all the Move Collections in the resource group.
-     *
+     * 
+     * Get all the Move Collections in the resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2759,9 +2765,9 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Get all Move Collections.
-     *
-     * <p>Get all the Move Collections in the resource group.
-     *
+     * 
+     * Get all the Move Collections in the resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2776,7 +2782,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * List of the move resources for which an arm resource is required for.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param sourceId The sourceId for which the api is invoked.
@@ -2816,7 +2822,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * List of the move resources for which an arm resource is required for.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param sourceId The sourceId for which the api is invoked.
@@ -2856,7 +2862,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * List of the move resources for which an arm resource is required for.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param sourceId The sourceId for which the api is invoked.
@@ -2874,7 +2880,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * List of the move resources for which an arm resource is required for.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param sourceId The sourceId for which the api is invoked.
@@ -2892,7 +2898,7 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * List of the move resources for which an arm resource is required for.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param sourceId The sourceId for which the api is invoked.
@@ -2909,14 +2915,13 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the collection of move collections along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MoveCollectionInner>>
@@ -2939,15 +2944,14 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the collection of move collections along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MoveCollectionInner>>
@@ -2968,14 +2972,13 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the collection of move collections along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MoveCollectionInner>>
@@ -2998,15 +3001,14 @@ public final class MoveCollectionsClientImpl implements MoveCollectionsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the collection of move collections along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MoveCollectionInner>>

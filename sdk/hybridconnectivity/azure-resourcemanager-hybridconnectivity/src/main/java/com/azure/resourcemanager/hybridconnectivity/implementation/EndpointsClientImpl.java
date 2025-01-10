@@ -41,17 +41,23 @@ import com.azure.resourcemanager.hybridconnectivity.models.ListIngressGatewayCre
 import com.azure.resourcemanager.hybridconnectivity.models.ManagedProxyRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in EndpointsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in EndpointsClient.
+ */
 public final class EndpointsClientImpl implements EndpointsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final EndpointsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final HybridConnectivityManagementApiImpl client;
 
     /**
      * Initializes an instance of EndpointsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     EndpointsClientImpl(HybridConnectivityManagementApiImpl client) {
@@ -162,7 +168,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * List of endpoints to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -189,7 +195,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * List of endpoints to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -215,7 +221,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * List of endpoints to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -229,7 +235,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * List of endpoints to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -245,7 +251,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * List of endpoints to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -259,7 +265,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * List of endpoints to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -274,7 +280,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Gets the endpoint to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -303,7 +309,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Gets the endpoint to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param context The context to associate with this operation.
@@ -333,7 +339,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Gets the endpoint to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -348,7 +354,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Gets the endpoint to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param context The context to associate with this operation.
@@ -364,7 +370,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Gets the endpoint to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -379,15 +385,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Create or update the endpoint to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param endpointResource Endpoint details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the endpoint for the target resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the endpoint for the target resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EndpointResourceInner>> createOrUpdateWithResponseAsync(String resourceUri,
@@ -417,7 +423,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Create or update the endpoint to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param endpointResource Endpoint details.
@@ -425,8 +431,8 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the endpoint for the target resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the endpoint for the target resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EndpointResourceInner>> createOrUpdateWithResponseAsync(String resourceUri,
@@ -455,7 +461,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Create or update the endpoint to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param endpointResource Endpoint details.
@@ -473,7 +479,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Create or update the endpoint to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param endpointResource Endpoint details.
@@ -491,7 +497,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Create or update the endpoint to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param endpointResource Endpoint details.
@@ -508,15 +514,15 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Update the endpoint to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param endpointResource Endpoint details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the endpoint for the target resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the endpoint for the target resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EndpointResourceInner>> updateWithResponseAsync(String resourceUri, String endpointName,
@@ -546,7 +552,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Update the endpoint to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param endpointResource Endpoint details.
@@ -554,8 +560,8 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the endpoint for the target resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the endpoint for the target resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EndpointResourceInner>> updateWithResponseAsync(String resourceUri, String endpointName,
@@ -584,7 +590,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Update the endpoint to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param endpointResource Endpoint details.
@@ -602,7 +608,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Update the endpoint to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param endpointResource Endpoint details.
@@ -620,7 +626,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Update the endpoint to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param endpointResource Endpoint details.
@@ -637,7 +643,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Deletes the endpoint access to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -666,7 +672,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Deletes the endpoint access to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param context The context to associate with this operation.
@@ -695,7 +701,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Deletes the endpoint access to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -710,7 +716,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Deletes the endpoint access to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param context The context to associate with this operation.
@@ -726,7 +732,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Deletes the endpoint access to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -740,7 +746,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Gets the endpoint access credentials to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param expiresin The is how long the endpoint access token is valid (in seconds).
@@ -749,7 +755,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the endpoint access credentials to the resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EndpointAccessResourceInner>> listCredentialsWithResponseAsync(String resourceUri,
@@ -776,7 +782,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Gets the endpoint access credentials to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param expiresin The is how long the endpoint access token is valid (in seconds).
@@ -786,7 +792,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the endpoint access credentials to the resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EndpointAccessResourceInner>> listCredentialsWithResponseAsync(String resourceUri,
@@ -812,7 +818,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Gets the endpoint access credentials to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -830,7 +836,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Gets the endpoint access credentials to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param expiresin The is how long the endpoint access token is valid (in seconds).
@@ -850,7 +856,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Gets the endpoint access credentials to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -868,7 +874,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Gets the ingress gateway endpoint credentials.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param expiresin The is how long the endpoint access token is valid (in seconds).
@@ -876,8 +882,8 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ingress gateway endpoint credentials along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the ingress gateway endpoint credentials along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IngressGatewayResourceInner>> listIngressGatewayCredentialsWithResponseAsync(
@@ -906,7 +912,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Gets the ingress gateway endpoint credentials.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param expiresin The is how long the endpoint access token is valid (in seconds).
@@ -915,8 +921,8 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ingress gateway endpoint credentials along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the ingress gateway endpoint credentials along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IngressGatewayResourceInner>> listIngressGatewayCredentialsWithResponseAsync(
@@ -943,7 +949,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Gets the ingress gateway endpoint credentials.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -962,7 +968,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Gets the ingress gateway endpoint credentials.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param expiresin The is how long the endpoint access token is valid (in seconds).
@@ -983,7 +989,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Gets the ingress gateway endpoint credentials.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1001,7 +1007,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Fetches the managed proxy details.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param managedProxyRequest Object of type ManagedProxyRequest.
@@ -1038,7 +1044,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Fetches the managed proxy details.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param managedProxyRequest Object of type ManagedProxyRequest.
@@ -1075,7 +1081,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Fetches the managed proxy details.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param managedProxyRequest Object of type ManagedProxyRequest.
@@ -1093,7 +1099,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Fetches the managed proxy details.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param managedProxyRequest Object of type ManagedProxyRequest.
@@ -1112,7 +1118,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Fetches the managed proxy details.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param managedProxyRequest Object of type ManagedProxyRequest.
@@ -1130,9 +1136,8 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1156,9 +1161,8 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

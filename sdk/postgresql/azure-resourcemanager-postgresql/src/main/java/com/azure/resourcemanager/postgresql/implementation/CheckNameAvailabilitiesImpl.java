@@ -13,11 +13,9 @@ import com.azure.resourcemanager.postgresql.fluent.models.NameAvailabilityInner;
 import com.azure.resourcemanager.postgresql.models.CheckNameAvailabilities;
 import com.azure.resourcemanager.postgresql.models.NameAvailability;
 import com.azure.resourcemanager.postgresql.models.NameAvailabilityRequest;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class CheckNameAvailabilitiesImpl implements CheckNameAvailabilities {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(CheckNameAvailabilitiesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CheckNameAvailabilitiesImpl.class);
 
     private final CheckNameAvailabilitiesClient innerClient;
 
@@ -29,15 +27,6 @@ public final class CheckNameAvailabilitiesImpl implements CheckNameAvailabilitie
         this.serviceManager = serviceManager;
     }
 
-    public NameAvailability execute(NameAvailabilityRequest nameAvailabilityRequest) {
-        NameAvailabilityInner inner = this.serviceClient().execute(nameAvailabilityRequest);
-        if (inner != null) {
-            return new NameAvailabilityImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<NameAvailability> executeWithResponse(NameAvailabilityRequest nameAvailabilityRequest,
         Context context) {
         Response<NameAvailabilityInner> inner
@@ -45,6 +34,15 @@ public final class CheckNameAvailabilitiesImpl implements CheckNameAvailabilitie
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new NameAvailabilityImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public NameAvailability execute(NameAvailabilityRequest nameAvailabilityRequest) {
+        NameAvailabilityInner inner = this.serviceClient().execute(nameAvailabilityRequest);
+        if (inner != null) {
+            return new NameAvailabilityImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -120,9 +120,10 @@ public final class AuthorizationProviderContractImpl implements AuthorizationPro
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.authorizationProviderId = Utils.getValueFromIdByName(innerObject.id(), "authorizationProviders");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.authorizationProviderId
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "authorizationProviders");
     }
 
     public AuthorizationProviderContract refresh() {

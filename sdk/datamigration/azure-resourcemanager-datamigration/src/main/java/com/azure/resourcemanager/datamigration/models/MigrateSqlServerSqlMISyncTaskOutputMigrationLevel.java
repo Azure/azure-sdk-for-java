@@ -77,11 +77,6 @@ public final class MigrateSqlServerSqlMISyncTaskOutputMigrationLevel extends Mig
      */
     private Integer databaseErrorCount;
 
-    /*
-     * Result identifier
-     */
-    private String id;
-
     /**
      * Creates an instance of MigrateSqlServerSqlMISyncTaskOutputMigrationLevel class.
      */
@@ -198,16 +193,6 @@ public final class MigrateSqlServerSqlMISyncTaskOutputMigrationLevel extends Mig
     }
 
     /**
-     * Get the id property: Result identifier.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -243,7 +228,7 @@ public final class MigrateSqlServerSqlMISyncTaskOutputMigrationLevel extends Mig
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedMigrateSqlServerSqlMISyncTaskOutputMigrationLevel.id = reader.getString();
+                    deserializedMigrateSqlServerSqlMISyncTaskOutputMigrationLevel.withId(reader.getString());
                 } else if ("resultType".equals(fieldName)) {
                     deserializedMigrateSqlServerSqlMISyncTaskOutputMigrationLevel.resultType = reader.getString();
                 } else if ("databaseCount".equals(fieldName)) {

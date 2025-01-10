@@ -30,17 +30,23 @@ import com.azure.resourcemanager.devtestlabs.fluent.models.GalleryImageInner;
 import com.azure.resourcemanager.devtestlabs.models.GalleryImageList;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in GalleryImagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GalleryImagesClient.
+ */
 public final class GalleryImagesClientImpl implements GalleryImagesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final GalleryImagesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DevTestLabsClientImpl client;
 
     /**
      * Initializes an instance of GalleryImagesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     GalleryImagesClientImpl(DevTestLabsClientImpl client) {
@@ -77,7 +83,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
 
     /**
      * List gallery images in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=author)'.
@@ -87,8 +93,8 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GalleryImageInner>> listSinglePageAsync(String resourceGroupName, String labName,
@@ -119,7 +125,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
 
     /**
      * List gallery images in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=author)'.
@@ -130,8 +136,8 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GalleryImageInner>> listSinglePageAsync(String resourceGroupName, String labName,
@@ -162,7 +168,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
 
     /**
      * List gallery images in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=author)'.
@@ -183,7 +189,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
 
     /**
      * List gallery images in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -203,7 +209,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
 
     /**
      * List gallery images in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=author)'.
@@ -226,7 +232,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
 
     /**
      * List gallery images in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -245,7 +251,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
 
     /**
      * List gallery images in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=author)'.
@@ -266,14 +272,13 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GalleryImageInner>> listNextSinglePageAsync(String nextLink) {
@@ -293,15 +298,14 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GalleryImageInner>> listNextSinglePageAsync(String nextLink, Context context) {

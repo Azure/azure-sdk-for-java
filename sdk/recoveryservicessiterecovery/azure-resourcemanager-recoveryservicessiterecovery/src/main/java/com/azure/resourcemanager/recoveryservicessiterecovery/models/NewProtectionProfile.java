@@ -6,51 +6,60 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * New Protection profile input.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resourceType")
-@JsonTypeName("New")
 @Fluent
 public final class NewProtectionProfile extends ProtectionProfileCustomDetails {
     /*
+     * The class type.
+     */
+    private String resourceType = "New";
+
+    /*
      * The protection profile input.
      */
-    @JsonProperty(value = "policyName", required = true)
     private String policyName;
 
     /*
      * The duration in minutes until which the recovery points need to be stored.
      */
-    @JsonProperty(value = "recoveryPointHistory")
     private Integer recoveryPointHistory;
 
     /*
      * The crash consistent snapshot frequency (in minutes).
      */
-    @JsonProperty(value = "crashConsistentFrequencyInMinutes")
     private Integer crashConsistentFrequencyInMinutes;
 
     /*
      * The app consistent snapshot frequency (in minutes).
      */
-    @JsonProperty(value = "appConsistentFrequencyInMinutes")
     private Integer appConsistentFrequencyInMinutes;
 
     /*
      * A value indicating whether multi-VM sync has to be enabled. Value should be 'Enabled' or 'Disabled'.
      */
-    @JsonProperty(value = "multiVmSyncStatus", required = true)
     private SetMultiVmSyncStatus multiVmSyncStatus;
 
     /**
      * Creates an instance of NewProtectionProfile class.
      */
     public NewProtectionProfile() {
+    }
+
+    /**
+     * Get the resourceType property: The class type.
+     * 
+     * @return the resourceType value.
+     */
+    @Override
+    public String resourceType() {
+        return this.resourceType;
     }
 
     /**
@@ -74,8 +83,7 @@ public final class NewProtectionProfile extends ProtectionProfileCustomDetails {
     }
 
     /**
-     * Get the recoveryPointHistory property: The duration in minutes until which the recovery points need to be
-     * stored.
+     * Get the recoveryPointHistory property: The duration in minutes until which the recovery points need to be stored.
      * 
      * @return the recoveryPointHistory value.
      */
@@ -84,8 +92,7 @@ public final class NewProtectionProfile extends ProtectionProfileCustomDetails {
     }
 
     /**
-     * Set the recoveryPointHistory property: The duration in minutes until which the recovery points need to be
-     * stored.
+     * Set the recoveryPointHistory property: The duration in minutes until which the recovery points need to be stored.
      * 
      * @param recoveryPointHistory the recoveryPointHistory value to set.
      * @return the NewProtectionProfile object itself.
@@ -164,16 +171,73 @@ public final class NewProtectionProfile extends ProtectionProfileCustomDetails {
      */
     @Override
     public void validate() {
-        super.validate();
         if (policyName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property policyName in model NewProtectionProfile"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property policyName in model NewProtectionProfile"));
         }
         if (multiVmSyncStatus() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property multiVmSyncStatus in model NewProtectionProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property multiVmSyncStatus in model NewProtectionProfile"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(NewProtectionProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("policyName", this.policyName);
+        jsonWriter.writeStringField("multiVmSyncStatus",
+            this.multiVmSyncStatus == null ? null : this.multiVmSyncStatus.toString());
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeNumberField("recoveryPointHistory", this.recoveryPointHistory);
+        jsonWriter.writeNumberField("crashConsistentFrequencyInMinutes", this.crashConsistentFrequencyInMinutes);
+        jsonWriter.writeNumberField("appConsistentFrequencyInMinutes", this.appConsistentFrequencyInMinutes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NewProtectionProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NewProtectionProfile if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NewProtectionProfile.
+     */
+    public static NewProtectionProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NewProtectionProfile deserializedNewProtectionProfile = new NewProtectionProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("policyName".equals(fieldName)) {
+                    deserializedNewProtectionProfile.policyName = reader.getString();
+                } else if ("multiVmSyncStatus".equals(fieldName)) {
+                    deserializedNewProtectionProfile.multiVmSyncStatus
+                        = SetMultiVmSyncStatus.fromString(reader.getString());
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedNewProtectionProfile.resourceType = reader.getString();
+                } else if ("recoveryPointHistory".equals(fieldName)) {
+                    deserializedNewProtectionProfile.recoveryPointHistory = reader.getNullable(JsonReader::getInt);
+                } else if ("crashConsistentFrequencyInMinutes".equals(fieldName)) {
+                    deserializedNewProtectionProfile.crashConsistentFrequencyInMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("appConsistentFrequencyInMinutes".equals(fieldName)) {
+                    deserializedNewProtectionProfile.appConsistentFrequencyInMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNewProtectionProfile;
+        });
+    }
 }

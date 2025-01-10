@@ -100,7 +100,7 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-data-cosmos</artifactId>
-    <version>5.18.0</version>
+    <version>5.19.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -567,6 +567,7 @@ String[] includePaths() default {};
 // Excluded paths for indexing
 String[] excludePaths() default {};
 ```
+- If using a column for summation in a sum() query that column should be indexed or else it will lead to performance issues.
 #### Unique Key Policy
  - Azure Spring Data Cosmos supports setting `UniqueKeyPolicy` on container by adding the annotation `@CosmosUniqueKeyPolicy` to domain class. This annotation has the following attributes:
 ```java readme-sample-CosmosUniqueKeyPolicyCodeSnippet

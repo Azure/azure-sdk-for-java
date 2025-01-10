@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Network Device updatable properties. */
+/**
+ * Network Device updatable properties.
+ */
 @Fluent
-public class NetworkDevicePatchableProperties {
+public class NetworkDevicePatchableProperties implements JsonSerializable<NetworkDevicePatchableProperties> {
     /*
      * The host name of the device.
      */
-    @JsonProperty(value = "hostName")
     private String hostname;
 
     /*
      * Serial number of the device. Format of serial Number - Make;Model;HardwareRevisionId;SerialNumber.
      */
-    @JsonProperty(value = "serialNumber")
     private String serialNumber;
 
-    /** Creates an instance of NetworkDevicePatchableProperties class. */
+    /**
+     * Creates an instance of NetworkDevicePatchableProperties class.
+     */
     public NetworkDevicePatchableProperties() {
     }
 
     /**
      * Get the hostname property: The host name of the device.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -37,7 +43,7 @@ public class NetworkDevicePatchableProperties {
 
     /**
      * Set the hostname property: The host name of the device.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the NetworkDevicePatchableProperties object itself.
      */
@@ -49,7 +55,7 @@ public class NetworkDevicePatchableProperties {
     /**
      * Get the serialNumber property: Serial number of the device. Format of serial Number -
      * Make;Model;HardwareRevisionId;SerialNumber.
-     *
+     * 
      * @return the serialNumber value.
      */
     public String serialNumber() {
@@ -59,7 +65,7 @@ public class NetworkDevicePatchableProperties {
     /**
      * Set the serialNumber property: Serial number of the device. Format of serial Number -
      * Make;Model;HardwareRevisionId;SerialNumber.
-     *
+     * 
      * @param serialNumber the serialNumber value to set.
      * @return the NetworkDevicePatchableProperties object itself.
      */
@@ -70,9 +76,49 @@ public class NetworkDevicePatchableProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("hostName", this.hostname);
+        jsonWriter.writeStringField("serialNumber", this.serialNumber);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkDevicePatchableProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkDevicePatchableProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkDevicePatchableProperties.
+     */
+    public static NetworkDevicePatchableProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkDevicePatchableProperties deserializedNetworkDevicePatchableProperties
+                = new NetworkDevicePatchableProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hostName".equals(fieldName)) {
+                    deserializedNetworkDevicePatchableProperties.hostname = reader.getString();
+                } else if ("serialNumber".equals(fieldName)) {
+                    deserializedNetworkDevicePatchableProperties.serialNumber = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkDevicePatchableProperties;
+        });
     }
 }

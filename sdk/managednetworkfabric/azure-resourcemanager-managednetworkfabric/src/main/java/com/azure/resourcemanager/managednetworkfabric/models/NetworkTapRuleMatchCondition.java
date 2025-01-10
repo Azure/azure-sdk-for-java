@@ -5,31 +5,36 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Defines the match condition that is supported to filter the traffic. */
+/**
+ * Defines the match condition that is supported to filter the traffic.
+ */
 @Fluent
 public final class NetworkTapRuleMatchCondition extends CommonMatchConditions {
     /*
-     * Encapsulation Type.
+     * Encapsulation Type that needs to be matched.
      */
-    @JsonProperty(value = "encapsulationType")
     private EncapsulationType encapsulationType;
 
     /*
      * Defines the port condition that needs to be matched.
      */
-    @JsonProperty(value = "portCondition")
     private PortCondition portCondition;
 
-    /** Creates an instance of NetworkTapRuleMatchCondition class. */
+    /**
+     * Creates an instance of NetworkTapRuleMatchCondition class.
+     */
     public NetworkTapRuleMatchCondition() {
     }
 
     /**
-     * Get the encapsulationType property: Encapsulation Type.
-     *
+     * Get the encapsulationType property: Encapsulation Type that needs to be matched.
+     * 
      * @return the encapsulationType value.
      */
     public EncapsulationType encapsulationType() {
@@ -37,8 +42,8 @@ public final class NetworkTapRuleMatchCondition extends CommonMatchConditions {
     }
 
     /**
-     * Set the encapsulationType property: Encapsulation Type.
-     *
+     * Set the encapsulationType property: Encapsulation Type that needs to be matched.
+     * 
      * @param encapsulationType the encapsulationType value to set.
      * @return the NetworkTapRuleMatchCondition object itself.
      */
@@ -49,7 +54,7 @@ public final class NetworkTapRuleMatchCondition extends CommonMatchConditions {
 
     /**
      * Get the portCondition property: Defines the port condition that needs to be matched.
-     *
+     * 
      * @return the portCondition value.
      */
     public PortCondition portCondition() {
@@ -58,7 +63,7 @@ public final class NetworkTapRuleMatchCondition extends CommonMatchConditions {
 
     /**
      * Set the portCondition property: Defines the port condition that needs to be matched.
-     *
+     * 
      * @param portCondition the portCondition value to set.
      * @return the NetworkTapRuleMatchCondition object itself.
      */
@@ -67,21 +72,27 @@ public final class NetworkTapRuleMatchCondition extends CommonMatchConditions {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkTapRuleMatchCondition withProtocolTypes(List<String> protocolTypes) {
         super.withProtocolTypes(protocolTypes);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkTapRuleMatchCondition withVlanMatchCondition(VlanMatchCondition vlanMatchCondition) {
         super.withVlanMatchCondition(vlanMatchCondition);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkTapRuleMatchCondition withIpCondition(IpMatchCondition ipCondition) {
         super.withIpCondition(ipCondition);
@@ -90,14 +101,71 @@ public final class NetworkTapRuleMatchCondition extends CommonMatchConditions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (portCondition() != null) {
             portCondition().validate();
         }
+        if (vlanMatchCondition() != null) {
+            vlanMatchCondition().validate();
+        }
+        if (ipCondition() != null) {
+            ipCondition().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("protocolTypes", protocolTypes(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("vlanMatchCondition", vlanMatchCondition());
+        jsonWriter.writeJsonField("ipCondition", ipCondition());
+        jsonWriter.writeStringField("encapsulationType",
+            this.encapsulationType == null ? null : this.encapsulationType.toString());
+        jsonWriter.writeJsonField("portCondition", this.portCondition);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkTapRuleMatchCondition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkTapRuleMatchCondition if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkTapRuleMatchCondition.
+     */
+    public static NetworkTapRuleMatchCondition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkTapRuleMatchCondition deserializedNetworkTapRuleMatchCondition = new NetworkTapRuleMatchCondition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("protocolTypes".equals(fieldName)) {
+                    List<String> protocolTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkTapRuleMatchCondition.withProtocolTypes(protocolTypes);
+                } else if ("vlanMatchCondition".equals(fieldName)) {
+                    deserializedNetworkTapRuleMatchCondition
+                        .withVlanMatchCondition(VlanMatchCondition.fromJson(reader));
+                } else if ("ipCondition".equals(fieldName)) {
+                    deserializedNetworkTapRuleMatchCondition.withIpCondition(IpMatchCondition.fromJson(reader));
+                } else if ("encapsulationType".equals(fieldName)) {
+                    deserializedNetworkTapRuleMatchCondition.encapsulationType
+                        = EncapsulationType.fromString(reader.getString());
+                } else if ("portCondition".equals(fieldName)) {
+                    deserializedNetworkTapRuleMatchCondition.portCondition = PortCondition.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkTapRuleMatchCondition;
+        });
     }
 }

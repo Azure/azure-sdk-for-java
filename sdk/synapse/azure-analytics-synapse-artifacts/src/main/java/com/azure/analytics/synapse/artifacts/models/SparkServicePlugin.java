@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -220,20 +221,20 @@ public final class SparkServicePlugin implements JsonSerializable<SparkServicePl
                 reader.nextToken();
 
                 if ("preparationStartedAt".equals(fieldName)) {
-                    deserializedSparkServicePlugin.preparationStartedAt
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedSparkServicePlugin.preparationStartedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("resourceAcquisitionStartedAt".equals(fieldName)) {
-                    deserializedSparkServicePlugin.resourceAcquisitionStartedAt
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedSparkServicePlugin.resourceAcquisitionStartedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("submissionStartedAt".equals(fieldName)) {
-                    deserializedSparkServicePlugin.submissionStartedAt
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedSparkServicePlugin.submissionStartedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("monitoringStartedAt".equals(fieldName)) {
-                    deserializedSparkServicePlugin.monitoringStartedAt
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedSparkServicePlugin.monitoringStartedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("cleanupStartedAt".equals(fieldName)) {
-                    deserializedSparkServicePlugin.cleanupStartedAt
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedSparkServicePlugin.cleanupStartedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("currentState".equals(fieldName)) {
                     deserializedSparkServicePlugin.currentState = PluginCurrentState.fromString(reader.getString());
                 } else {

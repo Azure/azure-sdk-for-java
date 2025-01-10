@@ -65,14 +65,14 @@ public final class InternalNetworksImpl implements InternalNetworks {
         String l3IsolationDomainName) {
         PagedIterable<InternalNetworkInner> inner
             = this.serviceClient().listByL3IsolationDomain(resourceGroupName, l3IsolationDomainName);
-        return Utils.mapPage(inner, inner1 -> new InternalNetworkImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new InternalNetworkImpl(inner1, this.manager()));
     }
 
     public PagedIterable<InternalNetwork> listByL3IsolationDomain(String resourceGroupName,
         String l3IsolationDomainName, Context context) {
         PagedIterable<InternalNetworkInner> inner
             = this.serviceClient().listByL3IsolationDomain(resourceGroupName, l3IsolationDomainName, context);
-        return Utils.mapPage(inner, inner1 -> new InternalNetworkImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new InternalNetworkImpl(inner1, this.manager()));
     }
 
     public CommonPostActionResponseForStateUpdate updateAdministrativeState(String resourceGroupName,
@@ -144,17 +144,17 @@ public final class InternalNetworksImpl implements InternalNetworks {
     }
 
     public InternalNetwork getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String l3IsolationDomainName = Utils.getValueFromIdByName(id, "l3IsolationDomains");
+        String l3IsolationDomainName = ResourceManagerUtils.getValueFromIdByName(id, "l3IsolationDomains");
         if (l3IsolationDomainName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'l3IsolationDomains'.", id)));
         }
-        String internalNetworkName = Utils.getValueFromIdByName(id, "internalNetworks");
+        String internalNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "internalNetworks");
         if (internalNetworkName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'internalNetworks'.", id)));
@@ -164,17 +164,17 @@ public final class InternalNetworksImpl implements InternalNetworks {
     }
 
     public Response<InternalNetwork> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String l3IsolationDomainName = Utils.getValueFromIdByName(id, "l3IsolationDomains");
+        String l3IsolationDomainName = ResourceManagerUtils.getValueFromIdByName(id, "l3IsolationDomains");
         if (l3IsolationDomainName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'l3IsolationDomains'.", id)));
         }
-        String internalNetworkName = Utils.getValueFromIdByName(id, "internalNetworks");
+        String internalNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "internalNetworks");
         if (internalNetworkName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'internalNetworks'.", id)));
@@ -183,17 +183,17 @@ public final class InternalNetworksImpl implements InternalNetworks {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String l3IsolationDomainName = Utils.getValueFromIdByName(id, "l3IsolationDomains");
+        String l3IsolationDomainName = ResourceManagerUtils.getValueFromIdByName(id, "l3IsolationDomains");
         if (l3IsolationDomainName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'l3IsolationDomains'.", id)));
         }
-        String internalNetworkName = Utils.getValueFromIdByName(id, "internalNetworks");
+        String internalNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "internalNetworks");
         if (internalNetworkName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'internalNetworks'.", id)));
@@ -202,17 +202,17 @@ public final class InternalNetworksImpl implements InternalNetworks {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String l3IsolationDomainName = Utils.getValueFromIdByName(id, "l3IsolationDomains");
+        String l3IsolationDomainName = ResourceManagerUtils.getValueFromIdByName(id, "l3IsolationDomains");
         if (l3IsolationDomainName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'l3IsolationDomains'.", id)));
         }
-        String internalNetworkName = Utils.getValueFromIdByName(id, "internalNetworks");
+        String internalNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "internalNetworks");
         if (internalNetworkName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'internalNetworks'.", id)));

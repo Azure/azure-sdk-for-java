@@ -29,7 +29,6 @@ final class PollingUtils {
             Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
 
             validationStatus = jsonTree.get("validationStatus").toString();
-            fileType = jsonTree.get("fileType").toString();
         } catch (IOException e) {
             throw new RuntimeException("Encountered exception while retrieving validation status", e);
         }
@@ -54,11 +53,7 @@ final class PollingUtils {
                 break;
 
             case "NOT_VALIDATED":
-                if ("JMX_FILE".equalsIgnoreCase(fileType)) {
-                    lroStatus = LongRunningOperationStatus.NOT_STARTED;
-                } else {
-                    lroStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                }
+                lroStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
 
                 break;
 

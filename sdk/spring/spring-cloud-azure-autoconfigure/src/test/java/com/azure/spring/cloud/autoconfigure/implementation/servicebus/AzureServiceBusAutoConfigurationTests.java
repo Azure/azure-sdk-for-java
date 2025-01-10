@@ -7,7 +7,6 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.spring.cloud.autoconfigure.implementation.AbstractAzureServiceConfigurationTests;
-import com.azure.spring.cloud.autoconfigure.implementation.context.TestSpringTokenCredentialProviderContextProviderAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties;
@@ -26,7 +25,7 @@ import java.time.Duration;
 
 import static com.azure.messaging.servicebus.models.SubQueue.DEAD_LETTER_QUEUE;
 import static com.azure.messaging.servicebus.models.SubQueue.TRANSFER_DEAD_LETTER_QUEUE;
-import static com.azure.spring.cloud.autoconfigure.implementation.servicebus.ServiceBusTestUtils.CONNECTION_STRING_FORMAT;
+import static com.azure.spring.cloud.autoconfigure.implementation.util.TestServiceBusUtils.CONNECTION_STRING_FORMAT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -35,8 +34,7 @@ class AzureServiceBusAutoConfigurationTests extends AbstractAzureServiceConfigur
     ServiceBusClientBuilderFactory, AzureServiceBusProperties> {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
-            AzureServiceBusAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AzureServiceBusAutoConfiguration.class));
 
     @Override
     protected ApplicationContextRunner getMinimalContextRunner() {

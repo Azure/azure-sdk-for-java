@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ResourcePoolsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourcePoolsClient.
+ */
 public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ResourcePoolsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ConnectedVMwareClientImpl client;
 
     /**
      * Initializes an instance of ResourcePoolsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ResourcePoolsClientImpl(ConnectedVMwareClientImpl client) {
@@ -142,9 +148,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Implements resourcePool PUT method.
-     *
-     * <p>Create Or Update resourcePool.
-     *
+     * 
+     * Create Or Update resourcePool.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @param body Request payload.
@@ -184,9 +190,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Implements resourcePool PUT method.
-     *
-     * <p>Create Or Update resourcePool.
-     *
+     * 
+     * Create Or Update resourcePool.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @param body Request payload.
@@ -226,9 +232,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Implements resourcePool PUT method.
-     *
-     * <p>Create Or Update resourcePool.
-     *
+     * 
+     * Create Or Update resourcePool.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @param body Request payload.
@@ -247,9 +253,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Implements resourcePool PUT method.
-     *
-     * <p>Create Or Update resourcePool.
-     *
+     * 
+     * Create Or Update resourcePool.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -268,9 +274,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Implements resourcePool PUT method.
-     *
-     * <p>Create Or Update resourcePool.
-     *
+     * 
+     * Create Or Update resourcePool.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @param body Request payload.
@@ -292,9 +298,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Implements resourcePool PUT method.
-     *
-     * <p>Create Or Update resourcePool.
-     *
+     * 
+     * Create Or Update resourcePool.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -311,9 +317,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Implements resourcePool PUT method.
-     *
-     * <p>Create Or Update resourcePool.
-     *
+     * 
+     * Create Or Update resourcePool.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @param body Request payload.
@@ -331,9 +337,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Implements resourcePool PUT method.
-     *
-     * <p>Create Or Update resourcePool.
-     *
+     * 
+     * Create Or Update resourcePool.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @param body Request payload.
@@ -351,9 +357,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Implements resourcePool PUT method.
-     *
-     * <p>Create Or Update resourcePool.
-     *
+     * 
+     * Create Or Update resourcePool.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -370,9 +376,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Implements resourcePool PUT method.
-     *
-     * <p>Create Or Update resourcePool.
-     *
+     * 
+     * Create Or Update resourcePool.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @param body Request payload.
@@ -391,9 +397,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Implements resourcePool PUT method.
-     *
-     * <p>Create Or Update resourcePool.
-     *
+     * 
+     * Create Or Update resourcePool.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -409,9 +415,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Implements resourcePool PUT method.
-     *
-     * <p>Create Or Update resourcePool.
-     *
+     * 
+     * Create Or Update resourcePool.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @param body Request payload.
@@ -429,9 +435,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Gets a resourcePool.
-     *
-     * <p>Implements resourcePool GET method.
-     *
+     * 
+     * Implements resourcePool GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -468,9 +474,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Gets a resourcePool.
-     *
-     * <p>Implements resourcePool GET method.
-     *
+     * 
+     * Implements resourcePool GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @param context The context to associate with this operation.
@@ -506,9 +512,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Gets a resourcePool.
-     *
-     * <p>Implements resourcePool GET method.
-     *
+     * 
+     * Implements resourcePool GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -524,9 +530,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Gets a resourcePool.
-     *
-     * <p>Implements resourcePool GET method.
-     *
+     * 
+     * Implements resourcePool GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @param context The context to associate with this operation.
@@ -543,9 +549,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Gets a resourcePool.
-     *
-     * <p>Implements resourcePool GET method.
-     *
+     * 
+     * Implements resourcePool GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -560,9 +566,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Updates a resourcePool.
-     *
-     * <p>API to update certain properties of the resourcePool resource.
-     *
+     * 
+     * API to update certain properties of the resourcePool resource.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @param body Resource properties to update.
@@ -602,9 +608,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Updates a resourcePool.
-     *
-     * <p>API to update certain properties of the resourcePool resource.
-     *
+     * 
+     * API to update certain properties of the resourcePool resource.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @param body Resource properties to update.
@@ -644,9 +650,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Updates a resourcePool.
-     *
-     * <p>API to update certain properties of the resourcePool resource.
-     *
+     * 
+     * API to update certain properties of the resourcePool resource.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -663,9 +669,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Updates a resourcePool.
-     *
-     * <p>API to update certain properties of the resourcePool resource.
-     *
+     * 
+     * API to update certain properties of the resourcePool resource.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @param body Resource properties to update.
@@ -683,9 +689,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Updates a resourcePool.
-     *
-     * <p>API to update certain properties of the resourcePool resource.
-     *
+     * 
+     * API to update certain properties of the resourcePool resource.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -701,9 +707,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Deletes an resourcePool.
-     *
-     * <p>Implements resourcePool DELETE method.
-     *
+     * 
+     * Implements resourcePool DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @param force Whether force delete was specified.
@@ -740,9 +746,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Deletes an resourcePool.
-     *
-     * <p>Implements resourcePool DELETE method.
-     *
+     * 
+     * Implements resourcePool DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @param force Whether force delete was specified.
@@ -779,9 +785,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Deletes an resourcePool.
-     *
-     * <p>Implements resourcePool DELETE method.
-     *
+     * 
+     * Implements resourcePool DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @param force Whether force delete was specified.
@@ -800,9 +806,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Deletes an resourcePool.
-     *
-     * <p>Implements resourcePool DELETE method.
-     *
+     * 
+     * Implements resourcePool DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -820,9 +826,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Deletes an resourcePool.
-     *
-     * <p>Implements resourcePool DELETE method.
-     *
+     * 
+     * Implements resourcePool DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @param force Whether force delete was specified.
@@ -844,9 +850,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Deletes an resourcePool.
-     *
-     * <p>Implements resourcePool DELETE method.
-     *
+     * 
+     * Implements resourcePool DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -862,9 +868,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Deletes an resourcePool.
-     *
-     * <p>Implements resourcePool DELETE method.
-     *
+     * 
+     * Implements resourcePool DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @param force Whether force delete was specified.
@@ -882,9 +888,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Deletes an resourcePool.
-     *
-     * <p>Implements resourcePool DELETE method.
-     *
+     * 
+     * Implements resourcePool DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @param force Whether force delete was specified.
@@ -901,9 +907,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Deletes an resourcePool.
-     *
-     * <p>Implements resourcePool DELETE method.
-     *
+     * 
+     * Implements resourcePool DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -920,9 +926,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Deletes an resourcePool.
-     *
-     * <p>Implements resourcePool DELETE method.
-     *
+     * 
+     * Implements resourcePool DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @param force Whether force delete was specified.
@@ -940,9 +946,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Deletes an resourcePool.
-     *
-     * <p>Implements resourcePool DELETE method.
-     *
+     * 
+     * Implements resourcePool DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -957,9 +963,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Deletes an resourcePool.
-     *
-     * <p>Implements resourcePool DELETE method.
-     *
+     * 
+     * Implements resourcePool DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @param force Whether force delete was specified.
@@ -975,9 +981,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Implements GET resourcePools in a subscription.
-     *
-     * <p>List of resourcePools in a subscription.
-     *
+     * 
+     * List of resourcePools in a subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of ResourcePools along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -1003,9 +1009,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Implements GET resourcePools in a subscription.
-     *
-     * <p>List of resourcePools in a subscription.
-     *
+     * 
+     * List of resourcePools in a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1033,9 +1039,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Implements GET resourcePools in a subscription.
-     *
-     * <p>List of resourcePools in a subscription.
-     *
+     * 
+     * List of resourcePools in a subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of ResourcePools as paginated response with {@link PagedFlux}.
@@ -1047,9 +1053,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Implements GET resourcePools in a subscription.
-     *
-     * <p>List of resourcePools in a subscription.
-     *
+     * 
+     * List of resourcePools in a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1064,9 +1070,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Implements GET resourcePools in a subscription.
-     *
-     * <p>List of resourcePools in a subscription.
-     *
+     * 
+     * List of resourcePools in a subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of ResourcePools as paginated response with {@link PagedIterable}.
@@ -1078,9 +1084,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Implements GET resourcePools in a subscription.
-     *
-     * <p>List of resourcePools in a subscription.
-     *
+     * 
+     * List of resourcePools in a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1094,9 +1100,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Implements GET resourcePools in a resource group.
-     *
-     * <p>List of resourcePools in a resource group.
-     *
+     * 
+     * List of resourcePools in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1128,9 +1134,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Implements GET resourcePools in a resource group.
-     *
-     * <p>List of resourcePools in a resource group.
-     *
+     * 
+     * List of resourcePools in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1164,9 +1170,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Implements GET resourcePools in a resource group.
-     *
-     * <p>List of resourcePools in a resource group.
-     *
+     * 
+     * List of resourcePools in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1181,9 +1187,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Implements GET resourcePools in a resource group.
-     *
-     * <p>List of resourcePools in a resource group.
-     *
+     * 
+     * List of resourcePools in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1199,9 +1205,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Implements GET resourcePools in a resource group.
-     *
-     * <p>List of resourcePools in a resource group.
-     *
+     * 
+     * List of resourcePools in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1215,9 +1221,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Implements GET resourcePools in a resource group.
-     *
-     * <p>List of resourcePools in a resource group.
-     *
+     * 
+     * List of resourcePools in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1232,9 +1238,8 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1258,9 +1263,8 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1285,9 +1289,8 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1313,9 +1316,8 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

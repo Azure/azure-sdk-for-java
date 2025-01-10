@@ -28,7 +28,7 @@ public final class WatchlistItemsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.watchlistItems()
-            .deleteWithResponse("jrw", "flvx", "ocaywmfvuhz", "olhve", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("syril", "hxdqaol", "ylnkkbjpjvlywltm", "wob", com.azure.core.util.Context.NONE);
 
     }
 }

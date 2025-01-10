@@ -11,7 +11,7 @@ public final class SubmissionMailEntityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubmissionMailEntityProperties model = BinaryData.fromString(
-            "{\"networkMessageId\":\"a95da80a-8225-4171-8a2c-ee06f1b2208f\",\"submissionId\":\"3e98b39c-0774-44cf-b036-70758c6cc4d1\",\"submitter\":\"mgobliqemc\",\"submissionDate\":\"2021-01-05T11:19:52Z\",\"timestamp\":\"2021-07-20T07:52:46Z\",\"recipient\":\"lbonxxupjxvtrkfk\",\"sender\":\"njqnnpjwkosny\",\"senderIp\":\"gfoujj\",\"subject\":\"gdqmrlhnzkwop\",\"reportType\":\"nyinxuprrxyxw\",\"additionalData\":{\"ployuekdcpvu\":\"databf\",\"olefcjisepkdbxo\":\"datatrsvjmnsvujnjkt\"},\"friendlyName\":\"bja\"}")
+            "{\"networkMessageId\":\"09792fe3-0a81-469d-8aa4-bafbee39423f\",\"submissionId\":\"e70c4d1c-6897-4885-a064-b2462c12363b\",\"submitter\":\"m\",\"submissionDate\":\"2021-09-03T01:56:24Z\",\"timestamp\":\"2021-09-20T20:14:10Z\",\"recipient\":\"hspnxwqagnepz\",\"sender\":\"klsbsbqqqagw\",\"senderIp\":\"xaomzisglrrc\",\"subject\":\"zkhhltnjadhqo\",\"reportType\":\"jqoyueayfbpcm\",\"additionalData\":{\"mg\":\"databyrrueqth\",\"gdhxi\":\"datambscbbx\"},\"friendlyName\":\"lopedbwdpyqyyb\"}")
             .toObject(SubmissionMailEntityProperties.class);
     }
 

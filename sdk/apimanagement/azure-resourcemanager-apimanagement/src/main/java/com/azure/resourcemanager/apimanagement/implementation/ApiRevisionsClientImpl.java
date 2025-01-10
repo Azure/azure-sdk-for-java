@@ -30,17 +30,23 @@ import com.azure.resourcemanager.apimanagement.fluent.models.ApiRevisionContract
 import com.azure.resourcemanager.apimanagement.models.ApiRevisionCollection;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ApiRevisionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ApiRevisionsClient.
+ */
 public final class ApiRevisionsClientImpl implements ApiRevisionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ApiRevisionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of ApiRevisionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ApiRevisionsClientImpl(ApiManagementClientImpl client) {
@@ -77,20 +83,20 @@ public final class ApiRevisionsClientImpl implements ApiRevisionsClient {
 
     /**
      * Lists all revisions of an API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| apiRevision | filter | ge,
-     *     le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| apiRevision | filter | ge, le,
+     * eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged API Revision list representation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApiRevisionContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
@@ -125,13 +131,13 @@ public final class ApiRevisionsClientImpl implements ApiRevisionsClient {
 
     /**
      * Lists all revisions of an API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| apiRevision | filter | ge,
-     *     le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| apiRevision | filter | ge, le,
+     * eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -139,7 +145,7 @@ public final class ApiRevisionsClientImpl implements ApiRevisionsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged API Revision list representation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApiRevisionContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
@@ -173,13 +179,13 @@ public final class ApiRevisionsClientImpl implements ApiRevisionsClient {
 
     /**
      * Lists all revisions of an API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| apiRevision | filter | ge,
-     *     le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| apiRevision | filter | ge, le,
+     * eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -197,7 +203,7 @@ public final class ApiRevisionsClientImpl implements ApiRevisionsClient {
 
     /**
      * Lists all revisions of an API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -219,13 +225,13 @@ public final class ApiRevisionsClientImpl implements ApiRevisionsClient {
 
     /**
      * Lists all revisions of an API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| apiRevision | filter | ge,
-     *     le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| apiRevision | filter | ge, le,
+     * eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -244,7 +250,7 @@ public final class ApiRevisionsClientImpl implements ApiRevisionsClient {
 
     /**
      * Lists all revisions of an API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -264,13 +270,13 @@ public final class ApiRevisionsClientImpl implements ApiRevisionsClient {
 
     /**
      * Lists all revisions of an API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| apiRevision | filter | ge,
-     *     le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| apiRevision | filter | ge, le,
+     * eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -288,14 +294,13 @@ public final class ApiRevisionsClientImpl implements ApiRevisionsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged API Revision list representation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApiRevisionContractInner>> listByServiceNextSinglePageAsync(String nextLink) {
@@ -316,15 +321,14 @@ public final class ApiRevisionsClientImpl implements ApiRevisionsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged API Revision list representation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApiRevisionContractInner>> listByServiceNextSinglePageAsync(String nextLink,

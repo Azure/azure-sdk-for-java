@@ -27,6 +27,15 @@ public final class MetricAlertRuleCondition extends ExpandableStringEnum<MetricA
     public static final MetricAlertRuleCondition LESS_THAN_OR_EQUAL = fromString("LessThanOrEqual");
 
     /**
+     * Creates a new instance of MetricAlertRuleCondition value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MetricAlertRuleCondition() {
+    }
+
+    /**
      * Creates or finds a MetricAlertRuleCondition from its string representation.
      *
      * @param name a name to look for
@@ -36,7 +45,11 @@ public final class MetricAlertRuleCondition extends ExpandableStringEnum<MetricA
         return fromString(name, MetricAlertRuleCondition.class);
     }
 
-    /** @return known MetricAlertRuleCondition values */
+    /**
+     * Gets known MetricAlertRuleCondition values.
+     *
+     * @return known MetricAlertRuleCondition values
+     */
     public static Collection<MetricAlertRuleCondition> values() {
         return values(MetricAlertRuleCondition.class);
     }

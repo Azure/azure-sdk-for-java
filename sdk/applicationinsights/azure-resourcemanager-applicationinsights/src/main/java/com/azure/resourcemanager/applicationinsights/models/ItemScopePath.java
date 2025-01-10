@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ItemScopePath. */
+/**
+ * Defines values for ItemScopePath.
+ */
 public final class ItemScopePath extends ExpandableStringEnum<ItemScopePath> {
-    /** Static value analyticsItems for ItemScopePath. */
+    /**
+     * Static value analyticsItems for ItemScopePath.
+     */
     public static final ItemScopePath ANALYTICS_ITEMS = fromString("analyticsItems");
 
-    /** Static value myanalyticsItems for ItemScopePath. */
+    /**
+     * Static value myanalyticsItems for ItemScopePath.
+     */
     public static final ItemScopePath MYANALYTICS_ITEMS = fromString("myanalyticsItems");
 
     /**
      * Creates a new instance of ItemScopePath value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class ItemScopePath extends ExpandableStringEnum<ItemScopePath> {
 
     /**
      * Creates or finds a ItemScopePath from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ItemScopePath.
      */
-    @JsonCreator
     public static ItemScopePath fromString(String name) {
         return fromString(name, ItemScopePath.class);
     }
 
     /**
      * Gets known ItemScopePath values.
-     *
+     * 
      * @return known ItemScopePath values.
      */
     public static Collection<ItemScopePath> values() {

@@ -22,7 +22,11 @@ public interface WebApp
     extends WebAppBasic, SupportsOneDeploy, WebAppBase, Updatable<WebApp.Update>, SupportsListingPrivateLinkResource,
     SupportsListingPrivateEndpointConnection, SupportsUpdatingPrivateEndpointConnection {
 
-    /** @return the entry point to deployment slot management API under the web app */
+    /**
+     * Gets the entry point to deployment slot management API under the web app.
+     *
+     * @return the entry point to deployment slot management API under the web app
+     */
     DeploymentSlots deploymentSlots();
 
     /**

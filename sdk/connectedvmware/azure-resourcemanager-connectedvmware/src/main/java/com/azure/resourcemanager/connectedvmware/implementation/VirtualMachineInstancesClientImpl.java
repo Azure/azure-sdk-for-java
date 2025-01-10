@@ -42,17 +42,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VirtualMachineInstancesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VirtualMachineInstancesClient.
+ */
 public final class VirtualMachineInstancesClientImpl implements VirtualMachineInstancesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final VirtualMachineInstancesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ConnectedVMwareClientImpl client;
 
     /**
      * Initializes an instance of VirtualMachineInstancesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     VirtualMachineInstancesClientImpl(ConnectedVMwareClientImpl client) {
@@ -149,12 +155,12 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements virtual machine PUT method.
-     *
-     * <p>The operation to create or update a virtual machine instance. Please note some properties can be set only
-     * during virtual machine instance creation.
-     *
+     * 
+     * The operation to create or update a virtual machine instance. Please note some properties can be set only during
+     * virtual machine instance creation.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -183,12 +189,12 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements virtual machine PUT method.
-     *
-     * <p>The operation to create or update a virtual machine instance. Please note some properties can be set only
-     * during virtual machine instance creation.
-     *
+     * 
+     * The operation to create or update a virtual machine instance. Please note some properties can be set only during
+     * virtual machine instance creation.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -217,12 +223,12 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements virtual machine PUT method.
-     *
-     * <p>The operation to create or update a virtual machine instance. Please note some properties can be set only
-     * during virtual machine instance creation.
-     *
+     * 
+     * The operation to create or update a virtual machine instance. Please note some properties can be set only during
+     * virtual machine instance creation.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -240,12 +246,12 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements virtual machine PUT method.
-     *
-     * <p>The operation to create or update a virtual machine instance. Please note some properties can be set only
-     * during virtual machine instance creation.
-     *
+     * 
+     * The operation to create or update a virtual machine instance. Please note some properties can be set only during
+     * virtual machine instance creation.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -263,12 +269,12 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements virtual machine PUT method.
-     *
-     * <p>The operation to create or update a virtual machine instance. Please note some properties can be set only
-     * during virtual machine instance creation.
-     *
+     * 
+     * The operation to create or update a virtual machine instance. Please note some properties can be set only during
+     * virtual machine instance creation.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -288,12 +294,12 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements virtual machine PUT method.
-     *
-     * <p>The operation to create or update a virtual machine instance. Please note some properties can be set only
-     * during virtual machine instance creation.
-     *
+     * 
+     * The operation to create or update a virtual machine instance. Please note some properties can be set only during
+     * virtual machine instance creation.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -308,12 +314,12 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements virtual machine PUT method.
-     *
-     * <p>The operation to create or update a virtual machine instance. Please note some properties can be set only
-     * during virtual machine instance creation.
-     *
+     * 
+     * The operation to create or update a virtual machine instance. Please note some properties can be set only during
+     * virtual machine instance creation.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -329,12 +335,12 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements virtual machine PUT method.
-     *
-     * <p>The operation to create or update a virtual machine instance. Please note some properties can be set only
-     * during virtual machine instance creation.
-     *
+     * 
+     * The operation to create or update a virtual machine instance. Please note some properties can be set only during
+     * virtual machine instance creation.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -349,12 +355,12 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements virtual machine PUT method.
-     *
-     * <p>The operation to create or update a virtual machine instance. Please note some properties can be set only
-     * during virtual machine instance creation.
-     *
+     * 
+     * The operation to create or update a virtual machine instance. Please note some properties can be set only during
+     * virtual machine instance creation.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -368,12 +374,12 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements virtual machine PUT method.
-     *
-     * <p>The operation to create or update a virtual machine instance. Please note some properties can be set only
-     * during virtual machine instance creation.
-     *
+     * 
+     * The operation to create or update a virtual machine instance. Please note some properties can be set only during
+     * virtual machine instance creation.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -390,12 +396,12 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements virtual machine PUT method.
-     *
-     * <p>The operation to create or update a virtual machine instance. Please note some properties can be set only
-     * during virtual machine instance creation.
-     *
+     * 
+     * The operation to create or update a virtual machine instance. Please note some properties can be set only during
+     * virtual machine instance creation.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -409,12 +415,12 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements virtual machine PUT method.
-     *
-     * <p>The operation to create or update a virtual machine instance. Please note some properties can be set only
-     * during virtual machine instance creation.
-     *
+     * 
+     * The operation to create or update a virtual machine instance. Please note some properties can be set only during
+     * virtual machine instance creation.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -430,11 +436,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Gets a virtual machine.
-     *
-     * <p>Retrieves information about a virtual machine instance.
-     *
+     * 
+     * Retrieves information about a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -458,11 +464,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Gets a virtual machine.
-     *
-     * <p>Retrieves information about a virtual machine instance.
-     *
+     * 
+     * Retrieves information about a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -485,11 +491,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Gets a virtual machine.
-     *
-     * <p>Retrieves information about a virtual machine instance.
-     *
+     * 
+     * Retrieves information about a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -502,11 +508,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Gets a virtual machine.
-     *
-     * <p>Retrieves information about a virtual machine instance.
-     *
+     * 
+     * Retrieves information about a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -520,11 +526,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Gets a virtual machine.
-     *
-     * <p>Retrieves information about a virtual machine instance.
-     *
+     * 
+     * Retrieves information about a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -537,11 +543,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Updates a virtual machine.
-     *
-     * <p>The operation to update a virtual machine instance.
-     *
+     * 
+     * The operation to update a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param body Resource properties to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -570,11 +576,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Updates a virtual machine.
-     *
-     * <p>The operation to update a virtual machine instance.
-     *
+     * 
+     * The operation to update a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param body Resource properties to update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -603,11 +609,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Updates a virtual machine.
-     *
-     * <p>The operation to update a virtual machine instance.
-     *
+     * 
+     * The operation to update a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param body Resource properties to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -625,11 +631,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Updates a virtual machine.
-     *
-     * <p>The operation to update a virtual machine instance.
-     *
+     * 
+     * The operation to update a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -647,11 +653,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Updates a virtual machine.
-     *
-     * <p>The operation to update a virtual machine instance.
-     *
+     * 
+     * The operation to update a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param body Resource properties to update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -671,11 +677,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Updates a virtual machine.
-     *
-     * <p>The operation to update a virtual machine instance.
-     *
+     * 
+     * The operation to update a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -690,11 +696,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Updates a virtual machine.
-     *
-     * <p>The operation to update a virtual machine instance.
-     *
+     * 
+     * The operation to update a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param body Resource properties to update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -710,11 +716,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Updates a virtual machine.
-     *
-     * <p>The operation to update a virtual machine instance.
-     *
+     * 
+     * The operation to update a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param body Resource properties to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -728,11 +734,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Updates a virtual machine.
-     *
-     * <p>The operation to update a virtual machine instance.
-     *
+     * 
+     * The operation to update a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -746,11 +752,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Updates a virtual machine.
-     *
-     * <p>The operation to update a virtual machine instance.
-     *
+     * 
+     * The operation to update a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param body Resource properties to update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -766,11 +772,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Updates a virtual machine.
-     *
-     * <p>The operation to update a virtual machine instance.
-     *
+     * 
+     * The operation to update a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -784,11 +790,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Updates a virtual machine.
-     *
-     * <p>The operation to update a virtual machine instance.
-     *
+     * 
+     * The operation to update a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param body Resource properties to update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -803,11 +809,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Deletes an virtual machine.
-     *
-     * <p>The operation to delete a virtual machine instance.
-     *
+     * 
+     * The operation to delete a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param deleteFromHost Whether to delete the VM from the vCenter.
      * @param force Whether force delete was specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -834,11 +840,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Deletes an virtual machine.
-     *
-     * <p>The operation to delete a virtual machine instance.
-     *
+     * 
+     * The operation to delete a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param deleteFromHost Whether to delete the VM from the vCenter.
      * @param force Whether force delete was specified.
      * @param context The context to associate with this operation.
@@ -865,11 +871,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Deletes an virtual machine.
-     *
-     * <p>The operation to delete a virtual machine instance.
-     *
+     * 
+     * The operation to delete a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param deleteFromHost Whether to delete the VM from the vCenter.
      * @param force Whether force delete was specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -887,11 +893,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Deletes an virtual machine.
-     *
-     * <p>The operation to delete a virtual machine instance.
-     *
+     * 
+     * The operation to delete a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -908,11 +914,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Deletes an virtual machine.
-     *
-     * <p>The operation to delete a virtual machine instance.
-     *
+     * 
+     * The operation to delete a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param deleteFromHost Whether to delete the VM from the vCenter.
      * @param force Whether force delete was specified.
      * @param context The context to associate with this operation.
@@ -932,11 +938,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Deletes an virtual machine.
-     *
-     * <p>The operation to delete a virtual machine instance.
-     *
+     * 
+     * The operation to delete a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -951,11 +957,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Deletes an virtual machine.
-     *
-     * <p>The operation to delete a virtual machine instance.
-     *
+     * 
+     * The operation to delete a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param deleteFromHost Whether to delete the VM from the vCenter.
      * @param force Whether force delete was specified.
      * @param context The context to associate with this operation.
@@ -972,11 +978,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Deletes an virtual machine.
-     *
-     * <p>The operation to delete a virtual machine instance.
-     *
+     * 
+     * The operation to delete a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param deleteFromHost Whether to delete the VM from the vCenter.
      * @param force Whether force delete was specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -992,11 +998,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Deletes an virtual machine.
-     *
-     * <p>The operation to delete a virtual machine instance.
-     *
+     * 
+     * The operation to delete a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1012,11 +1018,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Deletes an virtual machine.
-     *
-     * <p>The operation to delete a virtual machine instance.
-     *
+     * 
+     * The operation to delete a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param deleteFromHost Whether to delete the VM from the vCenter.
      * @param force Whether force delete was specified.
      * @param context The context to associate with this operation.
@@ -1033,11 +1039,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Deletes an virtual machine.
-     *
-     * <p>The operation to delete a virtual machine instance.
-     *
+     * 
+     * The operation to delete a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1051,11 +1057,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Deletes an virtual machine.
-     *
-     * <p>The operation to delete a virtual machine instance.
-     *
+     * 
+     * The operation to delete a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param deleteFromHost Whether to delete the VM from the vCenter.
      * @param force Whether force delete was specified.
      * @param context The context to associate with this operation.
@@ -1070,16 +1076,16 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements List virtual machine instances.
-     *
-     * <p>Lists all of the virtual machine instances within the specified parent resource.
-     *
+     * 
+     * Lists all of the virtual machine instances within the specified parent resource.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of VirtualMachineInstances along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of VirtualMachineInstances along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineInstanceInner>> listSinglePageAsync(String resourceUri) {
@@ -1101,17 +1107,17 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements List virtual machine instances.
-     *
-     * <p>Lists all of the virtual machine instances within the specified parent resource.
-     *
+     * 
+     * Lists all of the virtual machine instances within the specified parent resource.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of VirtualMachineInstances along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of VirtualMachineInstances along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineInstanceInner>> listSinglePageAsync(String resourceUri, Context context) {
@@ -1131,11 +1137,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements List virtual machine instances.
-     *
-     * <p>Lists all of the virtual machine instances within the specified parent resource.
-     *
+     * 
+     * Lists all of the virtual machine instances within the specified parent resource.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1148,11 +1154,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements List virtual machine instances.
-     *
-     * <p>Lists all of the virtual machine instances within the specified parent resource.
-     *
+     * 
+     * Lists all of the virtual machine instances within the specified parent resource.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1167,11 +1173,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements List virtual machine instances.
-     *
-     * <p>Lists all of the virtual machine instances within the specified parent resource.
-     *
+     * 
+     * Lists all of the virtual machine instances within the specified parent resource.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1184,11 +1190,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements List virtual machine instances.
-     *
-     * <p>Lists all of the virtual machine instances within the specified parent resource.
-     *
+     * 
+     * Lists all of the virtual machine instances within the specified parent resource.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1202,11 +1208,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements the operation to stop a virtual machine.
-     *
-     * <p>The operation to power off (stop) a virtual machine instance.
-     *
+     * 
+     * The operation to power off (stop) a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param body Virtualmachine stop action payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1234,11 +1240,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements the operation to stop a virtual machine.
-     *
-     * <p>The operation to power off (stop) a virtual machine instance.
-     *
+     * 
+     * The operation to power off (stop) a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param body Virtualmachine stop action payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1266,11 +1272,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements the operation to stop a virtual machine.
-     *
-     * <p>The operation to power off (stop) a virtual machine instance.
-     *
+     * 
+     * The operation to power off (stop) a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param body Virtualmachine stop action payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1286,11 +1292,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements the operation to stop a virtual machine.
-     *
-     * <p>The operation to power off (stop) a virtual machine instance.
-     *
+     * 
+     * The operation to power off (stop) a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1306,11 +1312,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements the operation to stop a virtual machine.
-     *
-     * <p>The operation to power off (stop) a virtual machine instance.
-     *
+     * 
+     * The operation to power off (stop) a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param body Virtualmachine stop action payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1329,11 +1335,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements the operation to stop a virtual machine.
-     *
-     * <p>The operation to power off (stop) a virtual machine instance.
-     *
+     * 
+     * The operation to power off (stop) a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1347,11 +1353,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements the operation to stop a virtual machine.
-     *
-     * <p>The operation to power off (stop) a virtual machine instance.
-     *
+     * 
+     * The operation to power off (stop) a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param body Virtualmachine stop action payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1367,11 +1373,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements the operation to stop a virtual machine.
-     *
-     * <p>The operation to power off (stop) a virtual machine instance.
-     *
+     * 
+     * The operation to power off (stop) a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param body Virtualmachine stop action payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1385,11 +1391,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements the operation to stop a virtual machine.
-     *
-     * <p>The operation to power off (stop) a virtual machine instance.
-     *
+     * 
+     * The operation to power off (stop) a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1403,11 +1409,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements the operation to stop a virtual machine.
-     *
-     * <p>The operation to power off (stop) a virtual machine instance.
-     *
+     * 
+     * The operation to power off (stop) a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param body Virtualmachine stop action payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1422,11 +1428,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements the operation to stop a virtual machine.
-     *
-     * <p>The operation to power off (stop) a virtual machine instance.
-     *
+     * 
+     * The operation to power off (stop) a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1439,11 +1445,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements the operation to stop a virtual machine.
-     *
-     * <p>The operation to power off (stop) a virtual machine instance.
-     *
+     * 
+     * The operation to power off (stop) a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param body Virtualmachine stop action payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1457,11 +1463,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements the operation to start a virtual machine.
-     *
-     * <p>The operation to start a virtual machine instance.
-     *
+     * 
+     * The operation to start a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1485,11 +1491,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements the operation to start a virtual machine.
-     *
-     * <p>The operation to start a virtual machine instance.
-     *
+     * 
+     * The operation to start a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1512,11 +1518,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements the operation to start a virtual machine.
-     *
-     * <p>The operation to start a virtual machine instance.
-     *
+     * 
+     * The operation to start a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1531,11 +1537,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements the operation to start a virtual machine.
-     *
-     * <p>The operation to start a virtual machine instance.
-     *
+     * 
+     * The operation to start a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1552,11 +1558,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements the operation to start a virtual machine.
-     *
-     * <p>The operation to start a virtual machine instance.
-     *
+     * 
+     * The operation to start a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1569,11 +1575,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements the operation to start a virtual machine.
-     *
-     * <p>The operation to start a virtual machine instance.
-     *
+     * 
+     * The operation to start a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1587,11 +1593,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements the operation to start a virtual machine.
-     *
-     * <p>The operation to start a virtual machine instance.
-     *
+     * 
+     * The operation to start a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1604,11 +1610,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements the operation to start a virtual machine.
-     *
-     * <p>The operation to start a virtual machine instance.
-     *
+     * 
+     * The operation to start a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1622,11 +1628,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements the operation to start a virtual machine.
-     *
-     * <p>The operation to start a virtual machine instance.
-     *
+     * 
+     * The operation to start a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1638,11 +1644,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements the operation to start a virtual machine.
-     *
-     * <p>The operation to start a virtual machine instance.
-     *
+     * 
+     * The operation to start a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1655,11 +1661,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements the operation to restart a virtual machine.
-     *
-     * <p>The operation to restart a virtual machine instance.
-     *
+     * 
+     * The operation to restart a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1683,11 +1689,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements the operation to restart a virtual machine.
-     *
-     * <p>The operation to restart a virtual machine instance.
-     *
+     * 
+     * The operation to restart a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1710,11 +1716,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements the operation to restart a virtual machine.
-     *
-     * <p>The operation to restart a virtual machine instance.
-     *
+     * 
+     * The operation to restart a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1729,11 +1735,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements the operation to restart a virtual machine.
-     *
-     * <p>The operation to restart a virtual machine instance.
-     *
+     * 
+     * The operation to restart a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1750,11 +1756,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements the operation to restart a virtual machine.
-     *
-     * <p>The operation to restart a virtual machine instance.
-     *
+     * 
+     * The operation to restart a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1767,11 +1773,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements the operation to restart a virtual machine.
-     *
-     * <p>The operation to restart a virtual machine instance.
-     *
+     * 
+     * The operation to restart a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1785,11 +1791,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements the operation to restart a virtual machine.
-     *
-     * <p>The operation to restart a virtual machine instance.
-     *
+     * 
+     * The operation to restart a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1802,11 +1808,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements the operation to restart a virtual machine.
-     *
-     * <p>The operation to restart a virtual machine instance.
-     *
+     * 
+     * The operation to restart a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1820,11 +1826,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements the operation to restart a virtual machine.
-     *
-     * <p>The operation to restart a virtual machine instance.
-     *
+     * 
+     * The operation to restart a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1836,11 +1842,11 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Implements the operation to restart a virtual machine.
-     *
-     * <p>The operation to restart a virtual machine instance.
-     *
+     * 
+     * The operation to restart a virtual machine instance.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1853,14 +1859,13 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of VirtualMachineInstances along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of VirtualMachineInstances along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineInstanceInner>> listNextSinglePageAsync(String nextLink) {
@@ -1880,15 +1885,14 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of VirtualMachineInstances along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of VirtualMachineInstances along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineInstanceInner>> listNextSinglePageAsync(String nextLink, Context context) {

@@ -14,29 +14,17 @@ import java.util.Locale;
  * this class guarantees correctness.
  */
 public final class BlobSasPermission {
-
     private boolean readPermission;
-
     private boolean addPermission;
-
     private boolean createPermission;
-
     private boolean writePermission;
-
     private boolean deletePermission;
-
     private boolean deleteVersionPermission;
-
     private boolean permanentDeletePermission;
-
     private boolean tagsPermission;
-
     private boolean listPermission;
-
     private boolean movePermission;
-
     private boolean executePermission;
-
     private boolean immutabilityPolicyPermission;
 
     /**
@@ -117,6 +105,8 @@ public final class BlobSasPermission {
     }
 
     /**
+     * Gets the read permission status.
+     *
      * @return the read permission status.
      */
     public boolean hasReadPermission() {
@@ -135,6 +125,8 @@ public final class BlobSasPermission {
     }
 
     /**
+     * Gets the add permission status.
+     *
      * @return the add permission status.
      */
     public boolean hasAddPermission() {
@@ -153,6 +145,8 @@ public final class BlobSasPermission {
     }
 
     /**
+     * Gets the create permission status.
+     *
      * @return the create permission status.
      */
     public boolean hasCreatePermission() {
@@ -171,6 +165,8 @@ public final class BlobSasPermission {
     }
 
     /**
+     * Gets the write permission status.
+     *
      * @return the write permission status.
      */
     public boolean hasWritePermission() {
@@ -189,6 +185,8 @@ public final class BlobSasPermission {
     }
 
     /**
+     * Gets the delete permission status.
+     *
      * @return the delete permission status.
      */
     public boolean hasDeletePermission() {
@@ -207,6 +205,8 @@ public final class BlobSasPermission {
     }
 
     /**
+     * Gets the delete version permission status.
+     *
      * @return the delete version permission status.
      */
     public boolean hasDeleteVersionPermission() {
@@ -225,6 +225,8 @@ public final class BlobSasPermission {
     }
 
     /**
+     * Gets the permanent delete permission status.
+     *
      * @return the permanent delete permission status.
      */
     public boolean hasPermanentDeletePermission() {
@@ -243,6 +245,8 @@ public final class BlobSasPermission {
     }
 
     /**
+     * Gets the tags permission status.
+     *
      * @return the tags permission status.
      */
     public boolean hasTagsPermission() {
@@ -261,6 +265,8 @@ public final class BlobSasPermission {
     }
 
     /**
+     * Gets the list permission status.
+     *
      * @return the list permission status.
      */
     public boolean hasListPermission() {
@@ -279,6 +285,8 @@ public final class BlobSasPermission {
     }
 
     /**
+     * Gets the move permission status.
+     *
      * @return the move permission status.
      */
     public boolean hasMovePermission() {
@@ -297,6 +305,8 @@ public final class BlobSasPermission {
     }
 
     /**
+     * Gets the execute permission status.
+     *
      * @return the execute permission status.
      */
     public boolean hasExecutePermission() {
@@ -315,6 +325,8 @@ public final class BlobSasPermission {
     }
 
     /**
+     * Gets the set immutability policy permission status.
+     * 
      * @return the set immutability policy permission status.
      */
     public boolean hasImmutabilityPolicyPermission() {

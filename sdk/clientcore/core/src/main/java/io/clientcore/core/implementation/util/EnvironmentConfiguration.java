@@ -47,6 +47,8 @@ public class EnvironmentConfiguration {
 
     /**
      * Clones original configuration.
+     *
+     * @param original The original configuration to clone.
      */
     public EnvironmentConfiguration(EnvironmentConfiguration original) {
         this.explicitConfigurations = new ConcurrentHashMap<>(original.explicitConfigurations);
@@ -56,6 +58,9 @@ public class EnvironmentConfiguration {
 
     /**
      * Constructs a configuration containing mocked environment. Use this constructor for testing.
+     *
+     * @param environmentConfigurationSource The mocked environment configuration source.
+     * @param systemPropertiesConfigurationSource The mocked system properties configuration source.
      */
     public EnvironmentConfiguration(ConfigurationSource systemPropertiesConfigurationSource,
         ConfigurationSource environmentConfigurationSource) {
@@ -171,7 +176,7 @@ public class EnvironmentConfiguration {
      * <p>
      * This will overwrite the previous configuration value if it existed.
      *
-     * @param name  Name of the configuration.
+     * @param name Name of the configuration.
      * @param value Value of the configuration.
      * @return The updated Configuration object.
      */

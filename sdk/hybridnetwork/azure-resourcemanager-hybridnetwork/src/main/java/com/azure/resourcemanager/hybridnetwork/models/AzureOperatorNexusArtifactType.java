@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class AzureOperatorNexusArtifactType extends ExpandableStringEnum<A
      * @param name a name to look for.
      * @return the corresponding AzureOperatorNexusArtifactType.
      */
-    @JsonCreator
     public static AzureOperatorNexusArtifactType fromString(String name) {
         return fromString(name, AzureOperatorNexusArtifactType.class);
     }

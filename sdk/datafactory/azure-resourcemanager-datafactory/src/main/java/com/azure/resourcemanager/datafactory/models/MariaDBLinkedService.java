@@ -102,7 +102,8 @@ public final class MariaDBLinkedService extends LinkedService {
 
     /**
      * Get the driverVersion property: The version of the MariaDB driver. Type: string. V1 or empty for legacy driver,
-     * V2 for new driver. V1 can support connection string and property bag, V2 can only support connection string.
+     * V2 for new driver. V1 can support connection string and property bag, V2 can only support connection string. The
+     * legacy driver is scheduled for deprecation by October 2024.
      * 
      * @return the driverVersion value.
      */
@@ -112,7 +113,8 @@ public final class MariaDBLinkedService extends LinkedService {
 
     /**
      * Set the driverVersion property: The version of the MariaDB driver. Type: string. V1 or empty for legacy driver,
-     * V2 for new driver. V1 can support connection string and property bag, V2 can only support connection string.
+     * V2 for new driver. V1 can support connection string and property bag, V2 can only support connection string. The
+     * legacy driver is scheduled for deprecation by October 2024.
      * 
      * @param driverVersion the driverVersion value to set.
      * @return the MariaDBLinkedService object itself.
@@ -243,6 +245,62 @@ public final class MariaDBLinkedService extends LinkedService {
     }
 
     /**
+     * Get the sslMode property: This option specifies whether the driver uses TLS encryption and verification when
+     * connecting to MariaDB. E.g., SSLMode=&lt;0/1/2/3/4&gt;. Options: DISABLED (0) / PREFERRED (1) (Default) /
+     * REQUIRED (2) / VERIFY_CA (3) / VERIFY_IDENTITY (4), REQUIRED (2) is recommended to only allow connections
+     * encrypted with SSL/TLS.
+     * 
+     * @return the sslMode value.
+     */
+    public Object sslMode() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sslMode();
+    }
+
+    /**
+     * Set the sslMode property: This option specifies whether the driver uses TLS encryption and verification when
+     * connecting to MariaDB. E.g., SSLMode=&lt;0/1/2/3/4&gt;. Options: DISABLED (0) / PREFERRED (1) (Default) /
+     * REQUIRED (2) / VERIFY_CA (3) / VERIFY_IDENTITY (4), REQUIRED (2) is recommended to only allow connections
+     * encrypted with SSL/TLS.
+     * 
+     * @param sslMode the sslMode value to set.
+     * @return the MariaDBLinkedService object itself.
+     */
+    public MariaDBLinkedService withSslMode(Object sslMode) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MariaDBLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSslMode(sslMode);
+        return this;
+    }
+
+    /**
+     * Get the useSystemTrustStore property: This option specifies whether to use a CA certificate from the system trust
+     * store, or from a specified PEM file. E.g. UseSystemTrustStore=&lt;0/1&gt;; Options: Enabled (1) / Disabled (0)
+     * (Default).
+     * 
+     * @return the useSystemTrustStore value.
+     */
+    public Object useSystemTrustStore() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().useSystemTrustStore();
+    }
+
+    /**
+     * Set the useSystemTrustStore property: This option specifies whether to use a CA certificate from the system trust
+     * store, or from a specified PEM file. E.g. UseSystemTrustStore=&lt;0/1&gt;; Options: Enabled (1) / Disabled (0)
+     * (Default).
+     * 
+     * @param useSystemTrustStore the useSystemTrustStore value to set.
+     * @return the MariaDBLinkedService object itself.
+     */
+    public MariaDBLinkedService withUseSystemTrustStore(Object useSystemTrustStore) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MariaDBLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUseSystemTrustStore(useSystemTrustStore);
+        return this;
+    }
+
+    /**
      * Get the password property: The Azure key vault secret reference of password in connection string.
      * 
      * @return the password value.
@@ -297,13 +355,22 @@ public final class MariaDBLinkedService extends LinkedService {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property innerTypeProperties in model MariaDBLinkedService"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (connectVia() != null) {
+            connectVia().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 

@@ -15,11 +15,13 @@ import com.azure.resourcemanager.kusto.fluent.models.CheckNameResultInner;
 import com.azure.resourcemanager.kusto.fluent.models.DatabasePrincipalAssignmentInner;
 import com.azure.resourcemanager.kusto.models.DatabasePrincipalAssignmentCheckNameRequest;
 
-/** An instance of this class provides access to all the operations defined in DatabasePrincipalAssignmentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DatabasePrincipalAssignmentsClient.
+ */
 public interface DatabasePrincipalAssignmentsClient {
     /**
      * Checks that the database principal assignment is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -36,7 +38,7 @@ public interface DatabasePrincipalAssignmentsClient {
 
     /**
      * Checks that the database principal assignment is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -52,7 +54,7 @@ public interface DatabasePrincipalAssignmentsClient {
 
     /**
      * Gets a Kusto cluster database principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -69,7 +71,7 @@ public interface DatabasePrincipalAssignmentsClient {
 
     /**
      * Gets a Kusto cluster database principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -85,7 +87,7 @@ public interface DatabasePrincipalAssignmentsClient {
 
     /**
      * Creates a Kusto cluster database principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -103,7 +105,7 @@ public interface DatabasePrincipalAssignmentsClient {
 
     /**
      * Creates a Kusto cluster database principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -122,7 +124,7 @@ public interface DatabasePrincipalAssignmentsClient {
 
     /**
      * Creates a Kusto cluster database principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -139,7 +141,7 @@ public interface DatabasePrincipalAssignmentsClient {
 
     /**
      * Creates a Kusto cluster database principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -157,7 +159,7 @@ public interface DatabasePrincipalAssignmentsClient {
 
     /**
      * Deletes a Kusto principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -173,7 +175,7 @@ public interface DatabasePrincipalAssignmentsClient {
 
     /**
      * Deletes a Kusto principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -190,7 +192,7 @@ public interface DatabasePrincipalAssignmentsClient {
 
     /**
      * Deletes a Kusto principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -204,7 +206,7 @@ public interface DatabasePrincipalAssignmentsClient {
 
     /**
      * Deletes a Kusto principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -220,15 +222,15 @@ public interface DatabasePrincipalAssignmentsClient {
 
     /**
      * Lists all Kusto cluster database principalAssignments.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto database principal assignments operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list Kusto database principal assignments operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DatabasePrincipalAssignmentInner> list(String resourceGroupName, String clusterName,
@@ -236,7 +238,7 @@ public interface DatabasePrincipalAssignmentsClient {
 
     /**
      * Lists all Kusto cluster database principalAssignments.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -244,8 +246,8 @@ public interface DatabasePrincipalAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto database principal assignments operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list Kusto database principal assignments operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DatabasePrincipalAssignmentInner> list(String resourceGroupName, String clusterName,

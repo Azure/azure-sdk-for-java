@@ -12,17 +12,18 @@ public final class DocumentationContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DocumentationContractInner model = BinaryData.fromString(
-            "{\"properties\":{\"title\":\"rrwcsp\",\"content\":\"tc\"},\"id\":\"vfxrdytz\",\"name\":\"slxizhqikmgob\",\"type\":\"iqemcdiiisklbon\"}")
+            "{\"properties\":{\"title\":\"dorsirxxhy\",\"content\":\"qakofajf\"},\"id\":\"epr\",\"name\":\"vmkinwtey\",\"type\":\"qshixbc\"}")
             .toObject(DocumentationContractInner.class);
-        Assertions.assertEquals("rrwcsp", model.title());
-        Assertions.assertEquals("tc", model.content());
+        Assertions.assertEquals("dorsirxxhy", model.title());
+        Assertions.assertEquals("qakofajf", model.content());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DocumentationContractInner model = new DocumentationContractInner().withTitle("rrwcsp").withContent("tc");
+        DocumentationContractInner model
+            = new DocumentationContractInner().withTitle("dorsirxxhy").withContent("qakofajf");
         model = BinaryData.fromObject(model).toObject(DocumentationContractInner.class);
-        Assertions.assertEquals("rrwcsp", model.title());
-        Assertions.assertEquals("tc", model.content());
+        Assertions.assertEquals("dorsirxxhy", model.title());
+        Assertions.assertEquals("qakofajf", model.content());
     }
 }

@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Administrative state of the BfdConfiguration. Example: Enabled | Disabled. */
+/**
+ * Administrative state of the BfdConfiguration. Example: Enabled | Disabled.
+ */
 public final class BfdAdministrativeState extends ExpandableStringEnum<BfdAdministrativeState> {
-    /** Static value Enabled for BfdAdministrativeState. */
+    /**
+     * Static value Enabled for BfdAdministrativeState.
+     */
     public static final BfdAdministrativeState ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for BfdAdministrativeState. */
+    /**
+     * Static value Disabled for BfdAdministrativeState.
+     */
     public static final BfdAdministrativeState DISABLED = fromString("Disabled");
 
-    /** Static value MAT for BfdAdministrativeState. */
+    /**
+     * Static value MAT for BfdAdministrativeState.
+     */
     public static final BfdAdministrativeState MAT = fromString("MAT");
 
-    /** Static value RMA for BfdAdministrativeState. */
+    /**
+     * Static value RMA for BfdAdministrativeState.
+     */
     public static final BfdAdministrativeState RMA = fromString("RMA");
 
     /**
      * Creates a new instance of BfdAdministrativeState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class BfdAdministrativeState extends ExpandableStringEnum<BfdAdmini
 
     /**
      * Creates or finds a BfdAdministrativeState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BfdAdministrativeState.
      */
-    @JsonCreator
     public static BfdAdministrativeState fromString(String name) {
         return fromString(name, BfdAdministrativeState.class);
     }
 
     /**
      * Gets known BfdAdministrativeState values.
-     *
+     * 
      * @return known BfdAdministrativeState values.
      */
     public static Collection<BfdAdministrativeState> values() {

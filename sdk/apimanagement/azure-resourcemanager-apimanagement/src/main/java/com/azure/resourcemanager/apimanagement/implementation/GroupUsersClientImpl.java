@@ -33,17 +33,23 @@ import com.azure.resourcemanager.apimanagement.fluent.models.UserContractInner;
 import com.azure.resourcemanager.apimanagement.models.UserCollection;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in GroupUsersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GroupUsersClient.
+ */
 public final class GroupUsersClientImpl implements GroupUsersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final GroupUsersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of GroupUsersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     GroupUsersClientImpl(ApiManagementClientImpl client) {
@@ -109,25 +115,24 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
 
     /**
      * Lists a collection of user entities associated with the group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| firstName | filter | ge, le, eq, ne,
-     *     gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| lastName | filter | ge, le, eq, ne, gt, lt
-     *     | substringof, contains, startswith, endswith |&lt;/br&gt;| email | filter | ge, le, eq, ne, gt, lt |
-     *     substringof, contains, startswith, endswith |&lt;/br&gt;| registrationDate | filter | ge, le, eq, ne, gt, lt
-     *     | |&lt;/br&gt;| note | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith
-     *     |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| firstName | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;| lastName | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;| email | filter | ge, le, eq, ne, gt, lt | substringof,
+     * contains, startswith, endswith |&lt;/br&gt;| registrationDate | filter | ge, le, eq, ne, gt, lt | |&lt;/br&gt;|
+     * note | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Users list representation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return paged Users list representation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UserContractInner>> listSinglePageAsync(String resourceGroupName, String serviceName,
@@ -161,26 +166,25 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
 
     /**
      * Lists a collection of user entities associated with the group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| firstName | filter | ge, le, eq, ne,
-     *     gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| lastName | filter | ge, le, eq, ne, gt, lt
-     *     | substringof, contains, startswith, endswith |&lt;/br&gt;| email | filter | ge, le, eq, ne, gt, lt |
-     *     substringof, contains, startswith, endswith |&lt;/br&gt;| registrationDate | filter | ge, le, eq, ne, gt, lt
-     *     | |&lt;/br&gt;| note | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith
-     *     |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| firstName | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;| lastName | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;| email | filter | ge, le, eq, ne, gt, lt | substringof,
+     * contains, startswith, endswith |&lt;/br&gt;| registrationDate | filter | ge, le, eq, ne, gt, lt | |&lt;/br&gt;|
+     * note | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Users list representation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return paged Users list representation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UserContractInner>> listSinglePageAsync(String resourceGroupName, String serviceName,
@@ -214,18 +218,17 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
 
     /**
      * Lists a collection of user entities associated with the group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| firstName | filter | ge, le, eq, ne,
-     *     gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| lastName | filter | ge, le, eq, ne, gt, lt
-     *     | substringof, contains, startswith, endswith |&lt;/br&gt;| email | filter | ge, le, eq, ne, gt, lt |
-     *     substringof, contains, startswith, endswith |&lt;/br&gt;| registrationDate | filter | ge, le, eq, ne, gt, lt
-     *     | |&lt;/br&gt;| note | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith
-     *     |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| firstName | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;| lastName | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;| email | filter | ge, le, eq, ne, gt, lt | substringof,
+     * contains, startswith, endswith |&lt;/br&gt;| registrationDate | filter | ge, le, eq, ne, gt, lt | |&lt;/br&gt;|
+     * note | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -242,7 +245,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
 
     /**
      * Lists a collection of user entities associated with the group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -262,18 +265,17 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
 
     /**
      * Lists a collection of user entities associated with the group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| firstName | filter | ge, le, eq, ne,
-     *     gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| lastName | filter | ge, le, eq, ne, gt, lt
-     *     | substringof, contains, startswith, endswith |&lt;/br&gt;| email | filter | ge, le, eq, ne, gt, lt |
-     *     substringof, contains, startswith, endswith |&lt;/br&gt;| registrationDate | filter | ge, le, eq, ne, gt, lt
-     *     | |&lt;/br&gt;| note | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith
-     *     |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| firstName | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;| lastName | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;| email | filter | ge, le, eq, ne, gt, lt | substringof,
+     * contains, startswith, endswith |&lt;/br&gt;| registrationDate | filter | ge, le, eq, ne, gt, lt | |&lt;/br&gt;|
+     * note | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -292,7 +294,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
 
     /**
      * Lists a collection of user entities associated with the group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -311,18 +313,17 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
 
     /**
      * Lists a collection of user entities associated with the group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| firstName | filter | ge, le, eq, ne,
-     *     gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| lastName | filter | ge, le, eq, ne, gt, lt
-     *     | substringof, contains, startswith, endswith |&lt;/br&gt;| email | filter | ge, le, eq, ne, gt, lt |
-     *     substringof, contains, startswith, endswith |&lt;/br&gt;| registrationDate | filter | ge, le, eq, ne, gt, lt
-     *     | |&lt;/br&gt;| note | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith
-     *     |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| firstName | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;| lastName | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;| email | filter | ge, le, eq, ne, gt, lt | substringof,
+     * contains, startswith, endswith |&lt;/br&gt;| registrationDate | filter | ge, le, eq, ne, gt, lt | |&lt;/br&gt;|
+     * note | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -339,7 +340,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
 
     /**
      * Checks that user entity specified by identifier is associated with the group entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -382,7 +383,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
 
     /**
      * Checks that user entity specified by identifier is associated with the group entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -425,7 +426,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
 
     /**
      * Checks that user entity specified by identifier is associated with the group entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -444,7 +445,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
 
     /**
      * Checks that user entity specified by identifier is associated with the group entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -463,7 +464,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
 
     /**
      * Checks that user entity specified by identifier is associated with the group entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -480,7 +481,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
 
     /**
      * Add existing user to existing group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -523,7 +524,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
 
     /**
      * Add existing user to existing group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -566,7 +567,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
 
     /**
      * Add existing user to existing group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -585,7 +586,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
 
     /**
      * Add existing user to existing group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -604,7 +605,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
 
     /**
      * Add existing user to existing group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -621,7 +622,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
 
     /**
      * Remove existing user from existing group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -664,7 +665,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
 
     /**
      * Remove existing user from existing group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -707,7 +708,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
 
     /**
      * Remove existing user from existing group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -725,7 +726,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
 
     /**
      * Remove existing user from existing group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -744,7 +745,7 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
 
     /**
      * Remove existing user from existing group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -760,14 +761,13 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Users list representation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return paged Users list representation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UserContractInner>> listNextSinglePageAsync(String nextLink) {
@@ -787,15 +787,14 @@ public final class GroupUsersClientImpl implements GroupUsersClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Users list representation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return paged Users list representation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UserContractInner>> listNextSinglePageAsync(String nextLink, Context context) {

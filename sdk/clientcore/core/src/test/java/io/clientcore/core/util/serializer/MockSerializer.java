@@ -3,11 +3,13 @@
 
 package io.clientcore.core.util.serializer;
 
+import io.clientcore.core.implementation.util.JsonSerializer;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
 
-public class MockSerializer implements JsonSerializer {
+public class MockSerializer extends JsonSerializer {
     @Override
     public <T> T deserializeFromBytes(byte[] data, Type type) {
         return null;

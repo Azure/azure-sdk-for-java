@@ -36,34 +36,32 @@ public interface ConfidentialLedger {
     String type();
 
     /**
-     * Gets the location property: The geo-location where the resource lives.
-     * 
-     * @return the location value.
-     */
-    String location();
-
-    /**
-     * Gets the tags property: Resource tags.
-     * 
-     * @return the tags value.
-     */
-    Map<String, String> tags();
-
-    /**
-     * Gets the properties property: LedgerProperties
-     * 
-     * Properties of Confidential Ledger Resource.
+     * Gets the properties property: Properties of Confidential Ledger Resource.
      * 
      * @return the properties value.
      */
     LedgerProperties properties();
 
     /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
      * 
      * @return the systemData value.
      */
     SystemData systemData();
+
+    /**
+     * Gets the location property: The Azure location where the Confidential Ledger is running.
+     * 
+     * @return the location value.
+     */
+    String location();
+
+    /**
+     * Gets the tags property: Additional tags for Confidential Ledger.
+     * 
+     * @return the tags value.
+     */
+    Map<String, String> tags();
 
     /**
      * Gets the region of the resource.
@@ -96,8 +94,8 @@ public interface ConfidentialLedger {
     /**
      * The entirety of the ConfidentialLedger definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
-        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
+    interface Definition
+        extends DefinitionStages.Blank, DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
     /**
@@ -107,28 +105,7 @@ public interface ConfidentialLedger {
         /**
          * The first stage of the ConfidentialLedger definition.
          */
-        interface Blank extends WithLocation {
-        }
-
-        /**
-         * The stage of the ConfidentialLedger definition allowing to specify location.
-         */
-        interface WithLocation {
-            /**
-             * Specifies the region for the resource.
-             * 
-             * @param location The geo-location where the resource lives.
-             * @return the next definition stage.
-             */
-            WithResourceGroup withRegion(Region location);
-
-            /**
-             * Specifies the region for the resource.
-             * 
-             * @param location The geo-location where the resource lives.
-             * @return the next definition stage.
-             */
-            WithResourceGroup withRegion(String location);
+        interface Blank extends WithResourceGroup {
         }
 
         /**
@@ -138,7 +115,7 @@ public interface ConfidentialLedger {
             /**
              * Specifies resourceGroupName.
              * 
-             * @param resourceGroupName The name of the resource group. The name is case insensitive.
+             * @param resourceGroupName The name of the resource group.
              * @return the next definition stage.
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
@@ -148,7 +125,8 @@ public interface ConfidentialLedger {
          * The stage of the ConfidentialLedger definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithProperties {
+        interface WithCreate
+            extends DefinitionStages.WithLocation, DefinitionStages.WithTags, DefinitionStages.WithProperties {
             /**
              * Executes the create request.
              * 
@@ -166,13 +144,34 @@ public interface ConfidentialLedger {
         }
 
         /**
+         * The stage of the ConfidentialLedger definition allowing to specify location.
+         */
+        interface WithLocation {
+            /**
+             * Specifies the region for the resource.
+             * 
+             * @param location The Azure location where the Confidential Ledger is running.
+             * @return the next definition stage.
+             */
+            WithCreate withRegion(Region location);
+
+            /**
+             * Specifies the region for the resource.
+             * 
+             * @param location The Azure location where the Confidential Ledger is running.
+             * @return the next definition stage.
+             */
+            WithCreate withRegion(String location);
+        }
+
+        /**
          * The stage of the ConfidentialLedger definition allowing to specify tags.
          */
         interface WithTags {
             /**
-             * Specifies the tags property: Resource tags..
+             * Specifies the tags property: Additional tags for Confidential Ledger.
              * 
-             * @param tags Resource tags.
+             * @param tags Additional tags for Confidential Ledger.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
@@ -183,13 +182,9 @@ public interface ConfidentialLedger {
          */
         interface WithProperties {
             /**
-             * Specifies the properties property: LedgerProperties
+             * Specifies the properties property: Properties of Confidential Ledger Resource..
              * 
-             * Properties of Confidential Ledger Resource..
-             * 
-             * @param properties LedgerProperties
-             * 
-             * Properties of Confidential Ledger Resource.
+             * @param properties Properties of Confidential Ledger Resource.
              * @return the next definition stage.
              */
             WithCreate withProperties(LedgerProperties properties);
@@ -232,9 +227,9 @@ public interface ConfidentialLedger {
          */
         interface WithTags {
             /**
-             * Specifies the tags property: Resource tags..
+             * Specifies the tags property: Additional tags for Confidential Ledger.
              * 
-             * @param tags Resource tags.
+             * @param tags Additional tags for Confidential Ledger.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
@@ -245,13 +240,9 @@ public interface ConfidentialLedger {
          */
         interface WithProperties {
             /**
-             * Specifies the properties property: LedgerProperties
+             * Specifies the properties property: Properties of Confidential Ledger Resource..
              * 
-             * Properties of Confidential Ledger Resource..
-             * 
-             * @param properties LedgerProperties
-             * 
-             * Properties of Confidential Ledger Resource.
+             * @param properties Properties of Confidential Ledger Resource.
              * @return the next definition stage.
              */
             Update withProperties(LedgerProperties properties);
@@ -272,58 +263,4 @@ public interface ConfidentialLedger {
      * @return the refreshed resource.
      */
     ConfidentialLedger refresh(Context context);
-
-    /**
-     * Performs the backup operation on a Confidential Ledger Resource.
-     * 
-     * Backs up a Confidential Ledger Resource.
-     * 
-     * @param confidentialLedger Confidential Ledger Backup Request Body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object representing the backup response of a Confidential Ledger Resource.
-     */
-    ConfidentialLedgerBackupResponse backup(ConfidentialLedgerBackup confidentialLedger);
-
-    /**
-     * Performs the backup operation on a Confidential Ledger Resource.
-     * 
-     * Backs up a Confidential Ledger Resource.
-     * 
-     * @param confidentialLedger Confidential Ledger Backup Request Body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object representing the backup response of a Confidential Ledger Resource.
-     */
-    ConfidentialLedgerBackupResponse backup(ConfidentialLedgerBackup confidentialLedger, Context context);
-
-    /**
-     * Performs the restore operation to spin up a newly restored Confidential Ledger Resource.
-     * 
-     * Restores a Confidential Ledger Resource.
-     * 
-     * @param confidentialLedger Confidential Ledger Restore Request Body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object representing the restore response of a Confidential Ledger Resource.
-     */
-    ConfidentialLedgerRestoreResponse restore(ConfidentialLedgerRestore confidentialLedger);
-
-    /**
-     * Performs the restore operation to spin up a newly restored Confidential Ledger Resource.
-     * 
-     * Restores a Confidential Ledger Resource.
-     * 
-     * @param confidentialLedger Confidential Ledger Restore Request Body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object representing the restore response of a Confidential Ledger Resource.
-     */
-    ConfidentialLedgerRestoreResponse restore(ConfidentialLedgerRestore confidentialLedger, Context context);
 }

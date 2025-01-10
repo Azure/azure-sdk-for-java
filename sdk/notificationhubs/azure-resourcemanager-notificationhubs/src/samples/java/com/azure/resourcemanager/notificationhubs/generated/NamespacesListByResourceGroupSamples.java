@@ -10,15 +10,16 @@ package com.azure.resourcemanager.notificationhubs.generated;
 public final class NamespacesListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/preview/2023-10-01-preview/examples/
-     * Namespaces/ListByResourceGroup.json
+     * specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/Namespaces/
+     * NHNameSpaceListByResourceGroup.json
      */
     /**
-     * Sample code: Namespaces_List.
+     * Sample code: NameSpaceListByResourceGroup.
      * 
      * @param manager Entry point to NotificationHubsManager.
      */
-    public static void namespacesList(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.namespaces().listByResourceGroup("5ktrial", null, null, com.azure.core.util.Context.NONE);
+    public static void
+        nameSpaceListByResourceGroup(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
+        manager.namespaces().listByResourceGroup("5ktrial", com.azure.core.util.Context.NONE);
     }
 }

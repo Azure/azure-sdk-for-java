@@ -29,25 +29,25 @@ public final class AvailabilityStatusesImpl implements AvailabilityStatuses {
 
     public PagedIterable<AvailabilityStatus> listBySubscriptionId() {
         PagedIterable<AvailabilityStatusInner> inner = this.serviceClient().listBySubscriptionId();
-        return Utils.mapPage(inner, inner1 -> new AvailabilityStatusImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AvailabilityStatusImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AvailabilityStatus> listBySubscriptionId(String filter, String expand, Context context) {
         PagedIterable<AvailabilityStatusInner> inner
             = this.serviceClient().listBySubscriptionId(filter, expand, context);
-        return Utils.mapPage(inner, inner1 -> new AvailabilityStatusImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AvailabilityStatusImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AvailabilityStatus> listByResourceGroup(String resourceGroupName) {
         PagedIterable<AvailabilityStatusInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new AvailabilityStatusImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AvailabilityStatusImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AvailabilityStatus> listByResourceGroup(String resourceGroupName, String filter, String expand,
         Context context) {
         PagedIterable<AvailabilityStatusInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, filter, expand, context);
-        return Utils.mapPage(inner, inner1 -> new AvailabilityStatusImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AvailabilityStatusImpl(inner1, this.manager()));
     }
 
     public Response<AvailabilityStatus> getByResourceWithResponse(String resourceUri, String filter, String expand,
@@ -73,12 +73,12 @@ public final class AvailabilityStatusesImpl implements AvailabilityStatuses {
 
     public PagedIterable<AvailabilityStatus> list(String resourceUri) {
         PagedIterable<AvailabilityStatusInner> inner = this.serviceClient().list(resourceUri);
-        return Utils.mapPage(inner, inner1 -> new AvailabilityStatusImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AvailabilityStatusImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AvailabilityStatus> list(String resourceUri, String filter, String expand, Context context) {
         PagedIterable<AvailabilityStatusInner> inner = this.serviceClient().list(resourceUri, filter, expand, context);
-        return Utils.mapPage(inner, inner1 -> new AvailabilityStatusImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AvailabilityStatusImpl(inner1, this.manager()));
     }
 
     private AvailabilityStatusesClient serviceClient() {

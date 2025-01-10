@@ -6,37 +6,42 @@ package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Information about the SKU of the IoT hub. */
+/**
+ * Information about the SKU of the IoT hub.
+ */
 @Fluent
-public final class IotHubSkuInfo {
+public final class IotHubSkuInfo implements JsonSerializable<IotHubSkuInfo> {
     /*
      * The name of the SKU.
      */
-    @JsonProperty(value = "name", required = true)
     private IotHubSku name;
 
     /*
      * The billing tier for the IoT hub.
      */
-    @JsonProperty(value = "tier", access = JsonProperty.Access.WRITE_ONLY)
     private IotHubSkuTier tier;
 
     /*
      * The number of provisioned IoT Hub units. See:
      * https://docs.microsoft.com/azure/azure-subscription-service-limits#iot-hub-limits.
      */
-    @JsonProperty(value = "capacity")
     private Long capacity;
 
-    /** Creates an instance of IotHubSkuInfo class. */
+    /**
+     * Creates an instance of IotHubSkuInfo class.
+     */
     public IotHubSkuInfo() {
     }
 
     /**
      * Get the name property: The name of the SKU.
-     *
+     * 
      * @return the name value.
      */
     public IotHubSku name() {
@@ -45,7 +50,7 @@ public final class IotHubSkuInfo {
 
     /**
      * Set the name property: The name of the SKU.
-     *
+     * 
      * @param name the name value to set.
      * @return the IotHubSkuInfo object itself.
      */
@@ -56,7 +61,7 @@ public final class IotHubSkuInfo {
 
     /**
      * Get the tier property: The billing tier for the IoT hub.
-     *
+     * 
      * @return the tier value.
      */
     public IotHubSkuTier tier() {
@@ -66,7 +71,7 @@ public final class IotHubSkuInfo {
     /**
      * Get the capacity property: The number of provisioned IoT Hub units. See:
      * https://docs.microsoft.com/azure/azure-subscription-service-limits#iot-hub-limits.
-     *
+     * 
      * @return the capacity value.
      */
     public Long capacity() {
@@ -76,7 +81,7 @@ public final class IotHubSkuInfo {
     /**
      * Set the capacity property: The number of provisioned IoT Hub units. See:
      * https://docs.microsoft.com/azure/azure-subscription-service-limits#iot-hub-limits.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the IotHubSkuInfo object itself.
      */
@@ -87,15 +92,57 @@ public final class IotHubSkuInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model IotHubSkuInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model IotHubSkuInfo"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IotHubSkuInfo.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        jsonWriter.writeNumberField("capacity", this.capacity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IotHubSkuInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IotHubSkuInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IotHubSkuInfo.
+     */
+    public static IotHubSkuInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IotHubSkuInfo deserializedIotHubSkuInfo = new IotHubSkuInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedIotHubSkuInfo.name = IotHubSku.fromString(reader.getString());
+                } else if ("tier".equals(fieldName)) {
+                    deserializedIotHubSkuInfo.tier = IotHubSkuTier.fromString(reader.getString());
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedIotHubSkuInfo.capacity = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIotHubSkuInfo;
+        });
+    }
 }

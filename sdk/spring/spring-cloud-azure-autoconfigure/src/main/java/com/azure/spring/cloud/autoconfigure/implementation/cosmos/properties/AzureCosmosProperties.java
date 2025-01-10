@@ -30,23 +30,23 @@ public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProp
     private final ClientConfigurationProperties client = new ClientConfigurationProperties();
 
     /**
-     * Endpoint of the Cosmos DB.
+     * Endpoint of the Azure Cosmos DB instance.
      */
     private String endpoint;
     /**
-     * Key to authenticate for accessing the Cosmos DB.
+     * Key to authenticate for accessing the Azure Cosmos DB instance.
      */
     private String key;
     /**
-     * Database name of the Cosmos DB.
+     * Database name of the Azure Cosmos DB instance.
      */
     private String database;
     /**
-     * Resource token to authenticate for accessing the Cosmos DB.
+     * Resource token to authenticate for accessing the Azure Cosmos DB instance.
      */
     private String resourceToken;
     /**
-     * Whether to enable client telemetry which will periodically collect database operations aggregation statistics,
+     * Whether to enable client telemetry, which will periodically collect database operations aggregation statistics,
      * system information like cpu/memory and send it to cosmos monitoring service, which will be helpful during
      * debugging.
      */
@@ -56,11 +56,11 @@ public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProp
      */
     private Boolean endpointDiscoveryEnabled;
     /**
-     * Whether to enable connections sharing across multiple Cosmos Clients.
+     * Whether to enable connections sharing across multiple Azure Cosmos DB Clients.
      */
     private Boolean connectionSharingAcrossClientsEnabled;
     /**
-     * Whether to only return the headers and status code in Cosmos DB response in case of Create, Update and Delete
+     * Whether to only return the headers and status code in Azure Cosmos DB response in case of Create, Update and Delete
      * operations on CosmosItem.  If set to false, service doesn't return payload in the response.
      */
     private Boolean contentResponseOnWriteEnabled;

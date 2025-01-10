@@ -24,7 +24,8 @@ public class SapCloudForCustomerLinkedService extends LinkedService {
     private String type = "SapCloudForCustomer";
 
     /*
-     * The URL of SAP Cloud for Customer OData API. For example, '[https://[tenantname].crm.ondemand.com/sap/c4c/odata/v1]'. Type: string (or Expression with resultType string).
+     * The URL of SAP Cloud for Customer OData API. For example,
+     * '[https://[tenantname].crm.ondemand.com/sap/c4c/odata/v1]'. Type: string (or Expression with resultType string).
      */
     private Object url;
 
@@ -39,7 +40,9 @@ public class SapCloudForCustomerLinkedService extends LinkedService {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Either encryptedCredential or username/password must be provided. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Either encryptedCredential or username/password must be provided. Type: string (or Expression
+     * with resultType string).
      */
     private Object encryptedCredential;
 

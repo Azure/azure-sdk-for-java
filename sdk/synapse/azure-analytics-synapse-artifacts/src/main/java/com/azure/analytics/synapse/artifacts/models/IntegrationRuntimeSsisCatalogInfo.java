@@ -34,7 +34,8 @@ public final class IntegrationRuntimeSsisCatalogInfo implements JsonSerializable
     private SecureString catalogAdminPassword;
 
     /*
-     * The pricing tier for the catalog database. The valid values could be found in https://azure.microsoft.com/en-us/pricing/details/sql-database/
+     * The pricing tier for the catalog database. The valid values could be found in
+     * https://azure.microsoft.com/en-us/pricing/details/sql-database/
      */
     private IntegrationRuntimeSsisCatalogPricingTier catalogPricingTier;
 

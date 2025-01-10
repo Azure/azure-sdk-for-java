@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Specifies the security settings like secure boot used while creating the virtual machine. */
+/**
+ * Specifies the security settings like secure boot used while creating the virtual machine.
+ */
 @Fluent
-public final class UefiSettings {
+public final class UefiSettings implements JsonSerializable<UefiSettings> {
     /*
      * Specifies whether secure boot should be enabled on the virtual machine.
      */
-    @JsonProperty(value = "secureBootEnabled")
     private Boolean secureBootEnabled;
 
-    /** Creates an instance of UefiSettings class. */
+    /**
+     * Creates an instance of UefiSettings class.
+     */
     public UefiSettings() {
     }
 
     /**
      * Get the secureBootEnabled property: Specifies whether secure boot should be enabled on the virtual machine.
-     *
+     * 
      * @return the secureBootEnabled value.
      */
     public Boolean secureBootEnabled() {
@@ -31,7 +38,7 @@ public final class UefiSettings {
 
     /**
      * Set the secureBootEnabled property: Specifies whether secure boot should be enabled on the virtual machine.
-     *
+     * 
      * @param secureBootEnabled the secureBootEnabled value to set.
      * @return the UefiSettings object itself.
      */
@@ -42,9 +49,45 @@ public final class UefiSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("secureBootEnabled", this.secureBootEnabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UefiSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UefiSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UefiSettings.
+     */
+    public static UefiSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UefiSettings deserializedUefiSettings = new UefiSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("secureBootEnabled".equals(fieldName)) {
+                    deserializedUefiSettings.secureBootEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUefiSettings;
+        });
     }
 }

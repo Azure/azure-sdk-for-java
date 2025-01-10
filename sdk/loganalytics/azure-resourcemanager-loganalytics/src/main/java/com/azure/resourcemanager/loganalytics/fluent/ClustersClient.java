@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.loganalytics.fluent.models.ClusterInner;
 import com.azure.resourcemanager.loganalytics.models.ClusterPatch;
 
-/** An instance of this class provides access to all the operations defined in ClustersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ClustersClient.
+ */
 public interface ClustersClient {
     /**
      * Gets Log Analytics clusters in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -30,7 +32,7 @@ public interface ClustersClient {
 
     /**
      * Gets Log Analytics clusters in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -43,7 +45,7 @@ public interface ClustersClient {
 
     /**
      * Gets the Log Analytics clusters in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Log Analytics clusters in a subscription as paginated response with {@link PagedIterable}.
@@ -53,7 +55,7 @@ public interface ClustersClient {
 
     /**
      * Gets the Log Analytics clusters in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -65,7 +67,7 @@ public interface ClustersClient {
 
     /**
      * Create or update a Log Analytics cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Log Analytics cluster.
      * @param parameters The parameters required to create or update a Log Analytics cluster.
@@ -80,7 +82,7 @@ public interface ClustersClient {
 
     /**
      * Create or update a Log Analytics cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Log Analytics cluster.
      * @param parameters The parameters required to create or update a Log Analytics cluster.
@@ -96,7 +98,7 @@ public interface ClustersClient {
 
     /**
      * Create or update a Log Analytics cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Log Analytics cluster.
      * @param parameters The parameters required to create or update a Log Analytics cluster.
@@ -110,7 +112,7 @@ public interface ClustersClient {
 
     /**
      * Create or update a Log Analytics cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Log Analytics cluster.
      * @param parameters The parameters required to create or update a Log Analytics cluster.
@@ -125,7 +127,7 @@ public interface ClustersClient {
 
     /**
      * Deletes a cluster instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Name of the Log Analytics Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -138,7 +140,7 @@ public interface ClustersClient {
 
     /**
      * Deletes a cluster instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Name of the Log Analytics Cluster.
      * @param context The context to associate with this operation.
@@ -152,7 +154,7 @@ public interface ClustersClient {
 
     /**
      * Deletes a cluster instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Name of the Log Analytics Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -164,7 +166,7 @@ public interface ClustersClient {
 
     /**
      * Deletes a cluster instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Name of the Log Analytics Cluster.
      * @param context The context to associate with this operation.
@@ -177,7 +179,7 @@ public interface ClustersClient {
 
     /**
      * Gets a Log Analytics cluster instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Name of the Log Analytics Cluster.
      * @param context The context to associate with this operation.
@@ -192,7 +194,7 @@ public interface ClustersClient {
 
     /**
      * Gets a Log Analytics cluster instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Name of the Log Analytics Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -205,7 +207,7 @@ public interface ClustersClient {
 
     /**
      * Updates a Log Analytics cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Name of the Log Analytics Cluster.
      * @param parameters The parameters required to patch a Log Analytics cluster.
@@ -220,7 +222,7 @@ public interface ClustersClient {
 
     /**
      * Updates a Log Analytics cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Name of the Log Analytics Cluster.
      * @param parameters The parameters required to patch a Log Analytics cluster.
@@ -236,7 +238,7 @@ public interface ClustersClient {
 
     /**
      * Updates a Log Analytics cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Name of the Log Analytics Cluster.
      * @param parameters The parameters required to patch a Log Analytics cluster.
@@ -250,7 +252,7 @@ public interface ClustersClient {
 
     /**
      * Updates a Log Analytics cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Name of the Log Analytics Cluster.
      * @param parameters The parameters required to patch a Log Analytics cluster.

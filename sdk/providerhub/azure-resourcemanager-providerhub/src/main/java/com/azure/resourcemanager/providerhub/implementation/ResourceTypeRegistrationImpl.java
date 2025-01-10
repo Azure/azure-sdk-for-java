@@ -90,8 +90,8 @@ public final class ResourceTypeRegistrationImpl
         com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.providerNamespace = Utils.getValueFromIdByName(innerObject.id(), "providerRegistrations");
-        this.resourceType = Utils.getValueFromIdByName(innerObject.id(), "resourcetypeRegistrations");
+        this.providerNamespace = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "providerRegistrations");
+        this.resourceType = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourcetypeRegistrations");
     }
 
     public ResourceTypeRegistration refresh() {

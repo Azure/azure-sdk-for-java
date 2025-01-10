@@ -26,16 +26,6 @@ public final class DataLakeStorageAccountDetails implements JsonSerializable<Dat
      */
     private String filesystem;
 
-    /*
-     * ARM resource Id of this storage account
-     */
-    private String resourceId;
-
-    /*
-     * Create managed private endpoint to this storage account or not
-     */
-    private Boolean createManagedPrivateEndpoint;
-
     /**
      * Creates an instance of DataLakeStorageAccountDetails class.
      */
@@ -83,46 +73,6 @@ public final class DataLakeStorageAccountDetails implements JsonSerializable<Dat
     }
 
     /**
-     * Get the resourceId property: ARM resource Id of this storage account.
-     * 
-     * @return the resourceId value.
-     */
-    public String resourceId() {
-        return this.resourceId;
-    }
-
-    /**
-     * Set the resourceId property: ARM resource Id of this storage account.
-     * 
-     * @param resourceId the resourceId value to set.
-     * @return the DataLakeStorageAccountDetails object itself.
-     */
-    public DataLakeStorageAccountDetails withResourceId(String resourceId) {
-        this.resourceId = resourceId;
-        return this;
-    }
-
-    /**
-     * Get the createManagedPrivateEndpoint property: Create managed private endpoint to this storage account or not.
-     * 
-     * @return the createManagedPrivateEndpoint value.
-     */
-    public Boolean createManagedPrivateEndpoint() {
-        return this.createManagedPrivateEndpoint;
-    }
-
-    /**
-     * Set the createManagedPrivateEndpoint property: Create managed private endpoint to this storage account or not.
-     * 
-     * @param createManagedPrivateEndpoint the createManagedPrivateEndpoint value to set.
-     * @return the DataLakeStorageAccountDetails object itself.
-     */
-    public DataLakeStorageAccountDetails withCreateManagedPrivateEndpoint(Boolean createManagedPrivateEndpoint) {
-        this.createManagedPrivateEndpoint = createManagedPrivateEndpoint;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -138,8 +88,6 @@ public final class DataLakeStorageAccountDetails implements JsonSerializable<Dat
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("accountUrl", this.accountUrl);
         jsonWriter.writeStringField("filesystem", this.filesystem);
-        jsonWriter.writeStringField("resourceId", this.resourceId);
-        jsonWriter.writeBooleanField("createManagedPrivateEndpoint", this.createManagedPrivateEndpoint);
         return jsonWriter.writeEndObject();
     }
 
@@ -163,11 +111,6 @@ public final class DataLakeStorageAccountDetails implements JsonSerializable<Dat
                     deserializedDataLakeStorageAccountDetails.accountUrl = reader.getString();
                 } else if ("filesystem".equals(fieldName)) {
                     deserializedDataLakeStorageAccountDetails.filesystem = reader.getString();
-                } else if ("resourceId".equals(fieldName)) {
-                    deserializedDataLakeStorageAccountDetails.resourceId = reader.getString();
-                } else if ("createManagedPrivateEndpoint".equals(fieldName)) {
-                    deserializedDataLakeStorageAccountDetails.createManagedPrivateEndpoint
-                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

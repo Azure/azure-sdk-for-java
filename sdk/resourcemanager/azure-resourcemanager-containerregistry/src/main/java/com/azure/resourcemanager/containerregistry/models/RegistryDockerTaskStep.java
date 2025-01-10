@@ -12,19 +12,39 @@ import java.util.Map;
 /** An immutable client-side representation of an Azure RegistryDockerTaskStep registry task. */
 @Fluent()
 public interface RegistryDockerTaskStep extends HasInnerModel<DockerTaskStep>, RegistryTaskStep {
-    /** @return the image names of this Docker task step */
+    /**
+     * Gets the image names of this Docker task step.
+     *
+     * @return the image names of this Docker task step
+     */
     List<String> imageNames();
 
-    /** @return whether push is enabled for this Docker task step */
+    /**
+     * Checks whether push is enabled for this Docker task step.
+     *
+     * @return whether push is enabled for this Docker task step
+     */
     boolean isPushEnabled();
 
-    /** @return whether there is no cache for this Docker task step */
+    /**
+     * Checks whether there is no cache for this Docker task step.
+     *
+     * @return whether there is no cache for this Docker task step
+     */
     boolean noCache();
 
-    /** @return Docker file path for this Docker task step */
+    /**
+     * Gets Docker file path for this Docker task step.
+     *
+     * @return Docker file path for this Docker task step
+     */
     String dockerFilePath();
 
-    /** @return the arguments this Docker task step */
+    /**
+     * Gets the arguments this Docker task step.
+     *
+     * @return the arguments this Docker task step
+     */
     List<Argument> arguments();
 
     /** Container interface for all the definitions related to a RegistryDockerTaskStep. */

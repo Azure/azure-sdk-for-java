@@ -24,8 +24,10 @@ public final class VirtualNetworksUpdateSamples {
      */
     public static void
         updateVirtualNetwork(com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
-        VirtualNetwork resource = manager.virtualNetworks().getByResourceGroupWithResponse("test-arcappliance-resgrp",
-            "test-vnet-static", com.azure.core.util.Context.NONE).getValue();
+        VirtualNetwork resource = manager.virtualNetworks()
+            .getByResourceGroupWithResponse("test-arcappliance-resgrp", "test-vnet-static",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("additionalProperties", "sample")).apply();
     }
 

@@ -24,7 +24,7 @@ public final class JobsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"runbook\":{\"name\":\"mey\"},\"startedBy\":\"jamca\",\"runOn\":\"hftpzcrrykll\",\"jobId\":\"05d5c40f-8ba7-438c-9bd8-31003f3dc255\",\"creationTime\":\"2021-03-15T02:29:37Z\",\"status\":\"New\",\"statusDetails\":\"kig\",\"startTime\":\"2021-07-18T23:52:23Z\",\"endTime\":\"2021-08-29T00:53:27Z\",\"exception\":\"lhv\",\"lastModifiedTime\":\"2021-11-28T01:36:47Z\",\"lastStatusModifiedTime\":\"2021-03-23T20:06:12Z\",\"parameters\":{\"alec\":\"etxdqcmyctajqzj\",\"egyxsbfpzvoik\":\"bibiwks\",\"pblalhhez\":\"ntwczfzwushlc\",\"qdsgptotxj\":\"fkissaidqzsaa\"},\"provisioningState\":\"Failed\"},\"id\":\"afcnlrtb\",\"name\":\"ijzzcaoijolbuauk\",\"type\":\"wieopexelxqdw\"}";
+            = "{\"properties\":{\"runbook\":{\"name\":\"mey\"},\"startedBy\":\"jamca\",\"runOn\":\"hftpzcrrykll\",\"jobId\":\"eb9453d7-cf27-444b-9480-c8c4194fb5f8\",\"creationTime\":\"2021-03-15T02:29:37Z\",\"status\":\"New\",\"statusDetails\":\"kig\",\"startTime\":\"2021-07-18T23:52:23Z\",\"endTime\":\"2021-08-29T00:53:27Z\",\"exception\":\"lhv\",\"lastModifiedTime\":\"2021-11-28T01:36:47Z\",\"lastStatusModifiedTime\":\"2021-03-23T20:06:12Z\",\"parameters\":{\"alec\":\"etxdqcmyctajqzj\",\"egyxsbfpzvoik\":\"bibiwks\",\"pblalhhez\":\"ntwczfzwushlc\",\"qdsgptotxj\":\"fkissaidqzsaa\"},\"provisioningState\":\"Failed\"},\"id\":\"afcnlrtb\",\"name\":\"ijzzcaoijolbuauk\",\"type\":\"wieopexelxqdw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -40,7 +40,7 @@ public final class JobsGetWithResponseMockTests {
         Assertions.assertEquals("mey", response.runbook().name());
         Assertions.assertEquals("jamca", response.startedBy());
         Assertions.assertEquals("hftpzcrrykll", response.runOn());
-        Assertions.assertEquals(UUID.fromString("05d5c40f-8ba7-438c-9bd8-31003f3dc255"), response.jobId());
+        Assertions.assertEquals(UUID.fromString("eb9453d7-cf27-444b-9480-c8c4194fb5f8"), response.jobId());
         Assertions.assertEquals(OffsetDateTime.parse("2021-03-15T02:29:37Z"), response.creationTime());
         Assertions.assertEquals(JobStatus.NEW, response.status());
         Assertions.assertEquals("kig", response.statusDetails());

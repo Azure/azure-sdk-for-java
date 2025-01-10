@@ -34,19 +34,31 @@ class VirtualMachineExtensionsImpl extends
         this.cacheCollection();
     }
 
-    /** @return the extension as a map indexed by name. */
+    /**
+     * Gets the extension as a map indexed by name.
+     *
+     * @return the extension as a map indexed by name.
+     */
     public Map<String, VirtualMachineExtension> asMap() {
         return this.asMapAsync().block();
     }
 
-    /** @return an observable emits extensions in this collection as a map indexed by name. */
+    /**
+     * Gets an observable emits extensions in this collection as a map indexed by name.
+     *
+     * @return an observable emits extensions in this collection as a map indexed by name.
+     */
     public Mono<Map<String, VirtualMachineExtension>> asMapAsync() {
         return listAsync().flatMapMany(Flux::fromIterable)
             .collect(Collectors.toMap(extension -> extension.name(), extension -> extension))
             .map(map -> Collections.unmodifiableMap(map));
     }
 
-    /** @return a Mono emits extensions in this collection */
+    /**
+     * Gets a Mono emits extensions in this collection.
+     *
+     * @return a Mono emits extensions in this collection
+     */
     public Mono<List<VirtualMachineExtension>> listAsync() {
         Flux<VirtualMachineExtensionImpl> extensions = Flux.fromIterable(this.collection().values());
         // Resolve reference getExtensions

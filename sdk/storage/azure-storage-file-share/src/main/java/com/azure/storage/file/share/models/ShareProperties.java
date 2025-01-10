@@ -163,6 +163,12 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
     private OffsetDateTime nextAllowedProvisionedBandwidthDowngradeTime;
 
     /**
+     * Creates a new instance of {@link ShareProperties}.
+     */
+    public ShareProperties() {
+    }
+
+    /**
      * Get the lastModified property: The lastModified property.
      *
      * @return the lastModified value.

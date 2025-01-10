@@ -43,12 +43,14 @@ public class SecretBundle implements JsonSerializable<SecretBundle> {
     private Map<String, String> tags;
 
     /*
-     * If this is a secret backing a KV certificate, then this field specifies the corresponding key backing the KV certificate.
+     * If this is a secret backing a KV certificate, then this field specifies the corresponding key backing the KV
+     * certificate.
      */
     private String kid;
 
     /*
-     * True if the secret's lifetime is managed by key vault. If this is a secret backing a certificate, then managed will be true.
+     * True if the secret's lifetime is managed by key vault. If this is a secret backing a certificate, then managed
+     * will be true.
      */
     private Boolean managed;
 

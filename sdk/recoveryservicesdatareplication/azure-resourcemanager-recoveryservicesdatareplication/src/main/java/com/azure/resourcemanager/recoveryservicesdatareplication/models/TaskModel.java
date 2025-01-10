@@ -5,57 +5,60 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.WorkflowModelInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Task model. */
+/**
+ * Task model.
+ */
 @Fluent
-public final class TaskModel {
+public final class TaskModel implements JsonSerializable<TaskModel> {
     /*
      * Gets or sets the task name.
      */
-    @JsonProperty(value = "taskName", access = JsonProperty.Access.WRITE_ONLY)
     private String taskName;
 
     /*
      * Gets or sets the task state.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private TaskState state;
 
     /*
      * Gets or sets the start time.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * Gets or sets the end time.
      */
-    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTime;
 
     /*
      * Task model custom properties.
      */
-    @JsonProperty(value = "customProperties")
     private TaskModelCustomProperties customProperties;
 
     /*
      * Gets or sets the list of children workflow models.
      */
-    @JsonProperty(value = "childrenWorkflows")
     private List<WorkflowModelInner> childrenWorkflows;
 
-    /** Creates an instance of TaskModel class. */
+    /**
+     * Creates an instance of TaskModel class.
+     */
     public TaskModel() {
     }
 
     /**
      * Get the taskName property: Gets or sets the task name.
-     *
+     * 
      * @return the taskName value.
      */
     public String taskName() {
@@ -64,7 +67,7 @@ public final class TaskModel {
 
     /**
      * Get the state property: Gets or sets the task state.
-     *
+     * 
      * @return the state value.
      */
     public TaskState state() {
@@ -73,7 +76,7 @@ public final class TaskModel {
 
     /**
      * Get the startTime property: Gets or sets the start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -82,7 +85,7 @@ public final class TaskModel {
 
     /**
      * Get the endTime property: Gets or sets the end time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -91,7 +94,7 @@ public final class TaskModel {
 
     /**
      * Get the customProperties property: Task model custom properties.
-     *
+     * 
      * @return the customProperties value.
      */
     public TaskModelCustomProperties customProperties() {
@@ -100,7 +103,7 @@ public final class TaskModel {
 
     /**
      * Set the customProperties property: Task model custom properties.
-     *
+     * 
      * @param customProperties the customProperties value to set.
      * @return the TaskModel object itself.
      */
@@ -111,7 +114,7 @@ public final class TaskModel {
 
     /**
      * Get the childrenWorkflows property: Gets or sets the list of children workflow models.
-     *
+     * 
      * @return the childrenWorkflows value.
      */
     public List<WorkflowModelInner> childrenWorkflows() {
@@ -120,7 +123,7 @@ public final class TaskModel {
 
     /**
      * Set the childrenWorkflows property: Gets or sets the list of children workflow models.
-     *
+     * 
      * @param childrenWorkflows the childrenWorkflows value to set.
      * @return the TaskModel object itself.
      */
@@ -131,7 +134,7 @@ public final class TaskModel {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -141,5 +144,57 @@ public final class TaskModel {
         if (childrenWorkflows() != null) {
             childrenWorkflows().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("customProperties", this.customProperties);
+        jsonWriter.writeArrayField("childrenWorkflows", this.childrenWorkflows,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TaskModel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TaskModel if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the TaskModel.
+     */
+    public static TaskModel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TaskModel deserializedTaskModel = new TaskModel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("taskName".equals(fieldName)) {
+                    deserializedTaskModel.taskName = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedTaskModel.state = TaskState.fromString(reader.getString());
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedTaskModel.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedTaskModel.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("customProperties".equals(fieldName)) {
+                    deserializedTaskModel.customProperties = TaskModelCustomProperties.fromJson(reader);
+                } else if ("childrenWorkflows".equals(fieldName)) {
+                    List<WorkflowModelInner> childrenWorkflows
+                        = reader.readArray(reader1 -> WorkflowModelInner.fromJson(reader1));
+                    deserializedTaskModel.childrenWorkflows = childrenWorkflows;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTaskModel;
+        });
     }
 }

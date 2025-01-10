@@ -11,7 +11,7 @@ public final class WorkloadClassifierListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadClassifierListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"memberName\":\"okpvzm\",\"label\":\"t\",\"context\":\"dgxobfircl\",\"startTime\":\"kciayzri\",\"endTime\":\"hya\",\"importance\":\"vjlboxqvk\"},\"id\":\"lmxhomdyn\",\"name\":\"dwdigumb\",\"type\":\"raauzzpt\"},{\"properties\":{\"memberName\":\"zysdzh\",\"label\":\"wwvaiqyuvvfonk\",\"context\":\"hqyikvy\",\"startTime\":\"uyav\",\"endTime\":\"wmn\",\"importance\":\"ttijfybvpoekrs\"},\"id\":\"sgbdhuz\",\"name\":\"gnjdgkynscliqhz\",\"type\":\"h\"}],\"nextLink\":\"komtkubotppn\"}")
+            "{\"value\":[{\"properties\":{\"memberName\":\"kpak\",\"label\":\"ifmjnn\",\"context\":\"tqabpxuckpgg\",\"startTime\":\"wey\",\"endTime\":\"dhlisngwflqqmpi\",\"importance\":\"uwnpqxpxiwfcng\"},\"id\":\"saasiixtmkzj\",\"name\":\"kv\",\"type\":\"irhgfgrwsdp\"},{\"properties\":{\"memberName\":\"atzv\",\"label\":\"glbyvi\",\"context\":\"ctbrxkjzwrgxffm\",\"startTime\":\"kwfbkgo\",\"endTime\":\"wopdbydpiz\",\"importance\":\"clnapxbiygnugjkn\"},\"id\":\"smfcttuxuuyilfl\",\"name\":\"oiquvrehmrnjhvs\",\"type\":\"jztczytqj\"}],\"nextLink\":\"h\"}")
             .toObject(WorkloadClassifierListResult.class);
     }
 

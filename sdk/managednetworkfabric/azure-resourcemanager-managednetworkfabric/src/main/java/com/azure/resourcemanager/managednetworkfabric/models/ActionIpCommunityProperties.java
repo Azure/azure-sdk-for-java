@@ -5,30 +5,35 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** IP Community Properties. */
+/**
+ * IP Community Properties.
+ */
 @Fluent
 public final class ActionIpCommunityProperties extends IpCommunityAddOperationProperties {
     /*
      * List of IP Community IDs.
      */
-    @JsonProperty(value = "delete")
     private IpCommunityIdList delete;
 
     /*
      * List of IP Community IDs.
      */
-    @JsonProperty(value = "set")
     private IpCommunityIdList set;
 
-    /** Creates an instance of ActionIpCommunityProperties class. */
+    /**
+     * Creates an instance of ActionIpCommunityProperties class.
+     */
     public ActionIpCommunityProperties() {
     }
 
     /**
      * Get the delete property: List of IP Community IDs.
-     *
+     * 
      * @return the delete value.
      */
     public IpCommunityIdList delete() {
@@ -37,7 +42,7 @@ public final class ActionIpCommunityProperties extends IpCommunityAddOperationPr
 
     /**
      * Set the delete property: List of IP Community IDs.
-     *
+     * 
      * @param delete the delete value to set.
      * @return the ActionIpCommunityProperties object itself.
      */
@@ -48,7 +53,7 @@ public final class ActionIpCommunityProperties extends IpCommunityAddOperationPr
 
     /**
      * Get the set property: List of IP Community IDs.
-     *
+     * 
      * @return the set value.
      */
     public IpCommunityIdList set() {
@@ -57,7 +62,7 @@ public final class ActionIpCommunityProperties extends IpCommunityAddOperationPr
 
     /**
      * Set the set property: List of IP Community IDs.
-     *
+     * 
      * @param set the set value to set.
      * @return the ActionIpCommunityProperties object itself.
      */
@@ -66,7 +71,9 @@ public final class ActionIpCommunityProperties extends IpCommunityAddOperationPr
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ActionIpCommunityProperties withAdd(IpCommunityIdList add) {
         super.withAdd(add);
@@ -75,17 +82,61 @@ public final class ActionIpCommunityProperties extends IpCommunityAddOperationPr
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (delete() != null) {
             delete().validate();
         }
         if (set() != null) {
             set().validate();
         }
+        if (add() != null) {
+            add().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("add", add());
+        jsonWriter.writeJsonField("delete", this.delete);
+        jsonWriter.writeJsonField("set", this.set);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActionIpCommunityProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActionIpCommunityProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ActionIpCommunityProperties.
+     */
+    public static ActionIpCommunityProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActionIpCommunityProperties deserializedActionIpCommunityProperties = new ActionIpCommunityProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("add".equals(fieldName)) {
+                    deserializedActionIpCommunityProperties.withAdd(IpCommunityIdList.fromJson(reader));
+                } else if ("delete".equals(fieldName)) {
+                    deserializedActionIpCommunityProperties.delete = IpCommunityIdList.fromJson(reader);
+                } else if ("set".equals(fieldName)) {
+                    deserializedActionIpCommunityProperties.set = IpCommunityIdList.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActionIpCommunityProperties;
+        });
     }
 }

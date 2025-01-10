@@ -24,13 +24,13 @@ public final class ReplicationProtectedItemsUpdateApplianceSamples {
      */
     public static void updatesApplianceForReplicationProtectedItem(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationProtectedItems().updateAppliance("Ayan-0106-SA-Vault", "Ayan-0106-SA-RG",
-            "Ayan-0106-SA-Vaultreplicationfabric", "Ayan-0106-SA-Vaultreplicationcontainer",
-            "idclab-vcen67_50158124-8857-3e08-0893-2ddf8ebb8c1f",
-            new UpdateApplianceForReplicationProtectedItemInput()
-                .withProperties(new UpdateApplianceForReplicationProtectedItemInputProperties()
-                    .withTargetApplianceId("").withProviderSpecificDetails(
-                        new InMageRcmUpdateApplianceForReplicationProtectedItemInput().withRunAsAccountId(""))),
-            com.azure.core.util.Context.NONE);
+        manager.replicationProtectedItems()
+            .updateAppliance("Ayan-0106-SA-Vault", "Ayan-0106-SA-RG", "Ayan-0106-SA-Vaultreplicationfabric",
+                "Ayan-0106-SA-Vaultreplicationcontainer", "idclab-vcen67_50158124-8857-3e08-0893-2ddf8ebb8c1f",
+                new UpdateApplianceForReplicationProtectedItemInput().withProperties(
+                    new UpdateApplianceForReplicationProtectedItemInputProperties().withTargetApplianceId("")
+                        .withProviderSpecificDetails(
+                            new InMageRcmUpdateApplianceForReplicationProtectedItemInput().withRunAsAccountId(""))),
+                com.azure.core.util.Context.NONE);
     }
 }

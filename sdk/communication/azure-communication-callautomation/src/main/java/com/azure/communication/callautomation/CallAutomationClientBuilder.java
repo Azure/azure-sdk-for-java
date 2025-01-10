@@ -8,7 +8,6 @@ import com.azure.communication.callautomation.implementation.AzureCommunicationC
 import com.azure.communication.callautomation.implementation.CustomBearerTokenAuthenticationPolicy;
 import com.azure.communication.callautomation.implementation.CustomHmacAuthenticationPolicy;
 import com.azure.communication.common.CommunicationUserIdentifier;
-import com.azure.communication.common.MicrosoftTeamsAppIdentifier;
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -45,8 +44,8 @@ import com.azure.core.util.logging.ClientLogger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -82,7 +81,6 @@ public final class CallAutomationClientBuilder
     private RetryPolicy retryPolicy;
     private RetryOptions retryOptions;
     private CommunicationUserIdentifier sourceIdentity;
-    private MicrosoftTeamsAppIdentifier opsSourceIdentity;
 
     /**
      * Public default constructor
@@ -184,16 +182,6 @@ public final class CallAutomationClientBuilder
      */
     public CallAutomationClientBuilder sourceIdentity(CommunicationUserIdentifier sourceIdentity) {
         this.sourceIdentity = sourceIdentity;
-        return this;
-    }
-
-    /**
-     * Set One Phone System Source Identity used to create call
-     * @param opsSourceIdentity {@link MicrosoftTeamsAppIdentifier} to used to create call.
-     * @return {@link CallAutomationClientBuilder} object.
-     */
-    public CallAutomationClientBuilder opsSourceIdentity(MicrosoftTeamsAppIdentifier opsSourceIdentity) {
-        this.opsSourceIdentity = opsSourceIdentity;
         return this;
     }
 
@@ -331,8 +319,7 @@ public final class CallAutomationClientBuilder
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public CallAutomationAsyncClient buildAsyncClient() {
-        return new CallAutomationAsyncClient(createServiceImpl(), sourceIdentity, opsSourceIdentity,
-            new CallAutomationEventProcessor());
+        return new CallAutomationAsyncClient(createServiceImpl(), sourceIdentity, new CallAutomationEventProcessor());
     }
 
     /**

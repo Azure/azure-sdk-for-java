@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.datadog.fluent.models.MonitoredSubscriptionPropertiesInner;
 
-/** An instance of this class provides access to all the operations defined in MonitoredSubscriptionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MonitoredSubscriptionsClient.
+ */
 public interface MonitoredSubscriptionsClient {
     /**
      * List the subscriptions currently being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +32,7 @@ public interface MonitoredSubscriptionsClient {
 
     /**
      * List the subscriptions currently being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -45,7 +47,7 @@ public interface MonitoredSubscriptionsClient {
 
     /**
      * List the subscriptions currently being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
@@ -54,7 +56,7 @@ public interface MonitoredSubscriptionsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the request to update subscriptions needed to be monitored by the Datadog monitor resource along with
-     *     {@link Response}.
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MonitoredSubscriptionPropertiesInner> getWithResponse(String resourceGroupName, String monitorName,
@@ -62,7 +64,7 @@ public interface MonitoredSubscriptionsClient {
 
     /**
      * List the subscriptions currently being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
@@ -76,7 +78,7 @@ public interface MonitoredSubscriptionsClient {
 
     /**
      * Add the subscriptions that should be monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
@@ -84,7 +86,7 @@ public interface MonitoredSubscriptionsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of the request to update subscriptions needed to be monitored by the
-     *     Datadog monitor resource.
+     * Datadog monitor resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
@@ -92,17 +94,17 @@ public interface MonitoredSubscriptionsClient {
 
     /**
      * Add the subscriptions that should be monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the Datadog monitor resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of the request to update subscriptions needed to be monitored by the
-     *     Datadog monitor resource.
+     * Datadog monitor resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
@@ -111,7 +113,7 @@ public interface MonitoredSubscriptionsClient {
 
     /**
      * Add the subscriptions that should be monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
@@ -126,11 +128,11 @@ public interface MonitoredSubscriptionsClient {
 
     /**
      * Add the subscriptions that should be monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the Datadog monitor resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -143,7 +145,7 @@ public interface MonitoredSubscriptionsClient {
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
@@ -151,7 +153,7 @@ public interface MonitoredSubscriptionsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of the request to update subscriptions needed to be monitored by the
-     *     Datadog monitor resource.
+     * Datadog monitor resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
@@ -159,17 +161,17 @@ public interface MonitoredSubscriptionsClient {
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the Datadog monitor resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of the request to update subscriptions needed to be monitored by the
-     *     Datadog monitor resource.
+     * Datadog monitor resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner> beginUpdate(
@@ -178,7 +180,7 @@ public interface MonitoredSubscriptionsClient {
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
@@ -192,11 +194,11 @@ public interface MonitoredSubscriptionsClient {
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the Datadog monitor resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -209,7 +211,7 @@ public interface MonitoredSubscriptionsClient {
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -224,7 +226,7 @@ public interface MonitoredSubscriptionsClient {
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -240,7 +242,7 @@ public interface MonitoredSubscriptionsClient {
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -253,7 +255,7 @@ public interface MonitoredSubscriptionsClient {
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.

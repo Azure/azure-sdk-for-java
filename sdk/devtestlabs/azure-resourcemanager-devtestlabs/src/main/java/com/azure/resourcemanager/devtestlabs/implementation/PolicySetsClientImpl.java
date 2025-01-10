@@ -27,17 +27,23 @@ import com.azure.resourcemanager.devtestlabs.fluent.models.EvaluatePoliciesRespo
 import com.azure.resourcemanager.devtestlabs.models.EvaluatePoliciesRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PolicySetsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PolicySetsClient.
+ */
 public final class PolicySetsClientImpl implements PolicySetsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PolicySetsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DevTestLabsClientImpl client;
 
     /**
      * Initializes an instance of PolicySetsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PolicySetsClientImpl(DevTestLabsClientImpl client) {
@@ -67,7 +73,7 @@ public final class PolicySetsClientImpl implements PolicySetsClient {
 
     /**
      * Evaluates lab policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the policy set.
@@ -75,8 +81,8 @@ public final class PolicySetsClientImpl implements PolicySetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for evaluating a policy set along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return response body for evaluating a policy set along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EvaluatePoliciesResponseInner>> evaluatePoliciesWithResponseAsync(String resourceGroupName,
@@ -115,7 +121,7 @@ public final class PolicySetsClientImpl implements PolicySetsClient {
 
     /**
      * Evaluates lab policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the policy set.
@@ -124,8 +130,8 @@ public final class PolicySetsClientImpl implements PolicySetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for evaluating a policy set along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return response body for evaluating a policy set along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EvaluatePoliciesResponseInner>> evaluatePoliciesWithResponseAsync(String resourceGroupName,
@@ -162,7 +168,7 @@ public final class PolicySetsClientImpl implements PolicySetsClient {
 
     /**
      * Evaluates lab policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the policy set.
@@ -181,7 +187,7 @@ public final class PolicySetsClientImpl implements PolicySetsClient {
 
     /**
      * Evaluates lab policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the policy set.
@@ -201,7 +207,7 @@ public final class PolicySetsClientImpl implements PolicySetsClient {
 
     /**
      * Evaluates lab policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the policy set.

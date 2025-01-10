@@ -11,7 +11,7 @@ public final class ApplicationServerVmDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationServerVmDetails model = BinaryData.fromString(
-            "{\"type\":\"Active\",\"virtualMachineId\":\"sgwbnbbeld\",\"storageDetails\":[{\"id\":\"baliourqhakauha\"}]}")
+            "{\"type\":\"Active\",\"virtualMachineId\":\"nkixzbinj\",\"storageDetails\":[{\"id\":\"tmryw\"},{\"id\":\"zoqftiyqzrnkcqvy\"},{\"id\":\"whzlsicohoq\"},{\"id\":\"wvl\"}]}")
             .toObject(ApplicationServerVmDetails.class);
     }
 

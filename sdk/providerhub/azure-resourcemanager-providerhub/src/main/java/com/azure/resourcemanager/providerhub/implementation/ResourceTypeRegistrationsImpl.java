@@ -60,23 +60,23 @@ public final class ResourceTypeRegistrationsImpl implements ResourceTypeRegistra
     public PagedIterable<ResourceTypeRegistration> listByProviderRegistration(String providerNamespace) {
         PagedIterable<ResourceTypeRegistrationInner> inner
             = this.serviceClient().listByProviderRegistration(providerNamespace);
-        return Utils.mapPage(inner, inner1 -> new ResourceTypeRegistrationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourceTypeRegistrationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ResourceTypeRegistration> listByProviderRegistration(String providerNamespace,
         Context context) {
         PagedIterable<ResourceTypeRegistrationInner> inner
             = this.serviceClient().listByProviderRegistration(providerNamespace, context);
-        return Utils.mapPage(inner, inner1 -> new ResourceTypeRegistrationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourceTypeRegistrationImpl(inner1, this.manager()));
     }
 
     public ResourceTypeRegistration getById(String id) {
-        String providerNamespace = Utils.getValueFromIdByName(id, "providerRegistrations");
+        String providerNamespace = ResourceManagerUtils.getValueFromIdByName(id, "providerRegistrations");
         if (providerNamespace == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
         }
-        String resourceType = Utils.getValueFromIdByName(id, "resourcetypeRegistrations");
+        String resourceType = ResourceManagerUtils.getValueFromIdByName(id, "resourcetypeRegistrations");
         if (resourceType == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'resourcetypeRegistrations'.", id)));
@@ -85,12 +85,12 @@ public final class ResourceTypeRegistrationsImpl implements ResourceTypeRegistra
     }
 
     public Response<ResourceTypeRegistration> getByIdWithResponse(String id, Context context) {
-        String providerNamespace = Utils.getValueFromIdByName(id, "providerRegistrations");
+        String providerNamespace = ResourceManagerUtils.getValueFromIdByName(id, "providerRegistrations");
         if (providerNamespace == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
         }
-        String resourceType = Utils.getValueFromIdByName(id, "resourcetypeRegistrations");
+        String resourceType = ResourceManagerUtils.getValueFromIdByName(id, "resourcetypeRegistrations");
         if (resourceType == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'resourcetypeRegistrations'.", id)));
@@ -99,12 +99,12 @@ public final class ResourceTypeRegistrationsImpl implements ResourceTypeRegistra
     }
 
     public void deleteById(String id) {
-        String providerNamespace = Utils.getValueFromIdByName(id, "providerRegistrations");
+        String providerNamespace = ResourceManagerUtils.getValueFromIdByName(id, "providerRegistrations");
         if (providerNamespace == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
         }
-        String resourceType = Utils.getValueFromIdByName(id, "resourcetypeRegistrations");
+        String resourceType = ResourceManagerUtils.getValueFromIdByName(id, "resourcetypeRegistrations");
         if (resourceType == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'resourcetypeRegistrations'.", id)));
@@ -113,12 +113,12 @@ public final class ResourceTypeRegistrationsImpl implements ResourceTypeRegistra
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String providerNamespace = Utils.getValueFromIdByName(id, "providerRegistrations");
+        String providerNamespace = ResourceManagerUtils.getValueFromIdByName(id, "providerRegistrations");
         if (providerNamespace == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
         }
-        String resourceType = Utils.getValueFromIdByName(id, "resourcetypeRegistrations");
+        String resourceType = ResourceManagerUtils.getValueFromIdByName(id, "resourcetypeRegistrations");
         if (resourceType == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'resourcetypeRegistrations'.", id)));

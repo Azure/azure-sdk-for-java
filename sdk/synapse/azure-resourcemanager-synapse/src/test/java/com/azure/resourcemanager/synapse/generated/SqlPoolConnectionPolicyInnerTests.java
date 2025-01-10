@@ -12,34 +12,33 @@ public final class SqlPoolConnectionPolicyInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlPoolConnectionPolicyInner model = BinaryData.fromString(
-            "{\"kind\":\"wct\",\"location\":\"dzjlu\",\"properties\":{\"securityEnabledAccess\":\"dlwggytsbwtovv\",\"proxyDnsName\":\"seinqfiuf\",\"proxyPort\":\"knpirgnepttwq\",\"visibility\":\"niffcdmqnroj\",\"useServerDefault\":\"ijnkrxfrdd\",\"redirectionState\":\"ratiz\",\"state\":\"onasxifto\"},\"id\":\"qyzhf\",\"name\":\"wesgogczh\",\"type\":\"nnxk\"}")
+            "{\"kind\":\"uwwltvuqjctz\",\"location\":\"keifzzhmkdasv\",\"properties\":{\"securityEnabledAccess\":\"hbxcu\",\"proxyDnsName\":\"hxgsrboldfor\",\"proxyPort\":\"wjlvizbfhfov\",\"visibility\":\"cqpbtuo\",\"useServerDefault\":\"eszabbelawumuas\",\"redirectionState\":\"kwrrwo\",\"state\":\"qucwyhahnom\"},\"id\":\"rkywuhpsvfuu\",\"name\":\"utlwexxwla\",\"type\":\"niexzsrzpgepq\"}")
             .toObject(SqlPoolConnectionPolicyInner.class);
-        Assertions.assertEquals("dlwggytsbwtovv", model.securityEnabledAccess());
-        Assertions.assertEquals("seinqfiuf", model.proxyDnsName());
-        Assertions.assertEquals("knpirgnepttwq", model.proxyPort());
-        Assertions.assertEquals("niffcdmqnroj", model.visibility());
-        Assertions.assertEquals("ijnkrxfrdd", model.useServerDefault());
-        Assertions.assertEquals("ratiz", model.redirectionState());
-        Assertions.assertEquals("onasxifto", model.state());
+        Assertions.assertEquals("hbxcu", model.securityEnabledAccess());
+        Assertions.assertEquals("hxgsrboldfor", model.proxyDnsName());
+        Assertions.assertEquals("wjlvizbfhfov", model.proxyPort());
+        Assertions.assertEquals("cqpbtuo", model.visibility());
+        Assertions.assertEquals("eszabbelawumuas", model.useServerDefault());
+        Assertions.assertEquals("kwrrwo", model.redirectionState());
+        Assertions.assertEquals("qucwyhahnom", model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlPoolConnectionPolicyInner model
-            = new SqlPoolConnectionPolicyInner().withSecurityEnabledAccess("dlwggytsbwtovv")
-                .withProxyDnsName("seinqfiuf")
-                .withProxyPort("knpirgnepttwq")
-                .withVisibility("niffcdmqnroj")
-                .withUseServerDefault("ijnkrxfrdd")
-                .withRedirectionState("ratiz")
-                .withState("onasxifto");
+        SqlPoolConnectionPolicyInner model = new SqlPoolConnectionPolicyInner().withSecurityEnabledAccess("hbxcu")
+            .withProxyDnsName("hxgsrboldfor")
+            .withProxyPort("wjlvizbfhfov")
+            .withVisibility("cqpbtuo")
+            .withUseServerDefault("eszabbelawumuas")
+            .withRedirectionState("kwrrwo")
+            .withState("qucwyhahnom");
         model = BinaryData.fromObject(model).toObject(SqlPoolConnectionPolicyInner.class);
-        Assertions.assertEquals("dlwggytsbwtovv", model.securityEnabledAccess());
-        Assertions.assertEquals("seinqfiuf", model.proxyDnsName());
-        Assertions.assertEquals("knpirgnepttwq", model.proxyPort());
-        Assertions.assertEquals("niffcdmqnroj", model.visibility());
-        Assertions.assertEquals("ijnkrxfrdd", model.useServerDefault());
-        Assertions.assertEquals("ratiz", model.redirectionState());
-        Assertions.assertEquals("onasxifto", model.state());
+        Assertions.assertEquals("hbxcu", model.securityEnabledAccess());
+        Assertions.assertEquals("hxgsrboldfor", model.proxyDnsName());
+        Assertions.assertEquals("wjlvizbfhfov", model.proxyPort());
+        Assertions.assertEquals("cqpbtuo", model.visibility());
+        Assertions.assertEquals("eszabbelawumuas", model.useServerDefault());
+        Assertions.assertEquals("kwrrwo", model.redirectionState());
+        Assertions.assertEquals("qucwyhahnom", model.state());
     }
 }

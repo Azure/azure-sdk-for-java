@@ -612,8 +612,8 @@ public final class FluxUtil {
         } else if (position < 0) {
             return monoError(LOGGER, new IllegalArgumentException("'position' cannot be less than 0."));
         }
-
-        return writeToAsynchronousByteChannel(content, IOUtils.toAsynchronousByteChannel(outFile, position));
+        return Mono.create(emitter -> content.subscribe(
+            new AsynchronousByteChannelWriteSubscriber(IOUtils.toAsynchronousByteChannel(outFile, position), emitter)));
     }
 
     /**

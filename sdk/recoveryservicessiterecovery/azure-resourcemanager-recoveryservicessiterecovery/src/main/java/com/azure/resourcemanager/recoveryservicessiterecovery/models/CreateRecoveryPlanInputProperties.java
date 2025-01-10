@@ -6,42 +6,41 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Recovery plan creation properties.
  */
 @Fluent
-public final class CreateRecoveryPlanInputProperties {
+public final class CreateRecoveryPlanInputProperties implements JsonSerializable<CreateRecoveryPlanInputProperties> {
     /*
      * The primary fabric Id.
      */
-    @JsonProperty(value = "primaryFabricId", required = true)
     private String primaryFabricId;
 
     /*
      * The recovery fabric Id.
      */
-    @JsonProperty(value = "recoveryFabricId", required = true)
     private String recoveryFabricId;
 
     /*
      * The failover deployment model.
      */
-    @JsonProperty(value = "failoverDeploymentModel")
     private FailoverDeploymentModel failoverDeploymentModel;
 
     /*
      * The recovery plan groups.
      */
-    @JsonProperty(value = "groups", required = true)
     private List<RecoveryPlanGroup> groups;
 
     /*
      * The provider specific input.
      */
-    @JsonProperty(value = "providerSpecificInput")
     private List<RecoveryPlanProviderSpecificInput> providerSpecificInput;
 
     /**
@@ -159,16 +158,19 @@ public final class CreateRecoveryPlanInputProperties {
      */
     public void validate() {
         if (primaryFabricId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property primaryFabricId in model CreateRecoveryPlanInputProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property primaryFabricId in model CreateRecoveryPlanInputProperties"));
         }
         if (recoveryFabricId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property recoveryFabricId in model CreateRecoveryPlanInputProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property recoveryFabricId in model CreateRecoveryPlanInputProperties"));
         }
         if (groups() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property groups in model CreateRecoveryPlanInputProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property groups in model CreateRecoveryPlanInputProperties"));
         } else {
             groups().forEach(e -> e.validate());
         }
@@ -178,4 +180,60 @@ public final class CreateRecoveryPlanInputProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CreateRecoveryPlanInputProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("primaryFabricId", this.primaryFabricId);
+        jsonWriter.writeStringField("recoveryFabricId", this.recoveryFabricId);
+        jsonWriter.writeArrayField("groups", this.groups, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("failoverDeploymentModel",
+            this.failoverDeploymentModel == null ? null : this.failoverDeploymentModel.toString());
+        jsonWriter.writeArrayField("providerSpecificInput", this.providerSpecificInput,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreateRecoveryPlanInputProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreateRecoveryPlanInputProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CreateRecoveryPlanInputProperties.
+     */
+    public static CreateRecoveryPlanInputProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CreateRecoveryPlanInputProperties deserializedCreateRecoveryPlanInputProperties
+                = new CreateRecoveryPlanInputProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("primaryFabricId".equals(fieldName)) {
+                    deserializedCreateRecoveryPlanInputProperties.primaryFabricId = reader.getString();
+                } else if ("recoveryFabricId".equals(fieldName)) {
+                    deserializedCreateRecoveryPlanInputProperties.recoveryFabricId = reader.getString();
+                } else if ("groups".equals(fieldName)) {
+                    List<RecoveryPlanGroup> groups = reader.readArray(reader1 -> RecoveryPlanGroup.fromJson(reader1));
+                    deserializedCreateRecoveryPlanInputProperties.groups = groups;
+                } else if ("failoverDeploymentModel".equals(fieldName)) {
+                    deserializedCreateRecoveryPlanInputProperties.failoverDeploymentModel
+                        = FailoverDeploymentModel.fromString(reader.getString());
+                } else if ("providerSpecificInput".equals(fieldName)) {
+                    List<RecoveryPlanProviderSpecificInput> providerSpecificInput
+                        = reader.readArray(reader1 -> RecoveryPlanProviderSpecificInput.fromJson(reader1));
+                    deserializedCreateRecoveryPlanInputProperties.providerSpecificInput = providerSpecificInput;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCreateRecoveryPlanInputProperties;
+        });
+    }
 }
