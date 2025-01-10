@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.messaging.servicebus.implementation.properties.merger;
+package com.azure.spring.messaging.servicebus.implementation.properties.merger.util;
 
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
@@ -30,16 +30,16 @@ import static com.azure.spring.messaging.servicebus.implementation.properties.me
 import static com.azure.spring.messaging.servicebus.implementation.properties.merger.util.TestPropertiesUtils.SETTER_METHOD;
 import static com.azure.spring.messaging.servicebus.implementation.properties.merger.util.TestPropertiesUtils.NO_SETTER_PROPERTIES_CLASSES;
 
-class TestPropertiesValueInjectHelper {
+public class TestPropertiesValueInjectHelper {
 
     private static final Random RANDOM = new Random();
 
-    static <T> void injectPseudoPropertyValues(T target,
+    public static <T> void injectPseudoPropertyValues(T target,
                                                String... ignoredMemberVariableNames) {
         injectPseudoPropertyValues(target, null, ignoredMemberVariableNames);
     }
 
-    static <T> void injectPseudoPropertyValues(T target,
+    public static <T> void injectPseudoPropertyValues(T target,
                                                List<String> highPriorityVariables,
                                                String... ignoredMemberVariableNames) {
         List<String> priorities = Optional.ofNullable(highPriorityVariables).orElseGet(Collections::emptyList);

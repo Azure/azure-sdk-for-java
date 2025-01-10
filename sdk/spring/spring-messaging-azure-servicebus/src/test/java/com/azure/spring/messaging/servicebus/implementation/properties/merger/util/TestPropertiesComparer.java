@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.messaging.servicebus.implementation.properties.merger;
+package com.azure.spring.messaging.servicebus.implementation.properties.merger.util;
 
 import com.azure.spring.messaging.servicebus.implementation.properties.merger.util.TestPropertiesUtils;
 
@@ -17,9 +17,9 @@ import static com.azure.spring.cloud.core.implementation.util.ClassUtils.isPrimi
 import static com.azure.spring.messaging.servicebus.implementation.properties.merger.util.TestPropertiesUtils.BUILT_IN_MEMBER_VARIABLE_NAMES;
 import static com.azure.spring.messaging.servicebus.implementation.properties.merger.util.TestPropertiesUtils.IGNORED_CLASSES;
 
-class TestPropertiesComparer {
+public class TestPropertiesComparer {
 
-    static <T, S> boolean isMergedPropertiesCorrect(T parent,
+    public static <T, S> boolean isMergedPropertiesCorrect(T parent,
                                                     S child,
                                                     S result,
                                                     String... ignoredMemberVariableNames) {

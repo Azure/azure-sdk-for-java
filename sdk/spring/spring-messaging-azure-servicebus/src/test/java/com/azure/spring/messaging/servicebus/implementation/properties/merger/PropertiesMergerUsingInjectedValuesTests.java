@@ -19,8 +19,8 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_CHINA;
-import static com.azure.spring.messaging.servicebus.implementation.properties.merger.TestPropertiesComparer.isMergedPropertiesCorrect;
-import static com.azure.spring.messaging.servicebus.implementation.properties.merger.TestPropertiesValueInjectHelper.injectPseudoPropertyValues;
+import static com.azure.spring.messaging.servicebus.implementation.properties.merger.util.TestPropertiesComparer.isMergedPropertiesCorrect;
+import static com.azure.spring.messaging.servicebus.implementation.properties.merger.util.TestPropertiesValueInjectHelper.injectPseudoPropertyValues;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;

@@ -5,17 +5,14 @@ package com.azure.spring.messaging.servicebus.implementation.properties.merger;
 
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.servicebus.core.properties.ProcessorProperties;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_CHINA;
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT;
-import static com.azure.spring.messaging.servicebus.implementation.properties.merger.TestPropertiesComparer.isMergedPropertiesCorrect;
-import static com.azure.spring.messaging.servicebus.implementation.properties.merger.TestPropertiesValueInjectHelper.injectPseudoPropertyValues;
+import static com.azure.spring.messaging.servicebus.implementation.properties.merger.util.TestPropertiesComparer.isMergedPropertiesCorrect;
+import static com.azure.spring.messaging.servicebus.implementation.properties.merger.util.TestPropertiesValueInjectHelper.injectPseudoPropertyValues;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
