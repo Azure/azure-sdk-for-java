@@ -27,7 +27,7 @@ public class TestPropertiesUtils {
     public static final String GETTER_METHOD = "getter";
     private static final String OTHERS_METHOD = "others";
 
-    public static final Set<Class<?>> IGNORED_CLASSES = Set.of(Class.class, Consumer.class, Object.class);
+    public static final Set<Class<?>> IGNORED_CLASSES = Set.of(Consumer.class, Object.class);
 
     public static final Set<String> BUILT_IN_MEMBER_VARIABLE_NAMES =
         Set.of("client", "credential", "environment", "exponential", "fixed", "profile", "proxy", "retry");

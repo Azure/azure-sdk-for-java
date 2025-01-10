@@ -128,14 +128,14 @@ class PropertiesMergerUsingInjectedValuesTests {
     }
 
     private static void assertAzureAmqpSdkProperties(AzureAmqpSdkProperties properties) {
-        assertBuiltInProperties(properties.getClient(), properties.getProxy(), properties.getRetry(), properties.getCredential(), properties.getProfile());
+        assertBuiltInProperties(properties.getClient(), properties.getProxy(), properties.getRetry(), properties.getProfile(), properties.getCredential());
     }
 
     private static void assertBuiltInProperties(AmqpClientProperties client,
                                                 AmqpProxyProperties proxy,
                                                 AmqpRetryProperties retry,
-                                                TokenCredentialProperties credential,
-                                                AzureProfileProperties profile) {
+                                                AzureProfileProperties profile,
+                                                TokenCredentialProperties credential) {
 
         assertTrue(client.getApplicationId().startsWith("ApplicationId"));
         assertEquals(client.getTransportType(), AmqpTransportType.AMQP);
