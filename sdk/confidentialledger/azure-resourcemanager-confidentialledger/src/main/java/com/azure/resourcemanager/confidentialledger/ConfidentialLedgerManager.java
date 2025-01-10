@@ -26,11 +26,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.confidentialledger.fluent.ConfidentialLedgerManagementClient;
 import com.azure.resourcemanager.confidentialledger.implementation.ConfidentialLedgerManagementClientBuilder;
 import com.azure.resourcemanager.confidentialledger.implementation.LedgersImpl;
-import com.azure.resourcemanager.confidentialledger.implementation.ManagedCcfsImpl;
 import com.azure.resourcemanager.confidentialledger.implementation.OperationsImpl;
 import com.azure.resourcemanager.confidentialledger.implementation.ResourceProvidersImpl;
 import com.azure.resourcemanager.confidentialledger.models.Ledgers;
-import com.azure.resourcemanager.confidentialledger.models.ManagedCcfs;
 import com.azure.resourcemanager.confidentialledger.models.Operations;
 import com.azure.resourcemanager.confidentialledger.models.ResourceProviders;
 import java.time.Duration;
@@ -50,8 +48,6 @@ public final class ConfidentialLedgerManager {
     private ResourceProviders resourceProviders;
 
     private Ledgers ledgers;
-
-    private ManagedCcfs managedCcfs;
 
     private final ConfidentialLedgerManagementClient clientObject;
 
@@ -217,7 +213,7 @@ public final class ConfidentialLedgerManager {
                 .append("-")
                 .append("com.azure.resourcemanager.confidentialledger")
                 .append("/")
-                .append("1.0.0-beta.5");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -297,18 +293,6 @@ public final class ConfidentialLedgerManager {
             this.ledgers = new LedgersImpl(clientObject.getLedgers(), this);
         }
         return ledgers;
-    }
-
-    /**
-     * Gets the resource collection API of ManagedCcfs. It manages ManagedCcf.
-     * 
-     * @return Resource collection API of ManagedCcfs.
-     */
-    public ManagedCcfs managedCcfs() {
-        if (this.managedCcfs == null) {
-            this.managedCcfs = new ManagedCcfsImpl(clientObject.getManagedCcfs(), this);
-        }
-        return managedCcfs;
     }
 
     /**

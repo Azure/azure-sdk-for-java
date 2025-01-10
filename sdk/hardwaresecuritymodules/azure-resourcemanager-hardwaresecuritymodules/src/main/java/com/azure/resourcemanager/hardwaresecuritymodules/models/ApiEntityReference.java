@@ -17,9 +17,9 @@ import java.io.IOException;
 @Fluent
 public final class ApiEntityReference implements JsonSerializable<ApiEntityReference> {
     /*
-     * The Azure resource id in the form of /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/...
+     * The ARM resource id in the form of /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/...
      */
-    private String resourceId;
+    private String id;
 
     /**
      * Creates an instance of ApiEntityReference class.
@@ -28,24 +28,24 @@ public final class ApiEntityReference implements JsonSerializable<ApiEntityRefer
     }
 
     /**
-     * Get the resourceId property: The Azure resource id in the form of
+     * Get the id property: The ARM resource id in the form of
      * /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/...
      * 
-     * @return the resourceId value.
+     * @return the id value.
      */
-    public String resourceId() {
-        return this.resourceId;
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Set the resourceId property: The Azure resource id in the form of
+     * Set the id property: The ARM resource id in the form of
      * /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/...
      * 
-     * @param resourceId the resourceId value to set.
+     * @param id the id value to set.
      * @return the ApiEntityReference object itself.
      */
-    public ApiEntityReference withResourceId(String resourceId) {
-        this.resourceId = resourceId;
+    public ApiEntityReference withId(String id) {
+        this.id = id;
         return this;
     }
 
@@ -63,7 +63,7 @@ public final class ApiEntityReference implements JsonSerializable<ApiEntityRefer
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("id", this.id);
         return jsonWriter.writeEndObject();
     }
 
@@ -82,8 +82,8 @@ public final class ApiEntityReference implements JsonSerializable<ApiEntityRefer
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("resourceId".equals(fieldName)) {
-                    deserializedApiEntityReference.resourceId = reader.getString();
+                if ("id".equals(fieldName)) {
+                    deserializedApiEntityReference.id = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

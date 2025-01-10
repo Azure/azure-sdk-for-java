@@ -1,3 +1,3 @@
-com.azure.tools.revapi.transforms.AzureSdkAllowedExternalApis
-com.azure.tools.revapi.transforms.JacksonDatabindRemovalTransform
-com.azure.tools.revapi.transforms.TransitiveCoreChangesTransform
+com.azure.tools.revapi.transforms.AllowedExternalApis
+com.azure.tools.revapi.transforms.IgnoredJacksonDatabindRemovalTransform
+com.azure.tools.revapi.transforms.IgnoredTransitiveChangesTransform

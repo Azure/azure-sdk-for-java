@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class DesiredInstallationState extends ExpandableStringEnum<Desired
      * @param name a name to look for.
      * @return the corresponding DesiredInstallationState.
      */
-    @JsonCreator
     public static DesiredInstallationState fromString(String name) {
         return fromString(name, DesiredInstallationState.class);
     }

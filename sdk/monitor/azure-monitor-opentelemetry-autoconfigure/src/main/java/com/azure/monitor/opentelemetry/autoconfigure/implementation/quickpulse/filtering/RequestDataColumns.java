@@ -71,4 +71,8 @@ public class RequestDataColumns implements TelemetryColumns {
         return customDims.matchesCustomDimFilter(filter, trimmedFieldName);
     }
 
+    public double getCustomDimValueForProjection(String key) {
+        return customDims.getCustomDimValueForProjection(key);
+    }
+
 }

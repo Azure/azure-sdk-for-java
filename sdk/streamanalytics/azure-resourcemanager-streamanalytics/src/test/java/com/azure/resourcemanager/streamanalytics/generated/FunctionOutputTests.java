@@ -11,15 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class FunctionOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FunctionOutput model
-            = BinaryData.fromString("{\"dataType\":\"gknygjofjddeqs\"}").toObject(FunctionOutput.class);
-        Assertions.assertEquals("gknygjofjddeqs", model.dataType());
+        FunctionOutput model = BinaryData.fromString("{\"dataType\":\"jzzd\"}").toObject(FunctionOutput.class);
+        Assertions.assertEquals("jzzd", model.dataType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FunctionOutput model = new FunctionOutput().withDataType("gknygjofjddeqs");
+        FunctionOutput model = new FunctionOutput().withDataType("jzzd");
         model = BinaryData.fromObject(model).toObject(FunctionOutput.class);
-        Assertions.assertEquals("gknygjofjddeqs", model.dataType());
+        Assertions.assertEquals("jzzd", model.dataType());
     }
 }

@@ -26,19 +26,9 @@ public final class ConfigurationProperties implements JsonSerializable<Configura
     private String value;
 
     /*
-     * Current value of the configuration.
-     */
-    private String currentValue;
-
-    /*
      * Description of the configuration.
      */
     private String description;
-
-    /*
-     * The link used to get the document from community or Azure site.
-     */
-    private String documentationLink;
 
     /*
      * Default value of the configuration.
@@ -102,41 +92,12 @@ public final class ConfigurationProperties implements JsonSerializable<Configura
     }
 
     /**
-     * Get the currentValue property: Current value of the configuration.
-     * 
-     * @return the currentValue value.
-     */
-    public String currentValue() {
-        return this.currentValue;
-    }
-
-    /**
-     * Set the currentValue property: Current value of the configuration.
-     * 
-     * @param currentValue the currentValue value to set.
-     * @return the ConfigurationProperties object itself.
-     */
-    public ConfigurationProperties withCurrentValue(String currentValue) {
-        this.currentValue = currentValue;
-        return this;
-    }
-
-    /**
      * Get the description property: Description of the configuration.
      * 
      * @return the description value.
      */
     public String description() {
         return this.description;
-    }
-
-    /**
-     * Get the documentationLink property: The link used to get the document from community or Azure site.
-     * 
-     * @return the documentationLink value.
-     */
-    public String documentationLink() {
-        return this.documentationLink;
     }
 
     /**
@@ -228,7 +189,6 @@ public final class ConfigurationProperties implements JsonSerializable<Configura
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("value", this.value);
-        jsonWriter.writeStringField("currentValue", this.currentValue);
         jsonWriter.writeStringField("source", this.source == null ? null : this.source.toString());
         return jsonWriter.writeEndObject();
     }
@@ -250,12 +210,8 @@ public final class ConfigurationProperties implements JsonSerializable<Configura
 
                 if ("value".equals(fieldName)) {
                     deserializedConfigurationProperties.value = reader.getString();
-                } else if ("currentValue".equals(fieldName)) {
-                    deserializedConfigurationProperties.currentValue = reader.getString();
                 } else if ("description".equals(fieldName)) {
                     deserializedConfigurationProperties.description = reader.getString();
-                } else if ("documentationLink".equals(fieldName)) {
-                    deserializedConfigurationProperties.documentationLink = reader.getString();
                 } else if ("defaultValue".equals(fieldName)) {
                     deserializedConfigurationProperties.defaultValue = reader.getString();
                 } else if ("dataType".equals(fieldName)) {

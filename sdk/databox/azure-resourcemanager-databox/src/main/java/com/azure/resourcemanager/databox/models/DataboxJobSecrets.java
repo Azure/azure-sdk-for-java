@@ -26,16 +26,6 @@ public final class DataboxJobSecrets extends JobSecrets {
      */
     private List<DataBoxSecret> podSecrets;
 
-    /*
-     * Error while fetching the secrets.
-     */
-    private CloudError error;
-
-    /*
-     * Dc Access Security Code for Customer Managed Shipping
-     */
-    private DcAccessSecurityCode dcAccessSecurityCode;
-
     /**
      * Creates an instance of DataboxJobSecrets class.
      */
@@ -70,26 +60,6 @@ public final class DataboxJobSecrets extends JobSecrets {
     public DataboxJobSecrets withPodSecrets(List<DataBoxSecret> podSecrets) {
         this.podSecrets = podSecrets;
         return this;
-    }
-
-    /**
-     * Get the error property: Error while fetching the secrets.
-     * 
-     * @return the error value.
-     */
-    @Override
-    public CloudError error() {
-        return this.error;
-    }
-
-    /**
-     * Get the dcAccessSecurityCode property: Dc Access Security Code for Customer Managed Shipping.
-     * 
-     * @return the dcAccessSecurityCode value.
-     */
-    @Override
-    public DcAccessSecurityCode dcAccessSecurityCode() {
-        return this.dcAccessSecurityCode;
     }
 
     /**
@@ -138,9 +108,9 @@ public final class DataboxJobSecrets extends JobSecrets {
                 reader.nextToken();
 
                 if ("dcAccessSecurityCode".equals(fieldName)) {
-                    deserializedDataboxJobSecrets.dcAccessSecurityCode = DcAccessSecurityCode.fromJson(reader);
+                    deserializedDataboxJobSecrets.withDcAccessSecurityCode(DcAccessSecurityCode.fromJson(reader));
                 } else if ("error".equals(fieldName)) {
-                    deserializedDataboxJobSecrets.error = CloudError.fromJson(reader);
+                    deserializedDataboxJobSecrets.withError(CloudError.fromJson(reader));
                 } else if ("jobSecretsType".equals(fieldName)) {
                     deserializedDataboxJobSecrets.jobSecretsType = ClassDiscriminator.fromString(reader.getString());
                 } else if ("podSecrets".equals(fieldName)) {

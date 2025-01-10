@@ -14,7 +14,6 @@ import jakarta.jms.Connection;
 import jakarta.jms.ConnectionFactory;
 import org.apache.qpid.jms.JmsConnectionExtensions;
 import org.apache.qpid.jms.JmsConnectionFactory;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -66,7 +65,7 @@ public class ServiceBusJmsAutoConfiguration {
     @Bean
     @ConditionalOnExpression("'standard'.equalsIgnoreCase('${spring.jms.servicebus.pricing-tier}')")
     @SuppressWarnings("unchecked")
-    AzureServiceBusJmsConnectionFactoryCustomizer amqpOpenPropertiesCustomizer(ObjectProvider<AzureServiceBusJmsCredentialSupplier> azureServiceBusJmsCredentialSupplier) {
+    AzureServiceBusJmsConnectionFactoryCustomizer amqpOpenPropertiesCustomizer() {
         return factory -> {
             JmsConnectionFactory jmsFactory = (JmsConnectionFactory) ReflectionUtils.getField(ServiceBusJmsConnectionFactory.class, "factory", factory);
             EnumMap<JmsConnectionExtensions, BiFunction<Connection, URI, Object>> extensionMap =

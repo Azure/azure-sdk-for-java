@@ -26,7 +26,6 @@ import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
-import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.domain.AuditableEntity;
 import com.azure.spring.data.cosmos.domain.AutoScaleSample;
 import com.azure.spring.data.cosmos.domain.BasicItem;
@@ -36,6 +35,9 @@ import com.azure.spring.data.cosmos.domain.PersonWithTransientEtag;
 import com.azure.spring.data.cosmos.domain.PersonWithTransientId;
 import com.azure.spring.data.cosmos.domain.PersonWithTransientPartitionKey;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
+import com.azure.spring.data.cosmos.exception.CosmosBadRequestException;
+import com.azure.spring.data.cosmos.exception.CosmosConflictException;
+import com.azure.spring.data.cosmos.exception.CosmosPreconditionFailedException;
 import com.azure.spring.data.cosmos.repository.StubAuditorProvider;
 import com.azure.spring.data.cosmos.repository.StubDateTimeProvider;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
@@ -79,12 +81,11 @@ import java.util.UUID;
 import static com.azure.spring.data.cosmos.common.TestConstants.ADDRESSES;
 import static com.azure.spring.data.cosmos.common.TestConstants.AGE;
 import static com.azure.spring.data.cosmos.common.TestConstants.FIRST_NAME;
-import static com.azure.spring.data.cosmos.common.TestConstants.ID_6;
-import static com.azure.spring.data.cosmos.common.TestConstants.NEW_FIRST_NAME;
-import static com.azure.spring.data.cosmos.common.TestConstants.TRANSIENT_PROPERTY;
 import static com.azure.spring.data.cosmos.common.TestConstants.HOBBIES;
 import static com.azure.spring.data.cosmos.common.TestConstants.ID_1;
+import static com.azure.spring.data.cosmos.common.TestConstants.ID_6;
 import static com.azure.spring.data.cosmos.common.TestConstants.LAST_NAME;
+import static com.azure.spring.data.cosmos.common.TestConstants.NEW_FIRST_NAME;
 import static com.azure.spring.data.cosmos.common.TestConstants.NEW_PASSPORT_IDS_BY_COUNTRY;
 import static com.azure.spring.data.cosmos.common.TestConstants.PASSPORT_IDS_BY_COUNTRY;
 import static com.azure.spring.data.cosmos.common.TestConstants.PATCH_AGE_1;
@@ -92,6 +93,7 @@ import static com.azure.spring.data.cosmos.common.TestConstants.PATCH_AGE_INCREM
 import static com.azure.spring.data.cosmos.common.TestConstants.PATCH_FIRST_NAME;
 import static com.azure.spring.data.cosmos.common.TestConstants.PATCH_HOBBIES;
 import static com.azure.spring.data.cosmos.common.TestConstants.PATCH_HOBBY1;
+import static com.azure.spring.data.cosmos.common.TestConstants.TRANSIENT_PROPERTY;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -232,7 +234,7 @@ public class ReactiveCosmosTemplateIT {
         final Mono<Person> insertMono = cosmosTemplate.insert(TEST_PERSON,
             new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
         StepVerifier.create(insertMono)
-                    .expectErrorMatches(ex -> ex instanceof CosmosAccessException &&
+                    .expectErrorMatches(ex -> ex instanceof CosmosConflictException &&
                         ((CosmosAccessException) ex).getCosmosException().getStatusCode() == TestConstants.CONFLICT_STATUS_CODE)
                     .verify();
 
@@ -483,7 +485,7 @@ public class ReactiveCosmosTemplateIT {
         final Person person = new Person(null, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
         Mono<Person> entityMono = cosmosTemplate.insert(Person.class.getSimpleName(),
             person, new PartitionKey(person.getLastName()));
-        StepVerifier.create(entityMono).verifyError(CosmosAccessException.class);
+        StepVerifier.create(entityMono).verifyError(CosmosBadRequestException.class);
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
     }
@@ -563,7 +565,7 @@ public class ReactiveCosmosTemplateIT {
     public void testPatchPreConditionFail() {
         options.setFilterPredicate("FROM person p WHERE p.lastName = 'dummy'");
         Mono<Person> person = cosmosTemplate.patch(insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), Person.class, operations, options);
-        StepVerifier.create(person).expectErrorMatches(ex -> ex instanceof CosmosAccessException &&
+        StepVerifier.create(person).expectErrorMatches(ex -> ex instanceof CosmosPreconditionFailedException &&
                 ((CosmosAccessException) ex).getCosmosException().getStatusCode() == TestConstants.PRECONDITION_FAILED_STATUS_CODE).verify();
     }
 

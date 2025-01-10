@@ -10,19 +10,22 @@ import com.azure.resourcemanager.deviceprovisioningservices.models.IotDpsSkuInfo
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for IotDpsResource CreateOrUpdate. */
+/**
+ * Samples for IotDpsResource CreateOrUpdate.
+ */
 public final class IotDpsResourceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSCreate.json
+     * x-ms-original-file:
+     * specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSCreate.
+     * json
      */
     /**
      * Sample code: DPSCreate.
-     *
+     * 
      * @param manager Entry point to IotDpsManager.
      */
     public static void dPSCreate(com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
-        manager
-            .iotDpsResources()
+        manager.iotDpsResources()
             .define("myFirstProvisioningService")
             .withRegion("East US")
             .withExistingResourceGroup("myResourceGroup")
@@ -32,6 +35,7 @@ public final class IotDpsResourceCreateOrUpdateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

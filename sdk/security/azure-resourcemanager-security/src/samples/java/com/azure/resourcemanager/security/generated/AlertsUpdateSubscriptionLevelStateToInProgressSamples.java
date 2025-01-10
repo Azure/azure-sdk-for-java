@@ -9,7 +9,8 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class AlertsUpdateSubscriptionLevelStateToInProgressSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/UpdateAlertSubscriptionLocation_inProgress_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/
+     * UpdateAlertSubscriptionLocation_inProgress_example.json
      */
     /**
      * Sample code: Update security alert state on a subscription from a security data location.

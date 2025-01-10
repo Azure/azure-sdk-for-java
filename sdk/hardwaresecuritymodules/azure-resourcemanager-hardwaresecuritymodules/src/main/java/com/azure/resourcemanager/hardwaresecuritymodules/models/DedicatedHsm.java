@@ -65,18 +65,18 @@ public interface DedicatedHsm {
     List<String> zones();
 
     /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * 
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the properties property: Properties of the dedicated HSM.
      * 
      * @return the properties value.
      */
     DedicatedHsmProperties properties();
-
-    /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     * 
-     * @return the systemData value.
-     */
-    SystemData systemData();
 
     /**
      * Gets the region of the resource.
@@ -109,9 +109,8 @@ public interface DedicatedHsm {
     /**
      * The entirety of the DedicatedHsm definition.
      */
-    interface Definition
-        extends DefinitionStages.Blank, DefinitionStages.WithLocation, DefinitionStages.WithResourceGroup,
-        DefinitionStages.WithSku, DefinitionStages.WithProperties, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithProperties, DefinitionStages.WithCreate {
     }
 
     /**
@@ -152,23 +151,10 @@ public interface DedicatedHsm {
             /**
              * Specifies resourceGroupName.
              * 
-             * @param resourceGroupName The name of the resource group. The name is case insensitive.
+             * @param resourceGroupName The name of the Resource Group to which the resource belongs.
              * @return the next definition stage.
              */
-            WithSku withExistingResourceGroup(String resourceGroupName);
-        }
-
-        /**
-         * The stage of the DedicatedHsm definition allowing to specify sku.
-         */
-        interface WithSku {
-            /**
-             * Specifies the sku property: SKU details.
-             * 
-             * @param sku SKU details.
-             * @return the next definition stage.
-             */
-            WithProperties withSku(Sku sku);
+            WithProperties withExistingResourceGroup(String resourceGroupName);
         }
 
         /**
@@ -188,7 +174,7 @@ public interface DedicatedHsm {
          * The stage of the DedicatedHsm definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithZones {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithSku, DefinitionStages.WithZones {
             /**
              * Executes the create request.
              * 
@@ -216,6 +202,19 @@ public interface DedicatedHsm {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the DedicatedHsm definition allowing to specify sku.
+         */
+        interface WithSku {
+            /**
+             * Specifies the sku property: SKU details.
+             * 
+             * @param sku SKU details.
+             * @return the next definition stage.
+             */
+            WithCreate withSku(Sku sku);
         }
 
         /**

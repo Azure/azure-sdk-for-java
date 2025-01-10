@@ -6,53 +6,50 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Definition for App Seen.
  */
 @Fluent
-public final class AppSeenInfo {
+public final class AppSeenInfo implements JsonSerializable<AppSeenInfo> {
     /*
      * title
      */
-    @JsonProperty(value = "title", required = true)
     private String title;
 
     /*
      * category
      */
-    @JsonProperty(value = "category", required = true)
     private String category;
 
     /*
      * subCategory
      */
-    @JsonProperty(value = "subCategory", required = true)
     private String subCategory;
 
     /*
      * risk
      */
-    @JsonProperty(value = "risk", required = true)
     private String risk;
 
     /*
      * tag
      */
-    @JsonProperty(value = "tag", required = true)
     private String tag;
 
     /*
      * technology
      */
-    @JsonProperty(value = "technology", required = true)
     private String technology;
 
     /*
      * standardPorts
      */
-    @JsonProperty(value = "standardPorts", required = true)
     private String standardPorts;
 
     /**
@@ -208,34 +205,89 @@ public final class AppSeenInfo {
      */
     public void validate() {
         if (title() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property title in model AppSeenInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property title in model AppSeenInfo"));
         }
         if (category() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property category in model AppSeenInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property category in model AppSeenInfo"));
         }
         if (subCategory() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property subCategory in model AppSeenInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property subCategory in model AppSeenInfo"));
         }
         if (risk() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property risk in model AppSeenInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property risk in model AppSeenInfo"));
         }
         if (tag() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property tag in model AppSeenInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property tag in model AppSeenInfo"));
         }
         if (technology() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property technology in model AppSeenInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property technology in model AppSeenInfo"));
         }
         if (standardPorts() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property standardPorts in model AppSeenInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property standardPorts in model AppSeenInfo"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AppSeenInfo.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("category", this.category);
+        jsonWriter.writeStringField("subCategory", this.subCategory);
+        jsonWriter.writeStringField("risk", this.risk);
+        jsonWriter.writeStringField("tag", this.tag);
+        jsonWriter.writeStringField("technology", this.technology);
+        jsonWriter.writeStringField("standardPorts", this.standardPorts);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AppSeenInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AppSeenInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AppSeenInfo.
+     */
+    public static AppSeenInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AppSeenInfo deserializedAppSeenInfo = new AppSeenInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("title".equals(fieldName)) {
+                    deserializedAppSeenInfo.title = reader.getString();
+                } else if ("category".equals(fieldName)) {
+                    deserializedAppSeenInfo.category = reader.getString();
+                } else if ("subCategory".equals(fieldName)) {
+                    deserializedAppSeenInfo.subCategory = reader.getString();
+                } else if ("risk".equals(fieldName)) {
+                    deserializedAppSeenInfo.risk = reader.getString();
+                } else if ("tag".equals(fieldName)) {
+                    deserializedAppSeenInfo.tag = reader.getString();
+                } else if ("technology".equals(fieldName)) {
+                    deserializedAppSeenInfo.technology = reader.getString();
+                } else if ("standardPorts".equals(fieldName)) {
+                    deserializedAppSeenInfo.standardPorts = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAppSeenInfo;
+        });
+    }
 }

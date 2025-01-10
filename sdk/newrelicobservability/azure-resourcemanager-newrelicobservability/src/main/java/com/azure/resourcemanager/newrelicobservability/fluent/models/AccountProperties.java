@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.newrelicobservability.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * List of all the New relic accounts for the given user.
  */
 @Fluent
-public final class AccountProperties {
+public final class AccountProperties implements JsonSerializable<AccountProperties> {
     /*
      * organization id
      */
-    @JsonProperty(value = "organizationId")
     private String organizationId;
 
     /*
      * account id
      */
-    @JsonProperty(value = "accountId")
     private String accountId;
 
     /*
      * account name
      */
-    @JsonProperty(value = "accountName")
     private String accountName;
 
     /*
      * Region where New Relic account is present
      */
-    @JsonProperty(value = "region")
     private String region;
 
     /**
@@ -128,5 +128,50 @@ public final class AccountProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("organizationId", this.organizationId);
+        jsonWriter.writeStringField("accountId", this.accountId);
+        jsonWriter.writeStringField("accountName", this.accountName);
+        jsonWriter.writeStringField("region", this.region);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccountProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccountProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccountProperties.
+     */
+    public static AccountProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccountProperties deserializedAccountProperties = new AccountProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("organizationId".equals(fieldName)) {
+                    deserializedAccountProperties.organizationId = reader.getString();
+                } else if ("accountId".equals(fieldName)) {
+                    deserializedAccountProperties.accountId = reader.getString();
+                } else if ("accountName".equals(fieldName)) {
+                    deserializedAccountProperties.accountName = reader.getString();
+                } else if ("region".equals(fieldName)) {
+                    deserializedAccountProperties.region = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccountProperties;
+        });
     }
 }

@@ -24,7 +24,7 @@ public final class IntegrationRuntimesCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"rnxhjtlxfikjk\",\"\":{\"htrxbozp\":\"dataavwwuasnjeg\",\"bl\":\"datajcnwjzb\",\"svoqiza\":\"datarnwv\"}},\"etag\":\"sdso\",\"id\":\"gfhjxsawoo\",\"name\":\"uffhxf\",\"type\":\"kmwzrdqyoy\"}";
+            = "{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"nequy\",\"\":{\"grmtqjk\":\"databo\"}},\"etag\":\"vadrmm\",\"id\":\"iuawvc\",\"name\":\"jzkxiidisczskos\",\"type\":\"oqiqazugamx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,14 +34,14 @@ public final class IntegrationRuntimesCreateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IntegrationRuntimeResource response = manager.integrationRuntimes()
-            .define("elnirupkqnst")
-            .withExistingWorkspace("ymotuz", "ybwjmtftc")
-            .withProperties(new IntegrationRuntime().withDescription("qp")
+            .define("xlnwyrmouvblgmo")
+            .withExistingWorkspace("uyem", "owuowh")
+            .withProperties(new IntegrationRuntime().withDescription("kltrfow")
                 .withAdditionalProperties(mapOf("type", "IntegrationRuntime")))
-            .withIfMatch("zyq")
+            .withIfMatch("qiuasigrows")
             .create();
 
-        Assertions.assertEquals("rnxhjtlxfikjk", response.properties().description());
+        Assertions.assertEquals("nequy", response.properties().description());
     }
 
     // Use "Map.of" if available

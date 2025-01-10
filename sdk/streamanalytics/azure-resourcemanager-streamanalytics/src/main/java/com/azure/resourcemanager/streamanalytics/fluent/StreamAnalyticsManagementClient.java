@@ -26,6 +26,13 @@ public interface StreamAnalyticsManagementClient {
     String getEndpoint();
 
     /**
+     * Gets Api Version.
+     * 
+     * @return the apiVersion value.
+     */
+    String getApiVersion();
+
+    /**
      * Gets The HTTP pipeline to send requests through.
      * 
      * @return the httpPipeline value.
@@ -38,27 +45,6 @@ public interface StreamAnalyticsManagementClient {
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
-
-    /**
-     * Gets the FunctionsClient object to access its operations.
-     * 
-     * @return the FunctionsClient object.
-     */
-    FunctionsClient getFunctions();
-
-    /**
-     * Gets the InputsClient object to access its operations.
-     * 
-     * @return the InputsClient object.
-     */
-    InputsClient getInputs();
-
-    /**
-     * Gets the OutputsClient object to access its operations.
-     * 
-     * @return the OutputsClient object.
-     */
-    OutputsClient getOutputs();
 
     /**
      * Gets the OperationsClient object to access its operations.
@@ -75,18 +61,18 @@ public interface StreamAnalyticsManagementClient {
     StreamingJobsClient getStreamingJobs();
 
     /**
-     * Gets the SkusClient object to access its operations.
+     * Gets the InputsClient object to access its operations.
      * 
-     * @return the SkusClient object.
+     * @return the InputsClient object.
      */
-    SkusClient getSkus();
+    InputsClient getInputs();
 
     /**
-     * Gets the SubscriptionsClient object to access its operations.
+     * Gets the OutputsClient object to access its operations.
      * 
-     * @return the SubscriptionsClient object.
+     * @return the OutputsClient object.
      */
-    SubscriptionsClient getSubscriptions();
+    OutputsClient getOutputs();
 
     /**
      * Gets the TransformationsClient object to access its operations.
@@ -94,6 +80,20 @@ public interface StreamAnalyticsManagementClient {
      * @return the TransformationsClient object.
      */
     TransformationsClient getTransformations();
+
+    /**
+     * Gets the FunctionsClient object to access its operations.
+     * 
+     * @return the FunctionsClient object.
+     */
+    FunctionsClient getFunctions();
+
+    /**
+     * Gets the SubscriptionsClient object to access its operations.
+     * 
+     * @return the SubscriptionsClient object.
+     */
+    SubscriptionsClient getSubscriptions();
 
     /**
      * Gets the ClustersClient object to access its operations.

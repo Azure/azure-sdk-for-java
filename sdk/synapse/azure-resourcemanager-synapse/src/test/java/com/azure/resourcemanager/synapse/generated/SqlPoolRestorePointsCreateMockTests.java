@@ -21,7 +21,7 @@ public final class SqlPoolRestorePointsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"location\":\"kzsifcuvb\",\"properties\":{\"restorePointType\":\"CONTINUOUS\",\"earliestRestoreDate\":\"2021-09-22T13:29:06Z\",\"restorePointCreationDate\":\"2021-05-24T04:41:19Z\",\"restorePointLabel\":\"cbbwjtrdxriz\"},\"id\":\"gbbgiarksykp\",\"name\":\"dqxwabzrwiqrxhac\",\"type\":\"cdosqkptj\"}";
+            = "{\"location\":\"hsoymhpvtyqf\",\"properties\":{\"restorePointType\":\"CONTINUOUS\",\"earliestRestoreDate\":\"2021-01-15T09:39:29Z\",\"restorePointCreationDate\":\"2021-05-18T17:57:13Z\",\"restorePointLabel\":\"jstkfvvdshxcd\"},\"id\":\"dsuenygnxcgjtfrn\",\"name\":\"uktrfnslnlrx\",\"type\":\"myltrwntfmtbg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,8 +31,8 @@ public final class SqlPoolRestorePointsCreateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         RestorePoint response = manager.sqlPoolRestorePoints()
-            .create("cgbfzuscstun", "lhxd", "bkl",
-                new CreateSqlPoolRestorePointDefinition().withRestorePointLabel("iichgjsysmvxodgw"),
+            .create("vzvluyq", "aiossscyvaifp", "uacvfy",
+                new CreateSqlPoolRestorePointDefinition().withRestorePointLabel("owpsfxt"),
                 com.azure.core.util.Context.NONE);
 
     }

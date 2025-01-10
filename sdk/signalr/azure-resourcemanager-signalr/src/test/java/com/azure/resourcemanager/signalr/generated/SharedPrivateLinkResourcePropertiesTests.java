@@ -12,21 +12,21 @@ public final class SharedPrivateLinkResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SharedPrivateLinkResourceProperties model = BinaryData.fromString(
-            "{\"groupId\":\"zejjoqk\",\"privateLinkResourceId\":\"gfhsxttaugzxn\",\"provisioningState\":\"Failed\",\"requestMessage\":\"pxdtnkdmkq\",\"status\":\"Rejected\"}")
+            "{\"groupId\":\"nhyjsv\",\"privateLinkResourceId\":\"ycxzbfvoo\",\"provisioningState\":\"Failed\",\"requestMessage\":\"mtg\",\"status\":\"Approved\"}")
             .toObject(SharedPrivateLinkResourceProperties.class);
-        Assertions.assertEquals("zejjoqk", model.groupId());
-        Assertions.assertEquals("gfhsxttaugzxn", model.privateLinkResourceId());
-        Assertions.assertEquals("pxdtnkdmkq", model.requestMessage());
+        Assertions.assertEquals("nhyjsv", model.groupId());
+        Assertions.assertEquals("ycxzbfvoo", model.privateLinkResourceId());
+        Assertions.assertEquals("mtg", model.requestMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SharedPrivateLinkResourceProperties model = new SharedPrivateLinkResourceProperties().withGroupId("zejjoqk")
-            .withPrivateLinkResourceId("gfhsxttaugzxn")
-            .withRequestMessage("pxdtnkdmkq");
+        SharedPrivateLinkResourceProperties model = new SharedPrivateLinkResourceProperties().withGroupId("nhyjsv")
+            .withPrivateLinkResourceId("ycxzbfvoo")
+            .withRequestMessage("mtg");
         model = BinaryData.fromObject(model).toObject(SharedPrivateLinkResourceProperties.class);
-        Assertions.assertEquals("zejjoqk", model.groupId());
-        Assertions.assertEquals("gfhsxttaugzxn", model.privateLinkResourceId());
-        Assertions.assertEquals("pxdtnkdmkq", model.requestMessage());
+        Assertions.assertEquals("nhyjsv", model.groupId());
+        Assertions.assertEquals("ycxzbfvoo", model.privateLinkResourceId());
+        Assertions.assertEquals("mtg", model.requestMessage());
     }
 }

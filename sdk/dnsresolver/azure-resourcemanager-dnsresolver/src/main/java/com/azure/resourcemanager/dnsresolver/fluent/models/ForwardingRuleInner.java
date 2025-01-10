@@ -34,7 +34,7 @@ public final class ForwardingRuleInner extends ProxyResource {
     private ForwardingRuleProperties innerProperties = new ForwardingRuleProperties();
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * Metadata pertaining to creation and last modification of the resource.
      */
     private SystemData systemData;
 
@@ -78,7 +78,7 @@ public final class ForwardingRuleInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
      * 
      * @return the systemData value.
      */

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -18,17 +17,17 @@ import java.io.IOException;
 @Fluent
 public final class BaiduCredentialProperties implements JsonSerializable<BaiduCredentialProperties> {
     /*
-     * Gets or sets baidu Api Key.
+     * Baidu Api Key.
      */
     private String baiduApiKey;
 
     /*
-     * Gets or sets baidu Endpoint.
+     * Baidu Endpoint.
      */
     private String baiduEndPoint;
 
     /*
-     * Gets or sets baidu Secret Key
+     * Baidu Secret Key
      */
     private String baiduSecretKey;
 
@@ -39,7 +38,7 @@ public final class BaiduCredentialProperties implements JsonSerializable<BaiduCr
     }
 
     /**
-     * Get the baiduApiKey property: Gets or sets baidu Api Key.
+     * Get the baiduApiKey property: Baidu Api Key.
      * 
      * @return the baiduApiKey value.
      */
@@ -48,7 +47,7 @@ public final class BaiduCredentialProperties implements JsonSerializable<BaiduCr
     }
 
     /**
-     * Set the baiduApiKey property: Gets or sets baidu Api Key.
+     * Set the baiduApiKey property: Baidu Api Key.
      * 
      * @param baiduApiKey the baiduApiKey value to set.
      * @return the BaiduCredentialProperties object itself.
@@ -59,7 +58,7 @@ public final class BaiduCredentialProperties implements JsonSerializable<BaiduCr
     }
 
     /**
-     * Get the baiduEndPoint property: Gets or sets baidu Endpoint.
+     * Get the baiduEndPoint property: Baidu Endpoint.
      * 
      * @return the baiduEndPoint value.
      */
@@ -68,7 +67,7 @@ public final class BaiduCredentialProperties implements JsonSerializable<BaiduCr
     }
 
     /**
-     * Set the baiduEndPoint property: Gets or sets baidu Endpoint.
+     * Set the baiduEndPoint property: Baidu Endpoint.
      * 
      * @param baiduEndPoint the baiduEndPoint value to set.
      * @return the BaiduCredentialProperties object itself.
@@ -79,7 +78,7 @@ public final class BaiduCredentialProperties implements JsonSerializable<BaiduCr
     }
 
     /**
-     * Get the baiduSecretKey property: Gets or sets baidu Secret Key.
+     * Get the baiduSecretKey property: Baidu Secret Key.
      * 
      * @return the baiduSecretKey value.
      */
@@ -88,7 +87,7 @@ public final class BaiduCredentialProperties implements JsonSerializable<BaiduCr
     }
 
     /**
-     * Set the baiduSecretKey property: Gets or sets baidu Secret Key.
+     * Set the baiduSecretKey property: Baidu Secret Key.
      * 
      * @param baiduSecretKey the baiduSecretKey value to set.
      * @return the BaiduCredentialProperties object itself.
@@ -104,24 +103,7 @@ public final class BaiduCredentialProperties implements JsonSerializable<BaiduCr
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (baiduApiKey() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property baiduApiKey in model BaiduCredentialProperties"));
-        }
-        if (baiduEndPoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property baiduEndPoint in model BaiduCredentialProperties"));
-        }
-        if (baiduSecretKey() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property baiduSecretKey in model BaiduCredentialProperties"));
-        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(BaiduCredentialProperties.class);
 
     /**
      * {@inheritDoc}
@@ -141,7 +123,6 @@ public final class BaiduCredentialProperties implements JsonSerializable<BaiduCr
      * @param jsonReader The JsonReader being read.
      * @return An instance of BaiduCredentialProperties if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BaiduCredentialProperties.
      */
     public static BaiduCredentialProperties fromJson(JsonReader jsonReader) throws IOException {

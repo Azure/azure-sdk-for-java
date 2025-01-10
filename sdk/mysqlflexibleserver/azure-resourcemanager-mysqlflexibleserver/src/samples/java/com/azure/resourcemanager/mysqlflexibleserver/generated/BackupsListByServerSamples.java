@@ -10,8 +10,8 @@ package com.azure.resourcemanager.mysqlflexibleserver.generated;
 public final class BackupsListByServerSamples {
     /*
      * x-ms-original-file:
-     * specification/mysql/resource-manager/Microsoft.DBforMySQL/Backups/preview/2023-10-01-preview/examples/
-     * BackupsListByServer.json
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/BackupsListByServer.
+     * json
      */
     /**
      * Sample code: List backups for a server.

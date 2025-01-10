@@ -18,61 +18,54 @@ public final class AnomalySecurityMLAnalyticsSettingsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AnomalySecurityMLAnalyticsSettingsProperties model = BinaryData.fromString(
-            "{\"description\":\"queqihk\",\"displayName\":\"yowltj\",\"enabled\":true,\"lastModifiedUtc\":\"2021-03-05T03:48:54Z\",\"requiredDataConnectors\":[{\"connectorId\":\"whieproqksmfxmcv\",\"dataTypes\":[\"tvkitbfjtdy\",\"tnp\",\"facqo\",\"cqrq\"]},{\"connectorId\":\"etjt\",\"dataTypes\":[\"u\",\"fdoadtxopgeh\",\"adkm\",\"zgssz\"]},{\"connectorId\":\"ctkbbxuha\",\"dataTypes\":[\"ir\",\"ccla\",\"voyn\"]},{\"connectorId\":\"uxx\",\"dataTypes\":[\"myqjog\",\"dsaidjanormovdxx\"]}],\"tactics\":[\"Execution\",\"Exfiltration\",\"DefenseEvasion\",\"Discovery\"],\"techniques\":[\"lu\"],\"anomalyVersion\":\"wemhdee\",\"customizableObservations\":\"dataslkyozd\",\"frequency\":\"PT22H16M22S\",\"settingsStatus\":\"Production\",\"isDefaultSettings\":false,\"anomalySettingsVersion\":1503256393,\"settingsDefinitionId\":\"42543b5d-088a-4e2a-be71-fc54628f9082\"}")
+            "{\"description\":\"vechndbnwiehole\",\"displayName\":\"jwiuubwefqsfapaq\",\"enabled\":false,\"lastModifiedUtc\":\"2021-10-04T15:26:40Z\",\"requiredDataConnectors\":[{\"connectorId\":\"ex\",\"dataTypes\":[\"fxapjwogqqnobpu\",\"cdabtqwpwya\",\"bzasqbucljgkyexa\",\"guyaip\"]}],\"tactics\":[\"CredentialAccess\",\"PrivilegeEscalation\",\"LateralMovement\"],\"techniques\":[\"xijj\"],\"anomalyVersion\":\"mfqwa\",\"customizableObservations\":\"datanqnm\",\"frequency\":\"PT225H52M14S\",\"settingsStatus\":\"Production\",\"isDefaultSettings\":true,\"anomalySettingsVersion\":878214115,\"settingsDefinitionId\":\"69819be3-f87c-494e-8407-4dae319becce\"}")
             .toObject(AnomalySecurityMLAnalyticsSettingsProperties.class);
-        Assertions.assertEquals("queqihk", model.description());
-        Assertions.assertEquals("yowltj", model.displayName());
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("whieproqksmfxmcv", model.requiredDataConnectors().get(0).connectorId());
-        Assertions.assertEquals("tvkitbfjtdy", model.requiredDataConnectors().get(0).dataTypes().get(0));
-        Assertions.assertEquals(AttackTactic.EXECUTION, model.tactics().get(0));
-        Assertions.assertEquals("lu", model.techniques().get(0));
-        Assertions.assertEquals("wemhdee", model.anomalyVersion());
-        Assertions.assertEquals(Duration.parse("PT22H16M22S"), model.frequency());
+        Assertions.assertEquals("vechndbnwiehole", model.description());
+        Assertions.assertEquals("jwiuubwefqsfapaq", model.displayName());
+        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals("ex", model.requiredDataConnectors().get(0).connectorId());
+        Assertions.assertEquals("fxapjwogqqnobpu", model.requiredDataConnectors().get(0).dataTypes().get(0));
+        Assertions.assertEquals(AttackTactic.CREDENTIAL_ACCESS, model.tactics().get(0));
+        Assertions.assertEquals("xijj", model.techniques().get(0));
+        Assertions.assertEquals("mfqwa", model.anomalyVersion());
+        Assertions.assertEquals(Duration.parse("PT225H52M14S"), model.frequency());
         Assertions.assertEquals(SettingsStatus.PRODUCTION, model.settingsStatus());
-        Assertions.assertEquals(false, model.isDefaultSettings());
-        Assertions.assertEquals(1503256393, model.anomalySettingsVersion());
-        Assertions.assertEquals(UUID.fromString("42543b5d-088a-4e2a-be71-fc54628f9082"), model.settingsDefinitionId());
+        Assertions.assertEquals(true, model.isDefaultSettings());
+        Assertions.assertEquals(878214115, model.anomalySettingsVersion());
+        Assertions.assertEquals(UUID.fromString("69819be3-f87c-494e-8407-4dae319becce"), model.settingsDefinitionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AnomalySecurityMLAnalyticsSettingsProperties model
-            = new AnomalySecurityMLAnalyticsSettingsProperties().withDescription("queqihk")
-                .withDisplayName("yowltj")
-                .withEnabled(true)
-                .withRequiredDataConnectors(Arrays.asList(
-                    new SecurityMLAnalyticsSettingsDataSource().withConnectorId("whieproqksmfxmcv")
-                        .withDataTypes(Arrays.asList("tvkitbfjtdy", "tnp", "facqo", "cqrq")),
-                    new SecurityMLAnalyticsSettingsDataSource().withConnectorId("etjt")
-                        .withDataTypes(Arrays.asList("u", "fdoadtxopgeh", "adkm", "zgssz")),
-                    new SecurityMLAnalyticsSettingsDataSource().withConnectorId("ctkbbxuha")
-                        .withDataTypes(Arrays.asList("ir", "ccla", "voyn")),
-                    new SecurityMLAnalyticsSettingsDataSource().withConnectorId("uxx")
-                        .withDataTypes(Arrays.asList("myqjog", "dsaidjanormovdxx"))))
-                .withTactics(Arrays.asList(AttackTactic.EXECUTION, AttackTactic.EXFILTRATION,
-                    AttackTactic.DEFENSE_EVASION, AttackTactic.DISCOVERY))
-                .withTechniques(Arrays.asList("lu"))
-                .withAnomalyVersion("wemhdee")
-                .withCustomizableObservations("dataslkyozd")
-                .withFrequency(Duration.parse("PT22H16M22S"))
-                .withSettingsStatus(SettingsStatus.PRODUCTION)
-                .withIsDefaultSettings(false)
-                .withAnomalySettingsVersion(1503256393)
-                .withSettingsDefinitionId(UUID.fromString("42543b5d-088a-4e2a-be71-fc54628f9082"));
+        AnomalySecurityMLAnalyticsSettingsProperties model = new AnomalySecurityMLAnalyticsSettingsProperties()
+            .withDescription("vechndbnwiehole")
+            .withDisplayName("jwiuubwefqsfapaq")
+            .withEnabled(false)
+            .withRequiredDataConnectors(Arrays.asList(new SecurityMLAnalyticsSettingsDataSource().withConnectorId("ex")
+                .withDataTypes(Arrays.asList("fxapjwogqqnobpu", "cdabtqwpwya", "bzasqbucljgkyexa", "guyaip"))))
+            .withTactics(Arrays.asList(AttackTactic.CREDENTIAL_ACCESS, AttackTactic.PRIVILEGE_ESCALATION,
+                AttackTactic.LATERAL_MOVEMENT))
+            .withTechniques(Arrays.asList("xijj"))
+            .withAnomalyVersion("mfqwa")
+            .withCustomizableObservations("datanqnm")
+            .withFrequency(Duration.parse("PT225H52M14S"))
+            .withSettingsStatus(SettingsStatus.PRODUCTION)
+            .withIsDefaultSettings(true)
+            .withAnomalySettingsVersion(878214115)
+            .withSettingsDefinitionId(UUID.fromString("69819be3-f87c-494e-8407-4dae319becce"));
         model = BinaryData.fromObject(model).toObject(AnomalySecurityMLAnalyticsSettingsProperties.class);
-        Assertions.assertEquals("queqihk", model.description());
-        Assertions.assertEquals("yowltj", model.displayName());
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("whieproqksmfxmcv", model.requiredDataConnectors().get(0).connectorId());
-        Assertions.assertEquals("tvkitbfjtdy", model.requiredDataConnectors().get(0).dataTypes().get(0));
-        Assertions.assertEquals(AttackTactic.EXECUTION, model.tactics().get(0));
-        Assertions.assertEquals("lu", model.techniques().get(0));
-        Assertions.assertEquals("wemhdee", model.anomalyVersion());
-        Assertions.assertEquals(Duration.parse("PT22H16M22S"), model.frequency());
+        Assertions.assertEquals("vechndbnwiehole", model.description());
+        Assertions.assertEquals("jwiuubwefqsfapaq", model.displayName());
+        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals("ex", model.requiredDataConnectors().get(0).connectorId());
+        Assertions.assertEquals("fxapjwogqqnobpu", model.requiredDataConnectors().get(0).dataTypes().get(0));
+        Assertions.assertEquals(AttackTactic.CREDENTIAL_ACCESS, model.tactics().get(0));
+        Assertions.assertEquals("xijj", model.techniques().get(0));
+        Assertions.assertEquals("mfqwa", model.anomalyVersion());
+        Assertions.assertEquals(Duration.parse("PT225H52M14S"), model.frequency());
         Assertions.assertEquals(SettingsStatus.PRODUCTION, model.settingsStatus());
-        Assertions.assertEquals(false, model.isDefaultSettings());
-        Assertions.assertEquals(1503256393, model.anomalySettingsVersion());
-        Assertions.assertEquals(UUID.fromString("42543b5d-088a-4e2a-be71-fc54628f9082"), model.settingsDefinitionId());
+        Assertions.assertEquals(true, model.isDefaultSettings());
+        Assertions.assertEquals(878214115, model.anomalySettingsVersion());
+        Assertions.assertEquals(UUID.fromString("69819be3-f87c-494e-8407-4dae319becce"), model.settingsDefinitionId());
     }
 }

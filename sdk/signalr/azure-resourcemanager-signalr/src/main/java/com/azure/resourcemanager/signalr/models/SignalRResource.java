@@ -59,7 +59,7 @@ public interface SignalRResource {
     ResourceSku sku();
 
     /**
-     * Gets the kind property: The kind of the service.
+     * Gets the kind property: The kind of the service, it can be SignalR or RawWebSockets.
      * 
      * @return the kind value.
      */
@@ -73,7 +73,7 @@ public interface SignalRResource {
     ManagedIdentity identity();
 
     /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
      * 
      * @return the systemData value.
      */
@@ -233,25 +233,6 @@ public interface SignalRResource {
     Boolean disableAadAuth();
 
     /**
-     * Gets the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled".
-     * When it's Disabled, new connections will not be routed to this endpoint, however existing connections will not be
-     * affected.
-     * This property is replica specific. Disable the regional endpoint without replica is not allowed.
-     * 
-     * @return the regionEndpointEnabled value.
-     */
-    String regionEndpointEnabled();
-
-    /**
-     * Gets the resourceStopped property: Stop or start the resource. Default to "False".
-     * When it's true, the data plane of the resource is shutdown.
-     * When it's false, the data plane of the resource is started.
-     * 
-     * @return the resourceStopped value.
-     */
-    String resourceStopped();
-
-    /**
      * Gets the region of the resource.
      * 
      * @return the region of the resource.
@@ -324,7 +305,8 @@ public interface SignalRResource {
             /**
              * Specifies resourceGroupName.
              * 
-             * @param resourceGroupName The name of the resource group. The name is case insensitive.
+             * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this
+             * value from the Azure Resource Manager API or the portal.
              * @return the next definition stage.
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
@@ -339,8 +321,7 @@ public interface SignalRResource {
             DefinitionStages.WithLiveTraceConfiguration, DefinitionStages.WithResourceLogConfiguration,
             DefinitionStages.WithCors, DefinitionStages.WithServerless, DefinitionStages.WithUpstream,
             DefinitionStages.WithNetworkACLs, DefinitionStages.WithPublicNetworkAccess,
-            DefinitionStages.WithDisableLocalAuth, DefinitionStages.WithDisableAadAuth,
-            DefinitionStages.WithRegionEndpointEnabled, DefinitionStages.WithResourceStopped {
+            DefinitionStages.WithDisableLocalAuth, DefinitionStages.WithDisableAadAuth {
             /**
              * Executes the create request.
              * 
@@ -388,9 +369,9 @@ public interface SignalRResource {
          */
         interface WithKind {
             /**
-             * Specifies the kind property: The kind of the service.
+             * Specifies the kind property: The kind of the service, it can be SignalR or RawWebSockets.
              * 
-             * @param kind The kind of the service.
+             * @param kind The kind of the service, it can be SignalR or RawWebSockets.
              * @return the next definition stage.
              */
             WithCreate withKind(ServiceKind kind);
@@ -576,43 +557,6 @@ public interface SignalRResource {
              */
             WithCreate withDisableAadAuth(Boolean disableAadAuth);
         }
-
-        /**
-         * The stage of the SignalRResource definition allowing to specify regionEndpointEnabled.
-         */
-        interface WithRegionEndpointEnabled {
-            /**
-             * Specifies the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to
-             * "Enabled".
-             * When it's Disabled, new connections will not be routed to this endpoint, however existing connections
-             * will not be affected.
-             * This property is replica specific. Disable the regional endpoint without replica is not allowed..
-             * 
-             * @param regionEndpointEnabled Enable or disable the regional endpoint. Default to "Enabled".
-             * When it's Disabled, new connections will not be routed to this endpoint, however existing connections
-             * will not be affected.
-             * This property is replica specific. Disable the regional endpoint without replica is not allowed.
-             * @return the next definition stage.
-             */
-            WithCreate withRegionEndpointEnabled(String regionEndpointEnabled);
-        }
-
-        /**
-         * The stage of the SignalRResource definition allowing to specify resourceStopped.
-         */
-        interface WithResourceStopped {
-            /**
-             * Specifies the resourceStopped property: Stop or start the resource. Default to "False".
-             * When it's true, the data plane of the resource is shutdown.
-             * When it's false, the data plane of the resource is started..
-             * 
-             * @param resourceStopped Stop or start the resource. Default to "False".
-             * When it's true, the data plane of the resource is shutdown.
-             * When it's false, the data plane of the resource is started.
-             * @return the next definition stage.
-             */
-            WithCreate withResourceStopped(String resourceStopped);
-        }
     }
 
     /**
@@ -629,8 +573,7 @@ public interface SignalRResource {
         extends UpdateStages.WithTags, UpdateStages.WithSku, UpdateStages.WithIdentity, UpdateStages.WithTls,
         UpdateStages.WithFeatures, UpdateStages.WithLiveTraceConfiguration, UpdateStages.WithResourceLogConfiguration,
         UpdateStages.WithCors, UpdateStages.WithServerless, UpdateStages.WithUpstream, UpdateStages.WithNetworkACLs,
-        UpdateStages.WithPublicNetworkAccess, UpdateStages.WithDisableLocalAuth, UpdateStages.WithDisableAadAuth,
-        UpdateStages.WithRegionEndpointEnabled, UpdateStages.WithResourceStopped {
+        UpdateStages.WithPublicNetworkAccess, UpdateStages.WithDisableLocalAuth, UpdateStages.WithDisableAadAuth {
         /**
          * Executes the update request.
          * 
@@ -856,43 +799,6 @@ public interface SignalRResource {
              * @return the next definition stage.
              */
             Update withDisableAadAuth(Boolean disableAadAuth);
-        }
-
-        /**
-         * The stage of the SignalRResource update allowing to specify regionEndpointEnabled.
-         */
-        interface WithRegionEndpointEnabled {
-            /**
-             * Specifies the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to
-             * "Enabled".
-             * When it's Disabled, new connections will not be routed to this endpoint, however existing connections
-             * will not be affected.
-             * This property is replica specific. Disable the regional endpoint without replica is not allowed..
-             * 
-             * @param regionEndpointEnabled Enable or disable the regional endpoint. Default to "Enabled".
-             * When it's Disabled, new connections will not be routed to this endpoint, however existing connections
-             * will not be affected.
-             * This property is replica specific. Disable the regional endpoint without replica is not allowed.
-             * @return the next definition stage.
-             */
-            Update withRegionEndpointEnabled(String regionEndpointEnabled);
-        }
-
-        /**
-         * The stage of the SignalRResource update allowing to specify resourceStopped.
-         */
-        interface WithResourceStopped {
-            /**
-             * Specifies the resourceStopped property: Stop or start the resource. Default to "False".
-             * When it's true, the data plane of the resource is shutdown.
-             * When it's false, the data plane of the resource is started..
-             * 
-             * @param resourceStopped Stop or start the resource. Default to "False".
-             * When it's true, the data plane of the resource is shutdown.
-             * When it's false, the data plane of the resource is started.
-             * @return the next definition stage.
-             */
-            Update withResourceStopped(String resourceStopped);
         }
     }
 

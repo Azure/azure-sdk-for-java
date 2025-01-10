@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -57,7 +56,6 @@ public final class RrcEstablishmentCause extends ExpandableStringEnum<RrcEstabli
      * @param name a name to look for.
      * @return the corresponding RrcEstablishmentCause.
      */
-    @JsonCreator
     public static RrcEstablishmentCause fromString(String name) {
         return fromString(name, RrcEstablishmentCause.class);
     }

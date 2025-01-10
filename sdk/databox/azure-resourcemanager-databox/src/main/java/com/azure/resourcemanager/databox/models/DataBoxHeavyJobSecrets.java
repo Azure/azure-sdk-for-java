@@ -26,16 +26,6 @@ public final class DataBoxHeavyJobSecrets extends JobSecrets {
      */
     private List<DataBoxHeavySecret> cabinetPodSecrets;
 
-    /*
-     * Error while fetching the secrets.
-     */
-    private CloudError error;
-
-    /*
-     * Dc Access Security Code for Customer Managed Shipping
-     */
-    private DcAccessSecurityCode dcAccessSecurityCode;
-
     /**
      * Creates an instance of DataBoxHeavyJobSecrets class.
      */
@@ -59,26 +49,6 @@ public final class DataBoxHeavyJobSecrets extends JobSecrets {
      */
     public List<DataBoxHeavySecret> cabinetPodSecrets() {
         return this.cabinetPodSecrets;
-    }
-
-    /**
-     * Get the error property: Error while fetching the secrets.
-     * 
-     * @return the error value.
-     */
-    @Override
-    public CloudError error() {
-        return this.error;
-    }
-
-    /**
-     * Get the dcAccessSecurityCode property: Dc Access Security Code for Customer Managed Shipping.
-     * 
-     * @return the dcAccessSecurityCode value.
-     */
-    @Override
-    public DcAccessSecurityCode dcAccessSecurityCode() {
-        return this.dcAccessSecurityCode;
     }
 
     /**
@@ -126,9 +96,9 @@ public final class DataBoxHeavyJobSecrets extends JobSecrets {
                 reader.nextToken();
 
                 if ("dcAccessSecurityCode".equals(fieldName)) {
-                    deserializedDataBoxHeavyJobSecrets.dcAccessSecurityCode = DcAccessSecurityCode.fromJson(reader);
+                    deserializedDataBoxHeavyJobSecrets.withDcAccessSecurityCode(DcAccessSecurityCode.fromJson(reader));
                 } else if ("error".equals(fieldName)) {
-                    deserializedDataBoxHeavyJobSecrets.error = CloudError.fromJson(reader);
+                    deserializedDataBoxHeavyJobSecrets.withError(CloudError.fromJson(reader));
                 } else if ("jobSecretsType".equals(fieldName)) {
                     deserializedDataBoxHeavyJobSecrets.jobSecretsType
                         = ClassDiscriminator.fromString(reader.getString());

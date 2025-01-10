@@ -7,26 +7,16 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.Exc
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.MessageTelemetryBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.ConnectionString;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.DerivedMetricProjections;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.FilteringConfiguration;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.KnownExceptionColumns;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.KnownRequestColumns;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.TelemetryType;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentIngress;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationInfo;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentFilterConjunctionGroupInfo;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentStreamInfo;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterInfo;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterConjunctionGroupInfo;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentType;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.RemoteDependency;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.PredicateType;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.Request;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.*;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
-import java.util.Date;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.List;
-import java.util.ArrayList;
 
 import static com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.QuickPulseTestBase.createRemoteDependencyTelemetry;
 import static com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.QuickPulseTestBase.createRequestTelemetry;
@@ -260,7 +250,7 @@ class QuickPulseDataCollectorTests {
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
 
-        createTelemetryItemsForDocsFiltering(collector);
+        createTelemetryItemsForFiltering(collector);
 
         QuickPulseDataCollector.FinalCounters counters = collector.peek();
         List<DocumentIngress> documents = counters.documentList;
@@ -277,17 +267,7 @@ class QuickPulseDataCollectorTests {
         DocumentIngress traceDoc = counters.documentList.get(3);
         assertThat(traceDoc.getDocumentType()).isEqualTo(DocumentType.TRACE);
 
-        assertThat(counters.rdds).isEqualTo(2);
-        assertThat(counters.unsuccessfulRdds).isEqualTo(1);
-        // The below line represents the "\\ApplicationInsights\\Dependency Call Duration" counter, which is meant to be an average in the 1s interval. (500 + 300) / 2 = 400.
-        // See this same logic used in the QuickPulseDataFetcher when building the monitoring point.
-        assertThat(counters.rddsDuration / counters.rdds).isEqualTo(400);
-        assertThat(counters.requests).isEqualTo(2);
-        assertThat(counters.unsuccessfulRequests).isEqualTo(1);
-        // The below line represents the "\\ApplicationInsights\\Request Duration" counter, which is meant to be an average in the 1s interval. (500 + 300) / 2 = 400.
-        // See this same logic used in the QuickPulseDataFetcher when building the monitoring point.
-        assertThat(counters.requestsDuration / counters.requests).isEqualTo(400);
-        assertThat(counters.exceptions).isEqualTo(1);
+        assertDefaultMetrics(counters);
 
         counters = collector.getAndRestart();
         assertCountersReset(collector.peek());
@@ -303,7 +283,7 @@ class QuickPulseDataCollectorTests {
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
 
-        createTelemetryItemsForDocsFiltering(collector);
+        createTelemetryItemsForFiltering(collector);
 
         QuickPulseDataCollector.FinalCounters counters = collector.peek();
         List<DocumentIngress> documents = counters.documentList;
@@ -346,7 +326,7 @@ class QuickPulseDataCollectorTests {
         QuickPulseDataCollector collector = new QuickPulseDataCollector(configuration);
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
-        createTelemetryItemsForDocsFiltering(collector);
+        createTelemetryItemsForFiltering(collector);
 
         QuickPulseDataCollector.FinalCounters counters = collector.peek();
         List<DocumentIngress> documents = counters.documentList;
@@ -375,7 +355,56 @@ class QuickPulseDataCollectorTests {
         assertCountersReset(collector.peek());
     }
 
-    private void createTelemetryItemsForDocsFiltering(QuickPulseDataCollector collector) {
+    @Test
+    void testMetricChartFiltering() {
+        CollectionConfigurationInfo derivedMetricsConfig = createDerivedMetricConfig();
+        AtomicReference<FilteringConfiguration> configuration
+            = new AtomicReference<>(new FilteringConfiguration(derivedMetricsConfig));
+
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(configuration);
+        collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
+        collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
+        createTelemetryItemsForFiltering(collector);
+
+        QuickPulseDataCollector.FinalCounters counters = collector.peek();
+        // The default metrics should not be impacted by derived metric filters
+        assertDefaultMetrics(counters);
+        Map<String, Double> finalDerivedMetricValues = counters.projections;
+
+        // The config asks to take the avg duration of requests that have response code 200.
+        // Only one such request came through and that request has a duration of 300.
+        assertThat(finalDerivedMetricValues.get("request-duration")).isEqualTo(300.0);
+
+        // The config asks to count the # of exceptions that contain the message "hi". No
+        // exceptions contain that message.
+        assertThat(finalDerivedMetricValues.get("exception-count")).isEqualTo(0.0);
+
+        counters = collector.getAndRestart();
+        QuickPulseDataCollector.FinalCounters resetCounters = collector.peek();
+        assertCountersReset(resetCounters);
+
+        Map<String, Double> resetProjections = new HashMap<>();
+        resetProjections.put("request-duration", 0.0);
+        resetProjections.put("exception-count", 0.0);
+
+        assertThat(resetCounters.projections).isEqualTo(resetProjections);
+    }
+
+    private void assertDefaultMetrics(QuickPulseDataCollector.FinalCounters counters) {
+        assertThat(counters.rdds).isEqualTo(2);
+        assertThat(counters.unsuccessfulRdds).isEqualTo(1);
+        // The below line represents the "\\ApplicationInsights\\Dependency Call Duration" counter, which is meant to be an average in the 1s interval. (500 + 300) / 2 = 400.
+        // See this same logic used in the QuickPulseDataFetcher when building the monitoring point.
+        assertThat(counters.rddsDuration / counters.rdds).isEqualTo(400);
+        assertThat(counters.requests).isEqualTo(2);
+        assertThat(counters.unsuccessfulRequests).isEqualTo(1);
+        // The below line represents the "\\ApplicationInsights\\Request Duration" counter, which is meant to be an average in the 1s interval. (500 + 300) / 2 = 400.
+        // See this same logic used in the QuickPulseDataFetcher when building the monitoring point.
+        assertThat(counters.requestsDuration / counters.requests).isEqualTo(400);
+        assertThat(counters.exceptions).isEqualTo(1);
+    }
+
+    private void createTelemetryItemsForFiltering(QuickPulseDataCollector collector) {
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
 
@@ -492,5 +521,75 @@ class QuickPulseDataCollectorTests {
         documentStreamInfo.setDocumentFilterGroups(docFilterGroups);
 
         return documentStreamInfo;
+    }
+
+    private CollectionConfigurationInfo createDerivedMetricConfig() {
+        CollectionConfigurationInfo config = new CollectionConfigurationInfo();
+        List<DocumentStreamInfo> documentStreams = new ArrayList<>();
+        DocumentStreamInfo defaultStream = createDocumentStream(true);
+        documentStreams.add(defaultStream);
+
+        config.setDocumentStreams(documentStreams);
+        config.setETag("random-etag");
+
+        List<DerivedMetricInfo> metrics = new ArrayList<>();
+        DerivedMetricInfo requestDuration = createRequestDurationDerivedMetricInfo();
+        DerivedMetricInfo exceptionCount = createExceptionCountDerivedMetricInfo();
+        metrics.add(requestDuration);
+        metrics.add(exceptionCount);
+
+        config.setMetrics(metrics);
+
+        return config;
+    }
+
+    private DerivedMetricInfo createRequestDurationDerivedMetricInfo() {
+        DerivedMetricInfo dmi = new DerivedMetricInfo();
+        dmi.setId("request-duration");
+        dmi.setTelemetryType("Request");
+        dmi.setAggregation(AggregationType.AVG);
+        dmi.setBackEndAggregation(AggregationType.AVG);
+        dmi.setProjection(KnownRequestColumns.DURATION);
+
+        FilterInfo filter = new FilterInfo();
+        filter.setFieldName(KnownRequestColumns.RESPONSE_CODE);
+        filter.setPredicate(PredicateType.EQUAL);
+        filter.setComparand("200");
+        List<FilterInfo> filters = new ArrayList<>();
+        filters.add(filter);
+
+        FilterConjunctionGroupInfo filterGroup = new FilterConjunctionGroupInfo();
+        filterGroup.setFilters(filters);
+
+        List<FilterConjunctionGroupInfo> filterGroups = new ArrayList<>();
+        filterGroups.add(filterGroup);
+        dmi.setFilterGroups(filterGroups);
+
+        return dmi;
+    }
+
+    private DerivedMetricInfo createExceptionCountDerivedMetricInfo() {
+        DerivedMetricInfo dmi = new DerivedMetricInfo();
+        dmi.setId("exception-count");
+        dmi.setTelemetryType("Exception");
+        dmi.setAggregation(AggregationType.SUM);
+        dmi.setBackEndAggregation(AggregationType.SUM);
+        dmi.setProjection(DerivedMetricProjections.COUNT);
+
+        FilterInfo filter = new FilterInfo();
+        filter.setFieldName(KnownExceptionColumns.MESSAGE);
+        filter.setPredicate(PredicateType.CONTAINS);
+        filter.setComparand("hi");
+        List<FilterInfo> filters = new ArrayList<>();
+        filters.add(filter);
+
+        FilterConjunctionGroupInfo filterGroup = new FilterConjunctionGroupInfo();
+        filterGroup.setFilters(filters);
+
+        List<FilterConjunctionGroupInfo> filterGroups = new ArrayList<>();
+        filterGroups.add(filterGroup);
+        dmi.setFilterGroups(filterGroups);
+
+        return dmi;
     }
 }

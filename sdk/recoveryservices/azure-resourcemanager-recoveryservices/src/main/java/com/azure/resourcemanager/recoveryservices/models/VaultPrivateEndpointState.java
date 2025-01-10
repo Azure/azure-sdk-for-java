@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class VaultPrivateEndpointState extends ExpandableStringEnum<VaultP
      * @param name a name to look for.
      * @return the corresponding VaultPrivateEndpointState.
      */
-    @JsonCreator
     public static VaultPrivateEndpointState fromString(String name) {
         return fromString(name, VaultPrivateEndpointState.class);
     }

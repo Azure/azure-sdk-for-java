@@ -9,7 +9,6 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.securityinsights.fluent.models.EntityInner;
 import com.azure.resourcemanager.securityinsights.fluent.models.SecurityGroupEntityProperties;
 import java.io.IOException;
 import java.util.Map;
@@ -19,11 +18,11 @@ import java.util.UUID;
  * Represents a security group entity.
  */
 @Immutable
-public final class SecurityGroupEntity extends EntityInner {
+public final class SecurityGroupEntity extends Entity {
     /*
      * The kind of the entity.
      */
-    private EntityKind kind = EntityKind.SECURITY_GROUP;
+    private EntityKindEnum kind = EntityKindEnum.SECURITY_GROUP;
 
     /*
      * SecurityGroup entity properties
@@ -62,7 +61,7 @@ public final class SecurityGroupEntity extends EntityInner {
      * @return the kind value.
      */
     @Override
-    public EntityKind kind() {
+    public EntityKindEnum kind() {
         return this.kind;
     }
 
@@ -212,7 +211,7 @@ public final class SecurityGroupEntity extends EntityInner {
                 } else if ("systemData".equals(fieldName)) {
                     deserializedSecurityGroupEntity.systemData = SystemData.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
-                    deserializedSecurityGroupEntity.kind = EntityKind.fromString(reader.getString());
+                    deserializedSecurityGroupEntity.kind = EntityKindEnum.fromString(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedSecurityGroupEntity.innerProperties = SecurityGroupEntityProperties.fromJson(reader);
                 } else {

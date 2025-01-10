@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mysqlflexibleserver.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.mysqlflexibleserver.models.EnableStatusEnum;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Network;
 import org.junit.jupiter.api.Assertions;
 
@@ -13,21 +12,18 @@ public final class NetworkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Network model = BinaryData.fromString(
-            "{\"publicNetworkAccess\":\"Disabled\",\"delegatedSubnetResourceId\":\"snzwd\",\"privateDnsZoneResourceId\":\"bavo\"}")
+            "{\"publicNetworkAccess\":\"Enabled\",\"delegatedSubnetResourceId\":\"zdxtayrlhmwhf\",\"privateDnsZoneResourceId\":\"rqobmtuk\"}")
             .toObject(Network.class);
-        Assertions.assertEquals(EnableStatusEnum.DISABLED, model.publicNetworkAccess());
-        Assertions.assertEquals("snzwd", model.delegatedSubnetResourceId());
-        Assertions.assertEquals("bavo", model.privateDnsZoneResourceId());
+        Assertions.assertEquals("zdxtayrlhmwhf", model.delegatedSubnetResourceId());
+        Assertions.assertEquals("rqobmtuk", model.privateDnsZoneResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Network model = new Network().withPublicNetworkAccess(EnableStatusEnum.DISABLED)
-            .withDelegatedSubnetResourceId("snzwd")
-            .withPrivateDnsZoneResourceId("bavo");
+        Network model
+            = new Network().withDelegatedSubnetResourceId("zdxtayrlhmwhf").withPrivateDnsZoneResourceId("rqobmtuk");
         model = BinaryData.fromObject(model).toObject(Network.class);
-        Assertions.assertEquals(EnableStatusEnum.DISABLED, model.publicNetworkAccess());
-        Assertions.assertEquals("snzwd", model.delegatedSubnetResourceId());
-        Assertions.assertEquals("bavo", model.privateDnsZoneResourceId());
+        Assertions.assertEquals("zdxtayrlhmwhf", model.delegatedSubnetResourceId());
+        Assertions.assertEquals("rqobmtuk", model.privateDnsZoneResourceId());
     }
 }

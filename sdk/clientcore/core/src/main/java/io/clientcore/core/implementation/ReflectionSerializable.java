@@ -20,9 +20,6 @@ import java.util.function.Function;
 /**
  * Utility class that handles creating and using {@code JsonSerializable} and {@code XmlSerializable} reflectively while
  * they are in beta.
- * <p>
- * Once {@code azure-json} and {@code azure-xml} GA this can be replaced with direct usage of the types. This is
- * separated out from what uses it to keep those code paths clean.
  */
 public final class ReflectionSerializable {
     private static final ClientLogger LOGGER = new ClientLogger(ReflectionSerializable.class);

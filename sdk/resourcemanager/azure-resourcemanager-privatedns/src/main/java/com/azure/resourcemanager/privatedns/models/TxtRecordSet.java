@@ -9,6 +9,10 @@ import java.util.List;
 /** An immutable client-side representation of a TXT (text) record set in Azure Private DNS Zone. */
 @Fluent
 public interface TxtRecordSet extends PrivateDnsRecordSet {
-    /** @return the TXT records in this record set */
+    /**
+     * Gets the TXT records in this record set.
+     *
+     * @return the TXT records in this record set
+     */
     List<TxtRecord> records();
 }

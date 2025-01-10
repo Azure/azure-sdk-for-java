@@ -12,7 +12,7 @@ import java.time.Duration;
  */
 public interface ConfidentialLedgerManagementClient {
     /**
-     * Gets The ID of the target subscription.
+     * Gets The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
      * 
      * @return the subscriptionId value.
      */
@@ -66,11 +66,4 @@ public interface ConfidentialLedgerManagementClient {
      * @return the LedgersClient object.
      */
     LedgersClient getLedgers();
-
-    /**
-     * Gets the ManagedCcfsClient object to access its operations.
-     * 
-     * @return the ManagedCcfsClient object.
-     */
-    ManagedCcfsClient getManagedCcfs();
 }

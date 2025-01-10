@@ -6,47 +6,28 @@ package com.azure.resourcemanager.confluent.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.confluent.ConfluentManager;
 import com.azure.resourcemanager.confluent.models.AccessListRoleBindingsSuccessResponse;
 import com.azure.resourcemanager.confluent.models.ListAccessRequestModel;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AccessListRoleBindingsWithResponseMockTests {
     @Test
     public void testListRoleBindingsWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
             = "{\"kind\":\"qylkmqpzoyhlf\",\"metadata\":{\"first\":\"wgcloxoebqinji\",\"last\":\"wjfuj\",\"prev\":\"afcba\",\"next\":\"pzpofoiyjw\",\"total_size\":1217605698},\"data\":[{\"kind\":\"kkholvdndvia\",\"id\":\"gphuartvtiu\",\"metadata\":{\"self\":\"fchnmnah\",\"resource_name\":\"xhk\",\"created_at\":\"qirwrweoox\",\"updated_at\":\"i\",\"deleted_at\":\"xwrsnew\"},\"principal\":\"zqvbubqm\",\"role_name\":\"hsycxhxzgaz\",\"crn_pattern\":\"abo\"},{\"kind\":\"vmfqhppubo\",\"id\":\"epdfgkmtdherng\",\"metadata\":{\"self\":\"juahokqto\",\"resource_name\":\"auxofshfph\",\"created_at\":\"nulaiywzejywhsl\",\"updated_at\":\"ojpllndnpdwrpqaf\",\"deleted_at\":\"ug\"},\"principal\":\"n\",\"role_name\":\"yetefyp\",\"crn_pattern\":\"octfjgtixrjvzuyt\"},{\"kind\":\"mlmuowol\",\"id\":\"uir\",\"metadata\":{\"self\":\"ons\",\"resource_name\":\"nw\",\"created_at\":\"gajinnixjawrtmj\",\"updated_at\":\"myccx\",\"deleted_at\":\"hcoxov\"},\"principal\":\"khenlus\",\"role_name\":\"rd\",\"crn_pattern\":\"xtxrdcqtjvidt\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ConfluentManager manager = ConfluentManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),

@@ -21,7 +21,7 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"jgmn\"},\"privateLinkServiceConnectionState\":{\"status\":\"t\",\"description\":\"rxkhlob\",\"actionsRequired\":\"jbhvhdiqayflu\"},\"provisioningState\":\"uosnuud\"},\"id\":\"elvhyibdrqrswh\",\"name\":\"uubpyrow\",\"type\":\"joxztfwfqchvczev\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"rra\"},\"privateLinkServiceConnectionState\":{\"status\":\"kcsueho\",\"description\":\"dac\",\"actionsRequired\":\"bgydlqidywm\"},\"provisioningState\":\"ptyrilkfbnrqqxv\"},\"id\":\"tpbnfnqtxjtoma\",\"name\":\"swbnfddepldwqjns\",\"type\":\"zygleexahvm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .getWithResponse("ldbglzout", "aaqgzeka", "clyzgs", com.azure.core.util.Context.NONE)
+            .getWithResponse("kywymxgaabj", "dtfohfaog", "vkiwrsiwdyjqu", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("t", response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("rxkhlob", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("kcsueho", response.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("dac", response.privateLinkServiceConnectionState().description());
     }
 }

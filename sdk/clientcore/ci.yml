@@ -50,3 +50,6 @@ extends:
         groupId: io.clientcore
         safeName: httpokhttp3
         releaseInBatch: ${{ parameters.release_clientcorehttpokhttp3 }}
+    AdditionalModules:
+      - name: optional-dependency-tests
+        groupId: io.clientcore

@@ -23,7 +23,7 @@ public class SwaggerInterfaceParserTests {
     interface TestInterface2 {
     }
 
-    @ServiceInterface(name = "myService", host = "https://management.azure.com")
+    @ServiceInterface(name = "myService", host = "https://management.somecloud.com")
     interface TestInterface3 {
     }
 
@@ -43,11 +43,11 @@ public class SwaggerInterfaceParserTests {
     @Test
     public void serviceWithServiceInterfaceAnnotation() {
         final SwaggerInterfaceParser interfaceParser = SwaggerInterfaceParser.getInstance(TestInterface3.class);
-        assertEquals("https://management.azure.com", interfaceParser.getHost());
+        assertEquals("https://management.somecloud.com", interfaceParser.getHost());
         assertEquals("myService", interfaceParser.getServiceName());
     }
 
-    @ServiceInterface(name = "myService", host = "https://azure.com")
+    @ServiceInterface(name = "myService", host = "https://somecloud.com")
     interface TestInterface4 {
         @HttpRequestInformation(method = HttpMethod.GET, path = "my/uri/path", expectedStatusCodes = { 200 })
         void testMethod4();

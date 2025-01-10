@@ -9,7 +9,9 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class ComplianceResultsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2017-08-01/examples/ComplianceResults/ListComplianceResults_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2017-08-01/examples/ComplianceResults/
+     * ListComplianceResults_example.json
      */
     /**
      * Sample code: Get compliance results on subscription.

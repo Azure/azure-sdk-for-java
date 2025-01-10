@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class ConnectionType extends ExpandableStringEnum<ConnectionType> {
      * @param name a name to look for.
      * @return the corresponding ConnectionType.
      */
-    @JsonCreator
     public static ConnectionType fromString(String name) {
         return fromString(name, ConnectionType.class);
     }

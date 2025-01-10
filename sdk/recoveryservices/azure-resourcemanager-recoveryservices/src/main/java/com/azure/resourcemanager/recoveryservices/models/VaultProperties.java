@@ -5,114 +5,101 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of the vault.
  */
 @Fluent
-public final class VaultProperties {
+public final class VaultProperties implements JsonSerializable<VaultProperties> {
     /*
      * Provisioning State.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * Details for upgrading vault.
      */
-    @JsonProperty(value = "upgradeDetails")
     private UpgradeDetails upgradeDetails;
 
     /*
      * List of private endpoint connection.
      */
-    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionVaultProperties> privateEndpointConnections;
 
     /*
      * Private endpoint state for backup.
      */
-    @JsonProperty(value = "privateEndpointStateForBackup", access = JsonProperty.Access.WRITE_ONLY)
     private VaultPrivateEndpointState privateEndpointStateForBackup;
 
     /*
      * Private endpoint state for site recovery.
      */
-    @JsonProperty(value = "privateEndpointStateForSiteRecovery", access = JsonProperty.Access.WRITE_ONLY)
     private VaultPrivateEndpointState privateEndpointStateForSiteRecovery;
 
     /*
      * Customer Managed Key details of the resource.
      */
-    @JsonProperty(value = "encryption")
     private VaultPropertiesEncryption encryption;
 
     /*
      * The details of the latest move operation performed on the Azure Resource
      */
-    @JsonProperty(value = "moveDetails")
     private VaultPropertiesMoveDetails moveDetails;
 
     /*
      * The State of the Resource after the move operation
      */
-    @JsonProperty(value = "moveState", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceMoveState moveState;
 
     /*
      * Backup storage version
      */
-    @JsonProperty(value = "backupStorageVersion", access = JsonProperty.Access.WRITE_ONLY)
     private BackupStorageVersion backupStorageVersion;
 
     /*
      * property to enable or disable resource provider inbound network traffic from public clients
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
      * Monitoring Settings of the vault
      */
-    @JsonProperty(value = "monitoringSettings")
     private MonitoringSettings monitoringSettings;
 
     /*
      * Restore Settings of the vault
      */
-    @JsonProperty(value = "restoreSettings")
     private RestoreSettings restoreSettings;
 
     /*
      * The redundancy Settings of a Vault
      */
-    @JsonProperty(value = "redundancySettings")
     private VaultPropertiesRedundancySettings redundancySettings;
 
     /*
      * Security Settings of the vault
      */
-    @JsonProperty(value = "securitySettings")
     private SecuritySettings securitySettings;
 
     /*
      * Secure Score of Recovery Services Vault
      */
-    @JsonProperty(value = "secureScore", access = JsonProperty.Access.WRITE_ONLY)
     private SecureScoreLevel secureScore;
 
     /*
      * Security levels of Recovery Services Vault for business continuity and disaster recovery
      */
-    @JsonProperty(value = "bcdrSecurityLevel", access = JsonProperty.Access.WRITE_ONLY)
     private BcdrSecurityLevel bcdrSecurityLevel;
 
     /*
      * ResourceGuardOperationRequests on which LAC check will be performed
      */
-    @JsonProperty(value = "resourceGuardOperationRequests")
     private List<String> resourceGuardOperationRequests;
 
     /**
@@ -408,5 +395,90 @@ public final class VaultProperties {
         if (securitySettings() != null) {
             securitySettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("upgradeDetails", this.upgradeDetails);
+        jsonWriter.writeJsonField("encryption", this.encryption);
+        jsonWriter.writeJsonField("moveDetails", this.moveDetails);
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeJsonField("monitoringSettings", this.monitoringSettings);
+        jsonWriter.writeJsonField("restoreSettings", this.restoreSettings);
+        jsonWriter.writeJsonField("redundancySettings", this.redundancySettings);
+        jsonWriter.writeJsonField("securitySettings", this.securitySettings);
+        jsonWriter.writeArrayField("resourceGuardOperationRequests", this.resourceGuardOperationRequests,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VaultProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VaultProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VaultProperties.
+     */
+    public static VaultProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VaultProperties deserializedVaultProperties = new VaultProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedVaultProperties.provisioningState = reader.getString();
+                } else if ("upgradeDetails".equals(fieldName)) {
+                    deserializedVaultProperties.upgradeDetails = UpgradeDetails.fromJson(reader);
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<PrivateEndpointConnectionVaultProperties> privateEndpointConnections
+                        = reader.readArray(reader1 -> PrivateEndpointConnectionVaultProperties.fromJson(reader1));
+                    deserializedVaultProperties.privateEndpointConnections = privateEndpointConnections;
+                } else if ("privateEndpointStateForBackup".equals(fieldName)) {
+                    deserializedVaultProperties.privateEndpointStateForBackup
+                        = VaultPrivateEndpointState.fromString(reader.getString());
+                } else if ("privateEndpointStateForSiteRecovery".equals(fieldName)) {
+                    deserializedVaultProperties.privateEndpointStateForSiteRecovery
+                        = VaultPrivateEndpointState.fromString(reader.getString());
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedVaultProperties.encryption = VaultPropertiesEncryption.fromJson(reader);
+                } else if ("moveDetails".equals(fieldName)) {
+                    deserializedVaultProperties.moveDetails = VaultPropertiesMoveDetails.fromJson(reader);
+                } else if ("moveState".equals(fieldName)) {
+                    deserializedVaultProperties.moveState = ResourceMoveState.fromString(reader.getString());
+                } else if ("backupStorageVersion".equals(fieldName)) {
+                    deserializedVaultProperties.backupStorageVersion
+                        = BackupStorageVersion.fromString(reader.getString());
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedVaultProperties.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("monitoringSettings".equals(fieldName)) {
+                    deserializedVaultProperties.monitoringSettings = MonitoringSettings.fromJson(reader);
+                } else if ("restoreSettings".equals(fieldName)) {
+                    deserializedVaultProperties.restoreSettings = RestoreSettings.fromJson(reader);
+                } else if ("redundancySettings".equals(fieldName)) {
+                    deserializedVaultProperties.redundancySettings = VaultPropertiesRedundancySettings.fromJson(reader);
+                } else if ("securitySettings".equals(fieldName)) {
+                    deserializedVaultProperties.securitySettings = SecuritySettings.fromJson(reader);
+                } else if ("secureScore".equals(fieldName)) {
+                    deserializedVaultProperties.secureScore = SecureScoreLevel.fromString(reader.getString());
+                } else if ("bcdrSecurityLevel".equals(fieldName)) {
+                    deserializedVaultProperties.bcdrSecurityLevel = BcdrSecurityLevel.fromString(reader.getString());
+                } else if ("resourceGuardOperationRequests".equals(fieldName)) {
+                    List<String> resourceGuardOperationRequests = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVaultProperties.resourceGuardOperationRequests = resourceGuardOperationRequests;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVaultProperties;
+        });
     }
 }

@@ -6,18 +6,21 @@ package com.azure.resourcemanager.sphere.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Request of the action to create a signed device capability image.
  */
 @Fluent
-public final class GenerateCapabilityImageRequest {
+public final class GenerateCapabilityImageRequest implements JsonSerializable<GenerateCapabilityImageRequest> {
     /*
      * List of capabilities to create
      */
-    @JsonProperty(value = "capabilities", required = true)
     private List<CapabilityType> capabilities;
 
     /**
@@ -53,10 +56,52 @@ public final class GenerateCapabilityImageRequest {
      */
     public void validate() {
         if (capabilities() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property capabilities in model GenerateCapabilityImageRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property capabilities in model GenerateCapabilityImageRequest"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GenerateCapabilityImageRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("capabilities", this.capabilities,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GenerateCapabilityImageRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GenerateCapabilityImageRequest if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GenerateCapabilityImageRequest.
+     */
+    public static GenerateCapabilityImageRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GenerateCapabilityImageRequest deserializedGenerateCapabilityImageRequest
+                = new GenerateCapabilityImageRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("capabilities".equals(fieldName)) {
+                    List<CapabilityType> capabilities
+                        = reader.readArray(reader1 -> CapabilityType.fromString(reader1.getString()));
+                    deserializedGenerateCapabilityImageRequest.capabilities = capabilities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGenerateCapabilityImageRequest;
+        });
+    }
 }
