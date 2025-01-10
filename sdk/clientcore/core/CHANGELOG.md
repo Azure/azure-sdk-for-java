@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added `PagedResponse`, `PagedOptions`, and `PagedIterable`, for supporting pagination.
+
 ### Breaking Changes
 
 ### Bugs Fixed
