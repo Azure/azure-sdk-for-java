@@ -32,7 +32,7 @@ public class TestPropertiesUtils {
     public static final Set<String> BUILT_IN_MEMBER_VARIABLE_NAMES =
         Set.of("client", "credential", "environment", "exponential", "fixed", "profile", "proxy", "retry");
 
-    public static final Class<?>[] NO_SETTER_PROPERTIES_CLASSES = new Class[] {
+    public static final Class<?>[] NO_SETTER_PROPERTIES_CLASSES = new Class<?>[] {
         AmqpClientProperties.class,
         AmqpProxyProperties.class,
         AmqpRetryProperties.class,
@@ -58,10 +58,6 @@ public class TestPropertiesUtils {
         }
 
         return OTHERS_METHOD;
-    }
-
-    public static boolean isMatchedGetter(Method getter, String varName) {
-        return getter.getName().equals("get" + varName) || getter.getName().equals("is" + varName);
     }
 
     public static boolean isGetter(Method method) {
