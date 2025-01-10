@@ -146,21 +146,25 @@ public class ConfigsTests {
         System.clearProperty("COSMOS.HTTP2_MAX_CONCURRENT_STREAMS");
     }
 
-    @Test(groups = { "emulator" })
+    @Test(groups = { "unit" })
     public void thinClientEnabledTest() {
         Configs config = new Configs();
         assertThat(config.getThinclientEnabled()).isFalse();
 
         System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
         assertThat(config.getThinclientEnabled()).isTrue();
+
+        System.clearProperty("COSMOS.THINCLIENT_ENABLED");
     }
 
-    @Test(groups = { "emulator" })
+    @Test(groups = { "unit" })
     public void thinClientEndpointTest() {
         Configs config = new Configs();
         assertThat(config.getThinclientEndpoint()).isEqualTo(URI.create("COSMOS.DEFAULT_THINCLIENT_ENDPOINT"));
 
         System.setProperty("COSMOS.THINCLIENT_ENDPOINT", "testThinClientEndpoint");
         assertThat(config.getThinclientEndpoint()).isEqualTo(URI.create("testThinClientEndpoint"));
+
+        System.clearProperty("COSMOS.THINCLIENT_ENDPOINT");
     }
 }
