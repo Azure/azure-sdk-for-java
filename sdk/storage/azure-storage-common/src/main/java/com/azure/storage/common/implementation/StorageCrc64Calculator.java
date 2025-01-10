@@ -2413,10 +2413,9 @@ public class StorageCrc64Calculator {
         long uSize = src.length;
         long uBytes, uStop;
 
-        uCrc ^= ~0L; // Flip all bits of uCrc
+        uCrc = ~uCrc; // Flip all bits of uCrc
 
-        uBytes = 0;
-        uStop = uSize - (uSize % 32);
+        uStop = uSize - (uSize & 31); // Modulo of powers of 2 (2^i) can be performed with a bitwise operator
 
         if (uStop >= 2 * 32) {
             long uCrc0 = 0L;
@@ -2514,7 +2513,8 @@ public class StorageCrc64Calculator {
         // Ensure unsigned behavior when comparing uInitialCrcA and uInitialCrcAB
         if ((uInitialCrcA & 0xFFFFFFFFFFFFFFFFL) != (uInitialCrcAB & 0xFFFFFFFFFFFFFFFFL)) {
             // Apply mulX_N with proper unsigned masking
-            uFinalCrcAB ^= multiplyCrcByPowerOfX((uInitialCrcA ^ uInitialCrcAB) & 0xFFFFFFFFFFFFFFFFL, uSizeA) & 0xFFFFFFFFFFFFFFFFL;
+            uFinalCrcAB ^= multiplyCrcByPowerOfX((uInitialCrcA ^ uInitialCrcAB) & 0xFFFFFFFFFFFFFFFFL, uSizeA)
+                & 0xFFFFFFFFFFFFFFFFL;
         }
 
         uFinalCrcAB ^= (uInitialCrcB ^ ~0L) & 0xFFFFFFFFFFFFFFFFL; // Ensure unsigned XOR logic
