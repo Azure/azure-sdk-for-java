@@ -21,7 +21,7 @@ def validate_tspconfig(tsp_dir: str) -> bool:
         yaml_json = yaml.safe_load(tspconfig)
 
     service_dir_pattern = r"sdk/\w+"
-    package_dir_pattern = r"azure(-\w+)+"
+    package_dir_pattern = r"(azure|clientcore)(-\w+)+"
 
     # SDK automation would make sure these properties exists
     service_dir: str = yaml_json["parameters"]["service-dir"]["default"]
@@ -42,8 +42,8 @@ def validate_tspconfig(tsp_dir: str) -> bool:
         valid = False
         logging.error(
             "[VALIDATE][tspconfig.yaml] "
-            'options.@azure-tools/typespec-java.package-dir SHOULD start with "azure-". '
-            'E.g. "azure-ai-openai". '
+            'options.@azure-tools/typespec-java.package-dir SHOULD start with "azure-" or "clientcore-". '
+            'E.g. "azure-ai-openai" or "clientcore-ai-openai". '
             f"Current value: {package_dir}"
         )
 

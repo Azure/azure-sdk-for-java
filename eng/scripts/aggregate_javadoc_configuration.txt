@@ -50,6 +50,8 @@ Group;Azure Quantum Jobs;com.azure.quantum.jobs*
 Group;Azure Schema Registry;com.azure.data.schemaregistry*
 Group;Azure Search Documents;com.azure.search.documents*
 Group;Azure Security Attestation;com.azure.security.attestation*
+Group;Azure Serialization - JSON;com.azure.json*
+Group;Azure Serialization - XML;com.azure.xml*
 Group;Azure Service Bus;com.azure.messaging.servicebus*
 Group;Azure Storage - Common;com.azure.storage.common*
 Group;Azure Storage - Blobs;com.azure.storage.blob*
@@ -70,9 +72,9 @@ Group;Azure Web Pub Sub;com.azure.messaging.webpubsub*
 Link;https://docs.oracle.com/javase/8/docs/api/
 Link;https://projectreactor.io/docs/core/release/api/
 Link;https://projectreactor.io/docs/netty/release/api/
-Link;https://fasterxml.github.io/jackson-annotations/javadoc/2.13/
-Link;https://fasterxml.github.io/jackson-core/javadoc/2.13/
-Link;https://fasterxml.github.io/jackson-databind/javadoc/2.13/
+Link;https://fasterxml.github.io/jackson-annotations/javadoc/2.17/
+Link;https://fasterxml.github.io/jackson-core/javadoc/2.17/
+Link;https://fasterxml.github.io/jackson-databind/javadoc/2.17/
 Link;https://netty.io/4.1/api/
 Link;https://avro.apache.org/docs/current/api/java/
 
