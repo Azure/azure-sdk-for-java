@@ -11,11 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_CHINA;
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT;
-import static com.azure.spring.messaging.servicebus.implementation.properties.merger.util.TestPropertiesComparer.isMergedPropertiesCorrect;
-import static com.azure.spring.messaging.servicebus.implementation.properties.merger.util.TestPropertiesValueInjectHelper.injectPseudoPropertyValues;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ProcessorPropertiesParentMergerTests {
     private final ProcessorPropertiesParentMerger merger = new ProcessorPropertiesParentMerger();

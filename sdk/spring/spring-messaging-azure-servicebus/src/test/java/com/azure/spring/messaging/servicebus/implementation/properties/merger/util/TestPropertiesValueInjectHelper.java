@@ -59,8 +59,9 @@ public class TestPropertiesValueInjectHelper {
         Map<String, List<Method>> methods = Arrays.stream(targetClass.getDeclaredMethods())
                                                   .collect(Collectors.groupingBy(TestPropertiesUtils::groupMethodName));
         if (!methods.isEmpty()) {
-            methods.get(GETTER_METHOD)
-                   .stream()
+            Optional<List<Method>> getters = Optional.ofNullable(methods.get(GETTER_METHOD));
+            getters.stream()
+                   .flatMap(Collection::stream)
                    .sorted(new HighPriorityMethodComparator(priorities))
                    .forEach(getter -> invokeSetter(target, priorities, ignored, methods.get(SETTER_METHOD), getter));
         }

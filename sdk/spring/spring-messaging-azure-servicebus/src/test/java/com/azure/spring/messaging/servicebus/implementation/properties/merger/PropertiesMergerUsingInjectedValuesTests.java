@@ -33,7 +33,7 @@ class PropertiesMergerUsingInjectedValuesTests {
         ProducerProperties child = new ProducerProperties();
 
         NamespaceProperties parent = new NamespaceProperties();
-        injectPseudoPropertyValues(parent, List.of("cloudType"),"FullyQualifiedNamespace");
+        injectPseudoPropertyValues(parent, List.of("cloudType"), "FullyQualifiedNamespace");
 
         // Action
         SenderPropertiesParentMerger merger = new SenderPropertiesParentMerger();
@@ -56,7 +56,7 @@ class PropertiesMergerUsingInjectedValuesTests {
     void allChildPropertiesWillBeMergedBySenderMerger() {
         // Arrange
         ProducerProperties child = new ProducerProperties();
-        injectPseudoPropertyValues(child, List.of("cloudType"),"FullyQualifiedNamespace");
+        injectPseudoPropertyValues(child, List.of("cloudType"), "FullyQualifiedNamespace");
 
         NamespaceProperties parent = new NamespaceProperties();
 
@@ -83,7 +83,7 @@ class PropertiesMergerUsingInjectedValuesTests {
         ProcessorProperties child = new ProcessorProperties();
 
         NamespaceProperties parent = new NamespaceProperties();
-        injectPseudoPropertyValues(parent, List.of("cloudType"),"FullyQualifiedNamespace");
+        injectPseudoPropertyValues(parent, List.of("cloudType"), "FullyQualifiedNamespace");
 
         // Action
         ProcessorPropertiesParentMerger merger = new ProcessorPropertiesParentMerger();
@@ -106,7 +106,7 @@ class PropertiesMergerUsingInjectedValuesTests {
     void allChildPropertiesWillBeMergedByProcessorMerger() {
         // Arrange
         ProcessorProperties child = new ProcessorProperties();
-        injectPseudoPropertyValues(child, List.of("cloudType"),"FullyQualifiedNamespace");
+        injectPseudoPropertyValues(child, List.of("cloudType"), "FullyQualifiedNamespace");
 
         NamespaceProperties parent = new NamespaceProperties();
 
