@@ -73,6 +73,25 @@ public class PagedIterableTests {
         assertEquals(Stream.iterate(0, i -> i + 1).limit(numberOfPages * 3L).collect(Collectors.toList()), values);
     }
 
+    @Test
+    public void iterateResponseContainsEmptyArray() {
+        pagedResponses = new ArrayList<>(3);
+        // second page is empty but has nextLink
+        pagedResponses.add(new PagedResponse<>(httpRequest, 200, httpHeaders, responseBody, List.of(0, 1, 2), null, "1",
+            null, null, null));
+        pagedResponses.add(new PagedResponse<>(httpRequest, 200, httpHeaders, responseBody, Collections.emptyList(),
+            null, "2", null, null, null));
+        pagedResponses.add(new PagedResponse<>(httpRequest, 200, httpHeaders, responseBody, List.of(3, 4), null, null,
+            null, null, null));
+
+        PagedIterable<Integer> pagedIterable
+            = new PagedIterable<>(pagingOptions -> pagedResponses.isEmpty() ? null : pagedResponses.get(0),
+                (pagingOptions, nextLink) -> getNextPageSync(nextLink, pagedResponses));
+
+        verifyIteratorSize(pagedIterable.iterableByPage().iterator(), 3);
+        verifyIteratorSize(pagedIterable.iterator(), 5);
+    }
+
     private PagedIterable<Integer> getIntegerPagedIterable(int numberOfPages) {
         createPagedResponse(numberOfPages);
 
@@ -111,6 +130,7 @@ public class PagedIterableTests {
         return IntStream.range(i * 3, i * 3 + 3).boxed().collect(Collectors.toList());
     }
 
+    // tests with mocked HttpResponse
     @ParameterizedTest
     @ValueSource(ints = { 0, 10000, 100000 })
     public void streamParallelDoesNotRetrieveMorePagesThanExpected(int numberOfPages) {
@@ -119,7 +139,7 @@ public class PagedIterableTests {
          * failure.
          */
 
-        // there is still 1 request, when there is no item
+        // there is still 1 request (1 page with empty array), when no items
         int expectedNumberOfRetrievals = numberOfPages == 0 ? 1 : numberOfPages;
 
         nextPageMode = NextPageMode.CONTINUATION_TOKEN;
@@ -129,11 +149,10 @@ public class PagedIterableTests {
         PagedIterable<TodoItem> pagedIterable = list();
 
         long count = pagedIterable.stream().parallel().count();
-        assertEquals(numberOfPages * pagingStatistics.pageSize, (int) count);
-        assertEquals(expectedNumberOfRetrievals, pagingStatistics.countPageRetrieval);
+        assertEquals((long) numberOfPages * pagingStatistics.pageSize, count);
+        assertEquals(expectedNumberOfRetrievals, pagingStatistics.numberOfPageRetrievals);
     }
 
-    // tests with mocked HttpResponse
     @ParameterizedTest
     @EnumSource(NextPageMode.class)
     public void testPagedIterable(NextPageMode nextPageMode) {
@@ -143,7 +162,7 @@ public class PagedIterableTests {
         PagedIterable<TodoItem> pagedIterable = this.list();
 
         verifyIteratorSize(pagedIterable.iterableByPage().iterator(), pagingStatistics.totalPages);
-        verifyIteratorSize(pagedIterable.iterator(), pagingStatistics.totalPages * pagingStatistics.pageSize);
+        verifyIteratorSize(pagedIterable.iterator(), (long) pagingStatistics.totalPages * pagingStatistics.pageSize);
 
         // case when pagingOptions == null
         verifyIteratorSize(pagedIterable.iterableByPage(null).iterator(), pagingStatistics.totalPages);
@@ -185,7 +204,7 @@ public class PagedIterableTests {
         private int totalPages = 3;
         private int pageSize = 5;
 
-        private int countPageRetrieval;
+        private int numberOfPageRetrievals;
 
         private void resetAll() {
             resetStatistics();
@@ -194,7 +213,7 @@ public class PagedIterableTests {
         }
 
         private void resetStatistics() {
-            countPageRetrieval = 0;
+            numberOfPageRetrievals = 0;
         }
     }
 
@@ -260,7 +279,7 @@ public class PagedIterableTests {
     }
 
     private Response<TodoPage> listSync(PagingOptions pagingOptions) {
-        ++pagingStatistics.countPageRetrieval;
+        ++pagingStatistics.numberOfPageRetrievals;
         // mock request on first page
         if (pagingStatistics.totalPages == 0) {
             return new HttpResponse<>(httpRequest, 200, httpHeaders, new TodoPage(Collections.emptyList(), null, null));
@@ -294,7 +313,7 @@ public class PagedIterableTests {
     }
 
     private Response<TodoPage> listNextSync(String nextLink) {
-        ++pagingStatistics.countPageRetrieval;
+        ++pagingStatistics.numberOfPageRetrievals;
         // mock request on next page
         int pageIndex = Integer.parseInt(nextLink);
         int nextPageIndex = pageIndex + 1;
