@@ -10,7 +10,6 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.s
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentFilterConjunctionGroupInfo;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.AggregationType;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.TelemetryType;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationErrorType;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationError;
 
 import java.util.Set;
@@ -19,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashSet;
 import java.util.HashMap;
+import java.util.Optional;
 
 public class FilteringConfiguration {
 
@@ -34,6 +34,8 @@ public class FilteringConfiguration {
     private final Map<String, AggregationType> validProjectionInfo;
 
     private final Validator validator = new Validator();
+
+    private final ConfigErrorTracker errorTracker = new ConfigErrorTracker();
 
     private static final ClientLogger logger = new ClientLogger(FilteringConfiguration.class);
 
@@ -82,7 +84,7 @@ public class FilteringConfiguration {
     }
 
     public List<CollectionConfigurationError> getErrors() {
-        return validator.getErrors();
+        return errorTracker.getErrors();
     }
 
     private Map<TelemetryType, Map<String, List<FilterConjunctionGroupInfo>>>
@@ -94,8 +96,14 @@ public class FilteringConfiguration {
                 .getDocumentFilterGroups()) {
                 TelemetryType telemetryType = documentFilterGroupInfo.getTelemetryType();
                 FilterConjunctionGroupInfo filterGroup = documentFilterGroupInfo.getFilters();
-                if (validator.isValidDocConjunctionGroupInfo(documentFilterGroupInfo, configuration.getETag(),
-                    documentStreamId)) {
+
+                Optional<String> docFilterGroupError
+                    = validator.validateDocConjunctionGroupInfo(documentFilterGroupInfo);
+
+                if (docFilterGroupError.isPresent()) {
+                    errorTracker.constructAndTrackCollectionConfigurationError(docFilterGroupError.get(),
+                        configuration.getETag(), documentStreamId, false);
+                } else { // passed validation, store valid docFilterGroupInfo
                     if (!result.containsKey(telemetryType)) {
                         result.put(telemetryType, new HashMap<>());
                     }
@@ -109,6 +117,7 @@ public class FilteringConfiguration {
                         innerMap.put(documentStreamId, filterGroups);
                     }
                 }
+
             }
         }
         return result;
@@ -124,7 +133,12 @@ public class FilteringConfiguration {
 
             if (!seenMetricIds.contains(id)) {
                 seenMetricIds.add(id);
-                if (validator.isValidDerivedMetricInfo(derivedMetricInfo, configuration.getETag())) {
+                Optional<String> dmiError = validator.validateDerivedMetricInfo(derivedMetricInfo);
+                if (dmiError.isPresent()) {
+                    errorTracker.constructAndTrackCollectionConfigurationError(dmiError.get(), configuration.getETag(),
+                        id, true);
+
+                } else { // validation passed, store valid dmi
                     if (result.containsKey(telemetryType)) {
                         result.get(telemetryType).add(derivedMetricInfo);
                     } else {
@@ -134,8 +148,7 @@ public class FilteringConfiguration {
                     }
                 }
             } else {
-                validator.constructAndTrackCollectionConfigurationError(
-                    CollectionConfigurationErrorType.METRIC_DUPLICATE_IDS,
+                errorTracker.constructAndTrackCollectionConfigurationError(
                     "A duplicate metric id was found in this configuration", configuration.getETag(), id, true);
             }
 
