@@ -22,7 +22,7 @@ class SparkE2EChangeFeedITest
   extends IntegrationSpec
     with SparkWithDropwizardAndSlf4jMetrics
     with CosmosClient
-    with CosmosContainer
+    with CosmosContainerWithRetention
     with BasicLoggingTrait
     with MetricAssertions {
 
