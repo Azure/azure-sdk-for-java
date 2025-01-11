@@ -21,7 +21,7 @@
     "snapshot" : false,
     "supportStatus" : "SUPPORTED",
     "spring-boot-version" : "3.3.7",
-    "spring-cloud-version" : "2023.0.4"
+    "spring-cloud-version" : "2023.0.5"
   },
   {
     "current" : false,
