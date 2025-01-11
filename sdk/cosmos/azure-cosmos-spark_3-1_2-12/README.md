@@ -278,9 +278,9 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 
 <!-- LINKS -->
 [source_code]: src
-[cosmos_introduction]: https://docs.microsoft.com/azure/cosmos-db/
-[cosmos_docs]: https://docs.microsoft.com/azure/cosmos-db/introduction
-[jdk]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[cosmos_introduction]: https://learn.microsoft.com/azure/cosmos-db/
+[cosmos_docs]: https://learn.microsoft.com/azure/cosmos-db/introduction
+[jdk]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [maven]: https://maven.apache.org/
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
@@ -288,11 +288,11 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [coc_contact]: mailto:opencode@microsoft.com
 [azure_subscription]: https://azure.microsoft.com/free/
 [samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-data-cosmos/src/samples/java/com/azure/spring/data/cosmos
-[sql_api_query]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sql-query
-[local_emulator]: https://docs.microsoft.com/azure/cosmos-db/local-emulator
-[local_emulator_export_ssl_certificates]: https://docs.microsoft.com/azure/cosmos-db/local-emulator-export-ssl-certificates
-[azure_cosmos_db_partition]: https://docs.microsoft.com/azure/cosmos-db/partition-data
-[sql_queries_in_cosmos]: https://docs.microsoft.com/azure/cosmos-db/tutorial-query-sql-api
-[sql_queries_getting_started]: https://docs.microsoft.com/azure/cosmos-db/sql-query-getting-started
+[sql_api_query]: https://learn.microsoft.com/azure/cosmos-db/sql-api-sql-query
+[local_emulator]: https://learn.microsoft.com/azure/cosmos-db/local-emulator
+[local_emulator_export_ssl_certificates]: https://learn.microsoft.com/azure/cosmos-db/local-emulator-export-ssl-certificates
+[azure_cosmos_db_partition]: https://learn.microsoft.com/azure/cosmos-db/partition-data
+[sql_queries_in_cosmos]: https://learn.microsoft.com/azure/cosmos-db/tutorial-query-sql-api
+[sql_queries_getting_started]: https://learn.microsoft.com/azure/cosmos-db/sql-query-getting-started
 
 
