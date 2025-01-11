@@ -23,7 +23,6 @@ class RandomIdUtils {
     private static final int TRACE_ID_HEX_LENGTH = 32;
     private static final int SPAN_ID_HEX_LENGTH = 16;
     private static final char[] ENCODING = buildEncodingArray();
-    private static final String ALPHABET = "0123456789abcdef";
 
     public static String generateSpanId() {
         long id;
@@ -80,10 +79,11 @@ class RandomIdUtils {
     }
 
     private static char[] buildEncodingArray() {
+        String alphabet = "0123456789abcdef";
         char[] encoding = new char[512];
         for (int i = 0; i < 256; ++i) {
-            encoding[i] = ALPHABET.charAt(i >>> 4);
-            encoding[i | 0x100] = ALPHABET.charAt(i & 0xF);
+            encoding[i] = alphabet.charAt(i >>> 4);
+            encoding[i | 0x100] = alphabet.charAt(i & 0xF);
         }
         return encoding;
     }

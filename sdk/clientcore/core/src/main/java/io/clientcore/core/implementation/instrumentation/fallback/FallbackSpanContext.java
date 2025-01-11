@@ -12,7 +12,8 @@ import static io.clientcore.core.implementation.instrumentation.fallback.RandomI
 import static io.clientcore.core.implementation.instrumentation.fallback.RandomIdUtils.generateTraceId;
 
 final class FallbackSpanContext implements InstrumentationContext {
-    static final FallbackSpanContext INVALID = new FallbackSpanContext();
+    static final FallbackSpanContext INVALID
+        = new FallbackSpanContext(INVALID_TRACE_ID, INVALID_SPAN_ID, "00", false, Span.noop());
     private final String traceId;
     private final String spanId;
     private final String traceFlags;
@@ -57,14 +58,6 @@ final class FallbackSpanContext implements InstrumentationContext {
     @Override
     public String getTraceFlags() {
         return traceFlags;
-    }
-
-    private FallbackSpanContext() {
-        this.traceId = INVALID_TRACE_ID;
-        this.spanId = INVALID_SPAN_ID;
-        this.traceFlags = "00";
-        this.isValid = false;
-        this.span = Span.noop();
     }
 
     FallbackSpanContext(String traceId, String spanId, String traceFlags, boolean isValid, Span span) {

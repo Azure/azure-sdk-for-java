@@ -51,23 +51,28 @@ final class FallbackContextPropagator implements TraceContextPropagator {
         return context == null ? FallbackSpanContext.INVALID : context;
     }
 
+    /**
+     * Validates the traceparent header according to <a href="https://www.w3.org/TR/trace-context/#traceparent-header-field-values">W3C Trace Context</a>
+     *
+     * @param traceparent the traceparent header value
+     * @return true if the traceparent header is valid, false otherwise
+     */
     private static boolean isValidTraceparent(String traceparent) {
         if (traceparent == null || traceparent.length() != 55) {
             return false;
         }
 
-        // version
-        for (int i = 0; i < 2; i++) {
-            if (traceparent.charAt(i) != '0') {
-                return false;
-            }
-        }
-
-        if (traceparent.charAt(2) != '-') {
+        // valid traceparent format: <version>-<trace-id>-<span-id>-<trace-flags>
+        // version - only 00 is supported
+        if (traceparent.charAt(0) != '0'
+            || traceparent.charAt(1) != '0'
+            || traceparent.charAt(2) != '-'
+            || traceparent.charAt(35) != '-'
+            || traceparent.charAt(52) != '-') {
             return false;
         }
 
-        // trace-id
+        // trace-id - 32 lower case hex characters, all 0 is invalid
         boolean isAllZero = true;
         for (int i = 3; i < 35; i++) {
             char c = traceparent.charAt(i);
@@ -82,11 +87,7 @@ final class FallbackContextPropagator implements TraceContextPropagator {
             return false;
         }
 
-        if (traceparent.charAt(35) != '-') {
-            return false;
-        }
-
-        // span-id
+        // span-id - 16 lower case hex characters, all 0 is invalid
         isAllZero = true;
         for (int i = 36; i < 52; i++) {
             char c = traceparent.charAt(i);
@@ -102,11 +103,7 @@ final class FallbackContextPropagator implements TraceContextPropagator {
             return false;
         }
 
-        if (traceparent.charAt(52) != '-') {
-            return false;
-        }
-
-        // trace-flags
+        // trace-flags - 2 lower case hex characters
         for (int i = 53; i < 55; i++) {
             char c = traceparent.charAt(i);
             if (!((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f'))) {

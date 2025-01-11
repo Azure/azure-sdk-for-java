@@ -184,7 +184,7 @@ public final class OTelInitializer {
      * @return true if OTel is initialized successfully, false otherwise
      */
     public static boolean isInitialized() {
-        return INSTANCE == null || INSTANCE.initialized;
+        return INSTANCE.initialized;
     }
 
 }
