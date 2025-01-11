@@ -4,7 +4,7 @@
 package io.clientcore.core.instrumentation;
 
 import io.clientcore.core.http.models.HttpHeaderName;
-import io.clientcore.core.http.models.HttpLogOptions;
+import io.clientcore.core.http.models.HttpInstrumentationOptions;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
@@ -117,42 +117,38 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
     }
 
     public void configureInstrumentationPolicy() {
-        InstrumentationOptions<?> instrumentationOptions = new InstrumentationOptions<>();
-        HttpLogOptions logOptions = new HttpLogOptions();
+        HttpInstrumentationOptions<?> instrumentationOptions = new HttpInstrumentationOptions<>();
 
         // BEGIN: io.clientcore.core.telemetry.tracing.instrumentationpolicy
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(
                 new HttpRetryPolicy(),
-                new HttpInstrumentationPolicy(instrumentationOptions, logOptions))
+                new HttpInstrumentationPolicy(instrumentationOptions))
             .build();
 
         // END:  io.clientcore.core.telemetry.tracing.instrumentationpolicy
     }
 
     public void customizeInstrumentationPolicy() {
-        InstrumentationOptions<?> instrumentationOptions = new InstrumentationOptions<>();
-
         // BEGIN: io.clientcore.core.telemetry.tracing.customizeinstrumentationpolicy
 
         // You can configure URL sanitization to include additional query parameters to preserve
         // in `url.full` attribute.
-        HttpLogOptions logOptions = new HttpLogOptions();
-        logOptions.addAllowedQueryParamName("documentId");
+        HttpInstrumentationOptions<?> instrumentationOptions = new HttpInstrumentationOptions<>();
+        instrumentationOptions.addAllowedQueryParamName("documentId");
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(
                 new HttpRetryPolicy(),
-                new HttpInstrumentationPolicy(instrumentationOptions, logOptions))
+                new HttpInstrumentationPolicy(instrumentationOptions))
             .build();
 
         // END:  io.clientcore.core.telemetry.tracing.customizeinstrumentationpolicy
     }
 
     public void enrichInstrumentationPolicySpans() {
-        InstrumentationOptions<?> instrumentationOptions = new InstrumentationOptions<>();
-        HttpLogOptions logOptions = new HttpLogOptions();
+        HttpInstrumentationOptions<?> instrumentationOptions = new HttpInstrumentationOptions<>();
 
         // BEGIN: io.clientcore.core.telemetry.tracing.enrichhttpspans
 
@@ -170,7 +166,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(
                 new HttpRetryPolicy(),
-                new HttpInstrumentationPolicy(instrumentationOptions, logOptions),
+                new HttpInstrumentationPolicy(instrumentationOptions),
                 enrichingPolicy)
             .build();
 

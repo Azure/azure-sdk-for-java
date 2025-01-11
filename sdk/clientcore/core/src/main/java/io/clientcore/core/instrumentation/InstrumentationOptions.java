@@ -29,7 +29,7 @@ public class InstrumentationOptions<T> {
      * <!-- src_embed io.clientcore.core.telemetry.disabledistributedtracing -->
      * <pre>
      *
-     * InstrumentationOptions&lt;?&gt; instrumentationOptions = new InstrumentationOptions&lt;&gt;&#40;&#41;
+     * HttpInstrumentationOptions&lt;?&gt; instrumentationOptions = new HttpInstrumentationOptions&lt;&gt;&#40;&#41;
      *     .setTracingEnabled&#40;false&#41;;
      *
      * SampleClient client = new SampleClientBuilder&#40;&#41;.instrumentationOptions&#40;instrumentationOptions&#41;.build&#40;&#41;;
@@ -59,7 +59,7 @@ public class InstrumentationOptions<T> {
      * <pre>
      *
      * OpenTelemetry openTelemetry =  AutoConfiguredOpenTelemetrySdk.initialize&#40;&#41;.getOpenTelemetrySdk&#40;&#41;;
-     * InstrumentationOptions&lt;OpenTelemetry&gt; instrumentationOptions = new InstrumentationOptions&lt;OpenTelemetry&gt;&#40;&#41;
+     * HttpInstrumentationOptions&lt;OpenTelemetry&gt; instrumentationOptions = new HttpInstrumentationOptions&lt;OpenTelemetry&gt;&#40;&#41;
      *     .setProvider&#40;openTelemetry&#41;;
      *
      * SampleClient client = new SampleClientBuilder&#40;&#41;.instrumentationOptions&#40;instrumentationOptions&#41;.build&#40;&#41;;

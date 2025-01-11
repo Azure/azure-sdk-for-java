@@ -3,6 +3,7 @@
 
 package io.clientcore.core.instrumentation;
 
+import io.clientcore.core.http.models.HttpInstrumentationOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
@@ -71,7 +72,7 @@ public class TelemetryJavaDocCodeSnippets {
         // BEGIN: io.clientcore.core.telemetry.useexplicitopentelemetry
 
         OpenTelemetry openTelemetry =  AutoConfiguredOpenTelemetrySdk.initialize().getOpenTelemetrySdk();
-        InstrumentationOptions<OpenTelemetry> instrumentationOptions = new InstrumentationOptions<OpenTelemetry>()
+        HttpInstrumentationOptions<OpenTelemetry> instrumentationOptions = new HttpInstrumentationOptions<OpenTelemetry>()
             .setProvider(openTelemetry);
 
         SampleClient client = new SampleClientBuilder().instrumentationOptions(instrumentationOptions).build();
@@ -87,7 +88,7 @@ public class TelemetryJavaDocCodeSnippets {
     public void disableDistributedTracing() {
         // BEGIN: io.clientcore.core.telemetry.disabledistributedtracing
 
-        InstrumentationOptions<?> instrumentationOptions = new InstrumentationOptions<>()
+        HttpInstrumentationOptions<?> instrumentationOptions = new HttpInstrumentationOptions<>()
             .setTracingEnabled(false);
 
         SampleClient client = new SampleClientBuilder().instrumentationOptions(instrumentationOptions).build();
@@ -148,16 +149,16 @@ public class TelemetryJavaDocCodeSnippets {
     }
 
     static class SampleClientBuilder {
-        private InstrumentationOptions<?> instrumentationOptions;
+        private HttpInstrumentationOptions<?> instrumentationOptions;
         // TODO (limolkova): do we need InstrumentationTrait?
-        public SampleClientBuilder instrumentationOptions(InstrumentationOptions<?> instrumentationOptions) {
+        public SampleClientBuilder instrumentationOptions(HttpInstrumentationOptions<?> instrumentationOptions) {
             this.instrumentationOptions = instrumentationOptions;
             return this;
         }
 
         public SampleClient build() {
             return new SampleClient(instrumentationOptions, new HttpPipelineBuilder()
-                .policies(new HttpInstrumentationPolicy(instrumentationOptions, null))
+                .policies(new HttpInstrumentationPolicy(instrumentationOptions))
                 .build());
         }
     }

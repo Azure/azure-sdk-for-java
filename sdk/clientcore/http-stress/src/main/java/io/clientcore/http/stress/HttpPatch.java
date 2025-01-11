@@ -6,7 +6,7 @@ package io.clientcore.http.stress;
 import com.azure.perf.test.core.PerfStressOptions;
 import io.clientcore.core.http.client.DefaultHttpClientBuilder;
 import io.clientcore.core.http.models.HttpHeaderName;
-import io.clientcore.core.http.models.HttpLogOptions;
+import io.clientcore.core.http.models.HttpInstrumentationOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
@@ -78,7 +78,7 @@ public class HttpPatch extends ScenarioBase<StressOptions> {
         String body = "{\"id\": \"1\", \"name\": \"test\"}";
         HttpRequest request = new HttpRequest(HttpMethod.PATCH, uri).setBody(BinaryData.fromString(body));
         request.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(body.length()));
-        request.getHeaders().set(HttpHeaderName.USER_AGENT, "azsdk-java-stress");
+        request.getHeaders().set(HttpHeaderName.USER_AGENT, "clientcore-stress");
         request.getHeaders()
             .set(HttpHeaderName.fromString("x-client-id"), String.valueOf(clientRequestId.incrementAndGet()));
         request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
@@ -87,10 +87,8 @@ public class HttpPatch extends ScenarioBase<StressOptions> {
     }
 
     private HttpPipelineBuilder getPipelineBuilder() {
-        HttpLogOptions logOptions = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.HEADERS);
-
         HttpPipelineBuilder builder = new HttpPipelineBuilder().policies(new HttpRetryPolicy(),
-            new HttpInstrumentationPolicy(null, logOptions));
+            new HttpInstrumentationPolicy(new HttpInstrumentationOptions<>().setHttpLoggingEnabled(true)));
 
         if (options.getHttpClient() == PerfStressOptions.HttpClientType.OKHTTP) {
             builder.httpClient(new OkHttpHttpClientProvider().getSharedInstance());

@@ -41,7 +41,7 @@
  * <pre>
  *
  * OpenTelemetry openTelemetry =  AutoConfiguredOpenTelemetrySdk.initialize&#40;&#41;.getOpenTelemetrySdk&#40;&#41;;
- * InstrumentationOptions&lt;OpenTelemetry&gt; instrumentationOptions = new InstrumentationOptions&lt;OpenTelemetry&gt;&#40;&#41;
+ * HttpInstrumentationOptions&lt;OpenTelemetry&gt; instrumentationOptions = new HttpInstrumentationOptions&lt;OpenTelemetry&gt;&#40;&#41;
  *     .setProvider&#40;openTelemetry&#41;;
  *
  * SampleClient client = new SampleClientBuilder&#40;&#41;.instrumentationOptions&#40;instrumentationOptions&#41;.build&#40;&#41;;
