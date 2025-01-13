@@ -51,7 +51,7 @@ If you send messages from a client any other than the Java client itself in any 
 ## FAQ
 
 ### Where is the API document?
-Click [here](https://docs.microsoft.com/java/api/overview/azure/servicebus?view=azure-java-legacy).
+Click [here](https://learn.microsoft.com/java/api/overview/azure/servicebus?view=azure-java-legacy).
 
 ### Where can I find examples that use this library?
 

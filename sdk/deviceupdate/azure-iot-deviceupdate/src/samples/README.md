@@ -22,7 +22,7 @@ Samples here demonstrate the following:
 
 ## Prerequisites
 
-You need an [Azure subscription][https://azure.microsoft.com/free/], and a [Device Update for IoT Hub][https://docs.microsoft.com/azure/iot-hub-device-update/understand-device-update] 
+You need an [Azure subscription][https://azure.microsoft.com/free/], and a [Device Update for IoT Hub][https://learn.microsoft.com/azure/iot-hub-device-update/understand-device-update] 
 account and instance to use this package.
 
 Set the following environment variables:
