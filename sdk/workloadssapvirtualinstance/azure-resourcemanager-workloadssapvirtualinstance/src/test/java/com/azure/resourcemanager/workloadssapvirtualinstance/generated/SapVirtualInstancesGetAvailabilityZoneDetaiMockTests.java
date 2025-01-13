@@ -24,7 +24,7 @@ public final class SapVirtualInstancesGetAvailabilityZoneDetaiMockTests {
     @Test
     public void testGetAvailabilityZoneDetailsWithResponse() throws Exception {
         String responseStr
-            = "{\"availabilityZonePairs\":[{\"zoneA\":8930706636163683839,\"zoneB\":7724253777962595356},{\"zoneA\":8079990441730774595,\"zoneB\":5614449039864356696},{\"zoneA\":618784540661466249,\"zoneB\":6520590766362280172}]}";
+            = "{\"availabilityZonePairs\":[{\"zoneA\":5108749362005618927,\"zoneB\":7113445488264308925},{\"zoneA\":5009429986443101089,\"zoneB\":945944524424846139},{\"zoneA\":1364801760742969084,\"zoneB\":1902366482512122706},{\"zoneA\":3410093693766084456,\"zoneB\":4739380056500631916}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,14 +34,14 @@ public final class SapVirtualInstancesGetAvailabilityZoneDetaiMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SapAvailabilityZoneDetailsResult response = manager.sapVirtualInstances()
-            .getAvailabilityZoneDetailsWithResponse("iithtywu",
-                new SapAvailabilityZoneDetailsRequest().withAppLocation("xcbihw")
-                    .withSapProduct(SapProductType.OTHER)
+            .getAvailabilityZoneDetailsWithResponse("unvjsrtkfawnopq",
+                new SapAvailabilityZoneDetailsRequest().withAppLocation("ikyzirtxdy")
+                    .withSapProduct(SapProductType.S4HANA)
                     .withDatabaseType(SapDatabaseType.HANA),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(8930706636163683839L, response.availabilityZonePairs().get(0).zoneA());
-        Assertions.assertEquals(7724253777962595356L, response.availabilityZonePairs().get(0).zoneB());
+        Assertions.assertEquals(5108749362005618927L, response.availabilityZonePairs().get(0).zoneA());
+        Assertions.assertEquals(7113445488264308925L, response.availabilityZonePairs().get(0).zoneB());
     }
 }

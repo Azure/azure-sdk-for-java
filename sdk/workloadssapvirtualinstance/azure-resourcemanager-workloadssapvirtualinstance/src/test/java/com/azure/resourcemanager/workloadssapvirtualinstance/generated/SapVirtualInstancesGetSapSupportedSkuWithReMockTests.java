@@ -27,7 +27,7 @@ public final class SapVirtualInstancesGetSapSupportedSkuWithReMockTests {
     @Test
     public void testGetSapSupportedSkuWithResponse() throws Exception {
         String responseStr
-            = "{\"supportedSkus\":[{\"vmSku\":\"pyouaibrebqaays\",\"isAppServerCertified\":false,\"isDatabaseCertified\":false},{\"vmSku\":\"nqttezl\",\"isAppServerCertified\":false,\"isDatabaseCertified\":false},{\"vmSku\":\"kpj\",\"isAppServerCertified\":false,\"isDatabaseCertified\":false},{\"vmSku\":\"d\",\"isAppServerCertified\":false,\"isDatabaseCertified\":false}]}";
+            = "{\"supportedSkus\":[{\"vmSku\":\"dgoihxumwctondzj\",\"isAppServerCertified\":false,\"isDatabaseCertified\":false},{\"vmSku\":\"lwg\",\"isAppServerCertified\":true,\"isDatabaseCertified\":true},{\"vmSku\":\"tov\",\"isAppServerCertified\":false,\"isDatabaseCertified\":false},{\"vmSku\":\"nqfiufxqknpi\",\"isAppServerCertified\":true,\"isDatabaseCertified\":false}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,17 +37,17 @@ public final class SapVirtualInstancesGetSapSupportedSkuWithReMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SapSupportedResourceSkusResult response = manager.sapVirtualInstances()
-            .getSapSupportedSkuWithResponse("taugzxnfaa",
-                new SapSupportedSkusRequest().withAppLocation("pxdtnkdmkq")
+            .getSapSupportedSkuWithResponse("wiithtywub",
+                new SapSupportedSkusRequest().withAppLocation("cbihwqk")
                     .withEnvironment(SapEnvironmentType.PROD)
                     .withSapProduct(SapProductType.ECC)
                     .withDeploymentType(SapDeploymentType.SINGLE_SERVER)
                     .withDatabaseType(SapDatabaseType.HANA)
-                    .withHighAvailabilityType(SapHighAvailabilityType.AVAILABILITY_SET),
+                    .withHighAvailabilityType(SapHighAvailabilityType.AVAILABILITY_ZONE),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("pyouaibrebqaays", response.supportedSkus().get(0).vmSku());
+        Assertions.assertEquals("dgoihxumwctondzj", response.supportedSkus().get(0).vmSku());
         Assertions.assertEquals(false, response.supportedSkus().get(0).isAppServerCertified());
         Assertions.assertEquals(false, response.supportedSkus().get(0).isDatabaseCertified());
     }

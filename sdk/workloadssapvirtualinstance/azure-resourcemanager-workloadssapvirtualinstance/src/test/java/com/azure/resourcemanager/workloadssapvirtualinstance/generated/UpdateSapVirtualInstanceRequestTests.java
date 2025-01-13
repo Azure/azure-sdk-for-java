@@ -6,8 +6,8 @@ package com.azure.resourcemanager.workloadssapvirtualinstance.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.ManagedResourcesNetworkAccessType;
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.ManagedServiceIdentity;
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SAPVirtualInstanceIdentity;
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SAPVirtualInstanceIdentityType;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.UpdateSapVirtualInstanceProperties;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.UpdateSapVirtualInstanceRequest;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.UserAssignedIdentity;
@@ -19,10 +19,10 @@ public final class UpdateSapVirtualInstanceRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateSapVirtualInstanceRequest model = BinaryData.fromString(
-            "{\"tags\":{\"kteo\":\"mgucna\",\"pfqbuaceopzf\":\"llwptfdy\"},\"identity\":{\"principalId\":\"huaoppp\",\"tenantId\":\"eqx\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"mgrcfbu\":{\"principalId\":\"hzxct\",\"clientId\":\"gbkdmoizpos\"},\"swbxqz\":{\"principalId\":\"mfqjhhkxbp\",\"clientId\":\"ymjhxxjyngudivkr\"},\"ivetvtcq\":{\"principalId\":\"zjf\",\"clientId\":\"vjfdx\"}}},\"properties\":{\"managedResourcesNetworkAccessType\":\"Private\"}}")
+            "{\"tags\":{\"xipeilpjzuaejx\":\"hnnpr\",\"mv\":\"ultskzbbtdz\"},\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{\"waboe\":{\"principalId\":\"ozuhkfp\",\"clientId\":\"jyofdxluusdtto\"}}},\"properties\":{\"managedResourcesNetworkAccessType\":\"Private\"}}")
             .toObject(UpdateSapVirtualInstanceRequest.class);
-        Assertions.assertEquals("mgucna", model.tags().get("kteo"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("hnnpr", model.tags().get("xipeilpjzuaejx"));
+        Assertions.assertEquals(SAPVirtualInstanceIdentityType.NONE, model.identity().type());
         Assertions.assertEquals(ManagedResourcesNetworkAccessType.PRIVATE,
             model.properties().managedResourcesNetworkAccessType());
     }
@@ -30,16 +30,14 @@ public final class UpdateSapVirtualInstanceRequestTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UpdateSapVirtualInstanceRequest model
-            = new UpdateSapVirtualInstanceRequest().withTags(mapOf("kteo", "mgucna", "pfqbuaceopzf", "llwptfdy"))
-                .withIdentity(
-                    new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                        .withUserAssignedIdentities(mapOf("mgrcfbu", new UserAssignedIdentity(), "swbxqz",
-                            new UserAssignedIdentity(), "ivetvtcq", new UserAssignedIdentity())))
+            = new UpdateSapVirtualInstanceRequest().withTags(mapOf("xipeilpjzuaejx", "hnnpr", "mv", "ultskzbbtdz"))
+                .withIdentity(new SAPVirtualInstanceIdentity().withType(SAPVirtualInstanceIdentityType.NONE)
+                    .withUserAssignedIdentities(mapOf("waboe", new UserAssignedIdentity())))
                 .withProperties(new UpdateSapVirtualInstanceProperties()
                     .withManagedResourcesNetworkAccessType(ManagedResourcesNetworkAccessType.PRIVATE));
         model = BinaryData.fromObject(model).toObject(UpdateSapVirtualInstanceRequest.class);
-        Assertions.assertEquals("mgucna", model.tags().get("kteo"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("hnnpr", model.tags().get("xipeilpjzuaejx"));
+        Assertions.assertEquals(SAPVirtualInstanceIdentityType.NONE, model.identity().type());
         Assertions.assertEquals(ManagedResourcesNetworkAccessType.PRIVATE,
             model.properties().managedResourcesNetworkAccessType());
     }
